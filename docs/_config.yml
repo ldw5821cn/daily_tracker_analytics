@@ -1,0 +1,13 @@
+# 允许 GitHub Pages 渲染 markdown 文件为 HTML
+# 无需 jekyll 处理，直接按原样提供 markdown
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+markdown: kramdown
+highlighter: rouge
+
+# 直接提供 .md 文件，Pages 会渲染它们
+include:
+  - "docs/reports/**/*.md"

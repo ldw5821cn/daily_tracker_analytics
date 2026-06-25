@@ -1,0 +1,9 @@
+*.py.bak
+*.pyc
+__pycache__/
+.reports/
+research_reports/
+models/
+data/
+logs/
+.env

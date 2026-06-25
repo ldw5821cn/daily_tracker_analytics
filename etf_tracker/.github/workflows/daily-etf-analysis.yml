@@ -1,0 +1,73 @@
+name: ETF Daily Analysis Report
+
+on:
+  schedule:
+    # 北京时间 18:00 (UTC 10:00) 运行，对应 A 股收盘后
+    - cron: '0 10 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: '运行模式'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - quick
+      force_run:
+        description: '强制运行（忽略非交易日检查）'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  PYTHON_VERSION: '3.10'
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas numpy requests
+        
+    - name: Generate ETF Analysis Report
+      run: |
+        cd etf_tracker
+        python3 etf_tracker.py
+        
+    - name: Upload report artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: etf-report-${{ github.run_id }}
+        path: etf_tracker/reports/
+        
+    - name: Commit report to repository
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add etf_tracker/reports/ etf_tracker/*.csv
+        git diff --quiet && git diff --staged --quiet || git commit -m "📊 Daily ETF report $(date +%Y-%m-%d)"
+        git push
+        
+    - name: Send WeChat notification (optional)
+      if: ${{ env.WECHAT_WEBHOOK_URL != '' }}
+      env:
+        WECHAT_WEBHOOK_URL: ${{ secrets.WECHAT_WEBHOOK_URL }}
+      run: |
+        # 发送报告摘要到微信
+        LATEST_REPORT=$(ls -t etf_tracker/reports/*.md | head -1)
+        SUMMARY=$(head -30 "$LATEST_REPORT")
+        curl -s "$WECHAT_WEBHOOK_URL" \
+          -H 'Content-Type: application/json' \
+          -d "{\"msgtype\": \"markdown\", \"markdown\": {\"content\": \"📊 ETF日报 $(date +%Y-%m-%d)\\n\\n$SUMMARY\"}}"

@@ -1,0 +1,2253 @@
+{
+  "default_etf": "516150",
+  "report_title": "多板块 ETF + 美股科技/东南亚科技 每日投资分析报告",
+  "tracking_industries": [
+    "芯片制造",
+    "新能源",
+    "CPU",
+    "AI",
+    "半导体设备",
+    "有色金属",
+    "港股科技",
+    "大盘蓝筹",
+    "存储行业",
+    "证券",
+    "机器人",
+    "消费",
+    "通信",
+    "半导体",
+    "动力电池",
+    "内存制造",
+    "晶圆制造",
+    "银行",
+    "高股息",
+    "稀土永磁",
+    "算力金属",
+    "医疗器械",
+    "创新药",
+    "人工智能",
+    "互联网",
+    "美股科技",
+    "美股大盘",
+    "美股半导体",
+    "美股机器人"
+  ],
+  "backtest_periods": [
+    30,
+    60,
+    90,
+    120,
+    200,
+    280,
+    365
+  ],
+  "data_source": "tickflow",
+  "data_sources": [
+    {
+      "name": "tickflow",
+      "source_type": "tickflow",
+      "enabled": true,
+      "priority": 1,
+      "timeout": 15,
+      "retry_count": 3,
+      "retry_delay": 2.0,
+      "token": "",
+      "api_key": ""
+    },
+    {
+      "name": "akshare",
+      "source_type": "akshare",
+      "enabled": true,
+      "priority": 2,
+      "timeout": 15,
+      "retry_count": 3,
+      "retry_delay": 2.0,
+      "token": "",
+      "api_key": ""
+    },
+    {
+      "name": "eastmoney",
+      "source_type": "eastmoney",
+      "enabled": true,
+      "priority": 3,
+      "timeout": 15,
+      "retry_count": 3,
+      "retry_delay": 2.0,
+      "token": "",
+      "api_key": ""
+    },
+    {
+      "name": "tushare",
+      "source_type": "tushare",
+      "enabled": true,
+      "priority": 4,
+      "timeout": 20,
+      "retry_count": 3,
+      "retry_delay": 3.0,
+      "token": "",
+      "api_key": ""
+    },
+    {
+      "name": "baostock",
+      "source_type": "baostock",
+      "enabled": true,
+      "priority": 5,
+      "timeout": 30,
+      "retry_count": 3,
+      "retry_delay": 2.0,
+      "token": "",
+      "api_key": ""
+    },
+    {
+      "name": "yfinance",
+      "source_type": "yfinance",
+      "enabled": true,
+      "priority": 6,
+      "timeout": 20,
+      "retry_count": 3,
+      "retry_delay": 2.0,
+      "token": "",
+      "api_key": ""
+    }
+  ],
+  "wechat_push": {
+    "enabled": true,
+    "channel": "hermes",
+    "max_length": 1200
+  },
+  "llm_report": {
+    "enabled": true,
+    "provider": "deepseek",
+    "model": "deepseek-v4-flash",
+    "temperature": 0.3,
+    "max_tokens": 4000,
+    "env_api_key": "DEEPSEEK_API_KEY",
+    "env_base_url": "DEEPSEEK_BASE_URL"
+  },
+  "features": {
+    "llm_report": true,
+    "minute_data": true,
+    "fund_flow": true,
+    "sector_comparison": true,
+    "margin_trading": true,
+    "individual_stocks": true,
+    "multi_etf": true,
+    "cross_sector_comparison": true,
+    "wechat_push": true
+  },
+  "etfs": [
+    {
+      "code": "516150",
+      "name": "稀土ETF嘉实",
+      "theme": "稀土永磁",
+      "sector": "稀土永磁",
+      "leading_stocks": [
+        "北方稀土",
+        "中国稀土",
+        "盛和资源",
+        "广晟有色",
+        "厦门钨业"
+      ],
+      "top_stocks": [
+        {
+          "code": "600111",
+          "name": "北方稀土",
+          "reason": "全球轻稀土龙头"
+        },
+        {
+          "code": "000831",
+          "name": "中国稀土",
+          "reason": "中重稀土整合平台"
+        },
+        {
+          "code": "600392",
+          "name": "盛和资源",
+          "reason": "稀土全产业链布局"
+        },
+        {
+          "code": "600259",
+          "name": "广晟有色",
+          "reason": "广东稀土资源整合"
+        },
+        {
+          "code": "600549",
+          "name": "厦门钨业",
+          "reason": "稀土+钨双主业"
+        },
+        {
+          "code": "600010",
+          "name": "包钢股份",
+          "reason": "稀土精矿资源"
+        },
+        {
+          "code": "600366",
+          "name": "宁波韵升",
+          "reason": "稀土永磁材料"
+        },
+        {
+          "code": "000970",
+          "name": "中科三环",
+          "reason": "烧结钕铁硼龙头"
+        },
+        {
+          "code": "600580",
+          "name": "卧龙电驱",
+          "reason": "稀土永磁电机"
+        },
+        {
+          "code": "300748",
+          "name": "金力永磁",
+          "reason": "高性能钕铁硼"
+        }
+      ]
+    },
+    {
+      "code": "512800",
+      "name": "银行ETF",
+      "theme": "银行",
+      "sector": "银行",
+      "leading_stocks": [
+        "招商银行",
+        "工商银行",
+        "建设银行",
+        "农业银行",
+        "中国银行"
+      ],
+      "top_stocks": [
+        {
+          "code": "600036",
+          "name": "招商银行",
+          "reason": "零售银行龙头"
+        },
+        {
+          "code": "601398",
+          "name": "工商银行",
+          "reason": "全球资产规模最大银行"
+        },
+        {
+          "code": "601939",
+          "name": "建设银行",
+          "reason": "对公+住房金融优势"
+        },
+        {
+          "code": "601288",
+          "name": "农业银行",
+          "reason": "县域金融覆盖广"
+        },
+        {
+          "code": "601988",
+          "name": "中国银行",
+          "reason": "国际化程度最高"
+        },
+        {
+          "code": "601658",
+          "name": "邮储银行",
+          "reason": "零售存款基础好"
+        },
+        {
+          "code": "600016",
+          "name": "民生银行",
+          "reason": "民营银行代表"
+        },
+        {
+          "code": "601166",
+          "name": "兴业银行",
+          "reason": "同业业务优势"
+        },
+        {
+          "code": "601818",
+          "name": "光大银行",
+          "reason": "理财业务特色"
+        },
+        {
+          "code": "600000",
+          "name": "浦发银行",
+          "reason": "对公+零售转型"
+        }
+      ]
+    },
+    {
+      "code": "159928",
+      "name": "消费ETF",
+      "theme": "消费",
+      "sector": "消费",
+      "leading_stocks": [
+        "贵州茅台",
+        "五粮液",
+        "伊利股份",
+        "海天味业",
+        "中国中免"
+      ],
+      "top_stocks": [
+        {
+          "code": "600519",
+          "name": "贵州茅台",
+          "reason": "白酒绝对龙头"
+        },
+        {
+          "code": "000858",
+          "name": "五粮液",
+          "reason": "浓香型白酒龙头"
+        },
+        {
+          "code": "600887",
+          "name": "伊利股份",
+          "reason": "乳制品龙头"
+        },
+        {
+          "code": "603288",
+          "name": "海天味业",
+          "reason": "调味品龙头"
+        },
+        {
+          "code": "601888",
+          "name": "中国中免",
+          "reason": "免税龙头"
+        },
+        {
+          "code": "000333",
+          "name": "美的集团",
+          "reason": "家电龙头"
+        },
+        {
+          "code": "000651",
+          "name": "格力电器",
+          "reason": "空调龙头"
+        },
+        {
+          "code": "603369",
+          "name": "今世缘",
+          "reason": "区域白酒高增长"
+        },
+        {
+          "code": "600809",
+          "name": "山西汾酒",
+          "reason": "清香型白酒龙头"
+        },
+        {
+          "code": "002714",
+          "name": "牧原股份",
+          "reason": "生猪养殖龙头"
+        }
+      ]
+    },
+    {
+      "code": "512760",
+      "name": "芯片ETF",
+      "theme": "CPU/芯片",
+      "sector": "半导体",
+      "leading_stocks": [
+        "中芯国际",
+        "海光信息",
+        "寒武纪",
+        "中微公司",
+        "北方华创"
+      ],
+      "top_stocks": [
+        {
+          "code": "688981",
+          "name": "中芯国际",
+          "reason": "晶圆代工龙头"
+        },
+        {
+          "code": "688041",
+          "name": "海光信息",
+          "reason": "国产CPU/DCU龙头"
+        },
+        {
+          "code": "688256",
+          "name": "寒武纪",
+          "reason": "AI芯片独角兽"
+        },
+        {
+          "code": "688012",
+          "name": "中微公司",
+          "reason": "刻蚀设备龙头"
+        },
+        {
+          "code": "002371",
+          "name": "北方华创",
+          "reason": "半导体设备平台"
+        },
+        {
+          "code": "688047",
+          "name": "龙芯中科",
+          "reason": "自主指令集CPU"
+        },
+        {
+          "code": "300474",
+          "name": "景嘉微",
+          "reason": "国产GPU龙头"
+        },
+        {
+          "code": "688072",
+          "name": "拓荆科技",
+          "reason": "薄膜沉积设备"
+        },
+        {
+          "code": "688082",
+          "name": "盛美上海",
+          "reason": "清洗设备龙头"
+        },
+        {
+          "code": "300054",
+          "name": "鼎龙股份",
+          "reason": "CMP抛光垫"
+        }
+      ]
+    },
+    {
+      "code": "159819",
+      "name": "人工智能ETF",
+      "theme": "AI",
+      "sector": "人工智能",
+      "leading_stocks": [
+        "寒武纪",
+        "海康威视",
+        "科大讯飞",
+        "中际旭创",
+        "金山办公"
+      ],
+      "top_stocks": [
+        {
+          "code": "688256",
+          "name": "寒武纪",
+          "reason": "AI芯片龙头"
+        },
+        {
+          "code": "002415",
+          "name": "海康威视",
+          "reason": "安防AI龙头"
+        },
+        {
+          "code": "002230",
+          "name": "科大讯飞",
+          "reason": "语音AI龙头"
+        },
+        {
+          "code": "300308",
+          "name": "中际旭创",
+          "reason": "光模块龙头"
+        },
+        {
+          "code": "688111",
+          "name": "金山办公",
+          "reason": "办公软件AI化"
+        },
+        {
+          "code": "603019",
+          "name": "中科曙光",
+          "reason": "AI算力基础设施"
+        },
+        {
+          "code": "000938",
+          "name": "中芯国际",
+          "reason": "晶圆代工（AI芯片）"
+        },
+        {
+          "code": "688787",
+          "name": "海天瑞声",
+          "reason": "AI训练数据"
+        },
+        {
+          "code": "300496",
+          "name": "中科创达",
+          "reason": "边缘AI平台"
+        },
+        {
+          "code": "688327",
+          "name": "云从科技",
+          "reason": "计算机视觉"
+        }
+      ]
+    },
+    {
+      "code": "512480",
+      "name": "半导体ETF",
+      "theme": "晶圆制造",
+      "sector": "半导体",
+      "leading_stocks": [
+        "中芯国际",
+        "北方华创",
+        "中微公司",
+        "韦尔股份",
+        "兆易创新"
+      ],
+      "top_stocks": [
+        {
+          "code": "688981",
+          "name": "中芯国际",
+          "reason": "晶圆代工龙头"
+        },
+        {
+          "code": "002371",
+          "name": "北方华创",
+          "reason": "半导体设备平台"
+        },
+        {
+          "code": "688012",
+          "name": "中微公司",
+          "reason": "刻蚀设备龙头"
+        },
+        {
+          "code": "603501",
+          "name": "韦尔股份",
+          "reason": "CIS芯片龙头"
+        },
+        {
+          "code": "603986",
+          "name": "兆易创新",
+          "reason": "存储芯片龙头"
+        },
+        {
+          "code": "688019",
+          "name": "安集科技",
+          "reason": "CMP抛光液"
+        },
+        {
+          "code": "600206",
+          "name": "有研新材",
+          "reason": "半导体靶材"
+        },
+        {
+          "code": "688072",
+          "name": "拓荆科技",
+          "reason": "薄膜沉积设备"
+        },
+        {
+          "code": "688082",
+          "name": "盛美上海",
+          "reason": "清洗设备龙头"
+        },
+        {
+          "code": "300782",
+          "name": "卓胜微",
+          "reason": "射频前端"
+        }
+      ]
+    },
+    {
+      "code": "563180",
+      "name": "高股息ETF",
+      "theme": "高股息",
+      "sector": "高股息",
+      "leading_stocks": [
+        "中国神华",
+        "长江电力",
+        "工商银行",
+        "中国平安",
+        "中国石油"
+      ],
+      "top_stocks": [
+        {
+          "code": "601088",
+          "name": "中国神华",
+          "reason": "煤炭+高股息"
+        },
+        {
+          "code": "600900",
+          "name": "长江电力",
+          "reason": "水电龙头高股息"
+        },
+        {
+          "code": "601398",
+          "name": "工商银行",
+          "reason": "银行高股息"
+        },
+        {
+          "code": "601318",
+          "name": "中国平安",
+          "reason": "保险高股息"
+        },
+        {
+          "code": "601857",
+          "name": "中国石油",
+          "reason": "石油高股息"
+        },
+        {
+          "code": "600028",
+          "name": "中国石化",
+          "reason": "炼化高股息"
+        },
+        {
+          "code": "601225",
+          "name": "陕西煤业",
+          "reason": "煤炭高股息"
+        },
+        {
+          "code": "600660",
+          "name": "福耀玻璃",
+          "reason": "汽车玻璃高股息"
+        },
+        {
+          "code": "600177",
+          "name": "雅戈尔",
+          "reason": "服装+投资高股息"
+        },
+        {
+          "code": "000895",
+          "name": "双汇发展",
+          "reason": "食品高股息"
+        }
+      ]
+    },
+    {
+      "code": "562500",
+      "name": "机器人ETF华夏",
+      "theme": "机器人",
+      "sector": "机器人",
+      "leading_stocks": [
+        "汇川技术",
+        "埃斯顿",
+        "机器人",
+        "绿的谐波",
+        "双环传动"
+      ],
+      "top_stocks": [
+        {
+          "code": "300124",
+          "name": "汇川技术",
+          "reason": "工控+机器人伺服龙头"
+        },
+        {
+          "code": "002747",
+          "name": "埃斯顿",
+          "reason": "工业机器人本体龙头"
+        },
+        {
+          "code": "300024",
+          "name": "机器人",
+          "reason": "中科院背景机器人平台"
+        },
+        {
+          "code": "688017",
+          "name": "绿的谐波",
+          "reason": "谐波减速器国产替代"
+        },
+        {
+          "code": "002472",
+          "name": "双环传动",
+          "reason": "RV减速器+齿轮龙头"
+        },
+        {
+          "code": "603486",
+          "name": "科沃斯",
+          "reason": "服务机器人龙头"
+        },
+        {
+          "code": "688322",
+          "name": "奥比中光",
+          "reason": "3D视觉传感器"
+        },
+        {
+          "code": "300433",
+          "name": "蓝思科技",
+          "reason": "机器人结构件"
+        },
+        {
+          "code": "002050",
+          "name": "三花智控",
+          "reason": "特斯拉机器人热管理"
+        },
+        {
+          "code": "002031",
+          "name": "巨轮智能",
+          "reason": "机器人减速器"
+        }
+      ]
+    },
+    {
+      "code": "159530",
+      "name": "机器人ETF易方达",
+      "theme": "机器人",
+      "sector": "机器人",
+      "leading_stocks": [
+        "汇川技术",
+        "埃斯顿",
+        "机器人",
+        "绿的谐波",
+        "双环传动"
+      ],
+      "top_stocks": [
+        {
+          "code": "300124",
+          "name": "汇川技术",
+          "reason": "工控+机器人伺服龙头"
+        },
+        {
+          "code": "002747",
+          "name": "埃斯顿",
+          "reason": "工业机器人本体龙头"
+        },
+        {
+          "code": "300024",
+          "name": "机器人",
+          "reason": "中科院背景机器人平台"
+        },
+        {
+          "code": "688017",
+          "name": "绿的谐波",
+          "reason": "谐波减速器国产替代"
+        },
+        {
+          "code": "002472",
+          "name": "双环传动",
+          "reason": "RV减速器+齿轮龙头"
+        },
+        {
+          "code": "603486",
+          "name": "科沃斯",
+          "reason": "服务机器人龙头"
+        },
+        {
+          "code": "688322",
+          "name": "奥比中光",
+          "reason": "3D视觉传感器"
+        },
+        {
+          "code": "300433",
+          "name": "蓝思科技",
+          "reason": "机器人结构件"
+        },
+        {
+          "code": "002050",
+          "name": "三花智控",
+          "reason": "特斯拉机器人热管理"
+        },
+        {
+          "code": "002031",
+          "name": "巨轮智能",
+          "reason": "机器人减速器"
+        }
+      ]
+    },
+    {
+      "code": "588200",
+      "name": "科创芯片ETF嘉实",
+      "theme": "芯片/半导体",
+      "sector": "芯片制造",
+      "leading_stocks": [
+        "中芯国际",
+        "海光信息",
+        "寒武纪",
+        "中微公司",
+        "澜起科技"
+      ],
+      "top_stocks": [
+        {
+          "code": "688981",
+          "name": "中芯国际",
+          "reason": "大陆晶圆代工龙头"
+        },
+        {
+          "code": "688041",
+          "name": "海光信息",
+          "reason": "国产CPU/GPU龙头"
+        },
+        {
+          "code": "688256",
+          "name": "寒武纪",
+          "reason": "AI芯片设计龙头"
+        },
+        {
+          "code": "688012",
+          "name": "中微公司",
+          "reason": "刻蚀设备龙头"
+        },
+        {
+          "code": "688008",
+          "name": "澜起科技",
+          "reason": "内存接口芯片龙头"
+        },
+        {
+          "code": "688126",
+          "name": "沪硅产业",
+          "reason": "大硅片龙头"
+        },
+        {
+          "code": "688019",
+          "name": "安集科技",
+          "reason": "CMP抛光液龙头"
+        },
+        {
+          "code": "688072",
+          "name": "拓荆科技",
+          "reason": "薄膜沉积设备"
+        },
+        {
+          "code": "688082",
+          "name": "盛美上海",
+          "reason": "清洗设备龙头"
+        },
+        {
+          "code": "688120",
+          "name": "华海清科",
+          "reason": "CMP设备龙头"
+        }
+      ]
+    },
+    {
+      "code": "159516",
+      "name": "半导体设备ETF国泰",
+      "theme": "芯片/半导体",
+      "sector": "半导体设备",
+      "leading_stocks": [
+        "北方华创",
+        "中微公司",
+        "拓荆科技",
+        "华海清科",
+        "盛美上海"
+      ],
+      "top_stocks": [
+        {
+          "code": "002371",
+          "name": "北方华创",
+          "reason": "半导体设备平台龙头"
+        },
+        {
+          "code": "688012",
+          "name": "中微公司",
+          "reason": "刻蚀设备龙头"
+        },
+        {
+          "code": "688072",
+          "name": "拓荆科技",
+          "reason": "薄膜沉积设备"
+        },
+        {
+          "code": "688120",
+          "name": "华海清科",
+          "reason": "CMP设备龙头"
+        },
+        {
+          "code": "688082",
+          "name": "盛美上海",
+          "reason": "清洗设备龙头"
+        },
+        {
+          "code": "688037",
+          "name": "芯源微",
+          "reason": "涂胶显影设备"
+        },
+        {
+          "code": "300604",
+          "name": "长川科技",
+          "reason": "测试设备龙头"
+        },
+        {
+          "code": "688200",
+          "name": "华峰测控",
+          "reason": "模拟测试机"
+        },
+        {
+          "code": "603690",
+          "name": "至纯科技",
+          "reason": "高纯工艺系统"
+        },
+        {
+          "code": "688409",
+          "name": "富创精密",
+          "reason": "半导体零部件"
+        }
+      ]
+    },
+    {
+      "code": "159995",
+      "name": "芯片ETF华夏",
+      "theme": "芯片/半导体",
+      "sector": "芯片设计",
+      "leading_stocks": [
+        "中芯国际",
+        "海光信息",
+        "寒武纪",
+        "韦尔股份",
+        "兆易创新"
+      ],
+      "top_stocks": [
+        {
+          "code": "688981",
+          "name": "中芯国际",
+          "reason": "大陆晶圆代工龙头"
+        },
+        {
+          "code": "688041",
+          "name": "海光信息",
+          "reason": "国产CPU/GPU龙头"
+        },
+        {
+          "code": "688256",
+          "name": "寒武纪",
+          "reason": "AI芯片设计龙头"
+        },
+        {
+          "code": "603501",
+          "name": "韦尔股份",
+          "reason": "CIS图像传感器龙头"
+        },
+        {
+          "code": "603986",
+          "name": "兆易创新",
+          "reason": "存储芯片龙头"
+        },
+        {
+          "code": "688008",
+          "name": "澜起科技",
+          "reason": "内存接口芯片龙头"
+        },
+        {
+          "code": "688099",
+          "name": "晶晨股份",
+          "reason": "SoC芯片设计"
+        },
+        {
+          "code": "688595",
+          "name": "芯海科技",
+          "reason": "模拟芯片"
+        },
+        {
+          "code": "300782",
+          "name": "卓胜微",
+          "reason": "射频芯片龙头"
+        },
+        {
+          "code": "688525",
+          "name": "佰维存储",
+          "reason": "存储模组"
+        }
+      ]
+    },
+    {
+      "code": "512400",
+      "name": "有色金属ETF南方",
+      "theme": "新能源/稀土/有色",
+      "sector": "有色金属",
+      "leading_stocks": [
+        "紫金矿业",
+        "中国铝业",
+        "洛阳钼业",
+        "赣锋锂业",
+        "华友钴业"
+      ],
+      "top_stocks": [
+        {
+          "code": "601899",
+          "name": "紫金矿业",
+          "reason": "全球矿业龙头"
+        },
+        {
+          "code": "601600",
+          "name": "中国铝业",
+          "reason": "电解铝龙头"
+        },
+        {
+          "code": "603993",
+          "name": "洛阳钼业",
+          "reason": "铜钴资源龙头"
+        },
+        {
+          "code": "002460",
+          "name": "赣锋锂业",
+          "reason": "锂盐龙头"
+        },
+        {
+          "code": "603799",
+          "name": "华友钴业",
+          "reason": "钴镍正极材料"
+        },
+        {
+          "code": "002466",
+          "name": "天齐锂业",
+          "reason": "锂资源龙头"
+        },
+        {
+          "code": "600547",
+          "name": "山东黄金",
+          "reason": "黄金龙头"
+        },
+        {
+          "code": "000807",
+          "name": "云铝股份",
+          "reason": "水电铝龙头"
+        },
+        {
+          "code": "600362",
+          "name": "江西铜业",
+          "reason": "铜冶炼龙头"
+        },
+        {
+          "code": "002738",
+          "name": "中矿资源",
+          "reason": "锂铯铷资源"
+        }
+      ]
+    },
+    {
+      "code": "159755",
+      "name": "电池ETF广发",
+      "theme": "新能源/稀土/有色",
+      "sector": "动力电池",
+      "leading_stocks": [
+        "宁德时代",
+        "比亚迪",
+        "亿纬锂能",
+        "国轩高科",
+        "欣旺达"
+      ],
+      "top_stocks": [
+        {
+          "code": "300750",
+          "name": "宁德时代",
+          "reason": "全球动力电池龙头"
+        },
+        {
+          "code": "002594",
+          "name": "比亚迪",
+          "reason": "新能源车+电池"
+        },
+        {
+          "code": "300014",
+          "name": "亿纬锂能",
+          "reason": "锂电池龙头"
+        },
+        {
+          "code": "002074",
+          "name": "国轩高科",
+          "reason": "动力电池"
+        },
+        {
+          "code": "300207",
+          "name": "欣旺达",
+          "reason": "消费+动力电池"
+        },
+        {
+          "code": "002709",
+          "name": "天赐材料",
+          "reason": "电解液龙头"
+        },
+        {
+          "code": "002812",
+          "name": "恩捷股份",
+          "reason": "隔膜龙头"
+        },
+        {
+          "code": "300073",
+          "name": "当升科技",
+          "reason": "正极材料"
+        },
+        {
+          "code": "603659",
+          "name": "璞泰来",
+          "reason": "负极材料"
+        },
+        {
+          "code": "300919",
+          "name": "中伟股份",
+          "reason": "前驱体龙头"
+        }
+      ]
+    },
+    {
+      "code": "512880",
+      "name": "证券ETF国泰",
+      "theme": "金融",
+      "sector": "证券",
+      "leading_stocks": [
+        "东方财富",
+        "中信证券",
+        "华泰证券",
+        "国泰君安",
+        "招商证券"
+      ],
+      "top_stocks": [
+        {
+          "code": "300059",
+          "name": "东方财富",
+          "reason": "互联网券商龙头"
+        },
+        {
+          "code": "600030",
+          "name": "中信证券",
+          "reason": "券商龙头"
+        },
+        {
+          "code": "601688",
+          "name": "华泰证券",
+          "reason": "头部券商"
+        },
+        {
+          "code": "601211",
+          "name": "国泰君安",
+          "reason": "头部券商"
+        },
+        {
+          "code": "600999",
+          "name": "招商证券",
+          "reason": "头部券商"
+        },
+        {
+          "code": "600837",
+          "name": "海通证券",
+          "reason": "头部券商"
+        },
+        {
+          "code": "000776",
+          "name": "广发证券",
+          "reason": "头部券商"
+        },
+        {
+          "code": "601066",
+          "name": "中信建投",
+          "reason": "投行龙头"
+        },
+        {
+          "code": "002736",
+          "name": "国信证券",
+          "reason": "头部券商"
+        },
+        {
+          "code": "601881",
+          "name": "中国银河",
+          "reason": "头部券商"
+        }
+      ]
+    },
+    {
+      "code": "512000",
+      "name": "券商ETF华宝",
+      "theme": "金融",
+      "sector": "证券",
+      "leading_stocks": [
+        "东方财富",
+        "中信证券",
+        "华泰证券",
+        "国泰君安",
+        "招商证券"
+      ],
+      "top_stocks": [
+        {
+          "code": "300059",
+          "name": "东方财富",
+          "reason": "互联网券商龙头"
+        },
+        {
+          "code": "600030",
+          "name": "中信证券",
+          "reason": "券商龙头"
+        },
+        {
+          "code": "601688",
+          "name": "华泰证券",
+          "reason": "头部券商"
+        },
+        {
+          "code": "601211",
+          "name": "国泰君安",
+          "reason": "头部券商"
+        },
+        {
+          "code": "600999",
+          "name": "招商证券",
+          "reason": "头部券商"
+        },
+        {
+          "code": "600837",
+          "name": "海通证券",
+          "reason": "头部券商"
+        },
+        {
+          "code": "000776",
+          "name": "广发证券",
+          "reason": "头部券商"
+        },
+        {
+          "code": "601066",
+          "name": "中信建投",
+          "reason": "投行龙头"
+        },
+        {
+          "code": "002736",
+          "name": "国信证券",
+          "reason": "头部券商"
+        },
+        {
+          "code": "601881",
+          "name": "中国银河",
+          "reason": "头部券商"
+        }
+      ]
+    },
+    {
+      "code": "512170",
+      "name": "医疗ETF华宝",
+      "theme": "消费/医药",
+      "sector": "医疗器械",
+      "leading_stocks": [
+        "迈瑞医疗",
+        "联影医疗",
+        "爱美客",
+        "惠泰医疗",
+        "新产业"
+      ],
+      "top_stocks": [
+        {
+          "code": "300760",
+          "name": "迈瑞医疗",
+          "reason": "医疗器械龙头"
+        },
+        {
+          "code": "688271",
+          "name": "联影医疗",
+          "reason": "医学影像设备龙头"
+        },
+        {
+          "code": "300896",
+          "name": "爱美客",
+          "reason": "医美龙头"
+        },
+        {
+          "code": "688617",
+          "name": "惠泰医疗",
+          "reason": "心血管介入器械"
+        },
+        {
+          "code": "300832",
+          "name": "新产业",
+          "reason": "化学发光龙头"
+        },
+        {
+          "code": "603658",
+          "name": "安图生物",
+          "reason": "体外诊断"
+        },
+        {
+          "code": "300003",
+          "name": "乐普医疗",
+          "reason": "心血管器械"
+        },
+        {
+          "code": "688139",
+          "name": "海尔生物",
+          "reason": "低温存储设备"
+        },
+        {
+          "code": "300482",
+          "name": "万孚生物",
+          "reason": "POCT诊断"
+        },
+        {
+          "code": "688029",
+          "name": "南微医学",
+          "reason": "微创医疗器械"
+        }
+      ]
+    },
+    {
+      "code": "513120",
+      "name": "港股创新药ETF广发",
+      "theme": "消费/医药",
+      "sector": "创新药",
+      "leading_stocks": [
+        "药明生物",
+        "百济神州",
+        "信达生物",
+        "康方生物",
+        "再鼎医药"
+      ],
+      "top_stocks": [
+        {
+          "code": "2269.HK",
+          "name": "药明生物",
+          "reason": "CXO龙头"
+        },
+        {
+          "code": "6160.HK",
+          "name": "百济神州",
+          "reason": "创新药国际化"
+        },
+        {
+          "code": "1801.HK",
+          "name": "信达生物",
+          "reason": "肿瘤免疫龙头"
+        },
+        {
+          "code": "9926.HK",
+          "name": "康方生物",
+          "reason": "双抗龙头"
+        },
+        {
+          "code": "9688.HK",
+          "name": "再鼎医药",
+          "reason": "License-in模式"
+        },
+        {
+          "code": "1877.HK",
+          "name": "君实生物",
+          "reason": "PD-1出海"
+        },
+        {
+          "code": "2096.HK",
+          "name": "先声药业",
+          "reason": "神经+肿瘤药"
+        },
+        {
+          "code": "1548.HK",
+          "name": "金斯瑞",
+          "reason": "基因合成+CAR-T"
+        },
+        {
+          "code": "1952.HK",
+          "name": "云顶新耀",
+          "reason": "创新药"
+        },
+        {
+          "code": "2616.HK",
+          "name": "基石药业",
+          "reason": "创新药"
+        }
+      ]
+    },
+    {
+      "code": "512890",
+      "name": "红利低波ETF华泰柏瑞",
+      "theme": "高股息",
+      "sector": "高股息",
+      "leading_stocks": [
+        "中国神华",
+        "长江电力",
+        "工商银行",
+        "农业银行",
+        "中国银行"
+      ],
+      "top_stocks": [
+        {
+          "code": "601088",
+          "name": "中国神华",
+          "reason": "煤炭高股息龙头"
+        },
+        {
+          "code": "600900",
+          "name": "长江电力",
+          "reason": "水电高股息龙头"
+        },
+        {
+          "code": "601398",
+          "name": "工商银行",
+          "reason": "银行高股息"
+        },
+        {
+          "code": "601288",
+          "name": "农业银行",
+          "reason": "银行高股息"
+        },
+        {
+          "code": "601988",
+          "name": "中国银行",
+          "reason": "银行高股息"
+        },
+        {
+          "code": "600028",
+          "name": "中国石化",
+          "reason": "石化高股息"
+        },
+        {
+          "code": "601857",
+          "name": "中国石油",
+          "reason": "石油高股息"
+        },
+        {
+          "code": "601939",
+          "name": "建设银行",
+          "reason": "银行高股息"
+        },
+        {
+          "code": "600019",
+          "name": "宝钢股份",
+          "reason": "钢铁高股息"
+        },
+        {
+          "code": "601328",
+          "name": "交通银行",
+          "reason": "银行高股息"
+        }
+      ]
+    },
+    {
+      "code": "515880",
+      "name": "通信ETF国泰",
+      "theme": "TMT/通信",
+      "sector": "通信",
+      "leading_stocks": [
+        "中际旭创",
+        "中兴通讯",
+        "新易盛",
+        "天孚通信",
+        "亨通光电"
+      ],
+      "top_stocks": [
+        {
+          "code": "300308",
+          "name": "中际旭创",
+          "reason": "光模块龙头"
+        },
+        {
+          "code": "000063",
+          "name": "中兴通讯",
+          "reason": "通信设备龙头"
+        },
+        {
+          "code": "300502",
+          "name": "新易盛",
+          "reason": "光模块"
+        },
+        {
+          "code": "300394",
+          "name": "天孚通信",
+          "reason": "光器件龙头"
+        },
+        {
+          "code": "600487",
+          "name": "亨通光电",
+          "reason": "光纤光缆"
+        },
+        {
+          "code": "600498",
+          "name": "烽火通信",
+          "reason": "通信设备"
+        },
+        {
+          "code": "300136",
+          "name": "信维通信",
+          "reason": "射频天线"
+        },
+        {
+          "code": "600522",
+          "name": "中天科技",
+          "reason": "海缆+通信"
+        },
+        {
+          "code": "300638",
+          "name": "广和通",
+          "reason": "物联网模组"
+        },
+        {
+          "code": "603236",
+          "name": "移远通信",
+          "reason": "物联网模组龙头"
+        }
+      ]
+    },
+    {
+      "code": "159792",
+      "name": "港股通互联网ETF富国",
+      "theme": "TMT/通信",
+      "sector": "互联网",
+      "leading_stocks": [
+        "腾讯控股",
+        "阿里巴巴",
+        "美团",
+        "快手",
+        "京东集团"
+      ],
+      "top_stocks": [
+        {
+          "code": "0700.HK",
+          "name": "腾讯控股",
+          "reason": "互联网巨头"
+        },
+        {
+          "code": "9988.HK",
+          "name": "阿里巴巴",
+          "reason": "电商+云计算"
+        },
+        {
+          "code": "3690.HK",
+          "name": "美团",
+          "reason": "本地生活龙头"
+        },
+        {
+          "code": "1024.HK",
+          "name": "快手",
+          "reason": "短视频平台"
+        },
+        {
+          "code": "9618.HK",
+          "name": "京东集团",
+          "reason": "电商物流"
+        },
+        {
+          "code": "9888.HK",
+          "name": "百度集团",
+          "reason": "AI+搜索"
+        },
+        {
+          "code": "2318.HK",
+          "name": "中国平安",
+          "reason": "综合金融"
+        },
+        {
+          "code": "1299.HK",
+          "name": "友邦保险",
+          "reason": "保险龙头"
+        },
+        {
+          "code": "1810.HK",
+          "name": "小米集团",
+          "reason": "手机+AIoT"
+        },
+        {
+          "code": "9999.HK",
+          "name": "网易",
+          "reason": "游戏+互联网"
+        }
+      ]
+    },
+    {
+      "code": "513180",
+      "name": "恒生科技ETF华夏",
+      "theme": "跨境/港股",
+      "sector": "港股科技",
+      "leading_stocks": [
+        "小米集团",
+        "阿里巴巴",
+        "腾讯控股",
+        "美团",
+        "京东集团"
+      ],
+      "top_stocks": [
+        {
+          "code": "1810.HK",
+          "name": "小米集团",
+          "reason": "手机+汽车+AIoT"
+        },
+        {
+          "code": "9988.HK",
+          "name": "阿里巴巴",
+          "reason": "电商+云计算"
+        },
+        {
+          "code": "0700.HK",
+          "name": "腾讯控股",
+          "reason": "互联网巨头"
+        },
+        {
+          "code": "3690.HK",
+          "name": "美团",
+          "reason": "本地生活龙头"
+        },
+        {
+          "code": "9618.HK",
+          "name": "京东集团",
+          "reason": "电商物流"
+        },
+        {
+          "code": "1024.HK",
+          "name": "快手",
+          "reason": "短视频平台"
+        },
+        {
+          "code": "9888.HK",
+          "name": "百度集团",
+          "reason": "AI+搜索"
+        },
+        {
+          "code": "2015.HK",
+          "name": "理想汽车",
+          "reason": "新能源车"
+        },
+        {
+          "code": "9868.HK",
+          "name": "小鹏汽车",
+          "reason": "新能源车"
+        },
+        {
+          "code": "2333.HK",
+          "name": "长城汽车",
+          "reason": "汽车制造"
+        }
+      ]
+    },
+    {
+      "code": "510300",
+      "name": "沪深300ETF华泰柏瑞",
+      "theme": "宽基指数",
+      "sector": "大盘蓝筹",
+      "leading_stocks": [
+        "贵州茅台",
+        "宁德时代",
+        "中国平安",
+        "招商银行",
+        "五粮液"
+      ],
+      "top_stocks": [
+        {
+          "code": "600519",
+          "name": "贵州茅台",
+          "reason": "白酒龙头"
+        },
+        {
+          "code": "300750",
+          "name": "宁德时代",
+          "reason": "动力电池龙头"
+        },
+        {
+          "code": "601318",
+          "name": "中国平安",
+          "reason": "综合金融"
+        },
+        {
+          "code": "600036",
+          "name": "招商银行",
+          "reason": "零售银行龙头"
+        },
+        {
+          "code": "000858",
+          "name": "五粮液",
+          "reason": "白酒龙头"
+        },
+        {
+          "code": "000333",
+          "name": "美的集团",
+          "reason": "家电龙头"
+        },
+        {
+          "code": "002594",
+          "name": "比亚迪",
+          "reason": "新能源车龙头"
+        },
+        {
+          "code": "600900",
+          "name": "长江电力",
+          "reason": "水电龙头"
+        },
+        {
+          "code": "601012",
+          "name": "隆基绿能",
+          "reason": "光伏龙头"
+        },
+        {
+          "code": "601888",
+          "name": "中国中免",
+          "reason": "免税龙头"
+        }
+      ]
+    },
+    {
+      "code": "QQQ",
+      "name": "纳斯达克100ETF",
+      "theme": "美股科技",
+      "sector": "美股科技",
+      "market": "us",
+      "leading_stocks": [
+        "苹果",
+        "微软",
+        "英伟达",
+        "亚马逊",
+        "谷歌"
+      ],
+      "top_stocks": [
+        {
+          "code": "AAPL",
+          "name": "苹果",
+          "reason": "全球消费电子龙头"
+        },
+        {
+          "code": "MSFT",
+          "name": "微软",
+          "reason": "云计算+AI龙头"
+        },
+        {
+          "code": "NVDA",
+          "name": "英伟达",
+          "reason": "AI算力芯片龙头"
+        },
+        {
+          "code": "AMZN",
+          "name": "亚马逊",
+          "reason": "电商+云计算龙头"
+        },
+        {
+          "code": "GOOGL",
+          "name": "谷歌",
+          "reason": "搜索+AI龙头"
+        },
+        {
+          "code": "META",
+          "name": "Meta",
+          "reason": "社交媒体+元宇宙"
+        },
+        {
+          "code": "TSLA",
+          "name": "特斯拉",
+          "reason": "电动车+能源"
+        },
+        {
+          "code": "AVGO",
+          "name": "博通",
+          "reason": "芯片+软件"
+        },
+        {
+          "code": "PEP",
+          "name": "百事",
+          "reason": "食品饮料"
+        },
+        {
+          "code": "COST",
+          "name": "好市多",
+          "reason": "会员制零售"
+        }
+      ]
+    },
+    {
+      "code": "SPY",
+      "name": "标普500ETF",
+      "theme": "美股大盘",
+      "sector": "美股大盘",
+      "market": "us",
+      "leading_stocks": [
+        "苹果",
+        "微软",
+        "英伟达",
+        "亚马逊",
+        "伯克希尔"
+      ],
+      "top_stocks": [
+        {
+          "code": "AAPL",
+          "name": "苹果",
+          "reason": "全球市值最大公司"
+        },
+        {
+          "code": "MSFT",
+          "name": "微软",
+          "reason": "云计算+AI"
+        },
+        {
+          "code": "NVDA",
+          "name": "英伟达",
+          "reason": "AI芯片"
+        },
+        {
+          "code": "AMZN",
+          "name": "亚马逊",
+          "reason": "电商云"
+        },
+        {
+          "code": "META",
+          "name": "Meta",
+          "reason": "社交媒体"
+        },
+        {
+          "code": "GOOGL",
+          "name": "谷歌",
+          "reason": "搜索广告"
+        },
+        {
+          "code": "BRK-B",
+          "name": "伯克希尔",
+          "reason": "巴菲特控股"
+        },
+        {
+          "code": "LLY",
+          "name": "礼来",
+          "reason": "减肥药龙头"
+        },
+        {
+          "code": "JPM",
+          "name": "摩根大通",
+          "reason": "美国最大银行"
+        },
+        {
+          "code": "XOM",
+          "name": "埃克森美孚",
+          "reason": "能源龙头"
+        }
+      ]
+    },
+    {
+      "code": "SOXX",
+      "name": "半导体ETF",
+      "theme": "芯片制造",
+      "sector": "芯片制造",
+      "market": "us",
+      "leading_stocks": [
+        "英伟达",
+        "台积电",
+        "博通",
+        "AMD",
+        "阿斯麦"
+      ],
+      "top_stocks": [
+        {
+          "code": "NVDA",
+          "name": "英伟达",
+          "reason": "GPU/AI芯片"
+        },
+        {
+          "code": "TSM",
+          "name": "台积电",
+          "reason": "全球最大晶圆代工"
+        },
+        {
+          "code": "AVGO",
+          "name": "博通",
+          "reason": "芯片+软件"
+        },
+        {
+          "code": "AMD",
+          "name": "AMD",
+          "reason": "CPU/GPU"
+        },
+        {
+          "code": "ASML",
+          "name": "阿斯麦",
+          "reason": "EUV光刻机垄断"
+        },
+        {
+          "code": "INTC",
+          "name": "英特尔",
+          "reason": "IDM巨头"
+        },
+        {
+          "code": "QCOM",
+          "name": "高通",
+          "reason": "移动芯片"
+        },
+        {
+          "code": "MU",
+          "name": "美光",
+          "reason": "存储芯片"
+        },
+        {
+          "code": "LRCX",
+          "name": "泛林集团",
+          "reason": "刻蚀设备"
+        },
+        {
+          "code": "KLAC",
+          "name": "科磊",
+          "reason": "检测设备"
+        }
+      ]
+    },
+    {
+      "code": "BOTZ",
+      "name": "机器人自动化ETF",
+      "theme": "机器人",
+      "sector": "机器人",
+      "market": "us",
+      "leading_stocks": [
+        "英伟达",
+        "直觉外科",
+        "ABB",
+        "发那科",
+        "库卡"
+      ],
+      "top_stocks": [
+        {
+          "code": "NVDA",
+          "name": "英伟达",
+          "reason": "机器人AI芯片"
+        },
+        {
+          "code": "ISRG",
+          "name": "直觉外科",
+          "reason": "手术机器人"
+        },
+        {
+          "code": "ABB",
+          "name": "ABB",
+          "reason": "工业机器人"
+        },
+        {
+          "code": "FANUY",
+          "name": "发那科",
+          "reason": "数控+机器人"
+        },
+        {
+          "code": "KUKA",
+          "name": "库卡",
+          "reason": "工业机器人"
+        },
+        {
+          "code": "TER",
+          "name": "泰瑞达",
+          "reason": "协作机器人"
+        },
+        {
+          "code": "CGNX",
+          "name": "康耐视",
+          "reason": "机器视觉"
+        },
+        {
+          "code": "ROK",
+          "name": "罗克韦尔",
+          "reason": "工业自动化"
+        },
+        {
+          "code": "SIE",
+          "name": "西门子",
+          "reason": "工业软件+自动化"
+        },
+        {
+          "code": "HON",
+          "name": "霍尼韦尔",
+          "reason": "工业自动化"
+        }
+      ]
+    },
+    {
+      "code": "GRAB",
+      "name": "Grab Holdings",
+      "market": "us",
+      "category": "网约车/东南亚科技",
+      "description": "东南亚网约车与超级应用平台龙头，覆盖新加坡、印尼、马来西亚、泰国、越南等市场",
+      "top_stocks": [
+        {
+          "code": "GRAB",
+          "name": "Grab Holdings",
+          "weight": 100.0
+        }
+      ]
+    }
+  ],
+  "individual_stocks": {
+    "enabled": true,
+    "stocks": [
+      {
+        "code": "300054",
+        "name": "鼎龙股份",
+        "sector": "半导体材料",
+        "reason": "CMP抛光垫龙头，国产替代核心标的"
+      },
+      {
+        "code": "688019",
+        "name": "安集科技",
+        "sector": "半导体材料",
+        "reason": "CMP抛光液龙头，中芯国际核心供应商"
+      },
+      {
+        "code": "600206",
+        "name": "有研新材",
+        "sector": "稀土/半导体材料",
+        "reason": "稀土磁材+靶材双轮驱动"
+      },
+      {
+        "code": "688041",
+        "name": "海光信息",
+        "sector": "CPU/GPU",
+        "reason": "国产CPU龙头，DCU加速卡放量"
+      },
+      {
+        "code": "688256",
+        "name": "寒武纪",
+        "sector": "AI芯片",
+        "reason": "AI芯片独角兽，思元系列云端训练/推理芯片"
+      },
+      {
+        "code": "688981",
+        "name": "中芯国际",
+        "sector": "晶圆代工",
+        "reason": "国内晶圆代工龙头，先进制程突破"
+      },
+      {
+        "code": "688012",
+        "name": "中微公司",
+        "sector": "半导体设备",
+        "reason": "刻蚀设备龙头，5nm工艺验证中"
+      },
+      {
+        "code": "300782",
+        "name": "卓胜微",
+        "sector": "射频芯片",
+        "reason": "射频前端龙头，5G模组国产替代"
+      },
+      {
+        "code": "688047",
+        "name": "龙芯中科",
+        "sector": "CPU",
+        "reason": "国产CPU自主指令集，龙架构生态建设"
+      },
+      {
+        "code": "300474",
+        "name": "景嘉微",
+        "sector": "GPU",
+        "reason": "国产GPU龙头，JM9系列图形芯片"
+      },
+      {
+        "code": "688072",
+        "name": "拓荆科技",
+        "sector": "半导体设备",
+        "reason": "薄膜沉积设备龙头，PECVD/SACVD/HDPCVD"
+      },
+      {
+        "code": "688082",
+        "name": "盛美上海",
+        "sector": "半导体设备",
+        "reason": "清洗设备龙头，单片/槽式清洗设备"
+      },
+      {
+        "code": "000657",
+        "name": "中钨高新",
+        "sector": "钨",
+        "reason": "钨产业链龙头，算力金属钨核心"
+      },
+      {
+        "code": "600549",
+        "name": "厦门钨业",
+        "sector": "钨/稀土",
+        "reason": "钨+稀土双主业"
+      },
+      {
+        "code": "002378",
+        "name": "章源钨业",
+        "sector": "钨",
+        "reason": "钨矿资源"
+      },
+      {
+        "code": "688146",
+        "name": "中船特气",
+        "sector": "电子特气",
+        "reason": "六氟化钨等电子特气"
+      },
+      {
+        "code": "000969",
+        "name": "安泰科技",
+        "sector": "金属材料",
+        "reason": "先进金属新材料"
+      },
+      {
+        "code": "601958",
+        "name": "金钼股份",
+        "sector": "钼",
+        "reason": "钼资源龙头，3D NAND以钼代钨"
+      },
+      {
+        "code": "603993",
+        "name": "洛阳钼业",
+        "sector": "铜/钴/钼",
+        "reason": "多元金属龙头"
+      },
+      {
+        "code": "600392",
+        "name": "盛和资源",
+        "sector": "稀土/锆钛",
+        "reason": "稀有金属资源"
+      },
+      {
+        "code": "300263",
+        "name": "隆华科技",
+        "sector": "钼靶材",
+        "reason": "高纯钼靶材"
+      },
+      {
+        "code": "000960",
+        "name": "锡业股份",
+        "sector": "锡",
+        "reason": "锡资源龙头，HBM焊料"
+      },
+      {
+        "code": "000426",
+        "name": "兴业银锡",
+        "sector": "锡/银",
+        "reason": "锡矿资源"
+      },
+      {
+        "code": "600301",
+        "name": "华锡有色",
+        "sector": "锡/锑",
+        "reason": "锡锑资源"
+      },
+      {
+        "code": "301319",
+        "name": "唯特偶",
+        "sector": "锡膏",
+        "reason": "微电子锡膏材料"
+      },
+      {
+        "code": "600961",
+        "name": "株冶集团",
+        "sector": "铟/锌",
+        "reason": "伴生铟资源"
+      },
+      {
+        "code": "688530",
+        "name": "欧莱新材",
+        "sector": "ITO靶材",
+        "reason": "ITO靶材"
+      },
+      {
+        "code": "601600",
+        "name": "中国铝业",
+        "sector": "铝/镓",
+        "reason": "金属镓来源"
+      },
+      {
+        "code": "000612",
+        "name": "焦作万方",
+        "sector": "铝/镓",
+        "reason": "金属镓来源"
+      },
+      {
+        "code": "300346",
+        "name": "南大光电",
+        "sector": "MO源",
+        "reason": "三甲基镓MO源"
+      },
+      {
+        "code": "600703",
+        "name": "三安光电",
+        "sector": "化合物半导体",
+        "reason": "GaN/GaAs半导体"
+      },
+      {
+        "code": "002428",
+        "name": "云南锗业",
+        "sector": "锗/铟/镓",
+        "reason": "锗、铟、镓等小金属"
+      },
+      {
+        "code": "600497",
+        "name": "驰宏锌锗",
+        "sector": "锗/锌",
+        "reason": "锗资源"
+      },
+      {
+        "code": "300489",
+        "name": "光智科技",
+        "sector": "红外/锗",
+        "reason": "红外光学材料"
+      },
+      {
+        "code": "688313",
+        "name": "仕佳光子",
+        "sector": "光芯片",
+        "reason": "光芯片衬底"
+      },
+      {
+        "code": "000962",
+        "name": "东方钽业",
+        "sector": "钽",
+        "reason": "钽电容核心原料"
+      },
+      {
+        "code": "300726",
+        "name": "宏达电子",
+        "sector": "钽电容",
+        "reason": "钽电容器"
+      },
+      {
+        "code": "000733",
+        "name": "振华科技",
+        "sector": "钽电容/军工",
+        "reason": "钽电容/军工电子"
+      },
+      {
+        "code": "603678",
+        "name": "火炬电子",
+        "sector": "电容",
+        "reason": "电子元器件"
+      },
+      {
+        "code": "002138",
+        "name": "顺络电子",
+        "sector": "电感",
+        "reason": "片式电感"
+      },
+      {
+        "code": "300618",
+        "name": "寒锐钴业",
+        "sector": "钴",
+        "reason": "钴资源"
+      },
+      {
+        "code": "301219",
+        "name": "腾远钴业",
+        "sector": "钴",
+        "reason": "钴资源"
+      },
+      {
+        "code": "300666",
+        "name": "江丰电子",
+        "sector": "靶材",
+        "reason": "高纯金属靶材"
+      },
+      {
+        "code": "600459",
+        "name": "贵研铂业",
+        "sector": "铂族",
+        "reason": "铂族金属"
+      },
+      {
+        "code": "301026",
+        "name": "浩通科技",
+        "sector": "贵金属回收",
+        "reason": "铂族回收"
+      },
+      {
+        "code": "300706",
+        "name": "阿石创",
+        "sector": "靶材",
+        "reason": "PVD镀膜材料"
+      },
+      {
+        "code": "601899",
+        "name": "紫金矿业",
+        "sector": "铜/金",
+        "reason": "铜资源龙头"
+      },
+      {
+        "code": "600362",
+        "name": "江西铜业",
+        "sector": "铜",
+        "reason": "铜冶炼龙头"
+      },
+      {
+        "code": "000630",
+        "name": "铜陵有色",
+        "sector": "铜",
+        "reason": "铜资源"
+      },
+      {
+        "code": "002203",
+        "name": "海亮股份",
+        "sector": "铜管",
+        "reason": "铜管/铜箔"
+      },
+      {
+        "code": "000878",
+        "name": "云南铜业",
+        "sector": "铜",
+        "reason": "铜冶炼"
+      },
+      {
+        "code": "300308",
+        "name": "中际旭创",
+        "sector": "光模块",
+        "reason": "全球光模块龙头，通信ETF+AI算力核心"
+      },
+      {
+        "code": "300502",
+        "name": "新易盛",
+        "sector": "光模块",
+        "reason": "高速光模块核心厂商"
+      },
+      {
+        "code": "300394",
+        "name": "天孚通信",
+        "sector": "光器件",
+        "reason": "光器件/光引擎龙头，光模块上游"
+      }
+    ]
+  },
+  "sector_comparison": {
+    "enabled": true,
+    "sector_name": "多板块对比",
+    "leading_stocks": [
+      "北方稀土",
+      "招商银行",
+      "贵州茅台",
+      "中芯国际",
+      "寒武纪"
+    ]
+  }
+}

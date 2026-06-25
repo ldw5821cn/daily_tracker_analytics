@@ -1,0 +1,10 @@
+[
+  {"ticker": "601991", "name": "大唐发电", "category": "个股", "tags": ["高股息", "火电", "核心"]},
+  {"ticker": "516150", "name": "稀土ETF", "category": "ETF", "tags": ["稀土", "核心"]},
+  {"ticker": "515880", "name": "通信ETF", "category": "ETF", "tags": ["通信", "CPO", "核心"]},
+  {"ticker": "600642", "name": "申能股份", "category": "个股", "tags": ["高股息", "火电", "组合持仓"]},
+  {"ticker": "600023", "name": "浙能电力", "category": "个股", "tags": ["高股息", "火电", "组合持仓"]},
+  {"ticker": "600011", "name": "华能国际", "category": "个股", "tags": ["高股息", "火电", "组合持仓"]},
+  {"ticker": "600027", "name": "华电国际", "category": "个股", "tags": ["高股息", "火电", "组合持仓"]},
+  {"ticker": "601398", "name": "工商银行", "category": "个股", "tags": ["高股息", "银行", "组合持仓"]}
+]
