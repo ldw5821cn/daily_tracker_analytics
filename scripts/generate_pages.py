@@ -69,7 +69,8 @@ def get_db_stats():
                 'accuracy': round(r['c'] / r['t'] * 100, 1)
             }
     
-    # 今日预测明细
+    # 今日预测明细；如果今天没有，取最近一次预测
+    display_date = today
     cur.execute("""
         SELECT ticker, name, sector, signal, confidence,
                horizon_1d, horizon_3d, horizon_5d, horizon_10d,
@@ -77,12 +78,29 @@ def get_db_stats():
         FROM predictions WHERE pred_date=?
         ORDER BY sector, ticker
     """, (today,))
-    stats['today_details'] = [dict(r) for r in cur.fetchall()]
+    rows = cur.fetchall()
+    if not rows:
+        cur.execute("""
+            SELECT pred_date FROM predictions ORDER BY pred_date DESC LIMIT 1
+        """)
+        last_row = cur.fetchone()
+        if last_row:
+            display_date = last_row['pred_date']
+            cur.execute("""
+                SELECT ticker, name, sector, signal, confidence,
+                       horizon_1d, horizon_3d, horizon_5d, horizon_10d,
+                       current_price
+                FROM predictions WHERE pred_date=?
+                ORDER BY sector, ticker
+            """, (display_date,))
+            rows = cur.fetchall()
+    stats['today_details'] = [dict(r) for r in rows]
+    stats['display_date'] = display_date  # 页面上显示的实际日期
     
     # 近期趋势（近7天）
     week = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
     cur.execute("""
-        SELECT COUNT(*) as t, SUM(direction_correct) as c
+        SELECT COUNT(*) as t, SUM(v.direction_correct) as c
         FROM validation_results v JOIN predictions p ON v.prediction_id=p.id
         WHERE p.pred_date >= ?
     """, (week,))
@@ -135,6 +153,14 @@ def generate_html(stats):
             <td>{h_data['correct']}</td>
             <td style="color:{h_color};font-weight:bold">{h_data['accuracy']}%</td>
         </tr>"""
+    
+    # 显示日期标签
+    display_date_label = stats.get('display_date', '')
+    today = datetime.now().strftime('%Y-%m-%d')
+    if display_date_label and display_date_label != today:
+        display_date_label = f"(最新: {display_date_label})"
+    else:
+        display_date_label = ""
     
     return f"""<!DOCTYPE html>
 <html lang="zh-CN">
@@ -199,7 +225,7 @@ tr:hover {{ background: #1e293b; }}
         </div>
     </div>
 
-    <div class="section-title">📊 今日预测明细</div>
+    <div class="section-title">📊 今日预测明细 {display_date_label}</div>
     <table>
         <thead>
             <tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>现价</th></tr>
