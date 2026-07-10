@@ -425,6 +425,8 @@ def save_predictions(predictions: List[Dict]) -> Dict:
                 stats['errors'] += 1
                 continue
             try:
+                # 同一天同一 ticker 去重：先删除旧记录
+                conn.execute("DELETE FROM agentic_predictions WHERE ticker=? AND pred_date=?", (p['ticker'], today))
                 conn.execute("""
                     INSERT INTO agentic_predictions
                     (ticker, name, sector, category, signal, confidence, weighted_score,
