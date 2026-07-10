@@ -801,7 +801,7 @@ class BacktestEngine:
     
     def run_strategy_backtests(self, strategies = None, period: int = 365) -> List[Dict]:
         """运行策略库中的策略回测（用于主报告）"""
-        sys.path.insert(0, '/home/zhihu/daily_tracker_analytics/etf_tracker/multi_agent')
+        sys.path.insert(0, '/home/liudawei/github/daily_tracker_analytics/etf_tracker/multi_agent')
         try:
             from core.strategy_library import STRATEGIES, run_event_backtest
         except Exception:
@@ -1735,7 +1735,7 @@ def run_multi_etf_daily_report(config: Config = None, deep_analysis_top_n: int =
     _log_timing("5.报告生成", time.time() - t4)
     
     # 保存报告（统一按日期文件夹组织）
-    reports_dir = "/home/zhihu/daily-_tracker_analytics/reports"
+    reports_dir = "/home/liudawei/github/daily_tracker_analytics/reports"
     day_dir = f"{reports_dir}/{report_date}"
     os.makedirs(day_dir, exist_ok=True)
     
@@ -1757,7 +1757,7 @@ def run_multi_etf_daily_report(config: Config = None, deep_analysis_top_n: int =
     
     # 更新报告索引
     try:
-        index_path = "/home/zhihu/daily-_tracker_analytics/reports/REPORT_INDEX.md"
+        index_path = "/home/liudawei/github/daily_tracker_analytics/reports/REPORT_INDEX.md"
         # 从日期文件夹收集所有报告
         import glob
         date_dirs = sorted(
@@ -2052,7 +2052,7 @@ def main():
             if STOCK_ANALYZER_AVAILABLE and stock_analysis_results:
                 print("\n正在生成个股对比图表...")
                 try:
-                    chart_path = f"/home/zhihu/etf_tracker/reports/stock_comparison_{datetime.now().strftime('%Y%m%d')}.png"
+                    chart_path = f"/home/liudawei/github/daily_tracker_analytics/etf_tracker/reports/stock_comparison_{datetime.now().strftime('%Y%m%d')}.png"
                     visualizer = StockVisualizer()
                     visualizer.generate_comparison_chart(stock_analysis_results, chart_path)
                 except Exception as e:
@@ -2115,11 +2115,11 @@ def main():
                     df_stock = analyzer.get_stock_data(stock['code'], days=60)
                     df_stock = analyzer.calculate_indicators(df_stock)
                     
-                    kline_path = f"/home/zhihu/etf_tracker/reports/kline_{stock['code']}_{datetime.now().strftime('%Y%m%d')}.png"
+                    kline_path = f"/home/liudawei/github/daily_tracker_analytics/etf_tracker/reports/kline_{stock['code']}_{datetime.now().strftime('%Y%m%d')}.png"
                     visualizer.generate_kline_chart(stock['code'], stock['name'], df_stock, kline_path)
                 
                 # 资金流向图
-                fundflow_path = f"/home/zhihu/etf_tracker/reports/fundflow_{stock['code']}_{datetime.now().strftime('%Y%m%d')}.png"
+                fundflow_path = f"/home/liudawei/github/daily_tracker_analytics/etf_tracker/reports/fundflow_{stock['code']}_{datetime.now().strftime('%Y%m%d')}.png"
                 visualizer.generate_fund_flow_chart(stock['code'], stock['name'], fundflow_path)
                 
             except Exception as e:
@@ -2143,8 +2143,8 @@ def main():
             
             # 复用已有数据或加载本地历史数据
             if df_long is None or len(df_long) < 60:
-                if os.path.exists(f"/home/zhihu/etf_tracker/{config.etf_code}_history.csv"):
-                    df_long = pd.read_csv(f"/home/zhihu/etf_tracker/{config.etf_code}_history.csv")
+                if os.path.exists(f"/home/liudawei/github/daily_tracker_analytics/etf_tracker/{config.etf_code}_history.csv"):
+                    df_long = pd.read_csv(f"/home/liudawei/github/daily_tracker_analytics/etf_tracker/{config.etf_code}_history.csv")
                     print(f"  从本地加载历史数据: {len(df_long)} 条")
                 else:
                     df_long = df.copy()
@@ -2166,7 +2166,7 @@ def main():
             # 保存完整的多模型预测报告
             try:
                 mm_report = AdvancedPredictionReport.generate_report(predictor, df_long, training_results, ensemble_result)
-                mm_report_path = f"/home/zhihu/etf_tracker/reports/multi_model_prediction_{datetime.now().strftime('%Y-%m-%d')}.md"
+                mm_report_path = f"/home/liudawei/github/daily_tracker_analytics/etf_tracker/reports/multi_model_prediction_{datetime.now().strftime('%Y-%m-%d')}.md"
                 with open(mm_report_path, 'w', encoding='utf-8') as f:
                     f.write(mm_report)
                 print(f"  多模型预测报告已保存: {mm_report_path}")
@@ -2194,7 +2194,7 @@ def main():
                     tp = TrendPredictor()
                     df_stock = tp.add_technical_indicators(df_stock)
                     stock_pred = tp.predict_trend(df_stock, days=5)
-                    pred_chart = f"/home/zhihu/etf_tracker/reports/prediction_{stock['code']}_{report_date}.png"
+                    pred_chart = f"/home/liudawei/github/daily_tracker_analytics/etf_tracker/reports/prediction_{stock['code']}_{report_date}.png"
                     visualizer.generate_prediction_chart(df_stock, stock_pred, stock['code'], stock['name'], pred_chart)
             except Exception as e:
                 print(f"  {stock['name']} 预测图生成失败: {e}")
@@ -2206,7 +2206,7 @@ def main():
                 if 'error' not in analysis:
                     dashboard_data.append(analysis)
             if dashboard_data:
-                dashboard_path = f"/home/zhihu/etf_tracker/reports/stock_dashboard_{report_date}.png"
+                dashboard_path = f"/home/liudawei/github/daily_tracker_analytics/etf_tracker/reports/stock_dashboard_{report_date}.png"
                 visualizer.generate_multi_stock_dashboard(dashboard_data, dashboard_path)
         except Exception as e:
             print(f"  仪表盘生成失败: {e}")
@@ -2221,7 +2221,7 @@ def main():
                 '存储行业': {'main_inflow': 10_000_000, 'sentiment_score': 0.1},
                 '内存制造': {'main_inflow': -5_000_000, 'sentiment_score': -0.2}
             }
-            sector_path = f"/home/zhihu/etf_tracker/reports/sector_fund_flow_{report_date}.png"
+            sector_path = f"/home/liudawei/github/daily_tracker_analytics/etf_tracker/reports/sector_fund_flow_{report_date}.png"
             visualizer.generate_sector_fund_flow_chart(sector_data, sector_path)
         except Exception as e:
             print(f"  板块资金流向图生成失败: {e}")
@@ -2239,14 +2239,14 @@ def main():
     )
     
     # 9. 保存报告
-    report_path = f"/home/zhihu/etf_tracker/reports/report_{datetime.now().strftime('%Y-%m-%d')}.md"
+    report_path = f"/home/liudawei/github/daily_tracker_analytics/etf_tracker/reports/report_{datetime.now().strftime('%Y-%m-%d')}.md"
     os.makedirs(os.path.dirname(report_path), exist_ok=True)
     with open(report_path, 'w', encoding='utf-8') as f:
         f.write(report)
     print(f"报告已保存: {report_path}")
     
     # 10. 保存数据
-    data_path = f"/home/zhihu/etf_tracker/{config.etf_code}_history.csv"
+    data_path = f"/home/liudawei/github/daily_tracker_analytics/etf_tracker/{config.etf_code}_history.csv"
     df.to_csv(data_path, index=False)
     print(f"数据已保存: {data_path}")
     

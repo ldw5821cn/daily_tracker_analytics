@@ -15,8 +15,6 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # 添加 akshare 路径 (仅在非虚拟环境时)
-if not hasattr(sys, 'real_prefix') and sys.base_prefix == sys.prefix:
-    sys.path.insert(0, '/home/zhihu/.linuxbrew/Cellar/python@3.10/3.10.9/lib/python3.10/site-packages')
 
 # 导入 LSTM 模型缓存
 import lstm_model_cache as lstm_cache
@@ -1176,7 +1174,7 @@ if __name__ == "__main__":
     print("\n" + report)
     
     # 保存报告
-    report_path = f'/home/zhihu/etf_tracker/reports/multi_model_prediction_{datetime.now().strftime("%Y%m%d")}.txt'
+    report_path = f'/home/liudawei/github/daily_tracker_analytics/etf_tracker/reports/multi_model_prediction_{datetime.now().strftime("%Y%m%d")}.txt'
     with open(report_path, 'w', encoding='utf-8') as f:
         f.write(report)
     

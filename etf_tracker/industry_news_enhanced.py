@@ -21,9 +21,6 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # 添加 akshare 路径 (仅在非虚拟环境时)
-if not hasattr(sys, 'real_prefix') and sys.base_prefix == sys.prefix:
-    sys.path.insert(0, '/home/zhihu/.linuxbrew/Cellar/python@3.10/3.10.9/lib/python3.10/site-packages')
-
 try:
     import akshare as ak
     AKSHARE_AVAILABLE = True

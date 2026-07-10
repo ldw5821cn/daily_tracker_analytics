@@ -430,6 +430,11 @@ if __name__ == "__main__":
     print(f"  Step 1/4: 全A股快速扫描")
     print(f"{'─'*60}")
     stocks = scan_all_a_shares()
+    
+    # TickFlow 批量预取（避免逐个 API 调用）
+    from strategy_scoring import prefetch_tf_quotes
+    prefetch_tf_quotes(stocks)
+    
     all_scores = scan_and_score(stocks)
     print(f"  ✅ {len(all_scores)} 只完成打分")
     

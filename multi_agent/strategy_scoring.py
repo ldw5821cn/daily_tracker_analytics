@@ -22,6 +22,23 @@ sys.path.insert(0, os.path.join(BASE, 'multi_agent'))
 from core.data_layer import TICKFLOW_AVAILABLE, tf_quotes, tf_klines
 TICKFLOW_ENABLED = TICKFLOW_AVAILABLE
 
+# TickFlow 批量缓存：避免 4994 只股票各打一次 API
+_TF_QUOTES_CACHE = None
+
+def prefetch_tf_quotes(stocks):
+    """预取所有股票的 TickFlow 行情到全局缓存"""
+    global _TF_QUOTES_CACHE
+    if not TICKFLOW_ENABLED or not stocks:
+        return
+    codes = [s.get('code', '') for s in stocks if s.get('code')]
+    if codes:
+        print(f"  📡 预取 TickFlow 批量行情 ({len(codes)} 只)...")
+        _TF_QUOTES_CACHE = tf_quotes(codes)
+        if _TF_QUOTES_CACHE:
+            print(f"  ✅ TickFlow 缓存 {len(_TF_QUOTES_CACHE)} 只")
+        else:
+            print(f"  ⚠️ TickFlow 缓存为空")
+
 
 def fetch_5d_kline(symbol):
     """获取5日K线数据（用于动量判断）
@@ -243,9 +260,13 @@ def tickflow_calibrate_score(result, s):
         if not code:
             return result
         
-        # 1. TickFlow 实时行情校验
-        quotes = tf_quotes([code])
-        tf_data = quotes.get(code)
+        # 1. TickFlow 实时行情校验（优先使用批量缓存）
+        global _TF_QUOTES_CACHE
+        if _TF_QUOTES_CACHE is not None:
+            tf_data = _TF_QUOTES_CACHE.get(code)
+        else:
+            quotes = tf_quotes([code])
+            tf_data = quotes.get(code)
         
         if tf_data:
             tf_price = float(tf_data.get('price', 0))
