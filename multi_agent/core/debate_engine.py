@@ -180,7 +180,7 @@ class DebateEngine:
             f = fundamental_report.get('fundamentals', {})
             if f.get('debt_to_equity', 0) > 100:
                 bear_points.append(f"负债权益比{f['debt_to_equity']:.0f}%偏高")
-            if f.get('profit_margins', 0) < 5:
+            if f.get('profit_margins', 0) < 5 and 'profit_margins' in f:
                 bear_points.append(f"净利率{f['profit_margins']:.1f}%偏低")
             if f.get('revenue_growth', 0) < -5:
                 bear_points.append(f"营收负增长{f['revenue_growth']:.1f}%")

@@ -1,20 +1,23 @@
 #!/usr/bin/env python3
 """
-多 Agent LLM 预测系统
+多 Agent LLM 预测系统 - 统一版（支持ETF/个股/期货，线程池并行）
 
-输入: 标的(ticker, name, category)
+输入: 任意标的(ticker, name, sector, category)
 输出: 结构化预测 JSON，写入 llm_predictions.db 的 agentic_predictions 表
 
 Agent 流程:
 1. 技术面分析师 (technical_analyst)  →  技术评分、趋势、回测
-2. 基本面分析师 (fundamentals_analyst) →  估值、财务评分
-3. 新闻情绪分析师 (news_analyst)  →  情绪分数、关键词
+2. 基本面分析师 (fundamentals_analyst) →  估值、财务评分（个股/ETF）
+3. 新闻情绪分析师 (news_analyst)  →  情绪分数、关键词（个股/ETF）
 4. Bull Agent  →  收集看涨证据
 5. Bear Agent  →  收集看跌证据
 6. 研究经理 (research_manager)  →  综合裁决最终方向/置信度/目标价/止损
 
-关键: 不用调用外部 Kimi API，而是把各 Agent 输出结构化后，用规则/加权法融合。
-这样不依赖 MOONSHOT_API_KEY，速度快、可回测、可解释。
+统一性:
+- 所有资产走同一 predict_one 接口
+- 统一信号、置信度、仓位阈值
+- 统一 horizon 1/3/5/10日
+- 统一验证和回测
 """
 import sys
 import os
@@ -22,22 +25,25 @@ import json
 import sqlite3
 import warnings
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# 项目根目录
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 MULTI_AGENT = os.path.join(PROJECT_ROOT, 'multi_agent')
 sys.path.insert(0, MULTI_AGENT)
 
 warnings.filterwarnings('ignore')
 
-from analysts import technical_analyst, fundamentals_analyst, news_analyst
+from analysts import fundamentals_analyst, news_analyst
 from core.debate_engine import DebateEngine
-from core.data_layer import get_realtime_price
+from core.data_layer import get_realtime_price, is_futures, get_stock_data, calc_technical_indicators, multi_period_backtest
+import pandas as pd
 
 DB_PATH = os.path.join(PROJECT_ROOT, 'multi_agent', 'data', 'llm_predictions.db')
 
-# 权重配置
+# ============================================================
+# 统一超参数配置（选股、预测、回测一致）
+# ============================================================
 WEIGHTS = {
     'technical': 0.35,
     'fundamental': 0.25,
@@ -45,17 +51,22 @@ WEIGHTS = {
     'debate': 0.25,
 }
 
-SIGNAL_MAP = {
-    'bullish': 'bullish',
-    'bearish': 'bearish',
-    'neutral': 'neutral',
-    '偏多': 'bullish',
-    '偏空': 'bearish',
-    '看涨': 'bullish',
-    '看跌': 'bearish',
-    '中性': 'neutral',
-    '震荡': 'neutral',
+THRESHOLD = {
+    'strong_bull': 62,
+    'weak_bull': 55,
+    'neutral_high': 45,
+    'weak_bear': 42,
+    'strong_bear': 38,
 }
+
+POSITION_MAP = {
+    'bullish': 0.25,
+    'bearish': 0.15,
+    'neutral': 0.0,
+}
+
+HORIZON_THRESHOLD = {'strong': 1.5, 'weak': 0.5}
+MAX_WORKERS = 4  # 线程池大小，避免数据源被封
 
 
 def _get_conn() -> sqlite3.Connection:
@@ -68,22 +79,28 @@ def _get_conn() -> sqlite3.Connection:
             ticker TEXT NOT NULL,
             name TEXT,
             sector TEXT,
-            signal TEXT NOT NULL,  -- bullish/bearish/neutral
-            confidence REAL,  -- 0.0-1.0
+            category TEXT,
+            signal TEXT NOT NULL,
+            confidence REAL,
+            weighted_score REAL,
             target_price REAL,
             stop_loss REAL,
-            position_pct REAL,  -- 建议仓位比例 0-1
+            position_pct REAL,
             horizon_1d TEXT,
             horizon_3d TEXT,
             horizon_5d TEXT,
             horizon_10d TEXT,
+            horizon_1d_return REAL,
+            horizon_3d_return REAL,
+            horizon_5d_return REAL,
+            horizon_10d_return REAL,
             key_support REAL,
             key_resistance REAL,
             reasoning TEXT,
-            bull_points TEXT,  -- JSON
-            bear_points TEXT,  -- JSON
-            component_scores TEXT,  -- JSON
-            backtest_summary TEXT,  -- JSON
+            bull_points TEXT,
+            bear_points TEXT,
+            component_scores TEXT,
+            backtest_summary TEXT,
             current_price REAL,
             pred_date TEXT NOT NULL,
             pred_time TEXT,
@@ -91,50 +108,59 @@ def _get_conn() -> sqlite3.Connection:
         );
         CREATE INDEX IF NOT EXISTS idx_agentic_pred_date ON agentic_predictions(pred_date);
         CREATE INDEX IF NOT EXISTS idx_agentic_ticker ON agentic_predictions(ticker);
+        CREATE INDEX IF NOT EXISTS idx_agentic_category ON agentic_predictions(category);
+
+        CREATE TABLE IF NOT EXISTS unified_validation_results (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            prediction_id INTEGER,
+            source_table TEXT NOT NULL,
+            ticker TEXT NOT NULL,
+            horizon INTEGER NOT NULL,
+            pred_signal TEXT,
+            actual_price REAL,
+            actual_return REAL,
+            direction_correct INTEGER,
+            confidence REAL,
+            validated_at TEXT DEFAULT CURRENT_TIMESTAMP
+        );
     """)
     return conn
 
 
 def _horizon_label(return_pct: float) -> str:
-    if return_pct > 1.5:
+    if return_pct > HORIZON_THRESHOLD['strong']:
         return '看涨'
-    elif return_pct > 0.5:
+    elif return_pct > HORIZON_THRESHOLD['weak']:
         return '偏多'
-    elif return_pct < -1.5:
+    elif return_pct < -HORIZON_THRESHOLD['strong']:
         return '看跌'
-    elif return_pct < -0.5:
+    elif return_pct < -HORIZON_THRESHOLD['weak']:
         return '偏空'
     else:
         return '震荡'
 
 
-def _calc_target_stop(current_price: float, signal: str, tech_snapshot: Dict, predictions: List[Dict]) -> tuple:
-    """根据信号和技术指标计算目标价和止损价"""
+def _calc_target_stop(current_price: float, signal: str, tech_snapshot: Dict, avg_return: float) -> Tuple[Optional[float], Optional[float]]:
     if current_price <= 0:
         return None, None
 
-    # 用5日预测收益估算目标价
-    if predictions:
-        avg_return = sum(p['pred_return'] for p in predictions if 'pred_return' in p) / len(predictions)
-    else:
-        avg_return = 0
-
     if signal == 'bullish':
         target = current_price * (1 + max(abs(avg_return), 2.0) / 100)
-        # 止损：布林下轨或MA20，取较高者（最多-5%）
-        stop = max(
+        stop_candidates = [
             tech_snapshot.get('boll_down') or 0,
             tech_snapshot.get('ma20') or 0,
-            current_price * 0.95
-        )
-        stop = min(stop, current_price * 0.97)  # 限制最大止损-3%
+            current_price * 0.95,
+        ]
+        stop = max([s for s in stop_candidates if s > 0] or [current_price * 0.95])
+        stop = min(stop, current_price * 0.97)
     elif signal == 'bearish':
         target = current_price * (1 - max(abs(avg_return), 2.0) / 100)
-        stop = min(
+        stop_candidates = [
             tech_snapshot.get('boll_up') or 99999,
             tech_snapshot.get('ma20') or 99999,
-            current_price * 1.05
-        )
+            current_price * 1.05,
+        ]
+        stop = min([s for s in stop_candidates if s > current_price] or [current_price * 1.05])
         stop = max(stop, current_price * 1.03)
     else:
         target = current_price * (1 + avg_return / 100)
@@ -145,86 +171,61 @@ def _calc_target_stop(current_price: float, signal: str, tech_snapshot: Dict, pr
 
 def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_report: Dict,
                      bull_arg: Dict, bear_arg: Dict) -> Dict:
-    """
-    研究经理裁决：综合所有 Agent 输出，给出最终方向、置信度和仓位
-    """
     tech_score = technical_report.get('score', 50)
     tech_rating = technical_report.get('rating', '中性')
     tech_snapshot = technical_report.get('tech_snapshot', {})
 
     fund_score = fundamental_report.get('score', 50) if 'error' not in fundamental_report else 50
-    news_score = (news_report.get('sentiment_score', 0) + 1) * 50  # -1~1 -> 0~100
+    news_score = (news_report.get('sentiment_score', 0) + 1) * 50
 
     bull_score = bull_arg.get('score', 0)
     bear_score = bear_arg.get('score', 0)
     net_debate = bull_score - bear_score
 
-    # 综合评分
     weighted = (
         tech_score * WEIGHTS['technical'] +
         fund_score * WEIGHTS['fundamental'] +
         news_score * WEIGHTS['sentiment'] +
-        (50 + net_debate * 8) * WEIGHTS['debate']  # 辩论净信号映射到0-100
+        (50 + net_debate * 8) * WEIGHTS['debate']
     )
     weighted = max(0, min(100, weighted))
 
-    # 最终方向
-    if weighted >= 62 and net_debate >= 1:
+    # 统一信号判定
+    if weighted >= THRESHOLD['strong_bull'] and net_debate >= 1:
         signal = 'bullish'
-    elif weighted <= 42 and net_debate <= -1:
+    elif weighted >= THRESHOLD['weak_bull'] and net_debate >= 0:
+        signal = 'bullish'
+    elif weighted <= THRESHOLD['strong_bear'] and net_debate <= -1:
         signal = 'bearish'
-    elif weighted >= 55:
-        signal = 'bullish' if net_debate >= 0 else 'neutral'
-    elif weighted <= 45:
-        signal = 'bearish' if net_debate <= 0 else 'neutral'
+    elif weighted <= THRESHOLD['weak_bear'] and net_debate <= 0:
+        signal = 'bearish'
     else:
         signal = 'neutral'
 
-    # 置信度：基于加权分散程度
     confidence = abs(weighted - 50) / 50 * 0.6 + min(abs(net_debate) * 0.05, 0.3) + 0.1
     confidence = round(max(0.15, min(0.95, confidence)), 2)
 
-    # 仓位建议：高置信+强信号=重仓，低置信=轻仓/观望
-    if signal == 'bullish':
-        position_pct = min(0.25, confidence * 0.3)
-    elif signal == 'bearish':
-        position_pct = min(0.15, confidence * 0.2)
-    else:
-        position_pct = 0.0
+    base_position = POSITION_MAP[signal]
+    position_pct = round(min(base_position * confidence, 0.25), 3)
 
-    # 关键位
     support = tech_snapshot.get('boll_down') or tech_snapshot.get('ma60') or 0
     resistance = tech_snapshot.get('boll_up') or tech_snapshot.get('ma5') or 0
 
-    # 核心推理
-    reasons = []
-    reasons.append(f"技术面{tech_rating}({tech_score}/100)")
-    reasons.append(f"基本面{fundamental_report.get('rating', 'N/A')}({fund_score}/100)")
-    reasons.append(f"新闻情绪{news_report.get('sentiment_score', 0):+.2f}")
-    reasons.append(f"多空辩论 看涨{bull_score} vs 看跌{bear_score}")
-    reasoning = " | ".join(reasons)
-
-    # 1/3/5/10日预测标签
-    predictions = technical_report.get('prediction', {}).get('predictions', [])
-    horizons = {}
-    for i, p in enumerate(predictions[:4]):
-        key = {0: '1d', 1: '3d', 2: '5d', 3: '10d'}.get(i)
-        if key:
-            horizons[key] = _horizon_label(p.get('pred_return', 0))
-    # 补齐
-    for k in ['1d', '3d', '5d', '10d']:
-        if k not in horizons:
-            horizons[k] = '震荡'
+    reasons = [
+        f"技术面{tech_rating}({tech_score}/100)",
+        f"基本面{fundamental_report.get('rating', 'N/A')}({fund_score}/100)",
+        f"新闻情绪{news_report.get('sentiment_score', 0):+.2f}",
+        f"多空辩论 看涨{bull_score} vs 看跌{bear_score}",
+    ]
 
     return {
         'signal': signal,
         'confidence': confidence,
         'weighted_score': round(weighted, 1),
-        'position_pct': round(position_pct, 2),
+        'position_pct': position_pct,
         'key_support': round(support, 3) if support else None,
         'key_resistance': round(resistance, 3) if resistance else None,
-        'reasoning': reasoning,
-        'horizons': horizons,
+        'reasoning': " | ".join(reasons),
         'bull_points': bull_arg.get('points', []),
         'bear_points': bear_arg.get('points', []),
         'component_scores': {
@@ -236,35 +237,141 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     }
 
 
-def predict_one(ticker: str, name: str = '', sector: str = '') -> Optional[Dict]:
-    """对单个标的进行多 Agent 预测"""
+def _fast_technical_analysis(ticker: str, name: str = "") -> Dict:
+    """
+    轻量技术面分析：仅 get_stock_data + calc_technical_indicators，
+    跳过 AdaptivePredictor 与复杂回测，单标约 0.5-2 秒。
+    """
+    df, _ = get_stock_data(ticker, calibrate=False)
+    df = calc_technical_indicators(df)
+    latest = df.iloc[-1]
+    cp = float(latest['close'])
+
+    def _val(col, ndigits=2, default=0):
+        v = latest.get(col)
+        return round(float(v), ndigits) if pd.notna(v) and v is not None else default
+
+    tech_snapshot = {
+        'current_price': round(cp, 2),
+        'ma5': _val('ma5'), 'ma10': _val('ma10'), 'ma20': _val('ma20'), 'ma60': _val('ma60'),
+        'macd_dif': _val('macd_dif', 4), 'macd_dea': _val('macd_dea', 4), 'macd_hist': _val('macd_hist', 4),
+        'rsi_14': _val('rsi_14', 1), 'kdj_k': _val('kdj_k', 1), 'kdj_d': _val('kdj_d', 1),
+        'boll_up': _val('boll_up'), 'boll_mid': _val('boll_mid'), 'boll_down': _val('boll_down'),
+        'vol_ratio': _val('vol_ratio', 2), 'annual_vol_20d': _val('annual_vol_20d', 1),
+        'momentum_5d': _val('momentum_5d', 2), 'momentum_20d': _val('momentum_20d', 2),
+    }
+
+    signals = []
+    if pd.notna(latest['ma5']) and pd.notna(latest['ma10']) and pd.notna(latest['ma20']):
+        if float(latest['ma5']) > float(latest['ma10']) > float(latest['ma20']):
+            signals.append(("🟢", "均线多头排列"))
+        elif float(latest['ma5']) < float(latest['ma10']) < float(latest['ma20']):
+            signals.append(("🔴", "均线空头排列"))
+    if latest['macd_hist'] > 0:
+        signals.append(("🟢", "MACD红柱"))
+    else:
+        signals.append(("🔴", "MACD绿柱"))
+    if latest['rsi_14'] < 30: signals.append(("🟢", "RSI超卖"))
+    elif latest['rsi_14'] > 70: signals.append(("🔴", "RSI超买"))
+
+    # 轻量评分
+    score = 50
+    reasons = []
+    if pd.notna(latest['ma60']):
+        ma60_dist = (cp / float(latest['ma60']) - 1) * 100
+        if ma60_dist > 0:
+            score += 8; reasons.append(f"MA60上方{ma60_dist:+.1f}%")
+        else:
+            score -= 5; reasons.append(f"MA60下方{ma60_dist:+.1f}%")
+    if latest['macd_hist'] > 0: score += 6; reasons.append("MACD红柱")
+    else: score -= 4; reasons.append("MACD绿柱")
+    if 30 < latest['rsi_14'] < 70: score += 3; reasons.append("RSI合理")
+    elif latest['rsi_14'] < 30: score += 4; reasons.append("RSI超卖反弹")
+    else: score -= 3; reasons.append("RSI超买")
+    vol = tech_snapshot['annual_vol_20d']
+    if vol < 30: score += 3; reasons.append("低波")
+    elif vol > 60: score -= 2; reasons.append("高波")
+    score = max(0, min(100, score))
+
+    rating = "偏多" if score >= 75 else "中性偏多" if score >= 60 else "中性" if score >= 40 else "中性偏空" if score >= 25 else "偏空"
+
+    # 轻量预测：用 5/20 日动量外推 1/3/5/10 日
+    m5 = tech_snapshot['momentum_5d'] / 5 if tech_snapshot['momentum_5d'] else 0
+    m20 = tech_snapshot['momentum_20d'] / 20 if tech_snapshot['momentum_20d'] else 0
+    avg_daily = (m5 + m20) / 2
+    predictions = []
+    for days, label in [(1, '1d'), (3, '3d'), (5, '5d'), (10, '10d')]:
+        pred_return = avg_daily * days
+        pred_price = round(cp * (1 + pred_return / 100), 3)
+        predictions.append({
+            'day': days, 'pred_price': pred_price, 'pred_return': round(pred_return, 3),
+            'pred_direction': '上涨' if pred_return > 0.5 else '下跌' if pred_return < -0.5 else '震荡'
+        })
+    prediction = {
+        'trend': '看涨' if avg_daily > 0.3 else '看跌' if avg_daily < -0.3 else '震荡',
+        'avg_return': round(avg_daily / 100, 5),
+        'predictions': predictions,
+    }
+
+    backtest = multi_period_backtest(df, periods=[30, 60]) if len(df) >= 30 else []
+
+    return {
+        'analyst': '技术面分析师(轻量)',
+        'ticker': ticker, 'name': name, 'current_price': round(cp, 2),
+        'score': score, 'rating': rating,
+        'backtest_results': backtest,
+        'tech_snapshot': tech_snapshot,
+        'signals': signals,
+        'reasons': reasons,
+        'prediction': prediction,
+    }
+
+
+def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '个股', fast: bool = False, ultra: bool = False) -> Optional[Dict]:
+    """对单个标的进行统一多 Agent 预测。fast=True 跳过基本面和新闻情绪，仅技术面+多空辩论。ultra=True 使用轻量技术面分析，速度最快。"""
     try:
-        # 1. 技术面分析
-        technical = technical_analyst.analyze(ticker, name)
+        is_fut = is_futures(ticker)
 
-        # 2. 基本面分析（ETF可能数据有限，但会返回）
-        fundamental = fundamentals_analyst.analyze(ticker, name)
+        if ultra:
+            technical = _fast_technical_analysis(ticker, name)
+        else:
+            technical = technical_analyst.analyze(ticker, name)
 
-        # 3. 新闻情绪分析
-        news = news_analyst.analyze(ticker, name)
+        # 期货和 fast/ultra 模式都跳过基本面和新闻
+        if is_fut or fast or ultra:
+            fundamental = {'score': 50, 'rating': 'N/A', 'fundamentals': {}, 'error': 'skipped'}
+            news = {'sentiment_score': 0, 'sentiment': '中性', 'keywords': []}
+        else:
+            fundamental = fundamentals_analyst.analyze(ticker, name)
+            news = news_analyst.analyze(ticker, name)
 
-        # 4. Bull / Bear 辩论
         bull = DebateEngine.bull_argument(technical, fundamental, news)
         bear = DebateEngine.bear_argument(technical, fundamental, news)
 
-        # 5. 研究经理裁决
         verdict = _manager_verdict(technical, fundamental, news, bull, bear)
 
-        # 6. 计算目标价和止损
         current_price = technical.get('current_price', 0)
-        target, stop = _calc_target_stop(
-            current_price,
-            verdict['signal'],
-            technical.get('tech_snapshot', {}),
-            technical.get('prediction', {}).get('predictions', [])
-        )
+        predictions = technical.get('prediction', {}).get('predictions', [])
+        if predictions:
+            avg_return = sum(p.get('pred_return', 0) for p in predictions) / len(predictions)
+            horizons = {}
+            horizon_returns = {}
+            for i, p in enumerate(predictions[:4]):
+                key = {0: '1d', 1: '3d', 2: '5d', 3: '10d'}.get(i)
+                if key:
+                    horizons[key] = _horizon_label(p.get('pred_return', 0))
+                    horizon_returns[f'{key}_return'] = p.get('pred_return', 0)
+        else:
+            avg_return = 0
+            horizons = {'1d': '震荡', '3d': '震荡', '5d': '震荡', '10d': '震荡'}
+            horizon_returns = {}
 
-        # 回测摘要
+        for k in ['1d', '3d', '5d', '10d']:
+            if k not in horizons:
+                horizons[k] = '震荡'
+
+        target, stop = _calc_target_stop(current_price, verdict['signal'], technical.get('tech_snapshot', {}), avg_return)
+
         backtest = technical.get('backtest_results', [])
         backtest_summary = {
             'periods': [{'period': b['period_name'], 'return': b['total_return'],
@@ -276,6 +383,7 @@ def predict_one(ticker: str, name: str = '', sector: str = '') -> Optional[Dict]
             'ticker': ticker,
             'name': name or technical.get('name', ticker),
             'sector': sector,
+            'category': category,
             'current_price': current_price,
             'signal': verdict['signal'],
             'confidence': verdict['confidence'],
@@ -283,10 +391,14 @@ def predict_one(ticker: str, name: str = '', sector: str = '') -> Optional[Dict]
             'target_price': target,
             'stop_loss': stop,
             'position_pct': verdict['position_pct'],
-            'horizon_1d': verdict['horizons']['1d'],
-            'horizon_3d': verdict['horizons']['3d'],
-            'horizon_5d': verdict['horizons']['5d'],
-            'horizon_10d': verdict['horizons']['10d'],
+            'horizon_1d': horizons['1d'],
+            'horizon_3d': horizons['3d'],
+            'horizon_5d': horizons['5d'],
+            'horizon_10d': horizons['10d'],
+            'horizon_1d_return': horizon_returns.get('1d_return', 0),
+            'horizon_3d_return': horizon_returns.get('3d_return', 0),
+            'horizon_5d_return': horizon_returns.get('5d_return', 0),
+            'horizon_10d_return': horizon_returns.get('10d_return', 0),
             'key_support': verdict['key_support'],
             'key_resistance': verdict['key_resistance'],
             'reasoning': verdict['reasoning'],
@@ -296,11 +408,12 @@ def predict_one(ticker: str, name: str = '', sector: str = '') -> Optional[Dict]
             'backtest_summary': backtest_summary,
         }
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         return {'error': str(e), 'ticker': ticker, 'name': name}
 
 
 def save_predictions(predictions: List[Dict]) -> Dict:
-    """批量保存 agentic 预测到数据库"""
     conn = _get_conn()
     try:
         stats = {'saved': 0, 'errors': 0}
@@ -314,16 +427,20 @@ def save_predictions(predictions: List[Dict]) -> Dict:
             try:
                 conn.execute("""
                     INSERT INTO agentic_predictions
-                    (ticker, name, sector, signal, confidence, target_price, stop_loss, position_pct,
+                    (ticker, name, sector, category, signal, confidence, weighted_score,
+                     target_price, stop_loss, position_pct,
                      horizon_1d, horizon_3d, horizon_5d, horizon_10d,
+                     horizon_1d_return, horizon_3d_return, horizon_5d_return, horizon_10d_return,
                      key_support, key_resistance, reasoning,
                      bull_points, bear_points, component_scores, backtest_summary,
                      current_price, pred_date, pred_time)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """, (
-                    p['ticker'], p['name'], p.get('sector', ''),
-                    p['signal'], p['confidence'], p['target_price'], p['stop_loss'], p['position_pct'],
+                    p['ticker'], p['name'], p.get('sector', ''), p.get('category', '个股'),
+                    p['signal'], p['confidence'], p['weighted_score'],
+                    p['target_price'], p['stop_loss'], p['position_pct'],
                     p['horizon_1d'], p['horizon_3d'], p['horizon_5d'], p['horizon_10d'],
+                    p['horizon_1d_return'], p['horizon_3d_return'], p['horizon_5d_return'], p['horizon_10d_return'],
                     p['key_support'], p['key_resistance'], p['reasoning'],
                     json.dumps(p['bull_points'], ensure_ascii=False),
                     json.dumps(p['bear_points'], ensure_ascii=False),
@@ -341,33 +458,113 @@ def save_predictions(predictions: List[Dict]) -> Dict:
         conn.close()
 
 
-def generate_for_watchlist(watchlist_path: str = None, category_filter: str = 'ETF') -> Dict:
-    """对 watchlist 中指定 category 的标的批量生成预测"""
+def generate_for_watchlist(watchlist_path: str = None, categories: List[str] = None,
+                           max_workers: int = MAX_WORKERS, fast: bool = False, ultra: bool = False) -> Dict:
+    """多线程批量生成预测。fast=True 跳过基本面/新闻，ultra=True 额外使用轻量技术面分析。"""
     if watchlist_path is None:
         watchlist_path = os.path.join(MULTI_AGENT, 'watchlist.json')
 
     with open(watchlist_path, 'r', encoding='utf-8') as f:
         watchlist = json.load(f)
 
-    items = [w for w in watchlist if w.get('category') == category_filter]
-    print(f"🎯 多 Agent 预测: {len(items)} 个 {category_filter} 标的")
+    if categories is None:
+        categories = ['ETF', '个股', '期货']
+
+    items = [w for w in watchlist if w.get('category') in categories]
+    print(f"🎯 多 Agent 预测: {len(items)} 个标的 ({', '.join(categories)}), 并发={max_workers}, fast={fast}, ultra={ultra}")
 
     predictions = []
-    for item in items:
-        ticker = item['ticker']
-        name = item['name']
-        sector = item.get('sector', item.get('theme', ''))
-        print(f"  → {ticker} {name}")
-        result = predict_one(ticker, name, sector)
-        if 'error' not in result:
-            predictions.append(result)
-            print(f"    {result['signal']} 置信度{result['confidence']} 评分{result['weighted_score']}")
-        else:
-            print(f"    ❌ {result['error']}")
+    errors = 0
+
+    def _predict(item):
+        return predict_one(item['ticker'], item['name'], item.get('sector', item.get('theme', '')), item.get('category', '个股'), fast=fast, ultra=ultra)
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        future_to_item = {executor.submit(_predict, item): item for item in items}
+        for future in as_completed(future_to_item):
+            item = future_to_item[future]
+            try:
+                result = future.result(timeout=120)
+                if 'error' in result:
+                    print(f"  ❌ {item['ticker']}: {result['error']}")
+                    errors += 1
+                else:
+                    predictions.append(result)
+                    print(f"  ✅ {item['ticker']} {result['signal']} 置信度{result['confidence']} 评分{result['weighted_score']}")
+            except Exception as e:
+                print(f"  ❌ {item['ticker']}: {e}")
+                errors += 1
 
     stats = save_predictions(predictions)
+    stats['errors'] += errors
     print(f"\n✅ 保存 {stats['saved']} 条, 失败 {stats['errors']} 条")
     return {'predictions': predictions, 'stats': stats}
+
+
+def validate_predictions(pred_date: str = None) -> Dict:
+    """统一验证 agentic 预测"""
+    if pred_date is None:
+        pred_date = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
+
+    conn = _get_conn()
+    try:
+        cur = conn.cursor()
+        rows = cur.execute("""
+            SELECT p.id, p.ticker, p.signal, p.horizon_1d_return, p.horizon_3d_return,
+                   p.horizon_5d_return, p.horizon_10d_return, p.current_price
+            FROM agentic_predictions p
+            WHERE p.pred_date = ?
+            AND p.id NOT IN (
+                SELECT DISTINCT prediction_id FROM unified_validation_results
+                WHERE source_table = 'agentic' AND prediction_id IS NOT NULL
+            )
+        """, (pred_date,)).fetchall()
+
+        if not rows:
+            return {'validated': 0, 'message': f'{pred_date} 无待验证预测'}
+
+        validated = 0
+        correct = 0
+        for row in rows:
+            ticker = row['ticker']
+            pred_price = row['current_price'] or 0
+            try:
+                rt = get_realtime_price(ticker)
+                actual_price = rt['price'] if rt else 0
+            except Exception:
+                continue
+            if actual_price <= 0 or pred_price <= 0:
+                continue
+
+            actual_return = (actual_price - pred_price) / pred_price
+            horizon_map = {
+                1: ('horizon_1d_return', row['horizon_1d_return']),
+                3: ('horizon_3d_return', row['horizon_3d_return']),
+                5: ('horizon_5d_return', row['horizon_5d_return']),
+                10: ('horizon_10d_return', row['horizon_10d_return']),
+            }
+
+            for horizon, (_, pred_return) in horizon_map.items():
+                if pred_return is None:
+                    continue
+                pred_direction = 'up' if pred_return > 0 else 'down' if pred_return < 0 else 'flat'
+                actual_direction = 'up' if actual_return > 0.005 else 'down' if actual_return < -0.005 else 'flat'
+                direction_correct = (pred_direction == actual_direction) if pred_direction != 'flat' else 0
+
+                cur.execute("""
+                    INSERT INTO unified_validation_results
+                    (prediction_id, source_table, ticker, horizon, pred_signal, actual_price, actual_return, direction_correct)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """, (row['id'], 'agentic', ticker, horizon, row['signal'], actual_price, actual_return, direction_correct))
+                validated += 1
+                if direction_correct:
+                    correct += 1
+
+        conn.commit()
+        accuracy = round(correct / validated * 100, 1) if validated > 0 else 0
+        return {'validated': validated, 'correct': correct, 'accuracy': accuracy}
+    finally:
+        conn.close()
 
 
 # ============================================================
@@ -375,22 +572,28 @@ def generate_for_watchlist(watchlist_path: str = None, category_filter: str = 'E
 # ============================================================
 if __name__ == '__main__':
     import argparse
-    parser = argparse.ArgumentParser(description='多 Agent LLM 预测系统')
+    parser = argparse.ArgumentParser(description='多 Agent LLM 预测系统（统一版）')
     parser.add_argument('--ticker', type=str, help='单个标的')
     parser.add_argument('--name', type=str, default='', help='标的名称')
+    parser.add_argument('--category', type=str, default='个股', help='标的类别')
     parser.add_argument('--watchlist', type=str, help='watchlist 文件路径')
-    parser.add_argument('--category', type=str, default='ETF', help='watchlist category 过滤')
+    parser.add_argument('--categories', type=str, default='ETF,个股,期货', help='逗号分隔的 category 过滤')
     parser.add_argument('--output', type=str, help='输出 JSON 文件（可选）')
+    parser.add_argument('--validate', action='store_true', help='验证昨日预测')
+    parser.add_argument('--workers', type=int, default=MAX_WORKERS, help='并发线程数')
+    parser.add_argument('--fast', action='store_true', help='跳过基本面和新闻，仅技术面+多空辩论')
+    parser.add_argument('--ultra', action='store_true', help='使用轻量技术面分析，速度最快')
     args = parser.parse_args()
 
-    if args.ticker:
-        result = predict_one(args.ticker, args.name)
+    if args.validate:
+        r = validate_predictions()
+        print(json.dumps(r, ensure_ascii=False, indent=2))
+    elif args.ticker:
+        result = predict_one(args.ticker, args.name, category=args.category, fast=args.fast, ultra=args.ultra)
         print(json.dumps(result, ensure_ascii=False, indent=2, default=str))
-        if args.output:
-            with open(args.output, 'w', encoding='utf-8') as f:
-                json.dump(result, f, ensure_ascii=False, indent=2, default=str)
     else:
-        result = generate_for_watchlist(args.watchlist, args.category)
+        cats = [c.strip() for c in args.categories.split(',')]
+        result = generate_for_watchlist(args.watchlist, cats, max_workers=args.workers, fast=args.fast, ultra=args.ultra)
         if args.output:
             with open(args.output, 'w', encoding='utf-8') as f:
                 json.dump(result['predictions'], f, ensure_ascii=False, indent=2, default=str)

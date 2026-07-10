@@ -76,13 +76,13 @@ def get_db_stats():
     display_date = today
     source_table = 'agentic'
     rows = cur.execute("""
-        SELECT ticker, name, sector, signal, confidence,
+        SELECT ticker, name, sector, category, signal, confidence,
                horizon_1d, horizon_3d, horizon_5d, horizon_10d,
                current_price, target_price, stop_loss, position_pct,
                weighted_score, reasoning, bull_points, bear_points,
                component_scores
         FROM agentic_predictions WHERE pred_date=?
-        ORDER BY sector, ticker
+        ORDER BY category, weighted_score DESC
     """, (today,)).fetchall()
 
     if not rows:
@@ -92,13 +92,13 @@ def get_db_stats():
         if last:
             display_date = last['pred_date']
             rows = cur.execute("""
-                SELECT ticker, name, sector, signal, confidence,
+                SELECT ticker, name, sector, category, signal, confidence,
                        horizon_1d, horizon_3d, horizon_5d, horizon_10d,
                        current_price, target_price, stop_loss, position_pct,
                        weighted_score, reasoning, bull_points, bear_points,
                        component_scores
                 FROM agentic_predictions WHERE pred_date=?
-                ORDER BY sector, ticker
+                ORDER BY category, weighted_score DESC
             """, (display_date,)).fetchall()
 
     if not rows:
@@ -150,25 +150,44 @@ def generate_html(stats):
 
     acc_color = "#22c55e" if stats['accuracy'] >= 60 else "#eab308" if stats['accuracy'] >= 40 else "#ef4444"
 
-    # 预测表格行
-    pred_rows = ""
-    signal_emoji = {'bullish': '🟢', 'neutral': '🟡', 'bearish': '🔴'}
-    signal_color = {'bullish': '#22c55e', 'neutral': '#eab308', 'bearish': '#ef4444'}
+    signal_emoji = {'bullish': '🔥', 'neutral': '➖', 'bearish': '❄️'}
+    signal_color = {'bullish': '#22c55e', 'neutral': '#94a3b8', 'bearish': '#ef4444'}
+    signal_cn = {'bullish': '看多', 'neutral': '中性', 'bearish': '看空'}
     is_agentic = stats.get('source_table') == 'agentic'
 
-    for p in stats.get('today_details', []):
-        sig = p.get('signal', 'neutral')
-        conf = p.get('confidence', 0.5) * 100
-        emoji = signal_emoji.get(sig, '⚪')
-        color = signal_color.get(sig, '#666')
-        if is_agentic:
-            # 新表：展示更多列
-            pred_rows += f"""
+    details = stats.get('today_details', [])
+
+    # 按 category 分组
+    groups = {}
+    for p in details:
+        cat = p.get('category') or '其他'
+        groups.setdefault(cat, []).append(p)
+
+    # 总体统计
+    bullish = [p for p in details if p.get('signal') == 'bullish']
+    bearish = [p for p in details if p.get('signal') == 'bearish']
+    neutral = [p for p in details if p.get('signal') == 'neutral']
+
+    # Top 推荐
+    top_bull = sorted(bullish, key=lambda x: x.get('weighted_score', 0), reverse=True)[:5]
+    top_bear = sorted(bearish, key=lambda x: x.get('weighted_score', 0), reverse=True)[:5]
+
+    def _rows_html(rows):
+        s = ""
+        for p in rows:
+            sig = p.get('signal', 'neutral')
+            conf = p.get('confidence', 0.5) * 100
+            emoji = signal_emoji.get(sig, '⚪')
+            color = signal_color.get(sig, '#666')
+            comp = json.loads(p.get('component_scores') or '{}') if isinstance(p.get('component_scores'), str) else p.get('component_scores', {})
+            tech = comp.get('technical', '-') if isinstance(comp, dict) else '-'
+            s += f"""
         <tr>
-            <td>{p.get('ticker', '')}</td>
+            <td><b>{p.get('ticker', '')}</b></td>
             <td>{p.get('name', '')}</td>
             <td>{p.get('sector', '')}</td>
-            <td style="color:{color};font-weight:bold">{emoji} {sig}</td>
+            <td style="color:{color};font-weight:bold">{emoji} {signal_cn.get(sig, sig)}</td>
+            <td>{p.get('weighted_score', 0)}</td>
             <td>{conf:.0f}%</td>
             <td>{p.get('horizon_1d', '')}</td>
             <td>{p.get('horizon_3d', '')}</td>
@@ -177,22 +196,51 @@ def generate_html(stats):
             <td>{p.get('current_price', '')}</td>
             <td>{p.get('target_price', '')}</td>
             <td>{p.get('stop_loss', '')}</td>
-            <td>{p.get('position_pct', 0)*100:.0f}%</td>
+            <td>{(p.get('position_pct') or 0)*100:.0f}%</td>
+            <td title="{p.get('reasoning', '')}">{tech}</td>
         </tr>"""
-        else:
-            pred_rows += f"""
-        <tr>
-            <td>{p.get('ticker', '')}</td>
-            <td>{p.get('name', '')}</td>
-            <td>{p.get('sector', '')}</td>
-            <td style="color:{color};font-weight:bold">{emoji} {sig}</td>
-            <td>{conf:.0f}%</td>
-            <td>{p.get('horizon_1d', '')}</td>
-            <td>{p.get('horizon_3d', '')}</td>
-            <td>{p.get('horizon_5d', '')}</td>
-            <td>{p.get('horizon_10d', '')}</td>
-            <td>{p.get('current_price', '')}</td>
-        </tr>"""
+        return s
+
+    category_html = ""
+    for cat in ['ETF', '个股', '期货']:
+        if cat not in groups:
+            continue
+        items = groups[cat]
+        cat_bull = len([p for p in items if p.get('signal') == 'bullish'])
+        cat_bear = len([p for p in items if p.get('signal') == 'bearish'])
+        category_html += f"""
+    <div class="section-title">📂 {cat} ({len(items)}只 | 看多{cat_bull} 看空{cat_bear})</div>
+    <table>
+        <thead><tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>现价</th><th>目标</th><th>止损</th><th>仓位</th><th>技术分</th></tr></thead>
+        <tbody>
+            {_rows_html(items)}
+        </tbody>
+    </table>"""
+
+    # Top 推荐区
+    top_html = ""
+    if top_bull:
+        top_html += '<div class="section-title">🏆 重点看多</div><div class="cards">'
+        for p in top_bull:
+            top_html += f"""
+            <div class="card bull">
+                <div class="card-title">🔥 {p.get('name', p.get('ticker'))} ({p.get('ticker')})</div>
+                <div class="card-meta">评分 {p.get('weighted_score')} | 置信 {p.get('confidence',0)*100:.0f}% | 仓位 {(p.get('position_pct') or 0)*100:.0f}%</div>
+                <div class="card-price">目标 {p.get('target_price')} | 止损 {p.get('stop_loss')}</div>
+                <div class="card-reason">{p.get('reasoning', '')}</div>
+            </div>"""
+        top_html += '</div>'
+    if top_bear:
+        top_html += '<div class="section-title">❄️ 重点看空</div><div class="cards">'
+        for p in top_bear:
+            top_html += f"""
+            <div class="card bear">
+                <div class="card-title">❄️ {p.get('name', p.get('ticker'))} ({p.get('ticker')})</div>
+                <div class="card-meta">评分 {p.get('weighted_score')} | 置信 {p.get('confidence',0)*100:.0f}% | 仓位 {(p.get('position_pct') or 0)*100:.0f}%</div>
+                <div class="card-price">目标 {p.get('target_price')} | 止损 {p.get('stop_loss')}</div>
+                <div class="card-reason">{p.get('reasoning', '')}</div>
+            </div>"""
+        top_html += '</div>'
 
     # 周期统计行
     horizon_rows = ""
@@ -214,15 +262,8 @@ def generate_html(stats):
     else:
         display_date_label = ""
 
-    # 模型标签
     model_tag = "🧠 多Agent融合" if is_agentic else "📈 趋势算法"
     total_preds = stats.get('agentic_total', 0) if is_agentic else stats.get('legacy_total', 0)
-
-    # 表头
-    if is_agentic:
-        thead = "<tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>现价</th><th>目标</th><th>止损</th><th>建议仓位</th></tr>"
-    else:
-        thead = "<tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>现价</th></tr>"
 
     return f"""<!DOCTYPE html>
 <html lang="zh-CN">
@@ -233,7 +274,7 @@ def generate_html(stats):
 <style>
 * {{ margin: 0; padding: 0; box-sizing: border-box; }}
 body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; }}
-.container {{ max-width: 1200px; margin: 0 auto; padding: 20px; }}
+.container {{ max-width: 1400px; margin: 0 auto; padding: 20px; }}
 .header {{ background: linear-gradient(135deg, #1e293b, #334155); padding: 30px; border-radius: 16px; margin-bottom: 24px; }}
 .header h1 {{ font-size: 24px; margin-bottom: 8px; }}
 .header .sub {{ color: #94a3b8; font-size: 14px; }}
@@ -244,13 +285,21 @@ body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans
 table {{ width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 12px; overflow: hidden; margin-bottom: 24px; font-size: 13px; }}
 th {{ background: #334155; padding: 10px 12px; text-align: left; font-size: 12px; color: #94a3b8; text-transform: uppercase; }}
 td {{ padding: 8px 12px; border-bottom: 1px solid #1e293b; font-size: 13px; }}
-tr:hover {{ background: #1e293b; }}
+tr:hover {{ background: #334155; }}
 .section-title {{ font-size: 18px; font-weight: 600; margin: 24px 0 12px; padding-left: 12px; border-left: 4px solid #6366f1; }}
 .nav {{ display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }}
 .nav a {{ color: #94a3b8; text-decoration: none; padding: 6px 16px; border-radius: 8px; background: #1e293b; font-size: 13px; }}
 .nav a:hover {{ background: #334155; color: #e2e8f0; }}
 .footer {{ text-align: center; color: #475569; font-size: 12px; margin-top: 40px; padding: 20px; }}
 .model-tag {{ display: inline-block; background: #6366f1; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 8px; }}
+.cards {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 24px; }}
+.card {{ background: #1e293b; border-radius: 12px; padding: 16px; border-left: 4px solid #6366f1; }}
+.card.bull {{ border-left-color: #22c55e; }}
+.card.bear {{ border-left-color: #ef4444; }}
+.card-title {{ font-weight: 600; margin-bottom: 6px; }}
+.card-meta {{ color: #94a3b8; font-size: 12px; margin-bottom: 6px; }}
+.card-price {{ color: #e2e8f0; font-size: 13px; margin-bottom: 6px; }}
+.card-reason {{ color: #94a3b8; font-size: 12px; line-height: 1.5; }}
 </style>
 </head>
 <body>
@@ -260,13 +309,13 @@ tr:hover {{ background: #1e293b; }}
         <a href="stocks.html">📈 个股</a>
         <a href="etfs.html">📊 ETF</a>
         <a href="futures.html">📉 期货</a>
-        <a href="prediction.html" style="background:#6366f1;color:#fff">🏛️ </a>
+        <a href="prediction.html" style="background:#6366f1;color:#fff">🏛️ 预测</a>
         <a href="portfolio.html">💼 组合</a>
     </div>
 
     <div class="header">
-        <h1>🏛️LLM 预测 <span class="model-tag">{model_tag}</span></h1>
-        <div class="sub">{now} · 基于（易方达基金经理）投资方法论</div>
+        <h1>🏛️ LLM 预测 <span class="model-tag">{model_tag}</span></h1>
+        <div class="sub">{now} · 基于（易方达基金经理）投资方法论 {display_date_label}</div>
     </div>
 
     <div class="stats-grid">
@@ -283,20 +332,18 @@ tr:hover {{ background: #1e293b; }}
             <div class="label">累计预测</div>
         </div>
         <div class="stat-card">
-            <div class="num">{stats.get('validated', 0)}</div>
-            <div class="label">已验证</div>
+            <div class="num">{len(bullish)}</div>
+            <div class="label">看多</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">{len(bearish)}</div>
+            <div class="label">看空</div>
         </div>
     </div>
 
-    <div class="section-title">📊 今日预测明细 {display_date_label}</div>
-    <table>
-        <thead>
-            {thead}
-        </thead>
-        <tbody>
-            {pred_rows if pred_rows else '<tr><td colspan="13" style="text-align:center;color:#64748b">今日暂无预测记录</td></tr>'}
-        </tbody>
-    </table>
+    {top_html}
+
+    {category_html}
 
     <div class="section-title">🎯 准确率统计（按周期）</div>
     <table>
@@ -305,9 +352,9 @@ tr:hover {{ background: #1e293b; }}
             {horizon_rows if horizon_rows else '<tr><td colspan="4" style="text-align:center;color:#64748b">暂无数据</td></tr>'}
         </tbody>
     </table>
-    
+
     <div class="footer">
-        数据由 Hermes Agent + 多Agent LLM 预测系统自动生成 · 研究辅助非投资建议 · 
+        数据由 Hermes Agent + 多Agent LLM 预测系统自动生成 · 研究辅助非投资建议 ·
         <a href="https://github.com/ldw5821cn/daily_tracker_analytics" style="color:#6366f1">GitHub</a>
     </div>
 </div>

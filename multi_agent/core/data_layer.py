@@ -15,6 +15,7 @@ import os
 import json
 import urllib.request
 import urllib.parse
+import ssl
 import warnings
 import tushare as ts
 from datetime import datetime, timedelta
@@ -217,10 +218,142 @@ def is_stock(ticker):
 
 def is_etf(ticker):
     """判断是否为ETF"""
-    return ticker.startswith(('5', '1'))
+    return ticker.startswith(('5', '1')) and ticker.isdigit()
 
 
-def _get_akshare_etf_data(ticker, start_date='20200101', end_date=None):
+def is_futures(ticker):
+    """判断是否为期货代码（非数字，如MA0, TA0, I0等）"""
+    return not ticker.isdigit()
+
+
+def _get_sina_futures_data(ticker, datalen=500):
+    """新浪期货历史日线（如 MA0, TA0, I0, RM0 等）"""
+    try:
+        # ticker 可能是 'MA0' 或 'MA'，统一补 0
+        symbol = ticker if ticker.endswith('0') else f"{ticker}0"
+        url = (f"https://stock.finance.sina.com.cn/futures/api/jsonp_v2.php/"
+               f"var_data_/InnerFuturesNewService.getDailyKLine?symbol={symbol}")
+        req = urllib.request.Request(url, headers={
+            'User-Agent': 'Mozilla/5.0',
+            'Referer': 'https://finance.sina.com.cn',
+        })
+        ctx = ssl.create_default_context()
+        with urllib.request.urlopen(req, timeout=10, context=ctx) as resp:
+            text = resp.read().decode('utf-8')
+        import re
+        # 新浪期货返回 var_data_([...])，需要提取方括号内容
+        json_match = re.search(r'var_data_\s*\(\s*(\[.*?\])\s*\)', text)
+        if not json_match:
+            # fallback 直接匹配最外层方括号
+            json_match = re.search(r'\[.*?\]', text)
+        if not json_match:
+            return None
+        data = json.loads(json_match.group(1) if json_match.groups() else json_match.group())
+        if len(data) < 20:
+            return None
+        rows = [{
+            'date': item['d'], 'open': float(item['o']),
+            'high': float(item['h']), 'low': float(item['l']),
+            'close': float(item['c']), 'volume': float(item['v']),
+        } for item in data]
+        df = pd.DataFrame(rows)
+        df['date'] = pd.to_datetime(df['date'])
+        df.set_index('date', inplace=True)
+        df.sort_index(inplace=True)
+        return df
+    except Exception as e:
+        print(f'  ⚠️ 新浪期货 {ticker} 获取失败: {e}')
+        import traceback
+        traceback.print_exc()
+        return None
+
+
+# 原有函数保持不变
+
+
+def get_stock_data(ticker, period="2y", calibrate=True):
+    """
+    智能获取数据：自动选择最优数据源
+    期货: 新浪期货(主)
+    个股: Tushare(主) -> 新浪(备) -> yfinance(备)
+    ETF:  akshare前复权(主) -> 新浪(备) -> yfinance(备)
+    """
+    df = None
+    source = None
+    info = {}
+
+    if is_futures(ticker):
+        df = _get_sina_futures_data(ticker)
+        if df is not None:
+            source = "sina_futures"
+            print(f"  📡 数据源: 新浪期货 {len(df)}天")
+    elif is_etf(ticker):
+        df = _get_akshare_etf_data(ticker)
+        if df is not None:
+            source = "akshare_etf"
+            print(f"  📡 数据源: akshare ETF 前复权 {len(df)}天")
+        if df is None:
+            df = _get_sina_data(ticker)
+            if df is not None:
+                source = "sina"
+                print(f"  📡 数据源: 新浪财经 {len(df)}天")
+        if df is None:
+            df = _get_yfinance_data(ticker, period)
+            if df is not None:
+                source = "yfinance"
+                print(f"  📡 数据源: yfinance {len(df)}天")
+    else:
+        df = _get_tushare_data(ticker)
+        if df is not None:
+            source = "tushare"
+            print(f"  📡 数据源: Tushare {len(df)}天")
+        if df is None:
+            df = _get_sina_data(ticker)
+            if df is not None:
+                source = "sina"
+                print(f"  📡 数据源: 新浪财经 {len(df)}天 (Tushare不可用)")
+        if df is None:
+            df = _get_yfinance_data(ticker, period)
+            if df is not None:
+                source = "yfinance"
+                print(f"  📡 数据源: yfinance {len(df)}天")
+
+    if df is None or len(df) < 20:
+        raise ValueError(f"所有数据源均不可用: {ticker}")
+
+    if calibrate and source is not None and not is_futures(ticker):
+        _verify_data(ticker, df, source)
+
+    return df, info
+
+
+def _get_akshare_etf_data(ticker, start_date='20190101', end_date=None):
+    """用 akshare 获取 ETF 前复权历史日线"""
+    try:
+        import akshare as ak
+        if end_date is None:
+            end_date = datetime.now().strftime('%Y%m%d')
+        df = ak.fund_etf_hist_em(symbol=ticker, period='daily',
+                                 start_date=start_date, end_date=end_date, adjust='qfq')
+        if df is None or len(df) < 20:
+            return None
+        df = df.rename(columns={
+            '日期': 'date', '开盘': 'open', '收盘': 'close',
+            '最高': 'high', '最低': 'low', '成交量': 'volume',
+        })
+        df['date'] = pd.to_datetime(df['date'])
+        df.set_index('date', inplace=True)
+        df = df[['open', 'high', 'low', 'close', 'volume']].astype(float)
+        df.sort_index(inplace=True)
+        return df
+    except Exception:
+        return None
+
+
+# 原有函数保持不变
+
+
+def get_stock_data_old(ticker, period="2y", calibrate=True):
     """用 akshare 获取 ETF 前复权历史日线"""
     try:
         import akshare as ak
@@ -351,6 +484,7 @@ def get_realtime_price(ticker):
 def get_stock_data(ticker, period="2y", calibrate=True):
     """
     智能获取数据：自动选择最优数据源
+    期货: 新浪期货(主)
     个股: Tushare(主) -> 新浪(备) -> yfinance(备)
     ETF:  akshare前复权(主) -> 新浪(备) -> yfinance(备)
     """
@@ -358,7 +492,12 @@ def get_stock_data(ticker, period="2y", calibrate=True):
     source = None
     info = {}
 
-    if is_etf(ticker):
+    if is_futures(ticker):
+        df = _get_sina_futures_data(ticker)
+        if df is not None:
+            source = "sina_futures"
+            print(f"  📡 数据源: 新浪期货 {len(df)}天")
+    elif is_etf(ticker):
         df = _get_akshare_etf_data(ticker)
         if df is not None:
             source = "akshare_etf"
@@ -392,7 +531,7 @@ def get_stock_data(ticker, period="2y", calibrate=True):
     if df is None or len(df) < 20:
         raise ValueError(f"所有数据源均不可用: {ticker}")
 
-    if calibrate and source is not None:
+    if calibrate and source is not None and not is_futures(ticker):
         _verify_data(ticker, df, source)
 
     return df, info
