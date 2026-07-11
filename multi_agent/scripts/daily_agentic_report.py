@@ -71,7 +71,7 @@ def _signal_cn(signal):
     return {'bullish': '看多', 'bearish': '看空', 'neutral': '中性'}.get(signal, signal)
 
 
-def build_markdown(pred_date=None, top_n=5):
+def build_markdown(pred_date=None, top_n=3):
     if pred_date is None:
         pred_date = datetime.now().strftime('%Y-%m-%d')
     preds = load_predictions(pred_date)
@@ -95,40 +95,40 @@ def build_markdown(pred_date=None, top_n=5):
         "",
     ]
 
-    # 重点推荐：按回测综合分排序（只看 top5）
-    top_recs = [p for p in preds if p['bt_score'] > 0][:5]
+    # 重点推荐：按回测综合分排序（只看 top3）
+    top_recs = [p for p in preds if p['bt_score'] > 0][:3]
     if top_recs:
-        lines.append("🏆 重点推荐（按回测综合分排序）")
+        lines.append("🏆 重点推荐")
         for p in top_recs:
-            lines.append(f"{_emoji(p['signal'])} {p['name']}({p['ticker']}) 60日收益{p['bt_return_60d']:+.1f}% 回撤{p['bt_max_dd_60d']:.1f}% 综合分{p['bt_score']:.1f}")
+            lines.append(f"{_emoji(p['signal'])} {p['name']}({p['ticker']}) 60日{p['bt_return_60d']:+.1f}% 分{p['bt_score']:.1f}")
         lines.append("")
 
-    # 分类 Top5：按回测综合分排序
+    # 分类 Top3：按回测综合分排序
     for cat in ['ETF', '个股', '期货']:
         if cat not in groups:
             continue
         items = sorted(groups[cat], key=lambda x: x['bt_score'], reverse=True)[:top_n]
-        lines.append(f"📂 {cat} Top{top_n}（60日收益/回撤/夏普）")
+        lines.append(f"📂 {cat} Top{top_n}")
         for p in items:
             sig = _emoji(p['signal'])
-            lines.append(f"{sig} {p['name']}({p['ticker']}): {p['bt_return_60d']:+.1f}% / {p['bt_max_dd_60d']:.1f}% / {p['bt_sharpe_60d']:.2f}")
+            lines.append(f"{sig} {p['name']}({p['ticker']}): {p['bt_return_60d']:+.1f}%/{p['bt_max_dd_60d']:.1f}%/{p['bt_sharpe_60d']:.2f}")
         lines.append("")
 
-    lines.append("⚠️ 提示：排序基于近60天回测综合分（收益/回撤/夏普），非预测收益；期货严格止损，个股建议结合基本面。")
+    lines.append("⚠️ 排序基于近60天回测综合分，非预测收益；期现严格止损。")
 
     # 加入 LLM 信号回测评估
     bt = _load_backtest_summary()
     if bt and 'by_category' in bt:
         lines.append("")
-        lines.append("📈 信号回测评估")
+        lines.append("📈 信号回测")
         for cat in ['ETF', '个股', '期货']:
             groups = bt.get('by_category', {}).get(cat, {})
             bullish = groups.get('bullish', {})
             bearish = groups.get('bearish', {})
             if not bullish and not bearish:
                 continue
-            long_s = f"看多{bullish.get('avg_return_60d', 0):+.1f}%/{bullish.get('win_rate_60d', 0):.0f}%胜" if bullish else "看多无"
-            short_s = f"看空{bearish.get('avg_return_60d', 0):+.1f}%/{bearish.get('win_rate_60d', 0):.0f}%胜" if bearish else "看空无"
+            long_s = f"多{bullish.get('avg_return_60d', 0):+.1f}%/{bullish.get('win_rate_60d', 0):.0f}%" if bullish else "多无"
+            short_s = f"空{bearish.get('avg_return_60d', 0):+.1f}%/{bearish.get('win_rate_60d', 0):.0f}%" if bearish else "空无"
             lines.append(f"{cat}: {long_s} | {short_s}")
 
     # 加入目标权重
@@ -139,10 +139,10 @@ def build_markdown(pred_date=None, top_n=5):
         longs = [t for t in weights['targets'] if t['target_weight'] > 0][:1]
         shorts = [t for t in weights['targets'] if t['target_weight'] < 0][:1]
         if longs:
-            long_line = " ".join([f"{t['ticker']}({t['name']}){t['target_weight']:+.1%}" for t in longs])
+            long_line = " ".join([f"{t['ticker']}{t['target_weight']:+.1%}" for t in longs])
             lines.append(f"🔥 多: {long_line}")
         if shorts:
-            short_line = " ".join([f"{t['ticker']}({t['name']}){t['target_weight']:+.1%}" for t in shorts])
+            short_line = " ".join([f"{t['ticker']}{t['target_weight']:+.1%}" for t in shorts])
             lines.append(f"❄️ 空: {short_line}")
 
     # 期货模拟盘持仓
@@ -159,10 +159,23 @@ def build_markdown(pred_date=None, top_n=5):
     try:
         import multi_agent.scripts.generate_stock_etf_list as gen
         lst = gen.generate_stock_etf_list()
-        buys = [i for i in lst['items'] if i['target_amount'] > 0][:3]
+        buys = [i for i in lst['items'] if i['target_amount'] > 0][:2]
         if buys:
             b = " ".join([f"{i['ticker']}{i['target_amount']:.0f}元" for i in buys])
             lines.append(f"📈 买入: {b}")
+    except Exception:
+        pass
+
+    # 新闻舆情（Top 1 标的）
+    try:
+        import json as _json
+        with open('multi_agent/data/news_sentiment.json', 'r', encoding='utf-8') as f:
+            ns = _json.load(f)
+        if ns.get('items'):
+            it = ns['items'][0]
+            emoji = '🟢' if it['sentiment'] == '积极' else '🔴' if it['sentiment'] == '消极' else '⚪'
+            title = it['latest_titles'][0] if it['latest_titles'] else '暂无'
+            lines.append(f"📰 {it['ticker']}{emoji}{title[:28]}")
     except Exception:
         pass
 

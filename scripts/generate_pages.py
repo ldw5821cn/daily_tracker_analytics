@@ -445,8 +445,37 @@ tr:hover {{ background: #334155; }}
         <a href="https://github.com/ldw5821cn/daily_tracker_analytics" style="color:#6366f1">GitHub</a>
     </div>
 </div>
+
+    <!-- LLM 舆情摘要区块 -->
+    <div class="section">
+        <h2>🗞️ 重点标的 LLM 舆情</h2>
+        {_build_news_sentiment_html()}
+    </div>
+
 </body>
 </html>"""
+
+
+def _build_news_sentiment_html():
+    try:
+        with open('multi_agent/data/news_sentiment.json', 'r', encoding='utf-8') as f:
+            ns = json.load(f)
+    except Exception as e:
+        return f"<!-- news sentiment load failed: {e} -->"
+    items = ns.get('items', [])[:3]
+    if not items:
+        return "<p>暂无舆情数据</p>"
+    cards = []
+    for it in items:
+        emoji = {'积极': '🟢', '消极': '🔴'}.get(it['sentiment'], '⚪')
+        summary = (it.get('llm_summary') or '暂无摘要').replace('<', '&lt;').replace('>', '&gt;')
+        titles = '<br>'.join(it.get('latest_titles', [])[:2]).replace('<', '&lt;').replace('>', '&gt;')
+        cards.append(
+            f'<div class="card"><h3>{emoji} {it["name"]}({it["ticker"]}) {it["sentiment"]}</h3>'
+            f'<p><b>LLM 摘要：</b>{summary}</p>'
+            f'<p><b>最新标题：</b>{titles}</p></div>'
+        )
+    return "\n".join(cards)
 
 
 if __name__ == "__main__":
