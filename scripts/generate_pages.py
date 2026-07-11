@@ -469,17 +469,17 @@ def _build_factors_html():
     if not factors:
         return '<p>暂无 LLM 因子数据</p>'
     cards = []
-    for f in factors[:5]:
+    for f in factors[:10]:
         source = f.get('source', 'rule')
-        src_tag = {'rule': '规则', 'llm': 'LLM'}.get(source, source)
+        src_tag = {'rule': '规则', 'llm': 'LLM', 'composite': '组合'}.get(source, source)
         cards.append(
             f'<div class="card">'
             f'<div class="card-title">🧬 {f["name"]} <span style="font-size:12px;color:#94a3b8">({src_tag})</span></div>'
             f'<div class="card-reason">{f.get("description", "")}</div>'
-            f'<div class="card-meta">夏普 {f.get("avg_sharpe")} | 收益 {f.get("avg_return")}% | 回撤 {f.get("avg_drawdown")}%</div>'
+            f'<div class="card-meta">夏普 {f.get("avg_sharpe")} | 收益 {f.get("avg_return")}% | 回撤 {f.get("avg_drawdown")}% | 胜率 {f.get("avg_win_rate")}% | Calmar {f.get("avg_calmar")}</div>'
             f'</div>'
         )
-    return "\n".join(cards)
+    return f'<div class="section"><h2>🧬 LLM 因子库（共 {len(factors)} 个）</h2>\n' + "\n".join(cards) + '</div>'
 
 
 def _build_news_sentiment_html():

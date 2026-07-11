@@ -186,9 +186,9 @@ def build_markdown(pred_date=None, top_n=3):
             data = _json.load(f)
         factors = data.get('factors', [])
         if factors:
-            tops = sorted(factors, key=lambda x: x.get('score', 0), reverse=True)[:2]
-            parts = [f"{f['name']}({f['avg_return']:+.0f}%)" for f in tops]
-            lines.append(f"🧬 因子: {' | '.join(parts)}")
+            tops = sorted(factors, key=lambda x: x.get('score', 0), reverse=True)[:3]
+            parts = [f"{f['name']}({f['avg_sharpe']}sh/{f['avg_return']:+.0f}%)" for f in tops]
+            lines.append(f"🧬 因子({len(factors)}个): {' | '.join(parts)}")
     except Exception:
         pass
 
