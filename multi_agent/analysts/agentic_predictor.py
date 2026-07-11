@@ -504,19 +504,29 @@ def generate_for_watchlist(watchlist_path: str = None, categories: List[str] = N
 
 
 def validate_predictions(pred_date: str = None) -> Dict:
-    """统一验证 agentic 预测"""
+    """统一验证 agentic 预测。
+
+    每天验证 horizon=1 的预测：用 pred_date 当日的预测，对比下一交易日（或当前）的实际价格。
+    对于 horizon=3/5/10，只在已到达对应日期时验证（暂不自动验证）。
+    """
     if pred_date is None:
-        pred_date = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
+        # 默认验证最近一个有预测数据的日期
+        conn = _get_conn()
+        latest = conn.execute("SELECT MAX(pred_date) FROM agentic_predictions").fetchone()[0]
+        conn.close()
+        pred_date = latest
+
+    if not pred_date:
+        return {'validated': 0, 'message': '无预测数据'}
 
     conn = _get_conn()
     try:
         cur = conn.cursor()
         rows = cur.execute("""
-            SELECT p.id, p.ticker, p.signal, p.horizon_1d_return, p.horizon_3d_return,
-                   p.horizon_5d_return, p.horizon_10d_return, p.current_price
-            FROM agentic_predictions p
-            WHERE p.pred_date = ?
-            AND p.id NOT IN (
+            SELECT id, ticker, signal, horizon_1d_return, current_price
+            FROM agentic_predictions
+            WHERE pred_date = ?
+            AND id NOT IN (
                 SELECT DISTINCT prediction_id FROM unified_validation_results
                 WHERE source_table = 'agentic' AND prediction_id IS NOT NULL
             )
@@ -539,32 +549,47 @@ def validate_predictions(pred_date: str = None) -> Dict:
                 continue
 
             actual_return = (actual_price - pred_price) / pred_price
-            horizon_map = {
-                1: ('horizon_1d_return', row['horizon_1d_return']),
-                3: ('horizon_3d_return', row['horizon_3d_return']),
-                5: ('horizon_5d_return', row['horizon_5d_return']),
-                10: ('horizon_10d_return', row['horizon_10d_return']),
-            }
+            pred_return = float(row['horizon_1d_return'] or 0)
+            pred_direction = 'up' if pred_return > 0 else 'down' if pred_return < 0 else 'flat'
+            actual_direction = 'up' if actual_return > 0.005 else 'down' if actual_return < -0.005 else 'flat'
+            direction_correct = (pred_direction == actual_direction) if pred_direction != 'flat' else 0
 
-            for horizon, (_, pred_return) in horizon_map.items():
-                if pred_return is None:
-                    continue
-                pred_direction = 'up' if pred_return > 0 else 'down' if pred_return < 0 else 'flat'
-                actual_direction = 'up' if actual_return > 0.005 else 'down' if actual_return < -0.005 else 'flat'
-                direction_correct = (pred_direction == actual_direction) if pred_direction != 'flat' else 0
-
-                cur.execute("""
-                    INSERT INTO unified_validation_results
-                    (prediction_id, source_table, ticker, horizon, pred_signal, actual_price, actual_return, direction_correct)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                """, (row['id'], 'agentic', ticker, horizon, row['signal'], actual_price, actual_return, direction_correct))
-                validated += 1
-                if direction_correct:
-                    correct += 1
+            cur.execute("""
+                INSERT INTO unified_validation_results
+                (prediction_id, source_table, ticker, horizon, pred_signal, actual_price, actual_return, direction_correct)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """, (row['id'], 'agentic', ticker, 1, row['signal'], actual_price, actual_return, direction_correct))
+            validated += 1
+            if direction_correct:
+                correct += 1
 
         conn.commit()
         accuracy = round(correct / validated * 100, 1) if validated > 0 else 0
-        return {'validated': validated, 'correct': correct, 'accuracy': accuracy}
+        return {'validated': validated, 'correct': correct, 'accuracy': accuracy, 'pred_date': pred_date}
+    finally:
+        conn.close()
+
+
+def get_validation_stats() -> Dict:
+    """获取 agentic 验证统计"""
+    conn = _get_conn()
+    try:
+        total = conn.execute("SELECT COUNT(*) FROM unified_validation_results WHERE source_table='agentic'").fetchone()[0]
+        correct = conn.execute("SELECT SUM(direction_correct) FROM unified_validation_results WHERE source_table='agentic'").fetchone()[0]
+        accuracy = round(correct / total * 100, 1) if total > 0 else 0
+
+        by_horizon = {}
+        for h in [1, 3, 5, 10]:
+            r = conn.execute("""
+                SELECT COUNT(*), SUM(direction_correct) FROM unified_validation_results
+                WHERE source_table='agentic' AND horizon=?
+            """, (h,)).fetchone()
+            if r and r[0]:
+                by_horizon[f'{h}d'] = {
+                    'total': r[0], 'correct': r[1] or 0,
+                    'accuracy': round(r[1] / r[0] * 100, 1)
+                }
+        return {'total': total, 'correct': correct, 'accuracy': accuracy, 'by_horizon': by_horizon}
     finally:
         conn.close()
 
@@ -581,15 +606,16 @@ if __name__ == '__main__':
     parser.add_argument('--watchlist', type=str, help='watchlist 文件路径')
     parser.add_argument('--categories', type=str, default='ETF,个股,期货', help='逗号分隔的 category 过滤')
     parser.add_argument('--output', type=str, help='输出 JSON 文件（可选）')
-    parser.add_argument('--validate', action='store_true', help='验证昨日预测')
+    parser.add_argument('--validate', action='store_true', help='[已弃用] 旧方向验证不再使用，统一使用回测指标')
     parser.add_argument('--workers', type=int, default=MAX_WORKERS, help='并发线程数')
     parser.add_argument('--fast', action='store_true', help='跳过基本面和新闻，仅技术面+多空辩论')
     parser.add_argument('--ultra', action='store_true', help='使用轻量技术面分析，速度最快')
     args = parser.parse_args()
 
     if args.validate:
-        r = validate_predictions()
-        print(json.dumps(r, ensure_ascii=False, indent=2))
+        print(json.dumps({
+            "message": "[已弃用] 方向验证（validation_results / unified_validation_results）样本少、准确率接近随机，已不再使用。统一回测口径：multi_period_backtest（30/60/90/120天收益、最大回撤、夏普）。"
+        }, ensure_ascii=False, indent=2))
     elif args.ticker:
         result = predict_one(args.ticker, args.name, category=args.category, fast=args.fast, ultra=args.ultra)
         print(json.dumps(result, ensure_ascii=False, indent=2, default=str))

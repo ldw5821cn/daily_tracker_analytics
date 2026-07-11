@@ -5,13 +5,15 @@
 """
 import sys
 import os
-import json
 import sqlite3
 from datetime import datetime, timedelta
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 MULTI_AGENT = os.path.join(PROJECT_ROOT, 'multi_agent')
 DB_PATH = os.path.join(MULTI_AGENT, 'data', 'llm_predictions.db')
+
+sys.path.insert(0, MULTI_AGENT)
+from core.backtest_utils import parse_backtest_summary, sort_by_backtest
 
 
 def _get_conn():
@@ -49,6 +51,9 @@ def build_markdown(pred_date=None, top_n=5):
     if not preds:
         return f"📊 {pred_date} 暂无预测数据，请检查 multi_agent/data/llm_predictions.db"
 
+    # 注入回测指标并排序
+    preds = sort_by_backtest(preds)
+
     groups = {}
     for p in preds:
         groups.setdefault(p.get('category') or '其他', []).append(p)
@@ -63,26 +68,26 @@ def build_markdown(pred_date=None, top_n=5):
         "",
     ]
 
-    # 重点推荐 Top5
-    top_bull = sorted(bullish, key=lambda x: x['weighted_score'], reverse=True)[:5]
-    if top_bull:
-        lines.append("🏆 重点推荐")
-        for p in top_bull:
-            lines.append(f"🔥 {p['name']}({p['ticker']}) 评分{p['weighted_score']} 仓位{p['position_pct']*100:.0f}% 目标{p['target_price']}/止损{p['stop_loss']}")
+    # 重点推荐：按回测综合分排序（只看 top5）
+    top_recs = [p for p in preds if p['bt_score'] > 0][:5]
+    if top_recs:
+        lines.append("🏆 重点推荐（按回测综合分排序）")
+        for p in top_recs:
+            lines.append(f"{_emoji(p['signal'])} {p['name']}({p['ticker']}) 60日收益{p['bt_return_60d']:+.1f}% 回撤{p['bt_max_dd_60d']:.1f}% 综合分{p['bt_score']:.1f}")
         lines.append("")
 
-    # 分类 Top5
+    # 分类 Top5：按回测综合分排序
     for cat in ['ETF', '个股', '期货']:
         if cat not in groups:
             continue
-        items = sorted(groups[cat], key=lambda x: x['weighted_score'], reverse=True)[:top_n]
-        lines.append(f"📂 {cat} Top{top_n}（看多/评分/1日/3日/5日）")
+        items = sorted(groups[cat], key=lambda x: x['bt_score'], reverse=True)[:top_n]
+        lines.append(f"📂 {cat} Top{top_n}（60日收益/回撤/夏普）")
         for p in items:
-            sig = '🔥' if p['signal'] == 'bullish' else '❄️' if p['signal'] == 'bearish' else '➖'
-            lines.append(f"{sig} {p['name']}({p['ticker']}): {p['weighted_score']} | {p['horizon_1d']}/{p['horizon_3d']}/{p['horizon_5d']}")
+            sig = _emoji(p['signal'])
+            lines.append(f"{sig} {p['name']}({p['ticker']}): {p['bt_return_60d']:+.1f}% / {p['bt_max_dd_60d']:.1f}% / {p['bt_sharpe_60d']:.2f}")
         lines.append("")
 
-    lines.append("⚠️ 提示：预测基于技术面+多空辩论，仅供参考；个股建议结合基本面确认，期货严格止损。")
+    lines.append("⚠️ 提示：排序基于近60天回测综合分（收益/回撤/夏普），非预测收益；期货严格止损，个股建议结合基本面。")
     lines.append(f"📱 完整页面：{PAGES_URL}")
     return "\n".join(lines)
 

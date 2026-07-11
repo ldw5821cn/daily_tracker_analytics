@@ -80,7 +80,7 @@ def get_db_stats():
                horizon_1d, horizon_3d, horizon_5d, horizon_10d,
                current_price, target_price, stop_loss, position_pct,
                weighted_score, reasoning, bull_points, bear_points,
-               component_scores
+               component_scores, backtest_summary
         FROM agentic_predictions WHERE pred_date=?
         ORDER BY category, weighted_score DESC
     """, (today,)).fetchall()
@@ -96,7 +96,7 @@ def get_db_stats():
                        horizon_1d, horizon_3d, horizon_5d, horizon_10d,
                        current_price, target_price, stop_loss, position_pct,
                        weighted_score, reasoning, bull_points, bear_points,
-                       component_scores
+                       component_scores, backtest_summary
                 FROM agentic_predictions WHERE pred_date=?
                 ORDER BY category, weighted_score DESC
             """, (display_date,)).fetchall()
@@ -148,12 +148,12 @@ def generate_html(stats):
     """生成 HTML 页面"""
     now = datetime.now().strftime('%Y-%m-%d %H:%M')
 
-    acc_color = "#22c55e" if stats['accuracy'] >= 60 else "#eab308" if stats['accuracy'] >= 40 else "#ef4444"
+    is_agentic = stats.get('source_table') == 'agentic'
+    total_preds = stats.get('agentic_total', 0) if is_agentic else stats.get('legacy_total', 0)
 
     signal_emoji = {'bullish': '🔥', 'neutral': '➖', 'bearish': '❄️'}
     signal_color = {'bullish': '#22c55e', 'neutral': '#94a3b8', 'bearish': '#ef4444'}
     signal_cn = {'bullish': '看多', 'neutral': '中性', 'bearish': '看空'}
-    is_agentic = stats.get('source_table') == 'agentic'
 
     details = stats.get('today_details', [])
 
@@ -168,9 +168,38 @@ def generate_html(stats):
     bearish = [p for p in details if p.get('signal') == 'bearish']
     neutral = [p for p in details if p.get('signal') == 'neutral']
 
-    # Top 推荐
-    top_bull = sorted(bullish, key=lambda x: x.get('weighted_score', 0), reverse=True)[:5]
-    top_bear = sorted(bearish, key=lambda x: x.get('weighted_score', 0), reverse=True)[:5]
+    # 总体统计卡片：移除准确率卡片，换成"回测统一口径"
+    acc_color = "#94a3b8"
+    stats_card_html = f"""
+        <div class="stat-card">
+            <div class="num" style="color:{acc_color}">统一回测</div>
+            <div class="label">multi_period_backtest</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">{stats.get('today_preds', 0)}</div>
+            <div class="label">今日预测</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">{total_preds}</div>
+            <div class="label">累计预测</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">{len(bullish)}</div>
+            <div class="label">看多</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">{len(bearish)}</div>
+            <div class="label">看空</div>
+        </div>
+    """
+
+    # Top 推荐：按回测得分排序，而不只是加权评分
+    top_bull = sorted(bullish, key=lambda x: x.get('bt_score', 0), reverse=True)[:5]
+    top_bear = sorted(bearish, key=lambda x: x.get('bt_score', 0), reverse=True)[:5]
+
+    for p in details:
+        if 'bt_score' not in p:
+            p['bt_score'] = 0
 
     def _rows_html(rows):
         s = ""
@@ -181,6 +210,19 @@ def generate_html(stats):
             color = signal_color.get(sig, '#666')
             comp = json.loads(p.get('component_scores') or '{}') if isinstance(p.get('component_scores'), str) else p.get('component_scores', {})
             tech = comp.get('technical', '-') if isinstance(comp, dict) else '-'
+            # 解析回测指标
+            bt_summary = p.get('backtest_summary')
+            if isinstance(bt_summary, str):
+                try: bt_summary = json.loads(bt_summary)
+                except Exception: bt_summary = {}
+            bt_periods = bt_summary.get('periods', []) if isinstance(bt_summary, dict) else []
+            r60 = next((x for x in bt_periods if x.get('period') == '近60天'), {})
+            r30 = next((x for x in bt_periods if x.get('period') == '近30天'), {})
+            ret60 = r60.get('return', 0)
+            dd60 = r60.get('max_drawdown', 0)
+            sharpe60 = r60.get('sharpe', 0)
+            ret30 = r30.get('return', 0)
+            bt_score = ret60 * 0.5 + ret30 * 0.3 - abs(dd60) * 0.2
             s += f"""
         <tr>
             <td><b>{p.get('ticker', '')}</b></td>
@@ -193,6 +235,9 @@ def generate_html(stats):
             <td>{p.get('horizon_3d', '')}</td>
             <td>{p.get('horizon_5d', '')}</td>
             <td>{p.get('horizon_10d', '')}</td>
+            <td>{ret60:+.1f}%</td>
+            <td>{dd60:.1f}%</td>
+            <td>{sharpe60:.2f}</td>
             <td>{p.get('current_price', '')}</td>
             <td>{p.get('target_price', '')}</td>
             <td>{p.get('stop_loss', '')}</td>
@@ -208,41 +253,54 @@ def generate_html(stats):
         items = groups[cat]
         cat_bull = len([p for p in items if p.get('signal') == 'bullish'])
         cat_bear = len([p for p in items if p.get('signal') == 'bearish'])
+        # 按回测得分排序
+        items = sorted(items, key=lambda x: x.get('bt_score', 0) if 'bt_score' in x else 0, reverse=True)
         category_html += f"""
     <div class="section-title">📂 {cat} ({len(items)}只 | 看多{cat_bull} 看空{cat_bear})</div>
     <table>
-        <thead><tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>现价</th><th>目标</th><th>止损</th><th>仓位</th><th>技术分</th></tr></thead>
+        <thead><tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>60日收益</th><th>60日回撤</th><th>60日夏普</th><th>现价</th><th>目标</th><th>止损</th><th>仓位</th><th>技术分</th></tr></thead>
         <tbody>
             {_rows_html(items)}
         </tbody>
     </table>"""
 
+    # 准确率统计区域改为“回测统计说明”：不再展示低准确率的方向验证
+    # 后续统一使用 multi_period_backtest 作为唯一回测口径
+    stats_note = f"""
+    <div class="section-title">🎯 回测口径</div>
+    <div style="background:#1e293b;padding:16px;border-radius:12px;margin-bottom:24px;color:#cbd5e1;line-height:1.8">
+        <p>统一回测方案：<b>multi_period_backtest</b>（30/60/90/120天持有收益、最大回撤、夏普）。</p>
+        <p>旧方向验证（validation_results / unified_validation_results）已弃用：样本小且准确率接近随机，无参考价值。</p>
+        <p>表格已按「60日收益综合分」排序，重点推荐同时考虑技术面评分和历史回测表现。</p>
+    </div>
+    """
+
     # Top 推荐区
     top_html = ""
     if top_bull:
-        top_html += '<div class="section-title">🏆 重点看多</div><div class="cards">'
+        top_html += '<div class="section-title">🏆 重点看多（按回测排序）</div><div class="cards">'
         for p in top_bull:
             top_html += f"""
             <div class="card bull">
                 <div class="card-title">🔥 {p.get('name', p.get('ticker'))} ({p.get('ticker')})</div>
-                <div class="card-meta">评分 {p.get('weighted_score')} | 置信 {p.get('confidence',0)*100:.0f}% | 仓位 {(p.get('position_pct') or 0)*100:.0f}%</div>
+                <div class="card-meta">评分 {p.get('weighted_score')} | 60日收益 {p.get('bt_return_60d', 0):+.1f}% | 回撤 {p.get('bt_max_dd_60d', 0):.1f}%</div>
                 <div class="card-price">目标 {p.get('target_price')} | 止损 {p.get('stop_loss')}</div>
                 <div class="card-reason">{p.get('reasoning', '')}</div>
             </div>"""
         top_html += '</div>'
     if top_bear:
-        top_html += '<div class="section-title">❄️ 重点看空</div><div class="cards">'
+        top_html += '<div class="section-title">❄️ 重点看空（按回测排序）</div><div class="cards">'
         for p in top_bear:
             top_html += f"""
             <div class="card bear">
                 <div class="card-title">❄️ {p.get('name', p.get('ticker'))} ({p.get('ticker')})</div>
-                <div class="card-meta">评分 {p.get('weighted_score')} | 置信 {p.get('confidence',0)*100:.0f}% | 仓位 {(p.get('position_pct') or 0)*100:.0f}%</div>
+                <div class="card-meta">评分 {p.get('weighted_score')} | 60日收益 {p.get('bt_return_60d', 0):+.1f}% | 回撤 {p.get('bt_max_dd_60d', 0):.1f}%</div>
                 <div class="card-price">目标 {p.get('target_price')} | 止损 {p.get('stop_loss')}</div>
                 <div class="card-reason">{p.get('reasoning', '')}</div>
             </div>"""
         top_html += '</div>'
 
-    # 周期统计行
+    # 周期统计行：已弃用方向验证，这里显示为空（保留结构方便后续）
     horizon_rows = ""
     for h_name, h_data in sorted(stats.get('by_horizon', {}).items()):
         h_color = "#22c55e" if h_data['accuracy'] >= 55 else "#eab308" if h_data['accuracy'] >= 40 else "#ef4444"
@@ -319,37 +377,20 @@ tr:hover {{ background: #334155; }}
     </div>
 
     <div class="stats-grid">
-        <div class="stat-card">
-            <div class="num">{stats.get('today_preds', 0)}</div>
-            <div class="label">今日预测</div>
-        </div>
-        <div class="stat-card">
-            <div class="num" style="color:{acc_color}">{stats.get('accuracy', 0)}%</div>
-            <div class="label">总体准确率 (共{stats.get('validated', 0)}次验证)</div>
-        </div>
-        <div class="stat-card">
-            <div class="num">{total_preds}</div>
-            <div class="label">累计预测</div>
-        </div>
-        <div class="stat-card">
-            <div class="num">{len(bullish)}</div>
-            <div class="label">看多</div>
-        </div>
-        <div class="stat-card">
-            <div class="num">{len(bearish)}</div>
-            <div class="label">看空</div>
-        </div>
+{stats_card_html}
     </div>
 
     {top_html}
 
+    {stats_note}
+
     {category_html}
 
-    <div class="section-title">🎯 准确率统计（按周期）</div>
+    <div class="section-title">🎯 回测按周期统计</div>
     <table>
         <thead><tr><th>周期</th><th>总数</th><th>正确</th><th>准确率</th></tr></thead>
         <tbody>
-            {horizon_rows if horizon_rows else '<tr><td colspan="4" style="text-align:center;color:#64748b">暂无数据</td></tr>'}
+            {horizon_rows if horizon_rows else '<tr><td colspan="4" style="text-align:center;color:#64748b">方向验证已弃用，回测口径请参考顶部说明</td></tr>'}
         </tbody>
     </table>
 
