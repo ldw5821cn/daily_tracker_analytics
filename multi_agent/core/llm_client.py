@@ -9,15 +9,28 @@ import os
 import sys
 from typing import Optional, List, Dict
 
-# 尝试加载 .env
-try:
-    from dotenv import load_dotenv
-    _proj = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    for _env in [os.path.join(_proj, '.env'), os.path.join(_proj, 'etf_tracker', '.env')]:
-        if os.path.exists(_env):
-            load_dotenv(_env, override=False)
-except Exception:
-    pass
+# 尝试加载 Hermes config.yaml
+def _load_hermes_provider(name: str = 'deepseek') -> dict:
+    try:
+        import yaml
+    except ImportError:
+        return {}
+    for path in [os.path.expanduser('~/.hermes/config.yaml'), os.path.expanduser('~/.hermes/config.yml')]:
+        if not os.path.exists(path):
+            continue
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                cfg = yaml.safe_load(f) or {}
+            for cp in cfg.get('custom_providers', []):
+                if cp.get('name') == name and cp.get('api_key'):
+                    return cp
+            # 如果 name 是默认 provider，fallback 到第一个带 api_key 的自定义 provider
+            for cp in cfg.get('custom_providers', []):
+                if cp.get('api_key') and cp.get('base_url'):
+                    return cp
+        except Exception:
+            continue
+    return {}
 
 
 def _get_client():
@@ -26,8 +39,16 @@ def _get_client():
     except ImportError:
         return None
 
-    api_key = os.getenv('OPENAI_API_KEY') or os.getenv('OPENROUTER_API_KEY') or os.getenv('LLM_API_KEY')
-    base_url = os.getenv('OPENAI_BASE_URL') or os.getenv('OPENROUTER_BASE_URL') or os.getenv('LLM_BASE_URL')
+    hermes = _load_hermes_provider('deepseek')
+    if hermes:
+        api_key = hermes['api_key']
+        base_url = hermes.get('base_url')
+        default_model = hermes.get('model', 'deepseek-chat')
+        os.environ.setdefault('LLM_MODEL', default_model)
+    else:
+        api_key = os.getenv('OPENAI_API_KEY') or os.getenv('OPENROUTER_API_KEY') or os.getenv('LLM_API_KEY')
+        base_url = os.getenv('OPENAI_BASE_URL') or os.getenv('OPENROUTER_BASE_URL') or os.getenv('LLM_BASE_URL')
+        default_model = None
 
     if not api_key:
         return None
@@ -35,6 +56,8 @@ def _get_client():
     kwargs = {'api_key': api_key}
     if base_url:
         kwargs['base_url'] = base_url
+    if default_model:
+        os.environ.setdefault('LLM_MODEL', default_model)
     return openai.OpenAI(**kwargs)
 
 
