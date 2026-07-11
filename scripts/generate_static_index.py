@@ -114,10 +114,6 @@ def _signal_cn(signal):
     return '中性'
 
 
-def _parse_backtest(bt):
-    """兼容旧代码，直接委托给公共工具。"""
-    res = parse_backtest_summary(bt)
-    return res['return_60d'], res['max_dd_60d'], res['sharpe_60d'], res['bt_score']
 
 
 def build_agentic_table(rows, page_type, top_n=50):
@@ -126,9 +122,10 @@ def build_agentic_table(rows, page_type, top_n=50):
     if not filtered:
         return ""
 
-    # 注入回测得分
+    # 注入统一回测指标
     for r in filtered:
-        r['bt_return_60d'], r['bt_max_dd_60d'], r['bt_sharpe_60d'], r['bt_score'] = _parse_backtest(r.get('backtest_summary'))
+        bt = parse_backtest_summary(r.get('backtest_summary'))
+        r.update(bt)
     filtered.sort(key=lambda x: x['bt_score'], reverse=True)
 
     bullish = [r for r in filtered if r.get('signal') == 'bullish']
@@ -166,7 +163,8 @@ def build_agentic_table(rows, page_type, top_n=50):
 def build_agentic_top_cards(rows, top_n=5):
     """构建今日重点推荐卡片；按回测得分排序。"""
     for r in rows:
-        r['bt_return_60d'], r['bt_max_dd_60d'], r['bt_sharpe_60d'], r['bt_score'] = _parse_backtest(r.get('backtest_summary'))
+        bt = parse_backtest_summary(r.get('backtest_summary'))
+        r.update(bt)
     bullish = sorted([r for r in rows if r.get('signal') == 'bullish'],
                      key=lambda x: x['bt_score'], reverse=True)[:top_n]
     if not bullish:
@@ -184,54 +182,6 @@ def build_agentic_top_cards(rows, top_n=5):
         )
     return '<div class="section-title">🏆 今日重点推荐（按回测排序）</div>\n<div class="cards">\n' + "\n".join(cards) + '\n</div>'
 
-    lines = [
-        f'<div class="section-title">🔥 {page_type} 实时预测（{len(filtered)}只 | 看多{len(bullish)} 看空{len(bearish)} 中性{len(neutral)}）</div>',
-        '<table><tr><th>名称</th><th>代码</th><th>板块</th><th>信号</th><th>评分</th><th>60日收益</th><th>60日回撤</th><th>60日夏普</th><th>现价</th><th>目标</th><th>止损</th><th>仓位</th></tr>',
-    ]
-
-    for r in filtered[:top_n]:
-        sig = r.get('signal', 'neutral')
-        sig_cls = _signal_class(sig)
-        sig_cn = _signal_cn(sig)
-        pos = (r.get('position_pct') or 0) * 100
-        lines.append(
-            f'<tr><td class="name">{r.get("name", r["ticker"])}</td>'
-            f'<td>{r["ticker"]}</td>'
-            f'<td>{r.get("sector", "")}</td>'
-            f'<td class="{sig_cls}">{sig_cn}</td>'
-            f'<td>{r.get("weighted_score", 0)}</td>'
-            f'<td>{r.get("bt_return_60d", 0):+.1f}%</td>'
-            f'<td>{r.get("bt_max_dd_60d", 0):.1f}%</td>'
-            f'<td>{r.get("bt_sharpe_60d", 0):.2f}</td>'
-            f'<td>{r.get("current_price", "")}</td>'
-            f'<td>{r.get("target_price", "")}</td>'
-            f'<td>{r.get("stop_loss", "")}</td>'
-            f'<td>{pos:.0f}%</td></tr>'
-        )
-    lines.append('</table>')
-    return "\n".join(lines)
-
-
-def build_agentic_top_cards(rows, top_n=5):
-    """构建今日重点推荐卡片；按回测得分排序。"""
-    for r in rows:
-        r['bt_return_60d'], r['bt_max_dd_60d'], r['bt_sharpe_60d'], r['bt_score'] = _parse_backtest(r.get('backtest_summary'))
-    bullish = sorted([r for r in rows if r.get('signal') == 'bullish'],
-                     key=lambda x: x['bt_score'], reverse=True)[:top_n]
-    if not bullish:
-        return ""
-    cards = []
-    for r in bullish:
-        pos = (r.get('position_pct') or 0) * 100
-        cards.append(
-            f'''<div class="card">
-                <div class="card-title">🔥 {r.get("name", r["ticker"])} ({r["ticker"]})</div>
-                <div class="card-meta">评分 {r.get("weighted_score", 0)} | 60日收益 {r.get("bt_return_60d", 0):+.1f}% | 回撤 {r.get("bt_max_dd_60d", 0):.1f}%</div>
-                <div class="card-price">目标 {r.get("target_price", "")} | 止损 {r.get("stop_loss", "")}</div>
-                <div class="card-reason">{r.get("reasoning", "")}</div>
-            </div>'''
-        )
-    return '<div class="section-title">🏆 今日重点推荐（按回测排序）</div>\n<div class="cards">\n' + "\n".join(cards) + '\n</div>'
 
 
 def extract_ticker_from_filename(filename):

@@ -17,6 +17,7 @@ import sqlite3
 from datetime import datetime, timedelta
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'multi_agent'))
+from core.backtest_utils import sort_by_backtest, inject_backtest_metrics
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOCS_DIR = os.path.join(REPO_ROOT, "docs")
@@ -129,6 +130,15 @@ def get_db_stats():
     stats['display_date'] = display_date
     stats['source_table'] = source_table
 
+    # 注入统一回测指标并按回测得分排序
+    for p in stats['today_details']:
+        inject_backtest_metrics(p)
+    stats['today_details'] = sorted(
+        stats['today_details'],
+        key=lambda x: x.get('bt_score', 0),
+        reverse=True
+    )
+
     # 近期趋势（近7天）
     week = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
     cur.execute("""
@@ -194,12 +204,10 @@ def generate_html(stats):
     """
 
     # Top 推荐：按回测得分排序，而不只是加权评分
+    for p in details:
+        inject_backtest_metrics(p)
     top_bull = sorted(bullish, key=lambda x: x.get('bt_score', 0), reverse=True)[:5]
     top_bear = sorted(bearish, key=lambda x: x.get('bt_score', 0), reverse=True)[:5]
-
-    for p in details:
-        if 'bt_score' not in p:
-            p['bt_score'] = 0
 
     def _rows_html(rows):
         s = ""
@@ -210,19 +218,6 @@ def generate_html(stats):
             color = signal_color.get(sig, '#666')
             comp = json.loads(p.get('component_scores') or '{}') if isinstance(p.get('component_scores'), str) else p.get('component_scores', {})
             tech = comp.get('technical', '-') if isinstance(comp, dict) else '-'
-            # 解析回测指标
-            bt_summary = p.get('backtest_summary')
-            if isinstance(bt_summary, str):
-                try: bt_summary = json.loads(bt_summary)
-                except Exception: bt_summary = {}
-            bt_periods = bt_summary.get('periods', []) if isinstance(bt_summary, dict) else []
-            r60 = next((x for x in bt_periods if x.get('period') == '近60天'), {})
-            r30 = next((x for x in bt_periods if x.get('period') == '近30天'), {})
-            ret60 = r60.get('return', 0)
-            dd60 = r60.get('max_drawdown', 0)
-            sharpe60 = r60.get('sharpe', 0)
-            ret30 = r30.get('return', 0)
-            bt_score = ret60 * 0.5 + ret30 * 0.3 - abs(dd60) * 0.2
             s += f"""
         <tr>
             <td><b>{p.get('ticker', '')}</b></td>
@@ -235,9 +230,9 @@ def generate_html(stats):
             <td>{p.get('horizon_3d', '')}</td>
             <td>{p.get('horizon_5d', '')}</td>
             <td>{p.get('horizon_10d', '')}</td>
-            <td>{ret60:+.1f}%</td>
-            <td>{dd60:.1f}%</td>
-            <td>{sharpe60:.2f}</td>
+            <td>{p.get('bt_return_60d', 0):+.1f}%</td>
+            <td>{p.get('bt_max_dd_60d', 0):.1f}%</td>
+            <td>{p.get('bt_sharpe_60d', 0):.2f}</td>
             <td>{p.get('current_price', '')}</td>
             <td>{p.get('target_price', '')}</td>
             <td>{p.get('stop_loss', '')}</td>
@@ -253,8 +248,8 @@ def generate_html(stats):
         items = groups[cat]
         cat_bull = len([p for p in items if p.get('signal') == 'bullish'])
         cat_bear = len([p for p in items if p.get('signal') == 'bearish'])
-        # 按回测得分排序
-        items = sorted(items, key=lambda x: x.get('bt_score', 0) if 'bt_score' in x else 0, reverse=True)
+        # 按回测得分排序（已注入）
+        items = sorted(items, key=lambda x: x.get('bt_score', 0), reverse=True)
         category_html += f"""
     <div class="section-title">📂 {cat} ({len(items)}只 | 看多{cat_bull} 看空{cat_bear})</div>
     <table>
@@ -321,7 +316,6 @@ def generate_html(stats):
         display_date_label = ""
 
     model_tag = "🧠 多Agent融合" if is_agentic else "📈 趋势算法"
-    total_preds = stats.get('agentic_total', 0) if is_agentic else stats.get('legacy_total', 0)
 
     return f"""<!DOCTYPE html>
 <html lang="zh-CN">
@@ -420,4 +414,4 @@ if __name__ == "__main__":
     print(f"   模型来源: {'多Agent融合' if stats.get('source_table')=='agentic' else '趋势算法'}")
     print(f"   今日预测: {stats.get('today_preds')} 条")
     print(f"   累计预测: {stats.get('agentic_total', 0)} 条 (新) + {stats.get('legacy_total', 0)} 条 (旧)")
-    print(f"   总体准确率: {stats.get('accuracy', 0)}% ({stats.get('validated', 0)}次验证)")
+    print(f"   回测口径: multi_period_backtest（方向验证已弃用）")
