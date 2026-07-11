@@ -18,6 +18,7 @@ from datetime import datetime
 import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from core.backtest_utils import parse_backtest_summary
+from strategy.factor_scoring import add_factor_scores_to_predictions
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 DB_PATH = os.path.join(PROJECT_ROOT, 'multi_agent', 'data', 'llm_predictions.db')
@@ -83,7 +84,10 @@ def allocate() -> Dict:
         p['bt_return_60d'] = bt.get('return_60d', 0)
         p['bt_max_dd_60d'] = bt.get('max_dd_60d', 0)
 
-    # 初始权重：方向 * 信心 * 回测得分缩放
+    # 注入精选因子得分
+    preds = add_factor_scores_to_predictions(preds)
+
+    # 初始权重：方向 * 信心 * 回测得分缩放 * 因子得分
     targets = []
     for p in preds:
         signal = p.get('signal', 'neutral')
@@ -91,8 +95,11 @@ def allocate() -> Dict:
             continue
         direction = 1 if signal == 'bullish' else -1
         confidence = p.get('confidence', 0.5)
-        bt_score = max(p.get('bt_score', 0), 0)  # 只用非负分作为质量权重
-        raw = direction * confidence * (1 + bt_score / 100)
+        bt_score = max(p.get('bt_score', 0), 0)
+        factor_score = p.get('factor_score', 0)
+        # factor_score 范围 [-1,1]；映射到 [0.5,1.5]
+        factor_multiplier = 1.0 + factor_score
+        raw = direction * confidence * (1 + bt_score / 100) * factor_multiplier
         if direction == -1:
             raw *= SHORT_DECAY
         targets.append({
@@ -106,8 +113,9 @@ def allocate() -> Dict:
             'stop_loss': p.get('stop_loss', 0),
             'confidence': confidence,
             'bt_score': p['bt_score'],
+            'factor_score': round(factor_score, 3),
             'raw_weight': raw,
-            'reason': f"信号{signal[:4]} 信心{confidence:.0%} 60日收益{p['bt_return_60d']:+.1f}% 回撤{p['bt_max_dd_60d']:.1f}%",
+            'reason': f"信号{signal[:4]} 信心{confidence:.0%} 60日收益{p['bt_return_60d']:+.1f}% 回撤{p['bt_max_dd_60d']:.1f}% 因子分{factor_score:+.2f}",
         })
 
     # 按 category 归一化到上限
