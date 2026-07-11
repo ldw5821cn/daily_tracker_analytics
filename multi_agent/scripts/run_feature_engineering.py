@@ -107,19 +107,64 @@ def _generate_thresholds(series: pd.Series, n: int = 5) -> List[float]:
     return [s.quantile(q/100) for q in qs]
 
 
-def _factor_to_signal(feat: pd.Series, direction: str, threshold: float) -> np.ndarray:
-    """根据特征值和阈值生成 -1/0/1 信号，并已 shift(1) 避免未来函数。"""
+def _factor_to_signal(feat: pd.Series, direction: str, threshold: float, spec: Dict) -> Tuple[np.ndarray, str, Dict]:
+    """根据特征值和阈值生成 -1/0/1 信号（已 shift(1)），并返回可执行代码与 spec。"""
     if direction == 'long':
         sig = np.where(feat > threshold, 1, 0)
     elif direction == 'short':
         sig = np.where(feat < threshold, -1, 0)
-    else:  # both: 高于阈值做多，低于阈值做空
+    else:  # both
         sig = np.where(feat > threshold, 1, np.where(feat < -threshold, -1, 0))
+
     sig = pd.Series(sig, index=feat.index).shift(1).fillna(0).values.astype(np.int8)
-    return sig
+
+    # 构建可执行代码
+    if spec['type'] == 'unary':
+        f1 = spec['f1']
+        op = spec['op']
+        expr = f"{f1}"
+        if op == 'diff1':
+            expr = f"{f1}.diff(1)"
+        elif op == 'diff5':
+            expr = f"{f1}.diff(5)"
+        elif op == 'pct1':
+            expr = f"{f1}.pct_change(1)"
+        elif op == 'pct5':
+            expr = f"{f1}.pct_change(5)"
+        elif op == 'zscore20':
+            expr = f"({f1} - {f1}.rolling(20).mean()) / ({f1}.rolling(20).std() + 1e-9)"
+        elif op == 'rank20':
+            expr = f"{f1}.rolling(20).rank(pct=True)"
+    else:  # binary
+        f1, f2, op = spec['f1'], spec['f2'], spec['op']
+        if op == 'sub':
+            expr = f"{f1} - {f2}"
+        elif op == 'div':
+            expr = f"{f1} / ({f2} + 1e-9)"
+        elif op == 'ratio':
+            expr = f"{f1} / ({f2}.abs() + 1e-9)"
+        elif op == 'corr20':
+            expr = f"{f1}.rolling(20).corr({f2})"
+        else:
+            expr = f"{f1}"
+
+    direction = spec['direction']
+    threshold = spec['threshold']
+    if direction == 'long':
+        cond = f"feat > {threshold}"
+    elif direction == 'short':
+        cond = f"feat < {threshold}"
+    else:
+        cond = f"(feat > {threshold}) | (feat < {-threshold})"
+
+    code = f"""feat = {expr}
+signal = np.where({cond}, 1, np.where({'feat < -' + str(threshold) if direction == 'both' else 'False'}, -1, 0))
+signal = pd.Series(signal, index=close.index).shift(1).fillna(0)
+"""
+    return sig, code, spec
 
 
-def generate_candidate_factors(df: pd.DataFrame, max_candidates: int = 500) -> List[Dict]:
+def generate_candidate_factors(df: pd.DataFrame, max_candidates: int = 500, include_code: bool = False) -> List[Dict]:
     """在单个 DataFrame 上生成候选因子。"""
     candidates = []
     returns = df['close'].pct_change().values.astype(np.float64)
@@ -132,16 +177,19 @@ def generate_candidate_factors(df: pd.DataFrame, max_candidates: int = 500) -> L
         base = df[fname]
         for op in UNARY_OPS:
             feat = _build_unary_feature(base, op)
+            feat.name = f'{fname}_{op}'
             for direction in DIRECTIONS:
                 thresholds = _generate_thresholds(feat, n=3)
                 for threshold in thresholds:
                     name = f"{fname}_{op}_{direction}_t{threshold:.3g}"
+                    spec = {'type': 'unary', 'f1': fname, 'op': op, 'direction': direction, 'threshold': threshold}
+                    signal, code, spec = _factor_to_signal(feat, direction, threshold, spec)
                     candidates.append({
                         'name': name,
                         'description': f'{fname} {op} {direction} 阈值{threshold:.3g}',
-                        'feature': feat,
-                        'direction': direction,
-                        'threshold': threshold,
+                        'code': code if include_code else '# auto-generated',
+                        'spec': spec,
+                        'signal': signal,
                         'returns': returns,
                         'valid_mask': valid_mask,
                     })
@@ -153,16 +201,19 @@ def generate_candidate_factors(df: pd.DataFrame, max_candidates: int = 500) -> L
                 continue
             for op in BINARY_OPS:
                 feat = _build_binary_feature(df[fa], df[fb], op)
+                feat.name = f'{fa}_{op}_{fb}'
                 for direction in DIRECTIONS:
                     thresholds = _generate_thresholds(feat, n=3)
                     for threshold in thresholds:
                         name = f"{fa}_{op}_{fb}_{direction}_t{threshold:.3g}"
+                        spec = {'type': 'binary', 'f1': fa, 'f2': fb, 'op': op, 'direction': direction, 'threshold': threshold}
+                        signal, code, spec = _factor_to_signal(feat, direction, threshold, spec)
                         candidates.append({
                             'name': name,
                             'description': f'{fa} {op} {fb} {direction} 阈值{threshold:.3g}',
-                            'feature': feat,
-                            'direction': direction,
-                            'threshold': threshold,
+                            'code': code if include_code else '# auto-generated',
+                            'spec': spec,
+                            'signal': signal,
                             'returns': returns,
                             'valid_mask': valid_mask,
                         })
@@ -181,7 +232,7 @@ def evaluate_candidates(candidates: List[Dict]) -> List[Dict]:
     results = []
     for c in candidates:
         try:
-            signal = _factor_to_signal(c['feature'], c['direction'], c['threshold'])
+            signal = c['signal']
             returns = c['returns']
             valid = c['valid_mask'] & (~np.isnan(returns)) & (~np.isnan(signal.astype(float)))
             if valid.sum() < 30:
@@ -194,7 +245,8 @@ def evaluate_candidates(candidates: List[Dict]) -> List[Dict]:
             results.append({
                 'name': c['name'],
                 'description': c['description'],
-                'code': '# auto-generated by feature engineering',
+                'code': c.get('code', '# auto-generated'),
+                'spec': c.get('spec', {}),
                 'source': 'auto_fe',
                 'total_return': round(total_ret * 100, 2),
                 'max_drawdown': round(max_dd * 100, 2),

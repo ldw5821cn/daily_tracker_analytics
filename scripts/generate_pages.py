@@ -459,7 +459,7 @@ tr:hover {{ background: #334155; }}
 
 
 def _build_factors_html():
-    """生成 LLM 因子库 HTML 区块。"""
+    """生成 LLM 因子库 HTML 区块：展示全库 + 精选。"""
     try:
         with open('multi_agent/data/llm_factors.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
@@ -468,10 +468,16 @@ def _build_factors_html():
     factors = data.get('factors', [])
     if not factors:
         return '<p>暂无 LLM 因子数据</p>'
+    try:
+        with open('multi_agent/data/llm_factors_selected.json', 'r', encoding='utf-8') as f:
+            selected = json.load(f).get('factors', [])
+    except Exception:
+        selected = []
+
     cards = []
     for f in factors[:10]:
         source = f.get('source', 'rule')
-        src_tag = {'rule': '规则', 'llm': 'LLM', 'composite': '组合'}.get(source, source)
+        src_tag = {'rule': '规则', 'llm': 'LLM', 'composite': '组合', 'auto_fe': '自动FE'}.get(source, source)
         cards.append(
             f'<div class="card">'
             f'<div class="card-title">🧬 {f["name"]} <span style="font-size:12px;color:#94a3b8">({src_tag})</span></div>'
@@ -479,7 +485,25 @@ def _build_factors_html():
             f'<div class="card-meta">夏普 {f.get("avg_sharpe")} | 收益 {f.get("avg_return")}% | 回撤 {f.get("avg_drawdown")}% | 胜率 {f.get("avg_win_rate")}% | Calmar {f.get("avg_calmar")}</div>'
             f'</div>'
         )
-    return f'<div class="section"><h2>🧬 LLM 因子库（共 {len(factors)} 个）</h2>\n' + "\n".join(cards) + '</div>'
+
+    selected_cards = []
+    for f in selected[:10]:
+        source = f.get('source', 'rule')
+        src_tag = {'rule': '规则', 'llm': 'LLM', 'composite': '组合', 'auto_fe': '自动FE'}.get(source, source)
+        selected_cards.append(
+            f'<div class="card">'
+            f'<div class="card-title">🎯 {f["name"]} <span style="font-size:12px;color:#94a3b8">({src_tag})</span></div>'
+            f'<div class="card-reason">{f.get("description", "")}</div>'
+            f'<div class="card-meta">测试收益 {f.get("avg_test_return")}% | 测试回撤 {f.get("avg_test_drawdown")}% | Rank IC {f.get("avg_rank_ic")}</div>'
+            f'</div>'
+        )
+
+    return (
+        f'<div class="section"><h2>🧬 LLM 因子库（共 {len(factors)} 个，精选 {len(selected)} 个）</h2>\n'
+        + "\n".join(cards)
+        + (f'<h3 style="margin-top:24px">🎯 精选因子（样本外验证 + 正交化）</h3>\n' + "\n".join(selected_cards) if selected_cards else '')
+        + '</div>'
+    )
 
 
 def _build_news_sentiment_html():
