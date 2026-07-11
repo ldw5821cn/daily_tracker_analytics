@@ -17,6 +17,8 @@ sys.path.insert(0, BASE)
 
 from multi_agent.strategy.backtest_engine import evaluate_signals, load_signals, build_report_text
 
+OUTPUT_PATH = os.path.join(BASE, 'multi_agent', 'data', 'llm_backtest_results.json')
+
 
 def main():
     parser = argparse.ArgumentParser(description='LLM 信号回测评估')

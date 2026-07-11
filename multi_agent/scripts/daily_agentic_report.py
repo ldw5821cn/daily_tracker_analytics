@@ -11,11 +11,14 @@ from datetime import datetime, timedelta
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 MULTI_AGENT = os.path.join(PROJECT_ROOT, 'multi_agent')
-DB_PATH = os.path.join(MULTI_AGENT, 'data', 'llm_predictions.db')
-BACKTEST_JSON = os.path.join(MULTI_AGENT, 'data', 'llm_backtest_results.json')
-
 sys.path.insert(0, MULTI_AGENT)
-from core.backtest_utils import parse_backtest_summary, sort_by_backtest
+
+from core.backtest_utils import sort_by_backtest
+from scripts.run_llm_backtest import OUTPUT_PATH as BACKTEST_JSON
+from strategy.portfolio_allocator import allocate, OUTPUT_PATH as WEIGHTS_JSON
+
+DB_PATH = os.path.join(MULTI_AGENT, 'data', 'llm_predictions.db')
+PAGES_URL = 'https://ldw5821cn.github.io/daily_tracker_analytics/prediction.html'
 
 
 def _load_backtest_summary():
@@ -29,15 +32,15 @@ def _load_backtest_summary():
         return {}
 
 
-def _format_backtest_one(data: dict) -> str:
-    """把单个 category 的回测数据格式化为一句话。"""
-    cat = data.get('category', '')
-    return (
-        f"{cat} 60日收益{data.get('avg_return_60d', 0):+.1f}% "
-        f"回撤{data.get('avg_max_drawdown_60d', 0):.1f}% "
-        f"夏普{data.get('avg_sharpe_60d', 0):.2f} "
-        f"胜率{data.get('win_rate_60d', 0):.0f}%"
-    )
+def _load_weights_summary():
+    """加载目标权重结果。"""
+    if not os.path.exists(WEIGHTS_JSON):
+        return {}
+    try:
+        with open(WEIGHTS_JSON, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:
+        return {}
 
 
 def _get_conn():
@@ -128,11 +131,22 @@ def build_markdown(pred_date=None, top_n=5):
             short_s = f"看空{bearish.get('avg_return_60d', 0):+.1f}%/{bearish.get('win_rate_60d', 0):.0f}%胜" if bearish else "看空无"
             lines.append(f"{cat}: {long_s} | {short_s}")
 
+    # 加入目标权重
+    weights = _load_weights_summary()
+    if weights and 'targets' in weights:
+        lines.append("")
+        lines.append(f"💼 目标权重（总敞口{weights['total_exposure']:.0%} 净敞口{weights['net_exposure']:+.0%}）")
+        longs = [t for t in weights['targets'] if t['target_weight'] > 0][:2]
+        shorts = [t for t in weights['targets'] if t['target_weight'] < 0][:2]
+        if longs:
+            long_line = " ".join([f"{t['ticker']}({t['name']}){t['target_weight']:+.1%}" for t in longs])
+            lines.append(f"🔥 多: {long_line}")
+        if shorts:
+            short_line = " ".join([f"{t['ticker']}({t['name']}){t['target_weight']:+.1%}" for t in shorts])
+            lines.append(f"❄️ 空: {short_line}")
+
     lines.append(f"📱 完整页面：{PAGES_URL}")
     return "\n".join(lines)
-
-
-PAGES_URL = "https://ldw5821cn.github.io/daily_tracker_analytics/prediction.html"
 
 
 def main():
