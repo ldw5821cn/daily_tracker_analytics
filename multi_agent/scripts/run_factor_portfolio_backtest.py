@@ -11,7 +11,7 @@ from __future__ import annotations
 import json
 import os
 import sys
-from typing import Dict, List, Tuple
+from typing import Dict, List
 
 import numpy as np
 import pandas as pd
@@ -40,6 +40,21 @@ def _load_watchlist_tickers(limit: int = 50) -> List[str]:
     ).fetchall()
     conn.close()
     return [r[0] for r in rows][:limit]
+
+
+def _load_full_data_cache(tickers: List[str], min_days: int = 252) -> Dict[str, pd.DataFrame]:
+    """加载所有标的完整 OHLCV 数据并缓存。"""
+    cache = {}
+    for t in tickers:
+        try:
+            df, _ = get_stock_data(t)
+            df = calc_technical_indicators(df)
+            if len(df) < min_days:
+                continue
+            cache[t] = df
+        except Exception:
+            continue
+    return cache
 
 
 def _load_price_data(tickers: List[str], min_days: int = 252) -> pd.DataFrame:
@@ -79,54 +94,55 @@ def _compute_scores_for_ticker(df: pd.DataFrame, factors: List[Dict]) -> np.ndar
     return np.sum(votes_arr, axis=0) / total_w
 
 
-def _compute_daily_scores(price_df: pd.DataFrame, tickers: List[str], factors: List[Dict]) -> pd.DataFrame:
+def _compute_daily_scores(price_df: pd.DataFrame, full_data_cache: Dict[str, pd.DataFrame],
+                          factors: List[Dict]) -> pd.DataFrame:
+    """基于完整数据缓存，为所有标的计算每日因子得分。"""
     scores = pd.DataFrame(index=price_df.index, columns=price_df.columns, dtype=float)
-    for t in tickers:
+    for t, df in full_data_cache.items():
         if t not in price_df.columns:
             continue
-        try:
-            df, _ = get_stock_data(t)
-            df = calc_technical_indicators(df)
-            daily_scores = _compute_scores_for_ticker(df, factors)
-            s = pd.Series(daily_scores, index=df.index).reindex(price_df.index)
-            scores[t] = s.values
-        except Exception:
-            continue
+        daily_scores = _compute_scores_for_ticker(df, factors)
+        s = pd.Series(daily_scores, index=df.index).reindex(price_df.index)
+        scores[t] = s.values
     return scores
 
 
-def _select_factors_rolling(price_df: pd.DataFrame, all_factors: List[Dict], current_date: pd.Timestamp, lookback_days: int = 252, top_n: int = 15) -> List[Dict]:
-    """基于过去一年数据，选出各标的平均测试收益最高的因子。"""
+def _select_factors_rolling(price_df: pd.DataFrame, full_data_cache: Dict[str, pd.DataFrame],
+                            all_factors: List[Dict], current_date: pd.Timestamp,
+                            lookback_days: int = 252, top_n: int = 15) -> List[Dict]:
+    """基于过去一年数据，用缓存价格矩阵选出 long-only 平均收益最高的因子。"""
     start_date = current_date - pd.Timedelta(days=lookback_days)
     window_df = price_df.loc[(price_df.index >= start_date) & (price_df.index <= current_date)]
     if len(window_df) < 60:
         return all_factors[:top_n]
 
-    factor_scores = []
-    for f in all_factors:
-        returns = []
-        for t in window_df.columns:
+    factor_returns = {f['name']: [] for f in all_factors}
+    for t, df in full_data_cache.items():
+        if t not in window_df.columns:
+            continue
+        df = df.loc[(df.index >= start_date) & (df.index <= current_date)]
+        if len(df) < 60:
+            continue
+        ret = df['close'].pct_change().shift(-1)
+        for f in all_factors:
             try:
-                df, _ = get_stock_data(t)
-                df = calc_technical_indicators(df)
-                df = df.loc[(df.index >= start_date) & (df.index <= current_date)]
-                if len(df) < 60:
-                    continue
                 signal = _execute_factor_code_on_df(f['code'], df)
-                ret = df['close'].pct_change().shift(-1)
                 aligned = pd.DataFrame({'signal': signal, 'returns': ret}).dropna()
                 if len(aligned) < 30:
                     continue
                 long_ret = aligned[aligned['signal'] > 0]['returns'].mean()
                 if not np.isnan(long_ret):
-                    returns.append(long_ret)
+                    factor_returns[f['name']].append(long_ret)
             except Exception:
                 continue
-        if not returns:
-            continue
-        avg_ret = np.mean(returns)
-        factor_scores.append((avg_ret, f))
 
+    factor_scores = []
+    for f in all_factors:
+        rets = factor_returns[f['name']]
+        if not rets:
+            continue
+        avg_ret = np.mean(rets)
+        factor_scores.append((avg_ret, f))
     factor_scores.sort(key=lambda x: x[0], reverse=True)
     return [f for _, f in factor_scores[:top_n]]
 
@@ -151,7 +167,6 @@ def backtest_portfolio(price_df: pd.DataFrame, scores_df: pd.DataFrame, top_n: i
         longs = scores.nlargest(top_n).index.tolist()
         shorts = [] if long_only else scores.nsmallest(top_n).index.tolist()
 
-        # 交易成本：只对新调入的标的收取
         current_positions = set(longs + shorts)
         turnover = len(current_positions - prev_positions) / len(current_positions) if current_positions else 0
         prev_positions = current_positions
@@ -211,7 +226,7 @@ def backtest_portfolio(price_df: pd.DataFrame, scores_df: pd.DataFrame, top_n: i
         'num_trading_days': len(daily_rets),
         'num_rebalances': len(positions_history),
         'latest_positions': positions_history[-1] if positions_history else None,
-        'equity_curve': portfolio_values[-100:],  # 只保存最近 100 个点
+        'equity_curve': portfolio_values[-100:],
     }
 
 
@@ -223,6 +238,9 @@ def run_portfolio_backtest(top_n: int = 10, rebalance_freq: int = 5, max_tickers
     if price_df.empty:
         return {'error': 'no price data'}
     print(f"[portfolio_backtest] 价格矩阵: {price_df.shape}")
+
+    full_data_cache = _load_full_data_cache(tickers, min_days=252)
+    print(f"[portfolio_backtest] 完整数据缓存: {len(full_data_cache)} 个标的")
 
     all_factors = _load_selected_factors()
     if not all_factors:
@@ -237,7 +255,6 @@ def run_portfolio_backtest(top_n: int = 10, rebalance_freq: int = 5, max_tickers
         return {'error': 'no factors'}
 
     if rolling:
-        # 按年滚动训练：每个交易日用过去一年数据选因子（太耗时，简化为每年1月1日切换）
         print("[portfolio_backtest] 使用滚动因子精选...")
         unique_years = sorted(set(price_df.index.year))
         yearly_factors = {}
@@ -245,31 +262,24 @@ def run_portfolio_backtest(top_n: int = 10, rebalance_freq: int = 5, max_tickers
             if year == price_df.index[0].year:
                 continue
             date = pd.Timestamp(f'{year}-01-01')
-            yearly_factors[year] = _select_factors_rolling(price_df, all_factors, date, lookback_days=252, top_n=15)
+            yearly_factors[year] = _select_factors_rolling(price_df, full_data_cache, all_factors, date,
+                                                           lookback_days=252, top_n=15)
             print(f"  {year}: 选出 {len(yearly_factors[year])} 个因子")
 
-        # 逐日得分：根据年份使用不同因子
         scores_df = pd.DataFrame(index=price_df.index, columns=price_df.columns, dtype=float)
-        for t in tickers:
+        for t, df in full_data_cache.items():
             if t not in price_df.columns:
                 continue
-            try:
-                df, _ = get_stock_data(t)
-                df = calc_technical_indicators(df)
-                s = pd.Series(np.nan, index=price_df.index)
-                for year in unique_years:
-                    factors = yearly_factors.get(year, all_factors[:15])
-                    mask = price_df.index.year == year
-                    if not mask.any():
-                        continue
-                    sub_dates = price_df.index[mask]
-                    daily_scores = _compute_scores_for_ticker(df, factors)
-                    s.loc[sub_dates] = daily_scores[df.index.isin(sub_dates)]
-                scores_df[t] = s.values
-            except Exception:
-                continue
+            s = pd.Series(np.nan, index=price_df.index)
+            for year in unique_years:
+                factors = yearly_factors.get(year, all_factors[:15])
+                mask = price_df.index.year == year
+                daily_scores = _compute_scores_for_ticker(df, factors)
+                ds = pd.Series(daily_scores, index=df.index)
+                s.loc[mask] = ds.reindex(price_df.index[mask]).values
+            scores_df[t] = s.values
     else:
-        scores_df = _compute_daily_scores(price_df, tickers, all_factors)
+        scores_df = _compute_daily_scores(price_df, full_data_cache, all_factors)
 
     print(f"[portfolio_backtest] 得分矩阵: {scores_df.shape}")
 
