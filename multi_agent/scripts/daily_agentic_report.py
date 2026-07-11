@@ -179,6 +179,19 @@ def build_markdown(pred_date=None, top_n=3):
     except Exception:
         pass
 
+    # 因子库摘要
+    try:
+        import json as _json
+        with open('multi_agent/data/llm_factors.json', 'r', encoding='utf-8') as f:
+            data = _json.load(f)
+        factors = data.get('factors', [])
+        if factors:
+            tops = sorted(factors, key=lambda x: x.get('score', 0), reverse=True)[:2]
+            parts = [f"{f['name']}({f['avg_return']:+.0f}%)" for f in tops]
+            lines.append(f"🧬 因子: {' | '.join(parts)}")
+    except Exception:
+        pass
+
     lines.append(f"📱 完整页面：{PAGES_URL}")
     return "\n".join(lines)
 

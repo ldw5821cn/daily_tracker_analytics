@@ -428,6 +428,8 @@ tr:hover {{ background: #334155; }}
 
     {_backtest_html(stats)}
 
+    {_build_factors_html()}
+
     {stats_note}
 
     {category_html}
@@ -454,6 +456,30 @@ tr:hover {{ background: #334155; }}
 
 </body>
 </html>"""
+
+
+def _build_factors_html():
+    """生成 LLM 因子库 HTML 区块。"""
+    try:
+        with open('multi_agent/data/llm_factors.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    except Exception as e:
+        return f"<!-- factors load failed: {e} -->"
+    factors = data.get('factors', [])
+    if not factors:
+        return '<p>暂无 LLM 因子数据</p>'
+    cards = []
+    for f in factors[:5]:
+        source = f.get('source', 'rule')
+        src_tag = {'rule': '规则', 'llm': 'LLM'}.get(source, source)
+        cards.append(
+            f'<div class="card">'
+            f'<div class="card-title">🧬 {f["name"]} <span style="font-size:12px;color:#94a3b8">({src_tag})</span></div>'
+            f'<div class="card-reason">{f.get("description", "")}</div>'
+            f'<div class="card-meta">夏普 {f.get("avg_sharpe")} | 收益 {f.get("avg_return")}% | 回撤 {f.get("avg_drawdown")}%</div>'
+            f'</div>'
+        )
+    return "\n".join(cards)
 
 
 def _build_news_sentiment_html():
