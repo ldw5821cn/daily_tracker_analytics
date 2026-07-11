@@ -145,6 +145,17 @@ def build_markdown(pred_date=None, top_n=3):
             short_line = " ".join([f"{t['ticker']}{t['target_weight']:+.1%}" for t in shorts])
             lines.append(f"❄️ 空: {short_line}")
 
+    # 因子组合滚动回测
+    try:
+        import json as _json
+        with open('multi_agent/data/factor_portfolio_backtest.json', 'r', encoding='utf-8') as f:
+            bt = _json.load(f)
+        if 'error' not in bt:
+            lines.append("")
+            lines.append(f"📊 因子组合回测: 年化{bt['annualized_return']:+.1f}% 回撤{bt['max_drawdown']:.1f}% 夏普{bt['sharpe_ratio']}")
+    except Exception:
+        pass
+
     # 期货模拟盘持仓
     try:
         from multi_agent.futures_simulator import get_positions_summary

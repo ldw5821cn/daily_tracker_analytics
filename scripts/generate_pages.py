@@ -430,6 +430,8 @@ tr:hover {{ background: #334155; }}
 
     {_build_factors_html()}
 
+    {_build_portfolio_backtest_html()}
+
     {stats_note}
 
     {category_html}
@@ -497,13 +499,38 @@ def _build_factors_html():
             f'<div class="card-meta">测试收益 {f.get("avg_test_return")}% | 测试回撤 {f.get("avg_test_drawdown")}% | Rank IC {f.get("avg_rank_ic")}</div>'
             f'</div>'
         )
-
     return (
         f'<div class="section"><h2>🧬 LLM 因子库（共 {len(factors)} 个，精选 {len(selected)} 个）</h2>\n'
         + "\n".join(cards)
         + (f'<h3 style="margin-top:24px">🎯 精选因子（样本外验证 + 正交化）</h3>\n' + "\n".join(selected_cards) if selected_cards else '')
         + '</div>'
     )
+
+
+def _build_portfolio_backtest_html():
+    try:
+        with open('multi_agent/data/factor_portfolio_backtest.json', 'r', encoding='utf-8') as f:
+            bt = json.load(f)
+    except Exception as e:
+        return f'<!-- portfolio backtest load failed: {e} -->'
+    if 'error' in bt:
+        return f'<p>组合回测错误: {bt["error"]}</p>'
+    return f"""
+    <div class="section">
+        <h2>📊 因子组合滚动回测</h2>
+        <div class="cards">
+            <div class="card"><div class="card-title">年化收益</div><div class="card-meta" style="font-size:24px;color:{'#22c55e' if bt['annualized_return'] >= 0 else '#ef4444'}">{bt['annualized_return']:+.2f}%</div></div>
+            <div class="card"><div class="card-title">最大回撤</div><div class="card-meta" style="font-size:24px;color:#ef4444">{bt['max_drawdown']:.2f}%</div></div>
+            <div class="card"><div class="card-title">夏普比率</div><div class="card-meta" style="font-size:24px;color:{'#22c55e' if bt['sharpe_ratio'] >= 0 else '#ef4444'}">{bt['sharpe_ratio']:.2f}</div></div>
+            <div class="card"><div class="card-title">Calmar</div><div class="card-meta" style="font-size:24px;color:{'#22c55e' if bt['calmar_ratio'] >= 0 else '#ef4444'}">{bt['calmar_ratio']:.2f}</div></div>
+        </div>
+        <p style="color:#94a3b8;font-size:13px">
+            参数：做多 Top {bt['top_n']}，做空 Bottom {bt['top_n']}，{bt['rebalance_freq']} 日再平衡，等权重。
+            交易天数 {bt['num_trading_days']}，再平衡 {bt['num_rebalances']} 次。
+            最新持仓：多 {' '.join(bt['latest_positions']['longs'])} | 空 {' '.join(bt['latest_positions']['shorts'])}
+        </p>
+    </div>
+    """
 
 
 def _build_news_sentiment_html():
