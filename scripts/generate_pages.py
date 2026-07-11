@@ -515,20 +515,32 @@ def _build_portfolio_backtest_html():
         return f'<!-- portfolio backtest load failed: {e} -->'
     if 'error' in bt:
         return f'<p>组合回测错误: {bt["error"]}</p>'
+    scenarios = bt.get('scenarios', {})
+    rows = []
+    for name, v in scenarios.items():
+        if 'error' in v:
+            continue
+        rows.append(
+            f"<tr><td>{name}</td>"
+            f"<td style=\"color:{'#22c55e' if v['annualized_return'] >= 0 else '#ef4444'}\">{v['annualized_return']:+.2f}%</td>"
+            f"<td>{v['max_drawdown']:.2f}%</td>"
+            f"<td>{v['sharpe_ratio']:.2f}</td>"
+            f"<td>{v['calmar_ratio']:.2f}</td>"
+            f"</tr>"
+        )
+    table = "\n".join(rows)
     return f"""
     <div class="section">
-        <h2>📊 因子组合滚动回测</h2>
+        <h2>📊 因子组合滚动回测（多场景对比）</h2>
         <div class="cards">
-            <div class="card"><div class="card-title">年化收益</div><div class="card-meta" style="font-size:24px;color:{'#22c55e' if bt['annualized_return'] >= 0 else '#ef4444'}">{bt['annualized_return']:+.2f}%</div></div>
-            <div class="card"><div class="card-title">最大回撤</div><div class="card-meta" style="font-size:24px;color:#ef4444">{bt['max_drawdown']:.2f}%</div></div>
-            <div class="card"><div class="card-title">夏普比率</div><div class="card-meta" style="font-size:24px;color:{'#22c55e' if bt['sharpe_ratio'] >= 0 else '#ef4444'}">{bt['sharpe_ratio']:.2f}</div></div>
-            <div class="card"><div class="card-title">Calmar</div><div class="card-meta" style="font-size:24px;color:{'#22c55e' if bt['calmar_ratio'] >= 0 else '#ef4444'}">{bt['calmar_ratio']:.2f}</div></div>
+            <div class="card"><div class="card-title">最佳场景</div><div class="card-meta" style="font-size:24px;color:#22c55e">{bt['best_scenario']}</div></div>
         </div>
-        <p style="color:#94a3b8;font-size:13px">
-            参数：做多 Top {bt['top_n']}，做空 Bottom {bt['top_n']}，{bt['rebalance_freq']} 日再平衡，等权重。
-            交易天数 {bt['num_trading_days']}，再平衡 {bt['num_rebalances']} 次。
-            最新持仓：多 {' '.join(bt['latest_positions']['longs'])} | 空 {' '.join(bt['latest_positions']['shorts'])}
-        </p>
+        <table>
+            <thead><tr><th>场景</th><th>年化</th><th>回撤</th><th>夏普</th><th>Calmar</th></tr></thead>
+            <tbody>
+                {table}
+            </tbody>
+        </table>
     </div>
     """
 

@@ -152,7 +152,10 @@ def build_markdown(pred_date=None, top_n=3):
             bt = _json.load(f)
         if 'error' not in bt:
             lines.append("")
-            lines.append(f"📊 因子组合回测: 年化{bt['annualized_return']:+.1f}% 回撤{bt['max_drawdown']:.1f}% 夏普{bt['sharpe_ratio']}")
+            lines.append("📊 因子组合回测")
+            for name, v in bt.get('scenarios', {}).items():
+                if 'error' not in v:
+                    lines.append(f"  {name}: 年化{v['annualized_return']:+.1f}% 回撤{v['max_drawdown']:.1f}% 夏普{v['sharpe_ratio']}")
     except Exception:
         pass
 
