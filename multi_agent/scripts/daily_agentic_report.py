@@ -155,6 +155,17 @@ def build_markdown(pred_date=None, top_n=5):
     except Exception:
         pass
 
+    # 股票/ETF 买入清单
+    try:
+        import multi_agent.scripts.generate_stock_etf_list as gen
+        lst = gen.generate_stock_etf_list()
+        buys = [i for i in lst['items'] if i['target_amount'] > 0][:3]
+        if buys:
+            b = " ".join([f"{i['ticker']}{i['target_amount']:.0f}元" for i in buys])
+            lines.append(f"📈 买入: {b}")
+    except Exception:
+        pass
+
     lines.append(f"📱 完整页面：{PAGES_URL}")
     return "\n".join(lines)
 
