@@ -36,6 +36,7 @@
   .stat-card .num { font-size: 1.4em; font-weight: 700; color: #58a6ff; }
   .stat-card .label { font-size: 0.78em; color: #8b949e; margin-top: 2px; }
 
+  .section-title { background: #161b22; border: 1px solid #30363d; border-radius: 8px 8px 0 0; padding: 12px 16px; font-weight: 600; color: #f0f6fc; margin-top: 20px; }
   .date-section { margin-bottom: 20px; border: 1px solid #30363d; border-radius: 8px; overflow: hidden; }
   .date-header {
     background: #161b22; padding: 12px 16px; font-weight: 600; color: #f0f6fc;
@@ -51,6 +52,22 @@
   .report-item a { color: #58a6ff; text-decoration: none; }
   .report-item a:hover { text-decoration: underline; }
   .report-item .meta { font-size: 0.85em; color: #8b949e; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.88em; margin-bottom: 24px; }
+  th { background: #161b22; border: 1px solid #30363d; padding: 7px 9px; text-align: left; color: #8b949e; font-weight: 600; font-size: 0.82em; white-space: nowrap; position: sticky; top: 0; }
+  td { border: 1px solid #30363d; padding: 6px 9px; transition: background .15s; }
+  tr:hover td { background: #1c2128; }
+  .name { font-weight: 600; color: #f0f6fc; }
+  .bullish { color: #3fb950; font-weight: 600; }
+  .bearish { color: #f85149; font-weight: 600; }
+  .neutral { color: #d29922; font-weight: 600; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 14px; border-left: 4px solid #3fb950; }
+  .card-title { font-weight: 600; color: #f0f6fc; margin-bottom: 6px; }
+  .card-meta { color: #8b949e; font-size: 0.82em; margin-bottom: 4px; }
+  .card-price { color: #f0f6fc; font-size: 0.88em; margin-bottom: 4px; }
+  .card-reason { color: #8b949e; font-size: 0.78em; line-height: 1.5; }
 
   .footer { text-align: center; color: #484f58; font-size: 0.78em; margin-top: 36px; padding-top: 16px; border-top: 1px solid #21262d; }
 </style>
@@ -75,6 +92,96 @@
   <div class="stat-card"><div class="num">6</div><div class="label">期货日期</div></div>
   <div class="stat-card"><div class="num">1</div><div class="label">美股日期</div></div>
 </div>
+
+
+    <div class="section-title">🤖 多Agent实时预测（最新 2026-07-11）</div>
+    <div class="section-title">🏆 今日重点推荐</div>
+<div class="cards">
+<div class="card">
+                <div class="card-title">🔥 菜油 (OI0)</div>
+                <div class="card-meta">评分 70.6 | 置信 55% | 仓位 14%</div>
+                <div class="card-price">目标 10106.16 | 止损 9610.76</div>
+                <div class="card-reason">技术面偏多(86/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨4 vs 看跌0</div>
+            </div>
+<div class="card">
+                <div class="card-title">🔥 棉花 (CF0)</div>
+                <div class="card-meta">评分 66.6 | 置信 40% | 仓位 10%</div>
+                <div class="card-price">目标 16447.5 | 止损 15641.25</div>
+                <div class="card-reason">技术面偏多(86/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨3 vs 看跌1</div>
+            </div>
+<div class="card">
+                <div class="card-title">🔥 东方盛虹 (000301)</div>
+                <div class="card-meta">评分 66.3 | 置信 35% | 仓位 9%</div>
+                <div class="card-price">目标 12.801 | 止损 12.17</div>
+                <div class="card-reason">技术面偏多(78/100) | 基本面良好(69/100) | 新闻情绪-0.03 | 多空辩论 看涨2 vs 看跌1</div>
+            </div>
+<div class="card">
+                <div class="card-title">🔥 安集科技 (688019)</div>
+                <div class="card-meta">评分 63.5 | 置信 36% | 仓位 9%</div>
+                <div class="card-price">目标 319.056 | 止损 297.16</div>
+                <div class="card-reason">技术面偏多(78/100) | 基本面一般(45/100) | 新闻情绪+0.13 | 多空辩论 看涨4 vs 看跌2</div>
+            </div>
+<div class="card">
+                <div class="card-title">🔥 景嘉微 (300474)</div>
+                <div class="card-meta">评分 63.3 | 置信 31% | 仓位 8%</div>
+                <div class="card-price">目标 64.903 | 止损 60.449</div>
+                <div class="card-reason">技术面中性偏多(73/100) | 基本面一般(57/100) | 新闻情绪+0.20 | 多空辩论 看涨1 vs 看跌0</div>
+            </div>
+</div>
+    <div class="section-title">🔥 个股 实时预测（87只 | 看多8 看空20 中性59）</div>
+<table><tr><th>名称</th><th>代码</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>现价</th><th>目标</th><th>止损</th><th>仓位</th></tr>
+<tr><td class="name">东方盛虹</td><td>000301</td><td>石化/PTA</td><td class="bullish">看多</td><td>66.3</td><td>35%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>12.55</td><td>12.801</td><td>12.17</td><td>9%</td></tr>
+<tr><td class="name">安集科技</td><td>688019</td><td>半导体材料</td><td class="bullish">看多</td><td>63.5</td><td>36%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>312.8</td><td>319.056</td><td>297.16</td><td>9%</td></tr>
+<tr><td class="name">景嘉微</td><td>300474</td><td>GPU</td><td class="bullish">看多</td><td>63.3</td><td>31%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>63.63</td><td>64.903</td><td>60.449</td><td>8%</td></tr>
+<tr><td class="name">海光信息</td><td>688041</td><td>CPU/GPU</td><td class="bullish">看多</td><td>62.0</td><td>29%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>353.0</td><td>360.06</td><td>335.35</td><td>7%</td></tr>
+<tr><td class="name">中芯国际</td><td>688981</td><td>晶圆代工</td><td class="bullish">看多</td><td>61.6</td><td>34%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>163.02</td><td>166.28</td><td>154.869</td><td>8%</td></tr>
+<tr><td class="name">宝钢股份</td><td>600019</td><td>钢铁</td><td class="neutral">中性</td><td>58.0</td><td>25%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>5.48</td><td>5.48</td><td>5.37</td><td>0%</td></tr>
+<tr><td class="name">中微公司</td><td>688012</td><td>半导体设备</td><td class="bullish">看多</td><td>57.3</td><td>19%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>434.51</td><td>443.2</td><td>412.784</td><td>5%</td></tr>
+<tr><td class="name">龙芯中科</td><td>688047</td><td>CPU</td><td class="bullish">看多</td><td>56.6</td><td>28%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>147.1</td><td>150.042</td><td>142.687</td><td>7%</td></tr>
+<tr><td class="name">中国石化</td><td>600028</td><td>石化</td><td class="neutral">中性</td><td>56.5</td><td>23%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>4.76</td><td>4.76</td><td>4.665</td><td>0%</td></tr>
+<tr><td class="name">首钢股份</td><td>000959</td><td>钢铁</td><td class="bullish">看多</td><td>55.3</td><td>16%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>3.4</td><td>3.468</td><td>3.298</td><td>4%</td></tr>
+<tr><td class="name">中国神华</td><td>601088</td><td>煤炭</td><td class="neutral">中性</td><td>55.3</td><td>21%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>42.04</td><td>42.038</td><td>41.199</td><td>0%</td></tr>
+<tr><td class="name">拓荆科技</td><td>688072</td><td>半导体设备</td><td class="neutral">中性</td><td>55.2</td><td>21%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>832.0</td><td>832.041</td><td>815.36</td><td>0%</td></tr>
+<tr><td class="name">中国石油</td><td>601857</td><td>石油</td><td class="neutral">中性</td><td>55.2</td><td>26%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>9.27</td><td>9.27</td><td>9.085</td><td>0%</td></tr>
+<tr><td class="name">万华化学</td><td>600309</td><td>化工</td><td class="neutral">中性</td><td>55.0</td><td>21%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>68.71</td><td>68.706</td><td>67.336</td><td>0%</td></tr>
+<tr><td class="name">中煤能源</td><td>601898</td><td>煤炭</td><td class="neutral">中性</td><td>54.8</td><td>21%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>12.67</td><td>12.669</td><td>12.417</td><td>0%</td></tr>
+<tr><td class="name">三安光电</td><td>600703</td><td>化合物半导体</td><td class="neutral">中性</td><td>54.7</td><td>21%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>16.94</td><td>16.938</td><td>16.601</td><td>0%</td></tr>
+<tr><td class="name">海油工程</td><td>600583</td><td>海洋工程</td><td class="neutral">中性</td><td>54.5</td><td>20%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>5.19</td><td>5.19</td><td>5.086</td><td>0%</td></tr>
+<tr><td class="name">中国铝业</td><td>601600</td><td>铝/镓</td><td class="neutral">中性</td><td>54.3</td><td>20%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>8.35</td><td>8.35</td><td>8.183</td><td>0%</td></tr>
+<tr><td class="name">赤峰黄金</td><td>600988</td><td>黄金</td><td class="neutral">中性</td><td>54.0</td><td>15%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>32.84</td><td>32.842</td><td>32.183</td><td>0%</td></tr>
+<tr><td class="name">陕西煤业</td><td>601225</td><td>煤炭</td><td class="neutral">中性</td><td>53.9</td><td>25%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>22.92</td><td>22.92</td><td>22.462</td><td>0%</td></tr>
+<tr><td class="name">鞍钢股份</td><td>000898</td><td>钢铁</td><td class="neutral">中性</td><td>52.6</td><td>18%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>1.91</td><td>1.91</td><td>1.872</td><td>0%</td></tr>
+<tr><td class="name">隆华科技</td><td>300263</td><td>钼靶材</td><td class="neutral">中性</td><td>52.5</td><td>23%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>13.04</td><td>13.038</td><td>12.779</td><td>0%</td></tr>
+<tr><td class="name">紫金矿业</td><td>601899</td><td>铜/金</td><td class="neutral">中性</td><td>52.5</td><td>23%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>27.72</td><td>27.719</td><td>27.166</td><td>0%</td></tr>
+<tr><td class="name">银泰黄金</td><td>000975</td><td>黄金/银</td><td class="neutral">中性</td><td>52.5</td><td>23%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>20.03</td><td>20.03</td><td>19.629</td><td>0%</td></tr>
+<tr><td class="name">寒武纪</td><td>688256</td><td>AI芯片</td><td class="neutral">中性</td><td>52.0</td><td>17%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>1400.0</td><td>1399.729</td><td>1372.0</td><td>0%</td></tr>
+<tr><td class="name">宝丰能源</td><td>600989</td><td>煤化工</td><td class="neutral">中性</td><td>51.8</td><td>22%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>20.32</td><td>20.319</td><td>19.914</td><td>0%</td></tr>
+<tr><td class="name">金龙鱼</td><td>300999</td><td>农产品/油脂</td><td class="neutral">中性</td><td>51.8</td><td>22%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>24.41</td><td>24.409</td><td>23.922</td><td>0%</td></tr>
+<tr><td class="name">中海油服</td><td>601808</td><td>油服</td><td class="neutral">中性</td><td>51.3</td><td>27%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>11.29</td><td>11.29</td><td>11.064</td><td>0%</td></tr>
+<tr><td class="name">南山铝业</td><td>600219</td><td>铝</td><td class="neutral">中性</td><td>51.1</td><td>26%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>4.08</td><td>4.08</td><td>3.998</td><td>0%</td></tr>
+<tr><td class="name">云铝股份</td><td>000807</td><td>铝</td><td class="neutral">中性</td><td>51.0</td><td>26%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>23.15</td><td>23.152</td><td>22.687</td><td>0%</td></tr>
+<tr><td class="name">山西焦煤</td><td>000983</td><td>焦煤</td><td class="neutral">中性</td><td>50.8</td><td>26%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>6.12</td><td>6.12</td><td>5.998</td><td>0%</td></tr>
+<tr><td class="name">大北农</td><td>002385</td><td>饲料/豆粕</td><td class="neutral">中性</td><td>50.3</td><td>20%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>3.0</td><td>3.0</td><td>2.94</td><td>0%</td></tr>
+<tr><td class="name">顺络电子</td><td>002138</td><td>电感</td><td class="neutral">中性</td><td>49.9</td><td>25%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>54.11</td><td>54.105</td><td>53.028</td><td>0%</td></tr>
+<tr><td class="name">宏达电子</td><td>300726</td><td>钽电容</td><td class="neutral">中性</td><td>49.5</td><td>26%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>67.45</td><td>67.445</td><td>66.101</td><td>0%</td></tr>
+<tr><td class="name">中金黄金</td><td>600489</td><td>黄金</td><td class="neutral">中性</td><td>49.5</td><td>16%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>20.34</td><td>20.341</td><td>19.933</td><td>0%</td></tr>
+<tr><td class="name">中钨高新</td><td>000657</td><td>钨</td><td class="neutral">中性</td><td>49.4</td><td>21%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>74.71</td><td>74.701</td><td>73.216</td><td>0%</td></tr>
+<tr><td class="name">华菱钢铁</td><td>000932</td><td>钢铁</td><td class="neutral">中性</td><td>49.3</td><td>26%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>3.5</td><td>3.5</td><td>3.43</td><td>0%</td></tr>
+<tr><td class="name">山东黄金</td><td>600547</td><td>黄金</td><td class="neutral">中性</td><td>48.8</td><td>26%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>24.96</td><td>24.96</td><td>24.461</td><td>0%</td></tr>
+<tr><td class="name">东方钽业</td><td>000962</td><td>钽</td><td class="neutral">中性</td><td>48.7</td><td>22%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>65.02</td><td>65.015</td><td>63.72</td><td>0%</td></tr>
+<tr><td class="name">杰瑞股份</td><td>002353</td><td>油服</td><td class="neutral">中性</td><td>48.5</td><td>27%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>151.2</td><td>151.2</td><td>148.176</td><td>0%</td></tr>
+<tr><td class="name">新希望</td><td>000876</td><td>饲料/养殖</td><td class="neutral">中性</td><td>48.3</td><td>27%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>7.14</td><td>7.14</td><td>6.997</td><td>0%</td></tr>
+<tr><td class="name">盛美上海</td><td>688082</td><td>半导体设备</td><td class="neutral">中性</td><td>47.5</td><td>33%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>392.89</td><td>392.873</td><td>385.032</td><td>0%</td></tr>
+<tr><td class="name">江丰电子</td><td>300666</td><td>靶材</td><td class="neutral">中性</td><td>47.5</td><td>33%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>340.44</td><td>340.436</td><td>333.631</td><td>0%</td></tr>
+<tr><td class="name">唯特偶</td><td>301319</td><td>锡膏</td><td class="neutral">中性</td><td>47.3</td><td>33%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>131.3</td><td>131.28</td><td>128.674</td><td>0%</td></tr>
+<tr><td class="name">有研新材</td><td>600206</td><td>半导体材料</td><td class="neutral">中性</td><td>47.2</td><td>28%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>60.0</td><td>59.996</td><td>58.8</td><td>0%</td></tr>
+<tr><td class="name">南大光电</td><td>300346</td><td>MO源</td><td class="neutral">中性</td><td>47.0</td><td>34%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>74.27</td><td>74.261</td><td>72.785</td><td>0%</td></tr>
+<tr><td class="name">阿石创</td><td>300706</td><td>靶材</td><td class="neutral">中性</td><td>47.0</td><td>34%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>65.08</td><td>65.072</td><td>63.778</td><td>0%</td></tr>
+<tr><td class="name">盛和资源</td><td>600392</td><td>稀土/锆钛</td><td class="neutral">中性</td><td>46.8</td><td>29%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>24.29</td><td>24.287</td><td>23.804</td><td>0%</td></tr>
+<tr><td class="name">光智科技</td><td>300489</td><td>红外/锗</td><td class="neutral">中性</td><td>46.8</td><td>34%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>255.0</td><td>254.989</td><td>249.9</td><td>0%</td></tr>
+<tr><td class="name">鼎龙股份</td><td>300054</td><td>半导体材料</td><td class="neutral">中性</td><td>46.5</td><td>34%</td><td>震荡</td><td>震荡</td><td>震荡</td><td>震荡</td><td>83.1</td><td>83.092</td><td>81.438</td><td>0%</td></tr>
+</table>
+    
 
 
     <div class="date-section">
@@ -208,7 +315,7 @@
 
 <div class="footer">
   <p>报告自动生成 | 数据源: Tushare / AkShare / 新浪财经 / 腾讯财经</p>
-  <p>更新时间: 2026-07-11 00:27</p>
+  <p>更新时间: 2026-07-11 08:25</p>
 </div>
 </body>
 </html>

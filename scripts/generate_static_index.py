@@ -8,6 +8,7 @@ import os
 import re
 import json
 import sys
+import sqlite3
 from datetime import datetime
 from collections import defaultdict
 
@@ -16,6 +17,7 @@ REPO_DIR = os.path.dirname(SCRIPT_DIR)
 DOCS_DIR = os.path.join(REPO_DIR, "docs")
 REPORTS_DIR = os.path.join(DOCS_DIR, "reports")
 WATCHLIST_PATH = os.path.join(REPO_DIR, "multi_agent", "watchlist.json")
+DB_PATH = os.path.join(REPO_DIR, "multi_agent", "data", "llm_predictions.db")
 
 # 注入 core.watchlist 路径，使其默认列表可用
 sys.path.insert(0, os.path.join(REPO_DIR, "multi_agent"))
@@ -70,6 +72,107 @@ def load_watchlist():
             print(f"⚠️ 加载 watchlist.json 失败: {e}")
 
     return merged
+
+
+def load_agentic_predictions():
+    """从 agentic_predictions 读取最新一天的预测数据"""
+    if not os.path.exists(DB_PATH):
+        return None, None, []
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    latest = cur.execute("SELECT MAX(pred_date) FROM agentic_predictions").fetchone()[0]
+    if not latest:
+        conn.close()
+        return None, None, []
+    rows = cur.execute("""
+        SELECT ticker, name, sector, category, signal, confidence, weighted_score,
+               horizon_1d, horizon_3d, horizon_5d, horizon_10d,
+               current_price, target_price, stop_loss, position_pct, reasoning
+        FROM agentic_predictions
+        WHERE pred_date=?
+        ORDER BY category, weighted_score DESC
+    """, (latest,)).fetchall()
+    conn.close()
+    return latest, [dict(r) for r in rows], rows
+
+
+def _signal_class(signal):
+    if signal == 'bullish':
+        return 'bullish'
+    elif signal == 'bearish':
+        return 'bearish'
+    return 'neutral'
+
+
+def _signal_cn(signal):
+    if signal == 'bullish':
+        return '看多'
+    elif signal == 'bearish':
+        return '看空'
+    return '中性'
+
+
+def build_agentic_table(rows, page_type, top_n=50):
+    """根据页面类型构建实时预测表格 HTML"""
+    filtered = [r for r in rows if r.get('category') == page_type]
+    if not filtered:
+        return ""
+
+    bullish = [r for r in filtered if r.get('signal') == 'bullish']
+    bearish = [r for r in filtered if r.get('signal') == 'bearish']
+    neutral = [r for r in filtered if r.get('signal') == 'neutral']
+
+    lines = [
+        f'<div class="section-title">🔥 {page_type} 实时预测（{len(filtered)}只 | 看多{len(bullish)} 看空{len(bearish)} 中性{len(neutral)}）</div>',
+        '<table><tr><th>名称</th><th>代码</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>现价</th><th>目标</th><th>止损</th><th>仓位</th></tr>',
+    ]
+
+    for r in filtered[:top_n]:
+        sig = r.get('signal', 'neutral')
+        sig_cls = _signal_class(sig)
+        sig_cn = _signal_cn(sig)
+        conf = (r.get('confidence') or 0) * 100
+        pos = (r.get('position_pct') or 0) * 100
+        lines.append(
+            f'<tr><td class="name">{r.get("name", r["ticker"])}</td>'
+            f'<td>{r["ticker"]}</td>'
+            f'<td>{r.get("sector", "")}</td>'
+            f'<td class="{sig_cls}">{sig_cn}</td>'
+            f'<td>{r.get("weighted_score", 0)}</td>'
+            f'<td>{conf:.0f}%</td>'
+            f'<td>{r.get("horizon_1d", "")}</td>'
+            f'<td>{r.get("horizon_3d", "")}</td>'
+            f'<td>{r.get("horizon_5d", "")}</td>'
+            f'<td>{r.get("horizon_10d", "")}</td>'
+            f'<td>{r.get("current_price", "")}</td>'
+            f'<td>{r.get("target_price", "")}</td>'
+            f'<td>{r.get("stop_loss", "")}</td>'
+            f'<td>{pos:.0f}%</td></tr>'
+        )
+    lines.append('</table>')
+    return "\n".join(lines)
+
+
+def build_agentic_top_cards(rows, top_n=5):
+    """构建今日重点推荐卡片"""
+    bullish = sorted([r for r in rows if r.get('signal') == 'bullish'],
+                     key=lambda x: x.get('weighted_score', 0), reverse=True)[:top_n]
+    if not bullish:
+        return ""
+    cards = []
+    for r in bullish:
+        conf = (r.get('confidence') or 0) * 100
+        pos = (r.get('position_pct') or 0) * 100
+        cards.append(
+            f'''<div class="card">
+                <div class="card-title">🔥 {r.get("name", r["ticker"])} ({r["ticker"]})</div>
+                <div class="card-meta">评分 {r.get("weighted_score", 0)} | 置信 {conf:.0f}% | 仓位 {pos:.0f}%</div>
+                <div class="card-price">目标 {r.get("target_price", "")} | 止损 {r.get("stop_loss", "")}</div>
+                <div class="card-reason">{r.get("reasoning", "")}</div>
+            </div>'''
+        )
+    return '<div class="section-title">🏆 今日重点推荐</div>\n<div class="cards">\n' + "\n".join(cards) + '\n</div>'
 
 
 def extract_ticker_from_filename(filename):
@@ -279,7 +382,7 @@ def group_by_date_and_type(reports):
     return grouped
 
 
-def generate_page_html(page_type, grouped, all_reports, update_time):
+def generate_page_html(page_type, grouped, all_reports, update_time, pred_date=None, pred_rows=None):
     """生成某一个类型页面"""
     type_list = ["ETF", "个股", "期货", "美股", "综合"]
     nav_items = ""
@@ -287,12 +390,25 @@ def generate_page_html(page_type, grouped, all_reports, update_time):
         active = "active" if t == page_type else ""
         nav_items += f'<a class="{active}" href="{TYPE_FILES[t]}">{TYPE_ICONS[t]} {TYPE_TITLES[t]}</a>'
 
+    # 实时预测区（在报告索引之上）
+    realtime_section = ""
+    if pred_date and pred_rows:
+        all_type_rows = [r for r in pred_rows if r.get('category') == page_type]
+        if all_type_rows:
+            top_cards = build_agentic_top_cards(pred_rows)  # 全部推荐，只展示本页相关的话在卡片里可能混其他类型，这里全部展示
+            table_html = build_agentic_table(pred_rows, page_type)
+            realtime_section = f'''
+    <div class="section-title">🤖 多Agent实时预测（最新 {pred_date}）</div>
+    {top_cards}
+    {table_html}
+    '''
+
     # 该类型按日期分组的内容
     sections = ""
     items_by_date = grouped.get(page_type, {})
-    if not items_by_date:
+    if not items_by_date and not realtime_section:
         sections = '<div style="padding:40px;text-align:center;color:#8b949e;">暂无报告</div>'
-    else:
+    elif items_by_date:
         for date in sorted(items_by_date.keys(), reverse=True):
             reports = items_by_date[date]
             rows = ""
@@ -360,6 +476,7 @@ def generate_page_html(page_type, grouped, all_reports, update_time):
   .stat-card .num {{ font-size: 1.4em; font-weight: 700; color: #58a6ff; }}
   .stat-card .label {{ font-size: 0.78em; color: #8b949e; margin-top: 2px; }}
 
+  .section-title {{ background: #161b22; border: 1px solid #30363d; border-radius: 8px 8px 0 0; padding: 12px 16px; font-weight: 600; color: #f0f6fc; margin-top: 20px; }}
   .date-section {{ margin-bottom: 20px; border: 1px solid #30363d; border-radius: 8px; overflow: hidden; }}
   .date-header {{
     background: #161b22; padding: 12px 16px; font-weight: 600; color: #f0f6fc;
@@ -375,6 +492,22 @@ def generate_page_html(page_type, grouped, all_reports, update_time):
   .report-item a {{ color: #58a6ff; text-decoration: none; }}
   .report-item a:hover {{ text-decoration: underline; }}
   .report-item .meta {{ font-size: 0.85em; color: #8b949e; }}
+
+  table {{ width: 100%; border-collapse: collapse; font-size: 0.88em; margin-bottom: 24px; }}
+  th {{ background: #161b22; border: 1px solid #30363d; padding: 7px 9px; text-align: left; color: #8b949e; font-weight: 600; font-size: 0.82em; white-space: nowrap; position: sticky; top: 0; }}
+  td {{ border: 1px solid #30363d; padding: 6px 9px; transition: background .15s; }}
+  tr:hover td {{ background: #1c2128; }}
+  .name {{ font-weight: 600; color: #f0f6fc; }}
+  .bullish {{ color: #3fb950; font-weight: 600; }}
+  .bearish {{ color: #f85149; font-weight: 600; }}
+  .neutral {{ color: #d29922; font-weight: 600; }}
+
+  .cards {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 24px; }}
+  .card {{ background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 14px; border-left: 4px solid #3fb950; }}
+  .card-title {{ font-weight: 600; color: #f0f6fc; margin-bottom: 6px; }}
+  .card-meta {{ color: #8b949e; font-size: 0.82em; margin-bottom: 4px; }}
+  .card-price {{ color: #f0f6fc; font-size: 0.88em; margin-bottom: 4px; }}
+  .card-reason {{ color: #8b949e; font-size: 0.78em; line-height: 1.5; }}
 
   .footer {{ text-align: center; color: #484f58; font-size: 0.78em; margin-top: 36px; padding-top: 16px; border-top: 1px solid #21262d; }}
 </style>
@@ -400,6 +533,8 @@ def generate_page_html(page_type, grouped, all_reports, update_time):
   <div class="stat-card"><div class="num">{sum(1 for _ in grouped.get('美股', {}).values())}</div><div class="label">美股日期</div></div>
 </div>
 
+{realtime_section}
+
 {sections}
 
 <div class="footer">
@@ -415,14 +550,17 @@ def main():
     grouped = group_by_date_and_type(reports)
     update_time = datetime.now().strftime('%Y-%m-%d %H:%M')
 
+    pred_date, pred_rows, _ = load_agentic_predictions()
+    print(f"🤖 加载 agentic_predictions: {pred_date} {len(pred_rows) if pred_rows else 0} 条")
+
     for t in ["ETF", "个股", "期货", "美股", "综合"]:
-        html = generate_page_html(t, grouped, reports, update_time)
+        html = generate_page_html(t, grouped, reports, update_time, pred_date=pred_date, pred_rows=pred_rows)
         path = os.path.join(DOCS_DIR, TYPE_FILES[t])
         with open(path, "w", encoding="utf-8") as f:
             f.write(html)
         print(f"✅ 生成 {TYPE_FILES[t]} ({TYPE_TITLES[t]}): {len(grouped.get(t, {}))} 个日期")
 
-    # 首页默认跳转到 ETF 页面（或个股页面）
+    # 首页默认跳转到 个股 页面
     index_path = os.path.join(DOCS_DIR, "index.html")
     with open(index_path, "w", encoding="utf-8") as f:
         f.write(f'''<!DOCTYPE html>
