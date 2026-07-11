@@ -136,14 +136,24 @@ def build_markdown(pred_date=None, top_n=5):
     if weights and 'targets' in weights:
         lines.append("")
         lines.append(f"💼 目标权重（总敞口{weights['total_exposure']:.0%} 净敞口{weights['net_exposure']:+.0%}）")
-        longs = [t for t in weights['targets'] if t['target_weight'] > 0][:2]
-        shorts = [t for t in weights['targets'] if t['target_weight'] < 0][:2]
+        longs = [t for t in weights['targets'] if t['target_weight'] > 0][:1]
+        shorts = [t for t in weights['targets'] if t['target_weight'] < 0][:1]
         if longs:
             long_line = " ".join([f"{t['ticker']}({t['name']}){t['target_weight']:+.1%}" for t in longs])
             lines.append(f"🔥 多: {long_line}")
         if shorts:
             short_line = " ".join([f"{t['ticker']}({t['name']}){t['target_weight']:+.1%}" for t in shorts])
             lines.append(f"❄️ 空: {short_line}")
+
+    # 期货模拟盘持仓
+    try:
+        from multi_agent.futures_simulator import get_positions_summary
+        fs = get_positions_summary()
+        if fs['positions']:
+            futs = " ".join([f"{p['contract']}{p['direction']}{p['lots']}" for p in fs['positions']])
+            lines.append(f"🌾 期货: {futs} 权益{fs['total_asset']:.0f}")
+    except Exception:
+        pass
 
     lines.append(f"📱 完整页面：{PAGES_URL}")
     return "\n".join(lines)

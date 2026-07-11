@@ -164,6 +164,46 @@ CONTRACT_SPECS = {
         'tick_size': 1,
         'symbol': 'FU0',
     },
+    'OI': {  # 菜油 郑商所
+        'name': '菜油',
+        'exchange': '郑商所',
+        'multiplier': 10,     # 10吨/手
+        'margin_rate': 0.08,
+        'tick_size': 1,
+        'symbol': 'OI0',
+    },
+    'CF': {  # 棉花 郑商所
+        'name': '棉花',
+        'exchange': '郑商所',
+        'multiplier': 5,      # 5吨/手
+        'margin_rate': 0.07,
+        'tick_size': 5,
+        'symbol': 'CF0',
+    },
+    'J': {  # 焦炭 大商所
+        'name': '焦炭',
+        'exchange': '大商所',
+        'multiplier': 100,    # 100吨/手
+        'margin_rate': 0.12,
+        'tick_size': 0.5,
+        'symbol': 'J0',
+    },
+    'ZN': {  # 沪锌 上期所
+        'name': '沪锌',
+        'exchange': '上期所',
+        'multiplier': 5,      # 5吨/手
+        'margin_rate': 0.10,
+        'tick_size': 5,
+        'symbol': 'ZN0',
+    },
+    'HC': {  # 热卷 上期所
+        'name': '热卷',
+        'exchange': '上期所',
+        'multiplier': 10,     # 10吨/手
+        'margin_rate': 0.10,
+        'tick_size': 1,
+        'symbol': 'HC0',
+    },
 }
 
 DEFAULT_CAPITAL = 100000.0  # 10万，与雪球组合一致
