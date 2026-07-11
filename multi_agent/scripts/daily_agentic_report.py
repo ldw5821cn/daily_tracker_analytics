@@ -6,14 +6,38 @@
 import sys
 import os
 import sqlite3
+import json
 from datetime import datetime, timedelta
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 MULTI_AGENT = os.path.join(PROJECT_ROOT, 'multi_agent')
 DB_PATH = os.path.join(MULTI_AGENT, 'data', 'llm_predictions.db')
+BACKTEST_JSON = os.path.join(MULTI_AGENT, 'data', 'llm_backtest_results.json')
 
 sys.path.insert(0, MULTI_AGENT)
 from core.backtest_utils import parse_backtest_summary, sort_by_backtest
+
+
+def _load_backtest_summary():
+    """加载 LLM 信号回测评估结果。"""
+    if not os.path.exists(BACKTEST_JSON):
+        return {}
+    try:
+        with open(BACKTEST_JSON, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+def _format_backtest_one(data: dict) -> str:
+    """把单个 category 的回测数据格式化为一句话。"""
+    cat = data.get('category', '')
+    return (
+        f"{cat} 60日收益{data.get('avg_return_60d', 0):+.1f}% "
+        f"回撤{data.get('avg_max_drawdown_60d', 0):.1f}% "
+        f"夏普{data.get('avg_sharpe_60d', 0):.2f} "
+        f"胜率{data.get('win_rate_60d', 0):.0f}%"
+    )
 
 
 def _get_conn():
@@ -88,6 +112,30 @@ def build_markdown(pred_date=None, top_n=5):
         lines.append("")
 
     lines.append("⚠️ 提示：排序基于近60天回测综合分（收益/回撤/夏普），非预测收益；期货严格止损，个股建议结合基本面。")
+
+    # 加入 LLM 信号回测评估
+    bt = _load_backtest_summary()
+    if bt and 'by_category' in bt:
+        lines.append("")
+        lines.append("📈 信号回测评估（按 backtest_summary 聚合）")
+        for cat in ['ETF', '个股', '期货']:
+            groups = bt.get('by_category', {}).get(cat, {})
+            bullish = groups.get('bullish', {})
+            bearish = groups.get('bearish', {})
+            if not bullish and not bearish:
+                continue
+            parts = [f"{cat}:", "看多"]
+            if bullish:
+                parts.append(f"60日{bullish.get('avg_return_60d', 0):+.1f}%/胜率{bullish.get('win_rate_60d', 0):.0f}%")
+            else:
+                parts.append("无")
+            parts.append("看空")
+            if bearish:
+                parts.append(f"60日{bearish.get('avg_return_60d', 0):+.1f}%/胜率{bearish.get('win_rate_60d', 0):.0f}%")
+            else:
+                parts.append("无")
+            lines.append(" ".join(parts))
+
     lines.append(f"📱 完整页面：{PAGES_URL}")
     return "\n".join(lines)
 

@@ -22,6 +22,56 @@ from core.backtest_utils import sort_by_backtest, inject_backtest_metrics
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOCS_DIR = os.path.join(REPO_ROOT, "docs")
 DB_PATH = os.path.join(REPO_ROOT, "multi_agent", "data", "llm_predictions.db")
+BACKTEST_JSON = os.path.join(REPO_ROOT, "multi_agent", "data", "llm_backtest_results.json")
+
+
+def _load_backtest_summary():
+    """加载 LLM 信号回测评估结果。"""
+    if not os.path.exists(BACKTEST_JSON):
+        return {}
+    try:
+        with open(BACKTEST_JSON, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+def _backtest_html(stats) -> str:
+    """生成信号回测评估 HTML 区块。"""
+    bt = _load_backtest_summary()
+    if not bt or 'by_category' not in bt:
+        return ""
+    rows = ""
+    for cat in ['ETF', '个股', '期货']:
+        groups = bt.get('by_category', {}).get(cat, {})
+        if not groups:
+            continue
+        for sig in ['bullish', 'bearish', 'neutral']:
+            vals = groups.get(sig, {})
+            if not vals:
+                continue
+            rows += f"""
+            <tr>
+                <td>{cat}</td>
+                <td>{ {'bullish':'看多','bearish':'看空','neutral':'中性'}.get(sig, sig) }</td>
+                <td>{vals.get('count', 0)}</td>
+                <td>{vals.get('avg_return_60d', 0):+.1f}%</td>
+                <td>{vals.get('avg_return_30d', 0):+.1f}%</td>
+                <td>{vals.get('avg_max_drawdown_60d', 0):.1f}%</td>
+                <td>{vals.get('avg_sharpe_60d', 0):.2f}</td>
+                <td>{vals.get('win_rate_60d', 0):.0f}%</td>
+            </tr>"""
+    if not rows:
+        return ""
+    return f"""
+    <div class="section-title">📈 LLM 信号回测评估（按 backtest_summary 聚合）</div>
+    <table>
+        <thead><tr><th>分类</th><th>信号</th><th>数量</th><th>60日收益</th><th>30日收益</th><th>60日回撤</th><th>60日夏普</th><th>60日胜率</th></tr></thead>
+        <tbody>
+            {rows}
+        </tbody>
+    </table>
+    """
 
 
 def get_db_stats():
@@ -375,6 +425,8 @@ tr:hover {{ background: #334155; }}
     </div>
 
     {top_html}
+
+    {_backtest_html(stats)}
 
     {stats_note}
 

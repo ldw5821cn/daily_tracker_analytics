@@ -38,7 +38,41 @@ from typing import Dict, List, Optional
 
 BASE = '/home/liudawei/github/daily_tracker_analytics'
 DB_PATH = os.path.join(BASE, 'multi_agent', 'data', 'futures_simulator.db')
+RISK_STATE_DB = os.path.join(BASE, 'multi_agent', 'data', 'riskguard_futures.db')
 os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+
+# ── 可选: RiskGuard 风控层 ──
+try:
+    from riskguard import (
+        RiskEngine, RiskConfig, Order, Side, Portfolio, Account, Position, SqliteStateStore
+    )
+    _RISKGUARD_AVAILABLE = True
+except Exception:
+    _RISKGUARD_AVAILABLE = False
+
+_risk_engine = None
+
+
+def _get_risk_engine():
+    """返回 RiskGuard 引擎单例；未安装时返回 None。"""
+    global _risk_engine
+    if _risk_engine is None and _RISKGUARD_AVAILABLE:
+        from riskguard.rules import DrawdownCircuitBreaker, MaxPositionLimit, StrategyQuarantine
+        config = RiskConfig(
+            max_position_pct=0.15,      # 单笔名义敞口 ≤ 15% 权益
+            max_drawdown_pct=0.15,      # 回撤 ≥ 15% 触发熔断
+            on_position_breach="resize",  # 越界时缩单而非拒单
+            # 期货模拟盘本身由保证金/现金约束杠杆，禁用组合总敞口规则，
+            # 避免高杠杆合约被总敞口上限误杀。
+        )
+        rules = [
+            DrawdownCircuitBreaker(),
+            MaxPositionLimit(),
+            StrategyQuarantine(),
+        ]
+        store = SqliteStateStore(RISK_STATE_DB)
+        _risk_engine = RiskEngine(config, rules=rules, state_store=store)
+    return _risk_engine
 
 # ── 合约规格定义 ──
 CONTRACT_SPECS = {
@@ -267,12 +301,58 @@ def calc_margin(contract: str, price: float, lots: int) -> float:
     return round(contract_value * spec['margin_rate'], 2)
 
 
+# ── 合约价值计算 ──
+
 def calc_contract_value(contract: str, price: float, lots: int) -> float:
     """计算合约总价值"""
     spec = CONTRACT_SPECS.get(contract)
     if not spec:
         return 0
     return price * spec['multiplier'] * lots
+
+
+def _build_risk_portfolio(conn: sqlite3.Connection, marks: Optional[Dict[str, float]] = None) -> Portfolio:
+    """从 DB 构建 RiskGuard Portfolio 快照。
+
+    对期货做单位映射：RiskGuard 的 quantity = 手数，mark = 每手保证金。
+    这样 RiskGuard 看到的 notional = lots × margin_per_lot = 保证金占用，
+    15% 权益上限即“单笔保证金 ≤ 15% 权益”，符合期货交易习惯。
+    """
+    cash = float(conn.execute("SELECT value FROM config WHERE key='cash'").fetchone()['value'])
+    positions = []
+    total_floating = 0.0
+    derived_marks: Dict[str, float] = {}
+    for pos in conn.execute("SELECT * FROM positions WHERE is_active=1"):
+        spec = CONTRACT_SPECS.get(pos['contract'], {})
+        multiplier = spec.get('multiplier', 10)
+        margin_rate = spec.get('margin_rate', 0.10)
+        current_price = pos['current_price']
+        derived_marks[pos['contract']] = current_price * multiplier * margin_rate  # 每手保证金
+        if pos['direction'] == 'long':
+            signed_qty = pos['lots']
+            floating = (current_price - pos['entry_price']) * multiplier * pos['lots']
+        else:
+            signed_qty = -pos['lots']
+            floating = (pos['entry_price'] - current_price) * multiplier * pos['lots']
+        total_floating += floating
+        positions.append(Position(
+            symbol=pos['contract'],
+            quantity=signed_qty,
+            avg_price=pos['entry_price'] * multiplier * margin_rate,  # 每手保证金成本
+        ))
+    equity = cash + sum(
+        calc_margin(p.symbol, p.avg_price / (CONTRACT_SPECS.get(p.symbol, {}).get('margin_rate', 0.10) * (CONTRACT_SPECS.get(p.symbol, {}).get('multiplier', 10) or 1)), int(abs(p.quantity))) for p in positions
+    ) + total_floating
+    pos_map = {p.symbol: p for p in positions}
+    if marks:
+        for sym, price in marks.items():
+            spec = CONTRACT_SPECS.get(sym, {})
+            derived_marks[sym] = price * spec.get('multiplier', 10) * spec.get('margin_rate', 0.10)
+    return Portfolio(
+        account=Account(equity=equity, cash=cash, buying_power=cash),
+        positions=pos_map,
+        marks=derived_marks,
+    )
 
 
 # ── 开仓 ──
@@ -283,6 +363,35 @@ def open_position(contract: str, direction: str, lots: int, price: float,
     spec = CONTRACT_SPECS.get(contract)
     if not spec:
         return {'success': False, 'error': f'不支持的合约: {contract}'}
+
+    engine = _get_risk_engine()
+    if engine is not None:
+        conn = _get_conn()
+        try:
+            portfolio = _build_risk_portfolio(conn, marks={contract: price})
+            order = Order(
+                symbol=contract,
+                side=Side.BUY if direction == 'long' else Side.SELL,
+                quantity=float(lots),
+            )
+            decision = engine.check(order, portfolio)
+            if decision.rejected:
+                return {
+                    'success': False,
+                    'error': f'RiskGuard 拒绝: {decision.reasons()}',
+                    'risk_decision': decision.decision.value,
+                    'risk_reasons': decision.reasons(),
+                }
+            if decision.resized:
+                lots = int(decision.order.quantity)
+                if lots <= 0:
+                    return {
+                        'success': False,
+                        'error': f'RiskGuard 缩单至 0: {decision.reasons()}',
+                    }
+                note = (note or '') + f' [RiskGuard 缩单至 {lots} 手]'
+        finally:
+            conn.close()
     
     margin_needed = calc_margin(contract, price, lots)
     cash = get_cash()
@@ -518,6 +627,12 @@ def update_daily(force_update: bool = False) -> Dict:
         # 总资产快照
         cash = get_cash()
         total_asset = cash + total_margin + total_floating_pnl
+        
+        # 更新 RiskGuard 权益观测（熔断用）
+        engine = _get_risk_engine()
+        if engine is not None:
+            portfolio = _build_risk_portfolio(conn, marks={})
+            engine.update_equity(portfolio)
         
         # 检查今日快照是否已存在
         existing = conn.execute(
