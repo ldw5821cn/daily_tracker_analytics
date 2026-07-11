@@ -117,24 +117,16 @@ def build_markdown(pred_date=None, top_n=5):
     bt = _load_backtest_summary()
     if bt and 'by_category' in bt:
         lines.append("")
-        lines.append("📈 信号回测评估（按 backtest_summary 聚合）")
+        lines.append("📈 信号回测评估")
         for cat in ['ETF', '个股', '期货']:
             groups = bt.get('by_category', {}).get(cat, {})
             bullish = groups.get('bullish', {})
             bearish = groups.get('bearish', {})
             if not bullish and not bearish:
                 continue
-            parts = [f"{cat}:", "看多"]
-            if bullish:
-                parts.append(f"60日{bullish.get('avg_return_60d', 0):+.1f}%/胜率{bullish.get('win_rate_60d', 0):.0f}%")
-            else:
-                parts.append("无")
-            parts.append("看空")
-            if bearish:
-                parts.append(f"60日{bearish.get('avg_return_60d', 0):+.1f}%/胜率{bearish.get('win_rate_60d', 0):.0f}%")
-            else:
-                parts.append("无")
-            lines.append(" ".join(parts))
+            long_s = f"看多{bullish.get('avg_return_60d', 0):+.1f}%/{bullish.get('win_rate_60d', 0):.0f}%胜" if bullish else "看多无"
+            short_s = f"看空{bearish.get('avg_return_60d', 0):+.1f}%/{bearish.get('win_rate_60d', 0):.0f}%胜" if bearish else "看空无"
+            lines.append(f"{cat}: {long_s} | {short_s}")
 
     lines.append(f"📱 完整页面：{PAGES_URL}")
     return "\n".join(lines)
