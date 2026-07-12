@@ -14,6 +14,7 @@ import pandas as pd
 import numpy as np
 import os
 import json
+import re
 import urllib.request
 import urllib.parse
 import ssl
@@ -54,27 +55,107 @@ def _get_mootdx_client():
         return _mootdx_client
     try:
         from mootdx.quotes import Quotes
-    except ImportError:
-        return None
-    for ip, port in _TDX_SERVERS:
-        if _probe_tdx(ip, port):
-            try:
-                _mootdx_client = Quotes.factory(market="std", server=(ip, port))
-                return _mootdx_client
-            except Exception:
-                continue
-    try:
         _mootdx_client = Quotes.factory(market="std")
         return _mootdx_client
     except Exception:
         return None
 
 
-def _get_mootdx_data(symbol: str, offset: int = 800) -> pd.DataFrame | None:
-    """通过 mootdx 获取个股/ETF 日线。
+def _normalize_ticker(symbol: str) -> str:
+    """标准化 A 股代码：去掉交易所前后缀，返回 6 位纯数字。"""
+    s = symbol.strip().upper()
+    for suffix in (".SH", ".SZ", ".BJ"):
+        if s.endswith(suffix):
+            s = s[: -len(suffix)]
+            break
+    for prefix in ("SH", "SZ", "BJ"):
+        if s.startswith(prefix):
+            s = s[len(prefix):]
+            break
+    return s
 
-    注意：mootdx 显式传入 server 时 bars 可能返回空，这里使用默认 factory。
+
+_name_to_code_map: dict[str, str] | None = None
+_code_to_name_map: dict[str, str] | None = None
+
+
+def _build_name_code_map() -> tuple[dict[str, str], dict[str, str]]:
+    """通过 mootdx 构建股票名称到代码的映射。"""
+    global _name_to_code_map, _code_to_name_map
+    if _name_to_code_map is not None:
+        return _name_to_code_map, _code_to_name_map
+
+    client = _get_mootdx_client()
+    if client is None:
+        return {}, {}
+
+    n2c: dict[str, str] = {}
+    c2n: dict[str, str] = {}
+    # A 股有效代码：6 位数字，按交易所前缀
+    a_stock_re = re.compile(r"^(60|68|00|30|43|8|92)\d{4}$")
+
+    try:
+        for market in (0, 1):  # 0=SZ, 1=SH
+            stocks = client.stocks(market=market)
+            if stocks is None or stocks.empty:
+                continue
+            for _, row in stocks.iterrows():
+                code = str(row.get("code", "")).strip()
+                name = str(row.get("name", "")).strip()
+                if not a_stock_re.match(code) or not name:
+                    continue
+                clean_name = name.replace(" ", "").replace("　", "")
+                n2c[clean_name] = code
+                c2n[code] = clean_name
+    except Exception:
+        pass
+
+    _name_to_code_map = n2c
+    _code_to_name_map = c2n
+    return n2c, c2n
+
+
+def resolve_ticker(user_input: str) -> str:
+    """解析用户输入为 6 位 A 股代码。
+
+    支持：
+    - 6 位数字代码（如 600519）
+    - 带交易所前缀/后缀（如 SH600519、600519.SH）
+    - 完整中文名称（如 贵州茅台）
+    - 名称唯一子串（如输入"茅台"且只匹配一只股票时）
     """
+    s = user_input.strip()
+    if not s:
+        raise ValueError("输入不能为空")
+
+    has_chinese = any("\u4e00" <= ch <= "\u9fff" for ch in s)
+    if not has_chinese:
+        # 纯代码，做标准化
+        return _normalize_ticker(s)
+
+    clean = s.replace(" ", "").replace("　", "")
+    n2c, _ = _build_name_code_map()
+    if not n2c:
+        raise ValueError("无法获取股票名称映射表，请直接输入 6 位代码")
+
+    if clean in n2c:
+        return n2c[clean]
+
+    matches = {name: code for name, code in n2c.items() if clean in name}
+    if len(matches) == 1:
+        return next(iter(matches.values()))
+    if len(matches) > 1:
+        examples = ", ".join(f"{n}({c})" for n, c in list(matches.items())[:5])
+        raise ValueError(f"'{s}' 匹配到多只股票: {examples}，请输入完整名称")
+
+    raise ValueError(f"找不到股票 '{s}'。请输 6 位代码或完整股票名称")
+
+
+# ── mootdx 日线数据获取 ──
+
+
+def _get_mootdx_data(symbol: str, offset: int = 800) -> pd.DataFrame | None:
+    """通过 mootdx 获取个股/ETF 日线。"""
     if not symbol.isdigit():
         return None
     try:
