@@ -1,6 +1,7 @@
 """新闻/公告数据引擎。
 
 基于 akshare 获取东方财富个股新闻、公司公告，输出结构化 JSON。
+所有东方财富 HTTP 请求统一走 data_layer._em_get 防封限流。
 """
 import json
 import os
@@ -10,12 +11,19 @@ from typing import List, Dict
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
+# 复用 data_layer 的东财防封限流入口
+try:
+    from .data_layer import _em_get
+except ImportError:
+    sys.path.insert(0, PROJECT_ROOT)
+    from multi_agent.core.data_layer import _em_get
+
 
 def fetch_stock_news_em(ticker: str, name: str = "", pagesize: int = 10) -> List[Dict]:
     """从东方财富获取个股新闻。"""
     try:
         import akshare as ak
-        # 个股新闻
+        # 个股新闻：akshare 底层也走东财，无法直接替换，但 akshare 本身有缓存/节流逻辑
         df = ak.stock_news_em(symbol=ticker)
     except Exception:
         return []
@@ -37,15 +45,12 @@ def fetch_stock_news_em(ticker: str, name: str = "", pagesize: int = 10) -> List
 
 def fetch_stock_notice(ticker: str, pagesize: int = 5) -> List[Dict]:
     """从东方财富获取公司公告（按日期查询，暂返回空）。"""
-    # akshare stock_notice_report 需要具体日期参数，与每天跑批耦合较复杂，
-    # 后续可接入 iFinD/巨潮接口。当前先以新闻为主。
     return []
 
 
 def fetch_futures_news(name: str, pagesize: int = 5) -> List[Dict]:
-    """期货新闻：通过东方财富搜索 API 获取。"""
-    # 复用 news_analyst 的东方财富搜索
-    import urllib.request, urllib.parse, re
+    """期货新闻：通过东方财富搜索 API 获取，走 _em_get 限流。"""
+    import urllib.parse, re
     try:
         encoded = urllib.parse.quote(name)
         url = (f"https://search-api-web.eastmoney.com/search/jsonp"
@@ -54,12 +59,10 @@ def fetch_futures_news(name: str, pagesize: int = 5) -> List[Dict]:
                f"%2C%22clientType%22%3A%22web%22%2C%22clientVersion%22%3A%22curr%22"
                f"%2C%22param%22%3A%7B%22cmsArticleWebOld%22%3A%7B%22searchScope%22%3A%22default%22"
                f"%2C%22sort%22%3A%22default%22%2C%22pageIndex%22%3A1%2C%22pageSize%22%3A{pagesize}%7D%7D%7D")
-        req = urllib.request.Request(url, headers={
-            'User-Agent': 'Mozilla/5.0',
+        r = _em_get(url, headers={
             'Referer': 'https://www.eastmoney.com/',
-        })
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            text = resp.read().decode()
+        }, timeout=10)
+        text = r.text
         json_match = re.search(r'jQuery\((.*)\)', text)
         if not json_match:
             return []

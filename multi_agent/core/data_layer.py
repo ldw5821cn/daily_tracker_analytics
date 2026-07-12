@@ -3,8 +3,9 @@
 智能数据源选择 + 偏差校验
 
 数据源优先级：
-  个股: Tushare(主) > 新浪(备) > yfinance(备)
-  ETF:  akshare前复权(主) > 新浪(备) > yfinance(备)
+  个股: mootdx(主) > Tushare(备) > 新浪(备) > yfinance(备)
+  ETF:  akshare前复权(主) > mootdx(备) > 新浪(备) > yfinance(备)
+  期货: 新浪期货(主)
   TickFlow: K线/实时行情/财务数据（配置后启用，做主源校验）
 """
 
@@ -18,7 +19,115 @@ import urllib.parse
 import ssl
 import warnings
 import tushare as ts
+import time
+import random
+import socket
 from datetime import datetime, timedelta
+
+# 用于东财防封限流
+import requests as _requests
+
+# ── mootdx 通达信（直连，无 API key）──
+_mootdx_client = None
+
+_TDX_SERVERS = [
+    ("119.97.185.59", 7709), ("124.70.133.119", 7709), ("116.205.183.150", 7709),
+    ("123.60.73.44", 7709), ("116.205.163.254", 7709), ("121.36.225.169", 7709),
+    ("123.60.70.228", 7709), ("124.71.9.153", 7709), ("110.41.147.114", 7709),
+    ("124.71.187.122", 7709),
+]
+
+
+def _probe_tdx(ip: str, port: int, timeout: float = 2.0) -> bool:
+    """TCP 探测通达信服务器是否可达。"""
+    try:
+        with socket.create_connection((ip, port), timeout=timeout):
+            return True
+    except OSError:
+        return False
+
+
+def _get_mootdx_client():
+    """Lazy-init 通达信客户端。"""
+    global _mootdx_client
+    if _mootdx_client is not None:
+        return _mootdx_client
+    try:
+        from mootdx.quotes import Quotes
+    except ImportError:
+        return None
+    for ip, port in _TDX_SERVERS:
+        if _probe_tdx(ip, port):
+            try:
+                _mootdx_client = Quotes.factory(market="std", server=(ip, port))
+                return _mootdx_client
+            except Exception:
+                continue
+    try:
+        _mootdx_client = Quotes.factory(market="std")
+        return _mootdx_client
+    except Exception:
+        return None
+
+
+def _get_mootdx_data(symbol: str, offset: int = 800) -> pd.DataFrame | None:
+    """通过 mootdx 获取个股/ETF 日线。
+
+    注意：mootdx 显式传入 server 时 bars 可能返回空，这里使用默认 factory。
+    """
+    if not symbol.isdigit():
+        return None
+    try:
+        from mootdx.quotes import Quotes
+        client = Quotes.factory(market="std")
+        df = client.bars(symbol=symbol, category=4, offset=offset)
+        if df is None or df.empty:
+            return None
+        df = df.drop(
+            columns=["datetime", "year", "month", "day", "hour", "minute", "volume"],
+            errors="ignore",
+        )
+        df = df.reset_index()
+        df = df.rename(
+            columns={
+                "datetime": "date",
+                "open": "open",
+                "close": "close",
+                "high": "high",
+                "low": "low",
+                "vol": "volume",
+            }
+        )
+        df["date"] = pd.to_datetime(df["date"], errors="coerce")
+        df = df.dropna(subset=["date"])
+        df.set_index("date", inplace=True)
+        df = df[["open", "high", "low", "close", "volume"]].astype(float)
+        df.sort_index(inplace=True)
+        return df
+    except Exception:
+        return None
+
+
+# ── 东财防封统一限流入口 ──
+_EM_SESSION = _requests.Session()
+_EM_SESSION.headers.update({"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"})
+_EM_MIN_INTERVAL = float(os.environ.get("EM_MIN_INTERVAL", "1.0"))
+_em_last_call = [0.0]
+
+
+def _em_get(url, params=None, headers=None, timeout=15, **kwargs):
+    """东财统一请求入口：自动节流 + 复用 session + 默认 UA。
+
+    所有 eastmoney.com 接口都应通过它请求，避免多 Agent 高频拉数据被封 IP。
+    """
+    wait = _EM_MIN_INTERVAL - (time.time() - _em_last_call[0])
+    if wait > 0:
+        time.sleep(wait + random.uniform(0.1, 0.5))
+    try:
+        return _EM_SESSION.get(url, params=params, headers=headers, timeout=timeout, **kwargs)
+    finally:
+        _em_last_call[0] = time.time()
+
 
 # ── 优先从 .env 读 API key（gitignored，防泄漏）──
 try:
@@ -271,62 +380,6 @@ def _get_sina_futures_data(ticker, datalen=500):
 # 原有函数保持不变
 
 
-def get_stock_data(ticker, period="2y", calibrate=True):
-    """
-    智能获取数据：自动选择最优数据源
-    期货: 新浪期货(主)
-    个股: Tushare(主) -> 新浪(备) -> yfinance(备)
-    ETF:  akshare前复权(主) -> 新浪(备) -> yfinance(备)
-    """
-    df = None
-    source = None
-    info = {}
-
-    if is_futures(ticker):
-        df = _get_sina_futures_data(ticker)
-        if df is not None:
-            source = "sina_futures"
-            print(f"  📡 数据源: 新浪期货 {len(df)}天")
-    elif is_etf(ticker):
-        df = _get_akshare_etf_data(ticker)
-        if df is not None:
-            source = "akshare_etf"
-            print(f"  📡 数据源: akshare ETF 前复权 {len(df)}天")
-        if df is None:
-            df = _get_sina_data(ticker)
-            if df is not None:
-                source = "sina"
-                print(f"  📡 数据源: 新浪财经 {len(df)}天")
-        if df is None:
-            df = _get_yfinance_data(ticker, period)
-            if df is not None:
-                source = "yfinance"
-                print(f"  📡 数据源: yfinance {len(df)}天")
-    else:
-        df = _get_tushare_data(ticker)
-        if df is not None:
-            source = "tushare"
-            print(f"  📡 数据源: Tushare {len(df)}天")
-        if df is None:
-            df = _get_sina_data(ticker)
-            if df is not None:
-                source = "sina"
-                print(f"  📡 数据源: 新浪财经 {len(df)}天 (Tushare不可用)")
-        if df is None:
-            df = _get_yfinance_data(ticker, period)
-            if df is not None:
-                source = "yfinance"
-                print(f"  📡 数据源: yfinance {len(df)}天")
-
-    if df is None or len(df) < 20:
-        raise ValueError(f"所有数据源均不可用: {ticker}")
-
-    if calibrate and source is not None and not is_futures(ticker):
-        _verify_data(ticker, df, source)
-
-    return df, info
-
-
 def _get_akshare_etf_data(ticker, start_date='20190101', end_date=None):
     """用 akshare 获取 ETF 前复权历史日线"""
     try:
@@ -481,12 +534,12 @@ def get_realtime_price(ticker):
     return None
 
 
-def get_stock_data(ticker, period="2y", calibrate=True):
+def get_stock_data(ticker, period="2y", calibrate=True) -> tuple[pd.DataFrame, dict]:
     """
     智能获取数据：自动选择最优数据源
     期货: 新浪期货(主)
-    个股: Tushare(主) -> 新浪(备) -> yfinance(备)
-    ETF:  akshare前复权(主) -> 新浪(备) -> yfinance(备)
+    个股: mootdx(主) > Tushare(备) > 新浪(备) > yfinance(备)
+    ETF:  akshare前复权(主) > mootdx(备) > 新浪(备) > yfinance(备)
     """
     df = None
     source = None
@@ -503,6 +556,11 @@ def get_stock_data(ticker, period="2y", calibrate=True):
             source = "akshare_etf"
             print(f"  📡 数据源: akshare ETF 前复权 {len(df)}天")
         if df is None:
+            df = _get_mootdx_data(ticker)
+            if df is not None:
+                source = "mootdx"
+                print(f"  📡 数据源: mootdx {len(df)}天")
+        if df is None:
             df = _get_sina_data(ticker)
             if df is not None:
                 source = "sina"
@@ -513,15 +571,20 @@ def get_stock_data(ticker, period="2y", calibrate=True):
                 source = "yfinance"
                 print(f"  📡 数据源: yfinance {len(df)}天")
     else:
-        df = _get_tushare_data(ticker)
+        df = _get_mootdx_data(ticker)
         if df is not None:
-            source = "tushare"
-            print(f"  📡 数据源: Tushare {len(df)}天")
+            source = "mootdx"
+            print(f"  📡 数据源: mootdx {len(df)}天")
+        if df is None:
+            df = _get_tushare_data(ticker)
+            if df is not None:
+                source = "tushare"
+                print(f"  📡 数据源: Tushare {len(df)}天")
         if df is None:
             df = _get_sina_data(ticker)
             if df is not None:
                 source = "sina"
-                print(f"  📡 数据源: 新浪财经 {len(df)}天 (Tushare不可用)")
+                print(f"  📡 数据源: 新浪财经 {len(df)}天")
         if df is None:
             df = _get_yfinance_data(ticker, period)
             if df is not None:
