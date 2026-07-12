@@ -20,7 +20,8 @@ SELECTED_FACTORS_PATH = os.path.join(PROJECT_ROOT, 'multi_agent', 'data', 'llm_f
 def _load_selected_factors() -> List[Dict]:
     try:
         with open(SELECTED_FACTORS_PATH, 'r', encoding='utf-8') as f:
-            return json.load(f).get('factors', [])
+            data = json.load(f)
+        return data.get('filtered_factors') or data.get('factors', [])
     except Exception:
         return []
 

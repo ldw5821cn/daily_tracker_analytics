@@ -472,7 +472,8 @@ def _build_factors_html():
         return '<p>暂无 LLM 因子数据</p>'
     try:
         with open('multi_agent/data/llm_factors_selected.json', 'r', encoding='utf-8') as f:
-            selected = json.load(f).get('factors', [])
+            selected_data = json.load(f)
+        selected = selected_data.get('filtered_factors') or selected_data.get('factors', [])
     except Exception:
         selected = []
 
@@ -497,6 +498,7 @@ def _build_factors_html():
             f'<div class="card-title">🎯 {f["name"]} <span style="font-size:12px;color:#94a3b8">({src_tag})</span></div>'
             f'<div class="card-reason">{f.get("description", "")}</div>'
             f'<div class="card-meta">测试收益 {f.get("avg_test_return")}% | 测试回撤 {f.get("avg_test_drawdown")}% | Rank IC {f.get("avg_rank_ic")}</div>'
+            f'<div class="card-reason" style="color:#94a3b8">🧠 {f.get("llm_interpretation", "")} (可信度{f.get("llm_credibility_score", "")})</div>'
             f'</div>'
         )
     return (

@@ -202,13 +202,13 @@ def build_markdown(pred_date=None, top_n=3):
         try:
             with open('multi_agent/data/llm_factors_selected.json', 'r', encoding='utf-8') as f:
                 selected_data = _json.load(f)
-            selected_factors = selected_data.get('factors', [])
+            selected_factors = selected_data.get('filtered_factors') or selected_data.get('factors', [])
         except Exception:
             selected_factors = []
         if selected_factors:
             tops = selected_factors[:3]
-            parts = [f"{f['name']}({f['avg_test_return']:+.0f}%/{f['avg_test_drawdown']:.0f}%dd)" for f in tops]
-            lines.append(f"🧬 因子库{len(factors)}个（精选{len(selected_factors)}个）: {' | '.join(parts)}")
+            parts = [f"{f['name']}(可信{f.get('llm_credibility_score','')})" for f in tops]
+            lines.append(f"🧬 因子库{len(factors)}个（可信{len(selected_factors)}个）: {' | '.join(parts)}")
         elif factors:
             tops = sorted(factors, key=lambda x: x.get('score', 0), reverse=True)[:3]
             parts = [f"{f['name']}({f['avg_sharpe']}sh/{f['avg_return']:+.0f}%)" for f in tops]
