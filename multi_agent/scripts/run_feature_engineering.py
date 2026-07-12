@@ -21,13 +21,18 @@ FACTOR_DB_PATH = os.path.join(PROJECT_ROOT, 'multi_agent', 'data', 'llm_factors.
 
 # 基础特征名（必须与 data_layer 输出的列名一致）
 BASE_FEATURES = [
-    'close', 'ma5', 'ma10', 'ma20', 'ma60',
-    'rsi_14', 'macd_hist', 'momentum_5d',
-    'boll_up', 'boll_down', 'vol_ratio'
+    'close', 'ma5', 'ma10', 'ma20', 'ma30', 'ma60',
+    'rsi_6', 'rsi_14', 'rsi_24',
+    'macd_hist', 'macd_dif', 'macd_dea',
+    'momentum_5d', 'momentum_10d', 'momentum_20d', 'momentum_30d', 'momentum_60d',
+    'boll_up', 'boll_down', 'boll_mid',
+    'vol_ratio', 'vol_ma5', 'vol_ma20',
+    'kdj_k', 'kdj_d', 'kdj_j',
+    'atr_14', 'annual_vol_20d',
 ]
 
 # 一元变换
-UNARY_OPS = ['raw', 'diff1', 'diff5', 'pct1', 'pct5', 'zscore20', 'rank20']
+UNARY_OPS = ['raw', 'diff1', 'diff5', 'pct1', 'pct5', 'zscore20', 'rank20', 'ma5', 'ma20']
 
 # 二元运算
 BINARY_OPS = ['sub', 'div', 'ratio', 'corr20']
@@ -83,6 +88,10 @@ def _build_unary_feature(series: pd.Series, op: str) -> pd.Series:
         return (series - series.rolling(20).mean()) / (series.rolling(20).std() + 1e-9)
     if op == 'rank20':
         return series.rolling(20).rank(pct=True)
+    if op == 'ma5':
+        return series.rolling(5).mean()
+    if op == 'ma20':
+        return series.rolling(20).mean()
     return series
 
 
@@ -135,6 +144,10 @@ def _factor_to_signal(feat: pd.Series, direction: str, threshold: float, spec: D
             expr = f"({f1} - {f1}.rolling(20).mean()) / ({f1}.rolling(20).std() + 1e-9)"
         elif op == 'rank20':
             expr = f"{f1}.rolling(20).rank(pct=True)"
+        elif op == 'ma5':
+            expr = f"{f1}.rolling(5).mean()"
+        elif op == 'ma20':
+            expr = f"{f1}.rolling(20).mean()"
     else:  # binary
         f1, f2, op = spec['f1'], spec['f2'], spec['op']
         if op == 'sub':
@@ -179,7 +192,7 @@ def generate_candidate_factors(df: pd.DataFrame, max_candidates: int = 500, incl
             feat = _build_unary_feature(base, op)
             feat.name = f'{fname}_{op}'
             for direction in DIRECTIONS:
-                thresholds = _generate_thresholds(feat, n=3)
+                thresholds = _generate_thresholds(feat, n=5)
                 for threshold in thresholds:
                     name = f"{fname}_{op}_{direction}_t{threshold:.3g}"
                     spec = {'type': 'unary', 'f1': fname, 'op': op, 'direction': direction, 'threshold': threshold}
@@ -203,7 +216,7 @@ def generate_candidate_factors(df: pd.DataFrame, max_candidates: int = 500, incl
                 feat = _build_binary_feature(df[fa], df[fb], op)
                 feat.name = f'{fa}_{op}_{fb}'
                 for direction in DIRECTIONS:
-                    thresholds = _generate_thresholds(feat, n=3)
+                    thresholds = _generate_thresholds(feat, n=5)
                     for threshold in thresholds:
                         name = f"{fa}_{op}_{fb}_{direction}_t{threshold:.3g}"
                         spec = {'type': 'binary', 'f1': fa, 'f2': fb, 'op': op, 'direction': direction, 'threshold': threshold}
@@ -322,7 +335,7 @@ def _aggregate_across_assets(factor_results_by_ticker: Dict[str, List[Dict]]) ->
     return aggregated
 
 
-def run_auto_feature_engineering(max_candidates_per_asset=300, save_top_n=50):
+def run_auto_feature_engineering(max_candidates_per_asset=500, save_top_n=200):
     """主入口：批量生成候选因子，回测，聚合，保存 Top N。"""
     tickers = _load_top_tickers(20)
     print(f"[auto_fe] 加载 {len(tickers)} 个标的...")
@@ -368,8 +381,8 @@ def run_auto_feature_engineering(max_candidates_per_asset=300, save_top_n=50):
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--candidates', type=int, default=300, help='每只标的生成候选数量')
-    parser.add_argument('--top-n', type=int, default=50, help='保存表现最好的 N 个')
+    parser.add_argument('--candidates', type=int, default=500, help='每只标的生成候选数量')
+    parser.add_argument('--top-n', type=int, default=200, help='保存表现最好的 N 个')
     args = parser.parse_args()
 
     top = run_auto_feature_engineering(max_candidates_per_asset=args.candidates, save_top_n=args.top_n)
