@@ -36,7 +36,7 @@ warnings.filterwarnings('ignore')
 
 from analysts import fundamentals_analyst, news_analyst
 from core.debate_engine import DebateEngine
-from core.data_layer import get_realtime_price, is_futures, get_stock_data, calc_technical_indicators, multi_period_backtest
+from core.data_layer import get_realtime_price, is_futures, get_stock_data, calc_technical_indicators, multi_period_backtest, tf_quotes
 import pandas as pd
 
 DB_PATH = os.path.join(PROJECT_ROOT, 'multi_agent', 'data', 'llm_predictions.db')
@@ -53,9 +53,10 @@ WEIGHTS = {
 
 THRESHOLD = {
     'strong_bull': 62,
-    'weak_bull': 55,
-    'neutral_high': 45,
-    'weak_bear': 42,
+    'bull': 55,
+    'neutral_high': 53,
+    'neutral_low': 47,
+    'bear': 45,
     'strong_bear': 38,
 }
 
@@ -190,20 +191,22 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     )
     weighted = max(0, min(100, weighted))
 
-    # 统一信号判定
-    if weighted >= THRESHOLD['strong_bull'] and net_debate >= 1:
+    # 统一信号判定：收窄 neutral 范围，47-53 才为中性
+    if weighted >= THRESHOLD['strong_bull']:
         signal = 'bullish'
-    elif weighted >= THRESHOLD['weak_bull'] and net_debate >= 0:
+    elif weighted >= THRESHOLD['bull']:
         signal = 'bullish'
-    elif weighted <= THRESHOLD['strong_bear'] and net_debate <= -1:
+    elif weighted <= THRESHOLD['strong_bear']:
         signal = 'bearish'
-    elif weighted <= THRESHOLD['weak_bear'] and net_debate <= 0:
+    elif weighted <= THRESHOLD['bear']:
         signal = 'bearish'
     else:
         signal = 'neutral'
 
-    confidence = abs(weighted - 50) / 50 * 0.6 + min(abs(net_debate) * 0.05, 0.3) + 0.1
-    confidence = round(max(0.15, min(0.95, confidence)), 2)
+    # confidence：距离中值越远越高；0.5 为中性基线，避免低区分度
+    distance_from_neutral = abs(weighted - 50) / 50
+    debate_strength = min(abs(net_debate) * 0.08, 0.4)
+    confidence = round(max(0.5, min(0.95, 0.5 + distance_from_neutral * 0.5 + debate_strength)), 2)
 
     base_position = POSITION_MAP[signal]
     position_pct = round(min(base_position * confidence, 0.25), 3)
@@ -241,11 +244,37 @@ def _fast_technical_analysis(ticker: str, name: str = "") -> Dict:
     """
     轻量技术面分析：仅 get_stock_data + calc_technical_indicators，
     跳过 AdaptivePredictor 与复杂回测，单标约 0.5-2 秒。
+    新增：TickFlow 实时行情校验与评分增强。
     """
     df, _ = get_stock_data(ticker, calibrate=False)
     df = calc_technical_indicators(df)
     latest = df.iloc[-1]
     cp = float(latest['close'])
+
+    # TickFlow 实时行情校验
+    tf_data = {}
+    tf_price = None
+    tf_change_pct = 0.0
+    tf_turnover = 0.0
+    try:
+        from core.data_layer import tf_quotes
+        tf_data = tf_quotes([ticker]).get(ticker, {})
+        tf_price = tf_data.get('price')
+        tf_change_pct = tf_data.get('change_pct', 0.0) or 0.0
+        tf_turnover = tf_data.get('turnover_rate', 0.0) or 0.0
+    except Exception:
+        pass
+
+    if tf_price and cp > 0:
+        price_dev = abs(tf_price / cp - 1) * 100
+        if price_dev > 3.0:
+            # 偏差过大，保留数据源收盘价并记录警告
+            tf_data['price_warning'] = f"TickFlow价格{tf_price}与数据源收盘价{cp}偏差{price_dev:.2f}%"
+        elif price_dev < 2.0:
+            # 偏差在 2% 内，用 TickFlow 最新价作为 current_price
+            cp = tf_price
+    elif tf_price:
+        cp = tf_price
 
     def _val(col, ndigits=2, default=0):
         v = latest.get(col)
@@ -259,6 +288,9 @@ def _fast_technical_analysis(ticker: str, name: str = "") -> Dict:
         'boll_up': _val('boll_up'), 'boll_mid': _val('boll_mid'), 'boll_down': _val('boll_down'),
         'vol_ratio': _val('vol_ratio', 2), 'annual_vol_20d': _val('annual_vol_20d', 1),
         'momentum_5d': _val('momentum_5d', 2), 'momentum_20d': _val('momentum_20d', 2),
+        'tickflow_price': tf_price,
+        'tickflow_change_pct': round(tf_change_pct * 100, 3) if tf_change_pct else None,
+        'tickflow_turnover': round(tf_turnover, 4) if tf_turnover else None,
     }
 
     signals = []
@@ -274,7 +306,7 @@ def _fast_technical_analysis(ticker: str, name: str = "") -> Dict:
     if latest['rsi_14'] < 30: signals.append(("🟢", "RSI超卖"))
     elif latest['rsi_14'] > 70: signals.append(("🔴", "RSI超买"))
 
-    # 轻量评分
+    # 轻量评分（加入 TickFlow 涨跌幅与换手）
     score = 50
     reasons = []
     if pd.notna(latest['ma60']):
@@ -291,6 +323,16 @@ def _fast_technical_analysis(ticker: str, name: str = "") -> Dict:
     vol = tech_snapshot['annual_vol_20d']
     if vol < 30: score += 3; reasons.append("低波")
     elif vol > 60: score -= 2; reasons.append("高波")
+    # TickFlow 实时涨跌幅修正
+    if tf_change_pct > 0.03:
+        score += 2; reasons.append("TickFlow实时涨>3%")
+    elif tf_change_pct < -0.03:
+        score -= 2; reasons.append("TickFlow实时跌>3%")
+    # 换手活跃度（仅个股）
+    if tf_turnover and 0.02 < tf_turnover < 0.15:
+        score += 1; reasons.append("TickFlow换手适中")
+    elif tf_turnover and tf_turnover > 0.20:
+        score -= 1; reasons.append("TickFlow换手过高")
     score = max(0, min(100, score))
 
     rating = "偏多" if score >= 75 else "中性偏多" if score >= 60 else "中性" if score >= 40 else "中性偏空" if score >= 25 else "偏空"
@@ -299,13 +341,18 @@ def _fast_technical_analysis(ticker: str, name: str = "") -> Dict:
     m5 = tech_snapshot['momentum_5d'] / 5 if tech_snapshot['momentum_5d'] else 0
     m20 = tech_snapshot['momentum_20d'] / 20 if tech_snapshot['momentum_20d'] else 0
     avg_daily = (m5 + m20) / 2
+    # 加入 TickFlow 实时涨跌修正
+    if tf_change_pct:
+        avg_daily = avg_daily * 0.7 + (tf_change_pct * 100) * 0.3
     predictions = []
     for days, label in [(1, '1d'), (3, '3d'), (5, '5d'), (10, '10d')]:
         pred_return = avg_daily * days
-        pred_price = round(cp * (1 + pred_return / 100), 3)
+        # 用更宽松的阈值才判定方向（1日1.5%，3日2.5%，5日3.5%，10日5%）
+        thr = 1.5 + max(0, (days - 1)) * 0.5
+        pred_direction = '上涨' if pred_return > thr else '下跌' if pred_return < -thr else '震荡'
         predictions.append({
-            'day': days, 'pred_price': pred_price, 'pred_return': round(pred_return, 3),
-            'pred_direction': '上涨' if pred_return > 0.5 else '下跌' if pred_return < -0.5 else '震荡'
+            'day': days, 'pred_price': round(cp * (1 + pred_return / 100), 3), 'pred_return': round(pred_return, 3),
+            'pred_direction': pred_direction,
         })
     prediction = {
         'trend': '看涨' if avg_daily > 0.3 else '看跌' if avg_daily < -0.3 else '震荡',
@@ -316,7 +363,7 @@ def _fast_technical_analysis(ticker: str, name: str = "") -> Dict:
     backtest = multi_period_backtest(df, periods=[30, 60]) if len(df) >= 30 else []
 
     return {
-        'analyst': '技术面分析师(轻量)',
+        'analyst': '技术面分析师(轻量+TickFlow)',
         'ticker': ticker, 'name': name, 'current_price': round(cp, 2),
         'score': score, 'rating': rating,
         'backtest_results': backtest,
@@ -324,6 +371,7 @@ def _fast_technical_analysis(ticker: str, name: str = "") -> Dict:
         'signals': signals,
         'reasons': reasons,
         'prediction': prediction,
+        'tickflow': tf_data,
     }
 
 
@@ -551,7 +599,8 @@ def validate_predictions(pred_date: str = None) -> Dict:
             actual_return = (actual_price - pred_price) / pred_price
             pred_return = float(row['horizon_1d_return'] or 0)
             pred_direction = 'up' if pred_return > 0 else 'down' if pred_return < 0 else 'flat'
-            actual_direction = 'up' if actual_return > 0.005 else 'down' if actual_return < -0.005 else 'flat'
+            # 1日方向阈值从 0.5% 放宽到 1.5%，过滤日内噪音
+            actual_direction = 'up' if actual_return > 0.015 else 'down' if actual_return < -0.015 else 'flat'
             direction_correct = (pred_direction == actual_direction) if pred_direction != 'flat' else 0
 
             cur.execute("""
