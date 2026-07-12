@@ -10,6 +10,7 @@ import json
 import os
 import sys
 from typing import List, Dict, Tuple
+from collections import Counter
 import numpy as np
 import pandas as pd
 from numba import njit
@@ -75,23 +76,14 @@ def _load_top_tickers(n=20) -> List[str]:
 
 def _execute_factor_code_on_df(code: str, df: pd.DataFrame) -> pd.Series:
     """在已加载的 DataFrame 上执行因子代码，返回 signal 序列。"""
-    close = df['close']
-    ma5 = df['ma5']
-    ma10 = df['ma10']
-    ma20 = df['ma20']
-    ma60 = df['ma60']
-    rsi_14 = df['rsi_14']
-    macd_hist = df['macd_hist']
-    momentum_5d = df['momentum_5d']
-    boll_up = df['boll_up']
-    boll_down = df['boll_down']
-    vol_ratio = df['vol_ratio']
     namespace = {
         'np': np, 'pd': pd,
-        'close': close, 'ma5': ma5, 'ma10': ma10, 'ma20': ma20, 'ma60': ma60,
-        'rsi_14': rsi_14, 'macd_hist': macd_hist, 'momentum_5d': momentum_5d,
-        'boll_up': boll_up, 'boll_down': boll_down, 'vol_ratio': vol_ratio,
+        'close': df['close'], 'open': df.get('open', df['close']),
+        'high': df.get('high', df['close']), 'low': df.get('low', df['close']),
+        'volume': df.get('volume', pd.Series(0, index=df.index)),
     }
+    for col in df.columns:
+        namespace[col] = df[col]
     exec(code, namespace)
     signal = namespace.get('signal')
     if signal is None:
@@ -115,7 +107,7 @@ def _batch_load_data(tickers: List[str]) -> Dict[str, pd.DataFrame]:
 def _out_of_sample_stats(signal: pd.Series, returns: pd.Series) -> Dict:
     """计算样本外统计：分训练/测试。过滤 nan。"""
     aligned = pd.DataFrame({'signal': signal, 'returns': returns}).dropna()
-    if len(aligned) < 60:
+    if len(aligned) < 120:
         return {}
 
     n = len(aligned)
@@ -129,8 +121,8 @@ def _out_of_sample_stats(signal: pd.Series, returns: pd.Series) -> Dict:
     test_ret, test_dd, test_wr, test_trades = _backtest(test_signal, test_returns)
 
     # IC: 信号与未来收益的相关性
-    fut_ret = returns.shift(-1)
-    ic_aligned = pd.DataFrame({'signal': signal, 'fut_ret': fut_ret}).dropna()
+    fut_ret = aligned['returns'].shift(-1)
+    ic_aligned = pd.DataFrame({'signal': aligned['signal'], 'fut_ret': fut_ret}).dropna()
     if len(ic_aligned) > 30:
         ic = ic_aligned['signal'].corr(ic_aligned['fut_ret'])
         rank_ic, _ = spearmanr(ic_aligned['signal'], ic_aligned['fut_ret'])
@@ -149,32 +141,60 @@ def _out_of_sample_stats(signal: pd.Series, returns: pd.Series) -> Dict:
     }
 
 
-def _select_orthogonal(factors: List[Dict], corr_threshold: float = 0.7, max_selected: int = 30) -> List[Dict]:
-    """按样本外表现排序，逐步加入，剔除高相关性因子。"""
-    # 先按 test_return 排序
-    sorted_factors = sorted(factors, key=lambda x: x.get('test_return', 0), reverse=True)
+def _select_orthogonal(factors: List[Dict], corr_threshold: float = 0.5, max_selected: int = 30,
+                       min_per_source: Dict[str, int] = None) -> List[Dict]:
+    """按综合得分排序，保留低相关性的因子，并保证来源多样性。"""
+    if min_per_source is None:
+        min_per_source = {'rule': 8, 'auto_fe': 5, 'composite': 1}
+    by_source = {}
+    for f in factors:
+        src = f.get('source', 'unknown')
+        by_source.setdefault(src, []).append(f)
+    for src in by_source:
+        by_source[src].sort(key=lambda x: x.get('composite_score', 0), reverse=True)
+
     selected = []
-    for f in sorted_factors:
+    selected_signals = []
+
+    def _avg_corr_with_selected(f: Dict) -> float:
+        if not selected_signals:
+            return 0.0
+        corrs = []
+        for sig_b in selected_signals:
+            for sig_a, sig_b_ticker in zip(f.get('signals', []), sig_b):
+                if sig_a is None or sig_b_ticker is None:
+                    continue
+                aligned = pd.concat([sig_a, sig_b_ticker], axis=1).dropna()
+                if len(aligned) > 30:
+                    corrs.append(abs(aligned.iloc[:, 0].corr(aligned.iloc[:, 1])))
+        return sum(corrs) / len(corrs) if corrs else 0.0
+
+    # 先满足每个来源最低配额
+    for src, min_n in min_per_source.items():
+        for f in by_source.get(src, [])[:min_n]:
+            if len(selected) >= max_selected:
+                break
+            if _avg_corr_with_selected(f) < corr_threshold:
+                selected.append(f)
+                selected_signals.append(f.get('signals', []))
         if len(selected) >= max_selected:
             break
-        if f.get('test_return', 0) <= 0:
+
+    # 剩余名额按综合分从高到低填补
+    all_sorted = sorted(factors, key=lambda x: x.get('composite_score', 0), reverse=True)
+    for f in all_sorted:
+        if len(selected) >= max_selected:
+            break
+        if f in selected:
             continue
-        # 计算与已选因子的平均相关性
-        if not selected:
+        if _avg_corr_with_selected(f) < corr_threshold:
             selected.append(f)
-            continue
-        corrs = []
-        for s in selected:
-            c = f.get('signal_returns_corr', 0)
-            # 这里需要预先计算 signal_returns_corr
-            corrs.append(abs(c))
-        avg_corr = sum(corrs) / len(corrs)
-        if avg_corr < corr_threshold:
-            selected.append(f)
+            selected_signals.append(f.get('signals', []))
+
     return selected
 
 
-def select_factors(save_top_n: int = 30, corr_threshold: float = 0.7):
+def select_factors(save_top_n: int = 30, corr_threshold: float = 0.5):
     factors = _load_factors()
     tickers = _load_top_tickers(20)
     print(f"[factor_selector] 加载 {len(factors)} 个因子，{len(tickers)} 个标的")
@@ -187,6 +207,7 @@ def select_factors(save_top_n: int = 30, corr_threshold: float = 0.7):
     all_evaluated = []
     for idx, factor in enumerate(factors):
         oos_results = []
+        signals = []
         for ticker, df in data_cache.items():
             try:
                 signal = _execute_factor_code_on_df(factor['code'], df)
@@ -195,6 +216,7 @@ def select_factors(save_top_n: int = 30, corr_threshold: float = 0.7):
                 if not stats:
                     continue
                 oos_results.append(stats)
+                signals.append(signal)
             except Exception as e:
                 continue
 
@@ -206,45 +228,52 @@ def select_factors(save_top_n: int = 30, corr_threshold: float = 0.7):
         avg_test_dd = sum(r['test_drawdown'] for r in oos_results) / len(oos_results)
         avg_ic = sum(r['ic'] for r in oos_results) / len(oos_results)
         avg_rank_ic = sum(r['rank_ic'] for r in oos_results) / len(oos_results)
-        stability_score = avg_test * max(avg_rank_ic, 0)
+        avg_train_dd = sum(r['train_drawdown'] for r in oos_results) / len(oos_results)
+        avg_wr = sum(r['test_win_rate'] for r in oos_results) / len(oos_results)
+
+        # 综合得分：样本外收益 + 夏普风格 + IC + 训练测试一致性
+        test_sharpe = avg_test / (abs(avg_test_dd) + 1e-9)
+        consistency = max(0, 1 - abs(avg_train - avg_test) / (abs(avg_train) + abs(avg_test) + 1e-9))
+        ic_score = max(0, avg_rank_ic) * 100
+        composite_score = (
+            avg_test * 0.5 +                    # 降低收益权重
+            test_sharpe * 20.0 +                # 加大夏普/回撤惩罚
+            ic_score * 30.0 +                   # 加大 IC 权重
+            consistency * 5.0                 # 降低一致性权重
+        )
+        # 通过条件：按来源差异化
+        # 规则因子已有经济逻辑，要求严格；auto_fe 允许更多样本探索
+        src = factor.get('source', 'unknown')
+        if src == 'auto_fe':
+            passed = (avg_test > -20) and (avg_test_dd > -80) and (avg_test_dd != 0)
+        else:
+            passed = (avg_test > -5) and (avg_test_dd > -70)
 
         all_evaluated.append({
             **factor,
             'avg_train_return': round(avg_train, 2),
+            'avg_train_drawdown': round(avg_train_dd, 2),
             'avg_test_return': round(avg_test, 2),
             'avg_test_drawdown': round(avg_test_dd, 2),
+            'avg_test_win_rate': round(avg_wr, 1),
             'avg_ic': round(avg_ic, 3),
             'avg_rank_ic': round(avg_rank_ic, 3),
-            'stability_score': round(stability_score, 2),
-            'passed': avg_test > 0 and avg_rank_ic > 0,
+            'test_sharpe': round(test_sharpe, 2),
+            'consistency': round(consistency, 2),
+            'composite_score': round(composite_score, 2),
+            'signals': signals,
+            'passed': passed,
         })
 
-    # 正交化：按稳定性分排序，保留低相关性的因子
+    # 正交化：按综合得分排序，保留低相关性的因子
     passed = [f for f in all_evaluated if f['passed']]
-    passed.sort(key=lambda x: x['stability_score'], reverse=True)
-    selected = []
+    selected = _select_orthogonal(passed, corr_threshold=corr_threshold, max_selected=save_top_n)
+
+    # 保存前去掉 signals 序列，避免 JSON 过大
+    for f in selected:
+        f.pop('signals', None)
     for f in passed:
-        if len(selected) >= save_top_n:
-            break
-        if not selected:
-            selected.append(f)
-            continue
-        # 计算与已选因子的 signal 相关性平均值（用第一个 ticker 的 signal 作为代表）
-        try:
-            first_ticker = list(data_cache.keys())[0]
-            first_df = data_cache[first_ticker]
-            f_signal = _execute_factor_code_on_df(f['code'], first_df)
-            corrs = []
-            for s in selected:
-                s_signal = _execute_factor_code_on_df(s['code'], first_df)
-                aligned = pd.concat([f_signal, s_signal], axis=1).dropna()
-                if len(aligned) > 30:
-                    corrs.append(abs(aligned.iloc[:, 0].corr(aligned.iloc[:, 1])))
-            avg_corr = sum(corrs) / len(corrs) if corrs else 0
-            if avg_corr < corr_threshold:
-                selected.append(f)
-        except Exception:
-            continue
+        f.pop('signals', None)
 
     os.makedirs(os.path.dirname(SELECTED_DB_PATH), exist_ok=True)
 
@@ -263,6 +292,8 @@ def select_factors(save_top_n: int = 30, corr_threshold: float = 0.7):
         json.dump(_sanitize({'factors': selected, 'total': len(factors), 'passed': len(passed)}), f, ensure_ascii=False, indent=2)
 
     print(f"[factor_selector] 通过 {len(passed)} 个，精选 {len(selected)} 个")
+    print(f"[factor_selector] 通过来源分布: {dict(Counter(f.get('source', 'unknown') for f in passed))}")
+    print(f"[factor_selector] 精选来源分布: {dict(Counter(f.get('source', 'unknown') for f in selected))}")
     return selected
 
 
@@ -276,5 +307,5 @@ if __name__ == '__main__':
     for f in selected[:10]:
         print(f"\n✅ {f['name']} ({f.get('source','?')})")
         print(f"   训练收益 {f['avg_train_return']}% | 测试收益 {f['avg_test_return']}% | 测试回撤 {f['avg_test_drawdown']}%")
-        print(f"   IC {f['avg_ic']} | Rank IC {f['avg_rank_ic']} | 稳定分 {f['stability_score']}")
+        print(f"   IC {f['avg_ic']} | Rank IC {f['avg_rank_ic']} | 综合分 {f['composite_score']}")
         print(f"   {f['description']}")

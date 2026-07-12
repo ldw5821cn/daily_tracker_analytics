@@ -107,23 +107,38 @@ def _build_binary_feature(a: pd.Series, b: pd.Series, op: str) -> pd.Series:
     return a
 
 
-def _generate_thresholds(series: pd.Series, n: int = 5) -> List[float]:
-    """根据序列分布生成候选阈值。"""
+def _generate_thresholds(series: pd.Series, direction: str, n: int = 3) -> List[float]:
+    """根据序列分布和方向生成有区分度的候选阈值。先做 1%/99% 缩尾避免极值。"""
     s = series.dropna()
     if len(s) < 20:
         return [0.0]
-    qs = np.linspace(10, 90, n)
+    low, high = s.quantile(0.01), s.quantile(0.99)
+    s = s.clip(lower=low, upper=high)
+    if direction == 'long':
+        qs = [50, 70, 90]
+    elif direction == 'short':
+        qs = [10, 30, 50]
+    else:  # both: 绝对值偏离，取 70/80/90 分位
+        qs = [70, 80, 90]
     return [s.quantile(q/100) for q in qs]
 
 
 def _factor_to_signal(feat: pd.Series, direction: str, threshold: float, spec: Dict) -> Tuple[np.ndarray, str, Dict]:
     """根据特征值和阈值生成 -1/0/1 信号（已 shift(1)），并返回可执行代码与 spec。"""
+    direction = spec['direction']
+    threshold = spec['threshold']
     if direction == 'long':
         sig = np.where(feat > threshold, 1, 0)
+        cond = f"feat > {threshold}"
+        val = "1"
     elif direction == 'short':
         sig = np.where(feat < threshold, -1, 0)
-    else:  # both
-        sig = np.where(feat > threshold, 1, np.where(feat < -threshold, -1, 0))
+        cond = f"feat < {threshold}"
+        val = "-1"
+    else:  # both: 绝对值偏离
+        sig = np.where(np.abs(feat) > threshold, np.sign(feat), 0)
+        cond = f"np.abs(feat) > {threshold}"
+        val = "np.sign(feat)"
 
     sig = pd.Series(sig, index=feat.index).shift(1).fillna(0).values.astype(np.int8)
 
@@ -161,23 +176,14 @@ def _factor_to_signal(feat: pd.Series, direction: str, threshold: float, spec: D
         else:
             expr = f"{f1}"
 
-    direction = spec['direction']
-    threshold = spec['threshold']
-    if direction == 'long':
-        cond = f"feat > {threshold}"
-    elif direction == 'short':
-        cond = f"feat < {threshold}"
-    else:
-        cond = f"(feat > {threshold}) | (feat < {-threshold})"
-
     code = f"""feat = {expr}
-signal = np.where({cond}, 1, np.where({'feat < -' + str(threshold) if direction == 'both' else 'False'}, -1, 0))
+signal = np.where({cond}, {val}, 0)
 signal = pd.Series(signal, index=close.index).shift(1).fillna(0)
 """
     return sig, code, spec
 
 
-def generate_candidate_factors(df: pd.DataFrame, max_candidates: int = 500, include_code: bool = False) -> List[Dict]:
+def generate_candidate_factors(df: pd.DataFrame, max_candidates: int = 500, include_code: bool = True) -> List[Dict]:
     """在单个 DataFrame 上生成候选因子。"""
     candidates = []
     returns = df['close'].pct_change().values.astype(np.float64)
@@ -192,7 +198,7 @@ def generate_candidate_factors(df: pd.DataFrame, max_candidates: int = 500, incl
             feat = _build_unary_feature(base, op)
             feat.name = f'{fname}_{op}'
             for direction in DIRECTIONS:
-                thresholds = _generate_thresholds(feat, n=5)
+                thresholds = _generate_thresholds(feat, direction, n=3)
                 for threshold in thresholds:
                     name = f"{fname}_{op}_{direction}_t{threshold:.3g}"
                     spec = {'type': 'unary', 'f1': fname, 'op': op, 'direction': direction, 'threshold': threshold}
@@ -216,7 +222,7 @@ def generate_candidate_factors(df: pd.DataFrame, max_candidates: int = 500, incl
                 feat = _build_binary_feature(df[fa], df[fb], op)
                 feat.name = f'{fa}_{op}_{fb}'
                 for direction in DIRECTIONS:
-                    thresholds = _generate_thresholds(feat, n=5)
+                    thresholds = _generate_thresholds(feat, direction, n=3)
                     for threshold in thresholds:
                         name = f"{fa}_{op}_{fb}_{direction}_t{threshold:.3g}"
                         spec = {'type': 'binary', 'f1': fa, 'f2': fb, 'op': op, 'direction': direction, 'threshold': threshold}
@@ -248,12 +254,20 @@ def evaluate_candidates(candidates: List[Dict]) -> List[Dict]:
             signal = c['signal']
             returns = c['returns']
             valid = c['valid_mask'] & (~np.isnan(returns)) & (~np.isnan(signal.astype(float)))
-            if valid.sum() < 30:
+            if valid.sum() < 120:
                 continue
             s = signal[valid]
             r = returns[valid]
             total_ret, max_dd, win_rate, trades = _backtest_signal(s, r)
             if np.isnan(total_ret) or np.isinf(total_ret):
+                continue
+            # 淘汰信号恒定或变化极少的因子
+            signal_changes = np.sum(s[1:] != s[:-1])
+            if signal_changes < 5:
+                continue
+            # 淘汰信号覆盖率极端的因子（>95% 或 <5% 仓位时间）
+            non_zero_ratio = np.mean(s != 0)
+            if non_zero_ratio < 0.05 or non_zero_ratio > 0.95:
                 continue
             results.append({
                 'name': c['name'],

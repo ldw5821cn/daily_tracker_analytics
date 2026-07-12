@@ -111,16 +111,20 @@ def run_factor_interpreter(min_credibility: int = 50, model: str = 'deepseek-v4-
         return {'error': 'no factors to interpret'}
 
     print(f"[factor_interpreter] 正在让 LLM 解释 {len(factors)} 个因子...")
-    prompt = _build_prompt(factors)
-    response = chat([{'role': 'user', 'content': prompt}], model=model, max_tokens=4000)
-    if response is None:
-        return {'error': 'LLM call failed or no API key'}
+    batch_size = 10
+    all_evaluations = []
+    for i in range(0, len(factors), batch_size):
+        batch = factors[i:i+batch_size]
+        prompt = _build_prompt(batch)
+        response = chat([{'role': 'user', 'content': prompt}], model=model, max_tokens=4000)
+        if response is None:
+            return {'error': f'LLM call failed for batch {i//batch_size + 1}'}
+        evaluations = _parse_llm_output(response)
+        if not evaluations:
+            return {'error': f'LLM output parsing failed for batch {i//batch_size + 1}', 'raw': response[:500]}
+        all_evaluations.extend(evaluations)
 
-    evaluations = _parse_llm_output(response)
-    if not evaluations:
-        return {'error': 'LLM output parsing failed', 'raw': response[:500]}
-
-    merged = _merge_evaluations(factors, evaluations)
+    merged = _merge_evaluations(factors, all_evaluations)
     filtered = [f for f in merged if f.get('llm_credibility_score', 0) >= min_credibility]
 
     data['factors'] = merged
