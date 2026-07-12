@@ -83,16 +83,71 @@ BASE_FACTOR_TEMPLATES = [
     {'name': 'MACD零轴', 'desc': 'MACD柱由负转正穿越零轴做多', 'code': "macd_hist_prev = macd_hist.shift(1)\nsignal = np.where((macd_hist > 0) & (macd_hist_prev <= 0), 1, np.where((macd_hist < 0) & (macd_hist_prev >= 0), -1, 0))"},
     {'name': '量价背离', 'desc': '价格上涨但成交量下降做空', 'code': "ret = close.pct_change()\nsignal = np.where((ret > 0) & (vol_ratio < 0.7), -1, 0)"},
     {'name': '突破回踩', 'desc': '创20日新高后回踩不破前高做多', 'code': "hh = close.rolling(20).max()\nsignal = np.where((close > hh.shift(1)) & (close.shift(1) >= hh.shift(2)), 1, 0)"},
+
+    # 更多动量/反转类
+    {'name': '动量12日', 'desc': '12日收益为正做多，为负做空', 'code': "mom = close.pct_change(12)\nsignal = np.where(mom > 0, 1, -1)"},
+    {'name': '动量15日', 'desc': '15日收益为正做多，为负做空', 'code': "mom = close.pct_change(15)\nsignal = np.where(mom > 0, 1, -1)"},
+    {'name': '动量30日', 'desc': '30日收益为正做多，为负做空', 'code': "mom = close.pct_change(30)\nsignal = np.where(mom > 0, 1, -1)"},
+    {'name': '动能衰减', 'desc': '5日动量大于10日但小于20日，动能在衰减时退出', 'code': "mom5, mom10, mom20 = close.pct_change(5), close.pct_change(10), close.pct_change(20)\nsignal = np.where((mom5 > mom10) & (mom10 < mom20), 1, np.where((mom5 < mom10) & (mom10 > mom20), -1, 0))"},
+
+    # 更多 RSI 类
+    {'name': 'RSI金叉', 'desc': 'RSI上穿50做多，下穿50做空', 'code': "rsi_prev = rsi_14.shift(1)\nsignal = np.where((rsi_14 > 50) & (rsi_prev <= 50), 1, np.where((rsi_14 < 50) & (rsi_prev >= 50), -1, 0))"},
+    {'name': 'RSI快速反转', 'desc': 'RSI从低于20快速反弹到30以上做多', 'code': "rsi_prev = rsi_14.shift(1)\nsignal = np.where((rsi_prev < 20) & (rsi_14 > 30), 1, 0)"},
+    {'name': 'RSI高位回落', 'desc': 'RSI从高于80回落到70以下做空', 'code': "rsi_prev = rsi_14.shift(1)\nsignal = np.where((rsi_prev > 80) & (rsi_14 < 70), -1, 0)"},
+
+    # 更多 MACD 类
+    {'name': 'MACD背离', 'desc': '价格新低但MACD柱未新低做多', 'code': "price_ll = close <= close.rolling(20).min().shift(1)\nmacd_ll = macd_hist <= macd_hist.rolling(20).min().shift(1)\nsignal = np.where(price_ll & (~macd_ll), 1, 0)"},
+    {'name': 'MACD缩量', 'desc': 'MACD柱为正但缩小，动量减弱做空', 'code': "macd_hist_prev = macd_hist.shift(1)\nsignal = np.where((macd_hist > 0) & (macd_hist < macd_hist_prev), -1, 0)"},
+    {'name': 'MACD量能共振', 'desc': 'MACD为正且价格站上MA60且放量做多', 'code': "signal = np.where((macd_hist > 0) & (close > ma60) & (vol_ratio > 1.2), 1, 0)"},
+
+    # 更多布林带类
+    {'name': 'BOLL百分位', 'desc': '价格位于布林带下轨附近做多，上轨附近做空', 'code': "boll_pct = (close - boll_down) / (boll_up - boll_down + 1e-6)\nsignal = np.where(boll_pct < 0.1, 1, np.where(boll_pct > 0.9, -1, 0))"},
+    {'name': 'BOLL突破中轨', 'desc': '价格突破布林中轨且放量做多', 'code': "boll_mid = (boll_up + boll_down) / 2\nprev_close = close.shift(1)\nprev_mid = boll_mid.shift(1)\nsignal = np.where((close > boll_mid) & (prev_close <= prev_mid) & (vol_ratio > 1.1), 1, 0)"},
+    {'name': 'BOLL收口', 'desc': '布林带收窄后，价格站上中轨做多', 'code': "boll_width = (boll_up - boll_down) / ((boll_up + boll_down) / 2)\nwidth_ma = boll_width.rolling(20).mean()\nboll_mid = (boll_up + boll_down) / 2\nsignal = np.where((boll_width < width_ma) & (close > boll_mid), 1, 0)"},
+
+    # 更多波动率类
+    {'name': 'ATR突破', 'desc': '价格突破昨日高点加上0.5倍ATR做多', 'code': "atr = (close.rolling(14).max() - close.rolling(14).min()).rolling(14).mean()\nsignal = np.where(close > close.shift(1) + 0.5 * atr, 1, 0)"},
+    {'name': '波动率均值回归', 'desc': '波动率处于60日低位且价格上涨做多', 'code': "vol20 = close.pct_change().rolling(20).std()\nrank = vol20.rolling(60).apply(lambda x: x.rank().iloc[-1] / len(x), raw=False)\nsignal = np.where((rank < 0.2) & (close > ma5), 1, 0)"},
+    {'name': '波动率突破', 'desc': '波动率突破60日均值且价格上涨做多', 'code': "vol20 = close.pct_change().rolling(20).std()\nvol_ma = vol20.rolling(60).mean()\nsignal = np.where((vol20 > vol_ma) & (close > ma20), 1, 0)"},
+
+    # 更多量价类
+    {'name': '放量阳线', 'desc': '收阳线且成交量是20日均量1.5倍以上做多', 'code': "ret = close.pct_change()\nsignal = np.where((ret > 0) & (vol_ratio > 1.5), 1, 0)"},
+    {'name': '缩量阴线', 'desc': '收阴线但成交量萎缩，卖压不足做多', 'code': "ret = close.pct_change()\nsignal = np.where((ret < 0) & (vol_ratio < 0.6), 1, 0)"},
+    {'name': '成交量突破', 'desc': '成交量是5日均量2倍以上且价格上涨做多', 'code': "signal = np.where((vol_ratio > 2.0) & (close > close.shift(1)), 1, 0)"},
+    {'name': '量价齐跌', 'desc': '价格下跌且成交量放大，继续看空', 'code': "ret = close.pct_change()\nsignal = np.where((ret < 0) & (vol_ratio > 1.3), -1, 0)"},
+    {'name': '均量线金叉', 'desc': '5日成交量均线上穿20日均量做多', 'code': "vol5 = vol_ratio.rolling(5).mean()\nvol20m = vol_ratio.rolling(20).mean()\nsignal = np.where((vol5 > vol20m) & (vol5.shift(1) <= vol20m.shift(1)), 1, 0)"},
+
+    # 筹码/支撑类
+    {'name': '跳空回补', 'desc': '向上跳空后价格未回补缺口做多', 'code': "gap = close - close.shift(1)\nsignal = np.where((gap > 0.01 * close.shift(1)) & (close > close.shift(1).rolling(5).max().shift(1)), 1, 0)"},
+    {'name': 'V型反弹', 'desc': '前5日大幅下跌，近3日反弹超过5%做多', 'code': "past5 = close.pct_change(5)\npast3 = close.pct_change(3)\nsignal = np.where((past5 < -0.10) & (past3 > 0.05), 1, 0)"},
+    {'name': '平台突破', 'desc': '价格突破20日盘整区间上轨且放量做多', 'code': "hh = close.rolling(20).max()\nll = close.rolling(20).min()\nrange_pct = (hh - ll) / ((hh + ll) / 2)\nsignal = np.where((range_pct < 0.08) & (close > hh.shift(1)) & (vol_ratio > 1.2), 1, 0)"},
+
+    # 综合/过滤类
+    {'name': '趋势过滤RSI', 'desc': 'MA20趋势向上且RSI未超买做多', 'code': "ma20_trend = ma20 > ma20.shift(5)\nsignal = np.where(ma20_trend & (rsi_14 < 70), 1, 0)"},
+    {'name': '动量过滤波动率', 'desc': '5日动量为正且20日波动率处于低位做多', 'code': "mom5 = close.pct_change(5)\nvol20 = close.pct_change().rolling(20).std()\nvol_low = vol20 < vol20.rolling(60).median()\nsignal = np.where((mom5 > 0) & vol_low, 1, 0)"},
+    {'name': 'RSI_MACD趋势', 'desc': 'RSI>50且MACD为正且价格站上MA20做多', 'code': "signal = np.where((rsi_14 > 50) & (macd_hist > 0) & (close > ma20), 1, 0)"},
+    {'name': '多周期共振', 'desc': '日线和周级别均线均向上时做多', 'code': "trend = (close > ma20) & (ma20 > ma60) & (close > ma60)\nsignal = np.where(trend, 1, 0)"},
 ]
 
-# 参数扫描配置：为部分因子生成参数变体
+# 参数扫描配置：为更多因子生成参数变体
 PARAM_SCAN = {
     'MA20趋势': {'window': [10, 20, 30, 60]},
+    '双均线金叉': {'fast': [5, 10], 'slow': [20, 60]},
     'RSI超卖反弹': {'low': [20, 25, 30], 'high': [70, 75, 80]},
     '5日动量': {'window': [3, 5, 10, 20]},
+    '10日动量': {'window': [10, 15, 20, 30]},
+    '20日动量': {'window': [20, 30, 60]},
     '放量突破': {'vol_thresh': [1.2, 1.5, 2.0]},
     '突破20日高点': {'window': [10, 20, 60]},
     '价格偏离MA20': {'dev': [0.03, 0.05, 0.08]},
+    'BOLL下轨反弹': {'width': [1, 2]},
+    'BOLL百分位': {'low': [0.1, 0.2], 'high': [0.8, 0.9]},
+    '动量12日': {'window': [5, 12, 20]},
+    'RSI中轴': {'threshold': [45, 50, 55]},
+    'MACD柱状': {'threshold': [0, 0.001]},
+    '趋势动量共振': {'window': [5, 10, 20]},
+    'BOLL中轨趋势': {'width': [0, 0.01]},
+    '成交量突破': {'vol_thresh': [1.5, 2.0, 3.0]},
 }
 
 
@@ -306,6 +361,15 @@ def _expand_param_variants():
                 code = code.replace('ma20', ma_col)
                 name = f"MA趋势_window{kw['window']}"
 
+            elif base['name'] == '双均线金叉':
+                ma_map = {5: 'ma5', 10: 'ma10', 20: 'ma20', 30: 'ma30', 60: 'ma60'}
+                # 需动态构造 ma_slow，但模板中 ma5 已存在，ma20 已存在，ma30 未计算。这里只支持 5/10 vs 20/60
+                if kw['fast'] == 5 and kw['slow'] in [20, 60]:
+                    fast_col = ma_map[kw['fast']]
+                    slow_col = ma_map[kw['slow']]
+                    code = f"{fast_col}_prev, {slow_col}_prev = {fast_col}.shift(1), {slow_col}.shift(1)\nsignal = np.where(({fast_col} > {slow_col}) & ({fast_col}_prev <= {slow_col}_prev), 1, np.where(({fast_col} < {slow_col}) & ({fast_col}_prev >= {slow_col}_prev), -1, 0))"
+                name = f"双均线金叉_{kw['fast']}x{kw['slow']}"
+
             elif base['name'] == 'RSI超卖反弹':
                 code = code.replace('rsi_14 < 30', f'rsi_14 < {kw["low"]}').replace('rsi_14 > 70', f'rsi_14 > {kw["high"]}')
                 name = f"RSI反转_L{kw['low']}H{kw['high']}"
@@ -313,6 +377,14 @@ def _expand_param_variants():
             elif base['name'] == '5日动量':
                 code = code.replace('close.pct_change(5)', f'close.pct_change({kw["window"]})')
                 name = f"{kw['window']}日动量"
+
+            elif base['name'] == '10日动量':
+                code = code.replace('close.pct_change(10)', f'close.pct_change({kw["window"]})')
+                name = f"动量_{kw['window']}日"
+
+            elif base['name'] == '20日动量':
+                code = code.replace('close.pct_change(20)', f'close.pct_change({kw["window"]})')
+                name = f"动量_{kw['window']}日"
 
             elif base['name'] == '放量突破':
                 code = code.replace('vol_ratio > 1.5', f'vol_ratio > {kw["vol_thresh"]}').replace('vol_ratio < 0.8', f'vol_ratio < {kw["vol_thresh"] * 0.5}')
@@ -325,6 +397,45 @@ def _expand_param_variants():
             elif base['name'] == '价格偏离MA20':
                 code = code.replace('-0.05', f'-{kw["dev"]}').replace('0.05', f'{kw["dev"]}')
                 name = f"偏离MA20_d{kw['dev']}"
+
+            elif base['name'] == 'BOLL下轨反弹':
+                # 原始模板使用 close <= boll_down，不做变体，只是参数化宽度
+                code = code.replace('close <= boll_down', f'close <= boll_down * (1 + {kw["width"] * 0.01})')
+                name = f"BOLL下轨反弹_w{kw['width']}"
+
+            elif base['name'] == 'BOLL百分位':
+                code = code.replace('boll_pct < 0.1', f'boll_pct < {kw["low"]}').replace('boll_pct > 0.9', f'boll_pct > {kw["high"]}')
+                name = f"BOLL百分位_l{kw['low']}h{kw['high']}"
+
+            elif base['name'] == '动量12日':
+                code = code.replace('close.pct_change(12)', f'close.pct_change({kw["window"]})')
+                name = f"动量_{kw['window']}日"
+
+            elif base['name'] == 'RSI中轴':
+                code = code.replace('rsi_14 > 50', f'rsi_14 > {kw["threshold"]}').replace('rsi_14 < 50', f'rsi_14 < {kw["threshold"]}')
+                name = f"RSI中轴_t{kw['threshold']}"
+
+            elif base['name'] == 'MACD柱状':
+                code = code.replace('macd_hist > 0', f'macd_hist > {kw["threshold"]}').replace('macd_hist < 0', f'macd_hist < -{kw["threshold"]}')
+                name = f"MACD柱状_t{kw['threshold']}"
+
+            elif base['name'] == 'MA60趋势':
+                ma_map = {30: 'ma30', 60: 'ma60', 120: 'ma60'}
+                ma_col = ma_map.get(kw['window'], 'ma60')
+                code = code.replace('ma60', ma_col)
+                name = f"MA趋势_window{kw['window']}"
+
+            elif base['name'] == '趋势动量共振':
+                code = code.replace('momentum_5d > 0', f'close.pct_change({kw["window"]}) > 0')
+                name = f"趋势动量共振_w{kw['window']}"
+
+            elif base['name'] == 'BOLL中轨趋势':
+                # width 参数占位，不做实际替换
+                name = f"BOLL中轨趋势_w{kw['width']}"
+
+            elif base['name'] == '成交量突破':
+                code = code.replace('vol_ratio > 2.0', f'vol_ratio > {kw["vol_thresh"]}')
+                name = f"成交量突破_v{kw['vol_thresh']}"
 
             variants.append({
                 'name': name,
