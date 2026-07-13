@@ -37,6 +37,7 @@ warnings.filterwarnings('ignore')
 from analysts import fundamentals_analyst, news_analyst
 from core.debate_engine import DebateEngine
 from core.data_layer import get_realtime_price, is_futures, get_stock_data, calc_technical_indicators, multi_period_backtest, tf_quotes
+from core.scenario_backtests import scenario_backtests, recommend_scenario, SCENARIO_NAME_CN, SCENARIO_DESC
 from core.db import get_predictions_conn, save_predictions as _db_save_predictions
 import pandas as pd
 
@@ -346,12 +347,16 @@ def _fast_technical_analysis(ticker: str, name: str = "") -> Dict:
     }
 
     backtest = multi_period_backtest(df, periods=[30, 60]) if len(df) >= 30 else []
+    scenarios = scenario_backtests(df, periods=[30, 60], ticker=ticker) if len(df) >= 30 else []
+    recommended = recommend_scenario(scenarios) if scenarios else {}
 
     return {
         'analyst': '技术面分析师(轻量+TickFlow)',
         'ticker': ticker, 'name': name, 'current_price': round(cp, 2),
         'score': score, 'rating': rating,
         'backtest_results': backtest,
+        'scenarios': scenarios,
+        'recommended_scenario': recommended,
         'tech_snapshot': tech_snapshot,
         'signals': signals,
         'reasons': reasons,
@@ -409,11 +414,15 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
         target, stop = _calc_target_stop(current_price, verdict['signal'], technical.get('tech_snapshot', {}), avg_return)
 
         backtest = technical.get('backtest_results', [])
+        scenarios = technical.get('scenarios', [])
+        recommended = technical.get('recommended_scenario', {})
         backtest_summary = {
             'periods': [{'period': b['period_name'], 'return': b['total_return'],
                          'max_drawdown': b['max_drawdown'], 'sharpe': b['sharpe']}
-                        for b in backtest[:4]]
-        } if backtest else {}
+                        for b in backtest[:4]],
+            'scenarios': scenarios,
+            'recommended_scenario': recommended,
+        } if backtest else {'scenarios': scenarios, 'recommended_scenario': recommended}
 
         return {
             'ticker': ticker,

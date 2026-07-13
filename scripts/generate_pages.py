@@ -23,17 +23,17 @@ SCENARIO_NAME_CN = {
     'daily_long_short_with_cost': '每日多空（含成本）',
     'weekly_long_only_no_cost': '每周只做多（无成本）',
     'weekly_long_only_with_cost': '每周只做多（含成本）',
-    'weekly_long_only_risk_no_cost': '每周只做多+止损风控（无成本）',
-    'weekly_long_only_risk_with_cost': '每周只做多+止损风控（含成本）',
+    'weekly_long_only_risk_no_cost': '每周只做多+止损（无成本）',
+    'weekly_long_only_risk_with_cost': '每周只做多+止损（含成本）',
 }
 
 SCENARIO_DESC = {
-    'daily_long_short_no_cost': '每日按因子得分 Top10 做多、Bottom10 做空，不考虑交易成本',
-    'daily_long_short_with_cost': '每日按因子得分 Top10 做多、Bottom10 做空，扣 0.1% 单边交易成本',
-    'weekly_long_only_no_cost': '每周五选因子得分 Top10 等权做多，不考虑交易成本',
-    'weekly_long_only_with_cost': '每周五选因子得分 Top10 等权做多，扣 0.1% 交易成本',
-    'weekly_long_only_risk_no_cost': '每周五 Top10 等权 + 个股回撤 8% 止损 + 组合回撤 15% 清仓，无成本',
-    'weekly_long_only_risk_with_cost': '每周五 Top10 等权 + 个股回撤 8% 止损 + 组合回撤 15% 清仓，含成本',
+    'daily_long_short_no_cost': '每日按技术得分 Top 做多、Bottom 做空，无交易成本',
+    'daily_long_short_with_cost': '每日按技术得分 Top 做多、Bottom 做空，扣 0.1% 单边成本',
+    'weekly_long_only_no_cost': '每周五按技术得分判定下周方向，无成本',
+    'weekly_long_only_with_cost': '每周五按技术得分判定下周方向，扣 0.1% 成本',
+    'weekly_long_only_risk_no_cost': '每周五只做多 + 8% 止损，无成本',
+    'weekly_long_only_risk_with_cost': '每周五只做多 + 8% 止损，含成本',
 }
 
 SIGNAL_EMOJI = {'bullish': '🔥', 'neutral': '➖', 'bearish': '❄️'}
@@ -207,6 +207,9 @@ def _row_html(p):
             <td>{p.get('bt_return_60d', 0):+.1f}%</td>
             <td>{p.get('bt_max_dd_60d', 0):.1f}%</td>
             <td>{p.get('bt_sharpe_60d', 0):.2f}</td>
+            <td title="{SCENARIO_DESC.get(p.get('recommended_scenario'), '')}">{SCENARIO_NAME_CN.get(p.get('recommended_scenario'), p.get('recommended_scenario', 'N/A'))}</td>
+            <td>{p.get('recommended_return', 0):+.1f}%</td>
+            <td>{p.get('recommended_dd', 0):.1f}%</td>
             <td>{price_str}</td>
             <td>{p.get('target_price', '')}</td>
             <td>{p.get('stop_loss', '')}</td>
@@ -225,7 +228,7 @@ def _table_html(items, title):
     <div class="section-title">{title}</div>
     <div class="table-responsive">
     <table>
-        <thead><tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>60日收益</th><th>60日回撤</th><th>60日夏普</th><th>价格</th><th>目标</th><th>止损</th><th>仓位</th><th>技术分</th></tr></thead>
+        <thead><tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>60日收益</th><th>60日回撤</th><th>60日夏普</th><th>推荐策略</th><th>策略收益</th><th>策略回撤</th><th>价格</th><th>目标</th><th>止损</th><th>仓位</th><th>技术分</th></tr></thead>
         <tbody>{rows}</tbody>
     </table>
     </div>"""
@@ -247,6 +250,7 @@ def _top_cards(rows, title, sig, color_class):
             <div class="card {color_class}">
                 <div class="card-title">{SIGNAL_EMOJI[sig]} {p.get('name', p.get('ticker'))} ({p.get('ticker')})</div>
                 <div class="card-meta">评分 {p.get('weighted_score')} | 60日收益 {p.get('bt_return_60d', 0):+.1f}% | 回撤 {p.get('bt_max_dd_60d', 0):.1f}%</div>
+                <div class="card-meta">推荐策略：{SCENARIO_NAME_CN.get(p.get('recommended_scenario'), 'N/A')} | 收益 {p.get('recommended_return', 0):+.1f}% | 回撤 {p.get('recommended_dd', 0):.1f}%</div>
                 <div class="card-price">{price_label} {p.get('current_price')} | 目标 {p.get('target_price')} | 止损 {p.get('stop_loss')}</div>
                 <div class="card-reason">{p.get('reasoning', '')}</div>
             </div>"""

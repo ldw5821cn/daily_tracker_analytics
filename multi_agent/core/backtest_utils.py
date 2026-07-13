@@ -9,19 +9,15 @@ from typing import Dict, Tuple
 
 
 def parse_backtest_summary(backtest_summary, category: str = '') -> Dict:
-    """解析回测汇总，返回关键指标：60日收益、回撤、夏普、综合得分。
-
-    收益截断：
-    - 个股/ETF 60日收益截断到 ±150%，30日 ±100%
-    - 期货 60日收益截断到 ±80%，30日 ±50%
-    """
+    """解析回测汇总，返回关键指标：60日收益、回撤、夏普、综合得分、推荐策略。"""
     if isinstance(backtest_summary, str):
         try:
             backtest_summary = json.loads(backtest_summary)
         except Exception:
             backtest_summary = {}
     if not backtest_summary or not isinstance(backtest_summary, dict):
-        return {'return_60d': 0, 'max_dd_60d': 0, 'sharpe_60d': 0, 'bt_score': 0}
+        return {'return_60d': 0, 'max_dd_60d': 0, 'sharpe_60d': 0, 'bt_score': 0,
+                'recommended_scenario': 'N/A', 'recommended_return': 0, 'recommended_dd': 0, 'recommended_sharpe': 0}
 
     periods = backtest_summary.get('periods', [])
     r30 = next((p for p in periods if p.get('period') == '近30天'), {})
@@ -32,7 +28,6 @@ def parse_backtest_summary(backtest_summary, category: str = '') -> Dict:
     sharpe60 = r60.get('sharpe', 0)
     ret30 = r30.get('return', 0)
 
-    # 截断异常收益，防止复权/退市/次新股导致排序被拉高
     if category == '期货':
         ret60 = max(min(ret60, 80), -80)
         ret30 = max(min(ret30, 50), -50)
@@ -41,11 +36,17 @@ def parse_backtest_summary(backtest_summary, category: str = '') -> Dict:
         ret30 = max(min(ret30, 100), -100)
     bt_score = ret60 * 0.5 + ret30 * 0.3 - abs(dd60) * 0.2
 
+    rec = backtest_summary.get('recommended_scenario', {}) or {}
+
     return {
-        'return_60d': r60.get('return', 0),   # 原始收益，展示用
+        'return_60d': r60.get('return', 0),
         'max_dd_60d': dd60,
         'sharpe_60d': sharpe60,
-        'bt_score': bt_score,                    # 排序用
+        'bt_score': bt_score,
+        'recommended_scenario': rec.get('scenario', 'N/A'),
+        'recommended_return': rec.get('total_return', 0),
+        'recommended_dd': rec.get('max_drawdown', 0),
+        'recommended_sharpe': rec.get('sharpe', 0),
     }
 
 
@@ -57,6 +58,10 @@ def inject_backtest_metrics(pred: Dict) -> Dict:
         'bt_max_dd_60d': bt['max_dd_60d'],
         'bt_sharpe_60d': bt['sharpe_60d'],
         'bt_score': bt['bt_score'],
+        'recommended_scenario': bt['recommended_scenario'],
+        'recommended_return': bt['recommended_return'],
+        'recommended_dd': bt['recommended_dd'],
+        'recommended_sharpe': bt['recommended_sharpe'],
     })
     return pred
 
