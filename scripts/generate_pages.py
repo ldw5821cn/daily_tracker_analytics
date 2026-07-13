@@ -181,6 +181,8 @@ def _row_html(p):
 def _table_html(items, title):
     if not items:
         return f'<div class="section-title">{title}</div>\n<div class="empty">暂无数据</div>'
+    order = {'bullish': 0, 'bearish': 1, 'neutral': 2}
+    items = sorted(items, key=lambda x: (order.get(x.get('signal'), 99), -x.get('weighted_score', 0)))
     rows = "".join(_row_html(p) for p in items)
     return f"""
     <div class="section-title">{title}</div>
@@ -387,6 +389,19 @@ def generate_portfolio_page():
     skipped = rb.get('skipped_count', 0)
     date = tw.get('date', '') or rb.get('date', '')
 
+    # 从数据库读取价格日期
+    price_date_map = {}
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+        latest = conn.execute("SELECT MAX(pred_date) FROM agentic_predictions").fetchone()[0]
+        if latest:
+            for r in conn.execute("SELECT ticker, price_date FROM agentic_predictions WHERE pred_date=?", (latest,)):
+                price_date_map[r['ticker']] = r['price_date']
+        conn.close()
+    except Exception as e:
+        print(f"读取 price_date 失败: {e}")
+
     stats_cards = "".join([
         _stat_card(f"{tw.get('total_exposure', 0)*100:.1f}%", '总敞口'),
         _stat_card(f"{tw.get('long_exposure', 0)*100:.1f}%", '做多', '#ef4444'),
@@ -395,18 +410,23 @@ def generate_portfolio_page():
     ])
 
     def _target_rows(items):
+        # 排序：看多 -> 看空 -> 中性
+        order = {'bullish': 0, 'bearish': 1, 'neutral': 2}
+        items = sorted(items, key=lambda x: (order.get(x.get('signal', 'neutral'), 99), -abs(x.get('target_weight', 0))))
         rows = ""
         for t in items:
             sig = t.get('signal', 'neutral')
             color = SIGNAL_COLOR.get(sig, '#94a3b8')
             cn = SIGNAL_CN.get(sig, sig)
+            price_date = price_date_map.get(t.get('ticker'), '')
+            price_label = f" ({price_date})" if price_date else ''
             rows += f"""
         <tr>
             <td><b>{t.get('ticker')}</b></td>
             <td>{t.get('name')}</td>
             <td style="color:{color}">{cn}</td>
             <td>{t.get('target_weight', 0)*100:.2f}%</td>
-            <td>{t.get('current_price', 0)}</td>
+            <td>{t.get('current_price', 0)}{price_label}</td>
             <td>{t.get('target_price', 0)}</td>
             <td>{t.get('stop_loss', 0)}</td>
             <td title="{t.get('reason', '')}">{t.get('reason', '')[:40]}</td>
@@ -433,9 +453,6 @@ def generate_portfolio_page():
     stock_targets = [t for t in tw.get('targets', []) if t.get('category') == '个股']
     etf_targets = [t for t in tw.get('targets', []) if t.get('category') == 'ETF']
     futures_targets = [t for t in tw.get('targets', []) if t.get('category') == '期货']
-    stock_targets = sorted(stock_targets, key=lambda x: abs(x.get('target_weight', 0)), reverse=True)
-    etf_targets = sorted(etf_targets, key=lambda x: abs(x.get('target_weight', 0)), reverse=True)
-    futures_targets = sorted(futures_targets, key=lambda x: abs(x.get('target_weight', 0)), reverse=True)
 
     stock_actions = [i for i in rb.get('items', []) if i.get('category') == '个股']
     etf_actions = [i for i in rb.get('items', []) if i.get('category') == 'ETF']
@@ -494,7 +511,7 @@ def _load_futures_positions():
     try:
         conn = sqlite3.connect(db_path)
         cur = conn.cursor()
-        cur.execute("SELECT contract, direction, lots, entry_price, current_price, pnl FROM positions")
+        cur.execute("SELECT contract, direction, lots, entry_price, current_price, pnl_total FROM positions WHERE is_active=1")
         rows = cur.fetchall()
         conn.close()
         if not rows:
@@ -510,7 +527,7 @@ def _load_futures_positions():
             <td>{lots}</td>
             <td>{entry}</td>
             <td>{current}</td>
-            <td>{pnl}</td>
+            <td>{pnl:+.2f}</td>
         </tr>"""
         return html
     except Exception as e:
