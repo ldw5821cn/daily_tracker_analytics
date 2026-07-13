@@ -29,8 +29,6 @@ jobs:
         uses: actions/configure-pages@v5
         with:
           enablement: true
-      - name: Generate static index
-        run: python3 scripts/generate_static_index.py
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
