@@ -42,25 +42,44 @@ from core.db import get_predictions_conn, save_predictions as _db_save_predictio
 import pandas as pd
 
 DB_PATH = os.path.join(PROJECT_ROOT, 'multi_agent', 'data', 'llm_predictions.db')
+PARAMS_PATH = os.path.join(PROJECT_ROOT, 'multi_agent', 'config', 'predictor_params.json')
 
 # ============================================================
 # 统一超参数配置（选股、预测、回测一致）
-WEIGHTS = {
-    'technical': 0.22,  # 复盘后降低：下跌趋势中技术面常逆势误导
+# 从 config/predictor_params.json 读取，支持自动调参无需改代码
+# ============================================================
+def _load_params():
+    try:
+        with open(PARAMS_PATH, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception as e:
+        print(f'⚠️ 读取参数失败 {e}，使用默认')
+        return {}
+
+_PARAMS = _load_params()
+WEIGHTS = _PARAMS.get('weights', {
+    'technical': 0.22,
     'fundamental': 0.25,
     'sentiment': 0.15,
-    'macro': 0.18,      # 复盘后提高：宏观 bearish 时技术面容易失效
-    'debate': 0.25,      # 复盘后提高：多空辩论比滞后技术更可靠
-}
-
-THRESHOLD = {
+    'macro': 0.18,
+    'debate': 0.25,
+})
+THRESHOLD = _PARAMS.get('threshold', {
     'strong_bull': 62,
     'bull': 55,
     'neutral_high': 52,
     'neutral_low': 48,
     'bear': 43,
     'strong_bear': 38,
-}
+})
+HARD_RULES = _PARAMS.get('hard_rules', {
+    'macro_bearish_block_bullish': True,
+    'macro_bearish_force_bearish_if_tech_below': 55,
+    'macro_bearish_score_threshold': 50,
+})
+
+# 保持向后兼容的引用
+PARAMS = _PARAMS
 
 POSITION_MAP = {
     'bullish': 0.25,
@@ -177,11 +196,13 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         signal = 'neutral'
 
     # 复盘硬规则：宏观 < 50 时禁止 bullish；技术面 < 55 且宏观 < 50 强制 bearish
-    if macro_report and macro_report.get('macro_score', 50) < 50:
+    if (HARD_RULES.get('macro_bearish_block_bullish') and macro_report and
+            macro_report.get('macro_score', 50) < HARD_RULES.get('macro_bearish_score_threshold', 50)):
+        tech_threshold = HARD_RULES.get('macro_bearish_force_bearish_if_tech_below', 55)
         if signal == 'bullish':
-            signal = 'bearish' if tech_score < 55 else 'neutral'
-            weighted = THRESHOLD['bear'] - 1 if tech_score < 55 else 50
-        elif signal == 'neutral' and tech_score < 55:
+            signal = 'bearish' if tech_score < tech_threshold else 'neutral'
+            weighted = THRESHOLD['bear'] - 1 if tech_score < tech_threshold else 50
+        elif signal == 'neutral' and tech_score < tech_threshold:
             signal = 'bearish'
             weighted = THRESHOLD['bear'] - 1
 
