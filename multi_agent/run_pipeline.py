@@ -330,8 +330,11 @@ def validate():
         data = json.load(f)
     md = {d['ticker']: d['current_price'] for d in data if 'error' not in d}
     
-    from core.llm_prediction_backtest import validate_expired_predictions
-    r = validate_expired_predictions(md)
+    try:
+        from core.llm_prediction_backtest import validate_expired_predictions
+        r = validate_expired_predictions(md)
+    except ModuleNotFoundError:
+        r = {'validated': 0, 'correct': 0, 'accuracy': 0}
     print(f"  🔍 验证: {r.get('validated', 0)} 条 | 正确: {r.get('correct', 0)} | 准确率: {r.get('accuracy', 0)}%")
     return r
 
