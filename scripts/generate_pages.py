@@ -184,11 +184,14 @@ def _top_cards(rows, title, sig, color_class):
     top = sorted(filtered, key=lambda x: x.get('bt_score', 0), reverse=True)[:5]
     cards = ""
     for p in top:
+        price_date = p.get('price_date') or ''
+        price_date_fmt = price_date.replace('-', '/') if price_date else ''
+        price_label = f"{price_date_fmt} 现价" if price_date_fmt else '现价'
         cards += f"""
             <div class="card {color_class}">
                 <div class="card-title">{SIGNAL_EMOJI[sig]} {p.get('name', p.get('ticker'))} ({p.get('ticker')})</div>
                 <div class="card-meta">评分 {p.get('weighted_score')} | 60日收益 {p.get('bt_return_60d', 0):+.1f}% | 回撤 {p.get('bt_max_dd_60d', 0):.1f}%</div>
-                <div class="card-price">目标 {p.get('target_price')} | 止损 {p.get('stop_loss')}</div>
+                <div class="card-price">{price_label} {p.get('current_price')} | 目标 {p.get('target_price')} | 止损 {p.get('stop_loss')}</div>
                 <div class="card-reason">{p.get('reasoning', '')}</div>
             </div>"""
     return f'<div class="section-title">{title}</div>\n<div class="cards">\n{cards}\n</div>'
