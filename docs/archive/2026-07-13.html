@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>📈 个股 - 2026-07-13 20:01</title>
+<title>🏛️ 历史预测归档 - 2026-07-13</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -45,41 +45,37 @@ tr:hover { background: #334155; }
 <div class="container">
 <div class="nav">
 <a href="index.html" class="">🏠 首页</a>
-<a href="stocks.html" class="active">📈 个股</a>
+<a href="stocks.html" class="">📈 个股</a>
 <a href="us_market.html" class="">🇺🇸 美股</a>
 <a href="etfs.html" class="">📊 ETF</a>
 <a href="futures.html" class="">📉 期货</a>
 <a href="prediction.html" class="">🏛️ 预测</a>
 <a href="portfolio.html" class="">💼 持仓组合</a>
 <a href="reflection.html" class="">🧠 复盘</a>
-<select onchange="location.href=this.value" style="background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:20px;padding:8px 14px;font-size:13px;outline:none;cursor:pointer"><option value="" disabled>📅 历史归档</option><option value="archive/2026-07-13.html" >2026-07-13</option><option value="archive/2026-07-12.html" >2026-07-12</option><option value="archive/2026-07-11.html" >2026-07-11</option><option value="archive/2026-07-10.html" >2026-07-10</option></select>
+<select onchange="location.href=this.value" style="background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:20px;padding:8px 14px;font-size:13px;outline:none;cursor:pointer"><option value="" disabled>📅 历史归档</option><option value="archive/2026-07-13.html" selected>2026-07-13</option><option value="archive/2026-07-12.html" >2026-07-12</option><option value="archive/2026-07-11.html" >2026-07-11</option><option value="archive/2026-07-10.html" >2026-07-10</option></select>
 </div>
 
     <div class="header">
-        <h1>📈 个股 </h1>
-        <div class="sub">2026-07-13 20:01 · 最新预测 87 只 (价格日期: 2026-07-13)</div>
+        <h1>🏛️ 历史预测归档 <span class="model-tag">历史归档</span></h1>
+        <div class="sub">2026-07-13 · 多 Agent 融合预测 (价格日期: 2026-07-13)</div>
     </div>
 
 <div class="stats-grid">
         <div class="stat-card">
-            <div class="num">87</div>
-            <div class="label">总数</div>
+            <div class="num">131</div>
+            <div class="label">当日预测</div>
         </div>
         <div class="stat-card">
             <div class="num" style="color:#ef4444">1</div>
             <div class="label">看多</div>
         </div>
         <div class="stat-card">
-            <div class="num" style="color:#22c55e">53</div>
+            <div class="num" style="color:#22c55e">66</div>
             <div class="label">看空</div>
-        </div>
-        <div class="stat-card">
-            <div class="num">33</div>
-            <div class="label">中性</div>
         </div>
 
 </div>
-<div class="section-title">🏆 重点看多</div>
+<div class="section-title">🏆 重点看多（按回测排序）</div>
 <div class="cards">
 
             <div class="card bull">
@@ -88,7 +84,7 @@ tr:hover { background: #334155; }
                 <div class="card-price">2026/07/13 现价 163.58 | 目标 175.997 | 止损 155.401</div>
                 <div class="card-reason">技术面中性偏多(66/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌0 | 宏观bearish(44.6/100)</div>
             </div>
-</div><div class="section-title">❄️ 重点看空</div>
+</div><div class="section-title">❄️ 重点看空（按回测排序）</div>
 <div class="cards">
 
             <div class="card bear">
@@ -123,7 +119,504 @@ tr:hover { background: #334155; }
             </div>
 </div>
 
-    <div class="section-title">📂 📈 个股 (87只)</div>
+    <div class="section-title">🎯 验证准确率（2026-07-13）</div>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="num" style="color:#ef4444">64.1%</div>
+            <div class="label">总体准确率 (84/131)</div>
+        </div>
+        
+            <div class="stat-card">
+                <div class="num" style="color:#ef4444">69.6%</div>
+                <div class="label">ETF (16/23)</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" style="color:#ef4444">62.1%</div>
+                <div class="label">个股 (54/87)</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" style="color:#ef4444">66.7%</div>
+                <div class="label">期货 (14/21)</div>
+            </div>
+    </div>
+
+
+    <div class="section-title">🧠 反思摘要</div>
+    <div class="note">
+        <p><b>准确率 64.12%</b> · 正确 84 / 错误 47 / 总计 131</p>
+        <p><b>关键建议：</b></p><ul><li>看多信号失败率偏高，可能市场环境为下跌/震荡，基本面/技术面滞后</li><li>建议对失败标的增加日内 TickFlow 数据校验，减少滞后技术面影响</li><li>建议引入宏观/资金流向 Agent，提升对大盘方向的判断</li></ul>
+        <p><b>LLM 深度反思：</b></p><p># 深度复盘报告（2026-07-13）<br><br>---<br><br>### 1. 一句话总结<br>**看多信号严重误判（88.89%失败）与中性信号过度保守（55.38%错误）导致整体准确率仅64.12%，本质是系统未充分吸收宏观bearish背景对个股的压制。**<br><br>---<br><br>### 2. 主要错误模式<br><br>- **模式一：中性信号对宏观下行风险“失明”**  <br>  失败样本Top10中8个为中性信号，但实际跌幅超-7%至-11%。这些标的共同特征：技术面得分40-54（中性区间）、基本面N/A、多空辩论看跌占绝对优势（看涨1~2 vs 看跌5）、宏观评分44.6/100（明显偏空）。系统将技术面中性作为“无方向”信号，却忽略了宏观与资金流向的持续做空力量，导致中性变成了“错失下跌”。<br><br>- **模式二：看多信号在高胜率幻觉下被低置信度/弱评分误导**  <br>  看多信号仅9个，错误8个（88.89%）。失败样本如东方盛虹（bullish, 得分44.5, 置信度0.79）、景嘉微（bullish, 得分48.3, 置信度0.6）——评分均低于50、置信度低于0.8，且多空辩论看涨0 vs 看跌3/1，宏观同样bearish。系统对看多信号缺乏“评分<50且宏观逆风时强制降级”的硬约束，导致低分信号仍被输出为bullish。<br><br>- **模式三：高置信度（>0.8）的中性信号在高技术面评分下掩藏风险**  <br>  失败样本中多个中性信号置信度高达0.83~0.93，技术面评分41~54，但基本面缺失。系统在基本面N/A时依赖技术面，而技术面本身滞后（如得分41→中性）无法捕捉拐点，高置信度反而成为“错误自信”的来源。<br><br>---<br><br>### 3. 成功信号特征<br><br>- **看空信号表现极为稳定**：57个看空信号仅3个错误（错误率5.26%），成功样本Top10全是bearish信号，跌幅-7%至-17%。共性：<br>  - 加权得分集中在**37~44**（明显低于正确样本平均43.27），且置信度**0.83~0.95**（高）；<br>  - 多空辩论看跌占显著优势（逻辑与失败样本类似，但系统正确发出了看空信号）；<br>  - 成功样本中多个技术面得分低（如37.7、37.4），说明低技术分+高置信度看空是有效组合。<br><br>**关键启示**：当前系统对“低分+宏观偏空+多空辩论看跌”的组合已能有效捕捉下跌，但未能将同样信号条件用于**中性/看多信号的向下修正**。<br><br>---<br><br>### 4. 权重/阈值调整建议<br><br>- **看多信号硬性否决规则**：  <br>  当宏观得分 < 50时，禁止输出任何看多信号（除非基本面得分 > 60且置信度 > 0.9）。当前宏观44.6，应直接过滤掉所有看多候选。<br><br>- **中性信号的“方向位移”规则**：  <br>  若技术面得分在40-55（中性区间），同时宏观得分 < 50 且 多空辩论看跌比例 > 60%，则强制将信号从`neutral`下修至`bearish`。按此规则，失败样本Top10中至少8个中性可转为看空，准确率有望提升至80%+。<br><br>- **权重再校准**：  <br>  当前加权得分在正确/错误样本间差异小（43.27 vs 47.0），但技术面得分差异大（48.82 vs 53.3），说明技术面对错误的贡献更大。建议将技术面在加权得分中的比重从目前推测的50%下调至35%，同时引入宏观因子（目前估算占10-15%）提升至25%，避免技术面滞后主导预测。<br><br>- **置信度阈值动态调整**：  <br>  当宏观得分 < 50时，将信号输出置信度门槛从0.7提升至0.85，以减少低置信度信号被输出。<br><br>---<br><br>### 5. 今日操作建议<br><br>- **对持仓中信号为`neutral`或`bullish`的标的，立即启用宏观修正**：  <br>  检查所有中性/看多持仓的宏观得分（当前44.6），若多空辩论看跌占比 > 50%，无论当前技术面如何，立即转为**看空**并考虑减仓（尤其适用于失败样本中的电子、材料类个股）。<br><br>- **明日预测前强制过滤**：  <br>  在生成预测时，对所有技术面得分 < 55 且 宏观得分 < 50 的候选标的，直接输出`bearish`信号（即使原逻辑为neutral），并赋予高置信度（0.85+）。这能立刻修复最大错误源。<br><br>---<br><br>### 6. 需要新增/改进的数据源或因子<br><br>- **缺失因子：日内TickFlow（资金流向）数据**  <br>  失败样本中基本面均为N/A，无法判断资金进出。引入逐笔成交大单净流入流出数据，可在技术面滞后时捕捉短期抛压，特别对个股跌幅>5%的场景提供提前信号。<br><br>- **缺失因子：行业/板块联动性指标**  <br>  失败样本Top10中多数属电子、有色金属板块，且全部受宏观bearish压制。应加入板块相对强度（如相对大盘超额收益）、板块内空头占比等，避免系统孤立看待个股。<br><br>- **改进因子：多空辩论的置信度加权**  <br>  当前仅记录看涨/看跌人数比例，未考虑分析师历史准确率。建议对每位“辩论者”赋予历史命中率权重，使多空比更可靠（例如，当前看跌5:1但若分析师过去准确率低，应降低权重）。<br><br>- **新增因子：宏观评分的分类型应用**  <br>  当前宏观得分仅一个数值（44.6），未区分“流动性收紧”、“行业政策风险”、“汇率冲击”等子维度。建议拆解为3-5个宏观子因子，并针对不同资产类别（个股/ETF/期货）使用不同子因子权重。</p>
+    </div>
+
+
+    <div class="section-title">📂 ETF (23只)</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>60日收益</th><th>60日回撤</th><th>60日夏普</th><th>价格</th><th>目标</th><th>止损</th><th>仓位</th><th>技术分</th></tr></thead>
+        <tbody>
+        <tr>
+            <td><b>562500</b></td>
+            <td>机器人ETF华夏</td>
+            <td>机器人</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>44.1</td>
+            <td>72%</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+6.1%</td>
+            <td>-14.3%</td>
+            <td>0.79</td>
+            <td>2026/07/13 现价 1.04</td>
+            <td>0.915</td>
+            <td>1.092</td>
+            <td>11%</td>
+            <td title="技术面中性(43/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3 | 宏观bearish(44.6/100)">43</td>
+        </tr>
+        <tr>
+            <td><b>510300</b></td>
+            <td>沪深300ETF华泰柏瑞</td>
+            <td>大盘蓝筹</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>43.8</td>
+            <td>80%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+1.1%</td>
+            <td>-6.8%</td>
+            <td>0.22</td>
+            <td>2026/07/13 现价 4.74</td>
+            <td>4.572</td>
+            <td>4.92</td>
+            <td>12%</td>
+            <td title="技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观bearish(44.6/100)">48</td>
+        </tr>
+        <tr>
+            <td><b>516150</b></td>
+            <td>稀土ETF嘉实</td>
+            <td>稀土永磁</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>38.4</td>
+            <td>95%</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>-11.7%</td>
+            <td>-23.5%</td>
+            <td>-1.09</td>
+            <td>2026/07/13 现价 1.71</td>
+            <td>1.446</td>
+            <td>1.796</td>
+            <td>14%</td>
+            <td title="技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌5 | 宏观bearish(44.6/100)">44</td>
+        </tr>
+        <tr>
+            <td><b>512400</b></td>
+            <td>有色金属ETF南方</td>
+            <td>有色金属</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>38.4</td>
+            <td>95%</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>-20.2%</td>
+            <td>-24.0%</td>
+            <td>-2.05</td>
+            <td>2026/07/13 现价 1.68</td>
+            <td>1.498</td>
+            <td>1.764</td>
+            <td>14%</td>
+            <td title="技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌5 | 宏观bearish(44.6/100)">44</td>
+        </tr>
+        <tr>
+            <td><b>159755</b></td>
+            <td>电池ETF广发</td>
+            <td>动力电池</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>38.4</td>
+            <td>95%</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>-18.7%</td>
+            <td>-26.1%</td>
+            <td>-2.39</td>
+            <td>2026/07/13 现价 0.94</td>
+            <td>0.838</td>
+            <td>0.987</td>
+            <td>14%</td>
+            <td title="技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌5 | 宏观bearish(44.6/100)">44</td>
+        </tr>
+        <tr>
+            <td><b>512480</b></td>
+            <td>半导体ETF</td>
+            <td>半导体</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>37.7</td>
+            <td>95%</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>-19.1%</td>
+            <td>-57.0%</td>
+            <td>0.09</td>
+            <td>2026/07/13 现价 1.29</td>
+            <td>1.132</td>
+            <td>1.355</td>
+            <td>14%</td>
+            <td title="技术面中性(42/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌5 | 宏观bearish(44.6/100)">42</td>
+        </tr>
+        <tr>
+            <td><b>159995</b></td>
+            <td>芯片ETF华夏</td>
+            <td>芯片设计</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>37.7</td>
+            <td>95%</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>-19.7%</td>
+            <td>-57.0%</td>
+            <td>0.05</td>
+            <td>2026/07/13 现价 1.46</td>
+            <td>1.058</td>
+            <td>1.533</td>
+            <td>14%</td>
+            <td title="技术面中性(42/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌5 | 宏观bearish(44.6/100)">42</td>
+        </tr>
+        <tr>
+            <td><b>515880</b></td>
+            <td>通信ETF国泰</td>
+            <td>通信</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>37.7</td>
+            <td>95%</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>-39.5%</td>
+            <td>-60.8%</td>
+            <td>-0.89</td>
+            <td>2026/07/13 现价 0.74</td>
+            <td>0.645</td>
+            <td>0.777</td>
+            <td>14%</td>
+            <td title="技术面中性(42/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌5 | 宏观bearish(44.6/100)">42</td>
+        </tr>
+        <tr>
+            <td><b>159530</b></td>
+            <td>机器人ETF易方达</td>
+            <td>机器人</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>37.4</td>
+            <td>95%</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+1.9%</td>
+            <td>-18.0%</td>
+            <td>0.36</td>
+            <td>2026/07/13 现价 1.46</td>
+            <td>1.254</td>
+            <td>1.533</td>
+            <td>14%</td>
+            <td title="技术面中性(41/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌5 | 宏观bearish(44.6/100)">41</td>
+        </tr>
+        <tr>
+            <td><b>159516</b></td>
+            <td>半导体设备ETF国泰</td>
+            <td>半导体设备</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>37.0</td>
+            <td>95%</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>-2.4%</td>
+            <td>-56.6%</td>
+            <td>0.83</td>
+            <td>2026/07/13 现价 0.86</td>
+            <td>0.639</td>
+            <td>0.903</td>
+            <td>14%</td>
+            <td title="技术面中性(40/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌5 | 宏观bearish(44.6/100)">40</td>
+        </tr>
+        <tr>
+            <td><b>513120</b></td>
+            <td>港股创新药ETF广发</td>
+            <td>创新药</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>55.0</td>
+            <td>63%</td>
+            <td>震荡</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>-12.4%</td>
+            <td>-27.0%</td>
+            <td>-1.41</td>
+            <td>2026/07/13 现价 1.16</td>
+            <td>1.135</td>
+            <td>1.137</td>
+            <td>0%</td>
+            <td title="技术面中性偏多(60/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌0 | 宏观bearish(44.6/100)">60</td>
+        </tr>
+        <tr>
+            <td><b>512800</b></td>
+            <td>银行ETF</td>
+            <td>银行</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>52.8</td>
+            <td>53%</td>
+            <td>偏多</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>-2.9%</td>
+            <td>-9.8%</td>
+            <td>-0.82</td>
+            <td>2026/07/13 现价 0.78</td>
+            <td>0.801</td>
+            <td>0.764</td>
+            <td>0%</td>
+            <td title="技术面中性(58/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌0 | 宏观bearish(44.6/100)">58</td>
+        </tr>
+        <tr>
+            <td><b>512890</b></td>
+            <td>红利低波ETF华泰柏瑞</td>
+            <td>高股息</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>52.8</td>
+            <td>53%</td>
+            <td>震荡</td>
+            <td>偏多</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>-5.3%</td>
+            <td>-10.9%</td>
+            <td>-1.75</td>
+            <td>2026/07/13 现价 1.13</td>
+            <td>1.15</td>
+            <td>1.107</td>
+            <td>0%</td>
+            <td title="技术面中性(58/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌0 | 宏观bearish(44.6/100)">58</td>
+        </tr>
+        <tr>
+            <td><b>563180</b></td>
+            <td>高股息ETF</td>
+            <td>高股息</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>52.8</td>
+            <td>53%</td>
+            <td>震荡</td>
+            <td>偏多</td>
+            <td>偏多</td>
+            <td>看涨</td>
+            <td>-6.3%</td>
+            <td>-13.2%</td>
+            <td>-1.94</td>
+            <td>2026/07/13 现价 1.07</td>
+            <td>1.079</td>
+            <td>1.049</td>
+            <td>0%</td>
+            <td title="技术面中性(58/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌0 | 宏观bearish(44.6/100)">58</td>
+        </tr>
+        <tr>
+            <td><b>159928</b></td>
+            <td>消费ETF</td>
+            <td>消费</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>52.8</td>
+            <td>53%</td>
+            <td>震荡</td>
+            <td>偏空</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>-16.1%</td>
+            <td>-19.9%</td>
+            <td>-3.97</td>
+            <td>2026/07/13 现价 0.63</td>
+            <td>0.624</td>
+            <td>0.617</td>
+            <td>0%</td>
+            <td title="技术面中性(58/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌0 | 宏观bearish(44.6/100)">58</td>
+        </tr>
+        <tr>
+            <td><b>512170</b></td>
+            <td>医疗ETF华宝</td>
+            <td>医疗器械</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>51.8</td>
+            <td>52%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>-7.7%</td>
+            <td>-14.4%</td>
+            <td>-1.51</td>
+            <td>2026/07/13 现价 0.31</td>
+            <td>0.302</td>
+            <td>0.304</td>
+            <td>0%</td>
+            <td title="技术面中性(55/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌0 | 宏观bearish(44.6/100)">55</td>
+        </tr>
+        <tr>
+            <td><b>159819</b></td>
+            <td>人工智能ETF</td>
+            <td>人工智能</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>50.1</td>
+            <td>58%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+25.8%</td>
+            <td>-9.9%</td>
+            <td>2.30</td>
+            <td>2026/07/13 现价 2.05</td>
+            <td>1.989</td>
+            <td>2.009</td>
+            <td>0%</td>
+            <td title="技术面中性(56/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨2 vs 看跌3 | 宏观bearish(44.6/100)">56</td>
+        </tr>
+        <tr>
+            <td><b>512880</b></td>
+            <td>证券ETF国泰</td>
+            <td>证券</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>48.8</td>
+            <td>67%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+2.3%</td>
+            <td>-9.2%</td>
+            <td>0.41</td>
+            <td>2026/07/13 现价 1.1</td>
+            <td>1.068</td>
+            <td>1.078</td>
+            <td>0%</td>
+            <td title="技术面中性(58/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3 | 宏观bearish(44.6/100)">58</td>
+        </tr>
+        <tr>
+            <td><b>512000</b></td>
+            <td>券商ETF华宝</td>
+            <td>证券</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>48.8</td>
+            <td>67%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+2.1%</td>
+            <td>-9.5%</td>
+            <td>0.38</td>
+            <td>2026/07/13 现价 0.53</td>
+            <td>0.513</td>
+            <td>0.519</td>
+            <td>0%</td>
+            <td title="技术面中性(58/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3 | 宏观bearish(44.6/100)">58</td>
+        </tr>
+        <tr>
+            <td><b>513180</b></td>
+            <td>恒生科技ETF华夏</td>
+            <td>港股科技</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>47.8</td>
+            <td>68%</td>
+            <td>震荡</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>-5.9%</td>
+            <td>-17.1%</td>
+            <td>-0.85</td>
+            <td>2026/07/13 现价 0.59</td>
+            <td>0.578</td>
+            <td>0.578</td>
+            <td>0%</td>
+            <td title="技术面中性(55/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观bearish(44.6/100)">55</td>
+        </tr>
+        <tr>
+            <td><b>159792</b></td>
+            <td>港股通互联网ETF富国</td>
+            <td>互联网</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>47.8</td>
+            <td>68%</td>
+            <td>震荡</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>-16.6%</td>
+            <td>-29.5%</td>
+            <td>-2.13</td>
+            <td>2026/07/13 现价 0.58</td>
+            <td>0.567</td>
+            <td>0.568</td>
+            <td>0%</td>
+            <td title="技术面中性(55/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观bearish(44.6/100)">55</td>
+        </tr>
+        <tr>
+            <td><b>588200</b></td>
+            <td>科创芯片ETF嘉实</td>
+            <td>芯片制造</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>47.4</td>
+            <td>69%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+63.6%</td>
+            <td>-15.5%</td>
+            <td>3.72</td>
+            <td>2026/07/13 现价 4.33</td>
+            <td>4.078</td>
+            <td>4.243</td>
+            <td>0%</td>
+            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3 | 宏观bearish(44.6/100)">54</td>
+        </tr>
+        <tr>
+            <td><b>512760</b></td>
+            <td>芯片ETF</td>
+            <td>半导体</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>47.4</td>
+            <td>69%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+59.6%</td>
+            <td>-15.8%</td>
+            <td>3.61</td>
+            <td>2026/07/13 现价 1.38</td>
+            <td>1.306</td>
+            <td>1.352</td>
+            <td>0%</td>
+            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3 | 宏观bearish(44.6/100)">54</td>
+        </tr></tbody>
+    </table>
+    </div>
+    <div class="section-title">📂 个股 (87只)</div>
     <div class="table-responsive">
     <table>
         <thead><tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>60日收益</th><th>60日回撤</th><th>60日夏普</th><th>价格</th><th>目标</th><th>止损</th><th>仓位</th><th>技术分</th></tr></thead>
@@ -1867,6 +2360,433 @@ tr:hover { background: #334155; }
             <td>3.851</td>
             <td>0%</td>
             <td title="技术面中性(53/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观bearish(44.6/100)">53</td>
+        </tr></tbody>
+    </table>
+    </div>
+    <div class="section-title">📂 期货 (21只)</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>60日收益</th><th>60日回撤</th><th>60日夏普</th><th>价格</th><th>目标</th><th>止损</th><th>仓位</th><th>技术分</th></tr></thead>
+        <tbody>
+        <tr>
+            <td><b>HC0</b></td>
+            <td>热卷</td>
+            <td>黑色</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>43.8</td>
+            <td>80%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>偏空</td>
+            <td>偏空</td>
+            <td>-0.6%</td>
+            <td>-6.4%</td>
+            <td>-0.40</td>
+            <td>2026/07/13 现价 3272.0</td>
+            <td>3206.56</td>
+            <td>3370.16</td>
+            <td>12%</td>
+            <td title="技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观bearish(44.6/100)">48</td>
+        </tr>
+        <tr>
+            <td><b>C0</b></td>
+            <td>玉米</td>
+            <td>农产品</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>43.5</td>
+            <td>81%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>-3.5%</td>
+            <td>-6.1%</td>
+            <td>-1.84</td>
+            <td>2026/07/13 现价 2307.0</td>
+            <td>2260.86</td>
+            <td>2376.21</td>
+            <td>12%</td>
+            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观bearish(44.6/100)">47</td>
+        </tr>
+        <tr>
+            <td><b>JM0</b></td>
+            <td>焦煤</td>
+            <td>黑色</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>41.5</td>
+            <td>91%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+14.4%</td>
+            <td>-15.1%</td>
+            <td>1.37</td>
+            <td>2026/07/13 现价 1239.0</td>
+            <td>1204.454</td>
+            <td>1279.2</td>
+            <td>14%</td>
+            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌5 | 宏观bearish(44.6/100)">47</td>
+        </tr>
+        <tr>
+            <td><b>ZN0</b></td>
+            <td>沪锌</td>
+            <td>有色</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>54.5</td>
+            <td>62%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>偏多</td>
+            <td>偏多</td>
+            <td>+4.2%</td>
+            <td>-4.8%</td>
+            <td>1.06</td>
+            <td>2026/07/13 现价 24700.0</td>
+            <td>24829.058</td>
+            <td>24206.0</td>
+            <td>0%</td>
+            <td title="技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">70</td>
+        </tr>
+        <tr>
+            <td><b>OI0</b></td>
+            <td>菜油</td>
+            <td>农产品</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>54.5</td>
+            <td>62%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>偏多</td>
+            <td>偏多</td>
+            <td>+4.9%</td>
+            <td>-7.8%</td>
+            <td>1.20</td>
+            <td>2026/07/13 现价 9875.0</td>
+            <td>9939.829</td>
+            <td>9677.5</td>
+            <td>0%</td>
+            <td title="技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">70</td>
+        </tr>
+        <tr>
+            <td><b>RB0</b></td>
+            <td>螺纹钢</td>
+            <td>黑色</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>50.8</td>
+            <td>59%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>-1.6%</td>
+            <td>-7.1%</td>
+            <td>-0.82</td>
+            <td>2026/07/13 现价 3054.0</td>
+            <td>3031.294</td>
+            <td>2992.92</td>
+            <td>0%</td>
+            <td title="技术面中性(58/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">58</td>
+        </tr>
+        <tr>
+            <td><b>CF0</b></td>
+            <td>棉花</td>
+            <td>农产品</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>50.5</td>
+            <td>58%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>偏空</td>
+            <td>+3.3%</td>
+            <td>-6.2%</td>
+            <td>0.91</td>
+            <td>2026/07/13 现价 16080.0</td>
+            <td>16031.117</td>
+            <td>15758.4</td>
+            <td>0%</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
+        </tr>
+        <tr>
+            <td><b>CU0</b></td>
+            <td>沪铜</td>
+            <td>有色</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>50.5</td>
+            <td>58%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>+0.9%</td>
+            <td>-6.7%</td>
+            <td>0.21</td>
+            <td>2026/07/13 现价 103060.0</td>
+            <td>102921.9</td>
+            <td>100998.8</td>
+            <td>0%</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
+        </tr>
+        <tr>
+            <td><b>SR0</b></td>
+            <td>白糖</td>
+            <td>农产品</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>50.5</td>
+            <td>58%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>-1.1%</td>
+            <td>-5.3%</td>
+            <td>-0.70</td>
+            <td>2026/07/13 现价 5255.0</td>
+            <td>5214.247</td>
+            <td>5149.9</td>
+            <td>0%</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
+        </tr>
+        <tr>
+            <td><b>RM0</b></td>
+            <td>菜粕</td>
+            <td>农产品</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>50.5</td>
+            <td>58%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>-2.0%</td>
+            <td>-7.8%</td>
+            <td>-0.58</td>
+            <td>2026/07/13 现价 2295.0</td>
+            <td>2295.086</td>
+            <td>2249.1</td>
+            <td>0%</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
+        </tr>
+        <tr>
+            <td><b>P0</b></td>
+            <td>棕榈油</td>
+            <td>农产品</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>50.5</td>
+            <td>58%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>偏空</td>
+            <td>-2.1%</td>
+            <td>-7.7%</td>
+            <td>-0.62</td>
+            <td>2026/07/13 现价 9212.0</td>
+            <td>9183.443</td>
+            <td>9027.76</td>
+            <td>0%</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
+        </tr>
+        <tr>
+            <td><b>I0</b></td>
+            <td>铁矿石</td>
+            <td>黑色</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>50.5</td>
+            <td>58%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>-2.5%</td>
+            <td>-10.9%</td>
+            <td>-0.76</td>
+            <td>2026/07/13 现价 744.5</td>
+            <td>745.356</td>
+            <td>729.61</td>
+            <td>0%</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
+        </tr>
+        <tr>
+            <td><b>SM0</b></td>
+            <td>硅锰</td>
+            <td>黑色</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>50.5</td>
+            <td>58%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>-5.4%</td>
+            <td>-7.8%</td>
+            <td>-1.95</td>
+            <td>2026/07/13 现价 5868.0</td>
+            <td>5863.379</td>
+            <td>5750.64</td>
+            <td>0%</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
+        </tr>
+        <tr>
+            <td><b>AL0</b></td>
+            <td>沪铝</td>
+            <td>有色</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>50.5</td>
+            <td>58%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>偏空</td>
+            <td>偏空</td>
+            <td>-8.0%</td>
+            <td>-12.7%</td>
+            <td>-2.28</td>
+            <td>2026/07/13 现价 22945.0</td>
+            <td>22835.782</td>
+            <td>22486.1</td>
+            <td>0%</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
+        </tr>
+        <tr>
+            <td><b>V0</b></td>
+            <td>PVC</td>
+            <td>能化</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>50.5</td>
+            <td>58%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>-12.0%</td>
+            <td>-18.5%</td>
+            <td>-2.69</td>
+            <td>2026/07/13 现价 4488.0</td>
+            <td>4477.644</td>
+            <td>4398.24</td>
+            <td>0%</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
+        </tr>
+        <tr>
+            <td><b>AU0</b></td>
+            <td>黄金</td>
+            <td>有色</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>50.5</td>
+            <td>58%</td>
+            <td>震荡</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>-16.3%</td>
+            <td>-18.1%</td>
+            <td>-3.48</td>
+            <td>2026/07/13 现价 885.94</td>
+            <td>872.833</td>
+            <td>868.221</td>
+            <td>0%</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
+        </tr>
+        <tr>
+            <td><b>MA0</b></td>
+            <td>甲醇</td>
+            <td>能化</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>47.4</td>
+            <td>69%</td>
+            <td>震荡</td>
+            <td>偏多</td>
+            <td>偏多</td>
+            <td>看涨</td>
+            <td>-11.5%</td>
+            <td>-23.0%</td>
+            <td>-1.47</td>
+            <td>2026/07/13 现价 2516.0</td>
+            <td>2544.299</td>
+            <td>2465.68</td>
+            <td>0%</td>
+            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观bearish(44.6/100)">54</td>
+        </tr>
+        <tr>
+            <td><b>SC0</b></td>
+            <td>原油</td>
+            <td>能化</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>47.4</td>
+            <td>69%</td>
+            <td>偏多</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>-23.4%</td>
+            <td>-37.0%</td>
+            <td>-2.60</td>
+            <td>2026/07/13 现价 482.6</td>
+            <td>498.251</td>
+            <td>472.948</td>
+            <td>0%</td>
+            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观bearish(44.6/100)">54</td>
+        </tr>
+        <tr>
+            <td><b>J0</b></td>
+            <td>焦炭</td>
+            <td>黑色</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>45.5</td>
+            <td>71%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+10.3%</td>
+            <td>-10.9%</td>
+            <td>1.30</td>
+            <td>2026/07/13 现价 1865.0</td>
+            <td>1803.236</td>
+            <td>1827.7</td>
+            <td>0%</td>
+            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3 | 宏观bearish(44.6/100)">47</td>
+        </tr>
+        <tr>
+            <td><b>TA0</b></td>
+            <td>PTA</td>
+            <td>能化</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>45.4</td>
+            <td>79%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>-11.7%</td>
+            <td>-21.5%</td>
+            <td>-1.61</td>
+            <td>2026/07/13 现价 5612.0</td>
+            <td>5607.679</td>
+            <td>5499.76</td>
+            <td>0%</td>
+            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观bearish(44.6/100)">54</td>
+        </tr>
+        <tr>
+            <td><b>AG0</b></td>
+            <td>白银</td>
+            <td>有色</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>45.4</td>
+            <td>79%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>-27.7%</td>
+            <td>-35.6%</td>
+            <td>-2.53</td>
+            <td>2026/07/13 现价 14135.0</td>
+            <td>13519.703</td>
+            <td>13852.3</td>
+            <td>0%</td>
+            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观bearish(44.6/100)">54</td>
         </tr></tbody>
     </table>
     </div>

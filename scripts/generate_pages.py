@@ -15,6 +15,7 @@ from core.db import get_futures_positions as _db_get_futures_positions
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOCS_DIR = os.path.join(REPO_ROOT, "docs")
+ARCHIVE_DIR = os.path.join(DOCS_DIR, 'archive')
 DB_PATH = os.path.join(REPO_ROOT, "multi_agent", "data", "llm_predictions.db")
 
 SCENARIO_NAME_CN = {
@@ -95,6 +96,32 @@ def _load_json(path):
         return {}
 
 
+def get_all_pred_dates():
+    """返回数据库中所有预测日期（降序）。"""
+    conn = get_predictions_conn()
+    try:
+        cur = conn.execute("SELECT DISTINCT pred_date FROM agentic_predictions ORDER BY pred_date DESC")
+        return [r[0] for r in cur.fetchall() if r[0]]
+    finally:
+        conn.close()
+
+
+def _get_validation_for_date(pred_date):
+    """读取按 pred_date 组织的验证准确率文件。"""
+    val = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'morning_validation.json'))
+    if val and val.get('pred_date') == pred_date:
+        return val
+    return {}
+
+
+def _get_reflection_for_date(pred_date):
+    """读取按 pred_date 组织的反思摘要文件。"""
+    refl = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'prediction_reflection.json'))
+    if refl and refl.get('pred_date') == pred_date:
+        return refl
+    return {}
+
+
 def _load_db_stats():
     if not os.path.exists(DB_PATH):
         return None, None
@@ -114,11 +141,21 @@ def _load_db_stats():
     }, rows
 
 
-def _build_nav(active):
+def _build_nav(active, dates=None):
     items = []
     for href, icon, label in TABS:
         cls = 'active' if href == active else ''
         items.append(f'<a href="{href}" class="{cls}">{icon} {label}</a>')
+    # 最近 7 日归档下拉选择器
+    if dates:
+        options = ''.join(
+            f'<option value="archive/{d}.html" {"selected" if f"archive/{d}.html" == active else ""}>{d}</option>'
+            for d in dates[:7]
+        )
+        items.append(
+            f'<select onchange="location.href=this.value" style="background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:20px;padding:8px 14px;font-size:13px;outline:none;cursor:pointer">'
+            f'<option value="" disabled>📅 历史归档</option>{options}</select>'
+        )
     return '<div class="nav">\n' + '\n'.join(items) + '\n</div>'
 
 
@@ -272,7 +309,56 @@ def _validation_html():
 """
 
 
-def _build_page_skeleton(title, body, active_tab, subtitle, tag=''):
+def _archive_validation_html(pred_date):
+    """为归档页生成验证准确率卡片。"""
+    val = _get_validation_for_date(pred_date)
+    if not val or not val.get('overall'):
+        return ""
+    overall = val['overall']
+    by_cat = val.get('by_category', {})
+    cat_rows = ""
+    for cat, stat in by_cat.items():
+        cat_rows += f"""
+            <div class="stat-card">
+                <div class="num" style="color:{'#ef4444' if stat['accuracy'] >= 50 else '#22c55e'}">{stat['accuracy']:.1f}%</div>
+                <div class="label">{cat} ({stat['correct']}/{stat['total']})</div>
+            </div>"""
+    return f"""
+    <div class="section-title">🎯 验证准确率（{pred_date}）</div>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="num" style="color:{'#ef4444' if overall['accuracy'] >= 50 else '#22c55e'}">{overall['accuracy']:.1f}%</div>
+            <div class="label">总体准确率 ({overall['correct']}/{overall['total']})</div>
+        </div>
+        {cat_rows}
+    </div>
+"""
+
+
+def _archive_reflection_html(pred_date):
+    """为归档页生成反思摘要。"""
+    refl = _get_reflection_for_date(pred_date)
+    if not refl:
+        return ""
+    accuracy = refl.get('accuracy', 0)
+    total = refl.get('total', 0)
+    correct = refl.get('correct', 0)
+    wrong = refl.get('wrong', 0)
+    suggestions = refl.get('key_suggestions', [])
+    llm_reflection = refl.get('llm_reflection', '')
+    suggestions_html = ''.join(f'<li>{s}</li>' for s in suggestions) if suggestions else ''
+    llm_html = llm_reflection.replace('\n', '<br>') if isinstance(llm_reflection, str) else ''
+    return f"""
+    <div class="section-title">🧠 反思摘要</div>
+    <div class="note">
+        <p><b>准确率 {accuracy}%</b> · 正确 {correct} / 错误 {wrong} / 总计 {total}</p>
+        {f'<p><b>关键建议：</b></p><ul>{suggestions_html}</ul>' if suggestions else ''}
+        {f'<p><b>LLM 深度反思：</b></p><p>{llm_html}</p>' if llm_html else ''}
+    </div>
+"""
+
+
+def _build_page_skeleton(title, body, active_tab, subtitle, tag='', dates=None):
     return f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -284,7 +370,7 @@ def _build_page_skeleton(title, body, active_tab, subtitle, tag=''):
 </head>
 <body>
 <div class="container">
-{_build_nav(active_tab)}
+{_build_nav(active_tab, dates=dates)}
 {_header(title.split(' - ')[0], subtitle, tag)}
 {body}
     <div class="footer">
@@ -296,7 +382,7 @@ def _build_page_skeleton(title, body, active_tab, subtitle, tag=''):
 </html>"""
 
 
-def generate_prediction_page(stats, rows, out_name='prediction.html'):
+def generate_prediction_page(stats, rows, out_name='prediction.html', dates=None):
     now = datetime.now().strftime('%Y-%m-%d %H:%M')
     bullish = [r for r in rows if r.get('signal') == 'bullish']
     bearish = [r for r in rows if r.get('signal') == 'bearish']
@@ -330,11 +416,53 @@ def generate_prediction_page(stats, rows, out_name='prediction.html'):
     price_date_str = f"价格日期: {', '.join(price_dates)}" if price_dates else "价格日期: 未知"
     title = f"🏛️ LLM 预测 - {now}"
     subtitle = f"{now} · 基于多 Agent 融合预测 ({price_date_str})"
-    html = _build_page_skeleton(title, body, out_name, subtitle, tag='🧠 多Agent融合')
+    html = _build_page_skeleton(title, body, out_name, subtitle, tag='🧠 多Agent融合', dates=dates)
     _write(out_name, html)
 
 
-def generate_category_page(rows, category, out_name, title_cn):
+def generate_archive_page(pred_date, dates=None):
+    """生成 docs/archive/YYYY-MM-DD.html 归档页面。"""
+    rows = get_latest_predictions(pred_date)
+    for p in rows:
+        inject_backtest_metrics(p)
+    rows = sorted(rows, key=lambda x: x.get('bt_score', 0), reverse=True)
+
+    bullish = [r for r in rows if r.get('signal') == 'bullish']
+    bearish = [r for r in rows if r.get('signal') == 'bearish']
+
+    stats_cards = "".join([
+        _stat_card(len(rows), '当日预测'),
+        _stat_card(len(bullish), '看多', '#ef4444'),
+        _stat_card(len(bearish), '看空', '#22c55e'),
+    ])
+
+    cards = ""
+    cards += _top_cards(rows, '🏆 重点看多（按回测排序）', 'bullish', 'bull')
+    cards += _top_cards(rows, '❄️ 重点看空（按回测排序）', 'bearish', 'bear')
+
+    cat_tables = ""
+    for cat in ['ETF', '个股', '期货']:
+        items = [r for r in rows if r.get('category') == cat]
+        if items:
+            cat_tables += _table_html(items, f"📂 {cat} ({len(items)}只)")
+
+    body = f"""
+{_stat_grid(stats_cards)}
+{cards}
+{_archive_validation_html(pred_date)}
+{_archive_reflection_html(pred_date)}
+{cat_tables}
+"""
+    price_dates = sorted(set(r.get('price_date') for r in rows if r.get('price_date')))
+    price_date_str = f"价格日期: {', '.join(price_dates)}" if price_dates else "价格日期: 未知"
+    title = f"🏛️ 历史预测归档 - {pred_date}"
+    subtitle = f"{pred_date} · 多 Agent 融合预测 ({price_date_str})"
+    out_name = f"archive/{pred_date}.html"
+    html = _build_page_skeleton(title, body, out_name, subtitle, tag='历史归档', dates=dates)
+    _write(out_name, html)
+
+
+def generate_category_page(rows, category, out_name, title_cn, dates=None):
     items = [r for r in rows if r.get('category') == category]
     bullish = [r for r in items if r.get('signal') == 'bullish']
     bearish = [r for r in items if r.get('signal') == 'bearish']
@@ -361,11 +489,11 @@ def generate_category_page(rows, category, out_name, title_cn):
     date = datetime.now().strftime('%Y-%m-%d %H:%M')
     title = f"{title_cn} - {date}"
     subtitle = f"{date} · 最新预测 {len(items)} 只 ({price_date_str})"
-    html = _build_page_skeleton(title, body, out_name, subtitle)
+    html = _build_page_skeleton(title, body, out_name, subtitle, dates=dates)
     _write(out_name, html)
 
 
-def generate_index_page(stats, rows):
+def generate_index_page(stats, rows, dates=None):
     bullish = [r for r in rows if r.get('signal') == 'bullish']
     bearish = [r for r in rows if r.get('signal') == 'bearish']
     cats = {}
@@ -397,11 +525,11 @@ def generate_index_page(stats, rows):
     price_date_str = f"价格日期: {', '.join(price_dates)}" if price_dates else "价格日期: 未知"
     title = f"🏠 首页 - A股 & 期货 多维度投资分析 - {date}"
     subtitle = f"{date} · 首页概览 · {price_date_str}"
-    html = _build_page_skeleton(title, body, 'index.html', subtitle)
+    html = _build_page_skeleton(title, body, 'index.html', subtitle, dates=dates)
     _write('index.html', html)
 
 
-def generate_us_market_page():
+def generate_us_market_page(dates=None):
     # 美股暂无实时预测，展示旧美股报告入口或说明
     body = """
     <div class="note">
@@ -413,11 +541,11 @@ def generate_us_market_page():
     date = datetime.now().strftime('%Y-%m-%d %H:%M')
     title = f"🇺🇸 美股市场 - {date}"
     subtitle = f"{date} · 美股市场 · 实时预测待接入"
-    html = _build_page_skeleton(title, body, 'us_market.html', subtitle)
+    html = _build_page_skeleton(title, body, 'us_market.html', subtitle, dates=dates)
     _write('us_market.html', html)
 
 
-def generate_portfolio_page():
+def generate_portfolio_page(dates=None):
     now = datetime.now().strftime('%Y-%m-%d %H:%M')
     tw = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'target_weights.json'))
     rb = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'stock_etf_rebalance_list.json'))
@@ -533,7 +661,7 @@ def generate_portfolio_page():
 """
     title = f"💼 持仓组合 - {date}"
     subtitle = f"{date} · 目标权重组合 · 组合市值 ¥{total_value:,.0f}"
-    html = _build_page_skeleton(title, body, 'portfolio.html', subtitle)
+    html = _build_page_skeleton(title, body, 'portfolio.html', subtitle, dates=dates)
     _write('portfolio.html', html)
 
 
@@ -562,13 +690,13 @@ def _load_futures_positions():
 
 def _write(name, html):
     path = os.path.join(DOCS_DIR, name)
-    os.makedirs(DOCS_DIR, exist_ok=True)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, 'w', encoding='utf-8') as f:
         f.write(html)
     print(f"✅ 生成: {path}")
 
 
-def generate_reflection_page():
+def generate_reflection_page(dates=None):
     refl = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'prediction_reflection.json'))
     if not refl:
         return
@@ -655,7 +783,7 @@ def generate_reflection_page():
 """
     title = f"🧠 复盘 - {pred_date}"
     subtitle = f"{pred_date} 预测验证后反思 · 生成于 {refl.get('generated_at', '')[:19]}"
-    html = _build_page_skeleton(title, body, 'reflection.html', subtitle)
+    html = _build_page_skeleton(title, body, 'reflection.html', subtitle, dates=dates)
     _write('reflection.html', html)
 
 
@@ -665,13 +793,16 @@ if __name__ == '__main__':
         print('❌ 数据库不存在')
         sys.exit(1)
 
-    generate_index_page(stats, rows)
-    generate_category_page(rows, '个股', 'stocks.html', '📈 个股')
-    generate_us_market_page()
-    generate_category_page(rows, 'ETF', 'etfs.html', '📊 ETF')
-    generate_category_page(rows, '期货', 'futures.html', '📉 期货')
-    generate_prediction_page(stats, rows)
-    generate_portfolio_page()
-    generate_reflection_page()
+    dates = get_all_pred_dates()
+    generate_index_page(stats, rows, dates=dates)
+    generate_category_page(rows, '个股', 'stocks.html', '📈 个股', dates=dates)
+    generate_us_market_page(dates=dates)
+    generate_category_page(rows, 'ETF', 'etfs.html', '📊 ETF', dates=dates)
+    generate_category_page(rows, '期货', 'futures.html', '📉 期货', dates=dates)
+    generate_prediction_page(stats, rows, dates=dates)
+    generate_portfolio_page(dates=dates)
+    generate_reflection_page(dates=dates)
+    for d in dates:
+        generate_archive_page(d, dates=dates)
 
     print('✅ 全部页面生成完成')
