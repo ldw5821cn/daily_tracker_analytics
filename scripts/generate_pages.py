@@ -189,7 +189,7 @@ def _stat_grid(cards_html):
     return f'<div class="stats-grid">\n{cards_html}\n</div>'
 
 
-def _row_html(p):
+def _row_html(p, is_us=False):
     sig = p.get('signal', 'neutral')
     conf = (p.get('confidence') or 0.5) * 100
     color = SIGNAL_COLOR.get(sig, '#94a3b8')
@@ -200,11 +200,17 @@ def _row_html(p):
     price_date_fmt = price_date.replace('-', '/') if price_date else ''
     price_label = f"{price_date_fmt} 现价" if price_date_fmt else '现价'
     price_str = f"{price_label} {p.get('current_price', '')}".strip()
+    sector = p.get('sector', '')
+    if is_us:
+        industry = p.get('industry', '')
+        market_cap = p.get('market_cap', '')
+        parts = [x for x in [sector, industry, market_cap] if x]
+        sector = ' / '.join(parts[:2]) if parts else ''
     return f"""
         <tr>
             <td><b>{p.get('ticker', '')}</b></td>
             <td>{p.get('name', '')}</td>
-            <td>{p.get('sector', '')}</td>
+            <td>{sector}</td>
             <td style="color:{color};font-weight:bold">{emoji} {SIGNAL_CN.get(sig, sig)}</td>
             <td>{p.get('weighted_score', 0)}</td>
             <td>{conf:.0f}%</td>
@@ -226,12 +232,12 @@ def _row_html(p):
         </tr>"""
 
 
-def _table_html(items, title):
+def _table_html(items, title, is_us=False):
     if not items:
         return f'<div class="section-title">{title}</div>\n<div class="empty">暂无数据</div>'
     order = {'bullish': 0, 'bearish': 1, 'neutral': 2}
     items = sorted(items, key=lambda x: (order.get(x.get('signal'), 99), -x.get('weighted_score', 0)))
-    rows = "".join(_row_html(p) for p in items)
+    rows = "".join(_row_html(p, is_us=is_us) for p in items)
     return f"""
     <div class="section-title">{title}</div>
     <div class="table-responsive">
@@ -573,10 +579,10 @@ def generate_us_market_page(dates=None):
 <div class="stats-grid">
 {stats_cards}
 </div>
-{_table_html(rows, f'🇺🇸 美股预测 ({len(rows)}只)')}
+{_table_html(rows, f'🇺🇸 美股预测 ({len(rows)}只)', is_us=True)}
 <div class="note">
     <p>美股数据源：akshare 新浪美股前复权 / yfinance 备用。价格为美元。</p>
-    <p>受网络限制，基本面与新闻情绪暂未接入，当前仅基于技术面与宏观偏置。</p>
+    <p>行业与市值数据来自 FinanceDatabase。受网络限制，基本面与新闻情绪暂未接入，当前仅基于技术面与宏观偏置。</p>
 </div>
 """
     date = datetime.now().strftime('%Y-%m-%d %H:%M')
