@@ -1,0 +1,26 @@
+{
+  "scoring": {
+    "trend": 31,
+    "momentum": 19,
+    "volatility": 15,
+    "liquidity": 15,
+    "inflation": 10,
+    "performance": 14
+  },
+  "risk": {
+    "stop_loss": -0.08,
+    "take_profit": 0.2,
+    "max_single_weight": 0.15,
+    "min_cash_ratio": 0.1
+  },
+  "rebalance": {
+    "min_hold_days": 5,
+    "max_hold_days": 7,
+    "score_threshold": 70
+  },
+  "evolution": {
+    "version": 4,
+    "last_updated": "2026-07-09 15:37",
+    "win_rate_weight": 0.3
+  }
+}

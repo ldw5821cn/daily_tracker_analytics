@@ -511,7 +511,7 @@ def _build_factors_html():
 
 def _build_portfolio_backtest_html():
     try:
-        with open('multi_agent/data/factor_portfolio_backtest.json', 'r', encoding='utf-8') as f:
+        with open('multi_agent/data/vectorbt_portfolio_backtest.json', 'r', encoding='utf-8') as f:
             bt = json.load(f)
     except Exception as e:
         return f'<!-- portfolio backtest load failed: {e} -->'
@@ -522,23 +522,30 @@ def _build_portfolio_backtest_html():
     for name, v in scenarios.items():
         if 'error' in v:
             continue
+        # 高亮带成本只做多+风控策略
+        highlight = name == 'weekly_long_only_risk_with_cost'
+        row_style = 'style="background:#1e293b;font-weight:bold"' if highlight else ''
         rows.append(
-            f"<tr><td>{name}</td>"
+            f"<tr {row_style}><td>{name}{' ⭐' if highlight else ''}</td>"
             f"<td style=\"color:{'#22c55e' if v['annualized_return'] >= 0 else '#ef4444'}\">{v['annualized_return']:+.2f}%</td>"
             f"<td>{v['max_drawdown']:.2f}%</td>"
             f"<td>{v['sharpe_ratio']:.2f}</td>"
             f"<td>{v['calmar_ratio']:.2f}</td>"
+            f"<td>{v['num_trades']}</td>"
             f"</tr>"
         )
     table = "\n".join(rows)
+    best = bt.get('best_scenario', '')
+    recommended = 'weekly_long_only_risk_with_cost'
     return f"""
     <div class="section">
-        <h2>📊 因子组合滚动回测（多场景对比）</h2>
+        <h2>📊 VectorBT 组合滚动回测（多场景对比）</h2>
         <div class="cards">
-            <div class="card"><div class="card-title">最佳场景</div><div class="card-meta" style="font-size:24px;color:#22c55e">{bt['best_scenario']}</div></div>
+            <div class="card"><div class="card-title">夏普最高(无成本)</div><div class="card-meta" style="font-size:24px;color:#22c55e">{best}</div></div>
+            <div class="card"><div class="card-title">推荐策略(带成本)</div><div class="card-meta" style="font-size:24px;color:#6366f1">{recommended}</div></div>
         </div>
         <table>
-            <thead><tr><th>场景</th><th>年化</th><th>回撤</th><th>夏普</th><th>Calmar</th></tr></thead>
+            <thead><tr><th>场景</th><th>年化</th><th>回撤</th><th>夏普</th><th>Calmar</th><th>交易次数</th></tr></thead>
             <tbody>
                 {table}
             </tbody>

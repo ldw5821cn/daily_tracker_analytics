@@ -1,0 +1,98 @@
+{
+  "scan_time": "2026-07-09 13:03",
+  "top10": [
+    {
+      "name": "华安证券",
+      "code": "600909",
+      "score": 89,
+      "price": 9.8,
+      "change": 6.754
+    },
+    {
+      "name": "甘咨询",
+      "code": "000779",
+      "score": 87,
+      "price": 9.64,
+      "change": 5.011
+    },
+    {
+      "name": "硅宝科技",
+      "code": "300019",
+      "score": 87,
+      "price": 21.59,
+      "change": 5.368
+    },
+    {
+      "name": "神州泰岳",
+      "code": "300002",
+      "score": 85,
+      "price": 8.43,
+      "change": 4.203
+    },
+    {
+      "name": "商络电子",
+      "code": "300975",
+      "score": 83,
+      "price": 36.17,
+      "change": 4.146
+    },
+    {
+      "name": "中鼎股份",
+      "code": "000887",
+      "score": 82,
+      "price": 18.8,
+      "change": 10.006
+    },
+    {
+      "name": "泰山石油",
+      "code": "000554",
+      "score": 81,
+      "price": 6.19,
+      "change": 4.915
+    },
+    {
+      "name": "上峰材料",
+      "code": "000672",
+      "score": 81,
+      "price": 21.0,
+      "change": 5.954
+    },
+    {
+      "name": "模塑科技",
+      "code": "000700",
+      "score": 81,
+      "price": 14.97,
+      "change": 2.534
+    },
+    {
+      "name": "依依股份",
+      "code": "001206",
+      "score": 81,
+      "price": 21.39,
+      "change": 3.684
+    }
+  ],
+  "simulator": {
+    "total": 100000.0,
+    "cash": 16080.0,
+    "positions": 10
+  },
+  "xueqiu_r": {
+    "rebalanced": true,
+    "success_count": 10,
+    "error_count": 0,
+    "errors": [],
+    "weights": {
+      "SH600909": 9.0,
+      "SZ000779": 9.0,
+      "SZ300019": 9.0,
+      "SZ300002": 9.0,
+      "SZ300975": 9.0,
+      "SZ000887": 9.0,
+      "SZ000554": 9.0,
+      "SZ000672": 9.0,
+      "SZ000700": 9.0,
+      "SZ001206": 9.0
+    }
+  }
+}

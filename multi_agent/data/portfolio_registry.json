@@ -1,0 +1,35 @@
+{
+  "ZH3650487": {
+    "name": "全A扫描组合",
+    "strategy": "6维评分全A扫描Top10",
+    "capital": 100000,
+    "last_rebalance": "2026-07-09",
+    "config": "xueqiu_config.json"
+  },
+  "ZH3650823": {
+    "name": "高股息组合",
+    "strategy": "高股息ETF替代组合（申能/浙能/华能/华电/工行）",
+    "capital": 100000,
+    "last_rebalance": "2026-07-10",
+    "config": "xueqiu_config_div.json",
+    "holdings": {
+      "SH600642": "申能股份",
+      "SH600023": "浙能电力",
+      "SH600011": "华能国际",
+      "SH600027": "华电国际",
+      "SH601398": "工商银行"
+    }
+  },
+  "ZH3650824": {
+    "name": "期货模拟组合",
+    "strategy": "多品种期货模拟（甲醇/PTA/铁矿石）",
+    "capital": 100000,
+    "engine": "futures_simulator.py",
+    "last_update": "2026-07-10",
+    "positions": {
+      "MA": {"direction": "long", "lots": 1, "entry": 2488},
+      "TA": {"direction": "short", "lots": 2, "entry": 5640},
+      "I": {"direction": "short", "lots": 1, "entry": 746}
+    }
+  }
+}

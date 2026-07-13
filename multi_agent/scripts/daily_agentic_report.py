@@ -148,13 +148,18 @@ def build_markdown(pred_date=None, top_n=3):
     # 因子组合滚动回测
     try:
         import json as _json
-        with open('multi_agent/data/factor_portfolio_backtest.json', 'r', encoding='utf-8') as f:
+        with open('multi_agent/data/vectorbt_portfolio_backtest.json', 'r', encoding='utf-8') as f:
             bt = _json.load(f)
         if 'error' not in bt:
             lines.append("")
-            lines.append("📊 因子组合回测")
-            for name, v in bt.get('scenarios', {}).items():
-                if 'error' not in v:
+            lines.append("📊 VectorBT 组合回测")
+            scenarios = bt.get('scenarios', {})
+            # 优先展示带成本的只做多+风控策略
+            preferred = scenarios.get('weekly_long_only_risk_with_cost')
+            if preferred and 'error' not in preferred:
+                lines.append(f"  推荐(带成本): 年化{preferred['annualized_return']:+.1f}% 回撤{preferred['max_drawdown']:.1f}% 夏普{preferred['sharpe_ratio']}")
+            for name, v in scenarios.items():
+                if 'error' not in v and name != 'weekly_long_only_risk_with_cost':
                     lines.append(f"  {name}: 年化{v['annualized_return']:+.1f}% 回撤{v['max_drawdown']:.1f}% 夏普{v['sharpe_ratio']}")
     except Exception:
         pass

@@ -3,9 +3,11 @@
 
 逻辑：
 1. 从 target_weights.json 读取期货目标（只取 category=='期货'）。
-2. 按目标权重排序，在期货预算（权益 × 20%）内选最多的品种，每个品种 1 手。
-3. 对当前持仓：不在目标中的平仓，方向不对的平仓，目标手数差异调整。
-4. 所有开仓/加仓经过 RiskGuard 审核。
+2. 按目标权重排序，在期货预算（权益 × 50%）内选品种。
+3. 根据 ATR 风险平价计算手数：每个品种承担 equity 的固定百分比日波动风险。
+4. 单品种保证金 ≤ 15% 权益，总保证金 ≤ 50% 权益，最多 8 个品种。
+5. 对当前持仓：不在目标中的平仓，方向不对的平仓，目标手数差异调整。
+6. 所有开仓/加仓经过 RiskGuard 审核。
 """
 
 from __future__ import annotations
@@ -20,7 +22,7 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, 'multi_agent'))
 
 from futures_simulator import (
     get_positions_summary, open_position, close_position,
-    calc_margin, CONTRACT_SPECS, DEFAULT_CAPITAL, get_cash, DB_PATH
+    calc_margin, calc_atr, CONTRACT_SPECS, DEFAULT_CAPITAL, get_cash, DB_PATH
 )
 
 TARGET_WEIGHTS_PATH = os.path.join(PROJECT_ROOT, 'multi_agent', 'data', 'target_weights.json')
@@ -41,12 +43,39 @@ def _load_futures_targets():
     return [t for t in data.get('targets', []) if t.get('category') == '期货']
 
 
-def rebalance(dry_run: bool = True) -> Dict:
+def _calc_risk_parity_lots(contract: str, price: float, equity: float,
+                          risk_per_contract_pct: float = 0.5) -> int:
+    """根据 ATR 风险平价计算手数。
+
+    每个品种承担 equity 的 risk_per_contract_pct% 的日波动风险。
+    手数 = risk_budget / (ATR * 每点价值)，同时受 15% 权益保证金上限约束。
+    """
+    spec = CONTRACT_SPECS.get(contract)
+    if not spec:
+        return 0
+    multiplier = spec['multiplier']
+    margin_rate = spec['margin_rate']
+    atr = calc_atr(contract, days=14)
+    if atr <= 0 or price <= 0:
+        lots = 1
+    else:
+        risk_budget = equity * risk_per_contract_pct / 100
+        point_value = atr * multiplier
+        lots = int(risk_budget / point_value)
+        lots = max(1, lots)
+
+    margin_per_lot = price * multiplier * margin_rate
+    max_lots_by_margin = int(equity * 0.15 / margin_per_lot) if margin_per_lot > 0 else 0
+    lots = min(lots, max_lots_by_margin)
+    return lots
+
+
+def rebalance(dry_run: bool = True, risk_per_contract_pct: float = 0.5) -> dict:
     summary = get_positions_summary()
     equity = summary['total_asset']
     cash = summary['cash']
-    budget = equity * 0.50  # 期货预算 50% 权益，剩余现金保持流动性
-    max_contracts = 5
+    budget = equity * 0.50  # 期货预算 50% 权益
+    max_contracts = 8
 
     targets = _load_futures_targets()
     if not targets:
@@ -72,21 +101,26 @@ def rebalance(dry_run: bool = True) -> Dict:
             price = q['close'] if q else 0
         if price <= 0:
             continue
-        margin_per_lot = calc_margin(contract, price, 1)
-        # 单笔保证金不能超过权益 15%（RiskGuard 上限），否则跳过
-        if margin_per_lot > equity * 0.15:
+        lots = _calc_risk_parity_lots(contract, price, equity, risk_per_contract_pct)
+        if lots <= 0:
             continue
-        if used_budget + margin_per_lot > budget or len(selected) >= max_contracts:
+        margin = calc_margin(contract, price, lots)
+        # 单笔保证金不能超过权益 15%（RiskGuard 上限），否则缩单
+        if margin > equity * 0.15:
+            lots = max(1, int(equity * 0.15 / (price * CONTRACT_SPECS[contract]['multiplier'] * CONTRACT_SPECS[contract]['margin_rate'])))
+            margin = calc_margin(contract, price, lots)
+        if used_budget + margin > budget or len(selected) >= max_contracts:
             continue
         selected.append({
             'ticker': t['ticker'],
             'contract': contract,
             'direction': 'long' if t['target_weight'] > 0 else 'short',
             'price': price,
-            'margin_per_lot': margin_per_lot,
+            'lots': lots,
+            'margin': margin,
             'target_weight': t['target_weight'],
         })
-        used_budget += margin_per_lot
+        used_budget += margin
 
     # 当前持仓
     current = {p['contract']: p for p in summary.get('positions', [])}
@@ -115,16 +149,16 @@ def rebalance(dry_run: bool = True) -> Dict:
                     'lots': pos['lots'],
                     'reason': f'方向切换 目标{target_dir}',
                 })
-            elif pos['lots'] > 1:
+            elif pos['lots'] > target_map[contract]['lots']:
                 actions.append({
                     'contract': contract,
                     'action': 'close',
                     'direction': current_dir,
-                    'lots': pos['lots'] - 1,
-                    'reason': '目标 1 手，减仓',
+                    'lots': pos['lots'] - target_map[contract]['lots'],
+                    'reason': f'目标 {target_map[contract]["lots"]} 手，减仓',
                 })
 
-    # 2. 开仓目标中不存在的，或方向对但数量不足（暂不考虑加仓，每个 1 手）
+    # 2. 开仓或加仓
     for s in selected:
         contract = s['contract']
         if contract not in current:
@@ -132,10 +166,23 @@ def rebalance(dry_run: bool = True) -> Dict:
                 'contract': contract,
                 'action': 'open',
                 'direction': s['direction'],
-                'lots': 1,
+                'lots': s['lots'],
                 'price': s['price'],
-                'reason': f'目标权重{s["target_weight"]:+.2%}',
+                'reason': f'目标权重{s["target_weight"]:+.2%} ATR仓位{s["lots"]}手',
             })
+        else:
+            pos = current[contract]
+            current_lots = pos['lots']
+            current_dir = 'long' if pos['direction'] == '多' else 'short'
+            if current_dir == s['direction'] and current_lots < s['lots']:
+                actions.append({
+                    'contract': contract,
+                    'action': 'open',
+                    'direction': s['direction'],
+                    'lots': s['lots'] - current_lots,
+                    'price': s['price'],
+                    'reason': f'目标加仓至{s["lots"]}手',
+                })
 
     # 执行（或 dry-run）
     executed = []
@@ -143,7 +190,6 @@ def rebalance(dry_run: bool = True) -> Dict:
         # 先平仓，释放保证金
         for a in actions:
             if a['action'] == 'close':
-                # 获取当前价格，避免 price 处理异常
                 cur_price = current[a['contract']]['current_price']
                 r = close_position(a['contract'], a['direction'], a['lots'], price=cur_price, reason=a['reason'])
                 executed.append({'action': a, 'result': r})
@@ -169,9 +215,11 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description='期货目标权重再平衡')
     parser.add_argument('--execute', action='store_true', help='执行调仓（默认仅预览）')
+    parser.add_argument('--risk-per-contract', type=float, default=0.5,
+                        help='每个品种风险预算占权益百分比（默认 0.5%%）')
     args = parser.parse_args()
 
-    result = rebalance(dry_run=not args.execute)
+    result = rebalance(dry_run=not args.execute, risk_per_contract_pct=args.risk_per_contract)
     if 'error' in result:
         print(f"❌ {result['error']}")
         sys.exit(1)
@@ -180,7 +228,7 @@ if __name__ == '__main__':
     print(f"权益: {result['equity']:.2f}  现金: {result['cash']:.2f}  预算: {result['budget']:.2f}")
     print(f"目标持仓 ({len(result['selected_targets'])} 只):")
     for s in result['selected_targets']:
-        print(f"  {s['contract']:6s} {s['direction']:5s} 1手 保证金{s['margin_per_lot']:.0f} 目标{s['target_weight']:+.2%}")
+        print(f"  {s['contract']:6s} {s['direction']:5s} {s['lots']}手 保证金{s['margin']:.0f} 目标{s['target_weight']:+.2%}")
     print(f"\n当前持仓:")
     for p in result['current_positions']:
         print(f"  {p['contract']:6s} {p['direction']:3s} {p['lots']}手")

@@ -1,0 +1,5352 @@
+{
+  "factors": [
+    {
+      "name": "放量突破",
+      "description": "放量突破 20 日均线做多，跌破 20 日均线且缩量做空",
+      "code": "signal = np.where((close > ma20) & (vol_ratio > 1.5), 1, np.where((close < ma20) & (vol_ratio < 0.8), -1, 0))\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 92.75,
+          "annual_vol": 27.43,
+          "sharpe": 0.14,
+          "max_drawdown": -87.51,
+          "trades": 1801,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -13.05,
+          "annual_vol": 37.5,
+          "sharpe": -0.05,
+          "max_drawdown": -66.74,
+          "trades": 485,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 225.57,
+          "annual_vol": 40.76,
+          "sharpe": 0.56,
+          "max_drawdown": -59.19,
+          "trades": 781,
+          "ticker": "300474"
+        }
+      ],
+      "avg_sharpe": 0.22,
+      "avg_return": 101.76,
+      "avg_drawdown": -71.15,
+      "score": 22.05,
+      "passed": true,
+      "created_at": ""
+    },
+    {
+      "name": "RSI动量过滤",
+      "description": "均线多头排列且 RSI 在 40-70 区间做多，空头排列且 RSI 高位做空",
+      "code": "ma_aligned = (ma5 > ma10) & (ma10 > ma20)\nsignal = np.where(ma_aligned & (rsi_14 > 40) & (rsi_14 < 70), 1, np.where((ma5 < ma10) & (rsi_14 > 60), -1, 0))\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 135.2,
+          "annual_vol": 21.94,
+          "sharpe": 0.26,
+          "max_drawdown": -61.09,
+          "trades": 957,
+          "ticker": "000301"
+        },
+        {
+          "total_return": 24.6,
+          "annual_vol": 33.8,
+          "sharpe": 0.11,
+          "max_drawdown": -78.91,
+          "trades": 241,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 58.41,
+          "annual_vol": 30.21,
+          "sharpe": 0.2,
+          "max_drawdown": -56.54,
+          "trades": 337,
+          "ticker": "300474"
+        }
+      ],
+      "avg_sharpe": 0.19,
+      "avg_return": 72.74,
+      "avg_drawdown": -65.51,
+      "score": 13.82,
+      "passed": true,
+      "created_at": ""
+    },
+    {
+      "name": "10日动量",
+      "description": "10日收益为正做多，为负做空",
+      "code": "mom10 = close.pct_change(10)\nsignal = np.where(mom10 > 0, 1, -1)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 738.94,
+          "annual_vol": 44.55,
+          "sharpe": 0.7,
+          "max_drawdown": -70.78,
+          "win_rate": 50.8,
+          "calmar": 10.44,
+          "trades": 809,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -89.7,
+          "annual_vol": 65.05,
+          "sharpe": -0.21,
+          "max_drawdown": -93.14,
+          "win_rate": 48.8,
+          "calmar": -0.96,
+          "trades": 237,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 53.06,
+          "annual_vol": 60.45,
+          "sharpe": 0.09,
+          "max_drawdown": -93.6,
+          "win_rate": 49.8,
+          "calmar": 0.57,
+          "trades": 353,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 119.1,
+          "annual_vol": 63.34,
+          "sharpe": 0.51,
+          "max_drawdown": -55.89,
+          "win_rate": 49.1,
+          "calmar": 2.13,
+          "trades": 133,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 76.65,
+          "annual_vol": 36.03,
+          "sharpe": 1.07,
+          "max_drawdown": -25.32,
+          "win_rate": 54.3,
+          "calmar": 3.03,
+          "trades": 63,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.43,
+      "avg_return": 179.61,
+      "avg_drawdown": -67.75,
+      "avg_win_rate": 50.6,
+      "avg_calmar": 3.04,
+      "avg_trades": 319,
+      "score": 108.01,
+      "passed": true
+    },
+    {
+      "name": "RSI中轴",
+      "description": "RSI14>50做多，<50做空",
+      "code": "signal = np.where(rsi_14 > 50, 1, -1)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 653.22,
+          "annual_vol": 44.56,
+          "sharpe": 0.62,
+          "max_drawdown": -82.74,
+          "win_rate": 50.8,
+          "calmar": 7.9,
+          "trades": 615,
+          "ticker": "000301"
+        },
+        {
+          "total_return": 25.92,
+          "annual_vol": 65.05,
+          "sharpe": 0.06,
+          "max_drawdown": -91.98,
+          "win_rate": 49.0,
+          "calmar": 0.28,
+          "trades": 189,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 58.6,
+          "annual_vol": 60.45,
+          "sharpe": 0.1,
+          "max_drawdown": -90.2,
+          "win_rate": 50.4,
+          "calmar": 0.65,
+          "trades": 267,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 94.07,
+          "annual_vol": 63.36,
+          "sharpe": 0.4,
+          "max_drawdown": -72.14,
+          "win_rate": 48.7,
+          "calmar": 1.3,
+          "trades": 115,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 25.88,
+          "annual_vol": 36.1,
+          "sharpe": 0.36,
+          "max_drawdown": -39.31,
+          "win_rate": 51.4,
+          "calmar": 0.66,
+          "trades": 59,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.31,
+      "avg_return": 171.54,
+      "avg_drawdown": -75.27,
+      "avg_win_rate": 50.1,
+      "avg_calmar": 2.16,
+      "avg_trades": 249,
+      "score": 74.41,
+      "passed": true
+    },
+    {
+      "name": "量价齐升",
+      "description": "价格上涨且放量做多，下跌且放量做空",
+      "code": "ret = close.pct_change()\nsignal = np.where((ret > 0) & (vol_ratio > 1.2), 1, np.where((ret < 0) & (vol_ratio > 1.2), -1, 0))",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 217.5,
+          "annual_vol": 25.93,
+          "sharpe": 0.35,
+          "max_drawdown": -76.28,
+          "win_rate": 48.2,
+          "calmar": 2.85,
+          "trades": 1669,
+          "ticker": "000301"
+        },
+        {
+          "total_return": 184.74,
+          "annual_vol": 38.93,
+          "sharpe": 0.71,
+          "max_drawdown": -48.34,
+          "win_rate": 52.1,
+          "calmar": 3.82,
+          "trades": 465,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 79.35,
+          "annual_vol": 35.32,
+          "sharpe": 0.23,
+          "max_drawdown": -51.96,
+          "win_rate": 48.1,
+          "calmar": 1.53,
+          "trades": 682,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 20.33,
+          "annual_vol": 38.55,
+          "sharpe": 0.14,
+          "max_drawdown": -46.34,
+          "win_rate": 50.6,
+          "calmar": 0.44,
+          "trades": 277,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 35.29,
+          "annual_vol": 22.22,
+          "sharpe": 0.8,
+          "max_drawdown": -18.69,
+          "win_rate": 54.8,
+          "calmar": 1.89,
+          "trades": 163,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.45,
+      "avg_return": 107.44,
+      "avg_drawdown": -48.32,
+      "avg_win_rate": 50.8,
+      "avg_calmar": 2.11,
+      "avg_trades": 651,
+      "score": 68.98,
+      "passed": true
+    },
+    {
+      "name": "MA20趋势_window10",
+      "description": "价格站上MA20做多，跌破做空 {'window': 10}",
+      "code": "signal = np.where(close > ma20, 1, -1)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 689.48,
+          "annual_vol": 44.55,
+          "sharpe": 0.65,
+          "max_drawdown": -72.48,
+          "win_rate": 50.7,
+          "calmar": 9.51,
+          "trades": 615,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -51.34,
+          "annual_vol": 65.05,
+          "sharpe": -0.12,
+          "max_drawdown": -94.01,
+          "win_rate": 48.3,
+          "calmar": -0.55,
+          "trades": 195,
+          "ticker": "688019"
+        },
+        {
+          "total_return": -99.19,
+          "annual_vol": 60.45,
+          "sharpe": -0.17,
+          "max_drawdown": -95.79,
+          "win_rate": 49.8,
+          "calmar": -1.04,
+          "trades": 251,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 66.15,
+          "annual_vol": 63.37,
+          "sharpe": 0.28,
+          "max_drawdown": -74.62,
+          "win_rate": 49.6,
+          "calmar": 0.89,
+          "trades": 113,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 70.87,
+          "annual_vol": 36.04,
+          "sharpe": 0.99,
+          "max_drawdown": -30.3,
+          "win_rate": 53.3,
+          "calmar": 2.34,
+          "trades": 51,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.33,
+      "avg_return": 135.19,
+      "avg_drawdown": -73.44,
+      "avg_win_rate": 50.3,
+      "avg_calmar": 2.23,
+      "avg_trades": 245,
+      "score": 66.37,
+      "passed": true
+    },
+    {
+      "name": "MA20趋势_window20",
+      "description": "价格站上MA20做多，跌破做空 {'window': 20}",
+      "code": "signal = np.where(close > ma20, 1, -1)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 689.48,
+          "annual_vol": 44.55,
+          "sharpe": 0.65,
+          "max_drawdown": -72.48,
+          "win_rate": 50.7,
+          "calmar": 9.51,
+          "trades": 615,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -51.34,
+          "annual_vol": 65.05,
+          "sharpe": -0.12,
+          "max_drawdown": -94.01,
+          "win_rate": 48.3,
+          "calmar": -0.55,
+          "trades": 195,
+          "ticker": "688019"
+        },
+        {
+          "total_return": -99.19,
+          "annual_vol": 60.45,
+          "sharpe": -0.17,
+          "max_drawdown": -95.79,
+          "win_rate": 49.8,
+          "calmar": -1.04,
+          "trades": 251,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 66.15,
+          "annual_vol": 63.37,
+          "sharpe": 0.28,
+          "max_drawdown": -74.62,
+          "win_rate": 49.6,
+          "calmar": 0.89,
+          "trades": 113,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 70.87,
+          "annual_vol": 36.04,
+          "sharpe": 0.99,
+          "max_drawdown": -30.3,
+          "win_rate": 53.3,
+          "calmar": 2.34,
+          "trades": 51,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.33,
+      "avg_return": 135.19,
+      "avg_drawdown": -73.44,
+      "avg_win_rate": 50.3,
+      "avg_calmar": 2.23,
+      "avg_trades": 245,
+      "score": 66.37,
+      "passed": true
+    },
+    {
+      "name": "MA20趋势_window30",
+      "description": "价格站上MA20做多，跌破做空 {'window': 30}",
+      "code": "signal = np.where(close > ma20, 1, -1)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 689.48,
+          "annual_vol": 44.55,
+          "sharpe": 0.65,
+          "max_drawdown": -72.48,
+          "win_rate": 50.7,
+          "calmar": 9.51,
+          "trades": 615,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -51.34,
+          "annual_vol": 65.05,
+          "sharpe": -0.12,
+          "max_drawdown": -94.01,
+          "win_rate": 48.3,
+          "calmar": -0.55,
+          "trades": 195,
+          "ticker": "688019"
+        },
+        {
+          "total_return": -99.19,
+          "annual_vol": 60.45,
+          "sharpe": -0.17,
+          "max_drawdown": -95.79,
+          "win_rate": 49.8,
+          "calmar": -1.04,
+          "trades": 251,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 66.15,
+          "annual_vol": 63.37,
+          "sharpe": 0.28,
+          "max_drawdown": -74.62,
+          "win_rate": 49.6,
+          "calmar": 0.89,
+          "trades": 113,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 70.87,
+          "annual_vol": 36.04,
+          "sharpe": 0.99,
+          "max_drawdown": -30.3,
+          "win_rate": 53.3,
+          "calmar": 2.34,
+          "trades": 51,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.33,
+      "avg_return": 135.19,
+      "avg_drawdown": -73.44,
+      "avg_win_rate": 50.3,
+      "avg_calmar": 2.23,
+      "avg_trades": 245,
+      "score": 66.37,
+      "passed": true
+    },
+    {
+      "name": "MA20趋势_window60",
+      "description": "价格站上MA20做多，跌破做空 {'window': 60}",
+      "code": "signal = np.where(close > ma20, 1, -1)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 689.48,
+          "annual_vol": 44.55,
+          "sharpe": 0.65,
+          "max_drawdown": -72.48,
+          "win_rate": 50.7,
+          "calmar": 9.51,
+          "trades": 615,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -51.34,
+          "annual_vol": 65.05,
+          "sharpe": -0.12,
+          "max_drawdown": -94.01,
+          "win_rate": 48.3,
+          "calmar": -0.55,
+          "trades": 195,
+          "ticker": "688019"
+        },
+        {
+          "total_return": -99.19,
+          "annual_vol": 60.45,
+          "sharpe": -0.17,
+          "max_drawdown": -95.79,
+          "win_rate": 49.8,
+          "calmar": -1.04,
+          "trades": 251,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 66.15,
+          "annual_vol": 63.37,
+          "sharpe": 0.28,
+          "max_drawdown": -74.62,
+          "win_rate": 49.6,
+          "calmar": 0.89,
+          "trades": 113,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 70.87,
+          "annual_vol": 36.04,
+          "sharpe": 0.99,
+          "max_drawdown": -30.3,
+          "win_rate": 53.3,
+          "calmar": 2.34,
+          "trades": 51,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.33,
+      "avg_return": 135.19,
+      "avg_drawdown": -73.44,
+      "avg_win_rate": 50.3,
+      "avg_calmar": 2.23,
+      "avg_trades": 245,
+      "score": 66.37,
+      "passed": true
+    },
+    {
+      "name": "BOLL中轨趋势",
+      "description": "价格上穿布林中轨做多，下穿做空",
+      "code": "boll_mid = (boll_up + boll_down) / 2\nsignal = np.where(close > boll_mid, 1, -1)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 689.48,
+          "annual_vol": 44.55,
+          "sharpe": 0.65,
+          "max_drawdown": -72.48,
+          "win_rate": 50.7,
+          "calmar": 9.51,
+          "trades": 615,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -51.34,
+          "annual_vol": 65.05,
+          "sharpe": -0.12,
+          "max_drawdown": -94.01,
+          "win_rate": 48.3,
+          "calmar": -0.55,
+          "trades": 195,
+          "ticker": "688019"
+        },
+        {
+          "total_return": -99.19,
+          "annual_vol": 60.45,
+          "sharpe": -0.17,
+          "max_drawdown": -95.79,
+          "win_rate": 49.8,
+          "calmar": -1.04,
+          "trades": 251,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 66.15,
+          "annual_vol": 63.37,
+          "sharpe": 0.28,
+          "max_drawdown": -74.62,
+          "win_rate": 49.6,
+          "calmar": 0.89,
+          "trades": 113,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 70.87,
+          "annual_vol": 36.04,
+          "sharpe": 0.99,
+          "max_drawdown": -30.3,
+          "win_rate": 53.3,
+          "calmar": 2.34,
+          "trades": 51,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.33,
+      "avg_return": 135.19,
+      "avg_drawdown": -73.44,
+      "avg_win_rate": 50.3,
+      "avg_calmar": 2.23,
+      "avg_trades": 245,
+      "score": 66.37,
+      "passed": true
+    },
+    {
+      "name": "20日动量",
+      "description": "20日收益为正做多，为负做空",
+      "code": "mom20 = close.pct_change(20)\nsignal = np.where(mom20 > 0, 1, -1)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 537.51,
+          "annual_vol": 44.57,
+          "sharpe": 0.51,
+          "max_drawdown": -83.9,
+          "win_rate": 50.6,
+          "calmar": 6.41,
+          "trades": 551,
+          "ticker": "000301"
+        },
+        {
+          "total_return": 74.37,
+          "annual_vol": 65.05,
+          "sharpe": 0.17,
+          "max_drawdown": -91.09,
+          "win_rate": 49.9,
+          "calmar": 0.82,
+          "trades": 153,
+          "ticker": "688019"
+        },
+        {
+          "total_return": -79.29,
+          "annual_vol": 60.45,
+          "sharpe": -0.13,
+          "max_drawdown": -92.88,
+          "win_rate": 50.3,
+          "calmar": -0.85,
+          "trades": 255,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 4.05,
+          "annual_vol": 63.38,
+          "sharpe": 0.02,
+          "max_drawdown": -74.44,
+          "win_rate": 48.8,
+          "calmar": 0.05,
+          "trades": 105,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 55.95,
+          "annual_vol": 36.07,
+          "sharpe": 0.78,
+          "max_drawdown": -29.03,
+          "win_rate": 53.3,
+          "calmar": 1.93,
+          "trades": 49,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.27,
+      "avg_return": 118.52,
+      "avg_drawdown": -74.27,
+      "avg_win_rate": 50.6,
+      "avg_calmar": 1.67,
+      "avg_trades": 222,
+      "score": 48.72,
+      "passed": true
+    },
+    {
+      "name": "波动率收缩",
+      "description": "20日波动率低于5日波动率时跟随趋势",
+      "code": "vol20 = close.pct_change().rolling(20).std()\nvol5 = close.pct_change().rolling(5).std()\nsignal = np.where((vol20 < vol5) & (close > ma5), 1, np.where((vol20 < vol5) & (close < ma5), -1, 0))",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 388.26,
+          "annual_vol": 28.83,
+          "sharpe": 0.57,
+          "max_drawdown": -38.07,
+          "win_rate": 50.6,
+          "calmar": 10.2,
+          "trades": 1592,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -17.27,
+          "annual_vol": 42.37,
+          "sharpe": -0.06,
+          "max_drawdown": -80.28,
+          "win_rate": 49.6,
+          "calmar": -0.22,
+          "trades": 421,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 96.28,
+          "annual_vol": 42.13,
+          "sharpe": 0.23,
+          "max_drawdown": -66.01,
+          "win_rate": 48.9,
+          "calmar": 1.46,
+          "trades": 616,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 2.36,
+          "annual_vol": 40.77,
+          "sharpe": 0.02,
+          "max_drawdown": -47.88,
+          "win_rate": 45.5,
+          "calmar": 0.05,
+          "trades": 239,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 12.19,
+          "annual_vol": 24.83,
+          "sharpe": 0.25,
+          "max_drawdown": -21.91,
+          "win_rate": 46.8,
+          "calmar": 0.56,
+          "trades": 134,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.2,
+      "avg_return": 96.36,
+      "avg_drawdown": -50.83,
+      "avg_win_rate": 48.3,
+      "avg_calmar": 2.41,
+      "avg_trades": 600,
+      "score": 43.57,
+      "passed": true
+    },
+    {
+      "name": "MACD_RSI共振",
+      "description": "MACD正且RSI 40-70做多",
+      "code": "signal = np.where((macd_hist > 0) & (rsi_14 > 40) & (rsi_14 < 70), 1, 0)\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 224.09,
+          "annual_vol": 24.45,
+          "sharpe": 0.39,
+          "max_drawdown": -60.83,
+          "win_rate": 52.8,
+          "calmar": 3.68,
+          "trades": 882,
+          "ticker": "000301"
+        },
+        {
+          "total_return": 107.59,
+          "annual_vol": 39.73,
+          "sharpe": 0.4,
+          "max_drawdown": -59.42,
+          "win_rate": 49.1,
+          "calmar": 1.81,
+          "trades": 246,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 104.45,
+          "annual_vol": 32.73,
+          "sharpe": 0.32,
+          "max_drawdown": -45.76,
+          "win_rate": 49.9,
+          "calmar": 2.28,
+          "trades": 316,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 35.75,
+          "annual_vol": 36.9,
+          "sharpe": 0.26,
+          "max_drawdown": -67.27,
+          "win_rate": 47.2,
+          "calmar": 0.53,
+          "trades": 151,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 23.34,
+          "annual_vol": 18.84,
+          "sharpe": 0.63,
+          "max_drawdown": -14.24,
+          "win_rate": 52.2,
+          "calmar": 1.64,
+          "trades": 72,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.4,
+      "avg_return": 99.04,
+      "avg_drawdown": -49.5,
+      "avg_win_rate": 50.2,
+      "avg_calmar": 1.99,
+      "avg_trades": 333,
+      "score": 59.5,
+      "passed": true
+    },
+    {
+      "name": "放量突破_v1.2",
+      "description": "放量突破MA20做多，缩量跌破MA20做空 {'vol_thresh': 1.2}",
+      "code": "signal = np.where((close > ma20) & (vol_ratio > 1.2), 1, np.where((close < ma20) & (vol_ratio < 0.6), -1, 0))\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 52.55,
+          "annual_vol": 26.2,
+          "sharpe": 0.08,
+          "max_drawdown": -84.81,
+          "win_rate": 50.3,
+          "calmar": 0.62,
+          "trades": 1719,
+          "ticker": "000301"
+        },
+        {
+          "total_return": 5.01,
+          "annual_vol": 35.85,
+          "sharpe": 0.02,
+          "max_drawdown": -65.41,
+          "win_rate": 49.2,
+          "calmar": 0.08,
+          "trades": 417,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 191.71,
+          "annual_vol": 40.39,
+          "sharpe": 0.48,
+          "max_drawdown": -70.43,
+          "win_rate": 49.3,
+          "calmar": 2.72,
+          "trades": 737,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 96.5,
+          "annual_vol": 39.98,
+          "sharpe": 0.65,
+          "max_drawdown": -32.24,
+          "win_rate": 52.1,
+          "calmar": 2.99,
+          "trades": 266,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 39.8,
+          "annual_vol": 22.4,
+          "sharpe": 0.9,
+          "max_drawdown": -24.29,
+          "win_rate": 53.4,
+          "calmar": 1.64,
+          "trades": 119,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.43,
+      "avg_return": 77.11,
+      "avg_drawdown": -55.44,
+      "avg_win_rate": 50.9,
+      "avg_calmar": 1.61,
+      "avg_trades": 651,
+      "score": 48.95,
+      "passed": true
+    },
+    {
+      "name": "RSI过滤",
+      "description": "多头排列且RSI 40-70做多",
+      "code": "signal = np.where((ma5 > ma10) & (ma10 > ma20) & (rsi_14 > 40) & (rsi_14 < 70), 1, 0)\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 176.73,
+          "annual_vol": 20.25,
+          "sharpe": 0.37,
+          "max_drawdown": -42.26,
+          "win_rate": 54.0,
+          "calmar": 4.18,
+          "trades": 790,
+          "ticker": "000301"
+        },
+        {
+          "total_return": 30.41,
+          "annual_vol": 31.91,
+          "sharpe": 0.14,
+          "max_drawdown": -71.86,
+          "win_rate": 49.1,
+          "calmar": 0.42,
+          "trades": 199,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 49.59,
+          "annual_vol": 28.23,
+          "sharpe": 0.18,
+          "max_drawdown": -54.68,
+          "win_rate": 50.5,
+          "calmar": 0.91,
+          "trades": 270,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 66.05,
+          "annual_vol": 31.19,
+          "sharpe": 0.57,
+          "max_drawdown": -42.5,
+          "win_rate": 48.0,
+          "calmar": 1.55,
+          "trades": 137,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 10.05,
+          "annual_vol": 15.16,
+          "sharpe": 0.33,
+          "max_drawdown": -15.27,
+          "win_rate": 57.0,
+          "calmar": 0.66,
+          "trades": 64,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.32,
+      "avg_return": 66.57,
+      "avg_drawdown": -45.31,
+      "avg_win_rate": 51.7,
+      "avg_calmar": 1.54,
+      "avg_trades": 292,
+      "score": 36.61,
+      "passed": true
+    },
+    {
+      "name": "3日动量",
+      "description": "5日收益为正做多，为负做空 {'window': 3}",
+      "code": "mom5 = close.pct_change(3)\nsignal = np.where(mom5 > 0, 1, -1)\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": -121.42,
+          "annual_vol": 44.59,
+          "sharpe": -0.11,
+          "max_drawdown": -99.63,
+          "win_rate": 48.7,
+          "calmar": -1.22,
+          "trades": 1535,
+          "ticker": "000301"
+        },
+        {
+          "total_return": 45.42,
+          "annual_vol": 64.96,
+          "sharpe": 0.1,
+          "max_drawdown": -92.53,
+          "win_rate": 50.3,
+          "calmar": 0.49,
+          "trades": 455,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 340.92,
+          "annual_vol": 60.33,
+          "sharpe": 0.57,
+          "max_drawdown": -88.16,
+          "win_rate": 50.4,
+          "calmar": 3.87,
+          "trades": 675,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 33.38,
+          "annual_vol": 63.31,
+          "sharpe": 0.14,
+          "max_drawdown": -67.06,
+          "win_rate": 49.9,
+          "calmar": 0.5,
+          "trades": 263,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 6.16,
+          "annual_vol": 36.09,
+          "sharpe": 0.09,
+          "max_drawdown": -55.76,
+          "win_rate": 49.1,
+          "calmar": 0.11,
+          "trades": 132,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.16,
+      "avg_return": 60.89,
+      "avg_drawdown": -80.63,
+      "avg_win_rate": 49.7,
+      "avg_calmar": 0.75,
+      "avg_trades": 612,
+      "score": 17.12,
+      "passed": true
+    },
+    {
+      "name": "放量突破_v1.5",
+      "description": "放量突破MA20做多，缩量跌破MA20做空 {'vol_thresh': 1.5}",
+      "code": "signal = np.where((close > ma20) & (vol_ratio > 1.5), 1, np.where((close < ma20) & (vol_ratio < 0.75), -1, 0))\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 72.97,
+          "annual_vol": 26.58,
+          "sharpe": 0.12,
+          "max_drawdown": -85.75,
+          "win_rate": 49.2,
+          "calmar": 0.85,
+          "trades": 1780,
+          "ticker": "000301"
+        },
+        {
+          "total_return": 37.89,
+          "annual_vol": 35.03,
+          "sharpe": 0.16,
+          "max_drawdown": -52.65,
+          "win_rate": 52.6,
+          "calmar": 0.72,
+          "trades": 486,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 172.95,
+          "annual_vol": 39.72,
+          "sharpe": 0.44,
+          "max_drawdown": -64.85,
+          "win_rate": 50.4,
+          "calmar": 2.67,
+          "trades": 783,
+          "ticker": "300474"
+        },
+        {
+          "total_return": -29.33,
+          "annual_vol": 35.36,
+          "sharpe": -0.22,
+          "max_drawdown": -58.61,
+          "win_rate": 46.8,
+          "calmar": -0.5,
+          "trades": 255,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 0.3,
+          "annual_vol": 19.82,
+          "sharpe": 0.01,
+          "max_drawdown": -33.1,
+          "win_rate": 50.0,
+          "calmar": 0.01,
+          "trades": 137,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.1,
+      "avg_return": 50.96,
+      "avg_drawdown": -58.99,
+      "avg_win_rate": 49.8,
+      "avg_calmar": 0.75,
+      "avg_trades": 688,
+      "score": 12.7,
+      "passed": true
+    },
+    {
+      "name": "MA趋势_window60",
+      "description": "价格站上MA20做多，跌破做空 {'window': 60}",
+      "code": "signal = np.where(close > ma60, 1, -1)\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 204.8,
+          "annual_vol": 44.59,
+          "sharpe": 0.19,
+          "max_drawdown": -93.69,
+          "win_rate": 49.9,
+          "calmar": 2.19,
+          "trades": 319,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -29.21,
+          "annual_vol": 64.96,
+          "sharpe": -0.07,
+          "max_drawdown": -93.84,
+          "win_rate": 47.5,
+          "calmar": -0.31,
+          "trades": 111,
+          "ticker": "688019"
+        },
+        {
+          "total_return": -170.43,
+          "annual_vol": 60.36,
+          "sharpe": -0.29,
+          "max_drawdown": -96.98,
+          "win_rate": 50.1,
+          "calmar": -1.76,
+          "trades": 149,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 146.94,
+          "annual_vol": 63.26,
+          "sharpe": 0.63,
+          "max_drawdown": -59.44,
+          "win_rate": 49.0,
+          "calmar": 2.47,
+          "trades": 61,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 24.57,
+          "annual_vol": 36.08,
+          "sharpe": 0.34,
+          "max_drawdown": -35.02,
+          "win_rate": 53.4,
+          "calmar": 0.7,
+          "trades": 26,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.16,
+      "avg_return": 35.33,
+      "avg_drawdown": -75.79,
+      "avg_win_rate": 50.0,
+      "avg_calmar": 0.66,
+      "avg_trades": 133,
+      "score": 12.23,
+      "passed": true
+    },
+    {
+      "name": "MA60趋势",
+      "description": "价格站上MA60做多，跌破做空",
+      "code": "signal = np.where(close > ma60, 1, -1)\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 204.8,
+          "annual_vol": 44.59,
+          "sharpe": 0.19,
+          "max_drawdown": -93.69,
+          "win_rate": 49.9,
+          "calmar": 2.19,
+          "trades": 319,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -29.21,
+          "annual_vol": 64.96,
+          "sharpe": -0.07,
+          "max_drawdown": -93.84,
+          "win_rate": 47.5,
+          "calmar": -0.31,
+          "trades": 111,
+          "ticker": "688019"
+        },
+        {
+          "total_return": -170.43,
+          "annual_vol": 60.36,
+          "sharpe": -0.29,
+          "max_drawdown": -96.98,
+          "win_rate": 50.1,
+          "calmar": -1.76,
+          "trades": 149,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 146.94,
+          "annual_vol": 63.26,
+          "sharpe": 0.63,
+          "max_drawdown": -59.44,
+          "win_rate": 49.0,
+          "calmar": 2.47,
+          "trades": 61,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 24.57,
+          "annual_vol": 36.08,
+          "sharpe": 0.34,
+          "max_drawdown": -35.02,
+          "win_rate": 53.4,
+          "calmar": 0.7,
+          "trades": 26,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.16,
+      "avg_return": 35.33,
+      "avg_drawdown": -75.79,
+      "avg_win_rate": 50.0,
+      "avg_calmar": 0.66,
+      "avg_trades": 133,
+      "score": 12.23,
+      "passed": true
+    },
+    {
+      "name": "突破20日高点",
+      "description": "价格创20日新高做多，创20日新低做空 {'window': 20}",
+      "code": "hh = close.rolling(20).max()\nll = close.rolling(20).min()\nsignal = np.where(close >= hh.shift(1), 1, np.where(close <= ll.shift(1), -1, 0))\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": -40.06,
+          "annual_vol": 25.37,
+          "sharpe": -0.07,
+          "max_drawdown": -90.86,
+          "win_rate": 48.0,
+          "calmar": -0.44,
+          "trades": 1509,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -14.62,
+          "annual_vol": 35.86,
+          "sharpe": -0.06,
+          "max_drawdown": -62.18,
+          "win_rate": 47.2,
+          "calmar": -0.24,
+          "trades": 423,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 130.18,
+          "annual_vol": 31.14,
+          "sharpe": 0.42,
+          "max_drawdown": -43.48,
+          "win_rate": 51.1,
+          "calmar": 2.99,
+          "trades": 602,
+          "ticker": "300474"
+        },
+        {
+          "total_return": -29.96,
+          "annual_vol": 31.84,
+          "sharpe": -0.25,
+          "max_drawdown": -45.7,
+          "win_rate": 44.7,
+          "calmar": -0.66,
+          "trades": 213,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 39.94,
+          "annual_vol": 20.74,
+          "sharpe": 0.97,
+          "max_drawdown": -20.19,
+          "win_rate": 50.0,
+          "calmar": 1.98,
+          "trades": 113,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.2,
+      "avg_return": 17.1,
+      "avg_drawdown": -52.48,
+      "avg_win_rate": 48.2,
+      "avg_calmar": 0.73,
+      "avg_trades": 572,
+      "score": 10.71,
+      "passed": true
+    },
+    {
+      "name": "MACD柱状",
+      "description": "MACD柱状为正做多，为负做空",
+      "code": "signal = np.where(macd_hist > 0, 1, -1)\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 256.89,
+          "annual_vol": 44.59,
+          "sharpe": 0.24,
+          "max_drawdown": -87.73,
+          "win_rate": 50.4,
+          "calmar": 2.93,
+          "trades": 463,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -79.01,
+          "annual_vol": 64.96,
+          "sharpe": -0.18,
+          "max_drawdown": -95.37,
+          "win_rate": 48.7,
+          "calmar": -0.83,
+          "trades": 133,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 263.86,
+          "annual_vol": 60.34,
+          "sharpe": 0.44,
+          "max_drawdown": -82.55,
+          "win_rate": 50.1,
+          "calmar": 3.2,
+          "trades": 187,
+          "ticker": "300474"
+        },
+        {
+          "total_return": -126.14,
+          "annual_vol": 63.28,
+          "sharpe": -0.54,
+          "max_drawdown": -93.19,
+          "win_rate": 47.0,
+          "calmar": -1.35,
+          "trades": 80,
+          "ticker": "688041"
+        },
+        {
+          "total_return": -7.07,
+          "annual_vol": 36.09,
+          "sharpe": -0.1,
+          "max_drawdown": -58.17,
+          "win_rate": 48.7,
+          "calmar": -0.12,
+          "trades": 43,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": -0.03,
+      "avg_return": 61.71,
+      "avg_drawdown": -83.4,
+      "avg_win_rate": 49.0,
+      "avg_calmar": 0.77,
+      "avg_trades": 181,
+      "score": 7.66,
+      "passed": true
+    },
+    {
+      "name": "MA趋势_window20",
+      "description": "价格站上MA20做多，跌破做空 {'window': 20}",
+      "code": "signal = np.where(close > ma20, 1, -1)\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 267.39,
+          "annual_vol": 44.59,
+          "sharpe": 0.25,
+          "max_drawdown": -90.99,
+          "win_rate": 50.4,
+          "calmar": 2.94,
+          "trades": 615,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -36.12,
+          "annual_vol": 64.96,
+          "sharpe": -0.08,
+          "max_drawdown": -93.07,
+          "win_rate": 49.1,
+          "calmar": -0.39,
+          "trades": 195,
+          "ticker": "688019"
+        },
+        {
+          "total_return": -5.45,
+          "annual_vol": 60.37,
+          "sharpe": -0.01,
+          "max_drawdown": -95.12,
+          "win_rate": 50.1,
+          "calmar": -0.06,
+          "trades": 251,
+          "ticker": "300474"
+        },
+        {
+          "total_return": -86.59,
+          "annual_vol": 63.3,
+          "sharpe": -0.37,
+          "max_drawdown": -87.81,
+          "win_rate": 48.3,
+          "calmar": -0.99,
+          "trades": 113,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 39.46,
+          "annual_vol": 36.07,
+          "sharpe": 0.55,
+          "max_drawdown": -45.05,
+          "win_rate": 52.8,
+          "calmar": 0.88,
+          "trades": 51,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.07,
+      "avg_return": 35.74,
+      "avg_drawdown": -82.41,
+      "avg_win_rate": 50.1,
+      "avg_calmar": 0.48,
+      "avg_trades": 245,
+      "score": 7.19,
+      "passed": true
+    },
+    {
+      "name": "MA趋势_window30",
+      "description": "价格站上MA20做多，跌破做空 {'window': 30}",
+      "code": "signal = np.where(close > ma20, 1, -1)\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 267.39,
+          "annual_vol": 44.59,
+          "sharpe": 0.25,
+          "max_drawdown": -90.99,
+          "win_rate": 50.4,
+          "calmar": 2.94,
+          "trades": 615,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -36.12,
+          "annual_vol": 64.96,
+          "sharpe": -0.08,
+          "max_drawdown": -93.07,
+          "win_rate": 49.1,
+          "calmar": -0.39,
+          "trades": 195,
+          "ticker": "688019"
+        },
+        {
+          "total_return": -5.45,
+          "annual_vol": 60.37,
+          "sharpe": -0.01,
+          "max_drawdown": -95.12,
+          "win_rate": 50.1,
+          "calmar": -0.06,
+          "trades": 251,
+          "ticker": "300474"
+        },
+        {
+          "total_return": -86.59,
+          "annual_vol": 63.3,
+          "sharpe": -0.37,
+          "max_drawdown": -87.81,
+          "win_rate": 48.3,
+          "calmar": -0.99,
+          "trades": 113,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 39.46,
+          "annual_vol": 36.07,
+          "sharpe": 0.55,
+          "max_drawdown": -45.05,
+          "win_rate": 52.8,
+          "calmar": 0.88,
+          "trades": 51,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.07,
+      "avg_return": 35.74,
+      "avg_drawdown": -82.41,
+      "avg_win_rate": 50.1,
+      "avg_calmar": 0.48,
+      "avg_trades": 245,
+      "score": 7.19,
+      "passed": true
+    },
+    {
+      "name": "突破10日高点",
+      "description": "价格创20日新高做多，创20日新低做空 {'window': 10}",
+      "code": "hh = close.rolling(10).max()\nll = close.rolling(10).min()\nsignal = np.where(close >= hh.shift(1), 1, np.where(close <= ll.shift(1), -1, 0))\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": -26.87,
+          "annual_vol": 28.43,
+          "sharpe": -0.04,
+          "max_drawdown": -94.08,
+          "win_rate": 48.6,
+          "calmar": -0.29,
+          "trades": 2094,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -45.75,
+          "annual_vol": 41.94,
+          "sharpe": -0.16,
+          "max_drawdown": -74.89,
+          "win_rate": 48.0,
+          "calmar": -0.61,
+          "trades": 613,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 175.48,
+          "annual_vol": 37.34,
+          "sharpe": 0.48,
+          "max_drawdown": -69.53,
+          "win_rate": 49.3,
+          "calmar": 2.52,
+          "trades": 868,
+          "ticker": "300474"
+        },
+        {
+          "total_return": -43.31,
+          "annual_vol": 35.75,
+          "sharpe": -0.33,
+          "max_drawdown": -61.17,
+          "win_rate": 48.9,
+          "calmar": -0.71,
+          "trades": 325,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 38.19,
+          "annual_vol": 24.04,
+          "sharpe": 0.8,
+          "max_drawdown": -31.76,
+          "win_rate": 48.9,
+          "calmar": 1.2,
+          "trades": 167,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.15,
+      "avg_return": 19.55,
+      "avg_drawdown": -66.29,
+      "avg_win_rate": 48.7,
+      "avg_calmar": 0.42,
+      "avg_trades": 813,
+      "score": 7.15,
+      "passed": true
+    },
+    {
+      "name": "均线多头排列",
+      "description": "MA5>MA10>MA20 做多，空头排列做空",
+      "code": "signal = np.where((ma5 > ma10) & (ma10 > ma20), 1, np.where((ma5 < ma10) & (ma10 < ma20), -1, 0))\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 114.48,
+          "annual_vol": 37.65,
+          "sharpe": 0.13,
+          "max_drawdown": -93.98,
+          "win_rate": 50.6,
+          "calmar": 1.22,
+          "trades": 909,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -191.38,
+          "annual_vol": 54.99,
+          "sharpe": -0.52,
+          "max_drawdown": -98.43,
+          "win_rate": 47.6,
+          "calmar": -1.94,
+          "trades": 266,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 100.01,
+          "annual_vol": 50.4,
+          "sharpe": 0.2,
+          "max_drawdown": -74.04,
+          "win_rate": 50.3,
+          "calmar": 1.35,
+          "trades": 378,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 5.04,
+          "annual_vol": 50.34,
+          "sharpe": 0.03,
+          "max_drawdown": -64.2,
+          "win_rate": 47.4,
+          "calmar": 0.08,
+          "trades": 151,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 39.95,
+          "annual_vol": 30.23,
+          "sharpe": 0.67,
+          "max_drawdown": -27.34,
+          "win_rate": 52.8,
+          "calmar": 1.46,
+          "trades": 74,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.1,
+      "avg_return": 13.62,
+      "avg_drawdown": -71.6,
+      "avg_win_rate": 49.7,
+      "avg_calmar": 0.43,
+      "avg_trades": 355,
+      "score": 5.73,
+      "passed": true
+    },
+    {
+      "name": "缩量回调",
+      "description": "价格下跌但缩量（洗盘）做多",
+      "code": "ret = close.pct_change()\nsignal = np.where((ret < 0) & (vol_ratio < 0.7), 1, 0)\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 108.72,
+          "annual_vol": 16.45,
+          "sharpe": 0.28,
+          "max_drawdown": -42.6,
+          "win_rate": 55.0,
+          "calmar": 2.55,
+          "trades": 1397,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -17.01,
+          "annual_vol": 22.84,
+          "sharpe": -0.11,
+          "max_drawdown": -67.73,
+          "win_rate": 49.6,
+          "calmar": -0.25,
+          "trades": 365,
+          "ticker": "688019"
+        },
+        {
+          "total_return": -111.94,
+          "annual_vol": 20.41,
+          "sharpe": -0.56,
+          "max_drawdown": -82.36,
+          "win_rate": 46.2,
+          "calmar": -1.36,
+          "trades": 561,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 28.5,
+          "annual_vol": 26.24,
+          "sharpe": 0.29,
+          "max_drawdown": -41.21,
+          "win_rate": 50.0,
+          "calmar": 0.69,
+          "trades": 209,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 8.1,
+          "annual_vol": 10.99,
+          "sharpe": 0.37,
+          "max_drawdown": -7.66,
+          "win_rate": 54.0,
+          "calmar": 1.06,
+          "trades": 83,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.05,
+      "avg_return": 3.27,
+      "avg_drawdown": -48.31,
+      "avg_win_rate": 51.0,
+      "avg_calmar": 0.54,
+      "avg_trades": 523,
+      "score": 5.56,
+      "passed": true
+    },
+    {
+      "name": "RSI反转_L20H80",
+      "description": "RSI14<30做多，>70做空 {'low': 20, 'high': 80}",
+      "code": "signal = np.where(rsi_14 < 20, 1, np.where(rsi_14 > 80, -1, 0))\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 84.19,
+          "annual_vol": 16.15,
+          "sharpe": 0.22,
+          "max_drawdown": -60.47,
+          "win_rate": 53.6,
+          "calmar": 1.39,
+          "trades": 303,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -47.95,
+          "annual_vol": 21.73,
+          "sharpe": -0.33,
+          "max_drawdown": -57.06,
+          "win_rate": 42.9,
+          "calmar": -0.84,
+          "trades": 83,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 13.75,
+          "annual_vol": 20.98,
+          "sharpe": 0.07,
+          "max_drawdown": -53.0,
+          "win_rate": 53.7,
+          "calmar": 0.26,
+          "trades": 149,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 41.13,
+          "annual_vol": 16.37,
+          "sharpe": 0.68,
+          "max_drawdown": -15.97,
+          "win_rate": 54.3,
+          "calmar": 2.57,
+          "trades": 43,
+          "ticker": "688041"
+        },
+        {
+          "total_return": -43.33,
+          "annual_vol": 15.19,
+          "sharpe": -1.44,
+          "max_drawdown": -38.99,
+          "win_rate": 40.4,
+          "calmar": -1.11,
+          "trades": 25,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": -0.16,
+      "avg_return": 9.56,
+      "avg_drawdown": -45.1,
+      "avg_win_rate": 49.0,
+      "avg_calmar": 0.45,
+      "avg_trades": 120,
+      "score": 4.54,
+      "passed": true
+    },
+    {
+      "name": "MA趋势_window10",
+      "description": "价格站上MA20做多，跌破做空 {'window': 10}",
+      "code": "signal = np.where(close > ma10, 1, -1)\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 207.92,
+          "annual_vol": 44.59,
+          "sharpe": 0.2,
+          "max_drawdown": -94.87,
+          "win_rate": 49.2,
+          "calmar": 2.19,
+          "trades": 955,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -143.41,
+          "annual_vol": 64.95,
+          "sharpe": -0.33,
+          "max_drawdown": -97.42,
+          "win_rate": 48.1,
+          "calmar": -1.47,
+          "trades": 281,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 55.04,
+          "annual_vol": 60.36,
+          "sharpe": 0.09,
+          "max_drawdown": -96.69,
+          "win_rate": 49.2,
+          "calmar": 0.57,
+          "trades": 395,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 40.5,
+          "annual_vol": 63.31,
+          "sharpe": 0.17,
+          "max_drawdown": -82.31,
+          "win_rate": 49.3,
+          "calmar": 0.49,
+          "trades": 178,
+          "ticker": "688041"
+        },
+        {
+          "total_return": -7.21,
+          "annual_vol": 36.09,
+          "sharpe": -0.1,
+          "max_drawdown": -53.21,
+          "win_rate": 48.7,
+          "calmar": -0.14,
+          "trades": 77,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.01,
+      "avg_return": 30.57,
+      "avg_drawdown": -84.9,
+      "avg_win_rate": 48.9,
+      "avg_calmar": 0.33,
+      "avg_trades": 377,
+      "score": 3.46,
+      "passed": true
+    },
+    {
+      "name": "组合_等权投票",
+      "description": "Top3 单因子等权投票组合",
+      "code": "# MA趋势_window30\nsig0 = np.where(close > ma20, 1, -1)\nsig0 = pd.Series(sig0, index=close.index).shift(1).fillna(0)\n\n# 突破10日高点\nhh = close.rolling(10).max()\nll = close.rolling(10).min()\nsig1 = np.where(close >= hh.shift(1), 1, np.where(close <= ll.shift(1), -1, 0))\nsig1 = pd.Series(sig1, index=close.index).shift(1).fillna(0)\n\n# 均线多头排列\nsig2 = np.where((ma5 > ma10) & (ma10 > ma20), 1, np.where((ma5 < ma10) & (ma10 < ma20), -1, 0))\nsig2 = pd.Series(sig2, index=close.index).shift(1).fillna(0)\n\nvote = sig0 + sig1 + sig2\nsignal = np.where(vote >= 2, 1, np.where(vote <= -2, -1, 0))\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "composite",
+      "evaluation": [
+        {
+          "total_return": 181.27,
+          "annual_vol": 38.93,
+          "sharpe": 0.2,
+          "max_drawdown": -93.3,
+          "win_rate": 50.8,
+          "calmar": 1.94,
+          "trades": 1252,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -181.95,
+          "annual_vol": 56.91,
+          "sharpe": -0.48,
+          "max_drawdown": -97.63,
+          "win_rate": 48.0,
+          "calmar": -1.86,
+          "trades": 383,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 145.49,
+          "annual_vol": 51.54,
+          "sharpe": 0.29,
+          "max_drawdown": -83.38,
+          "win_rate": 51.0,
+          "calmar": 1.74,
+          "trades": 529,
+          "ticker": "300474"
+        },
+        {
+          "total_return": -92.79,
+          "annual_vol": 51.55,
+          "sharpe": -0.49,
+          "max_drawdown": -84.6,
+          "win_rate": 46.5,
+          "calmar": -1.1,
+          "trades": 213,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 24.06,
+          "annual_vol": 30.37,
+          "sharpe": 0.4,
+          "max_drawdown": -29.39,
+          "win_rate": 52.2,
+          "calmar": 0.82,
+          "trades": 98,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": -0.02,
+      "avg_return": 15.22,
+      "avg_drawdown": -77.66,
+      "avg_win_rate": 49.7,
+      "avg_calmar": 0.31,
+      "avg_trades": 495,
+      "score": 3.08,
+      "passed": true
+    },
+    {
+      "name": "RSI动量",
+      "description": "RSI14大于前一日做多，反之做空",
+      "code": "rsi_prev = rsi_14.shift(1)\nsignal = np.where(rsi_14 > rsi_prev, 1, -1)\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 50.49,
+          "annual_vol": 44.59,
+          "sharpe": 0.05,
+          "max_drawdown": -97.01,
+          "win_rate": 49.5,
+          "calmar": 0.52,
+          "trades": 2945,
+          "ticker": "000301"
+        },
+        {
+          "total_return": 208.28,
+          "annual_vol": 64.93,
+          "sharpe": 0.48,
+          "max_drawdown": -80.12,
+          "win_rate": 50.2,
+          "calmar": 2.6,
+          "trades": 873,
+          "ticker": "688019"
+        },
+        {
+          "total_return": -176.56,
+          "annual_vol": 60.36,
+          "sharpe": -0.3,
+          "max_drawdown": -97.52,
+          "win_rate": 49.2,
+          "calmar": -1.81,
+          "trades": 1255,
+          "ticker": "300474"
+        },
+        {
+          "total_return": -37.23,
+          "annual_vol": 63.31,
+          "sharpe": -0.16,
+          "max_drawdown": -74.39,
+          "win_rate": 48.4,
+          "calmar": -0.5,
+          "trades": 472,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 12.91,
+          "annual_vol": 36.09,
+          "sharpe": 0.18,
+          "max_drawdown": -45.49,
+          "win_rate": 46.2,
+          "calmar": 0.28,
+          "trades": 248,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": 0.05,
+      "avg_return": 11.58,
+      "avg_drawdown": -78.91,
+      "avg_win_rate": 48.7,
+      "avg_calmar": 0.22,
+      "avg_trades": 1158,
+      "score": 2.76,
+      "passed": true
+    },
+    {
+      "name": "RSI反转_L20H75",
+      "description": "RSI14<30做多，>70做空 {'low': 20, 'high': 75}",
+      "code": "signal = np.where(rsi_14 < 20, 1, np.where(rsi_14 > 75, -1, 0))\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 112.45,
+          "annual_vol": 18.81,
+          "sharpe": 0.25,
+          "max_drawdown": -64.3,
+          "win_rate": 53.0,
+          "calmar": 1.75,
+          "trades": 443,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -14.99,
+          "annual_vol": 25.26,
+          "sharpe": -0.09,
+          "max_drawdown": -53.48,
+          "win_rate": 50.0,
+          "calmar": -0.28,
+          "trades": 101,
+          "ticker": "688019"
+        },
+        {
+          "total_return": -13.58,
+          "annual_vol": 23.81,
+          "sharpe": -0.06,
+          "max_drawdown": -60.81,
+          "win_rate": 53.4,
+          "calmar": -0.22,
+          "trades": 173,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 35.11,
+          "annual_vol": 22.87,
+          "sharpe": 0.41,
+          "max_drawdown": -30.66,
+          "win_rate": 55.0,
+          "calmar": 1.14,
+          "trades": 61,
+          "ticker": "688041"
+        },
+        {
+          "total_return": -38.24,
+          "annual_vol": 17.04,
+          "sharpe": -1.13,
+          "max_drawdown": -36.18,
+          "win_rate": 42.9,
+          "calmar": -1.06,
+          "trades": 29,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": -0.12,
+      "avg_return": 16.15,
+      "avg_drawdown": -49.09,
+      "avg_win_rate": 50.9,
+      "avg_calmar": 0.27,
+      "avg_trades": 161,
+      "score": 2.66,
+      "passed": true
+    },
+    {
+      "name": "RSI反转_L30H75",
+      "description": "RSI14<30做多，>70做空 {'low': 30, 'high': 75}",
+      "code": "signal = np.where(rsi_14 < 30, 1, np.where(rsi_14 > 75, -1, 0))\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 79.58,
+          "annual_vol": 23.42,
+          "sharpe": 0.14,
+          "max_drawdown": -83.36,
+          "win_rate": 52.0,
+          "calmar": 0.95,
+          "trades": 685,
+          "ticker": "000301"
+        },
+        {
+          "total_return": 7.74,
+          "annual_vol": 30.88,
+          "sharpe": 0.04,
+          "max_drawdown": -61.03,
+          "win_rate": 51.5,
+          "calmar": 0.13,
+          "trades": 199,
+          "ticker": "688019"
+        },
+        {
+          "total_return": -117.19,
+          "annual_vol": 29.9,
+          "sharpe": -0.4,
+          "max_drawdown": -82.54,
+          "win_rate": 48.7,
+          "calmar": -1.42,
+          "trades": 263,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 66.02,
+          "annual_vol": 25.4,
+          "sharpe": 0.7,
+          "max_drawdown": -30.14,
+          "win_rate": 57.9,
+          "calmar": 2.19,
+          "trades": 87,
+          "ticker": "688041"
+        },
+        {
+          "total_return": -35.35,
+          "annual_vol": 20.27,
+          "sharpe": -0.88,
+          "max_drawdown": -36.64,
+          "win_rate": 43.9,
+          "calmar": -0.96,
+          "trades": 49,
+          "ticker": "513120"
+        }
+      ],
+      "avg_sharpe": -0.08,
+      "avg_return": 0.16,
+      "avg_drawdown": -58.74,
+      "avg_win_rate": 50.8,
+      "avg_calmar": 0.18,
+      "avg_trades": 256,
+      "score": 1.78,
+      "passed": true
+    },
+    {
+      "name": "MACD量能背离",
+      "description": "MACD红柱放大且价格高于MA5做多",
+      "code": "macd_hist_prev = macd_hist.shift(1)\nsignal = np.where((macd_hist > macd_hist_prev) & (close > ma5), 1, 0)\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 39.92,
+          "annual_vol": 29.31,
+          "sharpe": 0.06,
+          "max_drawdown": -78.61,
+          "win_rate": 50.3,
+          "calmar": 0.51,
+          "trades": 1543,
+          "ticker": "000301"
+        },
+        {
+          "total_return": 61.45,
+          "annual_vol": 46.7,
+          "sharpe": 0.2,
+          "max_drawdown": -76.84,
+          "win_rate": 48.9,
+          "calmar": 0.8,
+          "trades": 452,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 197.46,
+          "annual_vol": 43.77,
+          "sharpe": 0.46,
+          "max_drawdown": -68.83,
+          "win_rate": 48.5,
+          "calmar": 2.87,
+          "trades": 654,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 62.69,
+          "annual_vol": 41.54,
+          "sharpe": 0.41,
+          "max_drawdown": -46.82,
+          "win_rate": 48.6,
+          "calmar": 1.34,
+          "trades": 267,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 54.11,
+          "annual_vol": 25.76,
+          "sharpe": 1.06,
+          "max_drawdown": -23.54,
+          "win_rate": 51.2,
+          "calmar": 2.3,
+          "trades": 129,
+          "ticker": "513120"
+        },
+        {
+          "total_return": 66.31,
+          "annual_vol": 30.82,
+          "sharpe": 0.38,
+          "max_drawdown": -40.02,
+          "win_rate": 48.0,
+          "calmar": 1.66,
+          "trades": 414,
+          "ticker": "688981"
+        },
+        {
+          "total_return": 47.2,
+          "annual_vol": 22.12,
+          "sharpe": 0.09,
+          "max_drawdown": -53.89,
+          "win_rate": 49.0,
+          "calmar": 0.88,
+          "trades": 1561,
+          "ticker": "600019"
+        },
+        {
+          "total_return": 55.43,
+          "annual_vol": 24.89,
+          "sharpe": 1.12,
+          "max_drawdown": -17.44,
+          "win_rate": 53.7,
+          "calmar": 3.18,
+          "trades": 138,
+          "ticker": "159819"
+        },
+        {
+          "total_return": 296.47,
+          "annual_vol": 40.54,
+          "sharpe": 1.1,
+          "max_drawdown": -46.19,
+          "win_rate": 51.7,
+          "calmar": 6.42,
+          "trades": 425,
+          "ticker": "688012"
+        },
+        {
+          "total_return": -4.68,
+          "annual_vol": 20.87,
+          "sharpe": -0.11,
+          "max_drawdown": -32.05,
+          "win_rate": 49.4,
+          "calmar": -0.15,
+          "trades": 133,
+          "ticker": "512170"
+        },
+        {
+          "total_return": 27.88,
+          "annual_vol": 39.74,
+          "sharpe": 0.18,
+          "max_drawdown": -54.07,
+          "win_rate": 46.2,
+          "calmar": 0.52,
+          "trades": 255,
+          "ticker": "688047"
+        },
+        {
+          "total_return": 95.93,
+          "annual_vol": 20.8,
+          "sharpe": 0.19,
+          "max_drawdown": -49.05,
+          "win_rate": 48.9,
+          "calmar": 1.96,
+          "trades": 1626,
+          "ticker": "600028"
+        },
+        {
+          "total_return": 12.32,
+          "annual_vol": 18.0,
+          "sharpe": 0.35,
+          "max_drawdown": -21.53,
+          "win_rate": 44.4,
+          "calmar": 0.57,
+          "trades": 125,
+          "ticker": "159928"
+        },
+        {
+          "total_return": 137.4,
+          "annual_vol": 25.67,
+          "sharpe": 0.23,
+          "max_drawdown": -68.66,
+          "win_rate": 48.4,
+          "calmar": 2.0,
+          "trades": 1463,
+          "ticker": "000959"
+        },
+        {
+          "total_return": -79.41,
+          "annual_vol": 22.21,
+          "sharpe": -0.2,
+          "max_drawdown": -88.37,
+          "win_rate": 49.0,
+          "calmar": -0.9,
+          "trades": 1212,
+          "ticker": "601088"
+        },
+        {
+          "total_return": 162.41,
+          "annual_vol": 47.36,
+          "sharpe": 0.85,
+          "max_drawdown": -67.91,
+          "win_rate": 51.5,
+          "calmar": 2.39,
+          "trades": 254,
+          "ticker": "688072"
+        },
+        {
+          "total_return": 8.74,
+          "annual_vol": 17.7,
+          "sharpe": 0.03,
+          "max_drawdown": -53.17,
+          "win_rate": 48.1,
+          "calmar": 0.16,
+          "trades": 1182,
+          "ticker": "601857"
+        },
+        {
+          "total_return": -213.94,
+          "annual_vol": 31.46,
+          "sharpe": -0.29,
+          "max_drawdown": -99.2,
+          "win_rate": 49.4,
+          "calmar": -2.16,
+          "trades": 1589,
+          "ticker": "600309"
+        },
+        {
+          "total_return": -38.11,
+          "annual_vol": 25.47,
+          "sharpe": -0.08,
+          "max_drawdown": -69.43,
+          "win_rate": 48.8,
+          "calmar": -0.55,
+          "trades": 1208,
+          "ticker": "601898"
+        },
+        {
+          "total_return": 30.96,
+          "annual_vol": 12.46,
+          "sharpe": 1.25,
+          "max_drawdown": -10.87,
+          "win_rate": 53.6,
+          "calmar": 2.85,
+          "trades": 130,
+          "ticker": "512800"
+        }
+      ],
+      "avg_sharpe": 0.36,
+      "avg_return": 51.03,
+      "avg_drawdown": -53.32,
+      "avg_win_rate": 49.4,
+      "avg_calmar": 1.33,
+      "avg_trades": 738,
+      "score": 31.9,
+      "passed": true
+    },
+    {
+      "name": "双底放量",
+      "description": "价格接近布林下轨且放量做多",
+      "code": "signal = np.where((close <= boll_down * 1.03) & (vol_ratio > 1.2), 1, 0)\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 81.59,
+          "annual_vol": 9.63,
+          "sharpe": 0.36,
+          "max_drawdown": -23.2,
+          "win_rate": 51.7,
+          "calmar": 3.52,
+          "trades": 245,
+          "ticker": "000301"
+        },
+        {
+          "total_return": 0.58,
+          "annual_vol": 10.09,
+          "sharpe": 0.01,
+          "max_drawdown": -31.78,
+          "win_rate": 51.7,
+          "calmar": 0.02,
+          "trades": 77,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 33.6,
+          "annual_vol": 8.13,
+          "sharpe": 0.42,
+          "max_drawdown": -17.75,
+          "win_rate": 59.5,
+          "calmar": 1.89,
+          "trades": 53,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 15.57,
+          "annual_vol": 4.76,
+          "sharpe": 0.88,
+          "max_drawdown": -3.66,
+          "win_rate": 64.7,
+          "calmar": 4.25,
+          "trades": 21,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 12.1,
+          "annual_vol": 6.41,
+          "sharpe": 0.95,
+          "max_drawdown": -3.87,
+          "win_rate": 58.3,
+          "calmar": 3.13,
+          "trades": 19,
+          "ticker": "513120"
+        },
+        {
+          "total_return": 18.07,
+          "annual_vol": 7.62,
+          "sharpe": 0.41,
+          "max_drawdown": -10.66,
+          "win_rate": 61.3,
+          "calmar": 1.7,
+          "trades": 97,
+          "ticker": "688981"
+        },
+        {
+          "total_return": 29.39,
+          "annual_vol": 7.85,
+          "sharpe": 0.16,
+          "max_drawdown": -24.93,
+          "win_rate": 47.5,
+          "calmar": 1.18,
+          "trades": 437,
+          "ticker": "600019"
+        },
+        {
+          "total_return": 13.04,
+          "annual_vol": 5.5,
+          "sharpe": 1.2,
+          "max_drawdown": -4.37,
+          "win_rate": 60.0,
+          "calmar": 2.99,
+          "trades": 23,
+          "ticker": "159819"
+        },
+        {
+          "total_return": 55.18,
+          "annual_vol": 9.96,
+          "sharpe": 0.83,
+          "max_drawdown": -15.63,
+          "win_rate": 62.3,
+          "calmar": 3.53,
+          "trades": 73,
+          "ticker": "688012"
+        },
+        {
+          "total_return": -6.16,
+          "annual_vol": 5.64,
+          "sharpe": -0.55,
+          "max_drawdown": -7.79,
+          "win_rate": 33.3,
+          "calmar": -0.79,
+          "trades": 49,
+          "ticker": "512170"
+        },
+        {
+          "total_return": 27.23,
+          "annual_vol": 6.46,
+          "sharpe": 1.08,
+          "max_drawdown": -3.11,
+          "win_rate": 77.8,
+          "calmar": 8.75,
+          "trades": 31,
+          "ticker": "688047"
+        },
+        {
+          "total_return": -60.48,
+          "annual_vol": 8.04,
+          "sharpe": -0.32,
+          "max_drawdown": -56.52,
+          "win_rate": 45.5,
+          "calmar": -1.07,
+          "trades": 497,
+          "ticker": "600028"
+        },
+        {
+          "total_return": 2.76,
+          "annual_vol": 5.34,
+          "sharpe": 0.26,
+          "max_drawdown": -5.79,
+          "win_rate": 46.7,
+          "calmar": 0.48,
+          "trades": 73,
+          "ticker": "159928"
+        },
+        {
+          "total_return": 18.87,
+          "annual_vol": 6.52,
+          "sharpe": 0.12,
+          "max_drawdown": -27.31,
+          "win_rate": 45.7,
+          "calmar": 0.69,
+          "trades": 287,
+          "ticker": "000959"
+        },
+        {
+          "total_return": 11.36,
+          "annual_vol": 7.58,
+          "sharpe": 0.08,
+          "max_drawdown": -29.18,
+          "win_rate": 50.6,
+          "calmar": 0.39,
+          "trades": 349,
+          "ticker": "601088"
+        },
+        {
+          "total_return": 32.95,
+          "annual_vol": 11.19,
+          "sharpe": 0.73,
+          "max_drawdown": -13.12,
+          "win_rate": 52.9,
+          "calmar": 2.51,
+          "trades": 47,
+          "ticker": "688072"
+        },
+        {
+          "total_return": -30.12,
+          "annual_vol": 6.01,
+          "sharpe": -0.28,
+          "max_drawdown": -39.35,
+          "win_rate": 51.8,
+          "calmar": -0.77,
+          "trades": 457,
+          "ticker": "601857"
+        },
+        {
+          "total_return": -20.3,
+          "annual_vol": 8.78,
+          "sharpe": -0.1,
+          "max_drawdown": -41.3,
+          "win_rate": 50.2,
+          "calmar": -0.49,
+          "trades": 341,
+          "ticker": "600309"
+        },
+        {
+          "total_return": -52.67,
+          "annual_vol": 7.25,
+          "sharpe": -0.41,
+          "max_drawdown": -56.48,
+          "win_rate": 49.1,
+          "calmar": -0.93,
+          "trades": 223,
+          "ticker": "601898"
+        },
+        {
+          "total_return": -1.86,
+          "annual_vol": 4.89,
+          "sharpe": -0.19,
+          "max_drawdown": -8.08,
+          "win_rate": 45.3,
+          "calmar": -0.23,
+          "trades": 71,
+          "ticker": "512800"
+        }
+      ],
+      "avg_sharpe": 0.28,
+      "avg_return": 9.03,
+      "avg_drawdown": -21.19,
+      "avg_win_rate": 53.3,
+      "avg_calmar": 1.54,
+      "avg_trades": 173,
+      "score": 17.92,
+      "passed": true
+    },
+    {
+      "name": "量价背离",
+      "description": "价格上涨但成交量下降做空",
+      "code": "ret = close.pct_change()\nsignal = np.where((ret > 0) & (vol_ratio < 0.7), -1, 0)\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 20.9,
+          "annual_vol": 15.83,
+          "sharpe": 0.06,
+          "max_drawdown": -63.96,
+          "win_rate": 52.0,
+          "calmar": 0.33,
+          "trades": 1209,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -56.08,
+          "annual_vol": 16.2,
+          "sharpe": -0.52,
+          "max_drawdown": -53.45,
+          "win_rate": 47.9,
+          "calmar": -1.05,
+          "trades": 255,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 50.35,
+          "annual_vol": 22.46,
+          "sharpe": 0.23,
+          "max_drawdown": -43.99,
+          "win_rate": 47.5,
+          "calmar": 1.14,
+          "trades": 427,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 19.25,
+          "annual_vol": 15.78,
+          "sharpe": 0.33,
+          "max_drawdown": -18.2,
+          "win_rate": 50.0,
+          "calmar": 1.06,
+          "trades": 137,
+          "ticker": "688041"
+        },
+        {
+          "total_return": -6.47,
+          "annual_vol": 4.84,
+          "sharpe": -0.68,
+          "max_drawdown": -10.29,
+          "win_rate": 43.8,
+          "calmar": -0.63,
+          "trades": 31,
+          "ticker": "513120"
+        },
+        {
+          "total_return": 37.78,
+          "annual_vol": 11.28,
+          "sharpe": 0.58,
+          "max_drawdown": -16.63,
+          "win_rate": 55.4,
+          "calmar": 2.27,
+          "trades": 255,
+          "ticker": "688981"
+        },
+        {
+          "total_return": 123.3,
+          "annual_vol": 9.74,
+          "sharpe": 0.53,
+          "max_drawdown": -28.95,
+          "win_rate": 54.4,
+          "calmar": 4.26,
+          "trades": 1061,
+          "ticker": "600019"
+        },
+        {
+          "total_return": -17.43,
+          "annual_vol": 10.35,
+          "sharpe": -0.85,
+          "max_drawdown": -26.04,
+          "win_rate": 29.0,
+          "calmar": -0.67,
+          "trades": 57,
+          "ticker": "159819"
+        },
+        {
+          "total_return": 24.6,
+          "annual_vol": 16.44,
+          "sharpe": 0.22,
+          "max_drawdown": -29.82,
+          "win_rate": 51.4,
+          "calmar": 0.82,
+          "trades": 237,
+          "ticker": "688012"
+        },
+        {
+          "total_return": 3.51,
+          "annual_vol": 4.47,
+          "sharpe": 0.4,
+          "max_drawdown": -5.24,
+          "win_rate": 52.6,
+          "calmar": 0.67,
+          "trades": 41,
+          "ticker": "512170"
+        },
+        {
+          "total_return": -12.09,
+          "annual_vol": 13.9,
+          "sharpe": -0.22,
+          "max_drawdown": -25.04,
+          "win_rate": 52.0,
+          "calmar": -0.48,
+          "trades": 163,
+          "ticker": "688047"
+        },
+        {
+          "total_return": 46.23,
+          "annual_vol": 9.0,
+          "sharpe": 0.22,
+          "max_drawdown": -32.42,
+          "win_rate": 53.7,
+          "calmar": 1.43,
+          "trades": 981,
+          "ticker": "600028"
+        },
+        {
+          "total_return": 12.59,
+          "annual_vol": 5.67,
+          "sharpe": 1.12,
+          "max_drawdown": -4.39,
+          "win_rate": 64.3,
+          "calmar": 2.87,
+          "trades": 75,
+          "ticker": "159928"
+        },
+        {
+          "total_return": 111.49,
+          "annual_vol": 13.74,
+          "sharpe": 0.34,
+          "max_drawdown": -44.59,
+          "win_rate": 53.2,
+          "calmar": 2.5,
+          "trades": 1145,
+          "ticker": "000959"
+        },
+        {
+          "total_return": 56.61,
+          "annual_vol": 11.14,
+          "sharpe": 0.29,
+          "max_drawdown": -41.76,
+          "win_rate": 51.3,
+          "calmar": 1.36,
+          "trades": 721,
+          "ticker": "601088"
+        },
+        {
+          "total_return": 35.13,
+          "annual_vol": 22.05,
+          "sharpe": 0.4,
+          "max_drawdown": -36.64,
+          "win_rate": 57.3,
+          "calmar": 0.96,
+          "trades": 133,
+          "ticker": "688072"
+        },
+        {
+          "total_return": 30.9,
+          "annual_vol": 7.93,
+          "sharpe": 0.22,
+          "max_drawdown": -30.74,
+          "win_rate": 52.7,
+          "calmar": 1.01,
+          "trades": 661,
+          "ticker": "601857"
+        },
+        {
+          "total_return": 58.9,
+          "annual_vol": 19.02,
+          "sharpe": 0.13,
+          "max_drawdown": -62.76,
+          "win_rate": 49.2,
+          "calmar": 0.94,
+          "trades": 1143,
+          "ticker": "600309"
+        },
+        {
+          "total_return": 44.16,
+          "annual_vol": 12.15,
+          "sharpe": 0.21,
+          "max_drawdown": -36.7,
+          "win_rate": 54.8,
+          "calmar": 1.2,
+          "trades": 721,
+          "ticker": "601898"
+        },
+        {
+          "total_return": 2.07,
+          "annual_vol": 3.58,
+          "sharpe": 0.29,
+          "max_drawdown": -2.66,
+          "win_rate": 47.4,
+          "calmar": 0.78,
+          "trades": 35,
+          "ticker": "512800"
+        }
+      ],
+      "avg_sharpe": 0.16,
+      "avg_return": 29.28,
+      "avg_drawdown": -30.71,
+      "avg_win_rate": 51.0,
+      "avg_calmar": 1.04,
+      "avg_trades": 474,
+      "score": 15.22,
+      "passed": true
+    },
+    {
+      "name": "MA20回踩",
+      "description": "价格回踩MA20且未跌破做多",
+      "code": "prev_close = close.shift(1)\nsignal = np.where((prev_close > ma20) & (close >= ma20 * 0.98) & (close <= ma20 * 1.02), 1, 0)\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 111.48,
+          "annual_vol": 12.93,
+          "sharpe": 0.36,
+          "max_drawdown": -32.96,
+          "win_rate": 55.5,
+          "calmar": 3.38,
+          "trades": 939,
+          "ticker": "000301"
+        },
+        {
+          "total_return": 60.98,
+          "annual_vol": 16.06,
+          "sharpe": 0.57,
+          "max_drawdown": -15.89,
+          "win_rate": 51.4,
+          "calmar": 3.84,
+          "trades": 191,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 14.08,
+          "annual_vol": 14.98,
+          "sharpe": 0.1,
+          "max_drawdown": -40.34,
+          "win_rate": 49.8,
+          "calmar": 0.35,
+          "trades": 289,
+          "ticker": "300474"
+        },
+        {
+          "total_return": -1.33,
+          "annual_vol": 24.25,
+          "sharpe": -0.01,
+          "max_drawdown": -40.87,
+          "win_rate": 45.5,
+          "calmar": -0.03,
+          "trades": 147,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 34.58,
+          "annual_vol": 11.9,
+          "sharpe": 1.47,
+          "max_drawdown": -8.75,
+          "win_rate": 60.3,
+          "calmar": 3.95,
+          "trades": 69,
+          "ticker": "513120"
+        },
+        {
+          "total_return": 2.54,
+          "annual_vol": 13.59,
+          "sharpe": 0.03,
+          "max_drawdown": -28.07,
+          "win_rate": 47.8,
+          "calmar": 0.09,
+          "trades": 231,
+          "ticker": "688981"
+        },
+        {
+          "total_return": 29.07,
+          "annual_vol": 12.44,
+          "sharpe": 0.1,
+          "max_drawdown": -34.83,
+          "win_rate": 49.0,
+          "calmar": 0.83,
+          "trades": 991,
+          "ticker": "600019"
+        },
+        {
+          "total_return": 7.49,
+          "annual_vol": 14.06,
+          "sharpe": 0.27,
+          "max_drawdown": -14.97,
+          "win_rate": 50.0,
+          "calmar": 0.5,
+          "trades": 79,
+          "ticker": "159819"
+        },
+        {
+          "total_return": 29.58,
+          "annual_vol": 17.4,
+          "sharpe": 0.25,
+          "max_drawdown": -31.65,
+          "win_rate": 43.3,
+          "calmar": 0.93,
+          "trades": 207,
+          "ticker": "688012"
+        },
+        {
+          "total_return": 7.1,
+          "annual_vol": 10.24,
+          "sharpe": 0.35,
+          "max_drawdown": -9.65,
+          "win_rate": 43.8,
+          "calmar": 0.74,
+          "trades": 82,
+          "ticker": "512170"
+        },
+        {
+          "total_return": -7.49,
+          "annual_vol": 16.78,
+          "sharpe": -0.11,
+          "max_drawdown": -31.84,
+          "win_rate": 47.5,
+          "calmar": -0.24,
+          "trades": 131,
+          "ticker": "688047"
+        },
+        {
+          "total_return": 17.97,
+          "annual_vol": 11.8,
+          "sharpe": 0.06,
+          "max_drawdown": -44.39,
+          "win_rate": 47.7,
+          "calmar": 0.4,
+          "trades": 1051,
+          "ticker": "600028"
+        },
+        {
+          "total_return": -12.59,
+          "annual_vol": 6.76,
+          "sharpe": -0.94,
+          "max_drawdown": -16.91,
+          "win_rate": 44.7,
+          "calmar": -0.74,
+          "trades": 66,
+          "ticker": "159928"
+        },
+        {
+          "total_return": 128.65,
+          "annual_vol": 13.67,
+          "sharpe": 0.4,
+          "max_drawdown": -43.2,
+          "win_rate": 50.1,
+          "calmar": 2.98,
+          "trades": 925,
+          "ticker": "000959"
+        },
+        {
+          "total_return": -50.35,
+          "annual_vol": 12.23,
+          "sharpe": -0.23,
+          "max_drawdown": -59.55,
+          "win_rate": 50.2,
+          "calmar": -0.85,
+          "trades": 761,
+          "ticker": "601088"
+        },
+        {
+          "total_return": -10.77,
+          "annual_vol": 19.41,
+          "sharpe": -0.14,
+          "max_drawdown": -42.16,
+          "win_rate": 45.7,
+          "calmar": -0.26,
+          "trades": 143,
+          "ticker": "688072"
+        },
+        {
+          "total_return": 24.34,
+          "annual_vol": 10.69,
+          "sharpe": 0.13,
+          "max_drawdown": -38.62,
+          "win_rate": 49.2,
+          "calmar": 0.63,
+          "trades": 759,
+          "ticker": "601857"
+        },
+        {
+          "total_return": 120.84,
+          "annual_vol": 15.64,
+          "sharpe": 0.33,
+          "max_drawdown": -51.51,
+          "win_rate": 53.8,
+          "calmar": 2.35,
+          "trades": 890,
+          "ticker": "600309"
+        },
+        {
+          "total_return": 5.89,
+          "annual_vol": 13.19,
+          "sharpe": 0.03,
+          "max_drawdown": -38.96,
+          "win_rate": 48.1,
+          "calmar": 0.15,
+          "trades": 685,
+          "ticker": "601898"
+        },
+        {
+          "total_return": -0.77,
+          "annual_vol": 8.09,
+          "sharpe": -0.05,
+          "max_drawdown": -7.53,
+          "win_rate": 48.3,
+          "calmar": -0.1,
+          "trades": 111,
+          "ticker": "512800"
+        }
+      ],
+      "avg_sharpe": 0.15,
+      "avg_return": 25.56,
+      "avg_drawdown": -31.63,
+      "avg_win_rate": 49.1,
+      "avg_calmar": 0.94,
+      "avg_trades": 437,
+      "score": 13.25,
+      "passed": true
+    },
+    {
+      "name": "组合_等权投票",
+      "description": "Top3 单因子等权投票组合",
+      "code": "# MACD量能背离\nmacd_hist_prev = macd_hist.shift(1)\nsig0 = np.where((macd_hist > macd_hist_prev) & (close > ma5), 1, 0)\nsig0 = pd.Series(sig0, index=close.index).shift(1).fillna(0)\n\n# 双底放量\nsig1 = np.where((close <= boll_down * 1.03) & (vol_ratio > 1.2), 1, 0)\nsig1 = pd.Series(sig1, index=close.index).shift(1).fillna(0)\n\n# 量价背离\nret = close.pct_change()\nsig2 = np.where((ret > 0) & (vol_ratio < 0.7), -1, 0)\nsig2 = pd.Series(sig2, index=close.index).shift(1).fillna(0)\n\nvote = sig0 + sig1 + sig2\nsignal = np.where(vote >= 2, 1, np.where(vote <= -2, -1, 0))\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "composite",
+      "evaluation": [
+        {
+          "total_return": 10.86,
+          "annual_vol": 2.35,
+          "sharpe": 0.19,
+          "max_drawdown": -9.62,
+          "win_rate": 52.6,
+          "calmar": 1.13,
+          "trades": 35,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -3.19,
+          "annual_vol": 1.23,
+          "sharpe": -0.39,
+          "max_drawdown": -3.19,
+          "win_rate": 0.0,
+          "calmar": -1.0,
+          "trades": 3,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 0.0,
+          "annual_vol": 0.0,
+          "sharpe": 0,
+          "max_drawdown": 0.0,
+          "win_rate": 0,
+          "calmar": 0,
+          "trades": 1,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 2.19,
+          "annual_vol": 1.14,
+          "sharpe": 0.52,
+          "max_drawdown": 0.0,
+          "win_rate": 100.0,
+          "calmar": 0,
+          "trades": 3,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 0.0,
+          "annual_vol": 0.0,
+          "sharpe": 0,
+          "max_drawdown": 0.0,
+          "win_rate": 0,
+          "calmar": 0,
+          "trades": 1,
+          "ticker": "513120"
+        },
+        {
+          "total_return": -7.86,
+          "annual_vol": 3.21,
+          "sharpe": -0.43,
+          "max_drawdown": -10.14,
+          "win_rate": 20.0,
+          "calmar": -0.77,
+          "trades": 9,
+          "ticker": "688981"
+        },
+        {
+          "total_return": 16.48,
+          "annual_vol": 2.68,
+          "sharpe": 0.26,
+          "max_drawdown": -7.46,
+          "win_rate": 57.4,
+          "calmar": 2.21,
+          "trades": 87,
+          "ticker": "600019"
+        },
+        {
+          "total_return": 5.13,
+          "annual_vol": 3.31,
+          "sharpe": 0.78,
+          "max_drawdown": -0.96,
+          "win_rate": 75.0,
+          "calmar": 5.36,
+          "trades": 9,
+          "ticker": "159819"
+        },
+        {
+          "total_return": 20.31,
+          "annual_vol": 7.67,
+          "sharpe": 0.4,
+          "max_drawdown": 0.0,
+          "win_rate": 100.0,
+          "calmar": 0,
+          "trades": 5,
+          "ticker": "688012"
+        },
+        {
+          "total_return": -9.08,
+          "annual_vol": 7.42,
+          "sharpe": -0.62,
+          "max_drawdown": -12.46,
+          "win_rate": 20.0,
+          "calmar": -0.73,
+          "trades": 11,
+          "ticker": "512170"
+        },
+        {
+          "total_return": 1.58,
+          "annual_vol": 0.8,
+          "sharpe": 0.51,
+          "max_drawdown": 0.0,
+          "win_rate": 100.0,
+          "calmar": 0,
+          "trades": 3,
+          "ticker": "688047"
+        },
+        {
+          "total_return": 4.54,
+          "annual_vol": 2.74,
+          "sharpe": 0.07,
+          "max_drawdown": -10.38,
+          "win_rate": 49.3,
+          "calmar": 0.44,
+          "trades": 129,
+          "ticker": "600028"
+        },
+        {
+          "total_return": 4.52,
+          "annual_vol": 2.09,
+          "sharpe": 1.09,
+          "max_drawdown": -0.75,
+          "win_rate": 75.0,
+          "calmar": 6.05,
+          "trades": 19,
+          "ticker": "159928"
+        },
+        {
+          "total_return": -4.56,
+          "annual_vol": 1.07,
+          "sharpe": -0.18,
+          "max_drawdown": -7.4,
+          "win_rate": 55.6,
+          "calmar": -0.62,
+          "trades": 39,
+          "ticker": "000959"
+        },
+        {
+          "total_return": 21.57,
+          "annual_vol": 3.06,
+          "sharpe": 0.4,
+          "max_drawdown": -3.17,
+          "win_rate": 71.4,
+          "calmar": 6.81,
+          "trades": 79,
+          "ticker": "601088"
+        },
+        {
+          "total_return": 0.0,
+          "annual_vol": 0.0,
+          "sharpe": 0,
+          "max_drawdown": 0.0,
+          "win_rate": 0,
+          "calmar": 0,
+          "trades": 1,
+          "ticker": "688072"
+        },
+        {
+          "total_return": -8.2,
+          "annual_vol": 3.44,
+          "sharpe": -0.13,
+          "max_drawdown": -15.66,
+          "win_rate": 43.7,
+          "calmar": -0.52,
+          "trades": 181,
+          "ticker": "601857"
+        },
+        {
+          "total_return": -8.65,
+          "annual_vol": 1.25,
+          "sharpe": -0.29,
+          "max_drawdown": -10.51,
+          "win_rate": 42.9,
+          "calmar": -0.82,
+          "trades": 27,
+          "ticker": "600309"
+        },
+        {
+          "total_return": 21.4,
+          "annual_vol": 2.41,
+          "sharpe": 0.5,
+          "max_drawdown": -4.2,
+          "win_rate": 59.3,
+          "calmar": 5.1,
+          "trades": 37,
+          "ticker": "601898"
+        },
+        {
+          "total_return": 0.79,
+          "annual_vol": 1.53,
+          "sharpe": 0.26,
+          "max_drawdown": -1.5,
+          "win_rate": 50.0,
+          "calmar": 0.53,
+          "trades": 19,
+          "ticker": "512800"
+        }
+      ],
+      "avg_sharpe": 0.15,
+      "avg_return": 3.39,
+      "avg_drawdown": -4.87,
+      "avg_win_rate": 48.6,
+      "avg_calmar": 1.16,
+      "avg_trades": 34,
+      "score": 12.08,
+      "passed": true
+    },
+    {
+      "name": "双均线金叉",
+      "description": "MA5上穿MA20做多，下穿做空",
+      "code": "ma5_prev, ma20_prev = ma5.shift(1), ma20.shift(1)\nsignal = np.where((ma5 > ma20) & (ma5_prev <= ma20_prev), 1, np.where((ma5 < ma20) & (ma5_prev >= ma20_prev), -1, 0))\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 78.75,
+          "annual_vol": 9.42,
+          "sharpe": 0.35,
+          "max_drawdown": -37.02,
+          "win_rate": 50.4,
+          "calmar": 2.13,
+          "trades": 687,
+          "ticker": "000301"
+        },
+        {
+          "total_return": 4.12,
+          "annual_vol": 16.99,
+          "sharpe": 0.04,
+          "max_drawdown": -27.11,
+          "win_rate": 47.3,
+          "calmar": 0.15,
+          "trades": 215,
+          "ticker": "688019"
+        },
+        {
+          "total_return": -87.21,
+          "annual_vol": 17.59,
+          "sharpe": -0.5,
+          "max_drawdown": -66.87,
+          "win_rate": 37.7,
+          "calmar": -1.3,
+          "trades": 299,
+          "ticker": "300474"
+        },
+        {
+          "total_return": -31.02,
+          "annual_vol": 12.31,
+          "sharpe": -0.68,
+          "max_drawdown": -28.69,
+          "win_rate": 42.4,
+          "calmar": -1.08,
+          "trades": 118,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 5.31,
+          "annual_vol": 8.07,
+          "sharpe": 0.33,
+          "max_drawdown": -10.26,
+          "win_rate": 60.7,
+          "calmar": 0.52,
+          "trades": 55,
+          "ticker": "513120"
+        },
+        {
+          "total_return": 50.29,
+          "annual_vol": 11.09,
+          "sharpe": 0.79,
+          "max_drawdown": -12.24,
+          "win_rate": 58.0,
+          "calmar": 4.11,
+          "trades": 164,
+          "ticker": "688981"
+        },
+        {
+          "total_return": -21.36,
+          "annual_vol": 8.9,
+          "sharpe": -0.1,
+          "max_drawdown": -44.0,
+          "win_rate": 48.0,
+          "calmar": -0.49,
+          "trades": 758,
+          "ticker": "600019"
+        },
+        {
+          "total_return": 16.03,
+          "annual_vol": 6.53,
+          "sharpe": 1.24,
+          "max_drawdown": -3.62,
+          "win_rate": 76.2,
+          "calmar": 4.43,
+          "trades": 42,
+          "ticker": "159819"
+        },
+        {
+          "total_return": -53.1,
+          "annual_vol": 11.44,
+          "sharpe": -0.7,
+          "max_drawdown": -46.8,
+          "win_rate": 43.3,
+          "calmar": -1.13,
+          "trades": 194,
+          "ticker": "688012"
+        },
+        {
+          "total_return": 5.2,
+          "annual_vol": 9.36,
+          "sharpe": 0.28,
+          "max_drawdown": -8.4,
+          "win_rate": 54.2,
+          "calmar": 0.62,
+          "trades": 51,
+          "ticker": "512170"
+        },
+        {
+          "total_return": 49.65,
+          "annual_vol": 17.91,
+          "sharpe": 0.71,
+          "max_drawdown": -8.57,
+          "win_rate": 51.7,
+          "calmar": 5.79,
+          "trades": 117,
+          "ticker": "688047"
+        },
+        {
+          "total_return": 29.58,
+          "annual_vol": 7.3,
+          "sharpe": 0.17,
+          "max_drawdown": -33.35,
+          "win_rate": 51.0,
+          "calmar": 0.89,
+          "trades": 730,
+          "ticker": "600028"
+        },
+        {
+          "total_return": 17.59,
+          "annual_vol": 9.6,
+          "sharpe": 0.93,
+          "max_drawdown": -4.68,
+          "win_rate": 53.8,
+          "calmar": 3.76,
+          "trades": 59,
+          "ticker": "159928"
+        },
+        {
+          "total_return": 43.7,
+          "annual_vol": 8.99,
+          "sharpe": 0.2,
+          "max_drawdown": -36.99,
+          "win_rate": 53.2,
+          "calmar": 1.18,
+          "trades": 700,
+          "ticker": "000959"
+        },
+        {
+          "total_return": -52.6,
+          "annual_vol": 9.15,
+          "sharpe": -0.32,
+          "max_drawdown": -51.1,
+          "win_rate": 45.5,
+          "calmar": -1.03,
+          "trades": 567,
+          "ticker": "601088"
+        },
+        {
+          "total_return": 3.97,
+          "annual_vol": 18.39,
+          "sharpe": 0.05,
+          "max_drawdown": -30.99,
+          "win_rate": 47.3,
+          "calmar": 0.13,
+          "trades": 110,
+          "ticker": "688072"
+        },
+        {
+          "total_return": 23.69,
+          "annual_vol": 5.25,
+          "sharpe": 0.25,
+          "max_drawdown": -14.06,
+          "win_rate": 52.4,
+          "calmar": 1.68,
+          "trades": 511,
+          "ticker": "601857"
+        },
+        {
+          "total_return": -5.58,
+          "annual_vol": 9.91,
+          "sharpe": -0.02,
+          "max_drawdown": -47.76,
+          "win_rate": 50.8,
+          "calmar": -0.12,
+          "trades": 716,
+          "ticker": "600309"
+        },
+        {
+          "total_return": 21.13,
+          "annual_vol": 9.61,
+          "sharpe": 0.12,
+          "max_drawdown": -35.52,
+          "win_rate": 52.5,
+          "calmar": 0.59,
+          "trades": 532,
+          "ticker": "601898"
+        },
+        {
+          "total_return": 1.28,
+          "annual_vol": 3.37,
+          "sharpe": 0.19,
+          "max_drawdown": -4.88,
+          "win_rate": 53.3,
+          "calmar": 0.26,
+          "trades": 64,
+          "ticker": "512800"
+        }
+      ],
+      "avg_sharpe": 0.17,
+      "avg_return": 4.97,
+      "avg_drawdown": -27.65,
+      "avg_win_rate": 51.5,
+      "avg_calmar": 1.05,
+      "avg_trades": 334,
+      "score": 11.37,
+      "passed": true
+    },
+    {
+      "name": "偏离MA20_d0.08",
+      "description": "价格偏离MA20过远（+5%）做空，过低（-5%）做多 {'dev': 0.08}",
+      "code": "dev = close / ma20 - 1\nsignal = np.where(dev < -0.08, 1, np.where(dev > 0.08, -1, 0))\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": -52.75,
+          "annual_vol": 28.48,
+          "sharpe": -0.08,
+          "max_drawdown": -88.62,
+          "win_rate": 51.3,
+          "calmar": -0.6,
+          "trades": 491,
+          "ticker": "000301"
+        },
+        {
+          "total_return": 34.03,
+          "annual_vol": 42.53,
+          "sharpe": 0.12,
+          "max_drawdown": -67.33,
+          "win_rate": 54.0,
+          "calmar": 0.51,
+          "trades": 258,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 44.57,
+          "annual_vol": 36.61,
+          "sharpe": 0.12,
+          "max_drawdown": -61.77,
+          "win_rate": 52.3,
+          "calmar": 0.72,
+          "trades": 358,
+          "ticker": "300474"
+        },
+        {
+          "total_return": -73.04,
+          "annual_vol": 42.88,
+          "sharpe": -0.46,
+          "max_drawdown": -78.16,
+          "win_rate": 50.9,
+          "calmar": -0.93,
+          "trades": 115,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 15.65,
+          "annual_vol": 17.77,
+          "sharpe": 0.44,
+          "max_drawdown": -23.11,
+          "win_rate": 55.1,
+          "calmar": 0.68,
+          "trades": 33,
+          "ticker": "513120"
+        },
+        {
+          "total_return": 10.81,
+          "annual_vol": 26.78,
+          "sharpe": 0.07,
+          "max_drawdown": -52.79,
+          "win_rate": 52.7,
+          "calmar": 0.2,
+          "trades": 109,
+          "ticker": "688981"
+        },
+        {
+          "total_return": 38.99,
+          "annual_vol": 18.64,
+          "sharpe": 0.09,
+          "max_drawdown": -59.31,
+          "win_rate": 53.0,
+          "calmar": 0.66,
+          "trades": 379,
+          "ticker": "600019"
+        },
+        {
+          "total_return": -26.37,
+          "annual_vol": 21.52,
+          "sharpe": -0.62,
+          "max_drawdown": -34.15,
+          "win_rate": 50.0,
+          "calmar": -0.77,
+          "trades": 39,
+          "ticker": "159819"
+        },
+        {
+          "total_return": -21.04,
+          "annual_vol": 42.49,
+          "sharpe": -0.07,
+          "max_drawdown": -75.48,
+          "win_rate": 51.0,
+          "calmar": -0.28,
+          "trades": 198,
+          "ticker": "688012"
+        },
+        {
+          "total_return": 20.56,
+          "annual_vol": 10.61,
+          "sharpe": 0.98,
+          "max_drawdown": -9.94,
+          "win_rate": 75.0,
+          "calmar": 2.07,
+          "trades": 17,
+          "ticker": "512170"
+        },
+        {
+          "total_return": 24.88,
+          "annual_vol": 34.83,
+          "sharpe": 0.18,
+          "max_drawdown": -48.31,
+          "win_rate": 53.1,
+          "calmar": 0.52,
+          "trades": 145,
+          "ticker": "688047"
+        },
+        {
+          "total_return": 16.08,
+          "annual_vol": 16.25,
+          "sharpe": 0.04,
+          "max_drawdown": -62.62,
+          "win_rate": 51.3,
+          "calmar": 0.26,
+          "trades": 294,
+          "ticker": "600028"
+        },
+        {
+          "total_return": 5.09,
+          "annual_vol": 10.78,
+          "sharpe": 0.24,
+          "max_drawdown": -10.01,
+          "win_rate": 66.7,
+          "calmar": 0.51,
+          "trades": 5,
+          "ticker": "159928"
+        },
+        {
+          "total_return": 141.28,
+          "annual_vol": 22.68,
+          "sharpe": 0.26,
+          "max_drawdown": -51.35,
+          "win_rate": 51.9,
+          "calmar": 2.75,
+          "trades": 505,
+          "ticker": "000959"
+        },
+        {
+          "total_return": 165.19,
+          "annual_vol": 17.6,
+          "sharpe": 0.53,
+          "max_drawdown": -27.72,
+          "win_rate": 57.6,
+          "calmar": 5.96,
+          "trades": 297,
+          "ticker": "601088"
+        },
+        {
+          "total_return": 0.86,
+          "annual_vol": 43.12,
+          "sharpe": 0.0,
+          "max_drawdown": -49.5,
+          "win_rate": 49.5,
+          "calmar": 0.02,
+          "trades": 151,
+          "ticker": "688072"
+        },
+        {
+          "total_return": 27.81,
+          "annual_vol": 13.37,
+          "sharpe": 0.12,
+          "max_drawdown": -44.04,
+          "win_rate": 54.1,
+          "calmar": 0.63,
+          "trades": 189,
+          "ticker": "601857"
+        },
+        {
+          "total_return": 68.94,
+          "annual_vol": 26.3,
+          "sharpe": 0.11,
+          "max_drawdown": -70.19,
+          "win_rate": 51.7,
+          "calmar": 0.98,
+          "trades": 604,
+          "ticker": "600309"
+        },
+        {
+          "total_return": 39.84,
+          "annual_vol": 22.58,
+          "sharpe": 0.1,
+          "max_drawdown": -40.64,
+          "win_rate": 54.0,
+          "calmar": 0.98,
+          "trades": 329,
+          "ticker": "601898"
+        },
+        {
+          "total_return": -10.35,
+          "annual_vol": 8.19,
+          "sharpe": -0.64,
+          "max_drawdown": -11.88,
+          "win_rate": 40.7,
+          "calmar": -0.87,
+          "trades": 7,
+          "ticker": "512800"
+        }
+      ],
+      "avg_sharpe": 0.08,
+      "avg_return": 23.55,
+      "avg_drawdown": -48.35,
+      "avg_win_rate": 53.8,
+      "avg_calmar": 0.7,
+      "avg_trades": 226,
+      "score": 8.8,
+      "passed": true
+    },
+    {
+      "name": "RSI背离",
+      "description": "价格创新低但RSI未创新低做多",
+      "code": "price_ll = close <= close.rolling(20).min().shift(1)\nrsi_ll = rsi_14 <= rsi_14.rolling(20).min().shift(1)\nsignal = np.where(price_ll & (~rsi_ll), 1, 0)\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 40.27,
+          "annual_vol": 12.8,
+          "sharpe": 0.13,
+          "max_drawdown": -42.51,
+          "win_rate": 52.3,
+          "calmar": 0.95,
+          "trades": 539,
+          "ticker": "000301"
+        },
+        {
+          "total_return": 43.09,
+          "annual_vol": 16.81,
+          "sharpe": 0.38,
+          "max_drawdown": -26.41,
+          "win_rate": 58.1,
+          "calmar": 1.63,
+          "trades": 197,
+          "ticker": "688019"
+        },
+        {
+          "total_return": -41.86,
+          "annual_vol": 15.14,
+          "sharpe": -0.28,
+          "max_drawdown": -47.75,
+          "win_rate": 48.8,
+          "calmar": -0.88,
+          "trades": 239,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 32.6,
+          "annual_vol": 12.87,
+          "sharpe": 0.68,
+          "max_drawdown": -16.99,
+          "win_rate": 56.1,
+          "calmar": 1.92,
+          "trades": 71,
+          "ticker": "688041"
+        },
+        {
+          "total_return": 2.75,
+          "annual_vol": 8.74,
+          "sharpe": 0.16,
+          "max_drawdown": -11.17,
+          "win_rate": 55.3,
+          "calmar": 0.25,
+          "trades": 47,
+          "ticker": "513120"
+        },
+        {
+          "total_return": 19.99,
+          "annual_vol": 10.62,
+          "sharpe": 0.33,
+          "max_drawdown": -20.32,
+          "win_rate": 52.6,
+          "calmar": 0.98,
+          "trades": 161,
+          "ticker": "688981"
+        },
+        {
+          "total_return": 75.88,
+          "annual_vol": 10.03,
+          "sharpe": 0.32,
+          "max_drawdown": -27.58,
+          "win_rate": 53.4,
+          "calmar": 2.75,
+          "trades": 569,
+          "ticker": "600019"
+        },
+        {
+          "total_return": 2.82,
+          "annual_vol": 4.21,
+          "sharpe": 0.34,
+          "max_drawdown": -5.41,
+          "win_rate": 50.0,
+          "calmar": 0.52,
+          "trades": 33,
+          "ticker": "159819"
+        },
+        {
+          "total_return": 40.3,
+          "annual_vol": 14.19,
+          "sharpe": 0.43,
+          "max_drawdown": -23.6,
+          "win_rate": 48.7,
+          "calmar": 1.71,
+          "trades": 173,
+          "ticker": "688012"
+        },
+        {
+          "total_return": -7.35,
+          "annual_vol": 5.95,
+          "sharpe": -0.62,
+          "max_drawdown": -12.0,
+          "win_rate": 34.1,
+          "calmar": -0.61,
+          "trades": 57,
+          "ticker": "512170"
+        },
+        {
+          "total_return": 48.89,
+          "annual_vol": 13.64,
+          "sharpe": 0.92,
+          "max_drawdown": -15.58,
+          "win_rate": 58.0,
+          "calmar": 3.14,
+          "trades": 115,
+          "ticker": "688047"
+        },
+        {
+          "total_return": -28.24,
+          "annual_vol": 8.38,
+          "sharpe": -0.14,
+          "max_drawdown": -40.29,
+          "win_rate": 47.4,
+          "calmar": -0.7,
+          "trades": 581,
+          "ticker": "600028"
+        },
+        {
+          "total_return": -15.86,
+          "annual_vol": 6.22,
+          "sharpe": -1.29,
+          "max_drawdown": -17.65,
+          "win_rate": 42.9,
+          "calmar": -0.9,
+          "trades": 71,
+          "ticker": "159928"
+        },
+        {
+          "total_return": -32.93,
+          "annual_vol": 11.62,
+          "sharpe": -0.12,
+          "max_drawdown": -51.29,
+          "win_rate": 49.3,
+          "calmar": -0.64,
+          "trades": 663,
+          "ticker": "000959"
+        },
+        {
+          "total_return": 27.35,
+          "annual_vol": 9.16,
+          "sharpe": 0.17,
+          "max_drawdown": -39.5,
+          "win_rate": 54.5,
+          "calmar": 0.69,
+          "trades": 377,
+          "ticker": "601088"
+        },
+        {
+          "total_return": 18.98,
+          "annual_vol": 13.61,
+          "sharpe": 0.35,
+          "max_drawdown": -20.63,
+          "win_rate": 50.0,
+          "calmar": 0.92,
+          "trades": 87,
+          "ticker": "688072"
+        },
+        {
+          "total_return": -4.72,
+          "annual_vol": 7.98,
+          "sharpe": -0.03,
+          "max_drawdown": -31.61,
+          "win_rate": 51.9,
+          "calmar": -0.15,
+          "trades": 515,
+          "ticker": "601857"
+        },
+        {
+          "total_return": 20.06,
+          "annual_vol": 11.79,
+          "sharpe": 0.07,
+          "max_drawdown": -42.25,
+          "win_rate": 51.8,
+          "calmar": 0.47,
+          "trades": 541,
+          "ticker": "600309"
+        },
+        {
+          "total_return": 24.35,
+          "annual_vol": 10.61,
+          "sharpe": 0.13,
+          "max_drawdown": -24.39,
+          "win_rate": 53.7,
+          "calmar": 1.0,
+          "trades": 493,
+          "ticker": "601898"
+        },
+        {
+          "total_return": -3.92,
+          "annual_vol": 4.35,
+          "sharpe": -0.46,
+          "max_drawdown": -7.7,
+          "win_rate": 44.7,
+          "calmar": -0.51,
+          "trades": 53,
+          "ticker": "512800"
+        }
+      ],
+      "avg_sharpe": 0.07,
+      "avg_return": 13.12,
+      "avg_drawdown": -26.23,
+      "avg_win_rate": 50.7,
+      "avg_calmar": 0.63,
+      "avg_trades": 279,
+      "score": 7.23,
+      "passed": true
+    },
+    {
+      "name": "均线MACD共振",
+      "description": "MA多头排列且MACD正做多",
+      "code": "signal = np.where((ma5 > ma10) & (ma10 > ma20) & (macd_hist > 0), 1, np.where((ma5 < ma10) & (macd_hist < 0), -1, 0))\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 171.05,
+          "annual_vol": 39.1,
+          "sharpe": 0.18,
+          "max_drawdown": -92.72,
+          "win_rate": 50.3,
+          "calmar": 1.84,
+          "trades": 926,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -180.37,
+          "annual_vol": 55.76,
+          "sharpe": -0.48,
+          "max_drawdown": -97.96,
+          "win_rate": 47.9,
+          "calmar": -1.84,
+          "trades": 264,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 53.55,
+          "annual_vol": 51.09,
+          "sharpe": 0.11,
+          "max_drawdown": -87.97,
+          "win_rate": 50.3,
+          "calmar": 0.61,
+          "trades": 381,
+          "ticker": "300474"
+        },
+        {
+          "total_return": -87.56,
+          "annual_vol": 55.02,
+          "sharpe": -0.43,
+          "max_drawdown": -84.75,
+          "win_rate": 47.1,
+          "calmar": -1.03,
+          "trades": 161,
+          "ticker": "688041"
+        },
+        {
+          "total_return": -13.57,
+          "annual_vol": 30.85,
+          "sharpe": -0.22,
+          "max_drawdown": -44.03,
+          "win_rate": 49.6,
+          "calmar": -0.31,
+          "trades": 77,
+          "ticker": "513120"
+        },
+        {
+          "total_return": -51.79,
+          "annual_vol": 38.37,
+          "sharpe": -0.24,
+          "max_drawdown": -71.63,
+          "win_rate": 48.4,
+          "calmar": -0.72,
+          "trades": 217,
+          "ticker": "688981"
+        },
+        {
+          "total_return": -53.94,
+          "annual_vol": 30.33,
+          "sharpe": -0.07,
+          "max_drawdown": -89.24,
+          "win_rate": 48.3,
+          "calmar": -0.6,
+          "trades": 942,
+          "ticker": "600019"
+        },
+        {
+          "total_return": 31.11,
+          "annual_vol": 33.99,
+          "sharpe": 0.46,
+          "max_drawdown": -32.28,
+          "win_rate": 52.8,
+          "calmar": 0.96,
+          "trades": 76,
+          "ticker": "159819"
+        },
+        {
+          "total_return": 39.1,
+          "annual_vol": 52.97,
+          "sharpe": 0.11,
+          "max_drawdown": -78.08,
+          "win_rate": 49.7,
+          "calmar": 0.5,
+          "trades": 242,
+          "ticker": "688012"
+        },
+        {
+          "total_return": 18.47,
+          "annual_vol": 22.87,
+          "sharpe": 0.41,
+          "max_drawdown": -30.37,
+          "win_rate": 51.5,
+          "calmar": 0.61,
+          "trades": 77,
+          "ticker": "512170"
+        },
+        {
+          "total_return": 21.5,
+          "annual_vol": 48.14,
+          "sharpe": 0.11,
+          "max_drawdown": -56.4,
+          "win_rate": 48.3,
+          "calmar": 0.38,
+          "trades": 140,
+          "ticker": "688047"
+        },
+        {
+          "total_return": -30.51,
+          "annual_vol": 27.38,
+          "sharpe": -0.05,
+          "max_drawdown": -82.34,
+          "win_rate": 49.5,
+          "calmar": -0.37,
+          "trades": 913,
+          "ticker": "600028"
+        },
+        {
+          "total_return": -9.2,
+          "annual_vol": 17.25,
+          "sharpe": -0.27,
+          "max_drawdown": -27.62,
+          "win_rate": 52.1,
+          "calmar": -0.33,
+          "trades": 73,
+          "ticker": "159928"
+        },
+        {
+          "total_return": 114.52,
+          "annual_vol": 34.39,
+          "sharpe": 0.14,
+          "max_drawdown": -83.08,
+          "win_rate": 50.8,
+          "calmar": 1.38,
+          "trades": 916,
+          "ticker": "000959"
+        },
+        {
+          "total_return": -83.21,
+          "annual_vol": 30.14,
+          "sharpe": -0.16,
+          "max_drawdown": -89.38,
+          "win_rate": 48.3,
+          "calmar": -0.93,
+          "trades": 680,
+          "ticker": "601088"
+        },
+        {
+          "total_return": -47.77,
+          "annual_vol": 55.91,
+          "sharpe": -0.21,
+          "max_drawdown": -82.36,
+          "win_rate": 49.6,
+          "calmar": -0.58,
+          "trades": 153,
+          "ticker": "688072"
+        },
+        {
+          "total_return": 144.92,
+          "annual_vol": 23.79,
+          "sharpe": 0.34,
+          "max_drawdown": -58.49,
+          "win_rate": 49.4,
+          "calmar": 2.48,
+          "trades": 662,
+          "ticker": "601857"
+        },
+        {
+          "total_return": 166.87,
+          "annual_vol": 38.52,
+          "sharpe": 0.18,
+          "max_drawdown": -81.56,
+          "win_rate": 49.0,
+          "calmar": 2.05,
+          "trades": 911,
+          "ticker": "600309"
+        },
+        {
+          "total_return": 143.97,
+          "annual_vol": 34.58,
+          "sharpe": 0.23,
+          "max_drawdown": -63.92,
+          "win_rate": 48.7,
+          "calmar": 2.25,
+          "trades": 700,
+          "ticker": "601898"
+        },
+        {
+          "total_return": -17.7,
+          "annual_vol": 14.67,
+          "sharpe": -0.61,
+          "max_drawdown": -24.99,
+          "win_rate": 48.3,
+          "calmar": -0.71,
+          "trades": 71,
+          "ticker": "512800"
+        }
+      ],
+      "avg_sharpe": -0.02,
+      "avg_return": 16.47,
+      "avg_drawdown": -67.96,
+      "avg_win_rate": 49.5,
+      "avg_calmar": 0.28,
+      "avg_trades": 429,
+      "score": 2.82,
+      "passed": true
+    },
+    {
+      "name": "MACD金叉",
+      "description": "DIF上穿DEA做多，下穿做空",
+      "code": "macd_hist_prev = macd_hist.shift(1)\nsignal = np.where((macd_hist > 0) & (macd_hist_prev <= 0), 1, np.where((macd_hist < 0) & (macd_hist_prev >= 0), -1, 0))\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 8.97,
+          "annual_vol": 11.66,
+          "sharpe": 0.03,
+          "max_drawdown": -44.06,
+          "win_rate": 47.4,
+          "calmar": 0.2,
+          "trades": 887,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -57.98,
+          "annual_vol": 17.9,
+          "sharpe": -0.48,
+          "max_drawdown": -50.97,
+          "win_rate": 51.5,
+          "calmar": -1.14,
+          "trades": 254,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 8.16,
+          "annual_vol": 15.98,
+          "sharpe": 0.05,
+          "max_drawdown": -32.66,
+          "win_rate": 51.1,
+          "calmar": 0.25,
+          "trades": 357,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 6.34,
+          "annual_vol": 15.74,
+          "sharpe": 0.11,
+          "max_drawdown": -24.22,
+          "win_rate": 50.0,
+          "calmar": 0.26,
+          "trades": 154,
+          "ticker": "688041"
+        },
+        {
+          "total_return": -8.66,
+          "annual_vol": 8.92,
+          "sharpe": -0.49,
+          "max_drawdown": -12.92,
+          "win_rate": 36.6,
+          "calmar": -0.67,
+          "trades": 80,
+          "ticker": "513120"
+        },
+        {
+          "total_return": 15.7,
+          "annual_vol": 12.15,
+          "sharpe": 0.23,
+          "max_drawdown": -24.17,
+          "win_rate": 51.5,
+          "calmar": 0.65,
+          "trades": 203,
+          "ticker": "688981"
+        },
+        {
+          "total_return": -2.87,
+          "annual_vol": 10.27,
+          "sharpe": -0.01,
+          "max_drawdown": -30.1,
+          "win_rate": 46.2,
+          "calmar": -0.1,
+          "trades": 896,
+          "ticker": "600019"
+        },
+        {
+          "total_return": -3.33,
+          "annual_vol": 7.29,
+          "sharpe": -0.23,
+          "max_drawdown": -9.78,
+          "win_rate": 52.9,
+          "calmar": -0.34,
+          "trades": 67,
+          "ticker": "159819"
+        },
+        {
+          "total_return": -19.56,
+          "annual_vol": 15.76,
+          "sharpe": -0.19,
+          "max_drawdown": -28.56,
+          "win_rate": 45.6,
+          "calmar": -0.68,
+          "trades": 243,
+          "ticker": "688012"
+        },
+        {
+          "total_return": -5.18,
+          "annual_vol": 6.14,
+          "sharpe": -0.43,
+          "max_drawdown": -11.21,
+          "win_rate": 57.1,
+          "calmar": -0.46,
+          "trades": 60,
+          "ticker": "512170"
+        },
+        {
+          "total_return": 21.67,
+          "annual_vol": 17.84,
+          "sharpe": 0.31,
+          "max_drawdown": -24.89,
+          "win_rate": 56.7,
+          "calmar": 0.87,
+          "trades": 120,
+          "ticker": "688047"
+        },
+        {
+          "total_return": -28.54,
+          "annual_vol": 9.04,
+          "sharpe": -0.13,
+          "max_drawdown": -48.85,
+          "win_rate": 48.9,
+          "calmar": -0.58,
+          "trades": 856,
+          "ticker": "600028"
+        },
+        {
+          "total_return": 10.8,
+          "annual_vol": 8.52,
+          "sharpe": 0.64,
+          "max_drawdown": -8.06,
+          "win_rate": 48.8,
+          "calmar": 1.34,
+          "trades": 83,
+          "ticker": "159928"
+        },
+        {
+          "total_return": 31.79,
+          "annual_vol": 11.46,
+          "sharpe": 0.12,
+          "max_drawdown": -38.31,
+          "win_rate": 51.9,
+          "calmar": 0.83,
+          "trades": 845,
+          "ticker": "000959"
+        },
+        {
+          "total_return": 6.23,
+          "annual_vol": 9.94,
+          "sharpe": 0.04,
+          "max_drawdown": -34.55,
+          "win_rate": 48.0,
+          "calmar": 0.18,
+          "trades": 647,
+          "ticker": "601088"
+        },
+        {
+          "total_return": 19.79,
+          "annual_vol": 17.57,
+          "sharpe": 0.28,
+          "max_drawdown": -23.51,
+          "win_rate": 47.9,
+          "calmar": 0.84,
+          "trades": 144,
+          "ticker": "688072"
+        },
+        {
+          "total_return": -8.28,
+          "annual_vol": 7.57,
+          "sharpe": -0.06,
+          "max_drawdown": -37.35,
+          "win_rate": 49.0,
+          "calmar": -0.22,
+          "trades": 635,
+          "ticker": "601857"
+        },
+        {
+          "total_return": -7.11,
+          "annual_vol": 10.86,
+          "sharpe": -0.03,
+          "max_drawdown": -53.21,
+          "win_rate": 48.5,
+          "calmar": -0.13,
+          "trades": 841,
+          "ticker": "600309"
+        },
+        {
+          "total_return": 34.76,
+          "annual_vol": 11.61,
+          "sharpe": 0.17,
+          "max_drawdown": -27.53,
+          "win_rate": 50.3,
+          "calmar": 1.26,
+          "trades": 657,
+          "ticker": "601898"
+        },
+        {
+          "total_return": 6.51,
+          "annual_vol": 4.22,
+          "sharpe": 0.78,
+          "max_drawdown": -4.25,
+          "win_rate": 53.1,
+          "calmar": 1.53,
+          "trades": 66,
+          "ticker": "512800"
+        }
+      ],
+      "avg_sharpe": 0.04,
+      "avg_return": 1.46,
+      "avg_drawdown": -28.46,
+      "avg_win_rate": 49.6,
+      "avg_calmar": 0.19,
+      "avg_trades": 404,
+      "score": 2.0,
+      "passed": true
+    },
+    {
+      "name": "MACD零轴",
+      "description": "MACD柱由负转正穿越零轴做多",
+      "code": "macd_hist_prev = macd_hist.shift(1)\nsignal = np.where((macd_hist > 0) & (macd_hist_prev <= 0), 1, np.where((macd_hist < 0) & (macd_hist_prev >= 0), -1, 0))\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 8.97,
+          "annual_vol": 11.66,
+          "sharpe": 0.03,
+          "max_drawdown": -44.06,
+          "win_rate": 47.4,
+          "calmar": 0.2,
+          "trades": 887,
+          "ticker": "000301"
+        },
+        {
+          "total_return": -57.98,
+          "annual_vol": 17.9,
+          "sharpe": -0.48,
+          "max_drawdown": -50.97,
+          "win_rate": 51.5,
+          "calmar": -1.14,
+          "trades": 254,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 8.16,
+          "annual_vol": 15.98,
+          "sharpe": 0.05,
+          "max_drawdown": -32.66,
+          "win_rate": 51.1,
+          "calmar": 0.25,
+          "trades": 357,
+          "ticker": "300474"
+        },
+        {
+          "total_return": 6.34,
+          "annual_vol": 15.74,
+          "sharpe": 0.11,
+          "max_drawdown": -24.22,
+          "win_rate": 50.0,
+          "calmar": 0.26,
+          "trades": 154,
+          "ticker": "688041"
+        },
+        {
+          "total_return": -8.66,
+          "annual_vol": 8.92,
+          "sharpe": -0.49,
+          "max_drawdown": -12.92,
+          "win_rate": 36.6,
+          "calmar": -0.67,
+          "trades": 80,
+          "ticker": "513120"
+        },
+        {
+          "total_return": 15.7,
+          "annual_vol": 12.15,
+          "sharpe": 0.23,
+          "max_drawdown": -24.17,
+          "win_rate": 51.5,
+          "calmar": 0.65,
+          "trades": 203,
+          "ticker": "688981"
+        },
+        {
+          "total_return": -2.87,
+          "annual_vol": 10.27,
+          "sharpe": -0.01,
+          "max_drawdown": -30.1,
+          "win_rate": 46.2,
+          "calmar": -0.1,
+          "trades": 896,
+          "ticker": "600019"
+        },
+        {
+          "total_return": -3.33,
+          "annual_vol": 7.29,
+          "sharpe": -0.23,
+          "max_drawdown": -9.78,
+          "win_rate": 52.9,
+          "calmar": -0.34,
+          "trades": 67,
+          "ticker": "159819"
+        },
+        {
+          "total_return": -19.56,
+          "annual_vol": 15.76,
+          "sharpe": -0.19,
+          "max_drawdown": -28.56,
+          "win_rate": 45.6,
+          "calmar": -0.68,
+          "trades": 243,
+          "ticker": "688012"
+        },
+        {
+          "total_return": -5.18,
+          "annual_vol": 6.14,
+          "sharpe": -0.43,
+          "max_drawdown": -11.21,
+          "win_rate": 57.1,
+          "calmar": -0.46,
+          "trades": 60,
+          "ticker": "512170"
+        },
+        {
+          "total_return": 21.67,
+          "annual_vol": 17.84,
+          "sharpe": 0.31,
+          "max_drawdown": -24.89,
+          "win_rate": 56.7,
+          "calmar": 0.87,
+          "trades": 120,
+          "ticker": "688047"
+        },
+        {
+          "total_return": -28.54,
+          "annual_vol": 9.04,
+          "sharpe": -0.13,
+          "max_drawdown": -48.85,
+          "win_rate": 48.9,
+          "calmar": -0.58,
+          "trades": 856,
+          "ticker": "600028"
+        },
+        {
+          "total_return": 10.8,
+          "annual_vol": 8.52,
+          "sharpe": 0.64,
+          "max_drawdown": -8.06,
+          "win_rate": 48.8,
+          "calmar": 1.34,
+          "trades": 83,
+          "ticker": "159928"
+        },
+        {
+          "total_return": 31.79,
+          "annual_vol": 11.46,
+          "sharpe": 0.12,
+          "max_drawdown": -38.31,
+          "win_rate": 51.9,
+          "calmar": 0.83,
+          "trades": 845,
+          "ticker": "000959"
+        },
+        {
+          "total_return": 6.23,
+          "annual_vol": 9.94,
+          "sharpe": 0.04,
+          "max_drawdown": -34.55,
+          "win_rate": 48.0,
+          "calmar": 0.18,
+          "trades": 647,
+          "ticker": "601088"
+        },
+        {
+          "total_return": 19.79,
+          "annual_vol": 17.57,
+          "sharpe": 0.28,
+          "max_drawdown": -23.51,
+          "win_rate": 47.9,
+          "calmar": 0.84,
+          "trades": 144,
+          "ticker": "688072"
+        },
+        {
+          "total_return": -8.28,
+          "annual_vol": 7.57,
+          "sharpe": -0.06,
+          "max_drawdown": -37.35,
+          "win_rate": 49.0,
+          "calmar": -0.22,
+          "trades": 635,
+          "ticker": "601857"
+        },
+        {
+          "total_return": -7.11,
+          "annual_vol": 10.86,
+          "sharpe": -0.03,
+          "max_drawdown": -53.21,
+          "win_rate": 48.5,
+          "calmar": -0.13,
+          "trades": 841,
+          "ticker": "600309"
+        },
+        {
+          "total_return": 34.76,
+          "annual_vol": 11.61,
+          "sharpe": 0.17,
+          "max_drawdown": -27.53,
+          "win_rate": 50.3,
+          "calmar": 1.26,
+          "trades": 657,
+          "ticker": "601898"
+        },
+        {
+          "total_return": 6.51,
+          "annual_vol": 4.22,
+          "sharpe": 0.78,
+          "max_drawdown": -4.25,
+          "win_rate": 53.1,
+          "calmar": 1.53,
+          "trades": 66,
+          "ticker": "512800"
+        }
+      ],
+      "avg_sharpe": 0.04,
+      "avg_return": 1.46,
+      "avg_drawdown": -28.46,
+      "avg_win_rate": 49.6,
+      "avg_calmar": 0.19,
+      "avg_trades": 404,
+      "score": 2.0,
+      "passed": true
+    },
+    {
+      "name": "放量突破_v2.0",
+      "description": "放量突破MA20做多，缩量跌破MA20做空 {'vol_thresh': 2.0}",
+      "code": "signal = np.where((close > ma20) & (vol_ratio > 2.0), 1, np.where((close < ma20) & (vol_ratio < 1.0), -1, 0))\nsignal = pd.Series(signal, index=close.index).shift(1).fillna(0)",
+      "source": "rule",
+      "evaluation": [
+        {
+          "total_return": 60.7,
+          "annual_vol": 28.05,
+          "sharpe": 0.09,
+          "max_drawdown": -88.45,
+          "win_rate": 48.9,
+          "calmar": 0.69,
+          "trades": 1356,
+          "ticker": "000301"
+        },
+        {
+          "total_return": 21.16,
+          "annual_vol": 36.48,
+          "sharpe": 0.09,
+          "max_drawdown": -57.1,
+          "win_rate": 50.9,
+          "calmar": 0.37,
+          "trades": 389,
+          "ticker": "688019"
+        },
+        {
+          "total_return": 84.32,
+          "annual_vol": 38.3,
+          "sharpe": 0.22,
+          "max_drawdown": -66.93,
+          "win_rate": 50.9,
+          "calmar": 1.26,
+          "trades": 549,
+          "ticker": "300474"
+        },
+        {
+          "total_return": -107.72,
+          "annual_vol": 30.57,
+          "sharpe": -0.95,
+          "max_drawdown": -72.78,
+          "win_rate": 48.3,
+          "calmar": -1.48,
+          "trades": 191,
+          "ticker": "688041"
+        },
+        {
+          "total_return": -3.35,
+          "annual_vol": 18.62,
+          "sharpe": -0.09,
+          "max_drawdown": -37.25,
+          "win_rate": 49.0,
+          "calmar": -0.09,
+          "trades": 100,
+          "ticker": "513120"
+        },
+        {
+          "total_return": -19.24,
+          "annual_vol": 26.44,
+          "sharpe": -0.13,
+          "max_drawdown": -54.23,
+          "win_rate": 50.6,
+          "calmar": -0.35,
+          "trades": 345,
+          "ticker": "688981"
+        },
+        {
+          "total_return": -21.39,
+          "annual_vol": 22.0,
+          "sharpe": -0.04,
+          "max_drawdown": -65.73,
+          "win_rate": 49.4,
+          "calmar": -0.33,
+          "trades": 1454,
+          "ticker": "600019"
+        },
+        {
+          "total_return": -16.65,
+          "annual_vol": 22.55,
+          "sharpe": -0.37,
+          "max_drawdown": -38.79,
+          "win_rate": 48.4,
+          "calmar": -0.43,
+          "trades": 93,
+          "ticker": "159819"
+        },
+        {
+          "total_return": -34.07,
+          "annual_vol": 32.33,
+          "sharpe": -0.16,
+          "max_drawdown": -56.76,
+          "win_rate": 50.8,
+          "calmar": -0.6,
+          "trades": 386,
+          "ticker": "688012"
+        },
+        {
+          "total_return": 9.34,
+          "annual_vol": 19.88,
+          "sharpe": 0.24,
+          "max_drawdown": -24.97,
+          "win_rate": 54.0,
+          "calmar": 0.37,
+          "trades": 124,
+          "ticker": "512170"
+        },
+        {
+          "total_return": -78.84,
+          "annual_vol": 35.86,
+          "sharpe": -0.57,
+          "max_drawdown": -71.75,
+          "win_rate": 49.0,
+          "calmar": -1.1,
+          "trades": 229,
+          "ticker": "688047"
+        },
+        {
+          "total_return": 18.88,
+          "annual_vol": 19.33,
+          "sharpe": 0.04,
+          "max_drawdown": -63.74,
+          "win_rate": 51.0,
+          "calmar": 0.3,
+          "trades": 1572,
+          "ticker": "600028"
+        },
+        {
+          "total_return": 26.87,
+          "annual_vol": 17.48,
+          "sharpe": 0.78,
+          "max_drawdown": -22.4,
+          "win_rate": 51.3,
+          "calmar": 1.2,
+          "trades": 146,
+          "ticker": "159928"
+        },
+        {
+          "total_return": 109.62,
+          "annual_vol": 26.76,
+          "sharpe": 0.17,
+          "max_drawdown": -87.59,
+          "win_rate": 50.7,
+          "calmar": 1.25,
+          "trades": 1467,
+          "ticker": "000959"
+        },
+        {
+          "total_return": 71.45,
+          "annual_vol": 22.38,
+          "sharpe": 0.18,
+          "max_drawdown": -56.49,
+          "win_rate": 49.2,
+          "calmar": 1.26,
+          "trades": 1106,
+          "ticker": "601088"
+        },
+        {
+          "total_return": -15.24,
+          "annual_vol": 34.02,
+          "sharpe": -0.11,
+          "max_drawdown": -59.38,
+          "win_rate": 51.9,
+          "calmar": -0.26,
+          "trades": 213,
+          "ticker": "688072"
+        },
+        {
+          "total_return": 49.58,
+          "annual_vol": 17.78,
+          "sharpe": 0.16,
+          "max_drawdown": -50.7,
+          "win_rate": 50.2,
+          "calmar": 0.98,
+          "trades": 1157,
+          "ticker": "601857"
+        },
+        {
+          "total_return": -100.4,
+          "annual_vol": 27.83,
+          "sharpe": -0.15,
+          "max_drawdown": -96.58,
+          "win_rate": 49.0,
+          "calmar": -1.04,
+          "trades": 1461,
+          "ticker": "600309"
+        },
+        {
+          "total_return": -6.18,
+          "annual_vol": 25.55,
+          "sharpe": -0.01,
+          "max_drawdown": -76.27,
+          "win_rate": 50.0,
+          "calmar": -0.08,
+          "trades": 1114,
+          "ticker": "601898"
+        },
+        {
+          "total_return": -17.45,
+          "annual_vol": 9.04,
+          "sharpe": -0.98,
+          "max_drawdown": -21.35,
+          "win_rate": 45.7,
+          "calmar": -0.82,
+          "trades": 111,
+          "ticker": "512800"
+        }
+      ],
+      "avg_sharpe": -0.08,
+      "avg_return": 1.57,
+      "avg_drawdown": -58.46,
+      "avg_win_rate": 50.0,
+      "avg_calmar": 0.06,
+      "avg_trades": 678,
+      "score": 0.55,
+      "passed": true
+    },
+    {
+      "name": "close_ratio_boll_up_long_t0.943",
+      "description": "close ratio boll_up long 阈值0.943",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 259.46,
+      "avg_drawdown": -44.17,
+      "avg_sharpe": 2.94,
+      "avg_win_rate": 51.3,
+      "avg_calmar": 5.87,
+      "avg_trades": 483,
+      "score": 761.99,
+      "passed": true
+    },
+    {
+      "name": "close_ratio_boll_up_both_t0.943",
+      "description": "close ratio boll_up both 阈值0.943",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 259.46,
+      "avg_drawdown": -44.17,
+      "avg_sharpe": 2.94,
+      "avg_win_rate": 51.3,
+      "avg_calmar": 5.87,
+      "avg_trades": 483,
+      "score": 761.99,
+      "passed": true
+    },
+    {
+      "name": "close_ratio_boll_down_long_t1.07",
+      "description": "close ratio boll_down long 阈值1.07",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 254.28,
+      "avg_drawdown": -43.07,
+      "avg_sharpe": 2.95,
+      "avg_win_rate": 53.3,
+      "avg_calmar": 5.9,
+      "avg_trades": 321,
+      "score": 750.5,
+      "passed": true
+    },
+    {
+      "name": "rsi_14_diff1_long_t-8.08",
+      "description": "rsi_14 diff1 long 阈值-8.08",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 346.5,
+      "avg_drawdown": -80.75,
+      "avg_sharpe": 2.15,
+      "avg_win_rate": 50.0,
+      "avg_calmar": 4.29,
+      "avg_trades": 647,
+      "score": 743.44,
+      "passed": true
+    },
+    {
+      "name": "close_div_ma20_both_t1.01",
+      "description": "close div ma20 both 阈值1.01",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 231.07,
+      "avg_drawdown": -39.55,
+      "avg_sharpe": 2.92,
+      "avg_win_rate": 51.8,
+      "avg_calmar": 5.84,
+      "avg_trades": 260,
+      "score": 675.01,
+      "passed": true
+    },
+    {
+      "name": "close_ratio_boll_down_long_t1.06",
+      "description": "close ratio boll_down long 阈值1.06",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 235.85,
+      "avg_drawdown": -56.5,
+      "avg_sharpe": 2.09,
+      "avg_win_rate": 49.0,
+      "avg_calmar": 4.17,
+      "avg_trades": 521,
+      "score": 492.3,
+      "passed": true
+    },
+    {
+      "name": "close_div_ma20_both_t0.998",
+      "description": "close div ma20 both 阈值0.998",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 224.09,
+      "avg_drawdown": -53.16,
+      "avg_sharpe": 2.11,
+      "avg_win_rate": 49.6,
+      "avg_calmar": 4.22,
+      "avg_trades": 429,
+      "score": 472.29,
+      "passed": true
+    },
+    {
+      "name": "momentum_5d_sub_boll_down_long_t-15.3",
+      "description": "momentum_5d sub boll_down long 阈值-15.3",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 256.04,
+      "avg_drawdown": -73.67,
+      "avg_sharpe": 1.74,
+      "avg_win_rate": 50.5,
+      "avg_calmar": 3.48,
+      "avg_trades": 306,
+      "score": 444.93,
+      "passed": true
+    },
+    {
+      "name": "close_ratio_boll_down_long_t1.1",
+      "description": "close ratio boll_down long 阈值1.1",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 218.53,
+      "avg_drawdown": -53.81,
+      "avg_sharpe": 2.03,
+      "avg_win_rate": 50.5,
+      "avg_calmar": 4.06,
+      "avg_trades": 158,
+      "score": 443.72,
+      "passed": true
+    },
+    {
+      "name": "ma20_corr20_macd_hist_both_t-0.425",
+      "description": "ma20 corr20 macd_hist both 阈值-0.425",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 241.32,
+      "avg_drawdown": -69.58,
+      "avg_sharpe": 1.73,
+      "avg_win_rate": 50.8,
+      "avg_calmar": 3.47,
+      "avg_trades": 241,
+      "score": 418.53,
+      "passed": true
+    },
+    {
+      "name": "close_sub_ma5_both_t-0.004",
+      "description": "close sub ma5 both 阈值-0.004",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 263.51,
+      "avg_drawdown": -86.56,
+      "avg_sharpe": 1.52,
+      "avg_win_rate": 49.4,
+      "avg_calmar": 3.04,
+      "avg_trades": 1320,
+      "score": 401.13,
+      "passed": true
+    },
+    {
+      "name": "close_ratio_boll_down_long_t1.08",
+      "description": "close ratio boll_down long 阈值1.08",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 193.88,
+      "avg_drawdown": -47.27,
+      "avg_sharpe": 2.05,
+      "avg_win_rate": 52.6,
+      "avg_calmar": 4.1,
+      "avg_trades": 322,
+      "score": 397.54,
+      "passed": true
+    },
+    {
+      "name": "ma10_corr20_ma60_both_t-0.863",
+      "description": "ma10 corr20 ma60 both 阈值-0.863",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 238.97,
+      "avg_drawdown": -77.45,
+      "avg_sharpe": 1.54,
+      "avg_win_rate": 50.0,
+      "avg_calmar": 3.09,
+      "avg_trades": 83,
+      "score": 368.68,
+      "passed": true
+    },
+    {
+      "name": "ma20_diff1_long_t0.014",
+      "description": "ma20 diff1 long 阈值0.014",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 206.67,
+      "avg_drawdown": -58.85,
+      "avg_sharpe": 1.76,
+      "avg_win_rate": 48.2,
+      "avg_calmar": 3.51,
+      "avg_trades": 306,
+      "score": 362.88,
+      "passed": true
+    },
+    {
+      "name": "close_div_ma20_both_t0.996",
+      "description": "close div ma20 both 阈值0.996",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 192.51,
+      "avg_drawdown": -55.63,
+      "avg_sharpe": 1.73,
+      "avg_win_rate": 47.8,
+      "avg_calmar": 3.46,
+      "avg_trades": 395,
+      "score": 333.08,
+      "passed": true
+    },
+    {
+      "name": "ma5_rank20_both_t0.55",
+      "description": "ma5 rank20 both 阈值0.55",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 170.1,
+      "avg_drawdown": -44.69,
+      "avg_sharpe": 1.9,
+      "avg_win_rate": 53.2,
+      "avg_calmar": 3.81,
+      "avg_trades": 215,
+      "score": 323.76,
+      "passed": true
+    },
+    {
+      "name": "momentum_5d_zscore20_long_t-1.39",
+      "description": "momentum_5d zscore20 long 阈值-1.39",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 190.39,
+      "avg_drawdown": -56.11,
+      "avg_sharpe": 1.7,
+      "avg_win_rate": 48.8,
+      "avg_calmar": 3.39,
+      "avg_trades": 310,
+      "score": 323.0,
+      "passed": true
+    },
+    {
+      "name": "ma5_div_macd_hist_both_t11.9",
+      "description": "ma5 div macd_hist both 阈值11.9",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 225.69,
+      "avg_drawdown": -79.5,
+      "avg_sharpe": 1.42,
+      "avg_win_rate": 50.5,
+      "avg_calmar": 2.84,
+      "avg_trades": 166,
+      "score": 320.37,
+      "passed": true
+    },
+    {
+      "name": "ma5_corr20_ma10_both_t0.875",
+      "description": "ma5 corr20 ma10 both 阈值0.875",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 214.05,
+      "avg_drawdown": -75.81,
+      "avg_sharpe": 1.41,
+      "avg_win_rate": 51.3,
+      "avg_calmar": 2.82,
+      "avg_trades": 423,
+      "score": 302.17,
+      "passed": true
+    },
+    {
+      "name": "ma5_div_ma20_long_t0.998",
+      "description": "ma5 div ma20 long 阈值0.998",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 164.05,
+      "avg_drawdown": -46.95,
+      "avg_sharpe": 1.75,
+      "avg_win_rate": 49.5,
+      "avg_calmar": 3.49,
+      "avg_trades": 186,
+      "score": 286.61,
+      "passed": true
+    },
+    {
+      "name": "ma5_ratio_ma20_both_t0.998",
+      "description": "ma5 ratio ma20 both 阈值0.998",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 164.05,
+      "avg_drawdown": -46.95,
+      "avg_sharpe": 1.75,
+      "avg_win_rate": 49.5,
+      "avg_calmar": 3.49,
+      "avg_trades": 186,
+      "score": 286.61,
+      "passed": true
+    },
+    {
+      "name": "momentum_5d_zscore20_long_t-1.28",
+      "description": "momentum_5d zscore20 long 阈值-1.28",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 173.19,
+      "avg_drawdown": -52.52,
+      "avg_sharpe": 1.65,
+      "avg_win_rate": 48.5,
+      "avg_calmar": 3.3,
+      "avg_trades": 102,
+      "score": 285.54,
+      "passed": true
+    },
+    {
+      "name": "boll_up_rank20_both_t0.4",
+      "description": "boll_up rank20 both 阈值0.4",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 163.96,
+      "avg_drawdown": -47.95,
+      "avg_sharpe": 1.71,
+      "avg_win_rate": 49.8,
+      "avg_calmar": 3.42,
+      "avg_trades": 96,
+      "score": 280.35,
+      "passed": true
+    },
+    {
+      "name": "momentum_5d_zscore20_long_t-1.42",
+      "description": "momentum_5d zscore20 long 阈值-1.42",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 185.17,
+      "avg_drawdown": -66.67,
+      "avg_sharpe": 1.39,
+      "avg_win_rate": 50.5,
+      "avg_calmar": 2.78,
+      "avg_trades": 337,
+      "score": 257.17,
+      "passed": true
+    },
+    {
+      "name": "boll_up_rank20_both_t0.45",
+      "description": "boll_up rank20 both 阈值0.45",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 156.41,
+      "avg_drawdown": -50.6,
+      "avg_sharpe": 1.55,
+      "avg_win_rate": 50.4,
+      "avg_calmar": 3.09,
+      "avg_trades": 153,
+      "score": 241.76,
+      "passed": true
+    },
+    {
+      "name": "rsi_14_div_vol_ratio_long_t53.1",
+      "description": "rsi_14 div vol_ratio long 阈值53.1",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 172.69,
+      "avg_drawdown": -63.87,
+      "avg_sharpe": 1.35,
+      "avg_win_rate": 50.2,
+      "avg_calmar": 2.7,
+      "avg_trades": 1590,
+      "score": 233.44,
+      "passed": true
+    },
+    {
+      "name": "rsi_14_div_vol_ratio_both_t53.1",
+      "description": "rsi_14 div vol_ratio both 阈值53.1",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 172.69,
+      "avg_drawdown": -63.87,
+      "avg_sharpe": 1.35,
+      "avg_win_rate": 50.2,
+      "avg_calmar": 2.7,
+      "avg_trades": 1590,
+      "score": 233.44,
+      "passed": true
+    },
+    {
+      "name": "ma20_div_boll_up_both_t0.906",
+      "description": "ma20 div boll_up both 阈值0.906",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 137.81,
+      "avg_drawdown": -42.22,
+      "avg_sharpe": 1.63,
+      "avg_win_rate": 49.4,
+      "avg_calmar": 3.26,
+      "avg_trades": 70,
+      "score": 224.92,
+      "passed": true
+    },
+    {
+      "name": "ma20_ratio_boll_up_both_t0.906",
+      "description": "ma20 ratio boll_up both 阈值0.906",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 137.81,
+      "avg_drawdown": -42.22,
+      "avg_sharpe": 1.63,
+      "avg_win_rate": 49.4,
+      "avg_calmar": 3.26,
+      "avg_trades": 70,
+      "score": 224.92,
+      "passed": true
+    },
+    {
+      "name": "rsi_14_corr20_vol_ratio_long_t0.181",
+      "description": "rsi_14 corr20 vol_ratio long 阈值0.181",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 177.91,
+      "avg_drawdown": -71.48,
+      "avg_sharpe": 1.24,
+      "avg_win_rate": 50.5,
+      "avg_calmar": 2.49,
+      "avg_trades": 285,
+      "score": 221.39,
+      "passed": true
+    },
+    {
+      "name": "rsi_14_corr20_boll_down_both_t-0.824",
+      "description": "rsi_14 corr20 boll_down both 阈值-0.824",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 181.73,
+      "avg_drawdown": -77.85,
+      "avg_sharpe": 1.17,
+      "avg_win_rate": 49.7,
+      "avg_calmar": 2.33,
+      "avg_trades": 171,
+      "score": 212.11,
+      "passed": true
+    },
+    {
+      "name": "boll_up_corr20_vol_ratio_long_t-0.127",
+      "description": "boll_up corr20 vol_ratio long 阈值-0.127",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 131.72,
+      "avg_drawdown": -42.16,
+      "avg_sharpe": 1.56,
+      "avg_win_rate": 47.8,
+      "avg_calmar": 3.12,
+      "avg_trades": 299,
+      "score": 205.78,
+      "passed": true
+    },
+    {
+      "name": "ma10_corr20_vol_ratio_long_t-0.578",
+      "description": "ma10 corr20 vol_ratio long 阈值-0.578",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 159.91,
+      "avg_drawdown": -67.02,
+      "avg_sharpe": 1.19,
+      "avg_win_rate": 51.1,
+      "avg_calmar": 2.39,
+      "avg_trades": 162,
+      "score": 190.76,
+      "passed": true
+    },
+    {
+      "name": "ma10_div_boll_down_both_t1.07",
+      "description": "ma10 div boll_down both 阈值1.07",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 135.63,
+      "avg_drawdown": -51.55,
+      "avg_sharpe": 1.32,
+      "avg_win_rate": 53.2,
+      "avg_calmar": 2.63,
+      "avg_trades": 141,
+      "score": 178.45,
+      "passed": true
+    },
+    {
+      "name": "rsi_14_corr20_boll_down_long_t-0.824",
+      "description": "rsi_14 corr20 boll_down long 阈值-0.824",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 163.03,
+      "avg_drawdown": -77.78,
+      "avg_sharpe": 1.05,
+      "avg_win_rate": 49.5,
+      "avg_calmar": 2.1,
+      "avg_trades": 171,
+      "score": 170.87,
+      "passed": true
+    },
+    {
+      "name": "ma10_div_boll_down_both_t1.1",
+      "description": "ma10 div boll_down both 阈值1.1",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 138.86,
+      "avg_drawdown": -56.81,
+      "avg_sharpe": 1.22,
+      "avg_win_rate": 49.4,
+      "avg_calmar": 2.44,
+      "avg_trades": 81,
+      "score": 169.7,
+      "passed": true
+    },
+    {
+      "name": "ma60_sub_boll_up_both_t-1.2",
+      "description": "ma60 sub boll_up both 阈值-1.2",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 158.33,
+      "avg_drawdown": -76.38,
+      "avg_sharpe": 1.04,
+      "avg_win_rate": 48.6,
+      "avg_calmar": 2.07,
+      "avg_trades": 42,
+      "score": 164.12,
+      "passed": true
+    },
+    {
+      "name": "ma10_div_ma20_both_t1",
+      "description": "ma10 div ma20 both 阈值1",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 135.73,
+      "avg_drawdown": -56.85,
+      "avg_sharpe": 1.19,
+      "avg_win_rate": 50.7,
+      "avg_calmar": 2.39,
+      "avg_trades": 227,
+      "score": 162.03,
+      "passed": true
+    },
+    {
+      "name": "momentum_5d_zscore20_long_t-1.41",
+      "description": "momentum_5d zscore20 long 阈值-1.41",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 157.0,
+      "avg_drawdown": -78.09,
+      "avg_sharpe": 1.01,
+      "avg_win_rate": 49.3,
+      "avg_calmar": 2.01,
+      "avg_trades": 556,
+      "score": 157.82,
+      "passed": true
+    },
+    {
+      "name": "close_ratio_ma20_long_t0.901",
+      "description": "close ratio ma20 long 阈值0.901",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 153.12,
+      "avg_drawdown": -74.48,
+      "avg_sharpe": 1.03,
+      "avg_win_rate": 49.0,
+      "avg_calmar": 2.06,
+      "avg_trades": 90,
+      "score": 157.39,
+      "passed": true
+    },
+    {
+      "name": "ma10_corr20_rsi_14_long_t0.389",
+      "description": "ma10 corr20 rsi_14 long 阈值0.389",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 135.5,
+      "avg_drawdown": -58.95,
+      "avg_sharpe": 1.15,
+      "avg_win_rate": 50.0,
+      "avg_calmar": 2.3,
+      "avg_trades": 268,
+      "score": 155.75,
+      "passed": true
+    },
+    {
+      "name": "ma20_ratio_ma60_both_t1.02",
+      "description": "ma20 ratio ma60 both 阈值1.02",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 97.43,
+      "avg_drawdown": -30.55,
+      "avg_sharpe": 1.59,
+      "avg_win_rate": 53.6,
+      "avg_calmar": 3.19,
+      "avg_trades": 13,
+      "score": 155.35,
+      "passed": true
+    },
+    {
+      "name": "macd_hist_rank20_long_t0.55",
+      "description": "macd_hist rank20 long 阈值0.55",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 128.97,
+      "avg_drawdown": -54.92,
+      "avg_sharpe": 1.17,
+      "avg_win_rate": 49.3,
+      "avg_calmar": 2.35,
+      "avg_trades": 326,
+      "score": 151.43,
+      "passed": true
+    },
+    {
+      "name": "macd_hist_rank20_both_t0.55",
+      "description": "macd_hist rank20 both 阈值0.55",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 128.97,
+      "avg_drawdown": -54.92,
+      "avg_sharpe": 1.17,
+      "avg_win_rate": 49.3,
+      "avg_calmar": 2.35,
+      "avg_trades": 326,
+      "score": 151.43,
+      "passed": true
+    },
+    {
+      "name": "momentum_5d_rank20_long_t0.1",
+      "description": "momentum_5d rank20 long 阈值0.1",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 137.52,
+      "avg_drawdown": -62.96,
+      "avg_sharpe": 1.09,
+      "avg_win_rate": 49.2,
+      "avg_calmar": 2.18,
+      "avg_trades": 343,
+      "score": 150.19,
+      "passed": true
+    },
+    {
+      "name": "close_corr20_vol_ratio_both_t-0.399",
+      "description": "close corr20 vol_ratio both 阈值-0.399",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 133.94,
+      "avg_drawdown": -60.06,
+      "avg_sharpe": 1.12,
+      "avg_win_rate": 48.5,
+      "avg_calmar": 2.23,
+      "avg_trades": 120,
+      "score": 149.35,
+      "passed": true
+    },
+    {
+      "name": "close_corr20_ma5_both_t0.779",
+      "description": "close corr20 ma5 both 阈值0.779",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 127.92,
+      "avg_drawdown": -55.77,
+      "avg_sharpe": 1.15,
+      "avg_win_rate": 49.9,
+      "avg_calmar": 2.29,
+      "avg_trades": 280,
+      "score": 146.69,
+      "passed": true
+    },
+    {
+      "name": "ma20_div_boll_down_both_t1.07",
+      "description": "ma20 div boll_down both 阈值1.07",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 124.97,
+      "avg_drawdown": -56.46,
+      "avg_sharpe": 1.11,
+      "avg_win_rate": 51.5,
+      "avg_calmar": 2.21,
+      "avg_trades": 113,
+      "score": 138.3,
+      "passed": true
+    },
+    {
+      "name": "ma20_ratio_boll_down_long_t1.11",
+      "description": "ma20 ratio boll_down long 阈值1.11",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 134.23,
+      "avg_drawdown": -65.3,
+      "avg_sharpe": 1.03,
+      "avg_win_rate": 50.8,
+      "avg_calmar": 2.06,
+      "avg_trades": 82,
+      "score": 137.96,
+      "passed": true
+    },
+    {
+      "name": "ma20_div_boll_down_both_t1.11",
+      "description": "ma20 div boll_down both 阈值1.11",
+      "code": "# auto-generated by feature engineering",
+      "source": "auto_fe",
+      "avg_return": 133.78,
+      "avg_drawdown": -65.3,
+      "avg_sharpe": 1.02,
+      "avg_win_rate": 50.7,
+      "avg_calmar": 2.05,
+      "avg_trades": 82,
+      "score": 137.02,
+      "passed": true
+    }
+  ]
+}

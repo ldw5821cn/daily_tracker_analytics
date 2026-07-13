@@ -101,20 +101,99 @@ def _build_daily_scores(price_df: pd.DataFrame, full_data_cache: Dict[str, pd.Da
     return scores
 
 
-def _scores_to_weights(scores_df: pd.DataFrame, top_n: int = 10, long_only: bool = False) -> pd.DataFrame:
-    """将每日得分转换为前 top_n 多空等权权重。"""
+def _scores_to_weights(scores_df: pd.DataFrame, top_n: int = 10, long_only: bool = True,
+                        rebalance_freq: str = 'W-FRI', max_position: float = 0.10) -> pd.DataFrame:
+    """将每日得分转换为再平衡权重，只做多，降低换手。
+
+    Args:
+        rebalance_freq: 'W-FRI' 每周五再平衡，'M' 每月末再平衡，'D' 每日再平衡
+        max_position: 单个标的上限
+    """
     weights = pd.DataFrame(0.0, index=scores_df.index, columns=scores_df.columns)
-    for idx, row in scores_df.iterrows():
-        row = row.dropna()
-        if len(row) < top_n * (1 if long_only else 2):
-            continue
-        longs = row.nlargest(top_n).index.tolist()
-        long_w = 1.0 / top_n if long_only else 1.0 / (2 * top_n)
-        weights.loc[idx, longs] = long_w
-        if not long_only:
-            shorts = row.nsmallest(top_n).index.tolist()
-            short_w = 1.0 / (2 * top_n)
-            weights.loc[idx, shorts] = -short_w
+    rebalance_dates = pd.date_range(start=scores_df.index[0], end=scores_df.index[-1], freq=rebalance_freq)
+    rebalance_dates = rebalance_dates.normalize()
+
+    active_weights = pd.Series(0.0, index=scores_df.columns)
+    for idx in scores_df.index:
+        if idx.normalize() in rebalance_dates or idx == scores_df.index[0]:
+            row = scores_df.loc[idx].dropna()
+            if len(row) < top_n:
+                continue
+            longs = row.nlargest(top_n).index.tolist()
+            w = 1.0 / top_n
+            active_weights = pd.Series(0.0, index=scores_df.columns)
+            active_weights[longs] = w
+            # 单标上限约束
+            active_weights = active_weights.clip(upper=max_position)
+            active_weights = active_weights / active_weights.sum() if active_weights.sum() > 0 else active_weights
+        weights.loc[idx] = active_weights.values
+    return weights
+
+
+def _build_risk_managed_weights(price_df: pd.DataFrame, scores_df: pd.DataFrame, top_n: int = 10,
+                                rebalance_freq: str = 'W-FRI', max_position: float = 0.10,
+                                stop_loss: float = 0.08) -> pd.DataFrame:
+    """在每周再平衡基础上加入个股止损：
+    - 持仓标的若从最近再平衡日最高价回撤 stop_loss 则清仓
+    - 组合净值从高点回撤 15% 时全部清仓（现金避险）
+    """
+    weights = pd.DataFrame(0.0, index=scores_df.index, columns=scores_df.columns)
+    rebalance_dates = pd.date_range(start=scores_df.index[0], end=scores_df.index[-1], freq=rebalance_freq)
+    rebalance_dates = rebalance_dates.normalize()
+
+    active_weights = pd.Series(0.0, index=scores_df.columns)
+    last_rebalance_high = pd.Series(np.nan, index=scores_df.columns)
+    portfolio_value = 1.0
+    portfolio_high = 1.0
+    cash_weight = 1.0
+
+    for idx in scores_df.index:
+        if idx.normalize() in rebalance_dates or idx == scores_df.index[0]:
+            row = scores_df.loc[idx].dropna()
+            if len(row) >= top_n:
+                longs = row.nlargest(top_n).index.tolist()
+                w = 1.0 / top_n
+                active_weights = pd.Series(0.0, index=scores_df.columns)
+                active_weights[longs] = w
+                active_weights = active_weights.clip(upper=max_position)
+                total = active_weights.sum()
+                active_weights = active_weights / total if total > 0 else active_weights
+                last_rebalance_high = pd.Series(np.nan, index=scores_df.columns)
+                for t in active_weights.index:
+                    if active_weights[t] > 0 and t in price_df.columns and not np.isnan(price_df.loc[idx, t]):
+                        last_rebalance_high[t] = price_df.loc[idx, t]
+            cash_weight = 0.0
+
+        # 个股止损：从最近再平衡最高价回撤 stop_loss
+        for t in active_weights.index:
+            if active_weights[t] > 0 and not np.isnan(last_rebalance_high.get(t, np.nan)) and t in price_df.columns:
+                price = price_df.loc[idx, t]
+                if not np.isnan(price):
+                    last_rebalance_high[t] = max(last_rebalance_high[t], price)
+                    if price <= last_rebalance_high[t] * (1 - stop_loss):
+                        active_weights[t] = 0.0
+        # 归一化
+        if active_weights.sum() > 0:
+            active_weights = active_weights / active_weights.sum()
+        else:
+            active_weights = pd.Series(0.0, index=scores_df.columns)
+
+        # 组合回撤风控：从高点回撤 15% 全部转现金
+        if active_weights.sum() > 0 and idx > scores_df.index[0]:
+            # 用昨日持仓权重 * 今日收益 近似估算净值变化
+            prev_idx = scores_df.index[scores_df.index.get_loc(idx) - 1]
+            ret = 0.0
+            for t in active_weights.index:
+                if t in price_df.columns and not np.isnan(price_df.loc[idx, t]) and not np.isnan(price_df.loc[prev_idx, t]):
+                    ret += active_weights[t] * (price_df.loc[idx, t] / price_df.loc[prev_idx, t] - 1)
+            portfolio_value = portfolio_value * (1 + ret)
+            portfolio_high = max(portfolio_high, portfolio_value)
+            if portfolio_value < portfolio_high * 0.85:
+                active_weights = pd.Series(0.0, index=scores_df.columns)
+                cash_weight = 1.0
+
+        weights.loc[idx] = active_weights.values
+
     return weights
 
 
@@ -182,16 +261,40 @@ def run_vectorbt_backtest(top_n: int = 10, max_tickers: int = 50, transaction_co
     scores_df = _build_daily_scores(price_df, full_data_cache, factors)
 
     scenarios = {}
-    for name, long_only in [('long_short', False), ('long_only', True)]:
-        weights = _scores_to_weights(scores_df, top_n=top_n, long_only=long_only)
-        for cost_label, fees in [('no_cost', 0.0), ('with_cost', transaction_cost)]:
-            key = f"{name}_{cost_label}"
-            stats = _run_vectorbt_backtest(price_df, weights, freq='1d', fees=fees)
-            stats['top_n'] = top_n
-            stats['long_only'] = long_only
-            stats['transaction_cost'] = fees
-            scenarios[key] = stats
-            print(f"  [{key}] 年化{stats['annualized_return']:+.2f}% 回撤{stats['max_drawdown']:.2f}% 夏普{stats['sharpe_ratio']}")
+
+    # 1. 基准：每日再平衡 多空
+    weights = _scores_to_weights(scores_df, top_n=top_n, long_only=False, rebalance_freq='D')
+    for cost_label, fees in [('no_cost', 0.0), ('with_cost', transaction_cost)]:
+        key = f"daily_long_short_{cost_label}"
+        stats = _run_vectorbt_backtest(price_df, weights, freq='1d', fees=fees)
+        stats['top_n'] = top_n
+        stats['long_only'] = False
+        stats['transaction_cost'] = fees
+        scenarios[key] = stats
+        print(f"  [{key}] 年化{stats['annualized_return']:+.2f}% 回撤{stats['max_drawdown']:.2f}% 夏普{stats['sharpe_ratio']}")
+
+    # 2. 只做多 + 每周再平衡
+    weights = _scores_to_weights(scores_df, top_n=top_n, long_only=True, rebalance_freq='W-FRI')
+    for cost_label, fees in [('no_cost', 0.0), ('with_cost', transaction_cost)]:
+        key = f"weekly_long_only_{cost_label}"
+        stats = _run_vectorbt_backtest(price_df, weights, freq='1d', fees=fees)
+        stats['top_n'] = top_n
+        stats['long_only'] = True
+        stats['transaction_cost'] = fees
+        scenarios[key] = stats
+        print(f"  [{key}] 年化{stats['annualized_return']:+.2f}% 回撤{stats['max_drawdown']:.2f}% 夏普{stats['sharpe_ratio']}")
+
+    # 3. 只做多 + 每周再平衡 + 8% 个股止损 + 15% 组合回撤风控
+    weights = _build_risk_managed_weights(price_df, scores_df, top_n=top_n,
+                                           rebalance_freq='W-FRI', stop_loss=0.08)
+    for cost_label, fees in [('no_cost', 0.0), ('with_cost', transaction_cost)]:
+        key = f"weekly_long_only_risk_{cost_label}"
+        stats = _run_vectorbt_backtest(price_df, weights, freq='1d', fees=fees)
+        stats['top_n'] = top_n
+        stats['long_only'] = True
+        stats['transaction_cost'] = fees
+        scenarios[key] = stats
+        print(f"  [{key}] 年化{stats['annualized_return']:+.2f}% 回撤{stats['max_drawdown']:.2f}% 夏普{stats['sharpe_ratio']}")
 
     output = {
         'tickers': price_df.columns.tolist(),

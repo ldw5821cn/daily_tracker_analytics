@@ -36,6 +36,11 @@ import sys, os, json, sqlite3, urllib.request, re, ssl
 from datetime import datetime, date
 from typing import Dict, List, Optional
 
+try:
+    import pandas as pd
+except ImportError:
+    pd = None
+
 BASE = '/home/liudawei/github/daily_tracker_analytics'
 DB_PATH = os.path.join(BASE, 'multi_agent', 'data', 'futures_simulator.db')
 RISK_STATE_DB = os.path.join(BASE, 'multi_agent', 'data', 'riskguard_futures.db')
@@ -296,13 +301,8 @@ def set_cash(val: float):
 
 # ── 行情获取 ──
 
-def fetch_futures_price(contract: str) -> Optional[Dict]:
-    """从新浪获取期货主力合约最新行情"""
-    spec = CONTRACT_SPECS.get(contract)
-    if not spec:
-        return None
-    
-    symbol = spec['symbol']
+def _fetch_sina_futures_kline(symbol: str) -> list:
+    """从新浪获取期货主力合约日 K 线数据，返回原始字典列表。"""
     url = f'https://stock.finance.sina.com.cn/futures/api/jsonp.php/var_data_/InnerFuturesNewService.getDailyKLine?symbol={symbol}'
     req = urllib.request.Request(url, headers={
         'User-Agent': 'Mozilla/5.0',
@@ -313,21 +313,67 @@ def fetch_futures_price(contract: str) -> Optional[Dict]:
         with urllib.request.urlopen(req, timeout=10, context=ctx) as resp:
             text = resp.read().decode('utf-8')
         data = json.loads(re.search(r'\[.*\]', text).group())
-        d = data[-1]
-        prev = data[-2] if len(data) >= 2 else data[-1]
-        return {
-            'date': d['d'],
-            'open': float(d['o']),
-            'high': float(d['h']),
-            'low': float(d['l']),
-            'close': float(d['c']),
-            'volume': int(float(d['v'])),
-            'prev_close': float(prev['c']),
-            'change': float(d['c']) - float(prev['c']),
-            'change_pct': round((float(d['c']) - float(prev['c'])) / float(prev['c']) * 100, 2),
-        }
+        return data
     except Exception as e:
+        return []
+
+
+def fetch_futures_history(contract: str, days: int = 30) -> Optional[pd.DataFrame]:
+    """获取期货合约最近 days 天历史 K 线（收盘价、高低开）。"""
+    try:
+        import pandas as pd
+    except ImportError:
         return None
+    spec = CONTRACT_SPECS.get(contract)
+    if not spec:
+        return None
+    data = _fetch_sina_futures_kline(spec['symbol'])
+    if not data:
+        return None
+    df = pd.DataFrame(data[-days:])
+    df['date'] = pd.to_datetime(df['d'])
+    df = df.rename(columns={'o': 'open', 'h': 'high', 'l': 'low', 'c': 'close', 'v': 'volume'})
+    for col in ['open', 'high', 'low', 'close', 'volume']:
+        df[col] = pd.to_numeric(df[col], errors='coerce')
+    df = df.dropna()
+    return df.sort_values('date').reset_index(drop=True)
+
+
+def fetch_futures_price(contract: str) -> Optional[Dict]:
+    """从新浪获取期货主力合约最新行情"""
+    spec = CONTRACT_SPECS.get(contract)
+    if not spec:
+        return None
+    data = _fetch_sina_futures_kline(spec['symbol'])
+    if not data:
+        return None
+    d = data[-1]
+    prev = data[-2] if len(data) >= 2 else data[-1]
+    return {
+        'date': d['d'],
+        'open': float(d['o']),
+        'high': float(d['h']),
+        'low': float(d['l']),
+        'close': float(d['c']),
+        'volume': int(float(d['v'])),
+        'prev_close': float(prev['c']),
+        'change': float(d['c']) - float(prev['c']),
+        'change_pct': round((float(d['c']) - float(prev['c'])) / float(prev['c']) * 100, 2),
+    }
+
+
+# ── 风险指标 ──
+
+def calc_atr(contract: str, days: int = 14) -> float:
+    """计算 ATR（平均真实波幅）。"""
+    df = fetch_futures_history(contract, days=days + 5)
+    if df is None or len(df) < days:
+        return 0.0
+    df['tr1'] = df['high'] - df['low']
+    df['tr2'] = abs(df['high'] - df['close'].shift(1))
+    df['tr3'] = abs(df['low'] - df['close'].shift(1))
+    df['tr'] = df[['tr1', 'tr2', 'tr3']].max(axis=1)
+    return round(df['tr'].iloc[-days:].mean(), 2)
 
 
 # ── 合约价值计算 ──
@@ -606,6 +652,64 @@ def close_position(contract: str, direction: Optional[str] = None,
         conn.close()
 
 
+# ── 每日止损/止盈检查 ──
+
+def daily_risk_check(stop_loss_pct: float = 5.0, max_positions: int = 8) -> Dict:
+    """扫描所有持仓，对亏损超过 stop_loss_pct% 的仓位触发平仓。
+
+    同时当持仓品种数超过 max_positions 时，按浮亏从大到小平仓至上限。
+    """
+    conn = _get_conn()
+    try:
+        positions = conn.execute("SELECT * FROM positions WHERE is_active=1").fetchall()
+        to_close = []
+        for pos in positions:
+            contract = pos['contract']
+            spec = CONTRACT_SPECS.get(contract, {})
+            multiplier = spec.get('multiplier', 10)
+            if pos['direction'] == 'long':
+                pnl_pct = (pos['current_price'] - pos['entry_price']) / pos['entry_price'] * 100
+            else:
+                pnl_pct = (pos['entry_price'] - pos['current_price']) / pos['entry_price'] * 100
+            if pnl_pct <= -stop_loss_pct:
+                to_close.append({
+                    'contract': contract,
+                    'direction': 'long' if pos['direction'] == 'long' else 'short',
+                    'lots': pos['lots'],
+                    'price': pos['current_price'],
+                    'pnl_pct': pnl_pct,
+                    'reason': f'止损 {pnl_pct:.2f}%',
+                })
+
+        # 如果持仓过多，按浮亏从大到小多平一些
+        if len(positions) > max_positions:
+            sorted_by_pnl = sorted(positions, key=lambda p: p['pnl_total'])
+            for pos in sorted_by_pnl[:len(positions) - max_positions]:
+                if pos['contract'] in {c['contract'] for c in to_close}:
+                    continue
+                to_close.append({
+                    'contract': pos['contract'],
+                    'direction': 'long' if pos['direction'] == 'long' else 'short',
+                    'lots': pos['lots'],
+                    'price': pos['current_price'],
+                    'pnl_pct': 0.0,
+                    'reason': '超出最大持仓数',
+                })
+
+        closed = []
+        for c in to_close:
+            r = close_position(c['contract'], c['direction'], c['lots'], c['price'], reason=c['reason'])
+            closed.append({'target': c, 'result': r})
+        return {
+            'status': 'success',
+            'checked_positions': len(positions),
+            'closed_count': len(closed),
+            'closed': closed,
+        }
+    finally:
+        conn.close()
+
+
 # ── 每日更新 ──
 
 def update_daily(force_update: bool = False) -> Dict:
@@ -673,22 +777,37 @@ def update_daily(force_update: bool = False) -> Dict:
         if engine is not None:
             portfolio = _build_risk_portfolio(conn, marks={})
             engine.update_equity(portfolio)
-        
+
+        # 止损检查
+        risk_check = daily_risk_check(stop_loss_pct=5.0, max_positions=8)
+
         # 检查今日快照是否已存在
         existing = conn.execute(
             "SELECT id FROM snapshots WHERE snapshot_date=?", (today,)
         ).fetchone()
-        
+
+        # 重新获取最新持仓和资金（止损可能已改变）
+        positions = conn.execute(
+            "SELECT * FROM positions WHERE is_active=1"
+        ).fetchall()
+        total_floating_pnl = 0.0
+        total_margin = 0.0
+        for pos in positions:
+            total_floating_pnl += pos['pnl_total']
+            total_margin += pos['margin_used']
+        cash = get_cash()
+        total_asset = cash + total_margin + total_floating_pnl
+
         # 算收益率
         first = conn.execute("SELECT total_asset FROM snapshots ORDER BY id ASC LIMIT 1").fetchone()
         initial_asset = float(first['total_asset']) if first else DEFAULT_CAPITAL
-        
+
         prev = conn.execute("SELECT total_asset FROM snapshots ORDER BY id DESC LIMIT 1").fetchone()
         prev_asset = float(prev['total_asset']) if prev else initial_asset
-        
+
         daily_return = round((total_asset - prev_asset) / prev_asset * 100, 2) if prev_asset > 0 else 0
         cumulative_return = round((total_asset - initial_asset) / initial_asset * 100, 2) if initial_asset > 0 else 0
-        
+
         if not existing:
             conn.execute("""
                 INSERT INTO snapshots
@@ -698,9 +817,9 @@ def update_daily(force_update: bool = False) -> Dict:
             """, (today, round(total_asset, 2), round(cash, 2),
                   round(total_margin, 2), round(total_floating_pnl, 2),
                   daily_return, cumulative_return))
-        
+
         conn.commit()
-        
+
         return {
             'status': 'success',
             'date': today,
@@ -711,6 +830,7 @@ def update_daily(force_update: bool = False) -> Dict:
             'daily_return': daily_return,
             'cumulative_return': cumulative_return,
             'positions_updated': len(results),
+            'risk_check': risk_check,
             'details': results,
         }
     finally:

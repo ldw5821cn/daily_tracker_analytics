@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "created_at": "2026-07-09",
+  "total_trades": 0,
+  "wins": 0,
+  "losses": 0,
+  "consecutive_losses": 0,
+  "by_sector": {},
+  "by_error_type": {},
+  "by_market_condition": {},
+  "by_hold_days": {},
+  "lessons": [
+    "不追涨停(>9%的票次日回撤概率高)",
+    "换手率>25%的票放量出货风险大",
+    "大盘PE分位>70%时降低仓位",
+    "板块分散降低回撤幅度",
+    "止损需严格执行，-8%无条件卖出",
+    "盈利>5%后允许加仓，不要亏损补仓"
+  ],
+  "patterns": [
+    "连续上涨3天后追入胜率低于40%"
+  ],
+  "last_updated": "2026-07-10T16:07:26.846398"
+}

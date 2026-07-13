@@ -385,8 +385,8 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
         else:
             technical = technical_analyst.analyze(ticker, name)
 
-        # 期货和 fast/ultra 模式都跳过基本面和新闻
-        if is_fut or fast or ultra:
+        # 期货和 fast 模式跳过基本面和新闻；ultra 模式启用基本面和新闻
+        if is_fut or fast:
             fundamental = {'score': 50, 'rating': 'N/A', 'fundamentals': {}, 'error': 'skipped'}
             news = {'sentiment_score': 0, 'sentiment': '中性', 'keywords': []}
         else:

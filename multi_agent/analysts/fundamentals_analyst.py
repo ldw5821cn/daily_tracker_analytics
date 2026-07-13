@@ -29,11 +29,92 @@ def _safe_float(val, default=0.0):
         return default
 
 
+def _safe_float_pct(val, default=0.0):
+    """安全转 float，支持百分比字符串"""
+    if pd.isna(val) or val is None or val == '' or val is False:
+        return default
+    try:
+        if isinstance(val, str):
+            val = val.replace('%', '').strip()
+        return float(val)
+    except Exception:
+        return default
+
+
+def _parse_chinese_number(val, default=0.0):
+    """解析中文数字，如 '14.32亿' -> 14.32，'855.66万' -> 0.085566 亿"""
+    if pd.isna(val) or val is None or val == '' or val is False:
+        return default
+    try:
+        if isinstance(val, (int, float)):
+            return float(val)
+        s = str(val).strip()
+        if '亿' in s:
+            return float(s.replace('亿', '').strip())
+        elif '万' in s:
+            return float(s.replace('万', '').strip()) / 10000
+        elif '%' in s:
+            return float(s.replace('%', '').strip())
+        else:
+            return float(s)
+    except Exception:
+        return default
+
+
 def _ts_code(ticker):
     """ticker 转 tushare 的 ts_code"""
     if ticker.startswith(('6', '5')):
         return f'{ticker}.SH'
     return f'{ticker}.SZ'
+
+
+def _get_ths_fundamentals(ticker):
+    """使用 akshare 同花顺(THS)接口获取完整财务摘要
+    包含：净利润、营收、增长率、ROE、毛利率、净利率、资产负债率等
+    """
+    import akshare as ak
+    try:
+        df = ak.stock_financial_abstract_ths(symbol=ticker, indicator='按报告期')
+        if df is None or df.empty:
+            return None
+        latest = df.iloc[-1].to_dict()
+
+        # 市值仍用腾讯财经更稳定
+        em = _get_em_fundamentals(ticker) or {}
+
+        return {
+            'market_cap': em.get('market_cap', 0),
+            'pe_ratio': em.get('pe_ratio', 0),
+            'forward_pe': em.get('forward_pe', 0),
+            'pb_ratio': em.get('pb_ratio', 0),
+            'peg_ratio': 0.0,
+            'dividend_yield': em.get('dividend_yield', 0),
+            'payout_ratio': 0.0,
+            'eps': _safe_float(latest.get('基本每股收益'), 0),
+            'revenue': _parse_chinese_number(latest.get('营业总收入'), 0),
+            'revenue_growth': _safe_float_pct(latest.get('营业总收入同比增长率'), 0),
+            'net_profit': _parse_chinese_number(latest.get('净利润'), 0),
+            'net_profit_growth': _safe_float_pct(latest.get('净利润同比增长率'), 0),
+            'gross_margins': _safe_float_pct(latest.get('销售毛利率'), 0),
+            'profit_margins': _safe_float_pct(latest.get('销售净利率'), 0),
+            'operating_margins': 0.0,
+            'roe': _safe_float_pct(latest.get('净资产收益率'), 0),
+            'roa': 0.0,
+            'debt_to_equity': _safe_float_pct(latest.get('产权比率'), 0),
+            'current_ratio': _safe_float(latest.get('流动比率'), 0),
+            'asset_liability_ratio': _safe_float_pct(latest.get('资产负债率'), 0),
+            'free_cash_flow': 0.0,
+            'sector': 'A股',
+            'industry': em.get('industry', ''),
+            'full_time_employees': 0,
+            'beta': 0.0,
+            'fifty_two_week_high': 0.0,
+            'fifty_two_week_low': 0.0,
+            'close': em.get('close', 0),
+            'report_date': str(latest.get('报告期', '')),
+        }
+    except Exception:
+        return None
 
 
 def _get_em_fundamentals(ticker):
@@ -124,22 +205,36 @@ def _em_secid(ticker):
 
 def analyze(ticker, name="", current_date="2026-07-02"):
     """
-    基本面分析 - 使用腾讯财经 A 股数据
+    基本面分析 - 优先使用同花顺(THS)财务数据，失败 fallback 腾讯财经
     """
-    fundamentals = _get_em_fundamentals(ticker)
-
+    fundamentals = _get_ths_fundamentals(ticker)
     if fundamentals is None:
+        fundamentals = _get_em_fundamentals(ticker)
+
+    # ETF/非 A 股可能只有部分字段，补齐缺失字段
+    for k in ['market_cap','pe_ratio','forward_pe','pb_ratio','peg_ratio','dividend_yield',
+              'payout_ratio','eps','revenue','revenue_growth','net_profit','net_profit_growth',
+              'gross_margins','profit_margins','operating_margins','roe','roa','debt_to_equity',
+              'current_ratio','asset_liability_ratio','free_cash_flow','report_date']:
+        if k not in fundamentals:
+            fundamentals[k] = 0.0
+    if 'sector' not in fundamentals:
+        fundamentals['sector'] = ''
+    if 'industry' not in fundamentals:
+        fundamentals['industry'] = ''
+
+    if fundamentals is None or fundamentals.get('error') or not fundamentals:
         return {
             'analyst': '基本面分析师',
             'ticker': ticker,
             'name': name,
-            'error': '腾讯财经基本面数据获取失败',
-            'summary': f"# 基本面分析报告\n\n## 数据获取失败\n腾讯财经无法获取 {ticker} 基本面数据\n",
+            'error': '同花顺/腾讯财经基本面数据获取失败',
+            'summary': f"# 基本面分析报告\n\n## 数据获取失败\n无法获取 {ticker} 基本面数据\n",
             'fundamentals': {},
         }
 
     # EPS 估算
-    if fundamentals['pe_ratio'] and fundamentals['pe_ratio'] > 0 and fundamentals.get('close'):
+    if fundamentals.get('pe_ratio') and fundamentals['pe_ratio'] > 0 and fundamentals.get('close'):
         fundamentals['eps'] = round(fundamentals['close'] / fundamentals['pe_ratio'], 2)
     fundamentals.pop('close', None)
 
@@ -151,27 +246,30 @@ def analyze(ticker, name="", current_date="2026-07-02"):
     pb = fundamentals['pb_ratio']
     revenue_growth = fundamentals['revenue_growth']
     profit_margins = fundamentals['profit_margins']
+    gross_margins = fundamentals['gross_margins']
+    roe = fundamentals['roe']
     de = fundamentals['debt_to_equity']
+    net_profit_growth = fundamentals['net_profit_growth']
     
     if pe and 0 < pe < 15:
         score += 12
-        reasons.append(f"PE({pe})较低，估值偏低")
+        reasons.append(f"PE({pe:.1f})较低，估值偏低")
     elif pe and 15 <= pe < 30:
         score += 8
-        reasons.append(f"PE({pe})合理")
+        reasons.append(f"PE({pe:.1f})合理")
     elif pe and pe > 50:
         score -= 5
-        reasons.append(f"PE({pe})偏高")
+        reasons.append(f"PE({pe:.1f})偏高")
     
     if pb and pb < 1.5:
         score += 8
-        reasons.append(f"PB({pb})较低，有安全边际")
+        reasons.append(f"PB({pb:.2f})较低，有安全边际")
     elif pb and 1.5 <= pb <= 5:
         score += 4
-        reasons.append(f"PB({pb})合理")
+        reasons.append(f"PB({pb:.2f})合理")
     elif pb and pb > 5:
         score -= 3
-        reasons.append(f"PB({pb})偏高")
+        reasons.append(f"PB({pb:.2f})偏高")
     
     if revenue_growth and revenue_growth > 10:
         score += 10
@@ -184,7 +282,27 @@ def analyze(ticker, name="", current_date="2026-07-02"):
         reasons.append(f"营收负增长{revenue_growth:.1f}%")
     else:
         score += 3
-        reasons.append(f"营收增长数据不可用，按平稳处理")
+        reasons.append("营收增长数据不可用，按平稳处理")
+    
+    if net_profit_growth and net_profit_growth > 20:
+        score += 8
+        reasons.append(f"净利润增长{net_profit_growth:+.1f}%，盈利改善")
+    elif net_profit_growth and net_profit_growth > 0:
+        score += 4
+        reasons.append(f"净利润正增长{net_profit_growth:+.1f}%")
+    elif net_profit_growth and net_profit_growth < 0:
+        score -= 4
+        reasons.append(f"净利润负增长{net_profit_growth:.1f}%")
+    
+    if gross_margins and gross_margins > 30:
+        score += 6
+        reasons.append(f"毛利率{gross_margins:.1f}%较高")
+    elif gross_margins and 10 <= gross_margins <= 30:
+        score += 3
+        reasons.append(f"毛利率{gross_margins:.1f}%适中")
+    elif gross_margins and gross_margins < 10:
+        score -= 2
+        reasons.append(f"毛利率{gross_margins:.1f}%偏低")
     
     if profit_margins and profit_margins > 15:
         score += 8
@@ -196,15 +314,25 @@ def analyze(ticker, name="", current_date="2026-07-02"):
         score -= 3
         reasons.append(f"净利率{profit_margins:.1f}%偏低，盈利能力较弱")
     
+    if roe and roe > 15:
+        score += 8
+        reasons.append(f"ROE({roe:.1f}%)优秀")
+    elif roe and 8 <= roe <= 15:
+        score += 4
+        reasons.append(f"ROE({roe:.1f}%)良好")
+    elif roe and roe < 5:
+        score -= 4
+        reasons.append(f"ROE({roe:.1f}%)偏低")
+    
     if de and de > 150:
         score -= 8
-        reasons.append(f"负债权益比{de:.0f}%过高，财务风险大")
+        reasons.append(f"产权比率{de:.0f}%过高，财务风险大")
     elif de and de > 100:
         score -= 3
-        reasons.append(f"负债权益比{de:.0f}%偏高")
+        reasons.append(f"产权比率{de:.0f}%偏高")
     elif de and de < 30:
         score += 5
-        reasons.append(f"负债权益比{de:.0f}%较低，财务稳健")
+        reasons.append(f"产权比率{de:.0f}%较低，财务稳健")
     
     score = max(0, min(100, score))
     
@@ -236,6 +364,8 @@ def _generate_summary(name, f, score, rating, reasons):
     lines.append(f"# 基本面分析报告")
     lines.append(f"")
     lines.append(f"## 综合评级：{rating}（{score}/100）")
+    if f.get('report_date'):
+        lines.append(f"**最新报告期**: {f.get('report_date', '')}")
     lines.append(f"")
     
     if f.get('industry'):
@@ -259,6 +389,8 @@ def _generate_summary(name, f, score, rating, reasons):
     lines.append(f"| EPS | {f['eps']:.2f} |")
     lines.append(f"| 营收 | {f['revenue']:.1f}亿 |")
     lines.append(f"| 营收增长 | {f['revenue_growth']:+.2f}% |")
+    lines.append(f"| 净利润 | {f['net_profit']:.1f}亿 |")
+    lines.append(f"| 净利润增长 | {f['net_profit_growth']:+.2f}% |")
     lines.append(f"| 毛利率 | {f['gross_margins']:.1f}% |")
     lines.append(f"| 净利率 | {f['profit_margins']:.1f}% |")
     lines.append(f"| ROE | {f['roe']:.1f}% |")
@@ -268,7 +400,8 @@ def _generate_summary(name, f, score, rating, reasons):
     lines.append(f"### 财务健康")
     lines.append(f"| 指标 | 数值 |")
     lines.append(f"|------|------|")
-    lines.append(f"| 负债权益比 | {f['debt_to_equity']:.1f}% |")
+    lines.append(f"| 产权比率 | {f['debt_to_equity']:.1f}% |")
+    lines.append(f"| 资产负债率 | {f['asset_liability_ratio']:.1f}% |")
     lines.append(f"| 流动比率 | {f['current_ratio']:.2f} |")
     lines.append(f"| 自由现金流 | {f['free_cash_flow']:.1f}亿 |")
     lines.append(f"| Beta | {f['beta']:.2f} |")
