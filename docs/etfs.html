@@ -3,237 +3,590 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ETF 基金分析 | A股 & 期货 多维度投资分析</title>
+<title>📊 ETF - 2026-07-13 15:51</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
-    background: #0d1117; color: #c9d1d9;
-    max-width: 1100px; margin: 0 auto; padding: 30px 20px;
-  }
-  h1 { color: #58a6ff; font-size: 1.5em; margin-bottom: 6px; }
-  .subtitle { color: #8b949e; margin-bottom: 20px; font-size: 0.9em; }
-  .repo-link { color: #8b949e; font-size: 0.85em; margin-bottom: 20px; }
-  .repo-link a { color: #58a6ff; text-decoration: none; }
-
-  .nav {
-    display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;
-    border-bottom: 1px solid #30363d; padding-bottom: 10px;
-  }
-  .nav a {
-    padding: 8px 18px; border-radius: 20px; font-size: 0.9em;
-    text-decoration: none; cursor: pointer; transition: all 0.15s;
-    border: 1px solid #30363d; color: #8b949e; background: #161b22;
-  }
-  .nav a:hover { border-color: #58a6ff; color: #58a6ff; background: #1f6feb11; }
-  .nav a.active { border-color: #58a6ff; color: #fff; background: #1f6feb; }
-
-  .stats { display: flex; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
-  .stat-card {
-    background: #161b22; border: 1px solid #30363d; border-radius: 8px;
-    padding: 14px 20px; flex: 1; min-width: 100px; text-align: center;
-  }
-  .stat-card .num { font-size: 1.4em; font-weight: 700; color: #58a6ff; }
-  .stat-card .label { font-size: 0.78em; color: #8b949e; margin-top: 2px; }
-
-  .section-title { background: #161b22; border: 1px solid #30363d; border-radius: 8px 8px 0 0; padding: 12px 16px; font-weight: 600; color: #f0f6fc; margin-top: 20px; }
-  .date-section { margin-bottom: 20px; border: 1px solid #30363d; border-radius: 8px; overflow: hidden; }
-  .date-header {
-    background: #161b22; padding: 12px 16px; font-weight: 600; color: #f0f6fc;
-    border-bottom: 1px solid #30363d;
-  }
-  .report-item {
-    padding: 10px 16px; border-bottom: 1px solid #30363d;
-    display: flex; justify-content: space-between; align-items: center;
-    transition: background 0.2s;
-  }
-  .report-item:last-child { border-bottom: none; }
-  .report-item:hover { background: #1c2128; }
-  .report-item a { color: #58a6ff; text-decoration: none; }
-  .report-item a:hover { text-decoration: underline; }
-  .report-item .meta { font-size: 0.85em; color: #8b949e; }
-
-  table { width: 100%; border-collapse: collapse; font-size: 0.88em; margin-bottom: 24px; }
-  th { background: #161b22; border: 1px solid #30363d; padding: 7px 9px; text-align: left; color: #8b949e; font-weight: 600; font-size: 0.82em; white-space: nowrap; position: sticky; top: 0; }
-  td { border: 1px solid #30363d; padding: 6px 9px; transition: background .15s; }
-  tr:hover td { background: #1c2128; }
-  .name { font-weight: 600; color: #f0f6fc; }
-  .bullish { color: #3fb950; font-weight: 600; }
-  .bearish { color: #f85149; font-weight: 600; }
-  .neutral { color: #d29922; font-weight: 600; }
-
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 24px; }
-  .card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 14px; border-left: 4px solid #3fb950; }
-  .card-title { font-weight: 600; color: #f0f6fc; margin-bottom: 6px; }
-  .card-meta { color: #8b949e; font-size: 0.82em; margin-bottom: 4px; }
-  .card-price { color: #f0f6fc; font-size: 0.88em; margin-bottom: 4px; }
-  .card-reason { color: #8b949e; font-size: 0.78em; line-height: 1.5; }
-
-  .footer { text-align: center; color: #484f58; font-size: 0.78em; margin-top: 36px; padding-top: 16px; border-top: 1px solid #21262d; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; }
+.container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+.header { background: linear-gradient(135deg, #1e293b, #334155); padding: 30px; border-radius: 16px; margin-bottom: 24px; }
+.header h1 { font-size: 24px; margin-bottom: 8px; }
+.header .sub { color: #94a3b8; font-size: 14px; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.stat-card { background: #1e293b; border-radius: 12px; padding: 20px; text-align: center; }
+.stat-card .num { font-size: 28px; font-weight: bold; }
+.stat-card .label { color: #94a3b8; font-size: 12px; margin-top: 4px; }
+.section-title { font-size: 18px; font-weight: 600; margin: 24px 0 12px; padding-left: 12px; border-left: 4px solid #6366f1; }
+.nav { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+.nav a { color: #94a3b8; text-decoration: none; padding: 8px 18px; border-radius: 20px; background: #1e293b; border: 1px solid #334155; font-size: 13px; }
+.nav a:hover { background: #334155; color: #e2e8f0; }
+.nav a.active { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; border-color: transparent; }
+.footer { text-align: center; color: #475569; font-size: 12px; margin-top: 40px; padding: 20px; }
+.model-tag { display: inline-block; background: #6366f1; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 8px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.card { background: #1e293b; border-radius: 12px; padding: 16px; border-left: 4px solid #6366f1; }
+.card.bull { border-left-color: #ef4444; }
+.card.bear { border-left-color: #22c55e; }
+.card-title { font-weight: 600; margin-bottom: 6px; }
+.card-meta { color: #94a3b8; font-size: 12px; margin-bottom: 6px; }
+.card-price { color: #e2e8f0; font-size: 13px; margin-bottom: 6px; }
+.card-reason { color: #94a3b8; font-size: 12px; line-height: 1.5; }
+table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 12px; overflow: hidden; margin-bottom: 24px; font-size: 13px; }
+th { background: #334155; padding: 10px 12px; text-align: left; font-size: 12px; color: #94a3b8; text-transform: uppercase; }
+td { padding: 8px 12px; border-bottom: 1px solid #1e293b; font-size: 13px; }
+tr:hover { background: #334155; }
+.note { background: #1e293b; padding: 16px; border-radius: 12px; color: #cbd5e1; line-height: 1.8; margin-bottom: 24px; }
+.empty { text-align: center; color: #64748b; padding: 40px; }
 </style>
 </head>
 <body>
-<h1>📊 A股 & 期货 多维度投资分析</h1>
-<p class="subtitle">ETF / 个股 / 期货 / 综合 — 每日数据驱动分析报告</p>
-
-<div class="repo-link">
-  📂 <a href="https://github.com/ldw5821cn/daily_tracker_analytics/tree/main/docs/reports" target="_blank">ldw5821cn/daily_tracker_analytics</a>
-</div>
-
+<div class="container">
 <div class="nav">
-<a class="active" href="etfs.html">📈 ETF 基金分析</a><a class="" href="stocks.html">📊 股票分析</a><a class="" href="futures.html">⚡ 期货趋势</a><a class="" href="us_market.html">🇺🇸 美股市场</a><a class="" href="comprehensive.html">📋 综合报告</a>
+<a href="index.html" class="">🏠 首页</a>
+<a href="stocks.html" class="">📈 个股</a>
+<a href="us_market.html" class="">🇺🇸 美股</a>
+<a href="etfs.html" class="active">📊 ETF</a>
+<a href="futures.html" class="">📉 期货</a>
+<a href="prediction.html" class="">🏛️ 预测</a>
+<a href="portfolio.html" class="">💼 持仓组合</a>
 </div>
 
-<div class="stats">
-  <div class="stat-card"><div class="num">5</div><div class="label">分析类型</div></div>
-  <div class="stat-card"><div class="num">142</div><div class="label">总报告数</div></div>
-  <div class="stat-card"><div class="num">5</div><div class="label">ETF日期</div></div>
-  <div class="stat-card"><div class="num">5</div><div class="label">个股日期</div></div>
-  <div class="stat-card"><div class="num">6</div><div class="label">期货日期</div></div>
-  <div class="stat-card"><div class="num">1</div><div class="label">美股日期</div></div>
-</div>
-
-
-    <div class="section-title" style="font-size:1.2em;background:#1f6feb;color:#fff;">🤖 多Agent实时预测（2026-07-12 收盘后）</div>
-    <div style="background:#161b22;border:1px solid #30363d;border-top:0;padding:10px 16px;color:#8b949e;font-size:0.85em;">
-      这是 <strong>2026-07-12</strong> 的 ETF 预测结果。下方 📅 列表是旧版逐日报告。
+    <div class="header">
+        <h1>📊 ETF </h1>
+        <div class="sub">2026-07-13 15:51 · 最新预测 23 只 (预测日期: N/A)</div>
     </div>
-    <div class="section-title">🏆 今日重点推荐（按回测排序）</div>
+
+
+        <div class="stat-card">
+            <div class="num">23</div>
+            <div class="label">总数</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" style="color:#ef4444">1</div>
+            <div class="label">看多</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" style="color:#22c55e">10</div>
+            <div class="label">看空</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">12</div>
+            <div class="label">中性</div>
+        </div>
+<div class="section-title">🏆 重点看多</div>
 <div class="cards">
-<div class="card">
-                <div class="card-title">🔥 中芯国际 (688981)</div>
-                <div class="card-meta">评分 58.9 | 60日收益 +0.0% | 回撤 0.0%</div>
-                <div class="card-price">目标 166.28 | 止损 154.869</div>
-                <div class="card-reason">技术面中性偏多(64/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨2 vs 看跌0</div>
+
+            <div class="card bull">
+                <div class="card-title">🔥 港股创新药ETF广发 (513120)</div>
+                <div class="card-meta">评分 56.2 | 60日收益 -7.5% | 回撤 -27.0%</div>
+                <div class="card-price">目标 1.283 | 止损 1.13</div>
+                <div class="card-reason">技术面中性偏多(62/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌0</div>
             </div>
-<div class="card">
-                <div class="card-title">🔥 海光信息 (688041)</div>
-                <div class="card-meta">评分 57.6 | 60日收益 +0.0% | 回撤 0.0%</div>
-                <div class="card-price">目标 360.06 | 止损 335.35</div>
-                <div class="card-reason">技术面中性偏多(66/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌0</div>
+</div><div class="section-title">❄️ 重点看空</div>
+<div class="cards">
+
+            <div class="card bear">
+                <div class="card-title">❄️ 机器人ETF华夏 (562500)</div>
+                <div class="card-meta">评分 44.2 | 60日收益 +11.6% | 回撤 -10.9%</div>
+                <div class="card-price">目标 1.081 | 止损 1.143</div>
+                <div class="card-reason">技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3</div>
             </div>
-<div class="card">
-                <div class="card-title">🔥 东方盛虹 (000301)</div>
-                <div class="card-meta">评分 55.2 | 60日收益 +0.0% | 回撤 0.0%</div>
-                <div class="card-price">目标 12.801 | 止损 12.17</div>
-                <div class="card-reason">技术面中性偏多(65/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌1</div>
+            <div class="card bear">
+                <div class="card-title">❄️ 机器人ETF易方达 (159530)</div>
+                <div class="card-meta">评分 43.5 | 60日收益 +8.1% | 回撤 -14.1%</div>
+                <div class="card-price">目标 1.511 | 止损 1.607</div>
+                <div class="card-reason">技术面中性(43/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3</div>
             </div>
-<div class="card">
-                <div class="card-title">🔥 沪锌 (ZN0)</div>
-                <div class="card-meta">评分 57.0 | 60日收益 +0.0% | 回撤 0.0%</div>
-                <div class="card-price">目标 25362.3 | 止损 24119.05</div>
-                <div class="card-reason">技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌0</div>
+            <div class="card bear">
+                <div class="card-title">❄️ 沪深300ETF华泰柏瑞 (510300)</div>
+                <div class="card-meta">评分 43.3 | 60日收益 +2.5% | 回撤 -5.8%</div>
+                <div class="card-price">目标 4.699 | 止损 4.975</div>
+                <div class="card-reason">技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3</div>
             </div>
-<div class="card">
-                <div class="card-title">🔥 菜油 (OI0)</div>
-                <div class="card-meta">评分 59.0 | 60日收益 +0.0% | 回撤 0.0%</div>
-                <div class="card-price">目标 10106.16 | 止损 9610.76</div>
-                <div class="card-reason">技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌0</div>
+            <div class="card bear">
+                <div class="card-title">❄️ 稀土ETF嘉实 (516150)</div>
+                <div class="card-meta">评分 38.6 | 60日收益 -6.9% | 回撤 -17.9%</div>
+                <div class="card-price">目标 1.772 | 止损 1.932</div>
+                <div class="card-reason">技术面中性(46/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌5</div>
+            </div>
+            <div class="card bear">
+                <div class="card-title">❄️ 有色金属ETF南方 (512400)</div>
+                <div class="card-meta">评分 38.6 | 60日收益 -17.8% | 回撤 -21.0%</div>
+                <div class="card-price">目标 1.724 | 止损 1.848</div>
+                <div class="card-reason">技术面中性(46/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌5</div>
             </div>
 </div>
-    <div class="section-title">🔥 ETF 实时预测（23只 | 看多1 看空10 中性12）</div>
-<table><tr><th>名称</th><th>代码</th><th>板块</th><th>信号</th><th>评分</th><th>60日收益</th><th>60日回撤</th><th>60日夏普</th><th>现价</th><th>目标</th><th>止损</th><th>仓位</th></tr>
-<tr><td class="name">科创芯片ETF嘉实</td><td>588200</td><td>芯片制造</td><td class="neutral">中性</td><td>47.4</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>4.57</td><td>4.305</td><td>4.479</td><td>0%</td></tr>
-<tr><td class="name">芯片ETF</td><td>512760</td><td>半导体</td><td class="neutral">中性</td><td>47.4</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>1.45</td><td>1.365</td><td>1.421</td><td>0%</td></tr>
-<tr><td class="name">人工智能ETF</td><td>159819</td><td>人工智能</td><td class="neutral">中性</td><td>52.1</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>2.12</td><td>2.076</td><td>2.078</td><td>0%</td></tr>
-<tr><td class="name">机器人ETF华夏</td><td>562500</td><td>机器人</td><td class="bearish">看空</td><td>44.2</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>1.11</td><td>1.081</td><td>1.143</td><td>11%</td></tr>
-<tr><td class="name">券商ETF华宝</td><td>512000</td><td>证券</td><td class="neutral">中性</td><td>48.8</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>0.53</td><td>0.514</td><td>0.519</td><td>0%</td></tr>
-<tr><td class="name">证券ETF国泰</td><td>512880</td><td>证券</td><td class="neutral">中性</td><td>48.8</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>1.11</td><td>1.074</td><td>1.088</td><td>0%</td></tr>
-<tr><td class="name">机器人ETF易方达</td><td>159530</td><td>机器人</td><td class="bearish">看空</td><td>43.5</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>1.56</td><td>1.511</td><td>1.607</td><td>11%</td></tr>
-<tr><td class="name">沪深300ETF华泰柏瑞</td><td>510300</td><td>大盘蓝筹</td><td class="bearish">看空</td><td>43.3</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>4.83</td><td>4.699</td><td>4.975</td><td>12%</td></tr>
-<tr><td class="name">银行ETF</td><td>512800</td><td>银行</td><td class="neutral">中性</td><td>52.8</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>0.77</td><td>0.783</td><td>0.755</td><td>0%</td></tr>
-<tr><td class="name">恒生科技ETF华夏</td><td>513180</td><td>港股科技</td><td class="neutral">中性</td><td>47.8</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>0.61</td><td>0.63</td><td>0.598</td><td>0%</td></tr>
-<tr><td class="name">医疗ETF华宝</td><td>512170</td><td>医疗器械</td><td class="neutral">中性</td><td>51.8</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>0.32</td><td>0.335</td><td>0.314</td><td>0%</td></tr>
-<tr><td class="name">红利低波ETF华泰柏瑞</td><td>512890</td><td>高股息</td><td class="neutral">中性</td><td>52.8</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>1.11</td><td>1.125</td><td>1.088</td><td>0%</td></tr>
-<tr><td class="name">港股创新药ETF广发</td><td>513120</td><td>创新药</td><td class="bullish">看多</td><td>56.2</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>1.19</td><td>1.283</td><td>1.13</td><td>16%</td></tr>
-<tr><td class="name">高股息ETF</td><td>563180</td><td>高股息</td><td class="neutral">中性</td><td>50.8</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>1.06</td><td>1.054</td><td>1.039</td><td>0%</td></tr>
-<tr><td class="name">稀土ETF嘉实</td><td>516150</td><td>稀土永磁</td><td class="bearish">看空</td><td>38.6</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>1.84</td><td>1.772</td><td>1.932</td><td>14%</td></tr>
-<tr><td class="name">港股通互联网ETF富国</td><td>159792</td><td>互联网</td><td class="neutral">中性</td><td>47.8</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>0.6</td><td>0.628</td><td>0.588</td><td>0%</td></tr>
-<tr><td class="name">消费ETF</td><td>159928</td><td>消费</td><td class="neutral">中性</td><td>52.8</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>0.63</td><td>0.65</td><td>0.617</td><td>0%</td></tr>
-<tr><td class="name">有色金属ETF南方</td><td>512400</td><td>有色金属</td><td class="bearish">看空</td><td>38.6</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>1.76</td><td>1.724</td><td>1.848</td><td>14%</td></tr>
-<tr><td class="name">电池ETF广发</td><td>159755</td><td>动力电池</td><td class="bearish">看空</td><td>38.6</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>0.98</td><td>0.903</td><td>1.029</td><td>14%</td></tr>
-<tr><td class="name">半导体设备ETF国泰</td><td>159516</td><td>半导体设备</td><td class="bearish">看空</td><td>36.1</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>0.91</td><td>0.65</td><td>0.956</td><td>14%</td></tr>
-<tr><td class="name">半导体ETF</td><td>512480</td><td>半导体</td><td class="bearish">看空</td><td>37.2</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>1.37</td><td>1.207</td><td>1.439</td><td>14%</td></tr>
-<tr><td class="name">芯片ETF华夏</td><td>159995</td><td>芯片设计</td><td class="bearish">看空</td><td>37.2</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>1.53</td><td>1.094</td><td>1.607</td><td>14%</td></tr>
-<tr><td class="name">通信ETF国泰</td><td>515880</td><td>通信</td><td class="bearish">看空</td><td>37.2</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>0.78</td><td>0.577</td><td>0.819</td><td>14%</td></tr>
-</table>
-    <div style="text-align:center;padding:12px 0 24px 0;">
-      <a href="prediction.html#ETF" style="color:#58a6ff;text-decoration:none;font-size:0.9em;">查看 2026-07-12 全部 ETF 预测 →</a>
-    </div>
-    
 
+    <div class="section-title">📂 📊 ETF (23只)</div>
+    <table>
+        <thead><tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>60日收益</th><th>60日回撤</th><th>60日夏普</th><th>现价</th><th>目标</th><th>止损</th><th>仓位</th><th>技术分</th></tr></thead>
+        <tbody>
+        <tr>
+            <td><b>588200</b></td>
+            <td>科创芯片ETF嘉实</td>
+            <td>芯片制造</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>47.4</td>
+            <td>69%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+72.3%</td>
+            <td>-15.5%</td>
+            <td>4.16</td>
+            <td>4.57</td>
+            <td>4.305</td>
+            <td>4.479</td>
+            <td>0%</td>
+            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3">54</td>
+        </tr>
+        <tr>
+            <td><b>512760</b></td>
+            <td>芯片ETF</td>
+            <td>半导体</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>47.4</td>
+            <td>69%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+66.6%</td>
+            <td>-15.8%</td>
+            <td>3.97</td>
+            <td>1.45</td>
+            <td>1.365</td>
+            <td>1.421</td>
+            <td>0%</td>
+            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3">54</td>
+        </tr>
+        <tr>
+            <td><b>159819</b></td>
+            <td>人工智能ETF</td>
+            <td>人工智能</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>52.1</td>
+            <td>52%</td>
+            <td>震荡</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+28.7%</td>
+            <td>-9.9%</td>
+            <td>2.53</td>
+            <td>2.12</td>
+            <td>2.076</td>
+            <td>2.078</td>
+            <td>0%</td>
+            <td title="技术面中性(56/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨2 vs 看跌2">56</td>
+        </tr>
+        <tr>
+            <td><b>562500</b></td>
+            <td>机器人ETF华夏</td>
+            <td>机器人</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>44.2</td>
+            <td>72%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+11.6%</td>
+            <td>-10.9%</td>
+            <td>1.39</td>
+            <td>1.11</td>
+            <td>1.081</td>
+            <td>1.143</td>
+            <td>11%</td>
+            <td title="技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3">45</td>
+        </tr>
+        <tr>
+            <td><b>512000</b></td>
+            <td>券商ETF华宝</td>
+            <td>证券</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>48.8</td>
+            <td>67%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+2.9%</td>
+            <td>-9.5%</td>
+            <td>0.49</td>
+            <td>0.53</td>
+            <td>0.514</td>
+            <td>0.519</td>
+            <td>0%</td>
+            <td title="技术面中性(58/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3">58</td>
+        </tr>
+        <tr>
+            <td><b>512880</b></td>
+            <td>证券ETF国泰</td>
+            <td>证券</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>48.8</td>
+            <td>67%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+2.7%</td>
+            <td>-9.2%</td>
+            <td>0.46</td>
+            <td>1.11</td>
+            <td>1.074</td>
+            <td>1.088</td>
+            <td>0%</td>
+            <td title="技术面中性(58/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3">58</td>
+        </tr>
+        <tr>
+            <td><b>159530</b></td>
+            <td>机器人ETF易方达</td>
+            <td>机器人</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>43.5</td>
+            <td>72%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+8.1%</td>
+            <td>-14.1%</td>
+            <td>0.90</td>
+            <td>1.56</td>
+            <td>1.511</td>
+            <td>1.607</td>
+            <td>11%</td>
+            <td title="技术面中性(43/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3">43</td>
+        </tr>
+        <tr>
+            <td><b>510300</b></td>
+            <td>沪深300ETF华泰柏瑞</td>
+            <td>大盘蓝筹</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>43.3</td>
+            <td>81%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+2.5%</td>
+            <td>-5.8%</td>
+            <td>0.52</td>
+            <td>4.83</td>
+            <td>4.699</td>
+            <td>4.975</td>
+            <td>12%</td>
+            <td title="技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3">48</td>
+        </tr>
+        <tr>
+            <td><b>512800</b></td>
+            <td>银行ETF</td>
+            <td>银行</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>52.8</td>
+            <td>53%</td>
+            <td>震荡</td>
+            <td>偏多</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>-3.4%</td>
+            <td>-9.8%</td>
+            <td>-0.98</td>
+            <td>0.77</td>
+            <td>0.783</td>
+            <td>0.755</td>
+            <td>0%</td>
+            <td title="技术面中性(58/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌0">58</td>
+        </tr>
+        <tr>
+            <td><b>513180</b></td>
+            <td>恒生科技ETF华夏</td>
+            <td>港股科技</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>47.8</td>
+            <td>68%</td>
+            <td>偏多</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>-2.7%</td>
+            <td>-17.1%</td>
+            <td>-0.35</td>
+            <td>0.61</td>
+            <td>0.63</td>
+            <td>0.598</td>
+            <td>0%</td>
+            <td title="技术面中性(55/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2">55</td>
+        </tr>
+        <tr>
+            <td><b>512170</b></td>
+            <td>医疗ETF华宝</td>
+            <td>医疗器械</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>51.8</td>
+            <td>52%</td>
+            <td>偏多</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>-6.2%</td>
+            <td>-14.4%</td>
+            <td>-1.22</td>
+            <td>0.32</td>
+            <td>0.335</td>
+            <td>0.314</td>
+            <td>0%</td>
+            <td title="技术面中性(55/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌0">55</td>
+        </tr>
+        <tr>
+            <td><b>512890</b></td>
+            <td>红利低波ETF华泰柏瑞</td>
+            <td>高股息</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>52.8</td>
+            <td>53%</td>
+            <td>震荡</td>
+            <td>偏多</td>
+            <td>偏多</td>
+            <td>看涨</td>
+            <td>-5.8%</td>
+            <td>-10.9%</td>
+            <td>-1.93</td>
+            <td>1.11</td>
+            <td>1.125</td>
+            <td>1.088</td>
+            <td>0%</td>
+            <td title="技术面中性(58/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌0">58</td>
+        </tr>
+        <tr>
+            <td><b>513120</b></td>
+            <td>港股创新药ETF广发</td>
+            <td>创新药</td>
+            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
+            <td>56.2</td>
+            <td>64%</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>-7.5%</td>
+            <td>-27.0%</td>
+            <td>-0.76</td>
+            <td>1.19</td>
+            <td>1.283</td>
+            <td>1.13</td>
+            <td>16%</td>
+            <td title="技术面中性偏多(62/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌0">62</td>
+        </tr>
+        <tr>
+            <td><b>563180</b></td>
+            <td>高股息ETF</td>
+            <td>高股息</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>50.8</td>
+            <td>59%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>偏空</td>
+            <td>偏空</td>
+            <td>-7.1%</td>
+            <td>-13.2%</td>
+            <td>-2.22</td>
+            <td>1.06</td>
+            <td>1.054</td>
+            <td>1.039</td>
+            <td>0%</td>
+            <td title="技术面中性(58/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1">58</td>
+        </tr>
+        <tr>
+            <td><b>516150</b></td>
+            <td>稀土ETF嘉实</td>
+            <td>稀土永磁</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>38.6</td>
+            <td>95%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>-6.9%</td>
+            <td>-17.9%</td>
+            <td>-0.61</td>
+            <td>1.84</td>
+            <td>1.772</td>
+            <td>1.932</td>
+            <td>14%</td>
+            <td title="技术面中性(46/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌5">46</td>
+        </tr>
+        <tr>
+            <td><b>159792</b></td>
+            <td>港股通互联网ETF富国</td>
+            <td>互联网</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>47.8</td>
+            <td>68%</td>
+            <td>偏多</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>-13.3%</td>
+            <td>-29.5%</td>
+            <td>-1.67</td>
+            <td>0.6</td>
+            <td>0.628</td>
+            <td>0.588</td>
+            <td>0%</td>
+            <td title="技术面中性(55/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2">55</td>
+        </tr>
+        <tr>
+            <td><b>159928</b></td>
+            <td>消费ETF</td>
+            <td>消费</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>52.8</td>
+            <td>53%</td>
+            <td>偏多</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>-15.8%</td>
+            <td>-19.9%</td>
+            <td>-3.90</td>
+            <td>0.63</td>
+            <td>0.65</td>
+            <td>0.617</td>
+            <td>0%</td>
+            <td title="技术面中性(58/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌0">58</td>
+        </tr>
+        <tr>
+            <td><b>512400</b></td>
+            <td>有色金属ETF南方</td>
+            <td>有色金属</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>38.6</td>
+            <td>95%</td>
+            <td>震荡</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>-17.8%</td>
+            <td>-21.0%</td>
+            <td>-1.79</td>
+            <td>1.76</td>
+            <td>1.724</td>
+            <td>1.848</td>
+            <td>14%</td>
+            <td title="技术面中性(46/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌5">46</td>
+        </tr>
+        <tr>
+            <td><b>159755</b></td>
+            <td>电池ETF广发</td>
+            <td>动力电池</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>38.6</td>
+            <td>95%</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>-17.1%</td>
+            <td>-23.0%</td>
+            <td>-2.19</td>
+            <td>0.98</td>
+            <td>0.903</td>
+            <td>1.029</td>
+            <td>14%</td>
+            <td title="技术面中性(46/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌5">46</td>
+        </tr>
+        <tr>
+            <td><b>159516</b></td>
+            <td>半导体设备ETF国泰</td>
+            <td>半导体设备</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>36.1</td>
+            <td>95%</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+0.3%</td>
+            <td>-54.6%</td>
+            <td>0.92</td>
+            <td>0.91</td>
+            <td>0.65</td>
+            <td>0.956</td>
+            <td>14%</td>
+            <td title="技术面中性偏空(39/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌5">39</td>
+        </tr>
+        <tr>
+            <td><b>512480</b></td>
+            <td>半导体ETF</td>
+            <td>半导体</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>37.2</td>
+            <td>95%</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>-14.9%</td>
+            <td>-55.7%</td>
+            <td>0.27</td>
+            <td>1.37</td>
+            <td>1.207</td>
+            <td>1.439</td>
+            <td>14%</td>
+            <td title="技术面中性(42/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌5">42</td>
+        </tr>
+        <tr>
+            <td><b>159995</b></td>
+            <td>芯片ETF华夏</td>
+            <td>芯片设计</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>37.2</td>
+            <td>95%</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>-15.9%</td>
+            <td>-56.0%</td>
+            <td>0.21</td>
+            <td>1.53</td>
+            <td>1.094</td>
+            <td>1.607</td>
+            <td>14%</td>
+            <td title="技术面中性(42/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌5">42</td>
+        </tr>
+        <tr>
+            <td><b>515880</b></td>
+            <td>通信ETF国泰</td>
+            <td>通信</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>37.2</td>
+            <td>95%</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>-37.1%</td>
+            <td>-59.8%</td>
+            <td>-0.76</td>
+            <td>0.78</td>
+            <td>0.577</td>
+            <td>0.819</td>
+            <td>14%</td>
+            <td title="技术面中性(42/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌5">42</td>
+        </tr></tbody>
+    </table>
 
-    <div class="date-section" style="border-left:4px solid #1f6feb;">
-      <div class="date-header">📅 2026-07-12（最新实时预测）</div>
-            <div class="report-item">
-              <a href="prediction.html#ETF" target="_blank">📄 2026-07-12 ETF 多Agent预测总览（23只）</a>
-              <div class="meta">2026-07-12 · 实时预测</div>
-            </div>
+    <div class="footer">
+        数据由 Hermes Agent + 多Agent LLM 预测系统自动生成 · 研究辅助非投资建议 ·
+        <a href="https://github.com/ldw5821cn/daily_tracker_analytics" style="color:#6366f1">GitHub</a>
     </div>
-    <div class="date-section">
-      <div class="date-header">📅 2026-07-10</div>
-      
-            <div class="report-item">
-              <a href="reports/2026-07-10/multi_agent_516150_20260710.html" target="_blank">📄 稀土ETF嘉实(516150)</a>
-              <div class="meta">2026-07-10 · 6 KB</div>
-            </div>
-            <div class="report-item">
-              <a href="reports/2026-07-10/multi_agent_515880_20260710.html" target="_blank">📄 通信ETF国泰(515880)</a>
-              <div class="meta">2026-07-10 · 6 KB</div>
-            </div>
-    </div>
-    <div class="date-section">
-      <div class="date-header">📅 2026-07-09</div>
-      
-            <div class="report-item">
-              <a href="reports/2026-07-09/multi_agent_516150_20260709.html" target="_blank">📄 稀土ETF嘉实(516150)</a>
-              <div class="meta">2026-07-09 · 6 KB</div>
-            </div>
-            <div class="report-item">
-              <a href="reports/2026-07-09/multi_agent_515880_20260709.html" target="_blank">📄 通信ETF国泰(515880)</a>
-              <div class="meta">2026-07-09 · 6 KB</div>
-            </div>
-    </div>
-    <div class="date-section">
-      <div class="date-header">📅 2026-07-08</div>
-      
-            <div class="report-item">
-              <a href="reports/2026-07-08/multi_agent_516150_20260708.html" target="_blank">📄 稀土ETF嘉实(516150)</a>
-              <div class="meta">2026-07-08 · 6 KB</div>
-            </div>
-            <div class="report-item">
-              <a href="reports/2026-07-08/multi_agent_515880_20260708.html" target="_blank">📄 通信ETF国泰(515880)</a>
-              <div class="meta">2026-07-08 · 6 KB</div>
-            </div>
-    </div>
-    <div class="date-section">
-      <div class="date-header">📅 2026-07-07</div>
-      
-            <div class="report-item">
-              <a href="reports/2026-07-07/multi_agent_516150_20260707.html" target="_blank">📄 稀土ETF嘉实(516150)</a>
-              <div class="meta">2026-07-07 · 6 KB</div>
-            </div>
-            <div class="report-item">
-              <a href="reports/2026-07-07/multi_agent_515880_20260707.html" target="_blank">📄 通信ETF国泰(515880)</a>
-              <div class="meta">2026-07-07 · 6 KB</div>
-            </div>
-    </div>
-    <div class="date-section">
-      <div class="date-header">📅 2026-07-06</div>
-      
-            <div class="report-item">
-              <a href="reports/2026-07-06/multi_agent_516150_20260706.html" target="_blank">📄 稀土ETF嘉实(516150)</a>
-              <div class="meta">2026-07-06 · 6 KB</div>
-            </div>
-            <div class="report-item">
-              <a href="reports/2026-07-06/multi_agent_515880_20260706.html" target="_blank">📄 通信ETF国泰(515880)</a>
-              <div class="meta">2026-07-06 · 6 KB</div>
-            </div>
-    </div>
-
-<div class="footer">
-  <p>报告自动生成 | 数据源: Tushare / AkShare / 新浪财经 / 腾讯财经</p>
-  <p>更新时间: 2026-07-13 15:51</p>
 </div>
 </body>
 </html>

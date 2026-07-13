@@ -31,12 +31,11 @@ if [ "$NEW_REPORTS" -eq 0 ]; then
   fi
 fi
 
-# 2. 生成静态页面（预测页 + 分类页）
-echo "🏗️  生成静态页面..." | tee -a "$LOG_FILE"
+# 2. 生成统一风格页面（prediction 风格）
+echo "🏗️  生成统一风格页面..." | tee -a "$LOG_FILE"
 set +e
-. "$VENV" && python "$REPO_DIR/scripts/generate_pages.py" 2>&1 | tee -a "$LOG_FILE"
+. "$VENV" && python3 "$REPO_DIR/scripts/generate_pages.py" 2>&1 | tee -a "$LOG_FILE"
 set -e
-python3 "$REPO_DIR/scripts/generate_static_index.py" 2>&1 | tee -a "$LOG_FILE"
 
 # 3. Commit & Push
 echo "📦 Git add..." | tee -a "$LOG_FILE"
