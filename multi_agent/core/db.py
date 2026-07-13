@@ -1,0 +1,308 @@
+#!/usr/bin/env python3
+"""统一数据库访问层（DAO）。
+
+当前后端为 SQLite，但所有访问通过本模块，便于后续切换 PostgreSQL/MySQL/Redis 缓存。
+原则：
+- 保持简单，不引入 ORM。
+- 每个函数都显式管理连接。
+- 返回 dict 列表或标量，便于上层使用。
+"""
+from __future__ import annotations
+
+import json
+import os
+import sqlite3
+from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+
+PREDICTIONS_DB = os.path.join(REPO_ROOT, 'multi_agent', 'data', 'llm_predictions.db')
+FUTURES_DB = os.path.join(REPO_ROOT, 'multi_agent', 'data', 'futures_simulator.db')
+
+
+def _connect(path: str, timeout: int = 10) -> sqlite3.Connection:
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    conn = sqlite3.connect(path, timeout=timeout)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
+# ============================================================
+# 预测数据库
+# ============================================================
+
+def init_predictions_db(conn: sqlite3.Connection) -> None:
+    """初始化预测数据库表结构。"""
+    conn.executescript("""
+        CREATE TABLE IF NOT EXISTS agentic_predictions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ticker TEXT NOT NULL,
+            name TEXT,
+            sector TEXT,
+            category TEXT,
+            signal TEXT NOT NULL,
+            confidence REAL,
+            weighted_score REAL,
+            target_price REAL,
+            stop_loss REAL,
+            position_pct REAL,
+            horizon_1d TEXT,
+            horizon_3d TEXT,
+            horizon_5d TEXT,
+            horizon_10d TEXT,
+            horizon_1d_return REAL,
+            horizon_3d_return REAL,
+            horizon_5d_return REAL,
+            horizon_10d_return REAL,
+            key_support REAL,
+            key_resistance REAL,
+            reasoning TEXT,
+            bull_points TEXT,
+            bear_points TEXT,
+            component_scores TEXT,
+            backtest_summary TEXT,
+            current_price REAL,
+            price_date TEXT,
+            pred_date TEXT NOT NULL,
+            pred_time TEXT,
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE INDEX IF NOT EXISTS idx_agentic_pred_date ON agentic_predictions(pred_date);
+        CREATE INDEX IF NOT EXISTS idx_agentic_ticker ON agentic_predictions(ticker);
+        CREATE INDEX IF NOT EXISTS idx_agentic_category ON agentic_predictions(category);
+
+        CREATE TABLE IF NOT EXISTS unified_validation_results (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            prediction_id INTEGER,
+            source_table TEXT NOT NULL,
+            ticker TEXT NOT NULL,
+            horizon INTEGER NOT NULL,
+            pred_signal TEXT,
+            actual_price REAL,
+            actual_return REAL,
+            direction_correct INTEGER,
+            confidence REAL,
+            validated_at TEXT DEFAULT CURRENT_TIMESTAMP
+        );
+    """)
+    # 兼容旧表
+    cols = [r[1] for r in conn.execute("PRAGMA table_info(agentic_predictions)")]
+    if 'price_date' not in cols:
+        conn.execute("ALTER TABLE agentic_predictions ADD COLUMN price_date TEXT")
+    conn.commit()
+
+
+def get_predictions_conn() -> sqlite3.Connection:
+    conn = _connect(PREDICTIONS_DB)
+    init_predictions_db(conn)
+    return conn
+
+
+def save_predictions(predictions: List[Dict[str, Any]]) -> Dict[str, int]:
+    """批量保存/覆盖预测记录。同一天同一 ticker 去重。"""
+    conn = get_predictions_conn()
+    try:
+        stats = {'saved': 0, 'errors': 0}
+        today = datetime.now().strftime('%Y-%m-%d')
+        now = datetime.now().strftime('%H:%M')
+
+        for p in predictions:
+            if 'error' in p:
+                stats['errors'] += 1
+                continue
+            try:
+                conn.execute(
+                    "DELETE FROM agentic_predictions WHERE ticker=? AND pred_date=?",
+                    (p['ticker'], today)
+                )
+                conn.execute("""
+                    INSERT INTO agentic_predictions
+                    (ticker, name, sector, category, signal, confidence, weighted_score,
+                     target_price, stop_loss, position_pct,
+                     horizon_1d, horizon_3d, horizon_5d, horizon_10d,
+                     horizon_1d_return, horizon_3d_return, horizon_5d_return, horizon_10d_return,
+                     key_support, key_resistance, reasoning,
+                     bull_points, bear_points, component_scores, backtest_summary,
+                     current_price, price_date, pred_date, pred_time)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (
+                    p['ticker'], p['name'], p.get('sector', ''), p.get('category', '个股'),
+                    p['signal'], p['confidence'], p['weighted_score'],
+                    p['target_price'], p['stop_loss'], p['position_pct'],
+                    p['horizon_1d'], p['horizon_3d'], p['horizon_5d'], p['horizon_10d'],
+                    p['horizon_1d_return'], p['horizon_3d_return'], p['horizon_5d_return'], p['horizon_10d_return'],
+                    p['key_support'], p['key_resistance'], p['reasoning'],
+                    json.dumps(p['bull_points'], ensure_ascii=False) if isinstance(p['bull_points'], (list, dict)) else p['bull_points'],
+                    json.dumps(p['bear_points'], ensure_ascii=False) if isinstance(p['bear_points'], (list, dict)) else p['bear_points'],
+                    json.dumps(p['component_scores'], ensure_ascii=False) if isinstance(p['component_scores'], (list, dict)) else p['component_scores'],
+                    json.dumps(p['backtest_summary'], ensure_ascii=False) if isinstance(p['backtest_summary'], (list, dict)) else p['backtest_summary'],
+                    p['current_price'], p.get('price_date', ''), today, now
+                ))
+                stats['saved'] += 1
+            except Exception as e:
+                print(f"保存预测失败 {p.get('ticker')}: {e}")
+                stats['errors'] += 1
+        conn.commit()
+        return stats
+    finally:
+        conn.close()
+
+
+def get_latest_predictions(pred_date: Optional[str] = None) -> List[Dict[str, Any]]:
+    """获取最新预测记录。"""
+    conn = get_predictions_conn()
+    try:
+        if pred_date is None:
+            row = conn.execute("SELECT MAX(pred_date) FROM agentic_predictions").fetchone()
+            pred_date = row[0]
+        if not pred_date:
+            return []
+        cur = conn.execute("""
+            SELECT ticker, name, sector, category, signal, confidence,
+                   horizon_1d, horizon_3d, horizon_5d, horizon_10d,
+                   current_price, price_date, target_price, stop_loss, position_pct,
+                   weighted_score, reasoning, component_scores, backtest_summary
+            FROM agentic_predictions
+            WHERE pred_date=?
+            ORDER BY weighted_score DESC
+        """, (pred_date,))
+        return [dict(r) for r in cur.fetchall()]
+    finally:
+        conn.close()
+
+
+def get_price_date_map(pred_date: Optional[str] = None) -> Dict[str, str]:
+    """返回 ticker -> price_date 映射。"""
+    conn = get_predictions_conn()
+    try:
+        if pred_date is None:
+            row = conn.execute("SELECT MAX(pred_date) FROM agentic_predictions").fetchone()
+            pred_date = row[0]
+        if not pred_date:
+            return {}
+        cur = conn.execute(
+            "SELECT ticker, price_date FROM agentic_predictions WHERE pred_date=?",
+            (pred_date,)
+        )
+        return {r['ticker']: r['price_date'] for r in cur.fetchall()}
+    finally:
+        conn.close()
+
+
+def get_predictions_stats() -> Dict[str, Any]:
+    """返回预测统计信息。"""
+    conn = get_predictions_conn()
+    try:
+        total = conn.execute("SELECT COUNT(*) FROM agentic_predictions").fetchone()[0]
+        row = conn.execute("SELECT MAX(pred_date) FROM agentic_predictions").fetchone()
+        latest = row[0] if row else None
+        today_count = 0
+        if latest:
+            today_count = conn.execute(
+                "SELECT COUNT(*) FROM agentic_predictions WHERE pred_date=?", (latest,)
+            ).fetchone()[0]
+        return {'total': total, 'latest_pred_date': latest, 'today_count': today_count}
+    finally:
+        conn.close()
+
+
+# ============================================================
+# 期货模拟盘数据库
+# ============================================================
+
+def init_futures_db(conn: sqlite3.Connection) -> None:
+    """初始化期货模拟盘数据库表结构。"""
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA busy_timeout=5000")
+    conn.executescript("""
+        CREATE TABLE IF NOT EXISTS config (
+            key TEXT PRIMARY KEY,
+            value TEXT
+        );
+
+        CREATE TABLE IF NOT EXISTS positions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            contract TEXT NOT NULL,
+            direction TEXT NOT NULL CHECK(direction IN ('long','short')),
+            lots INTEGER NOT NULL DEFAULT 0,
+            entry_price REAL NOT NULL,
+            current_price REAL NOT NULL,
+            margin_used REAL NOT NULL,
+            pnl_total REAL DEFAULT 0,
+            open_date TEXT NOT NULL,
+            is_active INTEGER DEFAULT 1,
+            note TEXT
+        );
+
+        CREATE TABLE IF NOT EXISTS trades (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            trade_date TEXT NOT NULL,
+            contract TEXT NOT NULL,
+            direction TEXT NOT NULL,
+            action TEXT NOT NULL CHECK(action IN ('open_long','open_short','close_long','close_short')),
+            lots INTEGER NOT NULL,
+            price REAL NOT NULL,
+            margin REAL DEFAULT 0,
+            pnl REAL DEFAULT 0,
+            total_value REAL,
+            reason TEXT,
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP
+        );
+
+        CREATE TABLE IF NOT EXISTS snapshots (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            snapshot_date TEXT NOT NULL,
+            total_asset REAL NOT NULL,
+            cash REAL NOT NULL,
+            margin_used REAL NOT NULL,
+            floating_pnl REAL NOT NULL,
+            daily_return REAL,
+            cumulative_return REAL,
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP
+        );
+    """)
+    conn.commit()
+
+
+def get_futures_conn() -> sqlite3.Connection:
+    conn = _connect(FUTURES_DB, timeout=10)
+    init_futures_db(conn)
+    return conn
+
+
+def get_futures_positions(active_only: bool = True) -> List[Dict[str, Any]]:
+    """获取期货持仓列表。"""
+    conn = get_futures_conn()
+    try:
+        sql = "SELECT * FROM positions"
+        if active_only:
+            sql += " WHERE is_active=1"
+        cur = conn.execute(sql)
+        return [dict(r) for r in cur.fetchall()]
+    finally:
+        conn.close()
+
+
+def get_futures_config(key: str, default: Optional[str] = None) -> Optional[str]:
+    conn = get_futures_conn()
+    try:
+        row = conn.execute("SELECT value FROM config WHERE key=?", (key,)).fetchone()
+        return row['value'] if row else default
+    finally:
+        conn.close()
+
+
+def set_futures_config(key: str, value: str) -> None:
+    conn = get_futures_conn()
+    try:
+        conn.execute("INSERT OR REPLACE INTO config (key, value) VALUES (?, ?)", (key, value))
+        conn.commit()
+    finally:
+        conn.close()
+
+
+if __name__ == '__main__':
+    # 简单自检
+    print('predictions stats:', get_predictions_stats())
+    print('futures positions:', get_futures_positions())

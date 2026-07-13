@@ -10,6 +10,8 @@ from datetime import datetime, timedelta
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'multi_agent'))
 from core.backtest_utils import inject_backtest_metrics
+from core.db import get_predictions_conn, get_latest_predictions, get_price_date_map, get_predictions_stats
+from core.db import get_futures_positions as _db_get_futures_positions
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOCS_DIR = os.path.join(REPO_ROOT, "docs")
@@ -75,45 +77,20 @@ def _load_json(path):
 def _load_db_stats():
     if not os.path.exists(DB_PATH):
         return None, None
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cur = conn.cursor()
-
-    today = datetime.now().strftime('%Y-%m-%d')
-    cur.execute("SELECT COUNT(*) as c FROM agentic_predictions")
-    agentic_total = cur.fetchone()['c']
-
-    # 最新预测日期
-    cur.execute("SELECT pred_date FROM agentic_predictions ORDER BY pred_date DESC LIMIT 1")
-    last = cur.fetchone()
-    display_date = last['pred_date'] if last else today
-
-    cur.execute("""
-    SELECT ticker, name, sector, category, signal, confidence,
-           horizon_1d, horizon_3d, horizon_5d, horizon_10d,
-           current_price, price_date, target_price, stop_loss, position_pct,
-           weighted_score, reasoning, component_scores, backtest_summary
-    FROM agentic_predictions WHERE pred_date=?
-    ORDER BY category, weighted_score DESC
-    """, (display_date,))
-    rows = [dict(r) for r in cur.fetchall()]
+    stats = get_predictions_stats()
+    display_date = stats.get('latest_pred_date') or datetime.now().strftime('%Y-%m-%d')
+    rows = get_latest_predictions(display_date)
 
     for p in rows:
         inject_backtest_metrics(p)
     rows = sorted(rows, key=lambda x: x.get('bt_score', 0), reverse=True)
 
-    cur.execute("SELECT COUNT(*) as c FROM agentic_predictions WHERE pred_date=?", (display_date,))
-    today_preds = cur.fetchone()['c']
-
-    conn.close()
-
-    stats = {
+    return {
         'display_date': display_date,
-        'today_preds': today_preds,
-        'agentic_total': agentic_total,
+        'today_preds': stats.get('today_count', 0),
+        'agentic_total': stats.get('total', 0),
         'today_details': rows,
-    }
-    return stats, rows
+    }, rows
 
 
 def _build_nav(active):
@@ -390,17 +367,7 @@ def generate_portfolio_page():
     date = tw.get('date', '') or rb.get('date', '')
 
     # 从数据库读取价格日期
-    price_date_map = {}
-    try:
-        conn = sqlite3.connect(DB_PATH)
-        conn.row_factory = sqlite3.Row
-        latest = conn.execute("SELECT MAX(pred_date) FROM agentic_predictions").fetchone()[0]
-        if latest:
-            for r in conn.execute("SELECT ticker, price_date FROM agentic_predictions WHERE pred_date=?", (latest,)):
-                price_date_map[r['ticker']] = r['price_date']
-        conn.close()
-    except Exception as e:
-        print(f"读取 price_date 失败: {e}")
+    price_date_map = get_price_date_map()
 
     stats_cards = "".join([
         _stat_card(f"{tw.get('total_exposure', 0)*100:.1f}%", '总敞口'),
@@ -505,33 +472,26 @@ def generate_portfolio_page():
 
 
 def _load_futures_positions():
-    db_path = os.path.join(REPO_ROOT, 'multi_agent', 'data', 'futures_simulator.db')
-    if not os.path.exists(db_path):
+    """通过 DAO 读取期货模拟盘持仓并生成 HTML 行。"""
+    rows = _db_get_futures_positions(active_only=True)
+    if not rows:
         return ""
-    try:
-        conn = sqlite3.connect(db_path)
-        cur = conn.cursor()
-        cur.execute("SELECT contract, direction, lots, entry_price, current_price, pnl_total FROM positions WHERE is_active=1")
-        rows = cur.fetchall()
-        conn.close()
-        if not rows:
-            return ""
-        html = ""
-        for r in rows:
-            contract, direction, lots, entry, current, pnl = r
-            dir_color = '#ef4444' if direction == 'long' else '#22c55e'
-            html += f"""
+    html = ""
+    for r in rows:
+        direction_cn = '多' if r.get('direction') == 'long' else '空'
+        pnl = r.get('pnl_total', 0) or 0
+        color = '#ef4444' if pnl >= 0 else '#22c55e'
+        html += f"""
         <tr>
-            <td><b>{contract}</b></td>
-            <td style="color:{dir_color}">{direction}</td>
-            <td>{lots}</td>
-            <td>{entry}</td>
-            <td>{current}</td>
-            <td>{pnl:+.2f}</td>
+            <td><b>{r.get('contract')}</b></td>
+            <td>{direction_cn}</td>
+            <td>{r.get('lots')}</td>
+            <td>{r.get('entry_price')}</td>
+            <td>{r.get('current_price')}</td>
+            <td style="color:{color}">{pnl:+.2f}</td>
         </tr>"""
-        return html
-    except Exception as e:
-        return f'<tr><td colspan="6" class="empty">读取期货持仓失败: {e}</td></tr>'
+    return html
+
 
 
 def _write(name, html):

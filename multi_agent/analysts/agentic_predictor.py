@@ -37,6 +37,7 @@ warnings.filterwarnings('ignore')
 from analysts import fundamentals_analyst, news_analyst
 from core.debate_engine import DebateEngine
 from core.data_layer import get_realtime_price, is_futures, get_stock_data, calc_technical_indicators, multi_period_backtest, tf_quotes
+from core.db import get_predictions_conn, save_predictions as _db_save_predictions
 import pandas as pd
 
 DB_PATH = os.path.join(PROJECT_ROOT, 'multi_agent', 'data', 'llm_predictions.db')
@@ -71,66 +72,8 @@ MAX_WORKERS = 4  # 线程池大小，避免数据源被封
 
 
 def _get_conn() -> sqlite3.Connection:
-    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    conn.executescript("""
-        CREATE TABLE IF NOT EXISTS agentic_predictions (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            ticker TEXT NOT NULL,
-            name TEXT,
-            sector TEXT,
-            category TEXT,
-            signal TEXT NOT NULL,
-            confidence REAL,
-            weighted_score REAL,
-            target_price REAL,
-            stop_loss REAL,
-            position_pct REAL,
-            horizon_1d TEXT,
-            horizon_3d TEXT,
-            horizon_5d TEXT,
-            horizon_10d TEXT,
-            horizon_1d_return REAL,
-            horizon_3d_return REAL,
-            horizon_5d_return REAL,
-            horizon_10d_return REAL,
-            key_support REAL,
-            key_resistance REAL,
-            reasoning TEXT,
-            bull_points TEXT,
-            bear_points TEXT,
-            component_scores TEXT,
-            backtest_summary TEXT,
-            current_price REAL,
-            price_date TEXT,
-            pred_date TEXT NOT NULL,
-            pred_time TEXT,
-            created_at TEXT DEFAULT CURRENT_TIMESTAMP
-        );
-        CREATE INDEX IF NOT EXISTS idx_agentic_pred_date ON agentic_predictions(pred_date);
-        CREATE INDEX IF NOT EXISTS idx_agentic_ticker ON agentic_predictions(ticker);
-        CREATE INDEX IF NOT EXISTS idx_agentic_category ON agentic_predictions(category);
-
-        CREATE TABLE IF NOT EXISTS unified_validation_results (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            prediction_id INTEGER,
-            source_table TEXT NOT NULL,
-            ticker TEXT NOT NULL,
-            horizon INTEGER NOT NULL,
-            pred_signal TEXT,
-            actual_price REAL,
-            actual_return REAL,
-            direction_correct INTEGER,
-            confidence REAL,
-            validated_at TEXT DEFAULT CURRENT_TIMESTAMP
-        );
-    """)
-    # 兼容旧表：添加 price_date 列
-    cols = [r[1] for r in conn.execute("PRAGMA table_info(agentic_predictions)")]
-    if 'price_date' not in cols:
-        conn.execute("ALTER TABLE agentic_predictions ADD COLUMN price_date TEXT")
-    return conn
+    """向后兼容：提供预测数据库连接。"""
+    return get_predictions_conn()
 
 
 def _horizon_label(return_pct: float) -> str:
@@ -470,51 +413,9 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
 
 
 def save_predictions(predictions: List[Dict]) -> Dict:
-    conn = _get_conn()
-    try:
-        stats = {'saved': 0, 'errors': 0}
-        today = datetime.now().strftime('%Y-%m-%d')
-        now = datetime.now().strftime('%H:%M')
+    """向后兼容：使用 DAO 保存预测。"""
+    return _db_save_predictions(predictions)
 
-        for p in predictions:
-            if 'error' in p:
-                stats['errors'] += 1
-                continue
-            try:
-                # 同一天同一 ticker 去重：先删除旧记录
-                conn.execute("DELETE FROM agentic_predictions WHERE ticker=? AND pred_date=?", (p['ticker'], today))
-                conn.execute("""
-                    INSERT INTO agentic_predictions
-                    (ticker, name, sector, category, signal, confidence, weighted_score,
-                     target_price, stop_loss, position_pct,
-                     horizon_1d, horizon_3d, horizon_5d, horizon_10d,
-                     horizon_1d_return, horizon_3d_return, horizon_5d_return, horizon_10d_return,
-                     key_support, key_resistance, reasoning,
-                     bull_points, bear_points, component_scores, backtest_summary,
-                     current_price, price_date, pred_date, pred_time)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """, (
-                    p['ticker'], p['name'], p.get('sector', ''), p.get('category', '个股'),
-                    p['signal'], p['confidence'], p['weighted_score'],
-                    p['target_price'], p['stop_loss'], p['position_pct'],
-                    p['horizon_1d'], p['horizon_3d'], p['horizon_5d'], p['horizon_10d'],
-                    p['horizon_1d_return'], p['horizon_3d_return'], p['horizon_5d_return'], p['horizon_10d_return'],
-                    p['key_support'], p['key_resistance'], p['reasoning'],
-                    json.dumps(p['bull_points'], ensure_ascii=False),
-                    json.dumps(p['bear_points'], ensure_ascii=False),
-                    json.dumps(p['component_scores'], ensure_ascii=False),
-                    json.dumps(p['backtest_summary'], ensure_ascii=False),
-                    p['current_price'], p.get('price_date', ''), today, now
-                ))
-                stats['saved'] += 1
-
-            except Exception as e:
-                stats['errors'] += 1
-                print(f"  ❌ 保存失败 {p.get('ticker')}: {e}")
-        conn.commit()
-        return stats
-    finally:
-        conn.close()
 
 
 def generate_for_watchlist(watchlist_path: str = None, categories: List[str] = None,

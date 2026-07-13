@@ -35,6 +35,7 @@
 import sys, os, json, sqlite3, urllib.request, re, ssl
 from datetime import datetime, date
 from typing import Dict, List, Optional
+from core.db import get_futures_conn, get_futures_config, set_futures_config
 
 try:
     import pandas as pd
@@ -215,80 +216,13 @@ DEFAULT_CAPITAL = 100000.0  # 10万，与雪球组合一致
 
 
 def _get_conn() -> sqlite3.Connection:
-    """获取DB连接，自动建表"""
-    conn = sqlite3.connect(DB_PATH, timeout=10)
-    conn.row_factory = sqlite3.Row
-    conn.execute("PRAGMA journal_mode=WAL")
-    conn.execute("PRAGMA busy_timeout=5000")
-    conn.executescript("""
-        CREATE TABLE IF NOT EXISTS config (
-            key TEXT PRIMARY KEY,
-            value TEXT
-        );
-
-        CREATE TABLE IF NOT EXISTS positions (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            contract TEXT NOT NULL,          -- 如 'MA'
-            direction TEXT NOT NULL CHECK(direction IN ('long','short')),
-            lots INTEGER NOT NULL DEFAULT 0, -- 手数
-            entry_price REAL NOT NULL,       -- 开仓均价
-            current_price REAL NOT NULL,     -- 最新价
-            margin_used REAL NOT NULL,       -- 占用保证金
-            pnl_total REAL DEFAULT 0,        -- 累计盈亏（含浮动）
-            open_date TEXT NOT NULL,
-            is_active INTEGER DEFAULT 1,
-            note TEXT
-        );
-
-        CREATE TABLE IF NOT EXISTS trades (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            trade_date TEXT NOT NULL,
-            contract TEXT NOT NULL,
-            direction TEXT NOT NULL,
-            action TEXT NOT NULL CHECK(action IN ('open_long','open_short','close_long','close_short')),
-            lots INTEGER NOT NULL,
-            price REAL NOT NULL,
-            margin REAL DEFAULT 0,
-            pnl REAL DEFAULT 0,
-            total_value REAL,                -- 交易标的总额 lots*price*multiplier
-            reason TEXT,
-            created_at TEXT DEFAULT CURRENT_TIMESTAMP
-        );
-
-        CREATE TABLE IF NOT EXISTS snapshots (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            snapshot_date TEXT NOT NULL,
-            total_asset REAL NOT NULL,        -- 总资产 = 现金 + 保证金 + 浮动盈亏
-            cash REAL NOT NULL,
-            margin_used REAL NOT NULL,
-            floating_pnl REAL NOT NULL,       -- 浮动盈亏
-            daily_return REAL,
-            cumulative_return REAL,
-            created_at TEXT DEFAULT CURRENT_TIMESTAMP
-        );
-    """)
-    return conn
+    """向后兼容：使用 DAO 连接期货数据库。"""
+    return get_futures_conn()
 
 
-# ── 配置读写 ──
-
-def get_config(key: str, default=None) -> str:
-    conn = _get_conn()
-    try:
-        row = conn.execute("SELECT value FROM config WHERE key=?", (key,)).fetchone()
-        return row['value'] if row else default
-    finally:
-        conn.close()
-
-
-def set_config(key: str, value: str):
-    conn = _get_conn()
-    try:
-        conn.execute("INSERT OR REPLACE INTO config (key, value) VALUES (?, ?)", (key, value))
-        conn.commit()
-    finally:
-        conn.close()
-
+# 兼容性函数：重定向到 DAO
+get_config = get_futures_config
+set_config = set_futures_config
 
 def get_cash() -> float:
     raw = get_config('cash')
