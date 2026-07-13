@@ -4,6 +4,8 @@ __pycache__/
 .reports/
 research_reports/
 models/
-data/
 logs/
 .env
+*.db
+.DS_Store
+*.log
