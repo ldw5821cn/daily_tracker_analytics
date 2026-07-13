@@ -246,7 +246,7 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     }
 
 
-def _fast_technical_analysis(ticker: str, name: str = "") -> Dict:
+def _fast_technical_analysis(ticker: str, name: str = "", macro_report: Optional[Dict] = None) -> Dict:
     """
     轻量技术面分析：仅 get_stock_data + calc_technical_indicators，
     跳过 AdaptivePredictor 与复杂回测，单标约 0.5-2 秒。
@@ -369,7 +369,13 @@ def _fast_technical_analysis(ticker: str, name: str = "") -> Dict:
 
     backtest = multi_period_backtest(df, periods=[30, 60]) if len(df) >= 30 else []
     scenarios = scenario_backtests(df, periods=[30, 60], ticker=ticker) if len(df) >= 30 else []
-    recommended = recommend_scenario(scenarios) if scenarios else {}
+    # 从全局 macro_report 获取宏观信号，对策略推荐做宏观偏置
+    macro_signal = 'neutral'
+    macro_score = 50
+    if macro_report:
+        macro_signal = macro_report.get('macro_signal', 'neutral')
+        macro_score = macro_report.get('macro_score', 50)
+    recommended = recommend_scenario(scenarios, macro_signal=macro_signal, macro_score=macro_score) if scenarios else {}
 
     return {
         'analyst': '技术面分析师(轻量+TickFlow)',
@@ -394,7 +400,7 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
         is_fut = is_futures(ticker)
 
         if ultra:
-            technical = _fast_technical_analysis(ticker, name)
+            technical = _fast_technical_analysis(ticker, name, macro_report)
         else:
             technical = technical_analyst.analyze(ticker, name)
 

@@ -108,7 +108,9 @@ def scenario_backtests(df: pd.DataFrame, periods=None, ticker: str = '') -> List
     return results
 
 
-def recommend_scenario(scenarios: List[Dict], prefer_low_risk: bool = True) -> Dict:
+def recommend_scenario(scenarios: List[Dict], prefer_low_risk: bool = True,
+                       macro_signal: str = 'neutral', macro_score: float = 50) -> Dict:
+    """根据收益/回撤/夏普综合打分推荐最佳场景，并叠加宏观偏置。"""
     if not scenarios:
         return {'scenario': 'N/A', 'score': 0, 'total_return': 0, 'max_drawdown': 0, 'sharpe': 0}
 
@@ -116,10 +118,21 @@ def recommend_scenario(scenarios: List[Dict], prefer_low_risk: bool = True) -> D
         ret = s['total_return']
         dd = abs(s['max_drawdown'])
         sr = s['sharpe']
-        if prefer_low_risk:
-            return ret * 0.3 - dd * 0.5 + sr * 0.2
-        else:
-            return ret * 0.5 - dd * 0.3 + sr * 0.2
+        base = ret * 0.3 - dd * 0.5 + sr * 0.2 if prefer_low_risk else ret * 0.5 - dd * 0.3 + sr * 0.2
+
+        # 宏观偏置：熊市里提高多空策略，降低纯做多策略
+        scenario = s['scenario']
+        if macro_signal == 'bearish':
+            if 'long_short' in scenario:
+                base += 5  # 可以做空，熊市更优
+            elif 'weekly_long_only' in scenario:
+                base -= 5  # 纯做多受损
+        elif macro_signal == 'bullish':
+            if 'weekly_long_only' in scenario:
+                base += 3
+            elif 'long_short' in scenario and 'short' in scenario:
+                base -= 2
+        return base
 
     best = max(scenarios, key=score)
     return best

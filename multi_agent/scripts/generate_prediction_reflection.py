@@ -17,6 +17,7 @@ from core.llm_client import chat
 DATA_DIR = os.path.join(MULTI_AGENT, 'data')
 VALIDATION_PATH = os.path.join(DATA_DIR, 'morning_validation.json')
 ERROR_ANALYSIS_PATH = os.path.join(DATA_DIR, 'prediction_error_analysis.json')
+AB_TEST_PATH = os.path.join(DATA_DIR, 'ab_test_signal_changes.json')
 REFLECTION_PATH = os.path.join(DATA_DIR, 'prediction_reflection.json')
 HISTORY_PATH = os.path.join(DATA_DIR, 'prediction_reflection_history.jsonl')
 
@@ -44,7 +45,7 @@ def _load_history(limit: int = 7) -> list:
     return items[-limit:]
 
 
-def _build_prompt(validation: dict, error_analysis: dict, history: list) -> str:
+def _build_prompt(validation: dict, error_analysis: dict, history: list, ab_test: dict) -> str:
     pred_date = error_analysis.get('pred_date', validation.get('pred_date', '未知'))
     summary = error_analysis.get('summary', {})
     by_signal = error_analysis.get('by_signal', {})
@@ -62,6 +63,16 @@ def _build_prompt(validation: dict, error_analysis: dict, history: list) -> str:
             history_text += f"\n日期: {h.get('pred_date', '')}\n"
             history_text += f"准确率: {h.get('accuracy', '')}\n"
             history_text += f"关键改进建议: {h.get('key_suggestions', '')}\n"
+
+    ab_text = ""
+    if ab_test:
+        ab_text = f"""\n\n===== 自动调参 A/B 测试信号变化 =====\n预测日期: {ab_test.get('pred_date')}
+宏观信号: {ab_test.get('macro_signal')}/{ab_test.get('macro_score')}
+旧信号分布: {ab_test.get('old_counts', {})}
+新信号分布: {ab_test.get('new_counts', {})}
+信号迁移: {ab_test.get('transitions', {})}
+发生变化标的数: {len(ab_test.get('changed', []))}
+"""
 
     prompt = f"""你是量化投资系统的策略反思 Agent。请基于以下预测验证结果，写一份深度复盘报告。
 
@@ -89,6 +100,7 @@ def _build_prompt(validation: dict, error_analysis: dict, history: list) -> str:
 
 规则分析建议:
 {chr(10).join('- ' + s for s in suggestions)}
+{ab_text}
 {history_text}
 
 ===== 输出要求 =====
@@ -97,9 +109,10 @@ def _build_prompt(validation: dict, error_analysis: dict, history: list) -> str:
 1. 一句话总结：当日预测准确率的本质原因（50字以内）
 2. 主要错误模式：列出2-3个导致错误的核心模式
 3. 成功信号特征：总结正确样本的共性
-4. 权重/阈值调整建议：给出可落地的参数调整（如 threshold、weights、宏观修正幅度等）
-5. 今日操作建议：基于反思对当前持仓或明日预测给出1-2条具体建议
-6. 需要新增/改进的数据源或因子：指出当前系统缺少哪些信号
+4. 权重/阈值/硬规则调整建议：给出可落地的参数调整（如 threshold、weights、宏观修正幅度、拦截规则等）
+5. 策略回测建议：基于当前市场状态，6种策略中哪种更值得采用，是否需要调整推荐策略的打分权重
+6. 今日操作建议：基于反思对当前持仓或明日预测给出1-2条具体建议
+7. 需要新增/改进的数据源或因子：指出当前系统缺少哪些信号
 
 请尽量具体、量化，避免空泛。"""
     return prompt
@@ -108,12 +121,13 @@ def _build_prompt(validation: dict, error_analysis: dict, history: list) -> str:
 def generate_reflection():
     validation = _load_json(VALIDATION_PATH)
     error_analysis = _load_json(ERROR_ANALYSIS_PATH)
+    ab_test = _load_json(AB_TEST_PATH)
     if not error_analysis:
         print('❌ 未找到错误分析数据，请先运行 analyze_prediction_errors.py')
         sys.exit(1)
 
     history = _load_history()
-    prompt = _build_prompt(validation, error_analysis, history)
+    prompt = _build_prompt(validation, error_analysis, history, ab_test)
 
     print('[reflection] 正在调用 LLM 生成反思...')
     llm_output = chat([
