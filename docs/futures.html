@@ -3,556 +3,571 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>📉 期货 - 2026-07-13 15:58</title>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>期货趋势 | A股 & 期货 多维度投资分析</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; }
-.container { max-width: 1400px; margin: 0 auto; padding: 20px; }
-.header { background: linear-gradient(135deg, #1e293b, #334155); padding: 30px; border-radius: 16px; margin-bottom: 24px; }
-.header h1 { font-size: 24px; margin-bottom: 8px; }
-.header .sub { color: #94a3b8; font-size: 14px; }
-.stats-grid { display: flex; gap: 16px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 8px; }
-.stat-card { flex: 1; min-width: 120px; background: #1e293b; border-radius: 12px; padding: 20px; text-align: center; }
-.stat-card .num { font-size: 28px; font-weight: bold; }
-.stat-card .label { color: #94a3b8; font-size: 12px; margin-top: 4px; }
-.section-title { font-size: 18px; font-weight: 600; margin: 24px 0 12px; padding-left: 12px; border-left: 4px solid #6366f1; }
-.nav { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-.nav a { color: #94a3b8; text-decoration: none; padding: 8px 18px; border-radius: 20px; background: #1e293b; border: 1px solid #334155; font-size: 13px; }
-.nav a:hover { background: #334155; color: #e2e8f0; }
-.nav a.active { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; border-color: transparent; }
-.footer { text-align: center; color: #475569; font-size: 12px; margin-top: 40px; padding: 20px; }
-.model-tag { display: inline-block; background: #6366f1; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 8px; }
-.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 24px; }
-.card { background: #1e293b; border-radius: 12px; padding: 16px; border-left: 4px solid #6366f1; }
-.card.bull { border-left-color: #ef4444; }
-.card.bear { border-left-color: #22c55e; }
-.card-title { font-weight: 600; margin-bottom: 6px; }
-.card-meta { color: #94a3b8; font-size: 12px; margin-bottom: 6px; }
-.card-price { color: #e2e8f0; font-size: 13px; margin-bottom: 6px; }
-.card-reason { color: #94a3b8; font-size: 12px; line-height: 1.5; }
-table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 12px; overflow: hidden; margin-bottom: 24px; font-size: 13px; }
-th { background: #334155; padding: 10px 12px; text-align: left; font-size: 12px; color: #94a3b8; text-transform: uppercase; }
-td { padding: 8px 12px; border-bottom: 1px solid #1e293b; font-size: 13px; }
-tr:hover { background: #334155; }
-.note { background: #1e293b; padding: 16px; border-radius: 12px; color: #cbd5e1; line-height: 1.8; margin-bottom: 24px; }
-.empty { text-align: center; color: #64748b; padding: 40px; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+    background: #0d1117; color: #c9d1d9;
+    max-width: 1100px; margin: 0 auto; padding: 30px 20px;
+  }
+  h1 { color: #58a6ff; font-size: 1.5em; margin-bottom: 6px; }
+  .subtitle { color: #8b949e; margin-bottom: 20px; font-size: 0.9em; }
+  .repo-link { color: #8b949e; font-size: 0.85em; margin-bottom: 20px; }
+  .repo-link a { color: #58a6ff; text-decoration: none; }
+
+  .nav {
+    display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;
+    border-bottom: 1px solid #30363d; padding-bottom: 10px;
+  }
+  .nav a {
+    padding: 8px 18px; border-radius: 20px; font-size: 0.9em;
+    text-decoration: none; cursor: pointer; transition: all 0.15s;
+    border: 1px solid #30363d; color: #8b949e; background: #161b22;
+  }
+  .nav a:hover { border-color: #58a6ff; color: #58a6ff; background: #1f6feb11; }
+  .nav a.active { border-color: #58a6ff; color: #fff; background: #1f6feb; }
+
+  .stats { display: flex; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+  .stat-card {
+    background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+    padding: 14px 20px; flex: 1; min-width: 100px; text-align: center;
+  }
+  .stat-card .num { font-size: 1.4em; font-weight: 700; color: #58a6ff; }
+  .stat-card .label { font-size: 0.78em; color: #8b949e; margin-top: 2px; }
+
+  .section-title { background: #161b22; border: 1px solid #30363d; border-radius: 8px 8px 0 0; padding: 12px 16px; font-weight: 600; color: #f0f6fc; margin-top: 20px; }
+  .date-section { margin-bottom: 20px; border: 1px solid #30363d; border-radius: 8px; overflow: hidden; }
+  .date-header {
+    background: #161b22; padding: 12px 16px; font-weight: 600; color: #f0f6fc;
+    border-bottom: 1px solid #30363d;
+  }
+  .report-item {
+    padding: 10px 16px; border-bottom: 1px solid #30363d;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: background 0.2s;
+  }
+  .report-item:last-child { border-bottom: none; }
+  .report-item:hover { background: #1c2128; }
+  .report-item a { color: #58a6ff; text-decoration: none; }
+  .report-item a:hover { text-decoration: underline; }
+  .report-item .meta { font-size: 0.85em; color: #8b949e; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.88em; margin-bottom: 24px; }
+  th { background: #161b22; border: 1px solid #30363d; padding: 7px 9px; text-align: left; color: #8b949e; font-weight: 600; font-size: 0.82em; white-space: nowrap; position: sticky; top: 0; }
+  td { border: 1px solid #30363d; padding: 6px 9px; transition: background .15s; }
+  tr:hover td { background: #1c2128; }
+  .name { font-weight: 600; color: #f0f6fc; }
+  .bullish { color: #3fb950; font-weight: 600; }
+  .bearish { color: #f85149; font-weight: 600; }
+  .neutral { color: #d29922; font-weight: 600; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 14px; border-left: 4px solid #3fb950; }
+  .card-title { font-weight: 600; color: #f0f6fc; margin-bottom: 6px; }
+  .card-meta { color: #8b949e; font-size: 0.82em; margin-bottom: 4px; }
+  .card-price { color: #f0f6fc; font-size: 0.88em; margin-bottom: 4px; }
+  .card-reason { color: #8b949e; font-size: 0.78em; line-height: 1.5; }
+
+  .footer { text-align: center; color: #484f58; font-size: 0.78em; margin-top: 36px; padding-top: 16px; border-top: 1px solid #21262d; }
 </style>
 </head>
 <body>
-<div class="container">
-<div class="nav">
-<a href="index.html" class="">🏠 首页</a>
-<a href="stocks.html" class="">📈 个股</a>
-<a href="us_market.html" class="">🇺🇸 美股</a>
-<a href="etfs.html" class="">📊 ETF</a>
-<a href="futures.html" class="active">📉 期货</a>
-<a href="prediction.html" class="">🏛️ 预测</a>
-<a href="portfolio.html" class="">💼 持仓组合</a>
+<h1>📊 A股 & 期货 多维度投资分析</h1>
+<p class="subtitle">ETF / 个股 / 期货 / 综合 — 每日数据驱动分析报告</p>
+
+<div class="repo-link">
+  📂 <a href="https://github.com/ldw5821cn/daily_tracker_analytics/tree/main/docs/reports" target="_blank">ldw5821cn/daily_tracker_analytics</a>
 </div>
 
-    <div class="header">
-        <h1>📉 期货 </h1>
-        <div class="sub">2026-07-13 15:58 · 最新预测 21 只 (预测日期: N/A)</div>
+<div class="nav">
+<a class="" href="etfs.html">📈 ETF 基金分析</a><a class="" href="stocks.html">📊 股票分析</a><a class="active" href="futures.html">⚡ 期货趋势</a><a class="" href="us_market.html">🇺🇸 美股市场</a><a class="" href="comprehensive.html">📋 综合报告</a>
+</div>
+
+<div class="stats">
+  <div class="stat-card"><div class="num">5</div><div class="label">分析类型</div></div>
+  <div class="stat-card"><div class="num">142</div><div class="label">总报告数</div></div>
+  <div class="stat-card"><div class="num">5</div><div class="label">ETF日期</div></div>
+  <div class="stat-card"><div class="num">5</div><div class="label">个股日期</div></div>
+  <div class="stat-card"><div class="num">6</div><div class="label">期货日期</div></div>
+  <div class="stat-card"><div class="num">1</div><div class="label">美股日期</div></div>
+</div>
+
+
+    <div class="section-title" style="font-size:1.2em;background:#1f6feb;color:#fff;">🤖 多Agent实时预测（2026-07-12 收盘后）</div>
+    <div style="background:#161b22;border:1px solid #30363d;border-top:0;padding:10px 16px;color:#8b949e;font-size:0.85em;">
+      这是 <strong>2026-07-12</strong> 的 期货 预测结果。下方 📅 列表是旧版逐日报告。
     </div>
-
-
-        <div class="stat-card">
-            <div class="num">21</div>
-            <div class="label">总数</div>
-        </div>
-        <div class="stat-card">
-            <div class="num" style="color:#ef4444">4</div>
-            <div class="label">看多</div>
-        </div>
-        <div class="stat-card">
-            <div class="num" style="color:#22c55e">3</div>
-            <div class="label">看空</div>
-        </div>
-        <div class="stat-card">
-            <div class="num">14</div>
-            <div class="label">中性</div>
-        </div>
-<div class="section-title">🏆 重点看多</div>
+    <div class="section-title">🏆 今日重点推荐（按回测排序）</div>
 <div class="cards">
-
-            <div class="card bull">
+<div class="card">
+                <div class="card-title">🔥 中芯国际 (688981)</div>
+                <div class="card-meta">评分 58.9 | 60日收益 +0.0% | 回撤 0.0%</div>
+                <div class="card-price">目标 166.28 | 止损 154.869</div>
+                <div class="card-reason">技术面中性偏多(64/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨2 vs 看跌0</div>
+            </div>
+<div class="card">
+                <div class="card-title">🔥 海光信息 (688041)</div>
+                <div class="card-meta">评分 57.6 | 60日收益 +0.0% | 回撤 0.0%</div>
+                <div class="card-price">目标 360.06 | 止损 335.35</div>
+                <div class="card-reason">技术面中性偏多(66/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌0</div>
+            </div>
+<div class="card">
+                <div class="card-title">🔥 东方盛虹 (000301)</div>
+                <div class="card-meta">评分 55.2 | 60日收益 +0.0% | 回撤 0.0%</div>
+                <div class="card-price">目标 12.801 | 止损 12.17</div>
+                <div class="card-reason">技术面中性偏多(65/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌1</div>
+            </div>
+<div class="card">
                 <div class="card-title">🔥 沪锌 (ZN0)</div>
-                <div class="card-meta">评分 57.0 | 60日收益 +4.5% | 回撤 -4.8%</div>
+                <div class="card-meta">评分 57.0 | 60日收益 +0.0% | 回撤 0.0%</div>
                 <div class="card-price">目标 25362.3 | 止损 24119.05</div>
                 <div class="card-reason">技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌0</div>
             </div>
-            <div class="card bull">
+<div class="card">
                 <div class="card-title">🔥 菜油 (OI0)</div>
-                <div class="card-meta">评分 59.0 | 60日收益 +5.2% | 回撤 -7.8%</div>
+                <div class="card-meta">评分 59.0 | 60日收益 +0.0% | 回撤 0.0%</div>
                 <div class="card-price">目标 10106.16 | 止损 9610.76</div>
                 <div class="card-reason">技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌0</div>
             </div>
-            <div class="card bull">
-                <div class="card-title">🔥 棉花 (CF0)</div>
-                <div class="card-meta">评分 55.0 | 60日收益 +3.9% | 回撤 -6.2%</div>
-                <div class="card-price">目标 16447.5 | 止损 15641.25</div>
-                <div class="card-reason">技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1</div>
-            </div>
-            <div class="card bull">
-                <div class="card-title">🔥 菜粕 (RM0)</div>
-                <div class="card-meta">评分 57.0 | 60日收益 -1.1% | 回撤 -7.8%</div>
-                <div class="card-price">目标 2371.5 | 止损 2255.25</div>
-                <div class="card-reason">技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌0</div>
-            </div>
-</div><div class="section-title">❄️ 重点看空</div>
-<div class="cards">
-
-            <div class="card bear">
-                <div class="card-title">❄️ 焦煤 (JM0)</div>
-                <div class="card-meta">评分 41.0 | 60日收益 +18.1% | 回撤 -15.1%</div>
-                <div class="card-price">目标 1232.35 | 止损 1295.225</div>
-                <div class="card-reason">技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌5</div>
-            </div>
-            <div class="card bear">
-                <div class="card-title">❄️ 热卷 (HC0)</div>
-                <div class="card-meta">评分 43.3 | 60日收益 +0.4% | 回撤 -6.2%</div>
-                <div class="card-price">目标 3225.18 | 止损 3389.73</div>
-                <div class="card-reason">技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3</div>
-            </div>
-            <div class="card bear">
-                <div class="card-title">❄️ 玉米 (C0)</div>
-                <div class="card-meta">评分 43.0 | 60日收益 -3.6% | 回撤 -6.1%</div>
-                <div class="card-price">目标 2264.78 | 止损 2380.33</div>
-                <div class="card-reason">技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3</div>
-            </div>
 </div>
-
-    <div class="section-title">📂 📉 期货 (21只)</div>
-    <table>
-        <thead><tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>60日收益</th><th>60日回撤</th><th>60日夏普</th><th>现价</th><th>目标</th><th>止损</th><th>仓位</th><th>技术分</th></tr></thead>
-        <tbody>
-        <tr>
-            <td><b>J0</b></td>
-            <td>焦炭</td>
-            <td>黑色</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>49.5</td>
-            <td>67%</td>
-            <td>震荡</td>
-            <td>偏空</td>
-            <td>偏空</td>
-            <td>看跌</td>
-            <td>+16.3%</td>
-            <td>-9.0%</td>
-            <td>1.94</td>
-            <td>1913.0</td>
-            <td>1890.211</td>
-            <td>1874.74</td>
-            <td>0%</td>
-            <td title="技术面中性偏多(60/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3">60</td>
-        </tr>
-        <tr>
-            <td><b>JM0</b></td>
-            <td>焦煤</td>
-            <td>黑色</td>
-            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
-            <td>41.0</td>
-            <td>91%</td>
-            <td>震荡</td>
-            <td>偏空</td>
-            <td>看跌</td>
-            <td>看跌</td>
-            <td>+18.1%</td>
-            <td>-15.1%</td>
-            <td>1.65</td>
-            <td>1257.5</td>
-            <td>1232.35</td>
-            <td>1295.225</td>
-            <td>14%</td>
-            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌5">47</td>
-        </tr>
-        <tr>
-            <td><b>ZN0</b></td>
-            <td>沪锌</td>
-            <td>有色</td>
-            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>57.0</td>
-            <td>57%</td>
-            <td>震荡</td>
-            <td>偏多</td>
-            <td>看涨</td>
-            <td>看涨</td>
-            <td>+4.5%</td>
-            <td>-4.8%</td>
-            <td>1.16</td>
-            <td>24865.0</td>
-            <td>25362.3</td>
-            <td>24119.05</td>
-            <td>14%</td>
-            <td title="技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌0">70</td>
-        </tr>
-        <tr>
-            <td><b>OI0</b></td>
-            <td>菜油</td>
-            <td>农产品</td>
-            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>59.0</td>
-            <td>67%</td>
-            <td>震荡</td>
-            <td>偏多</td>
-            <td>偏多</td>
-            <td>看涨</td>
-            <td>+5.2%</td>
-            <td>-7.8%</td>
-            <td>1.28</td>
-            <td>9908.0</td>
-            <td>10106.16</td>
-            <td>9610.76</td>
-            <td>17%</td>
-            <td title="技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌0">70</td>
-        </tr>
-        <tr>
-            <td><b>CF0</b></td>
-            <td>棉花</td>
-            <td>农产品</td>
-            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>55.0</td>
-            <td>63%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>+3.9%</td>
-            <td>-6.2%</td>
-            <td>1.07</td>
-            <td>16125.0</td>
-            <td>16447.5</td>
-            <td>15641.25</td>
-            <td>16%</td>
-            <td title="技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1">70</td>
-        </tr>
-        <tr>
-            <td><b>CU0</b></td>
-            <td>沪铜</td>
-            <td>有色</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>52.5</td>
-            <td>52%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>偏多</td>
-            <td>+2.5%</td>
-            <td>-6.7%</td>
-            <td>0.66</td>
-            <td>103710.0</td>
-            <td>104124.84</td>
-            <td>101635.8</td>
-            <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌0">57</td>
-        </tr>
-        <tr>
-            <td><b>RM0</b></td>
-            <td>菜粕</td>
-            <td>农产品</td>
-            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>57.0</td>
-            <td>57%</td>
-            <td>震荡</td>
-            <td>偏多</td>
-            <td>看涨</td>
-            <td>看涨</td>
-            <td>-1.1%</td>
-            <td>-7.8%</td>
-            <td>-0.32</td>
-            <td>2325.0</td>
-            <td>2371.5</td>
-            <td>2255.25</td>
-            <td>14%</td>
-            <td title="技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌0">70</td>
-        </tr>
-        <tr>
-            <td><b>SR0</b></td>
-            <td>白糖</td>
-            <td>农产品</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>50.5</td>
-            <td>58%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>-0.1%</td>
-            <td>-5.3%</td>
-            <td>-0.21</td>
-            <td>5284.0</td>
-            <td>5272.388</td>
-            <td>5178.32</td>
-            <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1">57</td>
-        </tr>
-        <tr>
-            <td><b>HC0</b></td>
-            <td>热卷</td>
-            <td>黑色</td>
-            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
-            <td>43.3</td>
-            <td>81%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>+0.4%</td>
-            <td>-6.2%</td>
-            <td>0.00</td>
-            <td>3291.0</td>
-            <td>3225.18</td>
-            <td>3389.73</td>
-            <td>12%</td>
-            <td title="技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3">48</td>
-        </tr>
-        <tr>
-            <td><b>RB0</b></td>
-            <td>螺纹钢</td>
-            <td>黑色</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>50.5</td>
-            <td>58%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>-0.2%</td>
-            <td>-6.8%</td>
-            <td>-0.25</td>
-            <td>3087.0</td>
-            <td>3090.99</td>
-            <td>3025.26</td>
-            <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1">57</td>
-        </tr>
-        <tr>
-            <td><b>C0</b></td>
-            <td>玉米</td>
-            <td>农产品</td>
-            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
-            <td>43.0</td>
-            <td>81%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>-3.6%</td>
-            <td>-6.1%</td>
-            <td>-1.90</td>
-            <td>2311.0</td>
-            <td>2264.78</td>
-            <td>2380.33</td>
-            <td>12%</td>
-            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3">47</td>
-        </tr>
-        <tr>
-            <td><b>P0</b></td>
-            <td>棕榈油</td>
-            <td>农产品</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>50.5</td>
-            <td>58%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>偏多</td>
-            <td>-2.2%</td>
-            <td>-7.7%</td>
-            <td>-0.66</td>
-            <td>9222.0</td>
-            <td>9259.049</td>
-            <td>9037.56</td>
-            <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1">57</td>
-        </tr>
-        <tr>
-            <td><b>I0</b></td>
-            <td>铁矿石</td>
-            <td>黑色</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>52.5</td>
-            <td>52%</td>
-            <td>震荡</td>
-            <td>偏多</td>
-            <td>偏多</td>
-            <td>看涨</td>
-            <td>-0.9%</td>
-            <td>-10.9%</td>
-            <td>-0.31</td>
-            <td>751.5</td>
-            <td>758.532</td>
-            <td>736.47</td>
-            <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌0">57</td>
-        </tr>
-        <tr>
-            <td><b>SM0</b></td>
-            <td>硅锰</td>
-            <td>黑色</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>50.5</td>
-            <td>58%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>-4.5%</td>
-            <td>-7.8%</td>
-            <td>-1.62</td>
-            <td>5872.0</td>
-            <td>5877.021</td>
-            <td>5754.56</td>
-            <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1">57</td>
-        </tr>
-        <tr>
-            <td><b>AL0</b></td>
-            <td>沪铝</td>
-            <td>有色</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>50.5</td>
-            <td>58%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>-7.6%</td>
-            <td>-12.7%</td>
-            <td>-2.18</td>
-            <td>23055.0</td>
-            <td>23044.049</td>
-            <td>22593.9</td>
-            <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1">57</td>
-        </tr>
-        <tr>
-            <td><b>V0</b></td>
-            <td>PVC</td>
-            <td>能化</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>52.5</td>
-            <td>52%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>偏多</td>
-            <td>-10.0%</td>
-            <td>-18.5%</td>
-            <td>-2.21</td>
-            <td>4534.0</td>
-            <td>4552.397</td>
-            <td>4443.32</td>
-            <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌0">57</td>
-        </tr>
-        <tr>
-            <td><b>TA0</b></td>
-            <td>PTA</td>
-            <td>能化</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>45.4</td>
-            <td>79%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>偏空</td>
-            <td>-11.1%</td>
-            <td>-21.5%</td>
-            <td>-1.50</td>
-            <td>5560.0</td>
-            <td>5546.003</td>
-            <td>5448.8</td>
-            <td>0%</td>
-            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3">54</td>
-        </tr>
-        <tr>
-            <td><b>AU0</b></td>
-            <td>黄金</td>
-            <td>有色</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>50.5</td>
-            <td>58%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>偏空</td>
-            <td>偏空</td>
-            <td>-14.7%</td>
-            <td>-18.1%</td>
-            <td>-3.12</td>
-            <td>897.94</td>
-            <td>891.98</td>
-            <td>879.981</td>
-            <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1">57</td>
-        </tr>
-        <tr>
-            <td><b>MA0</b></td>
-            <td>甲醇</td>
-            <td>能化</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>45.4</td>
-            <td>79%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>-12.3%</td>
-            <td>-23.0%</td>
-            <td>-1.59</td>
-            <td>2480.0</td>
-            <td>2477.929</td>
-            <td>2430.4</td>
-            <td>0%</td>
-            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3">54</td>
-        </tr>
-        <tr>
-            <td><b>AG0</b></td>
-            <td>白银</td>
-            <td>有色</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>45.4</td>
-            <td>79%</td>
-            <td>偏空</td>
-            <td>看跌</td>
-            <td>看跌</td>
-            <td>看跌</td>
-            <td>-23.7%</td>
-            <td>-35.6%</td>
-            <td>-2.08</td>
-            <td>14656.0</td>
-            <td>14296.635</td>
-            <td>14362.88</td>
-            <td>0%</td>
-            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3">54</td>
-        </tr>
-        <tr>
-            <td><b>SC0</b></td>
-            <td>原油</td>
-            <td>能化</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>45.4</td>
-            <td>79%</td>
-            <td>震荡</td>
-            <td>偏多</td>
-            <td>偏多</td>
-            <td>看涨</td>
-            <td>-27.6%</td>
-            <td>-37.0%</td>
-            <td>-3.20</td>
-            <td>471.2</td>
-            <td>475.716</td>
-            <td>461.776</td>
-            <td>0%</td>
-            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3">54</td>
-        </tr></tbody>
-    </table>
-
-    <div class="footer">
-        数据由 Hermes Agent + 多Agent LLM 预测系统自动生成 · 研究辅助非投资建议 ·
-        <a href="https://github.com/ldw5821cn/daily_tracker_analytics" style="color:#6366f1">GitHub</a>
+    <div class="section-title">🔥 期货 实时预测（21只 | 看多4 看空3 中性14）</div>
+<table><tr><th>名称</th><th>代码</th><th>板块</th><th>信号</th><th>评分</th><th>60日收益</th><th>60日回撤</th><th>60日夏普</th><th>现价</th><th>目标</th><th>止损</th><th>仓位</th></tr>
+<tr><td class="name">焦炭</td><td>J0</td><td>黑色</td><td class="neutral">中性</td><td>49.5</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>1913.0</td><td>1890.211</td><td>1874.74</td><td>0%</td></tr>
+<tr><td class="name">焦煤</td><td>JM0</td><td>黑色</td><td class="bearish">看空</td><td>41.0</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>1257.5</td><td>1232.35</td><td>1295.225</td><td>14%</td></tr>
+<tr><td class="name">沪锌</td><td>ZN0</td><td>有色</td><td class="bullish">看多</td><td>57.0</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>24865.0</td><td>25362.3</td><td>24119.05</td><td>14%</td></tr>
+<tr><td class="name">菜油</td><td>OI0</td><td>农产品</td><td class="bullish">看多</td><td>59.0</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>9908.0</td><td>10106.16</td><td>9610.76</td><td>17%</td></tr>
+<tr><td class="name">棉花</td><td>CF0</td><td>农产品</td><td class="bullish">看多</td><td>55.0</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>16125.0</td><td>16447.5</td><td>15641.25</td><td>16%</td></tr>
+<tr><td class="name">沪铜</td><td>CU0</td><td>有色</td><td class="neutral">中性</td><td>52.5</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>103710.0</td><td>104124.84</td><td>101635.8</td><td>0%</td></tr>
+<tr><td class="name">菜粕</td><td>RM0</td><td>农产品</td><td class="bullish">看多</td><td>57.0</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>2325.0</td><td>2371.5</td><td>2255.25</td><td>14%</td></tr>
+<tr><td class="name">白糖</td><td>SR0</td><td>农产品</td><td class="neutral">中性</td><td>50.5</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>5284.0</td><td>5272.388</td><td>5178.32</td><td>0%</td></tr>
+<tr><td class="name">热卷</td><td>HC0</td><td>黑色</td><td class="bearish">看空</td><td>43.3</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>3291.0</td><td>3225.18</td><td>3389.73</td><td>12%</td></tr>
+<tr><td class="name">螺纹钢</td><td>RB0</td><td>黑色</td><td class="neutral">中性</td><td>50.5</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>3087.0</td><td>3090.99</td><td>3025.26</td><td>0%</td></tr>
+<tr><td class="name">玉米</td><td>C0</td><td>农产品</td><td class="bearish">看空</td><td>43.0</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>2311.0</td><td>2264.78</td><td>2380.33</td><td>12%</td></tr>
+<tr><td class="name">棕榈油</td><td>P0</td><td>农产品</td><td class="neutral">中性</td><td>50.5</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>9222.0</td><td>9259.049</td><td>9037.56</td><td>0%</td></tr>
+<tr><td class="name">铁矿石</td><td>I0</td><td>黑色</td><td class="neutral">中性</td><td>52.5</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>751.5</td><td>758.532</td><td>736.47</td><td>0%</td></tr>
+<tr><td class="name">硅锰</td><td>SM0</td><td>黑色</td><td class="neutral">中性</td><td>50.5</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>5872.0</td><td>5877.021</td><td>5754.56</td><td>0%</td></tr>
+<tr><td class="name">沪铝</td><td>AL0</td><td>有色</td><td class="neutral">中性</td><td>50.5</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>23055.0</td><td>23044.049</td><td>22593.9</td><td>0%</td></tr>
+<tr><td class="name">PVC</td><td>V0</td><td>能化</td><td class="neutral">中性</td><td>52.5</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>4534.0</td><td>4552.397</td><td>4443.32</td><td>0%</td></tr>
+<tr><td class="name">PTA</td><td>TA0</td><td>能化</td><td class="neutral">中性</td><td>45.4</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>5560.0</td><td>5546.003</td><td>5448.8</td><td>0%</td></tr>
+<tr><td class="name">黄金</td><td>AU0</td><td>有色</td><td class="neutral">中性</td><td>50.5</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>897.94</td><td>891.98</td><td>879.981</td><td>0%</td></tr>
+<tr><td class="name">甲醇</td><td>MA0</td><td>能化</td><td class="neutral">中性</td><td>45.4</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>2480.0</td><td>2477.929</td><td>2430.4</td><td>0%</td></tr>
+<tr><td class="name">白银</td><td>AG0</td><td>有色</td><td class="neutral">中性</td><td>45.4</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>14656.0</td><td>14296.635</td><td>14362.88</td><td>0%</td></tr>
+<tr><td class="name">原油</td><td>SC0</td><td>能化</td><td class="neutral">中性</td><td>45.4</td><td>+0.0%</td><td>0.0%</td><td>0.00</td><td>471.2</td><td>475.716</td><td>461.776</td><td>0%</td></tr>
+</table>
+    <div style="text-align:center;padding:12px 0 24px 0;">
+      <a href="prediction.html#期货" style="color:#58a6ff;text-decoration:none;font-size:0.9em;">查看 2026-07-12 全部 期货 预测 →</a>
     </div>
+    
+
+
+    <div class="date-section" style="border-left:4px solid #1f6feb;">
+      <div class="date-header">📅 2026-07-12（最新实时预测）</div>
+            <div class="report-item">
+              <a href="prediction.html#期货" target="_blank">📄 2026-07-12 期货 多Agent预测总览（21只）</a>
+              <div class="meta">2026-07-12 · 实时预测</div>
+            </div>
+    </div>
+    <div class="date-section">
+      <div class="date-header">📅 2026-07-10</div>
+      
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_ZN0_20260710.html" target="_blank">📄 沪锌(ZN0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_V0_20260710.html" target="_blank">📄 PVC(V0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_TA0_20260710.html" target="_blank">📄 PTA(TA0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_SR0_20260710.html" target="_blank">📄 白糖(SR0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_SM0_20260710.html" target="_blank">📄 硅锰(SM0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_SC0_20260710.html" target="_blank">📄 原油(SC0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_RM0_20260710.html" target="_blank">📄 菜粕(RM0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_RB0_20260710.html" target="_blank">📄 螺纹钢(RB0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_P0_20260710.html" target="_blank">📄 棕榈油(P0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_OI0_20260710.html" target="_blank">📄 菜油(OI0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_MA0_20260710.html" target="_blank">📄 甲醇(MA0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_JM0_20260710.html" target="_blank">📄 焦煤(JM0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_J0_20260710.html" target="_blank">📄 焦炭(J0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_I0_20260710.html" target="_blank">📄 铁矿石(I0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_HC0_20260710.html" target="_blank">📄 热卷(HC0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_CU0_20260710.html" target="_blank">📄 沪铜(CU0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_CF0_20260710.html" target="_blank">📄 棉花(CF0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_C0_20260710.html" target="_blank">📄 玉米(C0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_AU0_20260710.html" target="_blank">📄 黄金(AU0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_AL0_20260710.html" target="_blank">📄 沪铝(AL0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-10/futures_AG0_20260710.html" target="_blank">📄 白银(AG0)</a>
+              <div class="meta">2026-07-10 · 1 KB</div>
+            </div>
+    </div>
+    <div class="date-section">
+      <div class="date-header">📅 2026-07-09</div>
+      
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_ZN0_20260709.html" target="_blank">📄 沪锌(ZN0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_V0_20260709.html" target="_blank">📄 PVC(V0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_TA0_20260709.html" target="_blank">📄 PTA(TA0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_SR0_20260709.html" target="_blank">📄 白糖(SR0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_SM0_20260709.html" target="_blank">📄 硅锰(SM0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_SC0_20260709.html" target="_blank">📄 原油(SC0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_RM0_20260709.html" target="_blank">📄 菜粕(RM0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_RB0_20260709.html" target="_blank">📄 螺纹钢(RB0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_P0_20260709.html" target="_blank">📄 棕榈油(P0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_OI0_20260709.html" target="_blank">📄 菜油(OI0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_MA0_20260709.html" target="_blank">📄 甲醇(MA0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_JM0_20260709.html" target="_blank">📄 焦煤(JM0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_J0_20260709.html" target="_blank">📄 焦炭(J0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_I0_20260709.html" target="_blank">📄 铁矿石(I0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_HC0_20260709.html" target="_blank">📄 热卷(HC0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_CU0_20260709.html" target="_blank">📄 沪铜(CU0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_CF0_20260709.html" target="_blank">📄 棉花(CF0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_C0_20260709.html" target="_blank">📄 玉米(C0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_AU0_20260709.html" target="_blank">📄 黄金(AU0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_AL0_20260709.html" target="_blank">📄 沪铝(AL0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-09/futures_AG0_20260709.html" target="_blank">📄 白银(AG0)</a>
+              <div class="meta">2026-07-09 · 1 KB</div>
+            </div>
+    </div>
+    <div class="date-section">
+      <div class="date-header">📅 2026-07-08</div>
+      
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_ZN0_20260708.html" target="_blank">📄 沪锌(ZN0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_V0_20260708.html" target="_blank">📄 PVC(V0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_TA0_20260708.html" target="_blank">📄 PTA(TA0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_SR0_20260708.html" target="_blank">📄 白糖(SR0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_SM0_20260708.html" target="_blank">📄 硅锰(SM0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_SC0_20260708.html" target="_blank">📄 原油(SC0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_RM0_20260708.html" target="_blank">📄 菜粕(RM0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_RB0_20260708.html" target="_blank">📄 螺纹钢(RB0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_P0_20260708.html" target="_blank">📄 棕榈油(P0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_OI0_20260708.html" target="_blank">📄 菜油(OI0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_MA0_20260708.html" target="_blank">📄 甲醇(MA0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_JM0_20260708.html" target="_blank">📄 焦煤(JM0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_J0_20260708.html" target="_blank">📄 焦炭(J0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_I0_20260708.html" target="_blank">📄 铁矿石(I0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_HC0_20260708.html" target="_blank">📄 热卷(HC0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_CU0_20260708.html" target="_blank">📄 沪铜(CU0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_CF0_20260708.html" target="_blank">📄 棉花(CF0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_C0_20260708.html" target="_blank">📄 玉米(C0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_AU0_20260708.html" target="_blank">📄 黄金(AU0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_AL0_20260708.html" target="_blank">📄 沪铝(AL0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-08/futures_AG0_20260708.html" target="_blank">📄 白银(AG0)</a>
+              <div class="meta">2026-07-08 · 1 KB</div>
+            </div>
+    </div>
+    <div class="date-section">
+      <div class="date-header">📅 2026-07-07</div>
+      
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_ZN0_20260707.html" target="_blank">📄 沪锌(ZN0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_V0_20260707.html" target="_blank">📄 PVC(V0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_TA0_20260707.html" target="_blank">📄 PTA(TA0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_SR0_20260707.html" target="_blank">📄 白糖(SR0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_SM0_20260707.html" target="_blank">📄 硅锰(SM0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_SC0_20260707.html" target="_blank">📄 原油(SC0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_RM0_20260707.html" target="_blank">📄 菜粕(RM0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_RB0_20260707.html" target="_blank">📄 螺纹钢(RB0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_P0_20260707.html" target="_blank">📄 棕榈油(P0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_OI0_20260707.html" target="_blank">📄 菜油(OI0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_MA0_20260707.html" target="_blank">📄 甲醇(MA0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_JM0_20260707.html" target="_blank">📄 焦煤(JM0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_J0_20260707.html" target="_blank">📄 焦炭(J0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_I0_20260707.html" target="_blank">📄 铁矿石(I0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_HC0_20260707.html" target="_blank">📄 热卷(HC0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_CU0_20260707.html" target="_blank">📄 沪铜(CU0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_CF0_20260707.html" target="_blank">📄 棉花(CF0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_C0_20260707.html" target="_blank">📄 玉米(C0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_AU0_20260707.html" target="_blank">📄 黄金(AU0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_AL0_20260707.html" target="_blank">📄 沪铝(AL0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-07/futures_AG0_20260707.html" target="_blank">📄 白银(AG0)</a>
+              <div class="meta">2026-07-07 · 1 KB</div>
+            </div>
+    </div>
+    <div class="date-section">
+      <div class="date-header">📅 2026-07-06</div>
+      
+            <div class="report-item">
+              <a href="reports/2026-07-06/futures_ZN0_20260706.html" target="_blank">📄 沪锌(ZN0)</a>
+              <div class="meta">2026-07-06 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-06/futures_RB0_20260706.html" target="_blank">📄 螺纹钢(RB0)</a>
+              <div class="meta">2026-07-06 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-06/futures_I0_20260706.html" target="_blank">📄 铁矿石(I0)</a>
+              <div class="meta">2026-07-06 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-06/futures_HC0_20260706.html" target="_blank">📄 热卷(HC0)</a>
+              <div class="meta">2026-07-06 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-06/futures_CU0_20260706.html" target="_blank">📄 沪铜(CU0)</a>
+              <div class="meta">2026-07-06 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-06/futures_AU0_20260706.html" target="_blank">📄 黄金(AU0)</a>
+              <div class="meta">2026-07-06 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-06/futures_AL0_20260706.html" target="_blank">📄 沪铝(AL0)</a>
+              <div class="meta">2026-07-06 · 1 KB</div>
+            </div>
+            <div class="report-item">
+              <a href="reports/2026-07-06/futures_AG0_20260706.html" target="_blank">📄 白银(AG0)</a>
+              <div class="meta">2026-07-06 · 1 KB</div>
+            </div>
+    </div>
+    <div class="date-section">
+      <div class="date-header">📅 2026-07-03</div>
+      
+            <div class="report-item">
+              <a href="reports/2026-07-03/futures_report_1.html" target="_blank">📄 futures_report_1.md</a>
+              <div class="meta">2026-07-03 · 4 KB</div>
+            </div>
+    </div>
+
+<div class="footer">
+  <p>报告自动生成 | 数据源: Tushare / AkShare / 新浪财经 / 腾讯财经</p>
+  <p>更新时间: 2026-07-13 16:03</p>
 </div>
 </body>
 </html>
