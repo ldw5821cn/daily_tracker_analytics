@@ -33,13 +33,18 @@ echo "[$(date +'%Y-%m-%d %H:%M:%S')] 2/5 运行 analyze_prediction_errors.py"
 echo "[$(date +'%Y-%m-%d %H:%M:%S')] 3/5 运行 generate_prediction_reflection.py"
 "${PYTHON}" multi_agent/scripts/generate_prediction_reflection.py || echo "⚠️ generate_prediction_reflection.py 失败，继续执行"
 
-# 4. 生成 GitHub Pages 静态页面（包含预测、持仓、分类等）
-echo "[$(date +'%Y-%m-%d %H:%M:%S')] 4/5 运行 scripts/generate_pages.py"
+# 4. 根据反思自动调整超参数（A/B 对比记录）
+echo "[$(date +'%Y-%m-%d %H:%M:%S')] 4/6 运行 auto_tune_from_reflection.py + A/B 测试"
+"${PYTHON}" multi_agent/scripts/auto_tune_from_reflection.py
+"${PYTHON}" multi_agent/scripts/ab_test_predictions.py
+
+# 5. 生成 GitHub Pages 静态页面（包含预测、持仓、分类等）
+echo "[$(date +'%Y-%m-%d %H:%M:%S')] 5/6 运行 scripts/generate_pages.py"
 "${PYTHON}" scripts/generate_pages.py
 
-# 5. 提交并推送 docs/ 与数据 JSON（不推送 llm_predictions.db）
+# 6. 提交并推送 docs/ 与数据 JSON（不推送 llm_predictions.db）
 # .gitignore 已排除 *.db，因此无需特别处理
-echo "[$(date +'%Y-%m-%d %H:%M:%S')] 5/5 提交并推送 docs/ 与数据 JSON"
+echo "[$(date +'%Y-%m-%d %H:%M:%S')] 6/6 提交并推送 docs/ 与数据 JSON"
 if git diff --cached --quiet && git diff --quiet -- docs/ multi_agent/data/*.json; then
     echo "[$(date +'%Y-%m-%d %H:%M:%S')] 没有可提交的变更，跳过 git commit/push"
 else

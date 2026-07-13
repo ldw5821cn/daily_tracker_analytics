@@ -1,0 +1,37 @@
+[
+  {
+    "date": "2026-07-13T20:05:16.450857",
+    "pred_date": "2026-07-13",
+    "accuracy": 64.12,
+    "signals": {
+      "bearish_bullish_block": true,
+      "neutral_downgrade": true,
+      "technical_misleading": true,
+      "low_accuracy": false,
+      "high_bullish_error": true,
+      "high_neutral_error": true
+    },
+    "patches": [
+      {
+        "old": "    if macro_signal == 'bearish' and individual_signal == 'bullish':\n        return -base * strength * 2, \"宏观 bearish 压制",
+        "new": "    if macro_signal == 'bearish' and individual_signal == 'bullish':\n        # 强干预：宏观熊市下完全禁止 bullish 信号，直接推至 bearish 区间\n"
+      },
+      {
+        "old": "    'macro': 0.10,      # 新增宏观权重",
+        "new": "    'macro': 0.18,      # 复盘后提高：宏观 bearish 时技术面容易失效"
+      },
+      {
+        "old": "    'technical': 0.30,  # 市场环境动荡时技术面容易失效，适当降低",
+        "new": "    'technical': 0.22,  # 复盘后降低：下跌趋势中技术面常逆势误导"
+      },
+      {
+        "old": "    'debate': 0.20,",
+        "new": "    'debate': 0.25,      # 复盘后提高：多空辩论比滞后技术更可靠"
+      },
+      {
+        "old": "    'neutral_high': 55,\n    'neutral_low': 45,",
+        "new": "    'neutral_high': 52,\n    'neutral_low': 48,   # 复盘后收窄：减少 neutral 区间，避免熊市中性陷阱"
+      }
+    ]
+  }
+]

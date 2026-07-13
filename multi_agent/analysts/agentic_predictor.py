@@ -45,11 +45,11 @@ DB_PATH = os.path.join(PROJECT_ROOT, 'multi_agent', 'data', 'llm_predictions.db'
 # ============================================================
 # 统一超参数配置（选股、预测、回测一致）
 WEIGHTS = {
-    'technical': 0.30,  # 市场环境动荡时技术面容易失效，适当降低
+    'technical': 0.22,  # 复盘后降低：下跌趋势中技术面常逆势误导
     'fundamental': 0.25,
     'sentiment': 0.15,
-    'macro': 0.10,      # 新增宏观权重
-    'debate': 0.20,
+    'macro': 0.18,      # 复盘后提高：宏观 bearish 时技术面容易失效
+    'debate': 0.25,      # 复盘后提高：多空辩论比滞后技术更可靠
 }
 
 THRESHOLD = {
@@ -144,19 +144,26 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
 
     # 叠加宏观修正（单次评分，不循环放大）
     macro_override = 0
+    macro_note = ""
     if macro_report:
         from analysts.macro_analyst import get_macro_score_override
         raw_signal = 'bullish' if weighted >= THRESHOLD['bull'] else 'bearish' if weighted <= THRESHOLD['bear'] else 'neutral'
-        macro_override = get_macro_score_override(macro_report, raw_signal)
-        # 高波动环境下（如宏观 bearish 或市场广度<30），修正力度加倍
-        breadth_score = macro_report.get('market_breadth', {}).get('score', 50)
-        if macro_report.get('macro_signal') == 'bearish' and breadth_score < 30:
-            macro_override *= 2.0
-        elif macro_report.get('macro_signal') == 'bullish' and breadth_score > 70:
-            macro_override *= 1.5
-        weighted = max(0, min(100, weighted + macro_override))
+        # 强干预：宏观 bearish 环境下直接拦截 bullish 信号
+        if macro_report.get('macro_signal') == 'bearish' and raw_signal == 'bullish':
+            weighted = THRESHOLD['bear'] - 1  # 强制压入 bearish 区间
+            macro_override = -20
+            macro_note = f"宏观 bearish 拦截 bullish ({macro_report.get('macro_score', 50)}/100)"
+        else:
+            macro_override = get_macro_score_override(macro_report, raw_signal)
+            # 高波动环境下（如宏观 bearish 或市场广度<30），修正力度加倍
+            breadth_score = macro_report.get('market_breadth', {}).get('score', 50)
+            if macro_report.get('macro_signal') == 'bearish' and breadth_score < 30:
+                macro_override *= 2.0
+            elif macro_report.get('macro_signal') == 'bullish' and breadth_score > 70:
+                macro_override *= 1.5
+            weighted = max(0, min(100, weighted + macro_override))
 
-    # 统一信号判定：收窄 neutral 范围，47-53 才为中性
+    # 统一信号判定：收窄 neutral 范围，46-52 才为中性
     if weighted >= THRESHOLD['strong_bull']:
         signal = 'bullish'
     elif weighted >= THRESHOLD['bull']:
@@ -168,10 +175,16 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     else:
         signal = 'neutral'
 
-    # confidence：距离中值越远越高；0.5 为中性基线，避免低区分度
-    distance_from_neutral = abs(weighted - 50) / 50
-    debate_strength = min(abs(net_debate) * 0.08, 0.4)
-    confidence = round(max(0.5, min(0.95, 0.5 + distance_from_neutral * 0.5 + debate_strength)), 2)
+    # 复盘硬规则：宏观 < 50 时禁止 bullish；技术面 < 55 且宏观 < 50 强制 bearish
+    if macro_report and macro_report.get('macro_score', 50) < 50:
+        if signal == 'bullish':
+            signal = 'bearish' if tech_score < 55 else 'neutral'
+            weighted = THRESHOLD['bear'] - 1 if tech_score < 55 else 50
+        elif signal == 'neutral' and tech_score < 55:
+            signal = 'bearish'
+            weighted = THRESHOLD['bear'] - 1
+
+    confidence = round(max(0.5, min(0.95, 0.5 + abs(weighted - 50) / 50 * 0.5 + min(abs(net_debate) * 0.08, 0.4))), 2)
 
     base_position = POSITION_MAP[signal]
     position_pct = round(min(base_position * confidence, 0.25), 3)
