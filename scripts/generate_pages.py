@@ -17,6 +17,24 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOCS_DIR = os.path.join(REPO_ROOT, "docs")
 DB_PATH = os.path.join(REPO_ROOT, "multi_agent", "data", "llm_predictions.db")
 
+SCENARIO_NAME_CN = {
+    'daily_long_short_no_cost': '每日多空（无成本）',
+    'daily_long_short_with_cost': '每日多空（含成本）',
+    'weekly_long_only_no_cost': '每周只做多（无成本）',
+    'weekly_long_only_with_cost': '每周只做多（含成本）',
+    'weekly_long_only_risk_no_cost': '每周只做多+止损风控（无成本）',
+    'weekly_long_only_risk_with_cost': '每周只做多+止损风控（含成本）',
+}
+
+SCENARIO_DESC = {
+    'daily_long_short_no_cost': '每日按因子得分 Top10 做多、Bottom10 做空，不考虑交易成本',
+    'daily_long_short_with_cost': '每日按因子得分 Top10 做多、Bottom10 做空，扣 0.1% 单边交易成本',
+    'weekly_long_only_no_cost': '每周五选因子得分 Top10 等权做多，不考虑交易成本',
+    'weekly_long_only_with_cost': '每周五选因子得分 Top10 等权做多，扣 0.1% 交易成本',
+    'weekly_long_only_risk_no_cost': '每周五 Top10 等权 + 个股回撤 8% 止损 + 组合回撤 15% 清仓，无成本',
+    'weekly_long_only_risk_with_cost': '每周五 Top10 等权 + 个股回撤 8% 止损 + 组合回撤 15% 清仓，含成本',
+}
+
 SIGNAL_EMOJI = {'bullish': '🔥', 'neutral': '➖', 'bearish': '❄️'}
 SIGNAL_COLOR = {'bullish': '#ef4444', 'neutral': '#94a3b8', 'bearish': '#22c55e'}
 SIGNAL_CN = {'bullish': '看多', 'neutral': '中性', 'bearish': '看空'}
@@ -207,19 +225,22 @@ def _portfolio_backtest_html():
             continue
         highlight = name == 'weekly_long_only_risk_with_cost'
         style = 'style="background:#1e293b;font-weight:bold"' if highlight else ''
+        cn_name = SCENARIO_NAME_CN.get(name, name)
+        desc = SCENARIO_DESC.get(name, '')
         rows.append(
-            f"<tr {style}><td>{name}{' ⭐' if highlight else ''}</td>"
+            f"<tr {style}><td>{cn_name}{' ⭐' if highlight else ''}</td>"
             f"<td style=\"color:{'#ef4444' if v['annualized_return'] >= 0 else '#22c55e'}\">{v['annualized_return']:+.2f}%</td>"
             f"<td>{v['max_drawdown']:.2f}%</td>"
             f"<td>{v['sharpe_ratio']:.2f}</td>"
             f"<td>{v['calmar_ratio']:.2f}</td>"
-            f"<td>{v['num_trades']}</td></tr>"
+            f"<td>{v['num_trades']}</td>"
+            f"<td>{desc}</td></tr>"
         )
     return f"""
     <div class="section-title">📊 VectorBT 组合滚动回测</div>
     <div class="table-responsive">
     <table>
-        <thead><tr><th>场景</th><th>年化</th><th>回撤</th><th>夏普</th><th>Calmar</th><th>交易次数</th></tr></thead>
+        <thead><tr><th>场景</th><th>年化</th><th>回撤</th><th>夏普</th><th>Calmar</th><th>交易次数</th><th>含义</th></tr></thead>
         <tbody>{"".join(rows)}</tbody>
     </table>
     </div>"""
