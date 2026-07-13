@@ -36,8 +36,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto
 .header { background: linear-gradient(135deg, #1e293b, #334155); padding: 30px; border-radius: 16px; margin-bottom: 24px; }
 .header h1 { font-size: 24px; margin-bottom: 8px; }
 .header .sub { color: #94a3b8; font-size: 14px; }
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 24px; }
-.stat-card { background: #1e293b; border-radius: 12px; padding: 20px; text-align: center; }
+.stats-grid { display: flex; gap: 16px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 8px; }
+.stat-card { flex: 1; min-width: 120px; background: #1e293b; border-radius: 12px; padding: 20px; text-align: center; }
 .stat-card .num { font-size: 28px; font-weight: bold; }
 .stat-card .label { color: #94a3b8; font-size: 12px; margin-top: 4px; }
 .section-title { font-size: 18px; font-weight: 600; margin: 24px 0 12px; padding-left: 12px; border-left: 4px solid #6366f1; }
@@ -386,19 +386,16 @@ def generate_portfolio_page():
         _stat_card(f"{tw.get('net_exposure', 0)*100:+.1f}%", '净敞口'),
     ])
 
-    targets = tw.get('targets', [])
-    targets = [t for t in targets if t.get('category') in ('个股', 'ETF')]
-    targets = sorted(targets, key=lambda x: abs(x.get('target_weight', 0)), reverse=True)
-    target_rows = ""
-    for t in targets:
-        sig = t.get('signal', 'neutral')
-        color = SIGNAL_COLOR.get(sig, '#94a3b8')
-        cn = SIGNAL_CN.get(sig, sig)
-        target_rows += f"""
+    def _target_rows(items):
+        rows = ""
+        for t in items:
+            sig = t.get('signal', 'neutral')
+            color = SIGNAL_COLOR.get(sig, '#94a3b8')
+            cn = SIGNAL_CN.get(sig, sig)
+            rows += f"""
         <tr>
             <td><b>{t.get('ticker')}</b></td>
             <td>{t.get('name')}</td>
-            <td>{t.get('category')}</td>
             <td style="color:{color}">{cn}</td>
             <td>{t.get('target_weight', 0)*100:.2f}%</td>
             <td>{t.get('current_price', 0)}</td>
@@ -406,22 +403,37 @@ def generate_portfolio_page():
             <td>{t.get('stop_loss', 0)}</td>
             <td title="{t.get('reason', '')}">{t.get('reason', '')[:40]}</td>
         </tr>"""
+        return rows
 
-    items = rb.get('items', [])
-    action_rows = ""
-    for item in items:
-        action_color = {'买入': '#ef4444', '减持/卖出': '#22c55e', '融券卖出': '#22c55e', '不操作': '#94a3b8'}.get(item.get('action'), '#e2e8f0')
-        action_rows += f"""
+    def _action_rows(items):
+        rows = ""
+        for item in items:
+            action_color = {'买入': '#ef4444', '减持/卖出': '#22c55e', '融券卖出': '#22c55e', '不操作': '#94a3b8'}.get(item.get('action'), '#e2e8f0')
+            rows += f"""
         <tr>
             <td style="color:{action_color}"><b>{item.get('action')}</b></td>
             <td>{item.get('ticker')}</td>
             <td>{item.get('name')}</td>
-            <td>{item.get('category')}</td>
             <td>¥{item.get('target_amount', 0):,.0f}</td>
             <td>{item.get('target_weight', 0)*100:.2f}%</td>
             <td>{item.get('current_price', 0)}</td>
             <td>{item.get('constraint_note', '')}</td>
         </tr>"""
+        return rows
+
+    # 按类别分组
+    stock_targets = [t for t in tw.get('targets', []) if t.get('category') == '个股']
+    etf_targets = [t for t in tw.get('targets', []) if t.get('category') == 'ETF']
+    futures_targets = [t for t in tw.get('targets', []) if t.get('category') == '期货']
+    stock_targets = sorted(stock_targets, key=lambda x: abs(x.get('target_weight', 0)), reverse=True)
+    etf_targets = sorted(etf_targets, key=lambda x: abs(x.get('target_weight', 0)), reverse=True)
+    futures_targets = sorted(futures_targets, key=lambda x: abs(x.get('target_weight', 0)), reverse=True)
+
+    stock_actions = [i for i in rb.get('items', []) if i.get('category') == '个股']
+    etf_actions = [i for i in rb.get('items', []) if i.get('category') == 'ETF']
+
+    # 期货模拟盘持仓
+    futures_positions = _load_futures_positions()
 
     body = f"""
 {stats_cards}
@@ -430,21 +442,71 @@ def generate_portfolio_page():
         <p>买入金额合计: <b>¥{long_amount:,.0f}</b> | 融券金额: <b>¥{short_amount:,.0f}</b> | 跳过 <b>{skipped}</b> 只（A股一手约束）。</p>
         <p>A 股个股不能做空，负权重仅输出为"减持/卖出"建议；ETF 做空需开通融券账户。</p>
     </div>
-    <div class="section-title">🎯 目标持仓列表（股票+ETF）</div>
+    <div class="section-title">📈 股票持仓</div>
     <table>
-        <thead><tr><th>代码</th><th>名称</th><th>类别</th><th>信号</th><th>目标权重</th><th>现价</th><th>目标价</th><th>止损</th><th>理由</th></tr></thead>
-        <tbody>{target_rows if target_rows else '<tr><td colspan="9" class="empty">暂无目标权重数据</td></tr>'}</tbody>
+        <thead><tr><th>代码</th><th>名称</th><th>信号</th><th>目标权重</th><th>现价</th><th>目标价</th><th>止损</th><th>理由</th></tr></thead>
+        <tbody>{_target_rows(stock_targets) if stock_targets else '<tr><td colspan="8" class="empty">暂无股票目标持仓</td></tr>'}</tbody>
     </table>
-    <div class="section-title">📝 调仓建议清单</div>
+    <div class="section-title">📝 股票调仓建议</div>
     <table>
-        <thead><tr><th>操作</th><th>代码</th><th>名称</th><th>类别</th><th>目标金额</th><th>目标权重</th><th>现价</th><th>约束</th></tr></thead>
-        <tbody>{action_rows if action_rows else '<tr><td colspan="8" class="empty">暂无调仓建议</td></tr>'}</tbody>
+        <thead><tr><th>操作</th><th>代码</th><th>名称</th><th>目标金额</th><th>目标权重</th><th>现价</th><th>约束</th></tr></thead>
+        <tbody>{_action_rows(stock_actions) if stock_actions else '<tr><td colspan="7" class="empty">暂无股票调仓建议</td></tr>'}</tbody>
+    </table>
+    <div class="section-title">📊 ETF 持仓</div>
+    <table>
+        <thead><tr><th>代码</th><th>名称</th><th>信号</th><th>目标权重</th><th>现价</th><th>目标价</th><th>止损</th><th>理由</th></tr></thead>
+        <tbody>{_target_rows(etf_targets) if etf_targets else '<tr><td colspan="8" class="empty">暂无 ETF 目标持仓</td></tr>'}</tbody>
+    </table>
+    <div class="section-title">📝 ETF 调仓建议</div>
+    <table>
+        <thead><tr><th>操作</th><th>代码</th><th>名称</th><th>目标金额</th><th>目标权重</th><th>现价</th><th>约束</th></tr></thead>
+        <tbody>{_action_rows(etf_actions) if etf_actions else '<tr><td colspan="7" class="empty">暂无 ETF 调仓建议</td></tr>'}</tbody>
+    </table>
+    <div class="section-title">📉 期货持仓</div>
+    <table>
+        <thead><tr><th>代码</th><th>名称</th><th>信号</th><th>目标权重</th><th>现价</th><th>目标价</th><th>止损</th><th>理由</th></tr></thead>
+        <tbody>{_target_rows(futures_targets) if futures_targets else '<tr><td colspan="8" class="empty">暂无期货目标持仓</td></tr>'}</tbody>
+    </table>
+    <div class="section-title">📝 期货模拟盘持仓</div>
+    <table>
+        <thead><tr><th>品种</th><th>方向</th><th>手数</th><th>开仓均价</th><th>当前价</th><th>浮盈/亏</th></tr></thead>
+        <tbody>{futures_positions if futures_positions else '<tr><td colspan="6" class="empty">暂无期货持仓</td></tr>'}</tbody>
     </table>
 """
     title = f"💼 持仓组合 - {date}"
     subtitle = f"{date} · 目标权重组合 · 组合市值 ¥{total_value:,.0f}"
     html = _build_page_skeleton(title, body, 'portfolio.html', subtitle)
     _write('portfolio.html', html)
+
+
+def _load_futures_positions():
+    db_path = os.path.join(REPO_ROOT, 'multi_agent', 'data', 'futures_simulator.db')
+    if not os.path.exists(db_path):
+        return ""
+    try:
+        conn = sqlite3.connect(db_path)
+        cur = conn.cursor()
+        cur.execute("SELECT contract, direction, lots, entry_price, current_price, pnl FROM positions")
+        rows = cur.fetchall()
+        conn.close()
+        if not rows:
+            return ""
+        html = ""
+        for r in rows:
+            contract, direction, lots, entry, current, pnl = r
+            dir_color = '#ef4444' if direction == 'long' else '#22c55e'
+            html += f"""
+        <tr>
+            <td><b>{contract}</b></td>
+            <td style="color:{dir_color}">{direction}</td>
+            <td>{lots}</td>
+            <td>{entry}</td>
+            <td>{current}</td>
+            <td>{pnl}</td>
+        </tr>"""
+        return html
+    except Exception as e:
+        return f'<tr><td colspan="6" class="empty">读取期货持仓失败: {e}</td></tr>'
 
 
 def _write(name, html):
