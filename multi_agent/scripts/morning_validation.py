@@ -96,13 +96,25 @@ def main():
         print('❌ 无预测数据')
         sys.exit(1)
 
+    # 默认验证前一日预测（当前最新预测是今日收盘后生成，次日才有收盘价用于验证）
+    from datetime import datetime, timedelta
+    latest_dt = datetime.strptime(latest, '%Y-%m-%d')
+    pred_date = (latest_dt - timedelta(days=1)).strftime('%Y-%m-%d')
+    # 如果前一日没有预测，则退回到最新预测日期
+    exists = conn.execute(
+        "SELECT COUNT(*) FROM agentic_predictions WHERE pred_date=?",
+        (pred_date,)
+    ).fetchone()[0]
+    if exists == 0:
+        pred_date = latest
+
     rows = conn.execute(
         "SELECT * FROM agentic_predictions WHERE pred_date=?",
-        (latest,)
+        (pred_date,)
     ).fetchall()
     conn.close()
 
-    print(f'[morning] 验证 {latest} 预测 vs 今日上午收盘价，共 {len(rows)} 只...')
+    print(f'[morning] 验证 {pred_date} 预测 vs 下一交易日收盘价，共 {len(rows)} 只...')
     results = []
     for row in rows:
         r = _validate_row(row)
