@@ -135,13 +135,13 @@ def _stats(cards_html):
     return f'<div class="stats-grid">\n{cards_html}\n</div>'
 
 
-def _stat_card(num, label, color=None):
+def _stat_card(value, label, color=None):
     style = f' style="color:{color}"' if color else ''
-    return f"""
-        <div class="stat-card">
-            <div class="num"{style}>{num}</div>
-            <div class="label">{label}</div>
-        </div>"""
+    return f'        <div class="stat-card">\n            <div class="num"{style}>{value}</div>\n            <div class="label">{label}</div>\n        </div>\n'
+
+
+def _stat_grid(cards_html):
+    return f'<div class="stats-grid">\n{cards_html}\n</div>'
 
 
 def _row_html(p):
@@ -320,7 +320,7 @@ def generate_prediction_page(stats, rows, out_name='prediction.html'):
             cat_tables += _table_html(items, f"📂 {cat} ({len(items)}只)")
 
     body = f"""
-{stats_cards}
+{_stat_grid(stats_cards)}
 {cards}
 {_validation_html()}
 {_portfolio_backtest_html()}
@@ -352,7 +352,7 @@ def generate_category_page(rows, category, out_name, title_cn):
     cards += _top_cards(items, '❄️ 重点看空', 'bearish', 'bear')
 
     body = f"""
-{stats_cards}
+{_stat_grid(stats_cards)}
 {cards}
 {_table_html(items, f'📂 {title_cn} ({len(items)}只)')}
 """
@@ -494,7 +494,7 @@ def generate_portfolio_page():
     futures_positions = _load_futures_positions()
 
     body = f"""
-{stats_cards}
+{_stat_grid(stats_cards)}
     <div class="note">
         <p>📌 本地目标权重模拟盘，非雪球真实持仓。</p>
         <p>买入金额合计: <b>¥{long_amount:,.0f}</b> | 融券金额: <b>¥{short_amount:,.0f}</b> | 跳过 <b>{skipped}</b> 只（A股一手约束）。</p>
