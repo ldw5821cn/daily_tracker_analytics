@@ -44,20 +44,20 @@ DB_PATH = os.path.join(PROJECT_ROOT, 'multi_agent', 'data', 'llm_predictions.db'
 
 # ============================================================
 # 统一超参数配置（选股、预测、回测一致）
-# ============================================================
 WEIGHTS = {
-    'technical': 0.35,
+    'technical': 0.30,  # 市场环境动荡时技术面容易失效，适当降低
     'fundamental': 0.25,
     'sentiment': 0.15,
-    'debate': 0.25,
+    'macro': 0.10,      # 新增宏观权重
+    'debate': 0.20,
 }
 
 THRESHOLD = {
     'strong_bull': 62,
     'bull': 55,
-    'neutral_high': 53,
-    'neutral_low': 47,
-    'bear': 45,
+    'neutral_high': 52,
+    'neutral_low': 48,
+    'bear': 43,
     'strong_bear': 38,
 }
 
@@ -127,6 +127,7 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
 
     fund_score = fundamental_report.get('score', 50) if 'error' not in fundamental_report else 50
     news_score = (news_report.get('sentiment_score', 0) + 1) * 50
+    macro_score = macro_report.get('macro_score', 50) if macro_report else 50
 
     bull_score = bull_arg.get('score', 0)
     bear_score = bear_arg.get('score', 0)
@@ -136,6 +137,7 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         tech_score * WEIGHTS['technical'] +
         fund_score * WEIGHTS['fundamental'] +
         news_score * WEIGHTS['sentiment'] +
+        macro_score * WEIGHTS['macro'] +
         (50 + net_debate * 8) * WEIGHTS['debate']
     )
     weighted = max(0, min(100, weighted))
@@ -146,6 +148,12 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         from analysts.macro_analyst import get_macro_score_override
         raw_signal = 'bullish' if weighted >= THRESHOLD['bull'] else 'bearish' if weighted <= THRESHOLD['bear'] else 'neutral'
         macro_override = get_macro_score_override(macro_report, raw_signal)
+        # 高波动环境下（如宏观 bearish 或市场广度<30），修正力度加倍
+        breadth_score = macro_report.get('market_breadth', {}).get('score', 50)
+        if macro_report.get('macro_signal') == 'bearish' and breadth_score < 30:
+            macro_override *= 2.0
+        elif macro_report.get('macro_signal') == 'bullish' and breadth_score > 70:
+            macro_override *= 1.5
         weighted = max(0, min(100, weighted + macro_override))
 
     # 统一信号判定：收窄 neutral 范围，47-53 才为中性

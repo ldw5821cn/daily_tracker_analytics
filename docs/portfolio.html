@@ -12,13 +12,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto
 .header { background: linear-gradient(135deg, #1e293b, #334155); padding: 30px; border-radius: 16px; margin-bottom: 24px; }
 .header h1 { font-size: 24px; margin-bottom: 8px; }
 .header .sub { color: #94a3b8; font-size: 14px; }
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.stats-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 24px; }
+@media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
 .stat-card { background: #1e293b; border-radius: 12px; padding: 16px 10px; text-align: center; }
 .stat-card .num { font-size: 28px; font-weight: bold; white-space: nowrap; }
 .stat-card .label { color: #94a3b8; font-size: 12px; margin-top: 4px; }
 .section-title { font-size: 18px; font-weight: 600; margin: 24px 0 12px; padding-left: 12px; border-left: 4px solid #6366f1; }
-.nav { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-.nav a { color: #94a3b8; text-decoration: none; padding: 8px 18px; border-radius: 20px; background: #1e293b; border: 1px solid #334155; font-size: 13px; }
+.nav { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; align-items: center; gap: 10px; margin-bottom: 20px; }
+.nav a { display: inline-block; white-space: nowrap; color: #94a3b8; text-decoration: none; padding: 8px 18px; border-radius: 20px; background: #1e293b; border: 1px solid #334155; font-size: 13px; }
 .nav a:hover { background: #334155; color: #e2e8f0; }
 .nav a.active { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; border-color: transparent; }
 .footer { text-align: center; color: #475569; font-size: 12px; margin-top: 40px; padding: 20px; }
@@ -31,7 +32,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto
 .card-meta { color: #94a3b8; font-size: 12px; margin-bottom: 6px; }
 .card-price { color: #e2e8f0; font-size: 13px; margin-bottom: 6px; }
 .card-reason { color: #94a3b8; font-size: 12px; line-height: 1.5; }
-table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 12px; overflow: hidden; margin-bottom: 24px; font-size: 13px; }
+.table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 24px; border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; background: #1e293b; font-size: 13px; min-width: 800px; }
 th { background: #334155; padding: 10px 12px; text-align: left; font-size: 12px; color: #94a3b8; text-transform: uppercase; }
 td { padding: 8px 12px; border-bottom: 1px solid #1e293b; font-size: 13px; }
 tr:hover { background: #334155; }
@@ -87,7 +89,7 @@ tr:hover { background: #334155; }
             <td>中芯国际</td>
             <td style="color:#ef4444">看多</td>
             <td>2.22%</td>
-            <td>163.02 (2026-07-13)</td>
+            <td>2026/07/13 现价 163.02</td>
             <td>166.28</td>
             <td>154.869</td>
             <td title="信号bull 信心75% 60日收益+60.6% 回撤-21.9% 因子分+0.27">信号bull 信心75% 60日收益+60.6% 回撤-21.9% 因子分+0.</td>
@@ -97,7 +99,7 @@ tr:hover { background: #334155; }
             <td>景嘉微</td>
             <td style="color:#ef4444">看多</td>
             <td>1.98%</td>
-            <td>63.63 (2026-07-13)</td>
+            <td>2026/07/13 现价 63.63</td>
             <td>68.72</td>
             <td>60.449</td>
             <td title="信号bull 信心64% 60日收益+4.6% 回撤-25.7% 因子分+0.73">信号bull 信心64% 60日收益+4.6% 回撤-25.7% 因子分+0.7</td>
@@ -107,7 +109,7 @@ tr:hover { background: #334155; }
             <td>海光信息</td>
             <td style="color:#ef4444">看多</td>
             <td>1.72%</td>
-            <td>353.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 353.0</td>
             <td>360.06</td>
             <td>335.35</td>
             <td title="信号bull 信心66% 60日收益+41.9% 回撤-25.6% 因子分+0.20">信号bull 信心66% 60日收益+41.9% 回撤-25.6% 因子分+0.</td>
@@ -117,7 +119,7 @@ tr:hover { background: #334155; }
             <td>东方盛虹</td>
             <td style="color:#ef4444">看多</td>
             <td>1.28%</td>
-            <td>12.55 (2026-07-13)</td>
+            <td>2026/07/13 现价 12.55</td>
             <td>12.801</td>
             <td>12.17</td>
             <td title="信号bull 信心55% 60日收益+10.1% 回撤-15.4% 因子分+0.27">信号bull 信心55% 60日收益+10.1% 回撤-15.4% 因子分+0.</td>
@@ -127,7 +129,7 @@ tr:hover { background: #334155; }
             <td>中船特气</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.45%</td>
-            <td>293.99 (2026-07-13)</td>
+            <td>2026/07/13 现价 293.99</td>
             <td>207.134</td>
             <td>308.69</td>
             <td title="信号bear 信心89% 60日收益+411.2% 回撤-24.6% 因子分+0.40">信号bear 信心89% 60日收益+411.2% 回撤-24.6% 因子分+0</td>
@@ -137,7 +139,7 @@ tr:hover { background: #334155; }
             <td>光智科技</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.44%</td>
-            <td>255.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 255.0</td>
             <td>238.868</td>
             <td>262.65</td>
             <td title="信号bear 信心89% 60日收益+279.7% 回撤-18.3% 因子分+0.40">信号bear 信心89% 60日收益+279.7% 回撤-18.3% 因子分+0</td>
@@ -147,7 +149,7 @@ tr:hover { background: #334155; }
             <td>盛美上海</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.43%</td>
-            <td>392.89 (2026-07-13)</td>
+            <td>2026/07/13 现价 392.89</td>
             <td>364.614</td>
             <td>412.534</td>
             <td title="信号bear 信心89% 60日收益+146.8% 回撤-18.9% 因子分+0.40">信号bear 信心89% 60日收益+146.8% 回撤-18.9% 因子分+0</td>
@@ -157,7 +159,7 @@ tr:hover { background: #334155; }
             <td>唯特偶</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.42%</td>
-            <td>131.3 (2026-07-13)</td>
+            <td>2026/07/13 现价 131.3</td>
             <td>114.34</td>
             <td>137.865</td>
             <td title="信号bear 信心89% 60日收益+141.4% 回撤-38.4% 因子分+0.53">信号bear 信心89% 60日收益+141.4% 回撤-38.4% 因子分+0</td>
@@ -167,7 +169,7 @@ tr:hover { background: #334155; }
             <td>欧莱新材</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.41%</td>
-            <td>76.7 (2026-07-13)</td>
+            <td>2026/07/13 现价 76.7</td>
             <td>62.043</td>
             <td>79.14</td>
             <td title="信号bear 信心89% 60日收益+136.7% 回撤-23.3% 因子分+0.40">信号bear 信心89% 60日收益+136.7% 回撤-23.3% 因子分+0</td>
@@ -177,7 +179,7 @@ tr:hover { background: #334155; }
             <td>江丰电子</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.40%</td>
-            <td>340.44 (2026-07-13)</td>
+            <td>2026/07/13 现价 340.44</td>
             <td>315.899</td>
             <td>357.462</td>
             <td title="信号bear 信心89% 60日收益+110.2% 回撤-17.1% 因子分+0.40">信号bear 信心89% 60日收益+110.2% 回撤-17.1% 因子分+0</td>
@@ -187,7 +189,7 @@ tr:hover { background: #334155; }
             <td>阿石创</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.32%</td>
-            <td>65.08 (2026-07-13)</td>
+            <td>2026/07/13 现价 65.08</td>
             <td>52.447</td>
             <td>68.334</td>
             <td title="信号bear 信心89% 60日收益+72.3% 回撤-29.2% 因子分+0.40">信号bear 信心89% 60日收益+72.3% 回撤-29.2% 因子分+0.</td>
@@ -197,7 +199,7 @@ tr:hover { background: #334155; }
             <td>鼎龙股份</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.30%</td>
-            <td>83.1 (2026-07-13)</td>
+            <td>2026/07/13 现价 83.1</td>
             <td>65.812</td>
             <td>87.255</td>
             <td title="信号bear 信心89% 60日收益+56.6% 回撤-21.6% 因子分+0.40">信号bear 信心89% 60日收益+56.6% 回撤-21.6% 因子分+0.</td>
@@ -207,7 +209,7 @@ tr:hover { background: #334155; }
             <td>火炬电子</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.29%</td>
-            <td>59.45 (2026-07-13)</td>
+            <td>2026/07/13 现价 59.45</td>
             <td>47.832</td>
             <td>62.423</td>
             <td title="信号bear 信心89% 60日收益+78.7% 回撤-32.1% 因子分+0.27">信号bear 信心89% 60日收益+78.7% 回撤-32.1% 因子分+0.</td>
@@ -217,7 +219,7 @@ tr:hover { background: #334155; }
             <td>株冶集团</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.28%</td>
-            <td>26.52 (2026-07-13)</td>
+            <td>2026/07/13 现价 26.52</td>
             <td>24.282</td>
             <td>27.846</td>
             <td title="信号bear 信心93% 60日收益+44.3% 回撤-26.2% 因子分+0.40">信号bear 信心93% 60日收益+44.3% 回撤-26.2% 因子分+0.</td>
@@ -227,7 +229,7 @@ tr:hover { background: #334155; }
             <td>南大光电</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.28%</td>
-            <td>74.27 (2026-07-13)</td>
+            <td>2026/07/13 现价 74.27</td>
             <td>65.349</td>
             <td>76.498</td>
             <td title="信号bear 信心89% 60日收益+52.6% 回撤-20.0% 因子分+0.27">信号bear 信心89% 60日收益+52.6% 回撤-20.0% 因子分+0.</td>
@@ -237,7 +239,7 @@ tr:hover { background: #334155; }
             <td>海亮股份</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.25%</td>
-            <td>19.5 (2026-07-13)</td>
+            <td>2026/07/13 现价 19.5</td>
             <td>17.883</td>
             <td>20.475</td>
             <td title="信号bear 信心92% 60日收益+25.2% 回撤-25.9% 因子分+0.40">信号bear 信心92% 60日收益+25.2% 回撤-25.9% 因子分+0.</td>
@@ -247,7 +249,7 @@ tr:hover { background: #334155; }
             <td>章源钨业</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.24%</td>
-            <td>27.37 (2026-07-13)</td>
+            <td>2026/07/13 现价 27.37</td>
             <td>24.735</td>
             <td>28.739</td>
             <td title="信号bear 信心95% 60日收益-13.9% 回撤-32.5% 因子分+0.40">信号bear 信心95% 60日收益-13.9% 回撤-32.5% 因子分+0.</td>
@@ -257,7 +259,7 @@ tr:hover { background: #334155; }
             <td>金钼股份</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.24%</td>
-            <td>22.4 (2026-07-13)</td>
+            <td>2026/07/13 现价 22.4</td>
             <td>20.591</td>
             <td>23.52</td>
             <td title="信号bear 信心93% 60日收益+16.2% 回撤-28.5% 因子分+0.40">信号bear 信心93% 60日收益+16.2% 回撤-28.5% 因子分+0.</td>
@@ -267,7 +269,7 @@ tr:hover { background: #334155; }
             <td>安泰科技</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.24%</td>
-            <td>19.98 (2026-07-13)</td>
+            <td>2026/07/13 现价 19.98</td>
             <td>17.935</td>
             <td>20.979</td>
             <td title="信号bear 信心95% 60日收益-5.4% 回撤-24.7% 因子分+0.40">信号bear 信心95% 60日收益-5.4% 回撤-24.7% 因子分+0.4</td>
@@ -277,7 +279,7 @@ tr:hover { background: #334155; }
             <td>驰宏锌锗</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.24%</td>
-            <td>9.51 (2026-07-13)</td>
+            <td>2026/07/13 现价 9.51</td>
             <td>8.807</td>
             <td>9.986</td>
             <td title="信号bear 信心92% 60日收益+13.1% 回撤-25.7% 因子分+0.40">信号bear 信心92% 60日收益+13.1% 回撤-25.7% 因子分+0.</td>
@@ -287,7 +289,7 @@ tr:hover { background: #334155; }
             <td>华鲁恒升</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.24%</td>
-            <td>18.63 (2026-07-13)</td>
+            <td>2026/07/13 现价 18.63</td>
             <td>16.821</td>
             <td>19.561</td>
             <td title="信号bear 信心95% 60日收益-50.0% 回撤-52.5% 因子分+0.40">信号bear 信心95% 60日收益-50.0% 回撤-52.5% 因子分+0.</td>
@@ -297,7 +299,7 @@ tr:hover { background: #334155; }
             <td>盛和资源</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.23%</td>
-            <td>24.29 (2026-07-13)</td>
+            <td>2026/07/13 现价 24.29</td>
             <td>22.131</td>
             <td>25.505</td>
             <td title="信号bear 信心92% 60日收益-3.1% 回撤-29.6% 因子分+0.40">信号bear 信心92% 60日收益-3.1% 回撤-29.6% 因子分+0.4</td>
@@ -307,7 +309,7 @@ tr:hover { background: #334155; }
             <td>贵研铂业</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.23%</td>
-            <td>21.52 (2026-07-13)</td>
+            <td>2026/07/13 现价 21.52</td>
             <td>19.847</td>
             <td>22.596</td>
             <td title="信号bear 信心95% 60日收益+4.6% 回撤-27.1% 因子分+0.33">信号bear 信心95% 60日收益+4.6% 回撤-27.1% 因子分+0.3</td>
@@ -317,7 +319,7 @@ tr:hover { background: #334155; }
             <td>中际旭创</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.22%</td>
-            <td>1093.98 (2026-07-13)</td>
+            <td>2026/07/13 现价 1093.98</td>
             <td>952.723</td>
             <td>1148.679</td>
             <td title="信号bear 信心88% 60日收益+41.5% 回撤-20.9% 因子分+0.20">信号bear 信心88% 60日收益+41.5% 回撤-20.9% 因子分+0.</td>
@@ -327,7 +329,7 @@ tr:hover { background: #334155; }
             <td>包钢股份</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.22%</td>
-            <td>2.17 (2026-07-13)</td>
+            <td>2026/07/13 现价 2.17</td>
             <td>2.088</td>
             <td>2.279</td>
             <td title="信号bear 信心95% 60日收益-24.1% 回撤-27.9% 因子分+0.27">信号bear 信心95% 60日收益-24.1% 回撤-27.9% 因子分+0.</td>
@@ -337,7 +339,7 @@ tr:hover { background: #334155; }
             <td>兖矿能源</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.22%</td>
-            <td>18.16 (2026-07-13)</td>
+            <td>2026/07/13 现价 18.16</td>
             <td>17.797</td>
             <td>18.96</td>
             <td title="信号bear 信心95% 60日收益-6.8% 回撤-34.8% 因子分+0.27">信号bear 信心95% 60日收益-6.8% 回撤-34.8% 因子分+0.2</td>
@@ -347,7 +349,7 @@ tr:hover { background: #334155; }
             <td>大唐发电</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.21%</td>
-            <td>6.64 (2026-07-13)</td>
+            <td>2026/07/13 现价 6.64</td>
             <td>6.351</td>
             <td>6.972</td>
             <td title="信号bear 信心92% 60日收益+71.6% 回撤-28.4% 因子分+0.00">信号bear 信心92% 60日收益+71.6% 回撤-28.4% 因子分+0.</td>
@@ -357,7 +359,7 @@ tr:hover { background: #334155; }
             <td>卓胜微</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.21%</td>
-            <td>94.69 (2026-07-13)</td>
+            <td>2026/07/13 现价 94.69</td>
             <td>92.796</td>
             <td>99.424</td>
             <td title="信号bear 信心95% 60日收益-11.6% 回撤-36.4% 因子分+0.20">信号bear 信心95% 60日收益-11.6% 回撤-36.4% 因子分+0.</td>
@@ -367,7 +369,7 @@ tr:hover { background: #334155; }
             <td>厦门钨业</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.21%</td>
-            <td>63.35 (2026-07-13)</td>
+            <td>2026/07/13 现价 63.35</td>
             <td>57.85</td>
             <td>66.517</td>
             <td title="信号bear 信心82% 60日收益+8.2% 回撤-33.0% 因子分+0.40">信号bear 信心82% 60日收益+8.2% 回撤-33.0% 因子分+0.4</td>
@@ -377,7 +379,7 @@ tr:hover { background: #334155; }
             <td>锡业股份</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.21%</td>
-            <td>36.45 (2026-07-13)</td>
+            <td>2026/07/13 现价 36.45</td>
             <td>34.238</td>
             <td>38.273</td>
             <td title="信号bear 信心92% 60日收益+7.7% 回撤-22.8% 因子分+0.27">信号bear 信心92% 60日收益+7.7% 回撤-22.8% 因子分+0.2</td>
@@ -387,7 +389,7 @@ tr:hover { background: #334155; }
             <td>仕佳光子</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.21%</td>
-            <td>147.63 (2026-07-13)</td>
+            <td>2026/07/13 现价 147.63</td>
             <td>134.498</td>
             <td>155.012</td>
             <td title="信号bear 信心93% 60日收益+22.3% 回撤-30.2% 因子分+0.20">信号bear 信心93% 60日收益+22.3% 回撤-30.2% 因子分+0.</td>
@@ -397,7 +399,7 @@ tr:hover { background: #334155; }
             <td>新易盛</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.21%</td>
-            <td>523.05 (2026-07-13)</td>
+            <td>2026/07/13 现价 523.05</td>
             <td>491.158</td>
             <td>548.5</td>
             <td title="信号bear 信心95% 60日收益+0.6% 回撤-35.5% 因子分+0.20">信号bear 信心95% 60日收益+0.6% 回撤-35.5% 因子分+0.2</td>
@@ -407,7 +409,7 @@ tr:hover { background: #334155; }
             <td>天孚通信</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.21%</td>
-            <td>271.12 (2026-07-13)</td>
+            <td>2026/07/13 现价 271.12</td>
             <td>265.698</td>
             <td>284.676</td>
             <td title="信号bear 信心95% 60日收益-21.6% 回撤-52.4% 因子分+0.20">信号bear 信心95% 60日收益-21.6% 回撤-52.4% 因子分+0.</td>
@@ -417,7 +419,7 @@ tr:hover { background: #334155; }
             <td>焦作万方</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.20%</td>
-            <td>10.01 (2026-07-13)</td>
+            <td>2026/07/13 现价 10.01</td>
             <td>9.81</td>
             <td>10.511</td>
             <td title="信号bear 信心95% 60日收益-26.2% 回撤-29.0% 因子分+0.13">信号bear 信心95% 60日收益-26.2% 回撤-29.0% 因子分+0.</td>
@@ -427,7 +429,7 @@ tr:hover { background: #334155; }
             <td>振华科技</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.20%</td>
-            <td>47.14 (2026-07-13)</td>
+            <td>2026/07/13 现价 47.14</td>
             <td>42.978</td>
             <td>49.497</td>
             <td title="信号bear 信心95% 60日收益+0.4% 回撤-24.3% 因子分+0.13">信号bear 信心95% 60日收益+0.4% 回撤-24.3% 因子分+0.1</td>
@@ -437,7 +439,7 @@ tr:hover { background: #334155; }
             <td>浩通科技</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.20%</td>
-            <td>17.72 (2026-07-13)</td>
+            <td>2026/07/13 现价 17.72</td>
             <td>16.888</td>
             <td>18.606</td>
             <td title="信号bear 信心95% 60日收益-39.6% 回撤-50.9% 因子分+0.13">信号bear 信心95% 60日收益-39.6% 回撤-50.9% 因子分+0.</td>
@@ -447,7 +449,7 @@ tr:hover { background: #334155; }
             <td>云南铜业</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.20%</td>
-            <td>15.24 (2026-07-13)</td>
+            <td>2026/07/13 现价 15.24</td>
             <td>14.935</td>
             <td>16.002</td>
             <td title="信号bear 信心95% 60日收益-21.9% 回撤-27.4% 因子分+0.13">信号bear 信心95% 60日收益-21.9% 回撤-27.4% 因子分+0.</td>
@@ -457,7 +459,7 @@ tr:hover { background: #334155; }
             <td>恒力石化</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.20%</td>
-            <td>15.79 (2026-07-13)</td>
+            <td>2026/07/13 现价 15.79</td>
             <td>14.48</td>
             <td>16.579</td>
             <td title="信号bear 信心95% 60日收益-30.7% 回撤-36.7% 因子分+0.13">信号bear 信心95% 60日收益-30.7% 回撤-36.7% 因子分+0.</td>
@@ -467,7 +469,7 @@ tr:hover { background: #334155; }
             <td>江西铜业</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.18%</td>
-            <td>42.89 (2026-07-13)</td>
+            <td>2026/07/13 现价 42.89</td>
             <td>39.549</td>
             <td>45.0</td>
             <td title="信号bear 信心95% 60日收益-7.4% 回撤-27.4% 因子分+0.07">信号bear 信心95% 60日收益-7.4% 回撤-27.4% 因子分+0.0</td>
@@ -477,7 +479,7 @@ tr:hover { background: #334155; }
             <td>紫金矿业</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.18%</td>
-            <td>27.72 (2026-07-13)</td>
+            <td>2026/07/13 现价 27.72</td>
             <td>27.166</td>
             <td>28.552</td>
             <td title="信号bear 信心79% 60日收益-20.3% 回撤-29.6% 因子分+0.27">信号bear 信心79% 60日收益-20.3% 回撤-29.6% 因子分+0.</td>
@@ -487,7 +489,7 @@ tr:hover { background: #334155; }
             <td>大中矿业</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.18%</td>
-            <td>28.9 (2026-07-13)</td>
+            <td>2026/07/13 现价 28.9</td>
             <td>25.709</td>
             <td>30.345</td>
             <td title="信号bear 信心80% 60日收益-34.3% 回撤-45.8% 因子分+0.27">信号bear 信心80% 60日收益-34.3% 回撤-45.8% 因子分+0.</td>
@@ -497,7 +499,7 @@ tr:hover { background: #334155; }
             <td>洛阳钼业</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.17%</td>
-            <td>17.5 (2026-07-13)</td>
+            <td>2026/07/13 现价 17.5</td>
             <td>17.15</td>
             <td>18.375</td>
             <td title="信号bear 信心95% 60日收益-10.5% 回撤-20.6% 因子分+0.00">信号bear 信心95% 60日收益-10.5% 回撤-20.6% 因子分+0.</td>
@@ -507,7 +509,7 @@ tr:hover { background: #334155; }
             <td>兴业银锡</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.17%</td>
-            <td>33.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 33.0</td>
             <td>32.34</td>
             <td>34.65</td>
             <td title="信号bear 信心95% 60日收益-24.3% 回撤-36.5% 因子分+0.00">信号bear 信心95% 60日收益-24.3% 回撤-36.5% 因子分+0.</td>
@@ -517,7 +519,7 @@ tr:hover { background: #334155; }
             <td>华锡有色</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.17%</td>
-            <td>49.39 (2026-07-13)</td>
+            <td>2026/07/13 现价 49.39</td>
             <td>42.943</td>
             <td>51.86</td>
             <td title="信号bear 信心95% 60日收益-2.2% 回撤-30.8% 因子分+0.00">信号bear 信心95% 60日收益-2.2% 回撤-30.8% 因子分+0.0</td>
@@ -527,7 +529,7 @@ tr:hover { background: #334155; }
             <td>寒锐钴业</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.17%</td>
-            <td>33.11 (2026-07-13)</td>
+            <td>2026/07/13 现价 33.11</td>
             <td>31.952</td>
             <td>34.766</td>
             <td title="信号bear 信心95% 60日收益-29.7% 回撤-32.8% 因子分+0.00">信号bear 信心95% 60日收益-29.7% 回撤-32.8% 因子分+0.</td>
@@ -537,7 +539,7 @@ tr:hover { background: #334155; }
             <td>腾远钴业</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.17%</td>
-            <td>47.89 (2026-07-13)</td>
+            <td>2026/07/13 现价 47.89</td>
             <td>43.928</td>
             <td>50.285</td>
             <td title="信号bear 信心95% 60日收益-41.6% 回撤-47.4% 因子分+0.00">信号bear 信心95% 60日收益-41.6% 回撤-47.4% 因子分+0.</td>
@@ -547,7 +549,7 @@ tr:hover { background: #334155; }
             <td>铜陵有色</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.17%</td>
-            <td>6.1 (2026-07-13)</td>
+            <td>2026/07/13 现价 6.1</td>
             <td>5.978</td>
             <td>6.405</td>
             <td title="信号bear 信心95% 60日收益-3.8% 回撤-24.1% 因子分+0.00">信号bear 信心95% 60日收益-3.8% 回撤-24.1% 因子分+0.0</td>
@@ -557,7 +559,7 @@ tr:hover { background: #334155; }
             <td>荣盛石化</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.15%</td>
-            <td>10.95 (2026-07-13)</td>
+            <td>2026/07/13 现价 10.95</td>
             <td>10.697</td>
             <td>11.498</td>
             <td title="信号bear 信心83% 60日收益-9.7% 回撤-22.9% 因子分+0.00">信号bear 信心83% 60日收益-9.7% 回撤-22.9% 因子分+0.0</td>
@@ -573,7 +575,7 @@ tr:hover { background: #334155; }
             <td>中芯国际</td>
             <td>¥0</td>
             <td>2.22%</td>
-            <td>163.02</td>
+            <td>2026/07/13 现价 163.02</td>
             <td>金额不足一手(¥16302)</td>
         </tr>
         <tr>
@@ -582,7 +584,7 @@ tr:hover { background: #334155; }
             <td>景嘉微</td>
             <td>¥0</td>
             <td>1.98%</td>
-            <td>63.63</td>
+            <td>2026/07/13 现价 63.63</td>
             <td>金额不足一手(¥6363)</td>
         </tr>
         <tr>
@@ -591,7 +593,7 @@ tr:hover { background: #334155; }
             <td>海光信息</td>
             <td>¥0</td>
             <td>1.72%</td>
-            <td>353.0</td>
+            <td>2026/07/13 现价 353.0</td>
             <td>金额不足一手(¥35300)</td>
         </tr>
         <tr>
@@ -600,7 +602,7 @@ tr:hover { background: #334155; }
             <td>东方盛虹</td>
             <td>¥0</td>
             <td>1.28%</td>
-            <td>12.55</td>
+            <td>2026/07/13 现价 12.55</td>
             <td>金额不足一手(¥1255)</td>
         </tr>
         <tr>
@@ -609,7 +611,7 @@ tr:hover { background: #334155; }
             <td>中船特气</td>
             <td>¥0</td>
             <td>-0.45%</td>
-            <td>293.99</td>
+            <td>2026/07/13 现价 293.99</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -618,7 +620,7 @@ tr:hover { background: #334155; }
             <td>光智科技</td>
             <td>¥0</td>
             <td>-0.44%</td>
-            <td>255.0</td>
+            <td>2026/07/13 现价 255.0</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -627,7 +629,7 @@ tr:hover { background: #334155; }
             <td>盛美上海</td>
             <td>¥0</td>
             <td>-0.43%</td>
-            <td>392.89</td>
+            <td>2026/07/13 现价 392.89</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -636,7 +638,7 @@ tr:hover { background: #334155; }
             <td>唯特偶</td>
             <td>¥0</td>
             <td>-0.42%</td>
-            <td>131.3</td>
+            <td>2026/07/13 现价 131.3</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -645,7 +647,7 @@ tr:hover { background: #334155; }
             <td>欧莱新材</td>
             <td>¥0</td>
             <td>-0.41%</td>
-            <td>76.7</td>
+            <td>2026/07/13 现价 76.7</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -654,7 +656,7 @@ tr:hover { background: #334155; }
             <td>江丰电子</td>
             <td>¥0</td>
             <td>-0.40%</td>
-            <td>340.44</td>
+            <td>2026/07/13 现价 340.44</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -663,7 +665,7 @@ tr:hover { background: #334155; }
             <td>阿石创</td>
             <td>¥0</td>
             <td>-0.32%</td>
-            <td>65.08</td>
+            <td>2026/07/13 现价 65.08</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -672,7 +674,7 @@ tr:hover { background: #334155; }
             <td>鼎龙股份</td>
             <td>¥0</td>
             <td>-0.30%</td>
-            <td>83.1</td>
+            <td>2026/07/13 现价 83.1</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -681,7 +683,7 @@ tr:hover { background: #334155; }
             <td>火炬电子</td>
             <td>¥0</td>
             <td>-0.29%</td>
-            <td>59.45</td>
+            <td>2026/07/13 现价 59.45</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -690,7 +692,7 @@ tr:hover { background: #334155; }
             <td>株冶集团</td>
             <td>¥0</td>
             <td>-0.28%</td>
-            <td>26.52</td>
+            <td>2026/07/13 现价 26.52</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -699,7 +701,7 @@ tr:hover { background: #334155; }
             <td>南大光电</td>
             <td>¥0</td>
             <td>-0.28%</td>
-            <td>74.27</td>
+            <td>2026/07/13 现价 74.27</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -708,7 +710,7 @@ tr:hover { background: #334155; }
             <td>海亮股份</td>
             <td>¥0</td>
             <td>-0.25%</td>
-            <td>19.5</td>
+            <td>2026/07/13 现价 19.5</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -717,7 +719,7 @@ tr:hover { background: #334155; }
             <td>章源钨业</td>
             <td>¥0</td>
             <td>-0.24%</td>
-            <td>27.37</td>
+            <td>2026/07/13 现价 27.37</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -726,7 +728,7 @@ tr:hover { background: #334155; }
             <td>金钼股份</td>
             <td>¥0</td>
             <td>-0.24%</td>
-            <td>22.4</td>
+            <td>2026/07/13 现价 22.4</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -735,7 +737,7 @@ tr:hover { background: #334155; }
             <td>安泰科技</td>
             <td>¥0</td>
             <td>-0.24%</td>
-            <td>19.98</td>
+            <td>2026/07/13 现价 19.98</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -744,7 +746,7 @@ tr:hover { background: #334155; }
             <td>驰宏锌锗</td>
             <td>¥0</td>
             <td>-0.24%</td>
-            <td>9.51</td>
+            <td>2026/07/13 现价 9.51</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -753,7 +755,7 @@ tr:hover { background: #334155; }
             <td>华鲁恒升</td>
             <td>¥0</td>
             <td>-0.24%</td>
-            <td>18.63</td>
+            <td>2026/07/13 现价 18.63</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -762,7 +764,7 @@ tr:hover { background: #334155; }
             <td>盛和资源</td>
             <td>¥0</td>
             <td>-0.23%</td>
-            <td>24.29</td>
+            <td>2026/07/13 现价 24.29</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -771,7 +773,7 @@ tr:hover { background: #334155; }
             <td>贵研铂业</td>
             <td>¥0</td>
             <td>-0.23%</td>
-            <td>21.52</td>
+            <td>2026/07/13 现价 21.52</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -780,7 +782,7 @@ tr:hover { background: #334155; }
             <td>中际旭创</td>
             <td>¥0</td>
             <td>-0.22%</td>
-            <td>1093.98</td>
+            <td>2026/07/13 现价 1093.98</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -789,7 +791,7 @@ tr:hover { background: #334155; }
             <td>包钢股份</td>
             <td>¥0</td>
             <td>-0.22%</td>
-            <td>2.17</td>
+            <td>2026/07/13 现价 2.17</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -798,7 +800,7 @@ tr:hover { background: #334155; }
             <td>兖矿能源</td>
             <td>¥0</td>
             <td>-0.22%</td>
-            <td>18.16</td>
+            <td>2026/07/13 现价 18.16</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -807,7 +809,7 @@ tr:hover { background: #334155; }
             <td>大唐发电</td>
             <td>¥0</td>
             <td>-0.21%</td>
-            <td>6.64</td>
+            <td>2026/07/13 现价 6.64</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -816,7 +818,7 @@ tr:hover { background: #334155; }
             <td>卓胜微</td>
             <td>¥0</td>
             <td>-0.21%</td>
-            <td>94.69</td>
+            <td>2026/07/13 现价 94.69</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -825,7 +827,7 @@ tr:hover { background: #334155; }
             <td>厦门钨业</td>
             <td>¥0</td>
             <td>-0.21%</td>
-            <td>63.35</td>
+            <td>2026/07/13 现价 63.35</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -834,7 +836,7 @@ tr:hover { background: #334155; }
             <td>锡业股份</td>
             <td>¥0</td>
             <td>-0.21%</td>
-            <td>36.45</td>
+            <td>2026/07/13 现价 36.45</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -843,7 +845,7 @@ tr:hover { background: #334155; }
             <td>仕佳光子</td>
             <td>¥0</td>
             <td>-0.21%</td>
-            <td>147.63</td>
+            <td>2026/07/13 现价 147.63</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -852,7 +854,7 @@ tr:hover { background: #334155; }
             <td>新易盛</td>
             <td>¥0</td>
             <td>-0.21%</td>
-            <td>523.05</td>
+            <td>2026/07/13 现价 523.05</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -861,7 +863,7 @@ tr:hover { background: #334155; }
             <td>天孚通信</td>
             <td>¥0</td>
             <td>-0.21%</td>
-            <td>271.12</td>
+            <td>2026/07/13 现价 271.12</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -870,7 +872,7 @@ tr:hover { background: #334155; }
             <td>焦作万方</td>
             <td>¥0</td>
             <td>-0.20%</td>
-            <td>10.01</td>
+            <td>2026/07/13 现价 10.01</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -879,7 +881,7 @@ tr:hover { background: #334155; }
             <td>振华科技</td>
             <td>¥0</td>
             <td>-0.20%</td>
-            <td>47.14</td>
+            <td>2026/07/13 现价 47.14</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -888,7 +890,7 @@ tr:hover { background: #334155; }
             <td>浩通科技</td>
             <td>¥0</td>
             <td>-0.20%</td>
-            <td>17.72</td>
+            <td>2026/07/13 现价 17.72</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -897,7 +899,7 @@ tr:hover { background: #334155; }
             <td>云南铜业</td>
             <td>¥0</td>
             <td>-0.20%</td>
-            <td>15.24</td>
+            <td>2026/07/13 现价 15.24</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -906,7 +908,7 @@ tr:hover { background: #334155; }
             <td>恒力石化</td>
             <td>¥0</td>
             <td>-0.20%</td>
-            <td>15.79</td>
+            <td>2026/07/13 现价 15.79</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -915,7 +917,7 @@ tr:hover { background: #334155; }
             <td>江西铜业</td>
             <td>¥0</td>
             <td>-0.18%</td>
-            <td>42.89</td>
+            <td>2026/07/13 现价 42.89</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -924,7 +926,7 @@ tr:hover { background: #334155; }
             <td>紫金矿业</td>
             <td>¥0</td>
             <td>-0.18%</td>
-            <td>27.72</td>
+            <td>2026/07/13 现价 27.72</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -933,7 +935,7 @@ tr:hover { background: #334155; }
             <td>大中矿业</td>
             <td>¥0</td>
             <td>-0.18%</td>
-            <td>28.9</td>
+            <td>2026/07/13 现价 28.9</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -942,7 +944,7 @@ tr:hover { background: #334155; }
             <td>洛阳钼业</td>
             <td>¥0</td>
             <td>-0.17%</td>
-            <td>17.5</td>
+            <td>2026/07/13 现价 17.5</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -951,7 +953,7 @@ tr:hover { background: #334155; }
             <td>兴业银锡</td>
             <td>¥0</td>
             <td>-0.17%</td>
-            <td>33.0</td>
+            <td>2026/07/13 现价 33.0</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -960,7 +962,7 @@ tr:hover { background: #334155; }
             <td>华锡有色</td>
             <td>¥0</td>
             <td>-0.17%</td>
-            <td>49.39</td>
+            <td>2026/07/13 现价 49.39</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -969,7 +971,7 @@ tr:hover { background: #334155; }
             <td>寒锐钴业</td>
             <td>¥0</td>
             <td>-0.17%</td>
-            <td>33.11</td>
+            <td>2026/07/13 现价 33.11</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -978,7 +980,7 @@ tr:hover { background: #334155; }
             <td>腾远钴业</td>
             <td>¥0</td>
             <td>-0.17%</td>
-            <td>47.89</td>
+            <td>2026/07/13 现价 47.89</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -987,7 +989,7 @@ tr:hover { background: #334155; }
             <td>铜陵有色</td>
             <td>¥0</td>
             <td>-0.17%</td>
-            <td>6.1</td>
+            <td>2026/07/13 现价 6.1</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr>
         <tr>
@@ -996,7 +998,7 @@ tr:hover { background: #334155; }
             <td>荣盛石化</td>
             <td>¥0</td>
             <td>-0.15%</td>
-            <td>10.95</td>
+            <td>2026/07/13 现价 10.95</td>
             <td>A 股个股不能做空，仅作为卖出参考</td>
         </tr></tbody>
     </table>
@@ -1009,7 +1011,7 @@ tr:hover { background: #334155; }
             <td>港股创新药ETF广发</td>
             <td style="color:#ef4444">看多</td>
             <td>5.16%</td>
-            <td>1.19 (2026-07-13)</td>
+            <td>2026/07/13 现价 1.19</td>
             <td>1.283</td>
             <td>1.13</td>
             <td title="信号bull 信心64% 60日收益-7.5% 回撤-27.0% 因子分+0.47">信号bull 信心64% 60日收益-7.5% 回撤-27.0% 因子分+0.4</td>
@@ -1019,7 +1021,7 @@ tr:hover { background: #334155; }
             <td>半导体设备ETF国泰</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.78%</td>
-            <td>0.91 (2026-07-13)</td>
+            <td>2026/07/13 现价 0.91</td>
             <td>0.65</td>
             <td>0.956</td>
             <td title="信号bear 信心95% 60日收益+0.3% 回撤-54.6% 因子分+0.47">信号bear 信心95% 60日收益+0.3% 回撤-54.6% 因子分+0.4</td>
@@ -1029,7 +1031,7 @@ tr:hover { background: #334155; }
             <td>芯片ETF华夏</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.75%</td>
-            <td>1.53 (2026-07-13)</td>
+            <td>2026/07/13 现价 1.53</td>
             <td>1.094</td>
             <td>1.607</td>
             <td title="信号bear 信心95% 60日收益-15.9% 回撤-56.0% 因子分+0.40">信号bear 信心95% 60日收益-15.9% 回撤-56.0% 因子分+0.</td>
@@ -1039,7 +1041,7 @@ tr:hover { background: #334155; }
             <td>通信ETF国泰</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.75%</td>
-            <td>0.78 (2026-07-13)</td>
+            <td>2026/07/13 现价 0.78</td>
             <td>0.577</td>
             <td>0.819</td>
             <td title="信号bear 信心95% 60日收益-37.1% 回撤-59.8% 因子分+0.40">信号bear 信心95% 60日收益-37.1% 回撤-59.8% 因子分+0.</td>
@@ -1049,7 +1051,7 @@ tr:hover { background: #334155; }
             <td>半导体ETF</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.71%</td>
-            <td>1.37 (2026-07-13)</td>
+            <td>2026/07/13 现价 1.37</td>
             <td>1.207</td>
             <td>1.439</td>
             <td title="信号bear 信心95% 60日收益-14.9% 回撤-55.7% 因子分+0.33">信号bear 信心95% 60日收益-14.9% 回撤-55.7% 因子分+0.</td>
@@ -1059,7 +1061,7 @@ tr:hover { background: #334155; }
             <td>稀土ETF嘉实</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.67%</td>
-            <td>1.84 (2026-07-13)</td>
+            <td>2026/07/13 现价 1.84</td>
             <td>1.772</td>
             <td>1.932</td>
             <td title="信号bear 信心95% 60日收益-6.9% 回撤-17.9% 因子分+0.27">信号bear 信心95% 60日收益-6.9% 回撤-17.9% 因子分+0.2</td>
@@ -1069,7 +1071,7 @@ tr:hover { background: #334155; }
             <td>有色金属ETF南方</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.53%</td>
-            <td>1.76 (2026-07-13)</td>
+            <td>2026/07/13 现价 1.76</td>
             <td>1.724</td>
             <td>1.848</td>
             <td title="信号bear 信心95% 60日收益-17.8% 回撤-21.0% 因子分+0.00">信号bear 信心95% 60日收益-17.8% 回撤-21.0% 因子分+0.</td>
@@ -1079,7 +1081,7 @@ tr:hover { background: #334155; }
             <td>电池ETF广发</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.53%</td>
-            <td>0.98 (2026-07-13)</td>
+            <td>2026/07/13 现价 0.98</td>
             <td>0.903</td>
             <td>1.029</td>
             <td title="信号bear 信心95% 60日收益-17.1% 回撤-23.0% 因子分+0.00">信号bear 信心95% 60日收益-17.1% 回撤-23.0% 因子分+0.</td>
@@ -1089,7 +1091,7 @@ tr:hover { background: #334155; }
             <td>机器人ETF易方达</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.49%</td>
-            <td>1.56 (2026-07-13)</td>
+            <td>2026/07/13 现价 1.56</td>
             <td>1.511</td>
             <td>1.607</td>
             <td title="信号bear 信心72% 60日收益+8.1% 回撤-14.1% 因子分+0.20">信号bear 信心72% 60日收益+8.1% 回撤-14.1% 因子分+0.2</td>
@@ -1099,7 +1101,7 @@ tr:hover { background: #334155; }
             <td>沪深300ETF华泰柏瑞</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.48%</td>
-            <td>4.83 (2026-07-13)</td>
+            <td>2026/07/13 现价 4.83</td>
             <td>4.699</td>
             <td>4.975</td>
             <td title="信号bear 信心81% 60日收益+2.5% 回撤-5.8% 因子分+0.07">信号bear 信心81% 60日收益+2.5% 回撤-5.8% 因子分+0.07</td>
@@ -1109,7 +1111,7 @@ tr:hover { background: #334155; }
             <td>机器人ETF华夏</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.47%</td>
-            <td>1.11 (2026-07-13)</td>
+            <td>2026/07/13 现价 1.11</td>
             <td>1.081</td>
             <td>1.143</td>
             <td title="信号bear 信心72% 60日收益+11.6% 回撤-10.9% 因子分+0.13">信号bear 信心72% 60日收益+11.6% 回撤-10.9% 因子分+0.</td>
@@ -1125,7 +1127,7 @@ tr:hover { background: #334155; }
             <td>港股创新药ETF广发</td>
             <td>¥3,731</td>
             <td>5.16%</td>
-            <td>1.19</td>
+            <td>2026/07/13 现价 1.19</td>
             <td>跨境ETF</td>
         </tr>
         <tr>
@@ -1134,7 +1136,7 @@ tr:hover { background: #334155; }
             <td>半导体设备ETF国泰</td>
             <td>¥564</td>
             <td>-0.78%</td>
-            <td>0.91</td>
+            <td>2026/07/13 现价 0.91</td>
             <td>需融券账户 跨境ETF</td>
         </tr>
         <tr>
@@ -1143,7 +1145,7 @@ tr:hover { background: #334155; }
             <td>芯片ETF华夏</td>
             <td>¥542</td>
             <td>-0.75%</td>
-            <td>1.53</td>
+            <td>2026/07/13 现价 1.53</td>
             <td>需融券账户 跨境ETF</td>
         </tr>
         <tr>
@@ -1152,7 +1154,7 @@ tr:hover { background: #334155; }
             <td>通信ETF国泰</td>
             <td>¥542</td>
             <td>-0.75%</td>
-            <td>0.78</td>
+            <td>2026/07/13 现价 0.78</td>
             <td>需融券账户</td>
         </tr>
         <tr>
@@ -1161,7 +1163,7 @@ tr:hover { background: #334155; }
             <td>半导体ETF</td>
             <td>¥513</td>
             <td>-0.71%</td>
-            <td>1.37</td>
+            <td>2026/07/13 现价 1.37</td>
             <td>需融券账户</td>
         </tr>
         <tr>
@@ -1170,7 +1172,7 @@ tr:hover { background: #334155; }
             <td>稀土ETF嘉实</td>
             <td>¥484</td>
             <td>-0.67%</td>
-            <td>1.84</td>
+            <td>2026/07/13 现价 1.84</td>
             <td>需融券账户</td>
         </tr>
         <tr>
@@ -1179,7 +1181,7 @@ tr:hover { background: #334155; }
             <td>有色金属ETF南方</td>
             <td>¥383</td>
             <td>-0.53%</td>
-            <td>1.76</td>
+            <td>2026/07/13 现价 1.76</td>
             <td>需融券账户</td>
         </tr>
         <tr>
@@ -1188,7 +1190,7 @@ tr:hover { background: #334155; }
             <td>电池ETF广发</td>
             <td>¥383</td>
             <td>-0.53%</td>
-            <td>0.98</td>
+            <td>2026/07/13 现价 0.98</td>
             <td>需融券账户 跨境ETF</td>
         </tr>
         <tr>
@@ -1197,7 +1199,7 @@ tr:hover { background: #334155; }
             <td>机器人ETF易方达</td>
             <td>¥354</td>
             <td>-0.49%</td>
-            <td>1.56</td>
+            <td>2026/07/13 现价 1.56</td>
             <td>需融券账户 跨境ETF</td>
         </tr>
         <tr>
@@ -1206,7 +1208,7 @@ tr:hover { background: #334155; }
             <td>沪深300ETF华泰柏瑞</td>
             <td>¥347</td>
             <td>-0.48%</td>
-            <td>4.83</td>
+            <td>2026/07/13 现价 4.83</td>
             <td>需融券账户</td>
         </tr>
         <tr>
@@ -1215,7 +1217,7 @@ tr:hover { background: #334155; }
             <td>机器人ETF华夏</td>
             <td>¥340</td>
             <td>-0.47%</td>
-            <td>1.11</td>
+            <td>2026/07/13 现价 1.11</td>
             <td>需融券账户</td>
         </tr></tbody>
     </table>
@@ -1228,7 +1230,7 @@ tr:hover { background: #334155; }
             <td>菜粕</td>
             <td style="color:#ef4444">看多</td>
             <td>3.11%</td>
-            <td>2325.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 2325.0</td>
             <td>2371.5</td>
             <td>2255.25</td>
             <td title="信号bull 信心57% 60日收益-1.1% 回撤-7.8% 因子分+0.27">信号bull 信心57% 60日收益-1.1% 回撤-7.8% 因子分+0.27</td>
@@ -1238,7 +1240,7 @@ tr:hover { background: #334155; }
             <td>菜油</td>
             <td style="color:#ef4444">看多</td>
             <td>3.11%</td>
-            <td>9908.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 9908.0</td>
             <td>10106.16</td>
             <td>9610.76</td>
             <td title="信号bull 信心67% 60日收益+5.2% 回撤-7.8% 因子分+0.07">信号bull 信心67% 60日收益+5.2% 回撤-7.8% 因子分+0.07</td>
@@ -1248,7 +1250,7 @@ tr:hover { background: #334155; }
             <td>棉花</td>
             <td style="color:#ef4444">看多</td>
             <td>3.09%</td>
-            <td>16125.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 16125.0</td>
             <td>16447.5</td>
             <td>15641.25</td>
             <td title="信号bull 信心63% 60日收益+3.9% 回撤-6.2% 因子分+0.13">信号bull 信心63% 60日收益+3.9% 回撤-6.2% 因子分+0.13</td>
@@ -1258,7 +1260,7 @@ tr:hover { background: #334155; }
             <td>沪锌</td>
             <td style="color:#ef4444">看多</td>
             <td>2.48%</td>
-            <td>24865.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 24865.0</td>
             <td>25362.3</td>
             <td>24119.05</td>
             <td title="信号bull 信心57% 60日收益+4.5% 回撤-4.8% 因子分+0.00">信号bull 信心57% 60日收益+4.5% 回撤-4.8% 因子分+0.00</td>
@@ -1268,7 +1270,7 @@ tr:hover { background: #334155; }
             <td>焦煤</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.45%</td>
-            <td>1257.5 (2026-07-13)</td>
+            <td>2026/07/13 现价 1257.5</td>
             <td>1232.35</td>
             <td>1295.225</td>
             <td title="信号bear 信心91% 60日收益+18.1% 回撤-15.1% 因子分+0.07">信号bear 信心91% 60日收益+18.1% 回撤-15.1% 因子分+0.</td>
@@ -1278,7 +1280,7 @@ tr:hover { background: #334155; }
             <td>玉米</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.43%</td>
-            <td>2311.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 2311.0</td>
             <td>2264.78</td>
             <td>2380.33</td>
             <td title="信号bear 信心81% 60日收益-3.6% 回撤-6.1% 因子分+0.20">信号bear 信心81% 60日收益-3.6% 回撤-6.1% 因子分+0.20</td>
@@ -1288,7 +1290,7 @@ tr:hover { background: #334155; }
             <td>热卷</td>
             <td style="color:#22c55e">看空</td>
             <td>-0.40%</td>
-            <td>3291.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 3291.0</td>
             <td>3225.18</td>
             <td>3389.73</td>
             <td title="信号bear 信心81% 60日收益+0.4% 回撤-6.2% 因子分+0.13">信号bear 信心81% 60日收益+0.4% 回撤-6.2% 因子分+0.13</td>

@@ -38,13 +38,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto
 .header { background: linear-gradient(135deg, #1e293b, #334155); padding: 30px; border-radius: 16px; margin-bottom: 24px; }
 .header h1 { font-size: 24px; margin-bottom: 8px; }
 .header .sub { color: #94a3b8; font-size: 14px; }
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.stats-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 24px; }
+@media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
 .stat-card { background: #1e293b; border-radius: 12px; padding: 16px 10px; text-align: center; }
 .stat-card .num { font-size: 28px; font-weight: bold; white-space: nowrap; }
 .stat-card .label { color: #94a3b8; font-size: 12px; margin-top: 4px; }
 .section-title { font-size: 18px; font-weight: 600; margin: 24px 0 12px; padding-left: 12px; border-left: 4px solid #6366f1; }
-.nav { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-.nav a { color: #94a3b8; text-decoration: none; padding: 8px 18px; border-radius: 20px; background: #1e293b; border: 1px solid #334155; font-size: 13px; }
+.nav { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; align-items: center; gap: 10px; margin-bottom: 20px; }
+.nav a { display: inline-block; white-space: nowrap; color: #94a3b8; text-decoration: none; padding: 8px 18px; border-radius: 20px; background: #1e293b; border: 1px solid #334155; font-size: 13px; }
 .nav a:hover { background: #334155; color: #e2e8f0; }
 .nav a.active { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; border-color: transparent; }
 .footer { text-align: center; color: #475569; font-size: 12px; margin-top: 40px; padding: 20px; }
@@ -57,7 +58,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto
 .card-meta { color: #94a3b8; font-size: 12px; margin-bottom: 6px; }
 .card-price { color: #e2e8f0; font-size: 13px; margin-bottom: 6px; }
 .card-reason { color: #94a3b8; font-size: 12px; line-height: 1.5; }
-table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 12px; overflow: hidden; margin-bottom: 24px; font-size: 13px; }
+.table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 24px; border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; background: #1e293b; font-size: 13px; min-width: 800px; }
 th { background: #334155; padding: 10px 12px; text-align: left; font-size: 12px; color: #94a3b8; text-transform: uppercase; }
 td { padding: 8px 12px; border-bottom: 1px solid #1e293b; font-size: 13px; }
 tr:hover { background: #334155; }
@@ -131,7 +133,9 @@ def _row_html(p):
     comp = json.loads(p.get('component_scores') or '{}') if isinstance(p.get('component_scores'), str) else p.get('component_scores', {})
     tech = comp.get('technical', '-') if isinstance(comp, dict) else '-'
     price_date = p.get('price_date') or ''
-    price_label = f" ({price_date})" if price_date else ''
+    price_date_fmt = price_date.replace('-', '/') if price_date else ''
+    price_label = f"{price_date_fmt} 现价" if price_date_fmt else '现价'
+    price_str = f"{price_label} {p.get('current_price', '')}".strip()
     return f"""
         <tr>
             <td><b>{p.get('ticker', '')}</b></td>
@@ -147,7 +151,7 @@ def _row_html(p):
             <td>{p.get('bt_return_60d', 0):+.1f}%</td>
             <td>{p.get('bt_max_dd_60d', 0):.1f}%</td>
             <td>{p.get('bt_sharpe_60d', 0):.2f}</td>
-            <td>{p.get('current_price', '')}{price_label}</td>
+            <td>{price_str}</td>
             <td>{p.get('target_price', '')}</td>
             <td>{p.get('stop_loss', '')}</td>
             <td>{(p.get('position_pct') or 0)*100:.0f}%</td>
@@ -163,10 +167,12 @@ def _table_html(items, title):
     rows = "".join(_row_html(p) for p in items)
     return f"""
     <div class="section-title">{title}</div>
+    <div class="table-responsive">
     <table>
-        <thead><tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>60日收益</th><th>60日回撤</th><th>60日夏普</th><th>现价</th><th>目标</th><th>止损</th><th>仓位</th><th>技术分</th></tr></thead>
+        <thead><tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>60日收益</th><th>60日回撤</th><th>60日夏普</th><th>价格</th><th>目标</th><th>止损</th><th>仓位</th><th>技术分</th></tr></thead>
         <tbody>{rows}</tbody>
-    </table>"""
+    </table>
+    </div>"""
 
 
 def _top_cards(rows, title, sig, color_class):
@@ -208,10 +214,12 @@ def _portfolio_backtest_html():
         )
     return f"""
     <div class="section-title">📊 VectorBT 组合滚动回测</div>
+    <div class="table-responsive">
     <table>
         <thead><tr><th>场景</th><th>年化</th><th>回撤</th><th>夏普</th><th>Calmar</th><th>交易次数</th></tr></thead>
         <tbody>{"".join(rows)}</tbody>
-    </table>"""
+    </table>
+    </div>"""
 
 
 def _validation_html():
@@ -351,7 +359,9 @@ def generate_index_page(stats, rows):
     cards = _top_cards(rows, '🔥 今日重点看多', 'bullish', 'bull')
 
     body = f"""
+<div class="stats-grid">
 {stats_cards}
+</div>
 {cards}
 {_validation_html()}
 {_portfolio_backtest_html()}
@@ -413,14 +423,15 @@ def generate_portfolio_page():
             color = SIGNAL_COLOR.get(sig, '#94a3b8')
             cn = SIGNAL_CN.get(sig, sig)
             price_date = price_date_map.get(t.get('ticker'), '')
-            price_label = f" ({price_date})" if price_date else ''
+            price_date_fmt = price_date.replace('-', '/') if price_date else ''
+            price_label = f"{price_date_fmt} 现价" if price_date_fmt else '现价'
             rows += f"""
         <tr>
             <td><b>{t.get('ticker')}</b></td>
             <td>{t.get('name')}</td>
             <td style="color:{color}">{cn}</td>
             <td>{t.get('target_weight', 0)*100:.2f}%</td>
-            <td>{t.get('current_price', 0)}{price_label}</td>
+            <td>{price_label} {t.get('current_price', 0)}</td>
             <td>{t.get('target_price', 0)}</td>
             <td>{t.get('stop_loss', 0)}</td>
             <td title="{t.get('reason', '')}">{t.get('reason', '')[:40]}</td>
@@ -431,6 +442,9 @@ def generate_portfolio_page():
         rows = ""
         for item in items:
             action_color = {'买入': '#ef4444', '减持/卖出': '#22c55e', '融券卖出': '#22c55e', '不操作': '#94a3b8'}.get(item.get('action'), '#e2e8f0')
+            price_date = price_date_map.get(item.get('ticker'), '')
+            price_date_fmt = price_date.replace('-', '/') if price_date else ''
+            price_label = f"{price_date_fmt} 现价" if price_date_fmt else '现价'
             rows += f"""
         <tr>
             <td style="color:{action_color}"><b>{item.get('action')}</b></td>
@@ -438,7 +452,7 @@ def generate_portfolio_page():
             <td>{item.get('name')}</td>
             <td>¥{item.get('target_amount', 0):,.0f}</td>
             <td>{item.get('target_weight', 0)*100:.2f}%</td>
-            <td>{item.get('current_price', 0)}</td>
+            <td>{price_label} {item.get('current_price', 0)}</td>
             <td>{item.get('constraint_note', '')}</td>
         </tr>"""
         return rows

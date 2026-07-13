@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>📉 期货 - 2026-07-13 18:34</title>
+<title>📉 期货 - 2026-07-13 19:41</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -12,13 +12,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto
 .header { background: linear-gradient(135deg, #1e293b, #334155); padding: 30px; border-radius: 16px; margin-bottom: 24px; }
 .header h1 { font-size: 24px; margin-bottom: 8px; }
 .header .sub { color: #94a3b8; font-size: 14px; }
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.stats-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 24px; }
+@media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
 .stat-card { background: #1e293b; border-radius: 12px; padding: 16px 10px; text-align: center; }
 .stat-card .num { font-size: 28px; font-weight: bold; white-space: nowrap; }
 .stat-card .label { color: #94a3b8; font-size: 12px; margin-top: 4px; }
 .section-title { font-size: 18px; font-weight: 600; margin: 24px 0 12px; padding-left: 12px; border-left: 4px solid #6366f1; }
-.nav { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-.nav a { color: #94a3b8; text-decoration: none; padding: 8px 18px; border-radius: 20px; background: #1e293b; border: 1px solid #334155; font-size: 13px; }
+.nav { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; align-items: center; gap: 10px; margin-bottom: 20px; }
+.nav a { display: inline-block; white-space: nowrap; color: #94a3b8; text-decoration: none; padding: 8px 18px; border-radius: 20px; background: #1e293b; border: 1px solid #334155; font-size: 13px; }
 .nav a:hover { background: #334155; color: #e2e8f0; }
 .nav a.active { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; border-color: transparent; }
 .footer { text-align: center; color: #475569; font-size: 12px; margin-top: 40px; padding: 20px; }
@@ -31,7 +32,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto
 .card-meta { color: #94a3b8; font-size: 12px; margin-bottom: 6px; }
 .card-price { color: #e2e8f0; font-size: 13px; margin-bottom: 6px; }
 .card-reason { color: #94a3b8; font-size: 12px; line-height: 1.5; }
-table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 12px; overflow: hidden; margin-bottom: 24px; font-size: 13px; }
+.table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 24px; border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; background: #1e293b; font-size: 13px; min-width: 800px; }
 th { background: #334155; padding: 10px 12px; text-align: left; font-size: 12px; color: #94a3b8; text-transform: uppercase; }
 td { padding: 8px 12px; border-bottom: 1px solid #1e293b; font-size: 13px; }
 tr:hover { background: #334155; }
@@ -53,7 +55,7 @@ tr:hover { background: #334155; }
 
     <div class="header">
         <h1>📉 期货 </h1>
-        <div class="sub">2026-07-13 18:34 · 最新预测 21 只 (价格日期: 2026-07-13)</div>
+        <div class="sub">2026-07-13 19:41 · 最新预测 21 只 (价格日期: 2026-07-13)</div>
     </div>
 
 
@@ -62,132 +64,52 @@ tr:hover { background: #334155; }
             <div class="label">总数</div>
         </div>
         <div class="stat-card">
-            <div class="num" style="color:#ef4444">2</div>
+            <div class="num" style="color:#ef4444">0</div>
             <div class="label">看多</div>
         </div>
         <div class="stat-card">
-            <div class="num" style="color:#22c55e">4</div>
+            <div class="num" style="color:#22c55e">3</div>
             <div class="label">看空</div>
         </div>
         <div class="stat-card">
-            <div class="num">15</div>
+            <div class="num">18</div>
             <div class="label">中性</div>
         </div>
-<div class="section-title">🏆 重点看多</div>
-<div class="cards">
-
-            <div class="card bull">
-                <div class="card-title">🔥 沪锌 (ZN0)</div>
-                <div class="card-meta">评分 55.0 | 60日收益 +4.2% | 回撤 -4.8%</div>
-                <div class="card-price">目标 25194.0 | 止损 23959.0</div>
-                <div class="card-reason">技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观neutral(44.6/100)</div>
-            </div>
-            <div class="card bull">
-                <div class="card-title">🔥 菜油 (OI0)</div>
-                <div class="card-meta">评分 55.0 | 60日收益 +4.9% | 回撤 -7.8%</div>
-                <div class="card-price">目标 10072.5 | 止损 9578.75</div>
-                <div class="card-reason">技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观neutral(44.6/100)</div>
-            </div>
-</div><div class="section-title">❄️ 重点看空</div>
+<div class="section-title">❄️ 重点看空</div>
 <div class="cards">
 
             <div class="card bear">
                 <div class="card-title">❄️ 焦煤 (JM0)</div>
-                <div class="card-meta">评分 41.0 | 60日收益 +14.4% | 回撤 -15.1%</div>
+                <div class="card-meta">评分 41.5 | 60日收益 +14.4% | 回撤 -15.1%</div>
                 <div class="card-price">目标 1204.454 | 止损 1279.2</div>
-                <div class="card-reason">技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌5 | 宏观neutral(44.6/100)</div>
-            </div>
-            <div class="card bear">
-                <div class="card-title">❄️ 焦炭 (J0)</div>
-                <div class="card-meta">评分 45.0 | 60日收益 +10.3% | 回撤 -10.9%</div>
-                <div class="card-price">目标 1803.236 | 止损 1958.25</div>
-                <div class="card-reason">技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3 | 宏观neutral(44.6/100)</div>
+                <div class="card-reason">技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌5 | 宏观bearish(44.6/100)</div>
             </div>
             <div class="card bear">
                 <div class="card-title">❄️ 热卷 (HC0)</div>
-                <div class="card-meta">评分 43.3 | 60日收益 -0.6% | 回撤 -6.4%</div>
+                <div class="card-meta">评分 43.8 | 60日收益 -0.6% | 回撤 -6.4%</div>
                 <div class="card-price">目标 3206.56 | 止损 3370.16</div>
-                <div class="card-reason">技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观neutral(44.6/100)</div>
+                <div class="card-reason">技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观bearish(44.6/100)</div>
             </div>
             <div class="card bear">
                 <div class="card-title">❄️ 玉米 (C0)</div>
-                <div class="card-meta">评分 43.0 | 60日收益 -3.5% | 回撤 -6.1%</div>
+                <div class="card-meta">评分 43.5 | 60日收益 -3.5% | 回撤 -6.1%</div>
                 <div class="card-price">目标 2260.86 | 止损 2376.21</div>
-                <div class="card-reason">技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观neutral(44.6/100)</div>
+                <div class="card-reason">技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观bearish(44.6/100)</div>
             </div>
 </div>
 
     <div class="section-title">📂 📉 期货 (21只)</div>
+    <div class="table-responsive">
     <table>
-        <thead><tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>60日收益</th><th>60日回撤</th><th>60日夏普</th><th>现价</th><th>目标</th><th>止损</th><th>仓位</th><th>技术分</th></tr></thead>
+        <thead><tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>60日收益</th><th>60日回撤</th><th>60日夏普</th><th>价格</th><th>目标</th><th>止损</th><th>仓位</th><th>技术分</th></tr></thead>
         <tbody>
-        <tr>
-            <td><b>ZN0</b></td>
-            <td>沪锌</td>
-            <td>有色</td>
-            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>55.0</td>
-            <td>63%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>偏多</td>
-            <td>偏多</td>
-            <td>+4.2%</td>
-            <td>-4.8%</td>
-            <td>1.06</td>
-            <td>24700.0 (2026-07-13)</td>
-            <td>25194.0</td>
-            <td>23959.0</td>
-            <td>16%</td>
-            <td title="技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观neutral(44.6/100)">70</td>
-        </tr>
-        <tr>
-            <td><b>OI0</b></td>
-            <td>菜油</td>
-            <td>农产品</td>
-            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>55.0</td>
-            <td>63%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>偏多</td>
-            <td>偏多</td>
-            <td>+4.9%</td>
-            <td>-7.8%</td>
-            <td>1.20</td>
-            <td>9875.0 (2026-07-13)</td>
-            <td>10072.5</td>
-            <td>9578.75</td>
-            <td>16%</td>
-            <td title="技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观neutral(44.6/100)">70</td>
-        </tr>
-        <tr>
-            <td><b>J0</b></td>
-            <td>焦炭</td>
-            <td>黑色</td>
-            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
-            <td>45.0</td>
-            <td>71%</td>
-            <td>偏空</td>
-            <td>看跌</td>
-            <td>看跌</td>
-            <td>看跌</td>
-            <td>+10.3%</td>
-            <td>-10.9%</td>
-            <td>1.30</td>
-            <td>1865.0 (2026-07-13)</td>
-            <td>1803.236</td>
-            <td>1958.25</td>
-            <td>11%</td>
-            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3 | 宏观neutral(44.6/100)">47</td>
-        </tr>
         <tr>
             <td><b>HC0</b></td>
             <td>热卷</td>
             <td>黑色</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
-            <td>43.3</td>
-            <td>81%</td>
+            <td>43.8</td>
+            <td>80%</td>
             <td>震荡</td>
             <td>震荡</td>
             <td>偏空</td>
@@ -195,18 +117,18 @@ tr:hover { background: #334155; }
             <td>-0.6%</td>
             <td>-6.4%</td>
             <td>-0.40</td>
-            <td>3272.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 3272.0</td>
             <td>3206.56</td>
             <td>3370.16</td>
             <td>12%</td>
-            <td title="技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观neutral(44.6/100)">48</td>
+            <td title="技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观bearish(44.6/100)">48</td>
         </tr>
         <tr>
             <td><b>C0</b></td>
             <td>玉米</td>
             <td>农产品</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
-            <td>43.0</td>
+            <td>43.5</td>
             <td>81%</td>
             <td>震荡</td>
             <td>震荡</td>
@@ -215,18 +137,18 @@ tr:hover { background: #334155; }
             <td>-3.5%</td>
             <td>-6.1%</td>
             <td>-1.84</td>
-            <td>2307.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 2307.0</td>
             <td>2260.86</td>
             <td>2376.21</td>
             <td>12%</td>
-            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观neutral(44.6/100)">47</td>
+            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观bearish(44.6/100)">47</td>
         </tr>
         <tr>
             <td><b>JM0</b></td>
             <td>焦煤</td>
             <td>黑色</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
-            <td>41.0</td>
+            <td>41.5</td>
             <td>91%</td>
             <td>偏空</td>
             <td>看跌</td>
@@ -235,11 +157,51 @@ tr:hover { background: #334155; }
             <td>+14.4%</td>
             <td>-15.1%</td>
             <td>1.37</td>
-            <td>1239.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 1239.0</td>
             <td>1204.454</td>
             <td>1279.2</td>
             <td>14%</td>
-            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌5 | 宏观neutral(44.6/100)">47</td>
+            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌5 | 宏观bearish(44.6/100)">47</td>
+        </tr>
+        <tr>
+            <td><b>ZN0</b></td>
+            <td>沪锌</td>
+            <td>有色</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>54.5</td>
+            <td>62%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>偏多</td>
+            <td>偏多</td>
+            <td>+4.2%</td>
+            <td>-4.8%</td>
+            <td>1.06</td>
+            <td>2026/07/13 现价 24700.0</td>
+            <td>24829.058</td>
+            <td>24206.0</td>
+            <td>0%</td>
+            <td title="技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">70</td>
+        </tr>
+        <tr>
+            <td><b>OI0</b></td>
+            <td>菜油</td>
+            <td>农产品</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>54.5</td>
+            <td>62%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>偏多</td>
+            <td>偏多</td>
+            <td>+4.9%</td>
+            <td>-7.8%</td>
+            <td>1.20</td>
+            <td>2026/07/13 现价 9875.0</td>
+            <td>9939.829</td>
+            <td>9677.5</td>
+            <td>0%</td>
+            <td title="技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">70</td>
         </tr>
         <tr>
             <td><b>RB0</b></td>
@@ -255,11 +217,11 @@ tr:hover { background: #334155; }
             <td>-1.6%</td>
             <td>-7.1%</td>
             <td>-0.82</td>
-            <td>3054.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 3054.0</td>
             <td>3031.294</td>
             <td>2992.92</td>
             <td>0%</td>
-            <td title="技术面中性(58/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观neutral(44.6/100)">58</td>
+            <td title="技术面中性(58/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">58</td>
         </tr>
         <tr>
             <td><b>CF0</b></td>
@@ -275,11 +237,11 @@ tr:hover { background: #334155; }
             <td>+3.3%</td>
             <td>-6.2%</td>
             <td>0.91</td>
-            <td>16080.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 16080.0</td>
             <td>16031.117</td>
             <td>15758.4</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观neutral(44.6/100)">57</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
         </tr>
         <tr>
             <td><b>CU0</b></td>
@@ -295,11 +257,11 @@ tr:hover { background: #334155; }
             <td>+0.9%</td>
             <td>-6.7%</td>
             <td>0.21</td>
-            <td>103060.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 103060.0</td>
             <td>102921.9</td>
             <td>100998.8</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观neutral(44.6/100)">57</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
         </tr>
         <tr>
             <td><b>SR0</b></td>
@@ -315,11 +277,11 @@ tr:hover { background: #334155; }
             <td>-1.1%</td>
             <td>-5.3%</td>
             <td>-0.70</td>
-            <td>5255.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 5255.0</td>
             <td>5214.247</td>
             <td>5149.9</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观neutral(44.6/100)">57</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
         </tr>
         <tr>
             <td><b>RM0</b></td>
@@ -335,11 +297,11 @@ tr:hover { background: #334155; }
             <td>-2.0%</td>
             <td>-7.8%</td>
             <td>-0.58</td>
-            <td>2295.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 2295.0</td>
             <td>2295.086</td>
             <td>2249.1</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观neutral(44.6/100)">57</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
         </tr>
         <tr>
             <td><b>P0</b></td>
@@ -355,11 +317,11 @@ tr:hover { background: #334155; }
             <td>-2.1%</td>
             <td>-7.7%</td>
             <td>-0.62</td>
-            <td>9212.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 9212.0</td>
             <td>9183.443</td>
             <td>9027.76</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观neutral(44.6/100)">57</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
         </tr>
         <tr>
             <td><b>I0</b></td>
@@ -375,11 +337,11 @@ tr:hover { background: #334155; }
             <td>-2.5%</td>
             <td>-10.9%</td>
             <td>-0.76</td>
-            <td>744.5 (2026-07-13)</td>
+            <td>2026/07/13 现价 744.5</td>
             <td>745.356</td>
             <td>729.61</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观neutral(44.6/100)">57</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
         </tr>
         <tr>
             <td><b>SM0</b></td>
@@ -395,11 +357,11 @@ tr:hover { background: #334155; }
             <td>-5.4%</td>
             <td>-7.8%</td>
             <td>-1.95</td>
-            <td>5868.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 5868.0</td>
             <td>5863.379</td>
             <td>5750.64</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观neutral(44.6/100)">57</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
         </tr>
         <tr>
             <td><b>AL0</b></td>
@@ -415,11 +377,11 @@ tr:hover { background: #334155; }
             <td>-8.0%</td>
             <td>-12.7%</td>
             <td>-2.28</td>
-            <td>22945.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 22945.0</td>
             <td>22835.782</td>
             <td>22486.1</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观neutral(44.6/100)">57</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
         </tr>
         <tr>
             <td><b>V0</b></td>
@@ -435,11 +397,11 @@ tr:hover { background: #334155; }
             <td>-12.0%</td>
             <td>-18.5%</td>
             <td>-2.69</td>
-            <td>4488.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 4488.0</td>
             <td>4477.644</td>
             <td>4398.24</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观neutral(44.6/100)">57</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
         </tr>
         <tr>
             <td><b>AU0</b></td>
@@ -455,11 +417,11 @@ tr:hover { background: #334155; }
             <td>-16.3%</td>
             <td>-18.1%</td>
             <td>-3.48</td>
-            <td>885.94 (2026-07-13)</td>
+            <td>2026/07/13 现价 885.94</td>
             <td>872.833</td>
             <td>868.221</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观neutral(44.6/100)">57</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌1 | 宏观bearish(44.6/100)">57</td>
         </tr>
         <tr>
             <td><b>MA0</b></td>
@@ -475,11 +437,11 @@ tr:hover { background: #334155; }
             <td>-11.5%</td>
             <td>-23.0%</td>
             <td>-1.47</td>
-            <td>2516.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 2516.0</td>
             <td>2544.299</td>
             <td>2465.68</td>
             <td>0%</td>
-            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观neutral(44.6/100)">54</td>
+            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观bearish(44.6/100)">54</td>
         </tr>
         <tr>
             <td><b>SC0</b></td>
@@ -495,11 +457,31 @@ tr:hover { background: #334155; }
             <td>-23.4%</td>
             <td>-37.0%</td>
             <td>-2.60</td>
-            <td>482.6 (2026-07-13)</td>
+            <td>2026/07/13 现价 482.6</td>
             <td>498.251</td>
             <td>472.948</td>
             <td>0%</td>
-            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观neutral(44.6/100)">54</td>
+            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观bearish(44.6/100)">54</td>
+        </tr>
+        <tr>
+            <td><b>J0</b></td>
+            <td>焦炭</td>
+            <td>黑色</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>45.5</td>
+            <td>71%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>+10.3%</td>
+            <td>-10.9%</td>
+            <td>1.30</td>
+            <td>2026/07/13 现价 1865.0</td>
+            <td>1803.236</td>
+            <td>1827.7</td>
+            <td>0%</td>
+            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3 | 宏观bearish(44.6/100)">47</td>
         </tr>
         <tr>
             <td><b>TA0</b></td>
@@ -515,11 +497,11 @@ tr:hover { background: #334155; }
             <td>-11.7%</td>
             <td>-21.5%</td>
             <td>-1.61</td>
-            <td>5612.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 5612.0</td>
             <td>5607.679</td>
             <td>5499.76</td>
             <td>0%</td>
-            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观neutral(44.6/100)">54</td>
+            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观bearish(44.6/100)">54</td>
         </tr>
         <tr>
             <td><b>AG0</b></td>
@@ -535,13 +517,14 @@ tr:hover { background: #334155; }
             <td>-27.7%</td>
             <td>-35.6%</td>
             <td>-2.53</td>
-            <td>14135.0 (2026-07-13)</td>
+            <td>2026/07/13 现价 14135.0</td>
             <td>13519.703</td>
             <td>13852.3</td>
             <td>0%</td>
-            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观neutral(44.6/100)">54</td>
+            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观bearish(44.6/100)">54</td>
         </tr></tbody>
     </table>
+    </div>
 
     <div class="footer">
         数据由 Hermes Agent + 多Agent LLM 预测系统自动生成 · 研究辅助非投资建议 ·

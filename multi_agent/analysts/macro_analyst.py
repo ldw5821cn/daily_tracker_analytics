@@ -134,10 +134,10 @@ def analyze(current_date: Optional[str] = None) -> Dict:
     avg_index_score = sum(s['score'] for s in index_scores) / len(index_scores) if index_scores else 50
     macro_score = round(avg_index_score * 0.7 + breadth['score'] * 0.3, 1)
 
-    # 宏观信号：帮助经理判断
-    if macro_score >= 65:
+    # 宏观信号：阈值设置较敏感，50 为中性
+    if macro_score >= 55:
         macro_signal = 'bullish'
-    elif macro_score <= 35:
+    elif macro_score <= 45:
         macro_signal = 'bearish'
     else:
         macro_signal = 'neutral'
@@ -146,7 +146,7 @@ def analyze(current_date: Optional[str] = None) -> Dict:
     summary_lines = [
         f"# 宏观市场分析报告 ({current_date})",
         "",
-        f"综合宏观评分: {macro_score}/100 | 信号: {macro_signal}",
+        f"综合宏观评分: {macro_score}/100 | 信号: {macro_signal} (阈值: bullish>=55, bearish<=45)",
         "",
         "## 大盘指数",
     ]
@@ -179,12 +179,13 @@ def get_macro_score_override(macro_report: Dict, individual_signal: str) -> floa
     """
     macro_signal = macro_report.get('macro_signal', 'neutral')
     macro_score = macro_report.get('macro_score', 50)
-    # 距离中性（50）越远，修正幅度越大
+    # 距离中性（50）越远，修正幅度越大；熊市环境下最高可修正 12 分
     strength = abs(macro_score - 50) / 50  # 0~1
+    base = 12
     if macro_signal == 'bullish':
-        return 5 * strength if individual_signal == 'bullish' else -5 * strength if individual_signal == 'bearish' else 0
+        return base * strength if individual_signal == 'bullish' else -base * strength if individual_signal == 'bearish' else 0
     elif macro_signal == 'bearish':
-        return 5 * strength if individual_signal == 'bearish' else -5 * strength if individual_signal == 'bullish' else 0
+        return base * strength if individual_signal == 'bearish' else -base * strength if individual_signal == 'bullish' else 0
     return 0
 
 
