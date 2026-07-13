@@ -103,6 +103,7 @@ def _get_conn() -> sqlite3.Connection:
             component_scores TEXT,
             backtest_summary TEXT,
             current_price REAL,
+            price_date TEXT,
             pred_date TEXT NOT NULL,
             pred_time TEXT,
             created_at TEXT DEFAULT CURRENT_TIMESTAMP
@@ -125,6 +126,10 @@ def _get_conn() -> sqlite3.Connection:
             validated_at TEXT DEFAULT CURRENT_TIMESTAMP
         );
     """)
+    # 兼容旧表：添加 price_date 列
+    cols = [r[1] for r in conn.execute("PRAGMA table_info(agentic_predictions)")]
+    if 'price_date' not in cols:
+        conn.execute("ALTER TABLE agentic_predictions ADD COLUMN price_date TEXT")
     return conn
 
 
@@ -282,6 +287,7 @@ def _fast_technical_analysis(ticker: str, name: str = "") -> Dict:
 
     tech_snapshot = {
         'current_price': round(cp, 2),
+        'price_date': str(df.index[-1].date()) if hasattr(df.index[-1], 'date') else str(df.index[-1]),
         'ma5': _val('ma5'), 'ma10': _val('ma10'), 'ma20': _val('ma20'), 'ma60': _val('ma60'),
         'macd_dif': _val('macd_dif', 4), 'macd_dea': _val('macd_dea', 4), 'macd_hist': _val('macd_hist', 4),
         'rsi_14': _val('rsi_14', 1), 'kdj_k': _val('kdj_k', 1), 'kdj_d': _val('kdj_d', 1),
@@ -399,6 +405,7 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
         verdict = _manager_verdict(technical, fundamental, news, bull, bear)
 
         current_price = technical.get('current_price', 0)
+        price_date = technical.get('price_date') or technical.get('tech_snapshot', {}).get('price_date', '')
         predictions = technical.get('prediction', {}).get('predictions', [])
         if predictions:
             avg_return = sum(p.get('pred_return', 0) for p in predictions) / len(predictions)
@@ -433,6 +440,7 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
             'sector': sector,
             'category': category,
             'current_price': current_price,
+            'price_date': price_date,
             'signal': verdict['signal'],
             'confidence': verdict['confidence'],
             'weighted_score': verdict['weighted_score'],
@@ -483,8 +491,8 @@ def save_predictions(predictions: List[Dict]) -> Dict:
                      horizon_1d_return, horizon_3d_return, horizon_5d_return, horizon_10d_return,
                      key_support, key_resistance, reasoning,
                      bull_points, bear_points, component_scores, backtest_summary,
-                     current_price, pred_date, pred_time)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                     current_price, price_date, pred_date, pred_time)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """, (
                     p['ticker'], p['name'], p.get('sector', ''), p.get('category', '个股'),
                     p['signal'], p['confidence'], p['weighted_score'],
@@ -496,9 +504,10 @@ def save_predictions(predictions: List[Dict]) -> Dict:
                     json.dumps(p['bear_points'], ensure_ascii=False),
                     json.dumps(p['component_scores'], ensure_ascii=False),
                     json.dumps(p['backtest_summary'], ensure_ascii=False),
-                    p['current_price'], today, now
+                    p['current_price'], p.get('price_date', ''), today, now
                 ))
                 stats['saved'] += 1
+
             except Exception as e:
                 stats['errors'] += 1
                 print(f"  ❌ 保存失败 {p.get('ticker')}: {e}")

@@ -38,7 +38,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto
 .header .sub { color: #94a3b8; font-size: 14px; }
 .stats-grid { display: flex; gap: 16px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 8px; }
 .stat-card { flex: 1; min-width: 120px; background: #1e293b; border-radius: 12px; padding: 20px; text-align: center; }
-.stat-card .num { font-size: 28px; font-weight: bold; }
+.stat-card .num { font-size: 28px; font-weight: bold; white-space: nowrap; }
 .stat-card .label { color: #94a3b8; font-size: 12px; margin-top: 4px; }
 .section-title { font-size: 18px; font-weight: 600; margin: 24px 0 12px; padding-left: 12px; border-left: 4px solid #6366f1; }
 .nav { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
@@ -89,12 +89,12 @@ def _load_db_stats():
     display_date = last['pred_date'] if last else today
 
     cur.execute("""
-        SELECT ticker, name, sector, category, signal, confidence,
-               horizon_1d, horizon_3d, horizon_5d, horizon_10d,
-               current_price, target_price, stop_loss, position_pct,
-               weighted_score, reasoning, component_scores, backtest_summary
-        FROM agentic_predictions WHERE pred_date=?
-        ORDER BY category, weighted_score DESC
+    SELECT ticker, name, sector, category, signal, confidence,
+           horizon_1d, horizon_3d, horizon_5d, horizon_10d,
+           current_price, price_date, target_price, stop_loss, position_pct,
+           weighted_score, reasoning, component_scores, backtest_summary
+    FROM agentic_predictions WHERE pred_date=?
+    ORDER BY category, weighted_score DESC
     """, (display_date,))
     rows = [dict(r) for r in cur.fetchall()]
 
@@ -153,6 +153,8 @@ def _row_html(p):
     emoji = SIGNAL_EMOJI.get(sig, '⚪')
     comp = json.loads(p.get('component_scores') or '{}') if isinstance(p.get('component_scores'), str) else p.get('component_scores', {})
     tech = comp.get('technical', '-') if isinstance(comp, dict) else '-'
+    price_date = p.get('price_date') or ''
+    price_label = f" ({price_date})" if price_date else ''
     return f"""
         <tr>
             <td><b>{p.get('ticker', '')}</b></td>
@@ -168,7 +170,7 @@ def _row_html(p):
             <td>{p.get('bt_return_60d', 0):+.1f}%</td>
             <td>{p.get('bt_max_dd_60d', 0):.1f}%</td>
             <td>{p.get('bt_sharpe_60d', 0):.2f}</td>
-            <td>{p.get('current_price', '')}</td>
+            <td>{p.get('current_price', '')}{price_label}</td>
             <td>{p.get('target_price', '')}</td>
             <td>{p.get('stop_loss', '')}</td>
             <td>{(p.get('position_pct') or 0)*100:.0f}%</td>
@@ -286,8 +288,10 @@ def generate_prediction_page(stats, rows, out_name='prediction.html'):
 {_portfolio_backtest_html()}
 {cat_tables}
 """
+    price_dates = sorted(set(r.get('price_date') for r in rows if r.get('price_date')))
+    price_date_str = f"价格日期: {', '.join(price_dates)}" if price_dates else "价格日期: 未知"
     title = f"🏛️ LLM 预测 - {now}"
-    subtitle = f"{now} · 基于多 Agent 融合预测 (最新: {stats['display_date']})"
+    subtitle = f"{now} · 基于多 Agent 融合预测 ({price_date_str})"
     html = _build_page_skeleton(title, body, out_name, subtitle, tag='🧠 多Agent融合')
     _write(out_name, html)
 
@@ -314,9 +318,11 @@ def generate_category_page(rows, category, out_name, title_cn):
 {cards}
 {_table_html(items, f'📂 {title_cn} ({len(items)}只)')}
 """
+    price_dates = sorted(set(r.get('price_date') for r in items if r.get('price_date')))
+    price_date_str = f"价格日期: {', '.join(price_dates)}" if price_dates else "价格日期: 未知"
     date = datetime.now().strftime('%Y-%m-%d %H:%M')
     title = f"{title_cn} - {date}"
-    subtitle = f"{date} · 最新预测 {len(items)} 只 (预测日期: {items[0].get('pred_date', 'N/A')})"
+    subtitle = f"{date} · 最新预测 {len(items)} 只 ({price_date_str})"
     html = _build_page_skeleton(title, body, out_name, subtitle)
     _write(out_name, html)
 
@@ -346,8 +352,10 @@ def generate_index_page(stats, rows):
 {_table_html(sorted(bullish, key=lambda x: x.get('bt_score', 0), reverse=True)[:10], '🏆 Top 10 看多个股/ETF/期货')}
 """
     date = datetime.now().strftime('%Y-%m-%d %H:%M')
+    price_dates = sorted(set(r.get('price_date') for r in rows if r.get('price_date')))
+    price_date_str = f"价格日期: {', '.join(price_dates)}" if price_dates else "价格日期: 未知"
     title = f"🏠 首页 - A股 & 期货 多维度投资分析 - {date}"
-    subtitle = f"{date} · 首页概览 · 最新预测 {stats['display_date']}"
+    subtitle = f"{date} · 首页概览 · {price_date_str}"
     html = _build_page_skeleton(title, body, 'index.html', subtitle)
     _write('index.html', html)
 

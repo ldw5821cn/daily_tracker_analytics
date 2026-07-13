@@ -195,6 +195,7 @@ def analyze(ticker, name="", current_date="2026-07-02"):
         'ticker': ticker,
         'name': name,
         'current_price': round(cp, 2),
+        'price_date': str(df.index[-1].date()) if hasattr(df.index[-1], 'date') else str(df.index[-1]),
         'score': score,
         'rating': rating,
         'backtest_results': backtest_results,
