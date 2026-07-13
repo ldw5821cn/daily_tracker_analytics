@@ -133,7 +133,8 @@ def main():
     )[:10]
     for r in wrong_sorted:
         pred = r['pred']
-        print(f"  {r['ticker']:8s} {r['name'][:8]:8s} {r['signal']:8s} 预测价{pred.get('current_price',''):8s} 现价{r['today_price']:8s} 收益{r['return_pct']:+.2f}%")
+        cp = pred.get('current_price', 0) or 0
+        print(f"  {r['ticker']:8s} {r['name'][:8]:8s} {r['signal']:8s} 预测价{cp:8.2f} 现价{r['today_price']:8.2f} 收益{r['return_pct']:+.2f}%")
 
     # 建议
     print('\n💡 反思与改进建议')

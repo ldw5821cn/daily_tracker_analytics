@@ -30,16 +30,18 @@ def _get_conn():
 
 
 def _get_current_price(ticker: str, category: str, name: str) -> float | None:
-    """获取当前/上午收盘价。"""
+    """获取最新收盘价（验证日收盘价）。"""
     try:
         if category == '期货':
-            return get_realtime_price(ticker)
-        else:
-            df = get_stock_data(ticker, period='1d', limit=1)
+            df, _ = get_stock_data(ticker, period='10d', calibrate=False)
             if df is not None and not df.empty:
                 return float(df['close'].iloc[-1])
-    except Exception:
-        pass
+        else:
+            df, _ = get_stock_data(ticker, period='10d', calibrate=False)
+            if df is not None and not df.empty:
+                return float(df['close'].iloc[-1])
+    except Exception as e:
+        print(f"  {ticker} 价格获取失败: {e}")
     return None
 
 
