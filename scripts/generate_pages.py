@@ -6,6 +6,7 @@ import json
 import os
 import sqlite3
 import sys
+from collections import Counter
 from datetime import datetime, timedelta
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'multi_agent'))
@@ -133,11 +134,18 @@ def _load_db_stats():
         inject_backtest_metrics(p)
     rows = sorted(rows, key=lambda x: x.get('bt_score', 0), reverse=True)
 
+    # 推荐策略分布统计
+    scenario_counts = Counter()
+    for p in rows:
+        sc = p.get('recommended_scenario')
+        scenario_counts[SCENARIO_NAME_CN.get(sc, sc or 'N/A')] += 1
+
     return {
         'display_date': display_date,
         'today_preds': stats.get('today_count', 0),
         'agentic_total': stats.get('total', 0),
         'today_details': rows,
+        'scenario_counts': dict(scenario_counts.most_common()),
     }, rows
 
 
@@ -513,6 +521,12 @@ def generate_index_page(stats, rows, dates=None):
         _stat_card(len(cats.get('期货', [])), '期货'),
     ])
 
+    scenario_counts = stats.get('scenario_counts', {})
+    scenario_cards = "".join([
+        _stat_card(count, f"{name}", '#94a3b8')
+        for name, count in scenario_counts.items()
+    ])
+
     cards = _top_cards(rows, '🔥 今日重点看多', 'bullish', 'bull')
 
     body = f"""
@@ -521,6 +535,10 @@ def generate_index_page(stats, rows, dates=None):
 </div>
 {cards}
 {_validation_html()}
+<div class="section-title">📊 推荐策略分布</div>
+<div class="stats-grid">
+{scenario_cards}
+</div>
 {_portfolio_backtest_html()}
 {_table_html(sorted(bullish, key=lambda x: x.get('bt_score', 0), reverse=True)[:10], '🏆 Top 10 看多个股/ETF/期货')}
 """
