@@ -214,6 +214,31 @@ def _portfolio_backtest_html():
     </table>"""
 
 
+def _validation_html():
+    val = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'morning_validation.json'))
+    if not val or not val.get('overall'):
+        return ""
+    overall = val['overall']
+    by_cat = val.get('by_category', {})
+    cat_rows = ""
+    for cat, stat in by_cat.items():
+        cat_rows += f"""
+            <div class="stat-card">
+                <div class="num" style="color:{'#ef4444' if stat['accuracy'] >= 50 else '#22c55e'}">{stat['accuracy']:.1f}%</div>
+                <div class="label">{cat} ({stat['correct']}/{stat['total']})</div>
+            </div>"""
+    return f"""
+    <div class="section-title">🎯 昨日 1 日方向验证（{val.get('pred_date', '')} 预测）</div>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="num" style="color:{'#ef4444' if overall['accuracy'] >= 50 else '#22c55e'}">{overall['accuracy']:.1f}%</div>
+            <div class="label">总体准确率 ({overall['correct']}/{overall['total']})</div>
+        </div>
+        {cat_rows}
+    </div>
+"""
+
+
 def _build_page_skeleton(title, body, active_tab, subtitle, tag=''):
     return f"""<!DOCTYPE html>
 <html lang="zh-CN">
@@ -264,6 +289,7 @@ def generate_prediction_page(stats, rows, out_name='prediction.html'):
     body = f"""
 {stats_cards}
 {cards}
+{_validation_html()}
 {_portfolio_backtest_html()}
 {cat_tables}
 """
@@ -327,6 +353,7 @@ def generate_index_page(stats, rows):
     body = f"""
 {stats_cards}
 {cards}
+{_validation_html()}
 {_portfolio_backtest_html()}
 {_table_html(sorted(bullish, key=lambda x: x.get('bt_score', 0), reverse=True)[:10], '🏆 Top 10 看多个股/ETF/期货')}
 """

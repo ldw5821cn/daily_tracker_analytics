@@ -23,6 +23,21 @@ OUTPUT_PATH = os.path.join(MULTI_AGENT, 'data', 'morning_validation.json')
 DIRECTION_THRESHOLD = 1.5  # 1日方向阈值 1.5%
 
 
+def _direction_correct(signal: str, return_pct: float, threshold: float = DIRECTION_THRESHOLD) -> bool:
+    """方向正确性判定。
+
+    - bullish: 实际收益 > 0 即正确（允许小幅上涨，避免阈值过滤掉温和上涨）
+    - bearish: 实际收益 < 0 即正确
+    - neutral: 实际收益在 [-threshold, threshold] 区间内正确
+    """
+    if signal == 'bullish':
+        return return_pct > 0
+    elif signal == 'bearish':
+        return return_pct < 0
+    else:
+        return abs(return_pct) <= threshold
+
+
 def _get_conn():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
@@ -62,13 +77,7 @@ def _validate_row(row: sqlite3.Row) -> dict:
         }
 
     return_pct = (today_price - pred_price) / pred_price * 100
-    correct = None
-    if signal == 'bullish':
-        correct = return_pct >= DIRECTION_THRESHOLD
-    elif signal == 'bearish':
-        correct = return_pct <= -DIRECTION_THRESHOLD
-    else:
-        correct = abs(return_pct) < DIRECTION_THRESHOLD  # neutral 判断正确
+    correct = _direction_correct(signal, return_pct)
 
     return {
         'ticker': ticker, 'name': name, 'category': category,
