@@ -8,6 +8,8 @@
 - 北向资金流向（如可获取）
 - 人民币汇率/美债/大宗商品（可选）
 - 板块轮动热度
+- 美股宏观代理：利率、CPI、失业率、VIX/DXY 代理、收益率曲线
+- Risk-on / Risk-off 状态
 
 输出统一的宏观评分和信号，供基金经理 Agent 在裁决时参考。
 """
@@ -28,6 +30,7 @@ sys.path.insert(0, MULTI_AGENT)
 
 from core.data_layer import get_stock_data, is_futures, is_etf, is_stock
 import pandas as pd
+import numpy as np
 
 # 大盘指数代码
 INDEX_TICKERS = {
@@ -37,6 +40,10 @@ INDEX_TICKERS = {
     '399006': '创业板指',
     '399673': '创业板50',
 }
+
+# Risk-on/off 阈值
+RISK_ON_SCORE = 60
+RISK_OFF_SCORE = 40
 
 
 def _safe_float(val, default=0.0):
@@ -86,6 +93,10 @@ def _calc_index_score(ticker: str, name: str) -> Dict:
 
     score = max(0, min(100, score))
 
+    # 波动率惩罚：20日年化波动率>30 扣分
+    vol = df['close'].pct_change().rolling(20).std().iloc[-1] * np.sqrt(252) * 100 if len(df) >= 20 else 0
+    if vol > 30: score -= 2
+
     trend = 'bullish' if score >= 65 else 'bearish' if score <= 35 else 'neutral'
     return {
         'ticker': ticker, 'name': name, 'score': round(score, 1),
@@ -93,12 +104,13 @@ def _calc_index_score(ticker: str, name: str) -> Dict:
         'ma20': round(ma20, 2), 'ma60': round(ma60, 2),
         'return_1d': round(day_change, 2),
         'return_5d': round(ret_5d, 2), 'return_20d': round(ret_20d, 2),
+        'vol_20d': round(vol, 2),
     }
 
 
 def _get_market_breadth() -> Dict:
-    """市场广度：基于沪深300/中证500的涨跌情况估算。"""
-    breadth = {'advances': 0, 'declines': 0, 'score': 50}
+    """市场广度：基于沪深300/中证500/上证指数的涨跌情况 + 涨停池数量估算。"""
+    breadth = {'advances': 0, 'declines': 0, 'score': 50, 'limit_up': 0, 'limit_down': 0}
     for ticker, name in INDEX_TICKERS.items():
         df = _get_index_data(ticker, '5d')
         if df is not None and len(df) >= 2:
@@ -111,7 +123,170 @@ def _get_market_breadth() -> Dict:
     total = breadth['advances'] + breadth['declines']
     if total > 0:
         breadth['score'] = round(breadth['advances'] / total * 100, 1)
+
+    # 尝试获取涨停池作为情绪代理
+    try:
+        import akshare as ak
+        date_str = datetime.now().strftime('%Y%m%d')
+        zt = ak.stock_zt_pool_em(date=date_str)
+        breadth['limit_up'] = len(zt) if zt is not None else 0
+    except Exception:
+        pass
+
     return breadth
+
+
+def _get_us_macro_data() -> Dict:
+    """获取美国宏观数据（利率、CPI、失业率、初请失业金）。"""
+    data = {'fed_rate': None, 'cpi_yoy': None, 'unemployment': None, 'initial_jobless': None}
+    try:
+        import akshare as ak
+        rate_df = ak.macro_bank_usa_interest_rate()
+        if rate_df is not None and not rate_df.empty:
+            latest = rate_df.dropna(subset=['今值']).iloc[-1]
+            data['fed_rate'] = _safe_float(latest.get('今值'))
+            data['fed_rate_date'] = str(latest.get('日期', ''))
+
+        cpi_df = ak.macro_usa_cpi_yoy()
+        if cpi_df is not None and not cpi_df.empty:
+            latest = cpi_df.dropna(subset=['现值']).iloc[-1]
+            data['cpi_yoy'] = _safe_float(latest.get('现值'))
+            data['cpi_date'] = str(latest.get('发布日期', ''))
+
+        unemp_df = ak.macro_usa_unemployment_rate()
+        if unemp_df is not None and not unemp_df.empty:
+            latest = unemp_df.dropna(subset=['今值']).iloc[-1]
+            data['unemployment'] = _safe_float(latest.get('今值'))
+            data['unemployment_date'] = str(latest.get('日期', ''))
+
+        jobless_df = ak.macro_usa_initial_jobless()
+        if jobless_df is not None and not jobless_df.empty:
+            latest = jobless_df.dropna(subset=['今值']).iloc[-1]
+            data['initial_jobless'] = _safe_float(latest.get('今值'))
+            data['initial_jobless_date'] = str(latest.get('日期', ''))
+    except Exception as e:
+        data['error'] = str(e)
+    return data
+
+
+def _get_yield_curve() -> Dict:
+    """获取中美国债收益率曲线代理数据。"""
+    data = {'china_10y': None, 'china_2y': None, 'us_10y_proxy': None, 'spread': None}
+    try:
+        import akshare as ak
+        df = ak.bond_zh_us_rate()
+        if df is not None and not df.empty:
+            # 列名：日期、中国国债收益率2年、中国国债收益率5年、中国国债收益率10年、中国国债收益率30年、...、美国国债收益率10年...
+            latest = df.iloc[-1]
+            data['china_10y'] = _safe_float(latest.get('中国国债收益率10年'))
+            data['china_2y'] = _safe_float(latest.get('中国国债收益率2年'))
+            data['us_10y_proxy'] = _safe_float(latest.get('美国国债收益率10年'))
+            if data['china_10y'] and data['china_2y']:
+                data['spread'] = round(data['china_10y'] - data['china_2y'], 2)
+            data['date'] = str(latest.get('日期', ''))
+    except Exception as e:
+        data['error'] = str(e)
+    return data
+
+
+def _get_vix_proxy() -> Dict:
+    """VIX 代理：基于沪深300 20日波动率。"""
+    proxy = {'vix_proxy': None, 'level': 'normal'}
+    df = _get_index_data('000300', '60d')
+    if df is not None and len(df) >= 20:
+        vol = df['close'].pct_change().rolling(20).std().iloc[-1] * np.sqrt(252) * 100
+        proxy['vix_proxy'] = round(vol, 2)
+        if vol < 15: proxy['level'] = 'low'
+        elif vol > 30: proxy['level'] = 'high'
+        elif vol > 45: proxy['level'] = 'extreme'
+    return proxy
+
+
+def _get_risk_on_off(macro_score: float, us_macro: Dict, vix_proxy: Dict, yield_curve: Dict) -> Dict:
+    """
+    判断 Risk-on / Risk-off 状态。
+    Risk-on：市场偏好风险资产（股市、商品、新兴市场）。
+    Risk-off：市场偏好避险资产（美债、美元、黄金、现金）。
+    """
+    score = 0
+    reasons = []
+
+    # 1. 宏观评分
+    if macro_score >= RISK_ON_SCORE:
+        score += 2; reasons.append("A股宏观偏多")
+    elif macro_score <= RISK_OFF_SCORE:
+        score -= 2; reasons.append("A股宏观偏空")
+
+    # 2. 美国利率：高利率压制风险资产
+    fed_rate = us_macro.get('fed_rate')
+    if fed_rate is not None:
+        if fed_rate > 5.0:
+            score -= 2; reasons.append(f"美联储利率高({fed_rate}%)")
+        elif fed_rate < 3.0:
+            score += 1; reasons.append(f"美联储利率低({fed_rate}%)")
+
+    # 3. CPI：高通胀且未回落
+    cpi = us_macro.get('cpi_yoy')
+    if cpi is not None:
+        if cpi > 4.0:
+            score -= 1; reasons.append(f"美国CPI高({cpi}%)")
+        elif cpi < 2.5:
+            score += 1; reasons.append(f"美国CPI温和({cpi}%)")
+
+    # 4. 波动率
+    if vix_proxy.get('level') == 'high':
+        score -= 2; reasons.append("波动率高")
+    elif vix_proxy.get('level') == 'low':
+        score += 1; reasons.append("波动率低")
+
+    # 5. 收益率曲线倒挂
+    spread = yield_curve.get('spread')
+    if spread is not None and spread < 0:
+        score -= 2; reasons.append("收益率曲线倒挂")
+
+    # 判定
+    if score >= 2:
+        state = 'risk_on'
+        label = 'Risk-on（偏好风险资产）'
+    elif score <= -2:
+        state = 'risk_off'
+        label = 'Risk-off（偏好避险资产）'
+    else:
+        state = 'neutral'
+        label = '中性（风险/避险平衡）'
+
+    return {
+        'state': state,
+        'label': label,
+        'score': score,
+        'reasons': reasons,
+    }
+
+
+def _get_sector_rotation_proxy() -> Dict:
+    """板块轮动热度代理：基于主要行业 ETF / 指数相对强弱。"""
+    sectors = {
+        '512010': '医药ETF',
+        '512480': '半导体ETF',
+        '512760': '芯片ETF',
+        '515030': '新能源车ETF',
+        '515790': '光伏ETF',
+        '510880': '红利ETF',
+        '512800': '银行ETF',
+        '512200': '房地产ETF',
+    }
+    heat = []
+    for ticker, name in sectors.items():
+        try:
+            df = _get_index_data(ticker, '20d')
+            if df is not None and len(df) >= 5:
+                ret_5d = (df['close'].iloc[-1] / df['close'].iloc[-6] - 1) * 100 if len(df) >= 6 else 0
+                ret_20d = (df['close'].iloc[-1] / df['close'].iloc[-21] - 1) * 100 if len(df) >= 21 else 0
+                heat.append({'ticker': ticker, 'name': name, 'ret_5d': round(ret_5d, 2), 'ret_20d': round(ret_20d, 2)})
+        except Exception:
+            pass
+    heat = sorted(heat, key=lambda x: x['ret_5d'], reverse=True)
+    return {'heat': heat[:10], 'top_sector': heat[0]['name'] if heat else 'unknown'}
 
 
 def analyze(current_date: Optional[str] = None) -> Dict:
@@ -129,10 +304,25 @@ def analyze(current_date: Optional[str] = None) -> Dict:
         index_scores.append(s)
 
     breadth = _get_market_breadth()
+    us_macro = _get_us_macro_data()
+    yield_curve = _get_yield_curve()
+    vix_proxy = _get_vix_proxy()
+    risk_on_off = _get_risk_on_off(50, us_macro, vix_proxy, yield_curve)
+    sector_rotation = _get_sector_rotation_proxy()
 
-    # 综合宏观得分（等权平均指数得分 + 市场广度）
+    # 综合宏观得分（等权平均指数得分 + 市场广度 + 波动率修正）
     avg_index_score = sum(s['score'] for s in index_scores) / len(index_scores) if index_scores else 50
-    macro_score = round(avg_index_score * 0.7 + breadth['score'] * 0.3, 1)
+    # Risk-off 状态额外压低宏观得分
+    risk_adjustment = 0
+    if risk_on_off['state'] == 'risk_off':
+        risk_adjustment = -5
+    elif risk_on_off['state'] == 'risk_on':
+        risk_adjustment = 3
+    macro_score = round(avg_index_score * 0.7 + breadth['score'] * 0.3 + risk_adjustment, 1)
+    macro_score = max(0, min(100, macro_score))
+
+    # 重新计算 Risk-on/off 使用真实宏观评分
+    risk_on_off = _get_risk_on_off(macro_score, us_macro, vix_proxy, yield_curve)
 
     # 宏观信号：阈值设置较敏感，50 为中性
     if macro_score >= 55:
@@ -146,7 +336,7 @@ def analyze(current_date: Optional[str] = None) -> Dict:
     summary_lines = [
         f"# 宏观市场分析报告 ({current_date})",
         "",
-        f"综合宏观评分: {macro_score}/100 | 信号: {macro_signal} (阈值: bullish>=55, bearish<=45)",
+        f"综合宏观评分: {macro_score}/100 | 信号: {macro_signal} | 状态: {risk_on_off['label']}",
         "",
         "## 大盘指数",
     ]
@@ -159,13 +349,36 @@ def analyze(current_date: Optional[str] = None) -> Dict:
     summary_lines.append(f"## 市场广度")
     summary_lines.append(f"- 指数上涨: {breadth['advances']} / 下跌: {breadth['declines']}")
     summary_lines.append(f"- 广度得分: {breadth['score']}")
+    summary_lines.append(f"- 涨停家数: {breadth['limit_up']}")
+    summary_lines.append("")
+    summary_lines.append("## 美国宏观（akshare）")
+    summary_lines.append(f"- 联邦利率: {us_macro.get('fed_rate')}% (日期: {us_macro.get('fed_rate_date')})")
+    summary_lines.append(f"- CPI 同比: {us_macro.get('cpi_yoy')}% (日期: {us_macro.get('cpi_date')})")
+    summary_lines.append(f"- 失业率: {us_macro.get('unemployment')}% (日期: {us_macro.get('unemployment_date')})")
+    summary_lines.append(f"- 初请失业金: {us_macro.get('initial_jobless')}万 (日期: {us_macro.get('initial_jobless_date')})")
+    summary_lines.append("")
+    summary_lines.append("## 收益率曲线与波动率")
+    summary_lines.append(f"- 中国10Y: {yield_curve.get('china_10y')}%, 2Y: {yield_curve.get('china_2y')}%, 利差: {yield_curve.get('spread')}")
+    summary_lines.append(f"- 美国10Y代理: {yield_curve.get('us_10y_proxy')}%")
+    summary_lines.append(f"- VIX 代理(A股波动率): {vix_proxy.get('vix_proxy')}, 状态: {vix_proxy.get('level')}")
+    summary_lines.append("")
+    summary_lines.append("## 板块轮动")
+    if sector_rotation['heat']:
+        summary_lines.append(f"- 领涨板块: {sector_rotation['top_sector']}")
+        for h in sector_rotation['heat'][:5]:
+            summary_lines.append(f"  - {h['name']}: 5日{h['ret_5d']:+.2f}%, 20日{h['ret_20d']:+.2f}%")
 
     return {
         'analyst': '宏观市场分析师',
         'macro_score': macro_score,
         'macro_signal': macro_signal,
+        'risk_on_off': risk_on_off,
         'index_scores': index_scores,
         'market_breadth': breadth,
+        'us_macro': us_macro,
+        'yield_curve': yield_curve,
+        'vix_proxy': vix_proxy,
+        'sector_rotation': sector_rotation,
         'summary': "\n".join(summary_lines),
     }
 
@@ -192,6 +405,6 @@ def get_macro_score_override(macro_report: Dict, individual_signal: str) -> floa
 if __name__ == '__main__':
     r = analyze()
     print(r['summary'])
-    print(f"\nmacro_score: {r['macro_score']} | signal: {r['macro_signal']}")
+    print(f"\nmacro_score: {r['macro_score']} | signal: {r['macro_signal']} | risk_on_off: {r['risk_on_off']['state']}")
     print('修正示例 bullish:', get_macro_score_override(r, 'bullish'))
     print('修正示例 bearish:', get_macro_score_override(r, 'bearish'))

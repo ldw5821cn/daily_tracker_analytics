@@ -34,7 +34,7 @@ sys.path.insert(0, MULTI_AGENT)
 
 warnings.filterwarnings('ignore')
 
-from analysts import fundamentals_analyst, news_analyst
+from analysts import fundamentals_analyst, news_analyst, fundamental_factor_analyst, technical_analyst
 from core.debate_engine import DebateEngine
 from core.data_layer import get_realtime_price, is_futures, get_stock_data, calc_technical_indicators, multi_period_backtest, tf_quotes
 from core.us_data import get_us_stock_data, is_us_ticker
@@ -409,14 +409,70 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
             technical = _fast_technical_analysis(ticker, name, macro_report, category=category)
         else:
             technical = technical_analyst.analyze(ticker, name)
+            # 若传统技术面分析未产出 prediction，fallback 到轻量技术面
+            if not technical.get('prediction'):
+                technical = _fast_technical_analysis(ticker, name, macro_report, category=category)
 
         # 期货和 fast 模式跳过基本面和新闻；ultra 模式启用基本面和新闻
-        if is_fut or fast or category == 'US':
+        if is_fut or fast:
             fundamental = {'score': 50, 'rating': 'N/A', 'fundamentals': {}, 'error': 'skipped'}
             news = {'sentiment_score': 0, 'sentiment': '中性', 'keywords': []}
         else:
-            fundamental = fundamentals_analyst.analyze(ticker, name)
-            news = news_analyst.analyze(ticker, name)
+            if category == 'US':
+                # 美股使用轻量基本面因子模型
+                ff = fundamental_factor_analyst.analyze_fundamental_factors(ticker, name, category='US')
+                quality_score = 50
+                if ff['piotroski_f_score']['score'] is not None:
+                    quality_score += (ff['piotroski_f_score']['score'] - 4.5) * 5
+                if ff['altman_z_score']['score'] is not None:
+                    z = ff['altman_z_score']['score']
+                    if z > 2.99:
+                        quality_score += 5
+                    elif z < 1.81:
+                        quality_score -= 8
+                if ff['beneish_m_score']['score'] is not None:
+                    m = ff['beneish_m_score']['score']
+                    if m > -1.78:
+                        quality_score -= 7
+                quality_score = max(0, min(100, quality_score))
+                fundamental = {
+                    'score': round(quality_score, 1),
+                    'rating': ff['piotroski_f_score']['signals'],
+                    'fundamentals': {
+                        'piotroski_f_score': ff['piotroski_f_score']['score'],
+                        'altman_z_score': ff['altman_z_score']['score'],
+                        'beneish_m_score': ff['beneish_m_score']['score'],
+                        'beneish_flag': ff['beneish_m_score']['flag'],
+                        'altman_zone': ff['altman_z_score']['zone'],
+                    },
+                    'error': 'ok',
+                }
+                news = {'sentiment_score': 0, 'sentiment': '中性', 'keywords': []}
+            elif category == 'ETF':
+                # ETF 使用费率/规模/集中度/跟踪误差质量因子
+                from analysts import etf_quality_analyst
+                eq = etf_quality_analyst.analyze_etf_quality(ticker, name)
+                fundamental = {
+                    'score': eq.get('quality_score', 50),
+                    'rating': f"质量评分{eq.get('quality_score', 50)}",
+                    'fundamentals': {
+                        'management_fee': eq.get('fee', {}).get('management'),
+                        'custody_fee': eq.get('fee', {}).get('custody'),
+                        'total_fee': eq.get('fee', {}).get('total'),
+                        'scale': eq.get('scale'),
+                        'tracking_error': eq.get('tracking', {}).get('tracking_error'),
+                        'tracking_is_proxy': eq.get('tracking', {}).get('is_proxy'),
+                        'concentration_top10': eq.get('concentration', {}).get('top10'),
+                        'concentration_top20': eq.get('concentration', {}).get('top20'),
+                        'years_since_establish': eq.get('years_since_establish'),
+                        'quality_reasons': eq.get('reasons', []),
+                    },
+                    'error': 'ok',
+                }
+                news = news_analyst.analyze(ticker, name)
+            else:
+                fundamental = fundamentals_analyst.analyze(ticker, name)
+                news = news_analyst.analyze(ticker, name)
 
         bull = DebateEngine.bull_argument(technical, fundamental, news)
         bear = DebateEngine.bear_argument(technical, fundamental, news)
@@ -483,7 +539,9 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
             'reasoning': verdict['reasoning'],
             'bull_points': verdict['bull_points'],
             'bear_points': verdict['bear_points'],
-            'component_scores': verdict['component_scores'],
+            'component_scores': {**verdict['component_scores'],
+                                 'fundamental_score': fundamental.get('score', 50),
+                                 'fundamental': fundamental.get('fundamentals', {})},
             'backtest_summary': backtest_summary,
         }
     except Exception as e:
@@ -561,7 +619,7 @@ def validate_predictions(pred_date: str = None) -> Dict:
     try:
         cur = conn.cursor()
         rows = cur.execute("""
-            SELECT id, ticker, signal, horizon_1d_return, current_price
+            SELECT id, ticker, signal, horizon_1d_return, current_price, category
             FROM agentic_predictions
             WHERE pred_date = ?
             AND id NOT IN (
@@ -578,9 +636,15 @@ def validate_predictions(pred_date: str = None) -> Dict:
         for row in rows:
             ticker = row['ticker']
             pred_price = row['current_price'] or 0
+            category = row['category'] or '个股'
             try:
-                rt = get_realtime_price(ticker)
-                actual_price = rt['price'] if rt else 0
+                if category == 'US':
+                    # 美股：取 pred_date 的收盘价（应为 current_price）与下一交易日收盘价
+                    next_date = _next_trading_date_str(pred_date, calendar='us')
+                    actual_price = get_us_price(ticker, as_of_date=next_date)
+                else:
+                    rt = get_realtime_price(ticker)
+                    actual_price = rt['price'] if rt else 0
             except Exception:
                 continue
             if actual_price <= 0 or pred_price <= 0:
@@ -608,6 +672,16 @@ def validate_predictions(pred_date: str = None) -> Dict:
     finally:
         conn.close()
 
+
+def _next_trading_date_str(current_date: str, calendar: str = 'us') -> str:
+    """简单交易日推算：美股跳过周末；A股/期货跳过周末（暂不考虑节假日）。"""
+    d = datetime.strptime(current_date, '%Y-%m-%d')
+    if calendar == 'us':
+        delta = 1 if d.weekday() < 4 else (7 - d.weekday())
+    else:
+        # A股/期货：周末后推到周一
+        delta = 1 if d.weekday() < 5 else (7 - d.weekday())
+    return (d + timedelta(days=delta)).strftime('%Y-%m-%d')
 
 def get_validation_stats() -> Dict:
     """获取 agentic 验证统计"""

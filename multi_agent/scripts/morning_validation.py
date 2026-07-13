@@ -8,9 +8,10 @@ from __future__ import annotations
 
 import json
 import os
+import pandas as pd
 import sqlite3
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 MULTI_AGENT = os.path.join(PROJECT_ROOT, 'multi_agent')
@@ -44,10 +45,20 @@ def _get_conn():
     return conn
 
 
-def _get_current_price(ticker: str, category: str, name: str) -> float | None:
-    """获取最新收盘价（验证日收盘价）。"""
+def _get_current_price(ticker: str, category: str, name: str, as_of_date: str = None, pred_date: str = None) -> float | None:
+    """获取最新收盘价（验证日收盘价）。如果数据最新日期不晚于 pred_date，说明次日数据未更新，返回 None。"""
     try:
-        if category == '期货':
+        if category == 'US':
+            from core.us_data import get_us_price, get_us_stock_data
+            df = get_us_stock_data(ticker, period='2y')
+            if df is None or df.empty:
+                return None
+            latest_date = df.index[-1].date() if hasattr(df.index[-1], 'date') else df.index[-1]
+            pred_d = pd.to_datetime(pred_date).date() if pred_date else None
+            if pred_d and latest_date <= pred_d:
+                return None
+            return get_us_price(ticker, as_of_date=as_of_date)
+        elif category == '期货':
             df, _ = get_stock_data(ticker, period='10d', calibrate=False)
             if df is not None and not df.empty:
                 return float(df['close'].iloc[-1])
@@ -60,14 +71,23 @@ def _get_current_price(ticker: str, category: str, name: str) -> float | None:
     return None
 
 
-def _validate_row(row: sqlite3.Row) -> dict:
+def _next_trading_date_us(date_str: str) -> str:
+    """美股下一交易日：周五->周一，其他->+1。"""
+    dt = datetime.strptime(date_str, '%Y-%m-%d')
+    wd = dt.weekday()
+    delta = 1 if wd < 4 else (7 - wd)
+    return (dt + timedelta(days=delta)).strftime('%Y-%m-%d')
+
+
+def _validate_row(row: sqlite3.Row, pred_date: str) -> dict:
     pred_price = row['current_price']
     signal = row['signal']
     ticker = row['ticker']
     category = row['category']
     name = row['name']
 
-    today_price = _get_current_price(ticker, category, name)
+    validate_date = _next_trading_date_us(pred_date) if category == 'US' else None
+    today_price = _get_current_price(ticker, category, name, as_of_date=validate_date, pred_date=pred_date)
     if today_price is None or pred_price is None or pred_price == 0:
         return {
             'ticker': ticker, 'name': name, 'category': category,
@@ -117,7 +137,7 @@ def main():
     print(f'[morning] 验证 {pred_date} 预测 vs 下一交易日收盘价，共 {len(rows)} 只...')
     results = []
     for row in rows:
-        r = _validate_row(row)
+        r = _validate_row(row, pred_date)
         results.append(r)
         if r['note'] == 'ok':
             print(f"  {r['ticker']:8s} {r['signal']:8s} 预测{r['pred_price']:.2f} 现{r['today_price']:.2f} 收益{r['return_pct']:+.2f}% 正确{'✓' if r['direction_correct'] else '✗'}")

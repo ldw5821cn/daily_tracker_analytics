@@ -127,9 +127,15 @@ def get_us_stock_data(ticker: str, period: str = '2y') -> pd.DataFrame:
     return df
 
 
-def get_us_price(ticker: str) -> float:
-    """获取最新美股收盘价。"""
-    df = get_us_stock_data(ticker, period='5d')
+def get_us_price(ticker: str, as_of_date: str = None) -> float:
+    """获取美股收盘价。as_of_date 指定日期（YYYY-MM-DD），返回该日或之前最近一个交易日的收盘价。"""
+    df = get_us_stock_data(ticker, period='2y')
+    if as_of_date:
+        d = pd.to_datetime(as_of_date)
+        # 取该日期或之前最近的交易日
+        df = df[df.index <= d]
+        if df.empty:
+            raise ValueError(f'{ticker} 在 {as_of_date} 前无数据')
     return float(df['close'].iloc[-1])
 
 
