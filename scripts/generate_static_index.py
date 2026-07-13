@@ -407,9 +407,15 @@ def generate_page_html(page_type, grouped, all_reports, update_time, pred_date=N
             top_cards = build_agentic_top_cards(pred_rows)  # 全部推荐，只展示本页相关的话在卡片里可能混其他类型，这里全部展示
             table_html = build_agentic_table(pred_rows, page_type)
             realtime_section = f'''
-    <div class="section-title">🤖 多Agent实时预测（最新 {pred_date}）</div>
+    <div class="section-title" style="font-size:1.2em;background:#1f6feb;color:#fff;">🤖 多Agent实时预测（{pred_date} 收盘后）</div>
+    <div style="background:#161b22;border:1px solid #30363d;border-top:0;padding:10px 16px;color:#8b949e;font-size:0.85em;">
+      这是 <strong>{pred_date}</strong> 的 {page_type} 预测结果。下方 📅 列表是旧版逐日报告。
+    </div>
     {top_cards}
     {table_html}
+    <div style="text-align:center;padding:12px 0 24px 0;">
+      <a href="prediction.html#{page_type}" style="color:#58a6ff;text-decoration:none;font-size:0.9em;">查看 {pred_date} 全部 {page_type} 预测 →</a>
+    </div>
     '''
 
     # 该类型按日期分组的内容
@@ -418,6 +424,18 @@ def generate_page_html(page_type, grouped, all_reports, update_time, pred_date=N
     if not items_by_date and not realtime_section:
         sections = '<div style="padding:40px;text-align:center;color:#8b949e;">暂无报告</div>'
     elif items_by_date:
+        # 在最上方加入最新实时预测的日期入口
+        if pred_date and pred_rows:
+            all_type_rows = [r for r in pred_rows if r.get('category') == page_type]
+            if all_type_rows:
+                sections += f'''
+    <div class="date-section" style="border-left:4px solid #1f6feb;">
+      <div class="date-header">📅 {pred_date}（最新实时预测）</div>
+            <div class="report-item">
+              <a href="prediction.html#{page_type}" target="_blank">📄 {pred_date} {page_type} 多Agent预测总览（{len(all_type_rows)}只）</a>
+              <div class="meta">{pred_date} · 实时预测</div>
+            </div>
+    </div>'''
         for date in sorted(items_by_date.keys(), reverse=True):
             reports = items_by_date[date]
             rows = ""
