@@ -7,6 +7,7 @@ sys.path.insert(0, MULTI_AGENT)
 
 from analysts.macro_analyst import analyze as macro_analyze
 from analysts.agentic_predictor import generate_for_watchlist
+from scripts.daily_us_predictor import run_us_predictions
 
 
 def main():
@@ -18,16 +19,19 @@ def main():
     with open(macro_path, 'w', encoding='utf-8') as f:
         json.dump(macro_report, f, ensure_ascii=False, indent=2)
     print(f'[daily_agentic_predictor] 宏观报告已保存: {macro_path}')
-    print('[daily_agentic_predictor] 生成 watchlist 预测...')
+    print('[daily_agentic_predictor] 生成 A 股 watchlist 预测...')
     result = generate_for_watchlist(
         watchlist_path=os.path.join(MULTI_AGENT, 'watchlist.json'),
         categories=['ETF', '个股', '期货'],
         max_workers=4,
-        fast=True,  # 跳过基本面/新闻，提速；日常 cron 可改为 False 以使用完整分析
+        fast=True,
         ultra=True,
         macro_report=macro_report,
     )
-    print(f"[daily_agentic_predictor] 完成: {result['stats']}")
+    print(f"[daily_agentic_predictor] A 股完成: {result['stats']}")
+    print('[daily_agentic_predictor] 生成美股预测...')
+    us_result = run_us_predictions(ultra=True, macro_report=macro_report)
+    print(f"[daily_agentic_predictor] 美股完成: {us_result}")
 
 
 if __name__ == '__main__':

@@ -59,7 +59,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto
 .header { background: linear-gradient(135deg, #1e293b, #334155); padding: 30px; border-radius: 16px; margin-bottom: 24px; }
 .header h1 { font-size: 24px; margin-bottom: 8px; }
 .header .sub { color: #94a3b8; font-size: 14px; }
-.stats-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 24px; }
+.stats-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-bottom: 24px; }
 @media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
 .stat-card { background: #1e293b; border-radius: 12px; padding: 16px 10px; text-align: center; }
 .stat-card .num { font-size: 28px; font-weight: bold; white-space: nowrap; }
@@ -519,6 +519,7 @@ def generate_index_page(stats, rows, dates=None):
         _stat_card(len(cats.get('个股', [])), '个股'),
         _stat_card(len(cats.get('ETF', [])), 'ETF'),
         _stat_card(len(cats.get('期货', [])), '期货'),
+        _stat_card(len(cats.get('US', [])), '美股'),
     ])
 
     scenario_counts = stats.get('scenario_counts', {})
