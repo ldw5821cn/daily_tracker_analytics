@@ -119,7 +119,8 @@ def _calc_target_stop(current_price: float, signal: str, tech_snapshot: Dict, av
 
 
 def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_report: Dict,
-                     bull_arg: Dict, bear_arg: Dict) -> Dict:
+                     bull_arg: Dict, bear_arg: Dict,
+                     macro_report: Optional[Dict] = None) -> Dict:
     tech_score = technical_report.get('score', 50)
     tech_rating = technical_report.get('rating', '中性')
     tech_snapshot = technical_report.get('tech_snapshot', {})
@@ -138,6 +139,14 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         (50 + net_debate * 8) * WEIGHTS['debate']
     )
     weighted = max(0, min(100, weighted))
+
+    # 叠加宏观修正（单次评分，不循环放大）
+    macro_override = 0
+    if macro_report:
+        from analysts.macro_analyst import get_macro_score_override
+        raw_signal = 'bullish' if weighted >= THRESHOLD['bull'] else 'bearish' if weighted <= THRESHOLD['bear'] else 'neutral'
+        macro_override = get_macro_score_override(macro_report, raw_signal)
+        weighted = max(0, min(100, weighted + macro_override))
 
     # 统一信号判定：收窄 neutral 范围，47-53 才为中性
     if weighted >= THRESHOLD['strong_bull']:
@@ -162,12 +171,17 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     support = tech_snapshot.get('boll_down') or tech_snapshot.get('ma60') or 0
     resistance = tech_snapshot.get('boll_up') or tech_snapshot.get('ma5') or 0
 
+    macro_note = ""
+    if macro_report:
+        macro_note = f"宏观{macro_report.get('macro_signal', 'neutral')}({macro_report.get('macro_score', 50)}/100)"
     reasons = [
         f"技术面{tech_rating}({tech_score}/100)",
         f"基本面{fundamental_report.get('rating', 'N/A')}({fund_score}/100)",
         f"新闻情绪{news_report.get('sentiment_score', 0):+.2f}",
         f"多空辩论 看涨{bull_score} vs 看跌{bear_score}",
     ]
+    if macro_note:
+        reasons.append(macro_note)
 
     return {
         'signal': signal,
@@ -184,6 +198,7 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
             'fundamental': fund_score,
             'sentiment': round(news_score, 1),
             'debate_net': net_debate,
+            'macro_override': macro_override,
         },
     }
 
@@ -324,8 +339,10 @@ def _fast_technical_analysis(ticker: str, name: str = "") -> Dict:
     }
 
 
-def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '个股', fast: bool = False, ultra: bool = False) -> Optional[Dict]:
-    """对单个标的进行统一多 Agent 预测。fast=True 跳过基本面和新闻情绪，仅技术面+多空辩论。ultra=True 使用轻量技术面分析，速度最快。"""
+def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '个股',
+                fast: bool = False, ultra: bool = False,
+                macro_report: Optional[Dict] = None) -> Optional[Dict]:
+    """对单个标的进行统一多 Agent 预测。fast=True 跳过基本面和新闻情绪，仅技术面+多空辩论。ultra=True 使用轻量技术面分析，速度最快。macro_report 为全局宏观分析，影响经理裁决。"""
     try:
         is_fut = is_futures(ticker)
 
@@ -345,7 +362,7 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
         bull = DebateEngine.bull_argument(technical, fundamental, news)
         bear = DebateEngine.bear_argument(technical, fundamental, news)
 
-        verdict = _manager_verdict(technical, fundamental, news, bull, bear)
+        verdict = _manager_verdict(technical, fundamental, news, bull, bear, macro_report=macro_report)
 
         current_price = technical.get('current_price', 0)
         price_date = technical.get('price_date') or technical.get('tech_snapshot', {}).get('price_date', '')
@@ -417,10 +434,10 @@ def save_predictions(predictions: List[Dict]) -> Dict:
     return _db_save_predictions(predictions)
 
 
-
 def generate_for_watchlist(watchlist_path: str = None, categories: List[str] = None,
-                           max_workers: int = MAX_WORKERS, fast: bool = False, ultra: bool = False) -> Dict:
-    """多线程批量生成预测。fast=True 跳过基本面/新闻，ultra=True 额外使用轻量技术面分析。"""
+                           max_workers: int = MAX_WORKERS, fast: bool = False, ultra: bool = False,
+                           macro_report: Optional[Dict] = None) -> Dict:
+    """多线程批量生成预测。fast=True 跳过基本面/新闻，ultra=True 额外使用轻量技术面分析。macro_report 传入全局宏观分析。"""
     if watchlist_path is None:
         watchlist_path = os.path.join(MULTI_AGENT, 'watchlist.json')
 
@@ -437,7 +454,7 @@ def generate_for_watchlist(watchlist_path: str = None, categories: List[str] = N
     errors = 0
 
     def _predict(item):
-        return predict_one(item['ticker'], item['name'], item.get('sector', item.get('theme', '')), item.get('category', '个股'), fast=fast, ultra=ultra)
+        return predict_one(item['ticker'], item['name'], item.get('sector', item.get('theme', '')), item.get('category', '个股'), fast=fast, ultra=ultra, macro_report=macro_report)
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         future_to_item = {executor.submit(_predict, item): item for item in items}
@@ -580,7 +597,15 @@ if __name__ == '__main__':
         print(json.dumps(result, ensure_ascii=False, indent=2, default=str))
     else:
         cats = [c.strip() for c in args.categories.split(',')]
-        result = generate_for_watchlist(args.watchlist, cats, max_workers=args.workers, fast=args.fast, ultra=args.ultra)
+        # CLI 默认启动宏观分析并传入
+        macro_report = None
+        try:
+            from analysts.macro_analyst import analyze as macro_analyze
+            macro_report = macro_analyze()
+            print(f"[宏观] 评分 {macro_report['macro_score']} 信号 {macro_report['macro_signal']}")
+        except Exception as e:
+            print(f"[宏观] 分析失败，跳过: {e}")
+        result = generate_for_watchlist(args.watchlist, cats, max_workers=args.workers, fast=args.fast, ultra=args.ultra, macro_report=macro_report)
         if args.output:
             with open(args.output, 'w', encoding='utf-8') as f:
                 json.dump(result['predictions'], f, ensure_ascii=False, indent=2, default=str)
