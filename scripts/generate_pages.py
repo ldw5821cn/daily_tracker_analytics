@@ -569,6 +569,177 @@ def _build_news_sentiment_html():
     return "\n".join(cards)
 
 
+def generate_portfolio_html():
+    """基于本地 target_weights/stock_etf_rebalance_list 生成组合页面。"""
+    now = datetime.now().strftime('%Y-%m-%d %H:%M')
+    repo = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    tw_path = os.path.join(repo, 'multi_agent', 'data', 'target_weights.json')
+    rb_path = os.path.join(repo, 'multi_agent', 'data', 'stock_etf_rebalance_list.json')
+
+    tw = {}
+    if os.path.exists(tw_path):
+        with open(tw_path, 'r', encoding='utf-8') as f:
+            tw = json.load(f)
+
+    rb = {}
+    if os.path.exists(rb_path):
+        with open(rb_path, 'r', encoding='utf-8') as f:
+            rb = json.load(f)
+
+    total_value = rb.get('total_portfolio_value', 50000)
+    long_amount = rb.get('long_amount', 0)
+    short_amount = rb.get('short_amount', 0)
+    skipped = rb.get('skipped_count', 0)
+    date = tw.get('date', '') or rb.get('date', '')
+
+    # 目标权重概览
+    summary_rows = f"""
+        <div class="stat-card">
+            <div class="num">{tw.get('total_exposure', 0)*100:.1f}%</div>
+            <div class="label">总敞口</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" style="color:#22c55e">{tw.get('long_exposure', 0)*100:.1f}%</div>
+            <div class="label">做多</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" style="color:#ef4444">{tw.get('short_exposure', 0)*100:.1f}%</div>
+            <div class="label">做空</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">{tw.get('net_exposure', 0)*100:+.1f}%</div>
+            <div class="label">净敞口</div>
+        </div>
+    """
+
+    # 持仓列表（目标权重）
+    targets = tw.get('targets', [])
+    targets = [t for t in targets if t.get('category') in ('个股', 'ETF')]
+    targets = sorted(targets, key=lambda x: abs(x.get('target_weight', 0)), reverse=True)
+    target_rows = ""
+    for t in targets:
+        sig = t.get('signal', 'neutral')
+        color = {'bullish': '#22c55e', 'bearish': '#ef4444', 'neutral': '#94a3b8'}.get(sig, '#94a3b8')
+        cn = {'bullish': '看多', 'bearish': '看空', 'neutral': '中性'}.get(sig, sig)
+        target_rows += f"""
+        <tr>
+            <td><b>{t.get('ticker')}</b></td>
+            <td>{t.get('name')}</td>
+            <td>{t.get('category')}</td>
+            <td>{t.get('sector')}</td>
+            <td style="color:{color}">{cn}</td>
+            <td>{t.get('target_weight', 0)*100:.2f}%</td>
+            <td>{t.get('current_price', 0)}</td>
+            <td>{t.get('target_price', 0)}</td>
+            <td>{t.get('stop_loss', 0)}</td>
+            <td title="{t.get('reason', '')}">{t.get('reason', '')[:30]}</td>
+        </tr>"""
+
+    # 调仓建议
+    items = rb.get('items', [])
+    action_rows = ""
+    for item in items:
+        if item.get('target_amount', 0) == 0 and item.get('action') in ('持有',):
+            continue
+        action_color = {'买入': '#22c55e', '减持/卖出': '#ef4444', '融券卖出': '#f97316', '不操作': '#94a3b8'}.get(item.get('action'), '#e2e8f0')
+        action_rows += f"""
+        <tr>
+            <td style="color:{action_color}"><b>{item.get('action')}</b></td>
+            <td>{item.get('ticker')}</td>
+            <td>{item.get('name')}</td>
+            <td>{item.get('category')}</td>
+            <td>¥{item.get('target_amount', 0):,.0f}</td>
+            <td>{item.get('target_weight', 0)*100:.2f}%</td>
+            <td>{item.get('current_price', 0)}</td>
+            <td>{item.get('constraint_note', '')}</td>
+            <td title="{item.get('reason', '')}">{item.get('reason', '')[:30]}</td>
+        </tr>"""
+
+    html = f"""<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>组合目标权重 - {date}</title>
+<style>
+* {{ margin: 0; padding: 0; box-sizing: border-box; }}
+body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; }}
+.container {{ max-width: 1400px; margin: 0 auto; padding: 20px; }}
+.header {{ background: linear-gradient(135deg, #1e293b, #334155); padding: 30px; border-radius: 16px; margin-bottom: 24px; }}
+.header h1 {{ font-size: 24px; margin-bottom: 8px; }}
+.header .sub {{ color: #94a3b8; font-size: 14px; }}
+.stats-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }}
+.stat-card {{ background: #1e293b; border-radius: 12px; padding: 20px; text-align: center; }}
+.stat-card .num {{ font-size: 32px; font-weight: bold; }}
+.stat-card .label {{ color: #94a3b8; font-size: 12px; margin-top: 4px; }}
+.section-title {{ font-size: 18px; font-weight: 600; margin: 24px 0 12px; padding-left: 12px; border-left: 4px solid #6366f1; }}
+.nav {{ display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }}
+.nav a {{ color: #94a3b8; text-decoration: none; padding: 6px 16px; border-radius: 8px; background: #1e293b; font-size: 13px; }}
+.nav a:hover {{ background: #334155; color: #e2e8f0; }}
+.footer {{ text-align: center; color: #475569; font-size: 12px; margin-top: 40px; padding: 20px; }}
+table {{ width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 12px; overflow: hidden; margin-bottom: 24px; font-size: 13px; }}
+th {{ background: #334155; padding: 10px 12px; text-align: left; font-size: 12px; color: #94a3b8; text-transform: uppercase; }}
+td {{ padding: 8px 12px; border-bottom: 1px solid #1e293b; font-size: 13px; }}
+tr:hover {{ background: #334155; }}
+.note {{ background: #1e293b; padding: 16px; border-radius: 12px; color: #cbd5e1; line-height: 1.8; margin-bottom: 24px; }}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="nav">
+        <a href="index.html">🏠 首页</a>
+        <a href="stocks.html">📈 个股</a>
+        <a href="etfs.html">📊 ETF</a>
+        <a href="futures.html">📉 期货</a>
+        <a href="prediction.html">🏛️ 预测</a>
+        <a href="portfolio.html" style="background:#6366f1;color:#fff">💼 组合</a>
+    </div>
+
+    <div class="header">
+        <h1>💼 目标权重组合</h1>
+        <div class="sub">{date} · 基于 factor_score + 风险约束生成 · 组合市值 ¥{total_value:,.0f}</div>
+    </div>
+
+    <div class="stats-grid">
+{summary_rows}
+    </div>
+
+    <div class="note">
+        <p>📌 这不是雪球真实持仓，而是本地目标权重模拟盘。</p>
+        <p>买入金额合计: <b>¥{long_amount:,.0f}</b> | 融券金额: <b>¥{short_amount:,.0f}</b> | 跳过 <b>{skipped}</b> 只（A股一手约束）。</p>
+        <p>A 股个股不能做空，负权重仅输出为"减持/卖出"建议；ETF 做空需开通融券账户。</p>
+    </div>
+
+    <div class="section-title">🎯 目标持仓列表（股票+ETF）</div>
+    <table>
+        <thead><tr><th>代码</th><th>名称</th><th>类别</th><th>板块</th><th>信号</th><th>目标权重</th><th>现价</th><th>目标价</th><th>止损</th><th>理由</th></tr></thead>
+        <tbody>
+            {target_rows if target_rows else '<tr><td colspan="10" style="text-align:center;color:#64748b">暂无目标权重数据</td></tr>'}
+        </tbody>
+    </table>
+
+    <div class="section-title">📝 调仓建议清单</div>
+    <table>
+        <thead><tr><th>操作</th><th>代码</th><th>名称</th><th>类别</th><th>目标金额</th><th>目标权重</th><th>现价</th><th>约束</th><th>理由</th></tr></thead>
+        <tbody>
+            {action_rows if action_rows else '<tr><td colspan="9" style="text-align:center;color:#64748b">暂无调仓建议</td></tr>'}
+        </tbody>
+    </table>
+
+    <div class="footer">
+        本地目标权重模拟盘 · 研究辅助，非投资建议 · 更新于 {now}
+    </div>
+</div>
+</body>
+</html>"""
+
+    out_path = os.path.join(repo, 'docs', 'portfolio.html')
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    with open(out_path, 'w', encoding='utf-8') as f:
+        f.write(html)
+    print(f"✅ 组合页面生成: {out_path}")
+
+
 if __name__ == "__main__":
     stats = get_db_stats()
     if stats is None:
@@ -587,3 +758,5 @@ if __name__ == "__main__":
     print(f"   今日预测: {stats.get('today_preds')} 条")
     print(f"   累计预测: {stats.get('agentic_total', 0)} 条 (新) + {stats.get('legacy_total', 0)} 条 (旧)")
     print(f"   回测口径: multi_period_backtest（方向验证已弃用）")
+
+    generate_portfolio_html()
