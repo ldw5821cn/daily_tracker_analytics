@@ -37,6 +37,7 @@ warnings.filterwarnings('ignore')
 from analysts import fundamentals_analyst, news_analyst
 from core.debate_engine import DebateEngine
 from core.data_layer import get_realtime_price, is_futures, get_stock_data, calc_technical_indicators, multi_period_backtest, tf_quotes
+from core.us_data import get_us_stock_data, is_us_ticker
 from core.scenario_backtests import scenario_backtests, recommend_scenario, SCENARIO_NAME_CN, SCENARIO_DESC
 from core.db import get_predictions_conn, save_predictions as _db_save_predictions
 import pandas as pd
@@ -246,30 +247,35 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     }
 
 
-def _fast_technical_analysis(ticker: str, name: str = "", macro_report: Optional[Dict] = None) -> Dict:
+def _fast_technical_analysis(ticker: str, name: str = "", macro_report: Optional[Dict] = None, category: str = '') -> Dict:
     """
     轻量技术面分析：仅 get_stock_data + calc_technical_indicators，
     跳过 AdaptivePredictor 与复杂回测，单标约 0.5-2 秒。
     新增：TickFlow 实时行情校验与评分增强。
     """
-    df, _ = get_stock_data(ticker, calibrate=False)
+    if category == 'US' or is_us_ticker(ticker):
+        df = get_us_stock_data(ticker)
+        tickflow_available = False
+    else:
+        df, _ = get_stock_data(ticker, calibrate=False)
+        tickflow_available = True
     df = calc_technical_indicators(df)
     latest = df.iloc[-1]
     cp = float(latest['close'])
 
-    # TickFlow 实时行情校验
+    # TickFlow 实时行情校验（仅 A 股/期货）
     tf_data = {}
     tf_price = None
     tf_change_pct = 0.0
     tf_turnover = 0.0
-    try:
-        from core.data_layer import tf_quotes
-        tf_data = tf_quotes([ticker]).get(ticker, {})
-        tf_price = tf_data.get('price')
-        tf_change_pct = tf_data.get('change_pct', 0.0) or 0.0
-        tf_turnover = tf_data.get('turnover_rate', 0.0) or 0.0
-    except Exception:
-        pass
+    if tickflow_available:
+        try:
+            tf_data = tf_quotes([ticker]).get(ticker, {})
+            tf_price = tf_data.get('price')
+            tf_change_pct = tf_data.get('change_pct', 0.0) or 0.0
+            tf_turnover = tf_data.get('turnover_rate', 0.0) or 0.0
+        except Exception:
+            pass
 
     if tf_price and cp > 0:
         price_dev = abs(tf_price / cp - 1) * 100
@@ -400,12 +406,12 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
         is_fut = is_futures(ticker)
 
         if ultra:
-            technical = _fast_technical_analysis(ticker, name, macro_report)
+            technical = _fast_technical_analysis(ticker, name, macro_report, category=category)
         else:
             technical = technical_analyst.analyze(ticker, name)
 
         # 期货和 fast 模式跳过基本面和新闻；ultra 模式启用基本面和新闻
-        if is_fut or fast:
+        if is_fut or fast or category == 'US':
             fundamental = {'score': 50, 'rating': 'N/A', 'fundamentals': {}, 'error': 'skipped'}
             news = {'sentiment_score': 0, 'sentiment': '中性', 'keywords': []}
         else:

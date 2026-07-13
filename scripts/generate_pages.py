@@ -552,17 +552,37 @@ def generate_index_page(stats, rows, dates=None):
 
 
 def generate_us_market_page(dates=None):
-    # 美股暂无实时预测，展示旧美股报告入口或说明
-    body = """
-    <div class="note">
-        <p>🇺🇸 美股实时预测暂未接入。</p>
-        <p>当前主要覆盖 A 股（个股/ETF）和 期货。</p>
-        <p>如需美股分析，请先用现有美股报告或后续接入 Yahoo Finance / Alpha Vantage 数据源。</p>
-    </div>
-    """
+    # 美股：从数据库读取 category='US' 的最新预测
+    all_rows = get_latest_predictions()
+    rows = [r for r in all_rows if r.get('category') == 'US']
+    for r in rows:
+        inject_backtest_metrics(r)
+    bullish = [r for r in rows if r.get('signal') == 'bullish']
+    bearish = [r for r in rows if r.get('signal') == 'bearish']
+    neutral = [r for r in rows if r.get('signal') == 'neutral']
+
+    stats_cards = "".join([
+        _stat_card(len(rows), '美股标的'),
+        _stat_card(len(bullish), '看多', '#ef4444'),
+        _stat_card(len(bearish), '看空', '#22c55e'),
+        _stat_card(len(neutral), '中性'),
+    ])
+
+    body = f"""
+<div class="stats-grid">
+{stats_cards}
+</div>
+{_table_html(rows, f'🇺🇸 美股预测 ({len(rows)}只)')}
+<div class="note">
+    <p>美股数据源：akshare 新浪美股前复权 / yfinance 备用。价格为美元。</p>
+    <p>受网络限制，基本面与新闻情绪暂未接入，当前仅基于技术面与宏观偏置。</p>
+</div>
+"""
     date = datetime.now().strftime('%Y-%m-%d %H:%M')
+    price_dates = sorted(set(r.get('price_date') for r in rows if r.get('price_date')))
+    price_date_str = f"价格日期: {', '.join(price_dates)}" if price_dates else "价格日期: 未知"
     title = f"🇺🇸 美股市场 - {date}"
-    subtitle = f"{date} · 美股市场 · 实时预测待接入"
+    subtitle = f"{date} · 美股市场 · {len(rows)} 只 · {price_date_str}"
     html = _build_page_skeleton(title, body, 'us_market.html', subtitle, dates=dates)
     _write('us_market.html', html)
 
