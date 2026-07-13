@@ -15,6 +15,17 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
+# 尝试导入社交媒体搜索引擎
+try:
+    sys.path.insert(0, '/home/liudawei/github/daily_tracker_analytics/multi_agent')
+    from core.social_search_engine import get_social_sentiment, _calc_sentiment
+    _SOCIAL_AVAILABLE = True
+except Exception:
+    _SOCIAL_AVAILABLE = False
+    get_social_sentiment = None
+    _calc_sentiment = None
+
+
 # 情绪词典
 POSITIVE_WORDS = [
     '涨停', '大涨', '突破', '拉升', '利好', '反弹', '放量', '创新高',
@@ -153,16 +164,38 @@ def analyze(ticker, name="", current_date="2026-07-02"):
         newsapi_items = _fetch_newsapi(name, ticker)
         if newsapi_items:
             news_items = newsapi_items
+
+    # 4. 补充社交媒体/全网搜索舆情（Twitter/Exa/Jina）
+    social_items = []
+    if _SOCIAL_AVAILABLE and get_social_sentiment:
+        try:
+            extra = 'ETF' if 'ETF' in (name or ticker) else '股票 A股'
+            social = get_social_sentiment(ticker, name, query_extra=extra)
+            social_items = social.get('items', [])
+            social_sentiment = {
+                'score': social.get('sentiment_score', 0),
+                'positive_keywords': social.get('positive_keywords', []),
+                'negative_keywords': social.get('negative_keywords', []),
+                'scored_articles': social.get('total_count', 0),
+            }
+        except Exception:
+            social_sentiment = {'score': 0, 'positive_keywords': [], 'negative_keywords': [], 'scored_articles': 0}
+    else:
+        social_sentiment = {'score': 0, 'positive_keywords': [], 'negative_keywords': [], 'scored_articles': 0}
     
     if not news_items:
         news_items = [{'title': '暂无最新新闻', 'desc': '', 'source': '', 'date': ''}]
     
-    # 4. 情绪分析
-    sentiment = _calc_sentiment(news_items)
+    # 5. 情绪分析（合并东方财富 + 社交媒体）
+    all_for_sentiment = news_items + [{'title': i.get('title', ''), 'desc': i.get('summary', '')} for i in social_items]
+    sentiment = _calc_sentiment(all_for_sentiment) if _calc_sentiment else _calc_sentiment_fallback(all_for_sentiment)
+    # 叠加社交媒体情绪（权重 30%）
+    if social_sentiment.get('scored_articles', 0) > 0:
+        sentiment['score'] = round(sentiment['score'] * 0.7 + social_sentiment['score'] * 0.3, 2)
     
-    # 5. 提取关键主题
+    # 6. 提取关键主题
     keywords = list(set(
-        sentiment['positive_keywords'] + sentiment['negative_keywords']
+        sentiment['positive_keywords'] + sentiment['negative_keywords'] + social_sentiment.get('positive_keywords', []) + social_sentiment.get('negative_keywords', [])
     ))
     
     return {
@@ -170,16 +203,48 @@ def analyze(ticker, name="", current_date="2026-07-02"):
         'ticker': ticker,
         'name': name,
         'news_count': len(news_items),
+        'social_count': len(social_items),
         'news_items': news_items,
+        'social_items': social_items[:10],
         'sentiment_score': sentiment['score'],
         'sentiment_detail': sentiment,
+        'social_sentiment': social_sentiment,
         'keywords': keywords[:10],
-        'summary': _generate_summary(name, news_items, sentiment, keywords),
+        'summary': _generate_summary(name, news_items, sentiment, keywords, social_items),
     }
 
 
-def _generate_summary(name, news_items, sentiment, keywords):
+def _calc_sentiment_fallback(news_items):
+    """当 social_search_engine 不可用时使用的回退情绪打分。"""
+    total_score = 0
+    scored_count = 0
+    keyword_hits = {'positive': [], 'negative': []}
+    for item in news_items:
+        text = (item.get('title', '') + ' ' + item.get('desc', '')).lower()
+        pos_hits = [w for w in POSITIVE_WORDS if w in text]
+        neg_hits = [w for w in NEGATIVE_WORDS if w in text]
+        keyword_hits['positive'].extend(pos_hits)
+        keyword_hits['negative'].extend(neg_hits)
+        if pos_hits or neg_hits:
+            score = len(pos_hits) - len(neg_hits)
+            total_score += score
+            scored_count += 1
+    if scored_count > 0:
+        avg = total_score / max(scored_count, 1)
+        sentiment = max(-1, min(1, avg / 5))
+    else:
+        sentiment = 0.0
+    return {
+        'score': round(sentiment, 2),
+        'positive_keywords': list(set(keyword_hits['positive'])),
+        'negative_keywords': list(set(keyword_hits['negative'])),
+        'scored_articles': scored_count,
+    }
+
+
+def _generate_summary(name, news_items, sentiment, keywords, social_items=None):
     """生成新闻分析摘要"""
+    social_items = social_items or []
     lines = []
     lines.append(f"# 新闻与舆情分析报告")
     lines.append(f"")
@@ -200,6 +265,8 @@ def _generate_summary(name, news_items, sentiment, keywords):
     if sentiment.get('negative_keywords'):
         lines.append(f"**利空词**: {' '.join(sentiment['negative_keywords'][:5])}")
     lines.append(f"**情绪打分文章**: {sentiment['scored_articles']}/{len(news_items)}篇")
+    if social_items:
+        lines.append(f"**社交媒体/全网条目**: {len(social_items)}条")
     lines.append(f"")
     
     if keywords:
@@ -223,6 +290,15 @@ def _generate_summary(name, news_items, sentiment, keywords):
                 lines.append(f"")
     else:
         lines.append(f"暂无最新新闻数据。")
+
+    # 社交媒体热门
+    if social_items:
+        lines.append(f"")
+        lines.append(f"### 社交媒体/全网搜索")
+        for i, item in enumerate(social_items[:5], 1):
+            title = item.get('title', '') or item.get('summary', '')[:80]
+            source = item.get('source', 'social')
+            lines.append(f"{i}. [{source}] {title.strip()}")
     
     return "\n".join(lines)
 
