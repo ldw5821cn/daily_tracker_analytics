@@ -14,6 +14,7 @@ sys.path.insert(0, MULTI_AGENT)
 
 DB_PATH = os.path.join(MULTI_AGENT, 'data', 'llm_predictions.db')
 VALIDATION_PATH = os.path.join(MULTI_AGENT, 'data', 'morning_validation.json')
+OUTPUT_PATH = os.path.join(MULTI_AGENT, 'data', 'prediction_error_analysis.json')
 
 
 def _load_validation() -> dict:
@@ -137,15 +138,105 @@ def main():
         print(f"  {r['ticker']:8s} {r['name'][:8]:8s} {r['signal']:8s} 预测价{cp:8.2f} 现价{r['today_price']:8.2f} 收益{r['return_pct']:+.2f}%")
 
     # 建议
-    print('\n💡 反思与改进建议')
+    suggestions = []
     if len(wrong_items) > len(correct_items):
-        print('  - 整体胜率不足 50%，建议收紧信号阈值或提高置信度门槛')
+        suggestions.append('整体胜率不足 50%，建议收紧信号阈值或提高置信度门槛')
     if sig_wrong.get('bullish', 0) / max(sig_total.get('bullish', 1), 1) > 0.6:
-        print('  - 看多信号失败率偏高，可能市场环境为下跌/震荡，基本面/技术面滞后')
+        suggestions.append('看多信号失败率偏高，可能市场环境为下跌/震荡，基本面/技术面滞后')
     if sig_wrong.get('bearish', 0) / max(sig_total.get('bearish', 1), 1) > 0.6:
-        print('  - 看空信号失败率偏高，可能系统过度悲观或反转信号过早')
-    print('  - 建议对失败标的增加日内 TickFlow 数据校验，减少滞后技术面影响')
-    print('  - 建议引入宏观/资金流向 Agent，提升对大盘方向的判断')
+        suggestions.append('看空信号失败率偏高，可能系统过度悲观或反转信号过早')
+    suggestions.append('建议对失败标的增加日内 TickFlow 数据校验，减少滞后技术面影响')
+    suggestions.append('建议引入宏观/资金流向 Agent，提升对大盘方向的判断')
+
+    print('\n💡 反思与改进建议')
+    for s in suggestions:
+        print(f'  - {s}')
+
+    analysis = {
+        'pred_date': pred_date,
+        'validation_date': val.get('validation_date'),
+        'summary': {
+            'total': len(correct_items) + len(wrong_items),
+            'correct': len(correct_items),
+            'wrong': len(wrong_items),
+            'accuracy': accuracy,
+        },
+        'by_category': {cat: {'total': cat_total[cat], 'wrong': cat_wrong[cat], 'error_rate': round(cat_wrong[cat] / cat_total[cat] * 100, 2)} for cat in cat_total},
+        'by_signal': {sig: {'total': sig_total[sig], 'wrong': sig_wrong[sig], 'error_rate': round(sig_wrong[sig] / sig_total[sig] * 100, 2)} for sig in sig_total},
+        'feature_compare': {},
+        'component_compare': {},
+        'wrong_top10': [],
+        'correct_top10': [],
+        'suggestions': suggestions,
+    }
+
+    for feat in features:
+        c_vals = [r['pred'].get(feat) for r in correct_items if r['pred'].get(feat) is not None]
+        w_vals = [r['pred'].get(feat) for r in wrong_items if r['pred'].get(feat) is not None]
+        if c_vals and w_vals:
+            analysis['feature_compare'][feat] = {
+                'correct_avg': round(sum(c_vals) / len(c_vals), 2),
+                'wrong_avg': round(sum(w_vals) / len(w_vals), 2),
+            }
+
+    for key in comp_keys:
+        c_vals = []
+        w_vals = []
+        for r in correct_items:
+            comp = _parse_component_scores(r['pred'])
+            if key in comp:
+                c_vals.append(comp[key])
+        for r in wrong_items:
+            comp = _parse_component_scores(r['pred'])
+            if key in comp:
+                w_vals.append(comp[key])
+        if c_vals and w_vals:
+            analysis['component_compare'][key] = {
+                'correct_avg': round(sum(c_vals) / len(c_vals), 2),
+                'wrong_avg': round(sum(w_vals) / len(w_vals), 2),
+            }
+
+    analysis['wrong_top10'] = [
+        {
+            'ticker': r['ticker'],
+            'name': r['name'],
+            'category': r['category'],
+            'signal': r['signal'],
+            'return_pct': r['return_pct'],
+            'pred_price': r['pred'].get('current_price'),
+            'today_price': r['today_price'],
+            'weighted_score': r['pred'].get('weighted_score'),
+            'confidence': r['pred'].get('confidence'),
+            'reasoning': r['pred'].get('reasoning', '')[:200],
+        }
+        for r in wrong_sorted
+    ]
+
+    correct_sorted = sorted(
+        [r for r in correct_items if r.get('return_pct') is not None],
+        key=lambda x: abs(x['return_pct']),
+        reverse=True,
+    )[:10]
+    analysis['correct_top10'] = [
+        {
+            'ticker': r['ticker'],
+            'name': r['name'],
+            'category': r['category'],
+            'signal': r['signal'],
+            'return_pct': r['return_pct'],
+            'pred_price': r['pred'].get('current_price'),
+            'today_price': r['today_price'],
+            'weighted_score': r['pred'].get('weighted_score'),
+            'confidence': r['pred'].get('confidence'),
+        }
+        for r in correct_sorted
+    ]
+
+    with open(OUTPUT_PATH, 'w', encoding='utf-8') as f:
+        json.dump(analysis, f, ensure_ascii=False, indent=2)
+    print(f'\n✅ 分析结果已保存: {OUTPUT_PATH}')
+
+    return analysis
 
 
 if __name__ == '__main__':

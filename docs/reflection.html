@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧠 复盘 - 2026-07-13</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; }
+.container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+.header { background: linear-gradient(135deg, #1e293b, #334155); padding: 30px; border-radius: 16px; margin-bottom: 24px; }
+.header h1 { font-size: 24px; margin-bottom: 8px; }
+.header .sub { color: #94a3b8; font-size: 14px; }
+.stats-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 24px; }
+@media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
+.stat-card { background: #1e293b; border-radius: 12px; padding: 16px 10px; text-align: center; }
+.stat-card .num { font-size: 28px; font-weight: bold; white-space: nowrap; }
+.stat-card .label { color: #94a3b8; font-size: 12px; margin-top: 4px; }
+.section-title { font-size: 18px; font-weight: 600; margin: 24px 0 12px; padding-left: 12px; border-left: 4px solid #6366f1; }
+.nav { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; align-items: center; gap: 10px; margin-bottom: 20px; }
+.nav a { display: inline-block; white-space: nowrap; color: #94a3b8; text-decoration: none; padding: 8px 18px; border-radius: 20px; background: #1e293b; border: 1px solid #334155; font-size: 13px; }
+.nav a:hover { background: #334155; color: #e2e8f0; }
+.nav a.active { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; border-color: transparent; }
+.footer { text-align: center; color: #475569; font-size: 12px; margin-top: 40px; padding: 20px; }
+.model-tag { display: inline-block; background: #6366f1; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 8px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.card { background: #1e293b; border-radius: 12px; padding: 16px; border-left: 4px solid #6366f1; }
+.card.bull { border-left-color: #ef4444; }
+.card.bear { border-left-color: #22c55e; }
+.card-title { font-weight: 600; margin-bottom: 6px; }
+.card-meta { color: #94a3b8; font-size: 12px; margin-bottom: 6px; }
+.card-price { color: #e2e8f0; font-size: 13px; margin-bottom: 6px; }
+.card-reason { color: #94a3b8; font-size: 12px; line-height: 1.5; }
+.table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 24px; border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; background: #1e293b; font-size: 13px; min-width: 800px; }
+th { background: #334155; padding: 10px 12px; text-align: left; font-size: 12px; color: #94a3b8; text-transform: uppercase; }
+td { padding: 8px 12px; border-bottom: 1px solid #1e293b; font-size: 13px; }
+tr:hover { background: #334155; }
+.note { background: #1e293b; padding: 16px; border-radius: 12px; color: #cbd5e1; line-height: 1.8; margin-bottom: 24px; }
+.empty { text-align: center; color: #64748b; padding: 40px; }
+</style>
+</head>
+<body>
+<div class="container">
+<div class="nav">
+<a href="index.html" class="">🏠 首页</a>
+<a href="stocks.html" class="">📈 个股</a>
+<a href="us_market.html" class="">🇺🇸 美股</a>
+<a href="etfs.html" class="">📊 ETF</a>
+<a href="futures.html" class="">📉 期货</a>
+<a href="prediction.html" class="">🏛️ 预测</a>
+<a href="portfolio.html" class="">💼 持仓组合</a>
+<a href="reflection.html" class="active">🧠 复盘</a>
+</div>
+
+    <div class="header">
+        <h1>🧠 复盘 </h1>
+        <div class="sub">2026-07-13 预测验证后反思 · 生成于 2026-07-13T19:47:18</div>
+    </div>
+
+    <div class="header">
+        <h1>🧠 每日预测反思 </h1>
+        <div class="sub">2026-07-13 预测 · 验证准确率 64.12% (84/131) · 错误 47 个</div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="num" style="color:#ef4444">64.12%</div>
+            <div class="label">总体准确率</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">84</div>
+            <div class="label">正确</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">47</div>
+            <div class="label">错误</div>
+        </div>
+    </div>
+
+    <div class="section-title">📈 按信号方向错误率</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>信号</th><th>总数</th><th>错误</th><th>错误率</th></tr></thead>
+        <tbody>
+        <tr><td>neutral</td><td>65</td><td>36</td><td>55.38%</td></tr>
+        <tr><td>bearish</td><td>57</td><td>3</td><td>5.26%</td></tr>
+        <tr><td>bullish</td><td>9</td><td>8</td><td>88.89%</td></tr></tbody>
+    </table>
+    </div>
+
+    <div class="section-title">📂 按资产类别错误率</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>类别</th><th>总数</th><th>错误</th><th>错误率</th></tr></thead>
+        <tbody>
+        <tr><td>ETF</td><td>23</td><td>7</td><td>30.43%</td></tr>
+        <tr><td>个股</td><td>87</td><td>33</td><td>37.93%</td></tr>
+        <tr><td>期货</td><td>21</td><td>7</td><td>33.33%</td></tr></tbody>
+    </table>
+    </div>
+
+    <div class="section-title">🔍 正确 vs 错误特征对比</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>特征</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
+        <tbody>
+        <tr><td>weighted_score</td><td>43.27</td><td>47.0</td></tr>
+        <tr><td>confidence</td><td>0.82</td><td>0.72</td></tr></tbody>
+    </table>
+    </div>
+
+    <div class="section-title">🧩 分项得分对比</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>分项</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
+        <tbody>
+        <tr><td>technical</td><td>48.82</td><td>53.3</td></tr>
+        <tr><td>fundamental</td><td>50.0</td><td>50.0</td></tr></tbody>
+    </table>
+    </div>
+
+    <div class="section-title">🤖 LLM 深度反思</div>
+    <div class="note">好的，作为量化投资系统的策略反思 Agent，以下是基于预测验证结果的深度复盘报告。<br><br>### 1. 一句话总结<br>当日预测准确率64.12%的本质原因是：系统在宏观偏空环境下对中性信号过度乐观，导致看涨信号几乎全错，从而拉低了整体准确率。<br><br>### 2. 主要错误模式<br>- **宏观压制下的中性陷阱**：失败样本Top10中，7个是中性信号，且均处于宏观Bearish（44.6分）环境。系统将技术面评分中等（40-50）但多空辩论看跌主导的样本误判为“中性”，实际应看跌。平均错误样本的技术面评分（53.3）甚至高于正确样本（48.82），说明技术面评分在下跌趋势中产生了逆势误导。<br>- **看涨信号盲目乐观**：看涨信号错误率高达88.89%（8/9）。失败样本中，如东方盛虹（bullish，-9.16%）和景嘉微（bullish，-7.28%），其技术面评分仅为50/51，且多空辩论看跌方占优（0 vs 3，0 vs 1），系统却强行给出看涨信号，严重低估了空头动能和宏观压制。<br>- **高置信度虚假安全**：多个失败样本的置信度超过0.85（如宏达电子0.92、隆华科技0.93），但实际与方向完全背离。这表明置信度主要基于技术面一致性而非宏观-微观多因子共振，存在校准偏差。<br><br>### 3. 成功信号特征<br>成功样本Top10全部为看跌信号，且具备以下共性：<br>- **低技术面评分**：平均约39.5分（如安泰科技37.7、振华科技37.4），远低于失败样本（47.0）。<br>- **高置信度**：平均置信度0.91（最高0.95），表明系统在技术面一致偏空时判断坚决。<br>- **多空辩论一致**：虽然成功样本未显示底部分析，但其特征与失败样本形成对比——模型对“明确空头组合”的捕捉非常准确。<br><br>### 4. 权重/阈值调整建议<br>- **宏观修正系数**：当前宏观评分（44.6）低于50时，对所有中性信号实施**强制降级**：若多空辩论看跌方数量≥看涨方2倍，则直接输出看跌；否则输出看跌（但置信度打9折）。<br>- **看涨信号双阈值**：设置看涨信号的硬性门槛：`weighted_score ≥ 55` **且** `技术面评分 ≥ 60` **且** `宏观评分 ≥ 55`。三个条件缺一不可。目前看涨信号平均加权分仅46.4（失败样本），远低于门槛。<br>- **置信度校正**：引入宏观因子到置信度计算中。当宏观熊市时，看涨/中性信号的置信度自动扣减15%（如从0.82降至0.70），强制降低对高置信度中性信号的信任。<br><br>### 5. 今日操作建议<br>- **持仓处理**：立即核查当前持仓中所有昨日的“中性”信号个股（尤其技术面评分在40-50区间且多空看跌占优的），设置T+1止损位（如-3%），或主动降仓至零。宏观偏空环境下，中性即看跌。<br>- **明日预测**：在宏观评分未回到50以上前，**禁止生成看涨信号**。所有看涨信号将被系统自动静默拦截，改为输出“中性（但示警）”，避免复现8/9的看涨错误。<br><br>### 6. 需要新增/改进的数据源或因子<br>- **资金流向Agent（必需）**：失败样本中全部缺失资金流向数据。立刻引入日内主力净流入/流出、大单成交占比等实时TickFlow数据。若某标的主力净流出率连续2日>0.5%，则技术面评分直接扣减15分。<br>- **宏观扩散指数**：当前宏观评分仅依赖单一数值（44.6），建议改进为“宏观扩散指数”，包含A股全市场上涨/下跌家数比、申万一级行业下跌比例等，当全市场下跌家数比>70%时，所有中性信号自动转看跌。<br>- **新闻情绪聚合**：失败样本新闻情绪均为0，说明因子缺失。建议接入实时舆情API，至少覆盖个股新闻情感极性（正面/负面/中性）。在宏观熊市时，若新闻情绪为0或负面，则看跌信号置信度加10%，看涨信号直接屏蔽。</div>
+
+    <div class="footer">
+        数据由 Hermes Agent + 多Agent LLM 预测系统自动生成 · 研究辅助非投资建议 ·
+        <a href="https://github.com/ldw5821cn/daily_tracker_analytics" style="color:#6366f1">GitHub</a>
+    </div>
+</div>
+</body>
+</html>

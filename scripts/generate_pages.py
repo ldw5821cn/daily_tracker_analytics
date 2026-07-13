@@ -47,6 +47,7 @@ TABS = [
     ('futures.html', '📉', '期货'),
     ('prediction.html', '🏛️', '预测'),
     ('portfolio.html', '💼', '持仓组合'),
+    ('reflection.html', '🧠', '复盘'),
 ]
 
 CSS = """<style>
@@ -567,6 +568,97 @@ def _write(name, html):
     print(f"✅ 生成: {path}")
 
 
+def generate_reflection_page():
+    refl = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'prediction_reflection.json'))
+    if not refl:
+        return
+    pred_date = refl.get('pred_date', '未知')
+    accuracy = refl.get('accuracy', 0)
+    total = refl.get('total', 0)
+    correct = refl.get('correct', 0)
+    wrong = refl.get('wrong', 0)
+    by_signal = refl.get('by_signal', {})
+    by_category = refl.get('by_category', {})
+    feature_compare = refl.get('feature_compare', {})
+    component_compare = refl.get('component_compare', {})
+    llm_reflection = refl.get('llm_reflection', '')
+
+    def _signal_error_rows(data):
+        rows = ""
+        for sig, stat in data.items():
+            rows += f"\n        <tr><td>{sig}</td><td>{stat.get('total', 0)}</td><td>{stat.get('wrong', 0)}</td><td>{stat.get('error_rate', 0)}%</td></tr>"
+        return rows
+
+    def _compare_rows(data):
+        rows = ""
+        for key, stat in data.items():
+            rows += f"\n        <tr><td>{key}</td><td>{stat.get('correct_avg', 0)}</td><td>{stat.get('wrong_avg', 0)}</td></tr>"
+        return rows
+
+    llm_html = llm_reflection.replace('\n', '<br>')
+
+    body = f"""
+    <div class="header">
+        <h1>🧠 每日预测反思 </h1>
+        <div class="sub">{pred_date} 预测 · 验证准确率 {accuracy}% ({correct}/{total}) · 错误 {wrong} 个</div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="num" style="color:{'#ef4444' if accuracy >= 50 else '#22c55e'}">{accuracy}%</div>
+            <div class="label">总体准确率</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">{correct}</div>
+            <div class="label">正确</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">{wrong}</div>
+            <div class="label">错误</div>
+        </div>
+    </div>
+
+    <div class="section-title">📈 按信号方向错误率</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>信号</th><th>总数</th><th>错误</th><th>错误率</th></tr></thead>
+        <tbody>{_signal_error_rows(by_signal)}</tbody>
+    </table>
+    </div>
+
+    <div class="section-title">📂 按资产类别错误率</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>类别</th><th>总数</th><th>错误</th><th>错误率</th></tr></thead>
+        <tbody>{_signal_error_rows(by_category)}</tbody>
+    </table>
+    </div>
+
+    <div class="section-title">🔍 正确 vs 错误特征对比</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>特征</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
+        <tbody>{_compare_rows(feature_compare)}</tbody>
+    </table>
+    </div>
+
+    <div class="section-title">🧩 分项得分对比</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>分项</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
+        <tbody>{_compare_rows(component_compare)}</tbody>
+    </table>
+    </div>
+
+    <div class="section-title">🤖 LLM 深度反思</div>
+    <div class="note">{llm_html}</div>
+"""
+    title = f"🧠 复盘 - {pred_date}"
+    subtitle = f"{pred_date} 预测验证后反思 · 生成于 {refl.get('generated_at', '')[:19]}"
+    html = _build_page_skeleton(title, body, 'reflection.html', subtitle)
+    _write('reflection.html', html)
+
+
 if __name__ == '__main__':
     stats, rows = _load_db_stats()
     if stats is None:
@@ -580,5 +672,6 @@ if __name__ == '__main__':
     generate_category_page(rows, '期货', 'futures.html', '📉 期货')
     generate_prediction_page(stats, rows)
     generate_portfolio_page()
+    generate_reflection_page()
 
     print('✅ 全部页面生成完成')
