@@ -118,24 +118,31 @@ tr:hover { background: #334155; }
     <div class="section-title">🎯 验证准确率（2026-07-14）</div>
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="num" style="color:#22c55e">34.4%</div>
-            <div class="label">总体准确率 (45/131)</div>
+            <div class="num" style="color:#22c55e">23.7%</div>
+            <div class="label">总体准确率 (31/131)</div>
         </div>
         
             <div class="stat-card">
-                <div class="num" style="color:#ef4444">65.2%</div>
-                <div class="label">ETF (15/23)</div>
+                <div class="num" style="color:#22c55e">30.4%</div>
+                <div class="label">ETF (7/23)</div>
             </div>
             <div class="stat-card">
-                <div class="num" style="color:#22c55e">19.5%</div>
-                <div class="label">个股 (17/87)</div>
+                <div class="num" style="color:#22c55e">17.2%</div>
+                <div class="label">个股 (15/87)</div>
             </div>
             <div class="stat-card">
-                <div class="num" style="color:#ef4444">61.9%</div>
-                <div class="label">期货 (13/21)</div>
+                <div class="num" style="color:#22c55e">42.9%</div>
+                <div class="label">期货 (9/21)</div>
             </div>
     </div>
 
+
+    <div class="section-title">🧠 反思摘要</div>
+    <div class="note">
+        <p><b>准确率 23.66%</b> · 正确 31 / 错误 100 / 总计 131</p>
+        <p><b>关键建议：</b></p><ul><li>整体胜率不足 50%，建议收紧信号阈值或提高置信度门槛</li><li>看空信号失败率偏高，可能系统过度悲观或反转信号过早</li><li>建议对失败标的增加日内 TickFlow 数据校验，减少滞后技术面影响</li><li>建议引入宏观/资金流向 Agent，提升对大盘方向的判断</li></ul>
+        <p><b>LLM 深度反思：</b></p><p>1. **一句话总结**：宏观强bullish（70/100）环境下系统过度依赖技术面中性及看空辩论，导致看空信号错误率高达89%，严重错判方向。<br><br>---<br><br>2. **主要错误模式**：<br>   - **宏观-微观脱节模式**：失败样本中宏观信号均为 bullish（70/100），但系统因技术面中性（44-58）及多空辩论偏空（看跌>看涨）强行输出 bearish，实际标的跟随宏观大涨（8-14%）。宏观权重未有效压制微观空头信号。<br>   - **高置信度陷阱模式**：错误样本平均 confidence 0.79 高于正确样本的 0.75，尤其失败 Top10 中 confidence≥0.85 的标的（如江西铜业0.95、洛阳钼业0.95）全部错误，说明当前 confidence 与真实性负相关。<br>   - **基本面缺失盲区**：失败样本 reasoning 中“基本面N/A(50/100)”占绝大多数，缺失行业景气度、库存周期等基本面数据，导致对有色、资源股趋势误判（驰宏锌锗、江西铜业等）。<br><br>---<br><br>3. **成功信号特征**：<br>   - 正确样本中，技术面 score 相对较低（如卓胜微44.8、三安光电46.3）但下跌-4.8%~-1.4%，且宏观非强势板块（半导体、消费等并未被宏观 bullish 覆盖）。<br>   - 成功看空标的多为前期涨幅较大、技术面已显疲态（如中芯国际 weighted_score 66.8但实际下跌），说明高 weighted_score 仅在一定宏观背景下有效。<br>   - 期货类成功（沪铜中性预测）准确率较高（57.14%），与宏观路径更一致。<br><br>---<br><br>4. **权重/阈值/硬规则调整建议**：<br>   - **宏观强制拦截规则**：当宏观信号为 bullish > 60 且微观信号为 bearish 时，强制将给定标的的 bearish 信号升级为 neutral，并降低其预测置信度至 0.5 以下，待后续跟踪。<br>   - **阈值调整**：看空信号触发门槛由当前默认改为 **weighted_score ≤ 45 且 confidence ≤ 0.7** 才输出 bearish，否则输出 neutral。同时将 neutral 信号允许范围放宽（当前40个中性正确率52.5%，可保持）。<br>   - **基本面权重注入**：对“基本面N/A”的标的，自动降权50%并标记为低可信，若同时为资源/周期股，则直接禁止 bearish 信号输出。<br>   - **多空辩论修正**：当看跌数量≥看涨数量且宏观 bullish 时，将看跌辩论权重从当前100%下调至30%，避免过度悲观。<br><br>---<br><br>5. **策略回测建议**：<br>   - **当前市场状态**：宏观强势（bullish 70），结构性行情，资源/有色品种大涨。<br>   - 推荐策略：**“趋势跟随+宏观驱动”策略**，即当宏观 bullish 时，系统90%仓位应输出 neutral 或看多信号，仅对技术面严重恶化（如 weighted_score ≤ 30）且宏观同向时输出看空。<br>   - 调整推荐策略打分权重：将宏观 score 权重从当前20%提升至50%，技术面从50%降至30%，情绪/辩论从30%降至20%。<br>   - 回测对比：建议回测“宏观拦截规则”应用后，看空信号错误率是否能从89%降至40%以下。<br><br>---<br><br>6. **今日操作建议**：<br>   - **持仓建议**：对今日系统仍持有的看空资源股（如赤峰黄金、中国铝业等），立即撤销看空信号，转为中性等待，避免继续逆势做空。<br>   - **明日预测**：在宏观 bullish 未反转前，禁止输出任何标的的 bearish 信号，除非该标的所属行业指数已跌破20日均线且成交量萎缩。<br><br>---<br><br>7. **需要新增/改进的数据源或因子**：<br>   - **行业资金流向因子**：引入北向资金、主力净流入、行业ETF份额变化，尤其对有色、资源板块的实时资金监测，防止宏观与微观矛盾。<br>   - **库存与供需周期数据**：对于期货及资源类个股，加入LME库存、社会库存、开工率等基本面因子，填补当前“基本面N/A”空白。<br>   - **宏观一致性检验模块**：新增一个子 Agent 专门评估“宏观信号 vs 微观信号”的匹配度，若矛盾则降低微观信号 confidence 至0.3以下。</p>
+    </div>
 
 
     <div class="section-title">📂 ETF (23只)</div>

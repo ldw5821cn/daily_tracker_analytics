@@ -4,24 +4,24 @@
   "direction_threshold": 1.5,
   "overall": {
     "total": 131,
-    "correct": 45,
-    "accuracy": 34.35
+    "correct": 31,
+    "accuracy": 23.66
   },
   "by_category": {
     "ETF": {
       "total": 23,
-      "correct": 15,
-      "accuracy": 65.22
+      "correct": 7,
+      "accuracy": 30.43
     },
     "个股": {
       "total": 87,
-      "correct": 17,
-      "accuracy": 19.54
+      "correct": 15,
+      "accuracy": 17.24
     },
     "期货": {
       "total": 21,
-      "correct": 13,
-      "accuracy": 61.9
+      "correct": 9,
+      "accuracy": 42.86
     }
   },
   "items": [
@@ -31,8 +31,8 @@
       "category": "ETF",
       "signal": "bearish",
       "pred_price": 1.71,
-      "today_price": 1.71,
-      "return_pct": 0.0,
+      "today_price": 1.759,
+      "return_pct": 2.865,
       "direction_correct": false,
       "note": "ok"
     },
@@ -42,8 +42,8 @@
       "category": "ETF",
       "signal": "bearish",
       "pred_price": 1.38,
-      "today_price": 1.381,
-      "return_pct": 0.072,
+      "today_price": 1.397,
+      "return_pct": 1.232,
       "direction_correct": false,
       "note": "ok"
     },
@@ -53,8 +53,8 @@
       "category": "ETF",
       "signal": "neutral",
       "pred_price": 0.78,
-      "today_price": 0.779,
-      "return_pct": -0.128,
+      "today_price": 0.781,
+      "return_pct": 0.128,
       "direction_correct": true,
       "note": "ok"
     },
@@ -64,8 +64,8 @@
       "category": "ETF",
       "signal": "neutral",
       "pred_price": 0.63,
-      "today_price": 0.631,
-      "return_pct": 0.159,
+      "today_price": 0.632,
+      "return_pct": 0.317,
       "direction_correct": true,
       "note": "ok"
     },
@@ -75,8 +75,8 @@
       "category": "ETF",
       "signal": "bearish",
       "pred_price": 1.29,
-      "today_price": 1.292,
-      "return_pct": 0.155,
+      "today_price": 1.308,
+      "return_pct": 1.395,
       "direction_correct": false,
       "note": "ok"
     },
@@ -86,9 +86,9 @@
       "category": "ETF",
       "signal": "neutral",
       "pred_price": 2.05,
-      "today_price": 2.051,
-      "return_pct": 0.049,
-      "direction_correct": true,
+      "today_price": 2.085,
+      "return_pct": 1.707,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -97,9 +97,9 @@
       "category": "ETF",
       "signal": "neutral",
       "pred_price": 1.07,
-      "today_price": 1.071,
-      "return_pct": 0.093,
-      "direction_correct": true,
+      "today_price": 1.087,
+      "return_pct": 1.589,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -108,8 +108,8 @@
       "category": "ETF",
       "signal": "bearish",
       "pred_price": 1.04,
-      "today_price": 1.042,
-      "return_pct": 0.192,
+      "today_price": 1.05,
+      "return_pct": 0.962,
       "direction_correct": false,
       "note": "ok"
     },
@@ -119,8 +119,8 @@
       "category": "ETF",
       "signal": "bearish",
       "pred_price": 4.33,
-      "today_price": 4.332,
-      "return_pct": 0.046,
+      "today_price": 4.4,
+      "return_pct": 1.617,
       "direction_correct": false,
       "note": "ok"
     },
@@ -130,8 +130,8 @@
       "category": "ETF",
       "signal": "bearish",
       "pred_price": 0.86,
-      "today_price": 0.865,
-      "return_pct": 0.581,
+      "today_price": 0.862,
+      "return_pct": 0.233,
       "direction_correct": false,
       "note": "ok"
     },
@@ -141,9 +141,9 @@
       "category": "ETF",
       "signal": "bearish",
       "pred_price": 1.46,
-      "today_price": 1.456,
-      "return_pct": -0.274,
-      "direction_correct": true,
+      "today_price": 1.462,
+      "return_pct": 0.137,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -152,9 +152,9 @@
       "category": "ETF",
       "signal": "bearish",
       "pred_price": 1.46,
-      "today_price": 1.458,
-      "return_pct": -0.137,
-      "direction_correct": true,
+      "today_price": 1.481,
+      "return_pct": 1.438,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -163,9 +163,9 @@
       "category": "ETF",
       "signal": "bearish",
       "pred_price": 1.68,
-      "today_price": 1.679,
-      "return_pct": -0.06,
-      "direction_correct": true,
+      "today_price": 1.774,
+      "return_pct": 5.595,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -174,8 +174,8 @@
       "category": "ETF",
       "signal": "neutral",
       "pred_price": 1.1,
-      "today_price": 1.098,
-      "return_pct": -0.182,
+      "today_price": 1.104,
+      "return_pct": 0.364,
       "direction_correct": true,
       "note": "ok"
     },
@@ -185,9 +185,9 @@
       "category": "ETF",
       "signal": "bearish",
       "pred_price": 0.94,
-      "today_price": 0.938,
-      "return_pct": -0.213,
-      "direction_correct": true,
+      "today_price": 0.964,
+      "return_pct": 2.553,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -196,9 +196,9 @@
       "category": "ETF",
       "signal": "neutral",
       "pred_price": 0.31,
-      "today_price": 0.311,
-      "return_pct": 0.323,
-      "direction_correct": true,
+      "today_price": 0.319,
+      "return_pct": 2.903,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -207,8 +207,8 @@
       "category": "ETF",
       "signal": "neutral",
       "pred_price": 0.53,
-      "today_price": 0.525,
-      "return_pct": -0.943,
+      "today_price": 0.528,
+      "return_pct": -0.377,
       "direction_correct": true,
       "note": "ok"
     },
@@ -218,8 +218,8 @@
       "category": "ETF",
       "signal": "bearish",
       "pred_price": 1.16,
-      "today_price": 1.163,
-      "return_pct": 0.259,
+      "today_price": 1.174,
+      "return_pct": 1.207,
       "direction_correct": false,
       "note": "ok"
     },
@@ -229,8 +229,8 @@
       "category": "ETF",
       "signal": "neutral",
       "pred_price": 1.13,
-      "today_price": 1.126,
-      "return_pct": -0.354,
+      "today_price": 1.139,
+      "return_pct": 0.796,
       "direction_correct": true,
       "note": "ok"
     },
@@ -240,9 +240,9 @@
       "category": "ETF",
       "signal": "bearish",
       "pred_price": 0.74,
-      "today_price": 0.738,
-      "return_pct": -0.27,
-      "direction_correct": true,
+      "today_price": 0.78,
+      "return_pct": 5.405,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -251,9 +251,9 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 5.98,
-      "today_price": 5.98,
-      "return_pct": 0.0,
-      "direction_correct": false,
+      "today_price": 5.88,
+      "return_pct": -1.672,
+      "direction_correct": true,
       "note": "ok"
     },
     {
@@ -262,8 +262,8 @@
       "category": "ETF",
       "signal": "neutral",
       "pred_price": 0.59,
-      "today_price": 0.593,
-      "return_pct": 0.508,
+      "today_price": 0.595,
+      "return_pct": 0.847,
       "direction_correct": true,
       "note": "ok"
     },
@@ -273,9 +273,9 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 54.0,
-      "today_price": 54.0,
-      "return_pct": 0.0,
-      "direction_correct": false,
+      "today_price": 52.63,
+      "return_pct": -2.537,
+      "direction_correct": true,
       "note": "ok"
     },
     {
@@ -284,8 +284,8 @@
       "category": "ETF",
       "signal": "neutral",
       "pred_price": 0.58,
-      "today_price": 0.582,
-      "return_pct": 0.345,
+      "today_price": 0.58,
+      "return_pct": 0.0,
       "direction_correct": true,
       "note": "ok"
     },
@@ -295,8 +295,8 @@
       "category": "ETF",
       "signal": "bearish",
       "pred_price": 4.74,
-      "today_price": 4.744,
-      "return_pct": 0.084,
+      "today_price": 4.837,
+      "return_pct": 2.046,
       "direction_correct": false,
       "note": "ok"
     },
@@ -306,8 +306,8 @@
       "category": "个股",
       "signal": "neutral",
       "pred_price": 297.58,
-      "today_price": 297.58,
-      "return_pct": 0.0,
+      "today_price": 293.5,
+      "return_pct": -1.371,
       "direction_correct": true,
       "note": "ok"
     },
@@ -317,8 +317,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 79.92,
-      "today_price": 79.92,
-      "return_pct": 0.0,
+      "today_price": 82.6,
+      "return_pct": 3.353,
       "direction_correct": false,
       "note": "ok"
     },
@@ -328,8 +328,8 @@
       "category": "个股",
       "signal": "neutral",
       "pred_price": 345.0,
-      "today_price": 345.0,
-      "return_pct": 0.0,
+      "today_price": 340.85,
+      "return_pct": -1.203,
       "direction_correct": true,
       "note": "ok"
     },
@@ -339,9 +339,9 @@
       "category": "个股",
       "signal": "neutral",
       "pred_price": 1390.0,
-      "today_price": 1390.0,
-      "return_pct": 0.0,
-      "direction_correct": true,
+      "today_price": 1411.0,
+      "return_pct": 1.511,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -350,9 +350,9 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 163.58,
-      "today_price": 163.58,
-      "return_pct": 0.0,
-      "direction_correct": false,
+      "today_price": 160.99,
+      "return_pct": -1.583,
+      "direction_correct": true,
       "note": "ok"
     },
     {
@@ -361,8 +361,8 @@
       "category": "个股",
       "signal": "neutral",
       "pred_price": 408.6,
-      "today_price": 408.6,
-      "return_pct": 0.0,
+      "today_price": 405.3,
+      "return_pct": -0.808,
       "direction_correct": true,
       "note": "ok"
     },
@@ -372,9 +372,9 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 138.5,
-      "today_price": 138.5,
-      "return_pct": 0.0,
-      "direction_correct": false,
+      "today_price": 133.84,
+      "return_pct": -3.365,
+      "direction_correct": true,
       "note": "ok"
     },
     {
@@ -383,8 +383,8 @@
       "category": "个股",
       "signal": "neutral",
       "pred_price": 845.0,
-      "today_price": 845.0,
-      "return_pct": 0.0,
+      "today_price": 850.01,
+      "return_pct": 0.593,
       "direction_correct": true,
       "note": "ok"
     },
@@ -394,9 +394,9 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 87.95,
-      "today_price": 87.95,
-      "return_pct": 0.0,
-      "direction_correct": false,
+      "today_price": 86.71,
+      "return_pct": -1.41,
+      "direction_correct": true,
       "note": "ok"
     },
     {
@@ -405,9 +405,9 @@
       "category": "个股",
       "signal": "neutral",
       "pred_price": 399.06,
-      "today_price": 399.06,
-      "return_pct": 0.0,
-      "direction_correct": true,
+      "today_price": 387.88,
+      "return_pct": -2.802,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -416,8 +416,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 59.0,
-      "today_price": 59.0,
-      "return_pct": 0.0,
+      "today_price": 59.71,
+      "return_pct": 1.203,
       "direction_correct": false,
       "note": "ok"
     },
@@ -427,8 +427,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 69.36,
-      "today_price": 69.36,
-      "return_pct": 0.0,
+      "today_price": 74.79,
+      "return_pct": 7.829,
       "direction_correct": false,
       "note": "ok"
     },
@@ -438,8 +438,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 59.14,
-      "today_price": 59.14,
-      "return_pct": 0.0,
+      "today_price": 62.57,
+      "return_pct": 5.8,
       "direction_correct": false,
       "note": "ok"
     },
@@ -449,8 +449,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 26.6,
-      "today_price": 26.6,
-      "return_pct": 0.0,
+      "today_price": 27.59,
+      "return_pct": 3.722,
       "direction_correct": false,
       "note": "ok"
     },
@@ -460,8 +460,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 244.5,
-      "today_price": 244.5,
-      "return_pct": 0.0,
+      "today_price": 248.34,
+      "return_pct": 1.571,
       "direction_correct": false,
       "note": "ok"
     },
@@ -471,8 +471,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 22.24,
-      "today_price": 22.24,
-      "return_pct": 0.0,
+      "today_price": 22.98,
+      "return_pct": 3.327,
       "direction_correct": false,
       "note": "ok"
     },
@@ -482,9 +482,9 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 17.98,
-      "today_price": 17.98,
-      "return_pct": 0.0,
-      "direction_correct": false,
+      "today_price": 17.93,
+      "return_pct": -0.278,
+      "direction_correct": true,
       "note": "ok"
     },
     {
@@ -493,8 +493,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 16.86,
-      "today_price": 16.86,
-      "return_pct": 0.0,
+      "today_price": 18.21,
+      "return_pct": 8.007,
       "direction_correct": false,
       "note": "ok"
     },
@@ -504,8 +504,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 23.26,
-      "today_price": 23.26,
-      "return_pct": 0.0,
+      "today_price": 24.24,
+      "return_pct": 4.213,
       "direction_correct": false,
       "note": "ok"
     },
@@ -515,9 +515,9 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 11.87,
-      "today_price": 11.87,
-      "return_pct": 0.0,
-      "direction_correct": false,
+      "today_price": 11.83,
+      "return_pct": -0.337,
+      "direction_correct": true,
       "note": "ok"
     },
     {
@@ -526,8 +526,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 118.2,
-      "today_price": 118.2,
-      "return_pct": 0.0,
+      "today_price": 127.03,
+      "return_pct": 7.47,
       "direction_correct": false,
       "note": "ok"
     },
@@ -537,8 +537,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 30.45,
-      "today_price": 30.45,
-      "return_pct": 0.0,
+      "today_price": 31.97,
+      "return_pct": 4.992,
       "direction_correct": false,
       "note": "ok"
     },
@@ -548,8 +548,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 45.79,
-      "today_price": 45.79,
-      "return_pct": 0.0,
+      "today_price": 46.53,
+      "return_pct": 1.616,
       "direction_correct": false,
       "note": "ok"
     },
@@ -559,8 +559,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 34.18,
-      "today_price": 34.18,
-      "return_pct": 0.0,
+      "today_price": 36.43,
+      "return_pct": 6.583,
       "direction_correct": false,
       "note": "ok"
     },
@@ -570,8 +570,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 25.45,
-      "today_price": 25.45,
-      "return_pct": 0.0,
+      "today_price": 25.95,
+      "return_pct": 1.965,
       "direction_correct": false,
       "note": "ok"
     },
@@ -581,8 +581,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 73.3,
-      "today_price": 73.3,
-      "return_pct": 0.0,
+      "today_price": 74.95,
+      "return_pct": 2.251,
       "direction_correct": false,
       "note": "ok"
     },
@@ -592,9 +592,9 @@
       "category": "个股",
       "signal": "neutral",
       "pred_price": 8.11,
-      "today_price": 8.11,
-      "return_pct": 0.0,
-      "direction_correct": true,
+      "today_price": 8.86,
+      "return_pct": 9.248,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -603,8 +603,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 70.15,
-      "today_price": 70.15,
-      "return_pct": 0.0,
+      "today_price": 70.53,
+      "return_pct": 0.542,
       "direction_correct": false,
       "note": "ok"
     },
@@ -614,9 +614,9 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 15.73,
-      "today_price": 15.73,
-      "return_pct": 0.0,
-      "direction_correct": false,
+      "today_price": 14.97,
+      "return_pct": -4.832,
+      "direction_correct": true,
       "note": "ok"
     },
     {
@@ -625,8 +625,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 10.32,
-      "today_price": 10.32,
-      "return_pct": 0.0,
+      "today_price": 10.87,
+      "return_pct": 5.329,
       "direction_correct": false,
       "note": "ok"
     },
@@ -636,8 +636,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 8.9,
-      "today_price": 8.9,
-      "return_pct": 0.0,
+      "today_price": 9.79,
+      "return_pct": 10.0,
       "direction_correct": false,
       "note": "ok"
     },
@@ -647,8 +647,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 230.0,
-      "today_price": 230.0,
-      "return_pct": 0.0,
+      "today_price": 263.0,
+      "return_pct": 14.348,
       "direction_correct": false,
       "note": "ok"
     },
@@ -658,8 +658,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 58.76,
-      "today_price": 58.76,
-      "return_pct": 0.0,
+      "today_price": 64.0,
+      "return_pct": 8.918,
       "direction_correct": false,
       "note": "ok"
     },
@@ -669,8 +669,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 139.6,
-      "today_price": 139.6,
-      "return_pct": 0.0,
+      "today_price": 151.9,
+      "return_pct": 8.811,
       "direction_correct": false,
       "note": "ok"
     },
@@ -680,8 +680,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 90.23,
-      "today_price": 90.23,
-      "return_pct": 0.0,
+      "today_price": 94.77,
+      "return_pct": 5.032,
       "direction_correct": false,
       "note": "ok"
     },
@@ -691,8 +691,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 59.9,
-      "today_price": 59.9,
-      "return_pct": 0.0,
+      "today_price": 62.58,
+      "return_pct": 4.474,
       "direction_correct": false,
       "note": "ok"
     },
@@ -702,8 +702,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 43.04,
-      "today_price": 43.04,
-      "return_pct": 0.0,
+      "today_price": 43.9,
+      "return_pct": 1.998,
       "direction_correct": false,
       "note": "ok"
     },
@@ -713,8 +713,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 48.93,
-      "today_price": 48.93,
-      "return_pct": 0.0,
+      "today_price": 50.55,
+      "return_pct": 3.311,
       "direction_correct": false,
       "note": "ok"
     },
@@ -724,8 +724,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 31.91,
-      "today_price": 31.91,
-      "return_pct": 0.0,
+      "today_price": 33.13,
+      "return_pct": 3.823,
       "direction_correct": false,
       "note": "ok"
     },
@@ -735,8 +735,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 45.61,
-      "today_price": 45.61,
-      "return_pct": 0.0,
+      "today_price": 47.63,
+      "return_pct": 4.429,
       "direction_correct": false,
       "note": "ok"
     },
@@ -746,8 +746,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 53.51,
-      "today_price": 53.51,
-      "return_pct": 0.0,
+      "today_price": 56.01,
+      "return_pct": 4.672,
       "direction_correct": false,
       "note": "ok"
     },
@@ -757,9 +757,9 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 318.34,
-      "today_price": 318.34,
-      "return_pct": 0.0,
-      "direction_correct": false,
+      "today_price": 311.39,
+      "return_pct": -2.183,
+      "direction_correct": true,
       "note": "ok"
     },
     {
@@ -768,8 +768,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 20.01,
-      "today_price": 20.01,
-      "return_pct": 0.0,
+      "today_price": 20.48,
+      "return_pct": 2.349,
       "direction_correct": false,
       "note": "ok"
     },
@@ -779,8 +779,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 16.47,
-      "today_price": 16.47,
-      "return_pct": 0.0,
+      "today_price": 17.14,
+      "return_pct": 4.068,
       "direction_correct": false,
       "note": "ok"
     },
@@ -790,8 +790,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 62.18,
-      "today_price": 62.18,
-      "return_pct": 0.0,
+      "today_price": 65.25,
+      "return_pct": 4.937,
       "direction_correct": false,
       "note": "ok"
     },
@@ -801,8 +801,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 27.36,
-      "today_price": 27.36,
-      "return_pct": 0.0,
+      "today_price": 29.06,
+      "return_pct": 6.213,
       "direction_correct": false,
       "note": "ok"
     },
@@ -812,8 +812,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 5.86,
-      "today_price": 5.86,
-      "return_pct": 0.0,
+      "today_price": 6.19,
+      "return_pct": 5.631,
       "direction_correct": false,
       "note": "ok"
     },
@@ -823,8 +823,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 40.0,
-      "today_price": 40.0,
-      "return_pct": 0.0,
+      "today_price": 43.85,
+      "return_pct": 9.625,
       "direction_correct": false,
       "note": "ok"
     },
@@ -834,8 +834,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 14.48,
-      "today_price": 14.48,
-      "return_pct": 0.0,
+      "today_price": 15.33,
+      "return_pct": 5.87,
       "direction_correct": false,
       "note": "ok"
     },
@@ -845,8 +845,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 18.42,
-      "today_price": 18.42,
-      "return_pct": 0.0,
+      "today_price": 19.53,
+      "return_pct": 6.026,
       "direction_correct": false,
       "note": "ok"
     },
@@ -856,8 +856,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 512.5,
-      "today_price": 512.5,
-      "return_pct": 0.0,
+      "today_price": 568.82,
+      "return_pct": 10.989,
       "direction_correct": false,
       "note": "ok"
     },
@@ -867,8 +867,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 259.31,
-      "today_price": 259.31,
-      "return_pct": 0.0,
+      "today_price": 273.51,
+      "return_pct": 5.476,
       "direction_correct": false,
       "note": "ok"
     },
@@ -878,9 +878,9 @@
       "category": "个股",
       "signal": "neutral",
       "pred_price": 1108.0,
-      "today_price": 1108.0,
-      "return_pct": 0.0,
-      "direction_correct": true,
+      "today_price": 1184.05,
+      "return_pct": 6.864,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -889,8 +889,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 23.96,
-      "today_price": 23.96,
-      "return_pct": 0.0,
+      "today_price": 25.26,
+      "return_pct": 5.426,
       "direction_correct": false,
       "note": "ok"
     },
@@ -900,8 +900,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 19.52,
-      "today_price": 19.52,
-      "return_pct": 0.0,
+      "today_price": 19.9,
+      "return_pct": 1.947,
       "direction_correct": false,
       "note": "ok"
     },
@@ -911,8 +911,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 32.33,
-      "today_price": 32.33,
-      "return_pct": 0.0,
+      "today_price": 34.95,
+      "return_pct": 8.104,
       "direction_correct": false,
       "note": "ok"
     },
@@ -922,8 +922,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 23.06,
-      "today_price": 23.06,
-      "return_pct": 0.0,
+      "today_price": 24.98,
+      "return_pct": 8.326,
       "direction_correct": false,
       "note": "ok"
     },
@@ -933,8 +933,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 3.93,
-      "today_price": 3.93,
-      "return_pct": 0.0,
+      "today_price": 4.16,
+      "return_pct": 5.852,
       "direction_correct": false,
       "note": "ok"
     },
@@ -944,9 +944,9 @@
       "category": "个股",
       "signal": "neutral",
       "pred_price": 5.5,
-      "today_price": 5.5,
-      "return_pct": 0.0,
-      "direction_correct": true,
+      "today_price": 5.6,
+      "return_pct": 1.818,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -955,8 +955,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 2.07,
-      "today_price": 2.07,
-      "return_pct": 0.0,
+      "today_price": 2.22,
+      "return_pct": 7.246,
       "direction_correct": false,
       "note": "ok"
     },
@@ -966,9 +966,9 @@
       "category": "个股",
       "signal": "neutral",
       "pred_price": 1.87,
-      "today_price": 1.87,
-      "return_pct": 0.0,
-      "direction_correct": true,
+      "today_price": 1.91,
+      "return_pct": 2.139,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -977,8 +977,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 19.67,
-      "today_price": 19.67,
-      "return_pct": 0.0,
+      "today_price": 20.47,
+      "return_pct": 4.067,
       "direction_correct": false,
       "note": "ok"
     },
@@ -988,8 +988,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 3.53,
-      "today_price": 3.53,
-      "return_pct": 0.0,
+      "today_price": 3.57,
+      "return_pct": 1.133,
       "direction_correct": false,
       "note": "ok"
     },
@@ -999,9 +999,9 @@
       "category": "个股",
       "signal": "neutral",
       "pred_price": 42.65,
-      "today_price": 42.65,
-      "return_pct": 0.0,
-      "direction_correct": true,
+      "today_price": 43.42,
+      "return_pct": 1.805,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -1010,8 +1010,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 3.47,
-      "today_price": 3.47,
-      "return_pct": 0.0,
+      "today_price": 3.48,
+      "return_pct": 0.288,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1021,9 +1021,9 @@
       "category": "个股",
       "signal": "neutral",
       "pred_price": 23.95,
-      "today_price": 23.95,
-      "return_pct": 0.0,
-      "direction_correct": true,
+      "today_price": 24.55,
+      "return_pct": 2.505,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -1032,8 +1032,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 12.87,
-      "today_price": 12.87,
-      "return_pct": 0.0,
+      "today_price": 13.25,
+      "return_pct": 2.953,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1043,8 +1043,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 6.11,
-      "today_price": 6.11,
-      "return_pct": 0.0,
+      "today_price": 6.35,
+      "return_pct": 3.928,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1054,9 +1054,9 @@
       "category": "个股",
       "signal": "neutral",
       "pred_price": 9.66,
-      "today_price": 9.66,
-      "return_pct": 0.0,
-      "direction_correct": true,
+      "today_price": 10.0,
+      "return_pct": 3.52,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -1065,8 +1065,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 17.97,
-      "today_price": 17.97,
-      "return_pct": 0.0,
+      "today_price": 19.23,
+      "return_pct": 7.012,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1076,8 +1076,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 11.38,
-      "today_price": 11.38,
-      "return_pct": 0.0,
+      "today_price": 11.7,
+      "return_pct": 2.812,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1087,9 +1087,9 @@
       "category": "个股",
       "signal": "neutral",
       "pred_price": 5.23,
-      "today_price": 5.23,
-      "return_pct": 0.0,
-      "direction_correct": true,
+      "today_price": 5.39,
+      "return_pct": 3.059,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -1098,8 +1098,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 138.79,
-      "today_price": 138.79,
-      "return_pct": 0.0,
+      "today_price": 144.74,
+      "return_pct": 4.287,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1109,8 +1109,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 66.95,
-      "today_price": 66.95,
-      "return_pct": 0.0,
+      "today_price": 69.6,
+      "return_pct": 3.958,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1120,8 +1120,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 20.72,
-      "today_price": 20.72,
-      "return_pct": 0.0,
+      "today_price": 22.03,
+      "return_pct": 6.322,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1131,8 +1131,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 18.28,
-      "today_price": 18.28,
-      "return_pct": 0.0,
+      "today_price": 18.82,
+      "return_pct": 2.954,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1142,8 +1142,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 15.0,
-      "today_price": 15.0,
-      "return_pct": 0.0,
+      "today_price": 15.65,
+      "return_pct": 4.333,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1153,9 +1153,9 @@
       "category": "个股",
       "signal": "neutral",
       "pred_price": 4.88,
-      "today_price": 4.88,
-      "return_pct": 0.0,
-      "direction_correct": true,
+      "today_price": 5.03,
+      "return_pct": 3.074,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -1164,8 +1164,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 11.4,
-      "today_price": 11.4,
-      "return_pct": 0.0,
+      "today_price": 12.23,
+      "return_pct": 7.281,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1175,8 +1175,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 10.89,
-      "today_price": 10.89,
-      "return_pct": 0.0,
+      "today_price": 11.29,
+      "return_pct": 3.673,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1186,9 +1186,9 @@
       "category": "个股",
       "signal": "neutral",
       "pred_price": 13.05,
-      "today_price": 13.05,
-      "return_pct": 0.0,
-      "direction_correct": true,
+      "today_price": 13.55,
+      "return_pct": 3.831,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -1208,9 +1208,9 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 7.04,
-      "today_price": 7.04,
-      "return_pct": 0.0,
-      "direction_correct": false,
+      "today_price": 7.0,
+      "return_pct": -0.568,
+      "direction_correct": true,
       "note": "ok"
     },
     {
@@ -1219,8 +1219,8 @@
       "category": "个股",
       "signal": "neutral",
       "pred_price": 24.37,
-      "today_price": 24.37,
-      "return_pct": 0.0,
+      "today_price": 24.7,
+      "return_pct": 1.354,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1230,8 +1230,8 @@
       "category": "个股",
       "signal": "bearish",
       "pred_price": 28.01,
-      "today_price": 28.01,
-      "return_pct": 0.0,
+      "today_price": 28.43,
+      "return_pct": 1.499,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1241,8 +1241,8 @@
       "category": "期货",
       "signal": "neutral",
       "pred_price": 103060.0,
-      "today_price": 103060.0,
-      "return_pct": 0.0,
+      "today_price": 104340.0,
+      "return_pct": 1.242,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1252,9 +1252,9 @@
       "category": "期货",
       "signal": "neutral",
       "pred_price": 22945.0,
-      "today_price": 22945.0,
-      "return_pct": 0.0,
-      "direction_correct": true,
+      "today_price": 23335.0,
+      "return_pct": 1.7,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -1263,8 +1263,8 @@
       "category": "期货",
       "signal": "bearish",
       "pred_price": 14135.0,
-      "today_price": 14135.0,
-      "return_pct": 0.0,
+      "today_price": 14217.0,
+      "return_pct": 0.58,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1274,9 +1274,9 @@
       "category": "期货",
       "signal": "neutral",
       "pred_price": 744.5,
-      "today_price": 744.5,
-      "return_pct": 0.0,
-      "direction_correct": true,
+      "today_price": 760.5,
+      "return_pct": 2.149,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -1285,8 +1285,8 @@
       "category": "期货",
       "signal": "neutral",
       "pred_price": 3054.0,
-      "today_price": 3054.0,
-      "return_pct": 0.0,
+      "today_price": 3090.0,
+      "return_pct": 1.179,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1296,8 +1296,8 @@
       "category": "期货",
       "signal": "neutral",
       "pred_price": 885.94,
-      "today_price": 885.94,
-      "return_pct": 0.0,
+      "today_price": 880.26,
+      "return_pct": -0.641,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1307,8 +1307,8 @@
       "category": "期货",
       "signal": "neutral",
       "pred_price": 24700.0,
-      "today_price": 24700.0,
-      "return_pct": 0.0,
+      "today_price": 24840.0,
+      "return_pct": 0.567,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1318,8 +1318,8 @@
       "category": "期货",
       "signal": "bearish",
       "pred_price": 3272.0,
-      "today_price": 3272.0,
-      "return_pct": 0.0,
+      "today_price": 3302.0,
+      "return_pct": 0.917,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1329,8 +1329,8 @@
       "category": "期货",
       "signal": "bearish",
       "pred_price": 1865.0,
-      "today_price": 1865.0,
-      "return_pct": 0.0,
+      "today_price": 1868.0,
+      "return_pct": 0.161,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1340,8 +1340,8 @@
       "category": "期货",
       "signal": "neutral",
       "pred_price": 5868.0,
-      "today_price": 5868.0,
-      "return_pct": 0.0,
+      "today_price": 5890.0,
+      "return_pct": 0.375,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1351,8 +1351,8 @@
       "category": "期货",
       "signal": "bearish",
       "pred_price": 1239.0,
-      "today_price": 1239.0,
-      "return_pct": 0.0,
+      "today_price": 1260.0,
+      "return_pct": 1.695,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1362,8 +1362,8 @@
       "category": "期货",
       "signal": "bearish",
       "pred_price": 2516.0,
-      "today_price": 2516.0,
-      "return_pct": 0.0,
+      "today_price": 2632.0,
+      "return_pct": 4.61,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1373,9 +1373,9 @@
       "category": "期货",
       "signal": "neutral",
       "pred_price": 4488.0,
-      "today_price": 4488.0,
-      "return_pct": 0.0,
-      "direction_correct": true,
+      "today_price": 4579.0,
+      "return_pct": 2.028,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -1384,8 +1384,8 @@
       "category": "期货",
       "signal": "bearish",
       "pred_price": 482.6,
-      "today_price": 482.6,
-      "return_pct": 0.0,
+      "today_price": 519.4,
+      "return_pct": 7.625,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1395,8 +1395,8 @@
       "category": "期货",
       "signal": "bearish",
       "pred_price": 5612.0,
-      "today_price": 5612.0,
-      "return_pct": 0.0,
+      "today_price": 5842.0,
+      "return_pct": 4.098,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1406,8 +1406,8 @@
       "category": "期货",
       "signal": "neutral",
       "pred_price": 5255.0,
-      "today_price": 5255.0,
-      "return_pct": 0.0,
+      "today_price": 5235.0,
+      "return_pct": -0.381,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1417,8 +1417,8 @@
       "category": "期货",
       "signal": "neutral",
       "pred_price": 16080.0,
-      "today_price": 16080.0,
-      "return_pct": 0.0,
+      "today_price": 16070.0,
+      "return_pct": -0.062,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1428,8 +1428,8 @@
       "category": "期货",
       "signal": "bearish",
       "pred_price": 2307.0,
-      "today_price": 2307.0,
-      "return_pct": 0.0,
+      "today_price": 2309.0,
+      "return_pct": 0.087,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1439,8 +1439,8 @@
       "category": "期货",
       "signal": "neutral",
       "pred_price": 2295.0,
-      "today_price": 2295.0,
-      "return_pct": 0.0,
+      "today_price": 2308.0,
+      "return_pct": 0.566,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1450,8 +1450,8 @@
       "category": "期货",
       "signal": "neutral",
       "pred_price": 9875.0,
-      "today_price": 9875.0,
-      "return_pct": 0.0,
+      "today_price": 9944.0,
+      "return_pct": 0.699,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1461,9 +1461,9 @@
       "category": "期货",
       "signal": "neutral",
       "pred_price": 9212.0,
-      "today_price": 9212.0,
-      "return_pct": 0.0,
-      "direction_correct": true,
+      "today_price": 9351.0,
+      "return_pct": 1.509,
+      "direction_correct": false,
       "note": "ok"
     },
     {
