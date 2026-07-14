@@ -46,7 +46,7 @@ def _get_conn():
 
 
 def _get_current_price(ticker: str, category: str, name: str, as_of_date: str = None, pred_date: str = None) -> float | None:
-    """获取最新收盘价（验证日收盘价）。如果数据最新日期不晚于 pred_date，说明次日数据未更新，返回 None。"""
+    """获取最新收盘价（验证日收盘价）。如果数据源最新日期不晚于 pred_date，尝试用实时价格补充。"""
     try:
         if category == 'US':
             from core.us_data import get_us_price, get_us_stock_data
@@ -58,14 +58,21 @@ def _get_current_price(ticker: str, category: str, name: str, as_of_date: str = 
             if pred_d and latest_date <= pred_d:
                 return None
             return get_us_price(ticker, as_of_date=as_of_date)
-        elif category == '期货':
-            df, _ = get_stock_data(ticker, period='10d', calibrate=False)
-            if df is not None and not df.empty:
+
+        # A 股/期货统一用 get_stock_data
+        df, _ = get_stock_data(ticker, period='10d', calibrate=False)
+        if df is not None and not df.empty:
+            latest_date = df.index[-1].date() if hasattr(df.index[-1], 'date') else df.index[-1]
+            pred_d = pd.to_datetime(pred_date).date() if pred_date else None
+            # 如果数据源已更新到验证日之后，直接返回最新收盘价
+            if pred_d is None or latest_date > pred_d:
                 return float(df['close'].iloc[-1])
-        else:
-            df, _ = get_stock_data(ticker, period='10d', calibrate=False)
-            if df is not None and not df.empty:
-                return float(df['close'].iloc[-1])
+            # 否则尝试用实时价格补充（腾讯实时行情）
+            rt = get_realtime_price(ticker)
+            if rt and rt.get('price') and rt.get('price') > 0:
+                # 如果实时价有昨收，用实时价；否则仍用 df 最新收盘价
+                return float(rt['price'])
+            return float(df['close'].iloc[-1])
     except Exception as e:
         print(f"  {ticker} 价格获取失败: {e}")
     return None
