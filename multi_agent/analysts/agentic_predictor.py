@@ -83,12 +83,118 @@ HARD_RULES = _PARAMS.get('hard_rules', {
 PARAMS = _PARAMS
 
 POSITION_MAP = {
-    'bullish': 0.25,
-    'bearish': 0.15,
-    'neutral': 0.0,
+    '看多': 0.25,
+    '看空': 0.15,
+    '中性': 0.0,
 }
 
 HORIZON_THRESHOLD = {'strong': 1.5, 'weak': 0.5}
+
+# 信号中文化映射
+SIGNAL_CN = {
+    'bullish': '看多',
+    'bearish': '看空',
+    'neutral': '中性',
+    'weak_neutral': 'weak_neutral',
+}
+MACRO_SIGNAL_CN = {
+    'bullish': '偏多',
+    'bearish': '偏空',
+    'neutral': '中性',
+}
+
+
+def _get_market_momentum() -> Dict:
+    """获取主要市场指数近期动量，用于反制宏观滞后信号。"""
+    from core.data_layer import get_stock_data
+    try:
+        indices = {'000001': '上证', '000016': '上证50', '000905': '中证500', '399006': '创业板'}
+        returns = {}
+        for code, name in indices.items():
+            try:
+                r = get_stock_data(code)
+                if isinstance(r, tuple):
+                    r = r[0]
+                if r is None or len(r) < 6:
+                    continue
+                ret5 = r['close'].iloc[-1] / r['close'].iloc[-6] - 1
+                ret20 = r['close'].iloc[-1] / r['close'].iloc[-21] - 1 if len(r) >= 21 else 0
+                returns[name] = {'ret5': float(ret5), 'ret20': float(ret20)}
+            except Exception:
+                continue
+        return returns
+    except Exception:
+        return {}
+
+
+# 同花顺行业名称 -> 行业代码 (THS)
+_THS_INDUSTRY_MAP = {
+    '半导体': '881121', '通信设备': '881129', '通信服务': '881162', '光伏设备': '881279',
+    '电池': '881281', '煤炭开采加工': '881105', '钢铁': '881112', '电力': '881145',
+    '银行': '881155', '证券': '881157', '保险': '881156', '房地产开发': '881153',
+    '医药商业': '881154', '生物制品': '881142', '化学制药': '881140', '医疗器械': '881144',
+    '中药': '881141', '医疗服务': '881175', '电力设备': '881120', '通用设备': '881117',
+    '专用设备': '881118', '汽车整车': '881125', '汽车零部件': '881126', '电子化学品': '881172',
+    '元件': '881270', '消费电子': '881124', '光学光电子': '881122', '计算机设备': '881130',
+    '软件开发': '881272', 'IT服务': '881271', '传媒': '881164', '游戏': '881275',
+    '广告营销': '881163', '影视院线': '881274', '出版': '881166', '电视广播': '881160',
+    '油气开采及服务': '881107', '石油加工贸易': '881180', '燃气': '881146', '环保': '881181',
+    '建筑装饰': '881116', '建筑材料': '881115', '工程机械': '881268', '自动化设备': '881171',
+    '军工电子': '881276', '航天装备': '881265', '航空装备': '881266', '地面兵装': '881264',
+    '航海装备': '881267', '小金属': '881170', '金属新材料': '881114', '工业金属': '881168',
+    '贵金属': '881169', '冶钢原料': '881113', '非金属材料': '881167', '化学原料': '881108',
+    '化学制品': '881109', '农化制品': '881263', '塑料': '881265', '橡胶': '881266',
+    '农副食品加工': '881103', '食品加工制造': '881134', '饮料制造': '881133', '白酒': '881273',
+    '非白酒': '881273', '休闲食品': '881274', '调味发酵品': '881275', '纺织制造': '881135',
+    '服装家纺': '881136', '美容护理': '881182', '造纸': '881137', '包装印刷': '881138',
+    '家居用品': '881139', '家用轻工': '881140', '珠宝首饰': '881141', '饰品': '881142',
+    '白色家电': '881131', '黑色家电': '881132', '小家电': '881173', '厨卫电器': '881174',
+    '照明设备': '881175', '其他家电': '881176', '贸易': '881159', '一般零售': '881158',
+    '专业连锁': '881161', '互联网电商': '881177', '旅游零售': '881159', '酒店餐饮': '881284',
+    '旅游景区': '881285', '教育': '881178', '体育': '881179', '物流': '881152', '港口航运': '881148',
+    '公路铁路运输': '881149', '航空运输': '881150', '机场航运': '881151', '快递': '881153',
+    '供应链物流': '881152', '综合': '881165', '个护用品': '881184', '动物保健': '881185',
+    '农产品加工': '881103', '种植业与林业': '881101', '渔业': '881104', '养殖业': '881102',
+    '饲料': '881105', '汽车服务': '881127', '其他交运设备': '881128', '交运设备': '881128',
+    '非银金融': '881156', '多元金融': '881283', '金融租赁': '881283', '信托': '881283',
+    '期货': '881283', '农商行': '881155', '城商行': '881155', '股份制银行': '881155', '国有大型银行': '881155',
+}
+
+# 把我们关注的板块关键词映射到同花顺行业名称
+_SECTOR_KEYWORD_MAP = {
+    '稀土': '小金属', '永磁': '金属新材料', '通信': '通信设备', '半导体': '半导体', '芯片': '半导体',
+    '机器人': '自动化设备', '人工智能': '软件开发', '算力': '计算机设备', '电池': '电池', '光伏': '光伏设备',
+    '有色': '工业金属', '有色金属': '工业金属', '煤炭': '煤炭开采加工', '钢铁': '钢铁', '电力': '电力',
+    '银行': '银行', '证券': '证券', '保险': '保险', '房地产': '房地产开发', '医药': '化学制药',
+    '军工': '军工电子', '航空航天': '航天装备', '传媒': '传媒', '5G': '通信设备', '计算机': '计算机设备',
+    '新能源车': '汽车整车', '锂电': '电池', '储能': '电池', '食品饮料': '食品加工制造', '白酒': '白酒',
+}
+
+
+def _get_sector_momentum(sector: str) -> Dict:
+    """获取行业/主题指数近5日/20日动量（基于同花顺行业指数）。"""
+    import akshare as ak
+    if not sector:
+        return {}
+    try:
+        ths_name = _SECTOR_KEYWORD_MAP.get(sector)
+        if not ths_name:
+            return {}
+        code = _THS_INDUSTRY_MAP.get(ths_name)
+        if not code:
+            return {}
+        df = ak.stock_board_industry_index_ths(symbol=ths_name, start_date='20250101', end_date='20260714')
+        if df is None or len(df) < 6:
+            return {}
+        df['日期'] = pd.to_datetime(df['日期'])
+        df = df.sort_values('日期')
+        ret5 = df['收盘价'].iloc[-1] / df['收盘价'].iloc[-6] - 1
+        ret20 = df['收盘价'].iloc[-1] / df['收盘价'].iloc[-21] - 1 if len(df) >= 21 else 0
+        return {'ret5': float(ret5), 'ret20': float(ret20), 'sector_name': ths_name, 'code': code}
+    except Exception:
+        return {}
+
+
 MAX_WORKERS = 4  # 线程池大小，避免数据源被封
 
 
@@ -141,7 +247,7 @@ def _calc_target_stop(current_price: float, signal: str, tech_snapshot: Dict, av
 
 def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_report: Dict,
                      bull_arg: Dict, bear_arg: Dict,
-                     macro_report: Optional[Dict] = None, ticker: str = '') -> Dict:
+                     macro_report: Optional[Dict] = None, ticker: str = '', sector: str = '') -> Dict:
     tech_score = technical_report.get('score', 50)
     tech_rating = technical_report.get('rating', '中性')
     tech_snapshot = technical_report.get('tech_snapshot', {})
@@ -192,6 +298,11 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
             weighted = THRESHOLD['bear'] - 1  # 强制压入 bearish 区间
             macro_override = -20
             macro_note = f"宏观 bearish 拦截 bullish ({macro_report.get('macro_score', 50)}/100)"
+        # 对称规则：宏观 bullish 环境下直接拦截 bearish 信号
+        elif macro_report.get('macro_signal') == 'bullish' and raw_signal == 'bearish' and macro_report.get('macro_score', 50) >= 60:
+            weighted = THRESHOLD['neutral_low']  # 强制压入 neutral 区间
+            macro_override = 15
+            macro_note = f"宏观 bullish 拦截 bearish ({macro_report.get('macro_score', 50)}/100)"
         else:
             macro_override = get_macro_score_override(macro_report, raw_signal)
             # 高波动环境下（如宏观 bearish 或市场广度<30），修正力度加倍
@@ -209,37 +320,80 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
 
     # 统一信号判定：收窄 neutral 范围，46-52 才为中性
     if weighted >= THRESHOLD['strong_bull']:
-        signal = 'bullish'
+        signal = '看多'
     elif weighted >= THRESHOLD['bull']:
-        signal = 'bullish'
+        signal = '看多'
     elif weighted <= THRESHOLD['strong_bear']:
-        signal = 'bearish'
+        signal = '看空'
     elif weighted <= THRESHOLD['bear']:
-        signal = 'bearish'
+        signal = '看空'
     else:
-        signal = 'neutral'
+        signal = '中性'
 
     # 期货基本面强信号时，收窄 neutral 区间到 48-50，并给方向性偏置
-    if is_futures(ticker) and signal == 'neutral':
+    if is_futures(ticker) and signal == '中性':
         if weighted < 50 and fund_score < 45:
-            signal = 'bearish'
+            signal = '看空'
             weighted = THRESHOLD['bear'] - 1
         elif weighted > 50 and fund_score > 55:
-            signal = 'bullish'
+            signal = '看多'
             weighted = THRESHOLD['bull']
         elif weighted == 50 and abs(fund_score - 50) >= 5:
-            signal = 'bearish' if fund_score < 50 else 'bullish'
+            signal = '看空' if fund_score < 50 else '看多'
 
-    # 复盘硬规则：宏观 < 50 时禁止 bullish；技术面 < 55 且宏观 < 50 强制 bearish
+    # 复盘硬规则：宏观 bearish 时压制 bullish；若市场 5 日强反弹则放宽
+    market_momentum = _get_market_momentum()
+    market_bullish = any(m.get('ret5', 0) > 0.015 for m in market_momentum.values()) if market_momentum else False
+    sector_momentum = _get_sector_momentum(sector) if sector else {}
+    sector_bullish = sector_momentum.get('ret5', 0) > 0.015
+    sector_bearish = sector_momentum.get('ret5', 0) < -0.015
     if (HARD_RULES.get('macro_bearish_block_bullish') and macro_report and
             macro_report.get('macro_score', 50) < HARD_RULES.get('macro_bearish_score_threshold', 50)):
         tech_threshold = HARD_RULES.get('macro_bearish_force_bearish_if_tech_below', 55)
-        if signal == 'bullish':
-            signal = 'bearish' if tech_score < tech_threshold else 'neutral'
-            weighted = THRESHOLD['bear'] - 1 if tech_score < tech_threshold else 50
-        elif signal == 'neutral' and tech_score < tech_threshold:
-            signal = 'bearish'
+        if signal == '看多':
+            if market_bullish:
+                # 市场反弹时保留 bullish 但压降评分
+                weighted = min(weighted, THRESHOLD['bull'] - 1)
+            else:
+                signal = '看空' if tech_score < tech_threshold else '中性'
+                weighted = THRESHOLD['bear'] - 1 if tech_score < tech_threshold else 50
+        elif signal == '中性' and tech_score < tech_threshold and not market_bullish:
+            signal = '看空'
             weighted = THRESHOLD['bear'] - 1
+    # 行业动量修正：行业与大盘同步反弹时，不强制 bearish；行业同步下跌时，不强制 bullish
+    if sector_bullish and market_bullish and signal == '看空':
+        signal = '中性'
+        weighted = 50
+    if sector_bearish and not market_bullish and signal == '看多':
+        signal = '中性'
+        weighted = 50
+
+    # 宏观偏多时禁止看空硬规则（对称于 macro_bearish_block_bullish）
+    if (HARD_RULES.get('macro_bullish_block_bearish') and macro_report and
+            macro_report.get('macro_score', 50) >= HARD_RULES.get('macro_bullish_score_threshold', 60) and
+            signal == '看空'):
+        macro_sig = macro_report.get('macro_signal', 'neutral')
+        if macro_sig == 'bullish':
+            # 除非技术面极弱(score<40)，否则强制转 neutral
+            if tech_score >= HARD_RULES.get('macro_bullish_force_bullish_if_tech_above', 50):
+                signal = '看多'
+                weighted = THRESHOLD['bull']
+            else:
+                signal = '中性'
+                weighted = THRESHOLD['neutral_low']
+
+    # 宏观-市场一致性规则：避免在市场普涨/普跌日方向大量错误
+    strong_breadth = sum(1 for m in market_momentum.values() if m.get('ret5', 0) > 0.015)
+    weak_breadth = sum(1 for m in market_momentum.values() if m.get('ret5', 0) < -0.015)
+    market_breadth_score = macro_report.get('market_breadth', {}).get('score', 50) if macro_report else 50
+    high_breadth = market_breadth_score > 60 and macro_report.get('market_breadth', {}).get('advances', 0) > macro_report.get('market_breadth', {}).get('declines', 0)
+    low_breadth = market_breadth_score < 20 and macro_report.get('market_breadth', {}).get('declines', 0) > macro_report.get('market_breadth', {}).get('advances', 0)
+    if macro_report and macro_report.get('macro_score', 50) > 60 and (strong_breadth >= 2 or high_breadth) and signal == '看空':
+        signal = '中性'
+        weighted = 50
+    elif macro_report and macro_report.get('macro_score', 50) < 40 and (weak_breadth >= 2 or low_breadth) and signal == '看多':
+        signal = '中性'
+        weighted = 50
 
     confidence = round(max(0.5, min(0.95, 0.5 + abs(weighted - 50) / 50 * 0.5 + min(abs(net_debate) * 0.08, 0.4))), 2)
 
@@ -248,7 +402,7 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         signal = 'weak_neutral'
         position_pct = 0.0
     else:
-        base_position = POSITION_MAP[signal]
+        base_position = POSITION_MAP.get(signal, 0.0)
         position_pct = round(min(base_position * confidence, 0.25), 3)
 
     support = tech_snapshot.get('boll_down') or tech_snapshot.get('ma60') or 0
@@ -256,7 +410,8 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
 
     macro_note = ""
     if macro_report:
-        macro_note = f"宏观{macro_report.get('macro_signal', 'neutral')}({macro_report.get('macro_score', 50)}/100)"
+        ms = macro_report.get('macro_signal', 'neutral')
+        macro_note = f"宏观{MACRO_SIGNAL_CN.get(ms, ms)}({macro_report.get('macro_score', 50)}/100)"
     reasons = [
         f"技术面{tech_rating}({tech_score}/100)",
         f"基本面{fundamental_report.get('rating', 'N/A')}({fund_score}/100)",
@@ -531,7 +686,7 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
         bull = DebateEngine.bull_argument(technical, fundamental, news)
         bear = DebateEngine.bear_argument(technical, fundamental, news)
 
-        verdict = _manager_verdict(technical, fundamental, news, bull, bear, macro_report=macro_report, ticker=ticker)
+        verdict = _manager_verdict(technical, fundamental, news, bull, bear, macro_report=macro_report, ticker=ticker, sector=sector)
 
         current_price = technical.get('current_price', 0)
         price_date = technical.get('price_date') or technical.get('tech_snapshot', {}).get('price_date', '')

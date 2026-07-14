@@ -1,30 +1,27 @@
 """
 新闻分析师 - 增强版舆情分析
-数据源：东方财富搜索API + NewsAPI(备) + 关键词情绪打分
+数据源：akshare + 东方财富搜索API + 财联社快讯 + 热榜 + 公告(缓存)
+情绪打分：关键词匹配 + LLM fallback
+
+优化：
+- 公告日终全量缓存，每个交易日只拉一次
+- 社交搜索加5秒超时
+- LLM 情感 fallback 解决关键词无法匹配的场景
 """
 import sys
 import os
-sys.path.insert(0, '/home/zhihu/daily_tracker_analytics/etf_tracker/multi_agent')
-
 import json
 import re
 import urllib.request
 import urllib.parse
+import threading
 from datetime import datetime, timedelta
 import warnings
 warnings.filterwarnings('ignore')
 
-
-# 尝试导入社交媒体搜索引擎
-try:
-    sys.path.insert(0, '/home/liudawei/github/daily_tracker_analytics/multi_agent')
-    from core.social_search_engine import get_social_sentiment, _calc_sentiment
-    _SOCIAL_AVAILABLE = True
-except Exception:
-    _SOCIAL_AVAILABLE = False
-    get_social_sentiment = None
-    _calc_sentiment = None
-
+# 公告全量缓存（每个交易日只拉一次）
+_NOTICE_CACHE = {}
+_NOTICE_CACHE_LOCK = threading.Lock()
 
 # 情绪词典
 POSITIVE_WORDS = [
@@ -37,7 +34,7 @@ POSITIVE_WORDS = [
 NEGATIVE_WORDS = [
     '跌停', '大跌', '暴跌', '崩盘', '利空', '减持', '卖出', '做空',
     '亏损', 'st', '退市', '警示', '处罚', '立案', '调查', '监管函',
-    '下调', '评级下调', '减持', '质押', '平仓', '资金流出', '流出',
+    '下调', '评级下调', '质押', '平仓', '资金流出', '流出',
     '恐慌', '踩踏', '跌', '打压', '回调', '破位',
 ]
 
@@ -67,7 +64,6 @@ def _fetch_eastmoney_news(keyword, page_size=10):
         with urllib.request.urlopen(req, timeout=10) as resp:
             text = resp.read().decode()
         
-        # 提取JSON
         json_match = re.search(r'jQuery\((.*)\)', text)
         if not json_match:
             return []
@@ -86,7 +82,7 @@ def _fetch_eastmoney_news(keyword, page_size=10):
             })
         return items
     except Exception as e:
-        return [{'title': f'东方财富API错误: {e}', 'desc': '', 'source': '', 'date': ''}]
+        return []
 
 
 def _fetch_newsapi(name, ticker):
@@ -119,7 +115,6 @@ def _fetch_akshare_stock_news(ticker: str, name: str = "", page_size: int = 10) 
     """从 akshare 获取东方财富个股新闻。"""
     try:
         import akshare as ak
-        # 使用名称搜索更准确
         keyword = name or ticker
         df = ak.stock_news_em(symbol=keyword)
         if df is None or df.empty:
@@ -136,7 +131,7 @@ def _fetch_akshare_stock_news(ticker: str, name: str = "", page_size: int = 10) 
             })
         return items
     except Exception as e:
-        return [{'title': f'akshare 个股新闻错误: {e}', 'desc': '', 'source': '', 'date': '', 'type': 'error'}]
+        return []
 
 
 def _fetch_akshare_research_report(ticker: str, name: str = "", page_size: int = 5) -> list:
@@ -160,11 +155,11 @@ def _fetch_akshare_research_report(ticker: str, name: str = "", page_size: int =
             })
         return items
     except Exception as e:
-        return [{'title': f'akshare 研报错误: {e}', 'desc': '', 'source': '', 'date': '', 'type': 'error'}]
+        return []
 
 
 def _fetch_akshare_cx_news(page_size: int = 10) -> list:
-    """从 akshare 获取财联社财经快讯（全市场）。"""
+    """从 akshare 获取财联社财经快讯（全市场，可缓存）。"""
     try:
         import akshare as ak
         df = ak.stock_news_main_cx()
@@ -183,7 +178,7 @@ def _fetch_akshare_cx_news(page_size: int = 10) -> list:
             })
         return items
     except Exception as e:
-        return [{'title': f'akshare 财联社错误: {e}', 'desc': '', 'source': '', 'date': '', 'type': 'error'}]
+        return []
 
 
 def _fetch_akshare_hot_rank(page_size: int = 20) -> list:
@@ -204,35 +199,51 @@ def _fetch_akshare_hot_rank(page_size: int = 20) -> list:
             })
         return items
     except Exception as e:
-        return [{'title': f'akshare 热榜错误: {e}', 'desc': '', 'source': '', 'date': '', 'type': 'error'}]
+        return []
 
 
-def _fetch_akshare_notices(ticker: str, date: str = None, page_size: int = 10) -> list:
-    """从 akshare 获取 A 股公告（按个股代码过滤）。"""
-    try:
-        import akshare as ak
-        if date is None:
-            date = datetime.now().strftime('%Y%m%d')
-        # ticker 为 6 位 A 股代码才查公告
-        if not (len(ticker) == 6 and ticker.isdigit()):
-            return []
-        df = ak.stock_notice_report(symbol='全部', date=date)
-        if df is None or df.empty:
-            return []
-        df = df[df['代码'] == ticker]
-        items = []
-        for _, row in df.head(page_size).iterrows():
-            items.append({
-                'title': str(row.get('公告标题', '')),
-                'desc': f"类型: {row.get('公告类型', '')}",
-                'source': '公告',
-                'date': str(row.get('公告日期', '')),
-                'url': str(row.get('网址', '')),
-                'type': 'notice',
-            })
-        return items
-    except Exception as e:
-        return [{'title': f'akshare 公告错误: {e}', 'desc': '', 'source': '', 'date': '', 'type': 'error'}]
+def _get_cached_notices(ticker: str, date: str = None) -> list:
+    """
+    获取个股公告日终数据，使用全量缓存（每个交易日只拉一次）。
+    列表缓存在模块级字典中，线程安全。
+    """
+    if date is None:
+        date = datetime.now().strftime('%Y%m%d')
+    
+    # 只在 A 股个股（6位数字代码）时才查公告
+    if not (len(ticker) == 6 and ticker.isdigit()):
+        return []
+    
+    cache_key = f"notices_{date}"
+    with _NOTICE_CACHE_LOCK:
+        if cache_key in _NOTICE_CACHE:
+            all_notices = _NOTICE_CACHE[cache_key]
+        else:
+            try:
+                import akshare as ak
+                df = ak.stock_notice_report(symbol='全部', date=date)
+                _NOTICE_CACHE[cache_key] = df
+                all_notices = df
+            except Exception:
+                _NOTICE_CACHE[cache_key] = None
+                return []
+    
+    if all_notices is None or all_notices.empty:
+        return []
+    
+    # 过滤当前 ticker
+    ticker_notices = all_notices[all_notices['代码'] == ticker]
+    items = []
+    for _, row in ticker_notices.head(10).iterrows():
+        items.append({
+            'title': str(row.get('公告标题', '')),
+            'desc': f"类型: {row.get('公告类型', '')}",
+            'source': '公告',
+            'date': str(row.get('公告日期', '')),
+            'url': str(row.get('网址', '')),
+            'type': 'notice',
+        })
+    return items
 
 
 def _rate_research_sentiment(items: list) -> dict:
@@ -254,7 +265,7 @@ def _rate_research_sentiment(items: list) -> dict:
 
 
 def _calc_sentiment(news_items):
-    """基于新闻标题和描述的情绪打分"""
+    """基于新闻标题和描述的情绪打分（关键词匹配）"""
     total_score = 0
     scored_count = 0
     keyword_hits = {'positive': [], 'negative': []}
@@ -272,10 +283,9 @@ def _calc_sentiment(news_items):
             total_score += score
             scored_count += 1
     
-    # 归一化到 -1 ~ 1
     if scored_count > 0:
         avg = total_score / max(scored_count, 1)
-        sentiment = max(-1, min(1, avg / 5))  # 除以5降低单篇极端值影响
+        sentiment = max(-1, min(1, avg / 5))
     else:
         sentiment = 0.0
     
@@ -287,30 +297,131 @@ def _calc_sentiment(news_items):
     }
 
 
-def analyze(ticker, name="", current_date="2026-07-02"):
+def _llm_sentiment_fallback(ticker: str, news_items: list) -> dict:
     """
-    增强版新闻/舆情分析
+    LLM 情感 fallback：当关键词匹配无法打分时，用 LLM 做情感分析。
+    只对 Top-3 新闻标题做一句话情感判定。
     """
+    if not news_items:
+        return {'score': 0.0, 'n_articles': 0, 'llm_fallback': False}
+    
+    titles = [it['title'] for it in news_items[:5] if it.get('title') and len(it['title']) > 5]
+    if not titles:
+        return {'score': 0.0, 'n_articles': 0, 'llm_fallback': False}
+    
+    try:
+        from openai import OpenAI
+        api_key = os.getenv('DEEPSEEK_API_KEY', '')
+        if not api_key:
+            return {'score': 0.0, 'n_articles': 0, 'llm_fallback': False}
+        
+        client = OpenAI(
+            api_key=api_key,
+            base_url='https://api.deepseek.com/v1',
+        )
+        prompt = (
+            "Analyze the sentiment of these Chinese financial news headlines about a stock.\n"
+            "Return ONLY a JSON: {\"sentiment\": \"positive|negative|neutral\", \"score\": -1.0 to 1.0}\n"
+            "Headlines:\n" + "\n".join(f"- {t}" for t in titles)
+        )
+        resp = client.chat.completions.create(
+            model='deepseek-chat',
+            messages=[{'role': 'user', 'content': prompt}],
+            temperature=0.1,
+            max_tokens=100,
+            timeout=10,
+        )
+        text = resp.choices[0].message.content.strip()
+        # 提取 JSON
+        json_match = re.search(r'\{[^}]*\}', text)
+        if json_match:
+            data = json.loads(json_match.group())
+            return {'score': float(data.get('score', 0)), 'n_articles': len(titles), 'llm_fallback': True}
+        return {'score': 0.0, 'n_articles': len(titles), 'llm_fallback': False}
+    except Exception:
+        return {'score': 0.0, 'n_articles': 0, 'llm_fallback': False}
+
+
+def _social_search_fast(ticker: str, name: str = '') -> dict:
+    """
+    快速社交搜索（带5秒超时）。
+    没有凭证时直接返回空。
+    """
+    # 检查是否可能获得数据
+    tw_token = os.getenv('TWITTER_AUTH_TOKEN', '')
+    tw_ct0 = os.getenv('TWITTER_CT0', '')
+    exa_key = os.getenv('EXA_API_KEY', '')
+    
+    has_any_cred = bool(tw_token and tw_ct0) or bool(exa_key)
+    if not has_any_cred:
+        # 没有凭证，尝试一下 Jina（免费但慢）
+        try:
+            sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+            from core.social_search_engine import search_jina
+            query = f"{name or ticker} 股票 A股"
+            items = search_jina(query, n=3)
+            if items:
+                sentiment = _calc_sentiment(items)
+                return {
+                    'score': sentiment['score'],
+                    'items': items,
+                    'total_count': len(items),
+                    'source': 'jina_only',
+                }
+        except Exception:
+            pass
+        return {'score': 0.0, 'items': [], 'total_count': 0, 'source': 'none'}
+    
+    # 有凭证：完整跑一次社交搜索（带超时）
+    try:
+        from core.social_search_engine import get_social_sentiment
+        import concurrent.futures
+        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as ex:
+            fut = ex.submit(get_social_sentiment, ticker, name, '股票 A股')
+            result = fut.result(timeout=8)
+        return {
+            'score': result.get('sentiment_score', 0),
+            'items': result.get('items', []),
+            'total_count': result.get('total_count', 0),
+            'source': 'full_search',
+        }
+    except Exception:
+        return {'score': 0.0, 'items': [], 'total_count': 0, 'source': 'timeout'}
+
+
+def analyze(ticker, name="", current_date=None):
+    """
+    增强版新闻/舆情分析（已优化性能）
+    """
+    if current_date is None:
+        current_date = datetime.now().strftime('%Y-%m-%d')
+    
     # 1. 获取搜索关键词
     search_keyword = STOCK_KEYWORDS.get(ticker, name or ticker)
     
-    # 2. 从东方财富获取新闻
+    # 2. 从东方财富搜索获取新闻
     news_items = _fetch_eastmoney_news(search_keyword)
 
     # 3. 如果东方财富没拿到，尝试NewsAPI
-    if len(news_items) < 2 or '错误' in news_items[0].get('title', ''):
+    if len(news_items) < 2:
         newsapi_items = _fetch_newsapi(name, ticker)
         if newsapi_items:
             news_items = newsapi_items
 
-    # 4. 通过 akshare 补充 A 股/新闻/研报/公告/热榜
+    # 4. akshare 个股新闻 + 财联社快讯 + 热榜
     akshare_news = _fetch_akshare_stock_news(ticker, name)
-    research_items = _fetch_akshare_research_report(ticker, name)
     cx_items = _fetch_akshare_cx_news()
     hot_rank_items = _fetch_akshare_hot_rank()
-    notice_items = _fetch_akshare_notices(ticker, current_date)
+    
+    # 只有 A 股个股查公告（用全量缓存避免重复下载）
+    notice_items = []
+    if len(ticker) == 6 and ticker.isdigit():
+        notice_items = _get_cached_notices(ticker)
+    
+    # 研报（独立情绪源）
+    research_items = _fetch_akshare_research_report(ticker, name)
 
-    # 合并去重（以标题为 key）
+    # 合并去重
     seen = set()
     all_news = []
     for it in news_items + akshare_news + cx_items + hot_rank_items + notice_items:
@@ -320,41 +431,36 @@ def analyze(ticker, name="", current_date="2026-07-02"):
             all_news.append(it)
     news_items = all_news if all_news else news_items
 
-    # 5. 补充社交媒体/全网搜索舆情（Twitter/Exa/Jina）
-    social_items = []
-    if _SOCIAL_AVAILABLE and get_social_sentiment:
-        try:
-            extra = 'ETF' if 'ETF' in (name or ticker) else '股票 A股'
-            social = get_social_sentiment(ticker, name, query_extra=extra)
-            social_items = social.get('items', [])
-            social_sentiment = {
-                'score': social.get('sentiment_score', 0),
-                'positive_keywords': social.get('positive_keywords', []),
-                'negative_keywords': social.get('negative_keywords', []),
-                'scored_articles': social.get('total_count', 0),
-            }
-        except Exception:
-            social_sentiment = {'score': 0, 'positive_keywords': [], 'negative_keywords': [], 'scored_articles': 0}
-    else:
-        social_sentiment = {'score': 0, 'positive_keywords': [], 'negative_keywords': [], 'scored_articles': 0}
-    
+    # 5. 快速社交搜索（不阻塞）
+    social = _social_search_fast(ticker, name)
+    social_items = social.get('items', [])
+    social_sentiment = {
+        'score': social.get('score', 0),
+        'source': social.get('source', 'none'),
+    }
+
     if not news_items:
         news_items = [{'title': '暂无最新新闻', 'desc': '', 'source': '', 'date': ''}]
     
-    # 5. 情绪分析（合并东方财富 + 社交媒体）
+    # 6. 情绪分析（关键词匹配）
     all_for_sentiment = news_items + [{'title': i.get('title', ''), 'desc': i.get('summary', '')} for i in social_items]
-    sentiment = _calc_sentiment(all_for_sentiment) if _calc_sentiment else _calc_sentiment_fallback(all_for_sentiment)
+    sentiment = _calc_sentiment(all_for_sentiment)
+    
     # 叠加研报情绪（权重 25%）
     research_sentiment = _rate_research_sentiment(research_items)
     if research_sentiment['total'] > 0:
         sentiment['score'] = round(sentiment['score'] * 0.75 + research_sentiment['score'] * 0.25, 2)
-    # 叠加社交媒体情绪（权重 30%）
-    if social_sentiment.get('scored_articles', 0) > 0:
-        sentiment['score'] = round(sentiment['score'] * 0.7 + social_sentiment['score'] * 0.3, 2)
     
-    # 6. 提取关键主题
+    # 7. LLM 情感 fallback：如果关键词匹配没有命中任何文章，调用 LLM
+    if sentiment['scored_articles'] == 0 and news_items:
+        llm_result = _llm_sentiment_fallback(ticker, news_items)
+        if llm_result.get('n_articles', 0) > 0:
+            sentiment['score'] = llm_result['score']
+            sentiment['llm_fallback'] = llm_result.get('llm_fallback', False)
+    
+    # 8. 提取关键主题
     keywords = list(set(
-        sentiment['positive_keywords'] + sentiment['negative_keywords'] + social_sentiment.get('positive_keywords', []) + social_sentiment.get('negative_keywords', [])
+        sentiment.get('positive_keywords', []) + sentiment.get('negative_keywords', [])
     ))
     
     return {
@@ -453,7 +559,6 @@ def _generate_summary(name, news_items, sentiment, keywords, social_items=None):
     else:
         lines.append(f"暂无最新新闻数据。")
 
-    # 社交媒体热门
     if social_items:
         lines.append(f"")
         lines.append(f"### 社交媒体/全网搜索")

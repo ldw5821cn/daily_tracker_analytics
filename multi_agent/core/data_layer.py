@@ -836,3 +836,59 @@ def get_dividend_info(ticker, name=""):
         }
     except:
         return {}
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# V2 数据源统一注册表（借鉴 Vibe-Trading loader registry 思路）
+# 与 get_stock_data 共存，逐步替换；默认启用 V2，失败时回退旧版
+# ═══════════════════════════════════════════════════════════════════════════
+_USE_V2 = os.environ.get('USE_DATA_LOADER_REGISTRY_V2', '1') == '1'
+
+
+def get_stock_data_v2(ticker, period="2y", calibrate=True, source=None) -> tuple[pd.DataFrame, dict]:
+    """基于 data_loader_registry 的智能数据获取（V2 实验版）。"""
+    from core.data_loader_registry import fetch_market_data
+
+    # period 转起止日期
+    if isinstance(period, str) and period.endswith('y'):
+        years = int(period.replace('y', ''))
+        end = datetime.now().date()
+        start = end - timedelta(days=years * 365)
+    else:
+        end = datetime.now().date()
+        start = end - timedelta(days=730)
+    start_str = start.strftime('%Y-%m-%d')
+    end_str = end.strftime('%Y-%m-%d')
+
+    fetched = fetch_market_data([ticker], start_str, end_str, source=source, use_cache=True)
+    df = fetched.get(ticker)
+    if df is None or df.empty:
+        raise ValueError(f"V2 loader 无法获取数据: {ticker}")
+
+    # 统一列名：确保 open/high/low/close/volume 存在
+    df = df.copy()
+    for col in ['open', 'high', 'low', 'close', 'volume']:
+        if col not in df.columns:
+            df[col] = np.nan
+    df = df[['open', 'high', 'low', 'close', 'volume']].sort_index()
+    df = df.dropna(subset=['close'])
+    if len(df) < 20:
+        raise ValueError(f"V2 loader 数据不足: {ticker} ({len(df)} 条)")
+
+    info = {'source': 'data_loader_registry_v2', 'rows': len(df)}
+    if calibrate and not is_futures(ticker):
+        # 复用旧校验逻辑
+        _verify_data(ticker, df, info.get('source', 'v2'))
+    return df, info
+
+
+# 如果环境变量开启，则让 get_stock_data 内部优先使用 V2
+if _USE_V2:
+    _original_get_stock_data = get_stock_data
+
+    def get_stock_data(ticker, period="2y", calibrate=True) -> tuple[pd.DataFrame, dict]:
+        try:
+            return get_stock_data_v2(ticker, period, calibrate)
+        except Exception as e:
+            print(f"  V2 loader 失败: {e}，回退到旧版")
+            return _original_get_stock_data(ticker, period, calibrate)

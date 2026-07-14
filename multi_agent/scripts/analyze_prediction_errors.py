@@ -110,18 +110,26 @@ def main():
 
     # component scores 对比
     print('\n🧩 分项得分对比（技术/基本面/新闻）')
-    comp_keys = ['technical', 'fundamental', 'news']
+    comp_keys = ['technical', 'sentiment']  # fundamental 可能是 dict，用 fundamental_score
     for key in comp_keys:
         c_vals = []
         w_vals = []
         for r in correct_items:
             comp = _parse_component_scores(r['pred'])
-            if key in comp:
-                c_vals.append(comp[key])
+            v = comp.get(key)
+            if isinstance(v, (int, float)):
+                c_vals.append(v)
         for r in wrong_items:
             comp = _parse_component_scores(r['pred'])
-            if key in comp:
-                w_vals.append(comp[key])
+            v = comp.get(key)
+            if isinstance(v, (int, float)):
+                w_vals.append(v)
+        if c_vals and w_vals:
+            print(f'  {key}: 正确 {sum(c_vals)/len(c_vals):.2f} vs 错误 {sum(w_vals)/len(w_vals):.2f}')
+    # fundamental_score 单独处理
+    for key in ['fundamental_score']:
+        c_vals = [v for r in correct_items for v in [_parse_component_scores(r['pred']).get(key)] if isinstance(v, (int, float))]
+        w_vals = [v for r in wrong_items for v in [_parse_component_scores(r['pred']).get(key)] if isinstance(v, (int, float))]
         if c_vals and w_vals:
             print(f'  {key}: 正确 {sum(c_vals)/len(c_vals):.2f} vs 错误 {sum(w_vals)/len(w_vals):.2f}')
 
