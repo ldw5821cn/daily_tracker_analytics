@@ -202,7 +202,7 @@ def _get_vix_proxy() -> Dict:
     return proxy
 
 
-def _get_risk_on_off(macro_score: float, us_macro: Dict, vix_proxy: Dict, yield_curve: Dict) -> Dict:
+def _get_risk_on_off(macro_score: float, us_macro: Dict, china_macro: Dict, vix_proxy: Dict, yield_curve: Dict) -> Dict:
     """
     判断 Risk-on / Risk-off 状态。
     Risk-on：市场偏好风险资产（股市、商品、新兴市场）。
@@ -233,13 +233,29 @@ def _get_risk_on_off(macro_score: float, us_macro: Dict, vix_proxy: Dict, yield_
         elif cpi < 2.5:
             score += 1; reasons.append(f"美国CPI温和({cpi}%)")
 
-    # 4. 波动率
+    # 4. 中国货币政策：LPR/Shibor 下行偏松，Risk-on
+    lpr_5y = china_macro.get('lpr_5y')
+    if lpr_5y is not None and lpr_5y < 4.0:
+        score += 1; reasons.append(f"中国LPR宽松({lpr_5y}%)")
+    shibor_3m = china_macro.get('shibor_3m')
+    if shibor_3m is not None and shibor_3m < 2.0:
+        score += 1; reasons.append(f"Shibor低位({shibor_3m}%)")
+
+    # 5. 中国 PMI
+    pmi = china_macro.get('pmi')
+    if pmi is not None:
+        if pmi > 50:
+            score += 1; reasons.append(f"PMI扩张({pmi})")
+        else:
+            score -= 1; reasons.append(f"PMI收缩({pmi})")
+
+    # 6. 波动率
     if vix_proxy.get('level') == 'high':
         score -= 2; reasons.append("波动率高")
     elif vix_proxy.get('level') == 'low':
         score += 1; reasons.append("波动率低")
 
-    # 5. 收益率曲线倒挂
+    # 7. 收益率曲线倒挂
     spread = yield_curve.get('spread')
     if spread is not None and spread < 0:
         score -= 2; reasons.append("收益率曲线倒挂")
@@ -261,6 +277,101 @@ def _get_risk_on_off(macro_score: float, us_macro: Dict, vix_proxy: Dict, yield_
         'score': score,
         'reasons': reasons,
     }
+
+
+def _get_china_macro_data() -> Dict:
+    """获取中国宏观数据：LPR、存款准备金率、Shibor、M2、PMI、CPI、PPI、GDP。"""
+    data = {'lpr_1y': None, 'lpr_5y': None, 'rrr_large': None, 'rrr_small': None,
+            'shibor_1w': None, 'shibor_3m': None, 'm2_yoy': None, 'm1_yoy': None,
+            'pmi': None, 'cpi_yoy': None, 'ppi_yoy': None, 'gdp_yoy': None}
+    try:
+        import akshare as ak
+        # LPR
+        lpr = ak.macro_china_lpr()
+        if lpr is not None and not lpr.empty:
+            latest = lpr.iloc[-1]
+            data['lpr_1y'] = _safe_float(latest.get('LPR1Y'))
+            data['lpr_5y'] = _safe_float(latest.get('LPR5Y'))
+            data['lpr_date'] = str(latest.get('TRADE_DATE', ''))
+
+        # 存款准备金率（akshare 最新在头部）
+        rrr = ak.macro_china_reserve_requirement_ratio()
+        if rrr is not None and not rrr.empty:
+            latest = rrr.iloc[0]
+            data['rrr_large'] = _safe_float(latest.get('大型金融机构-调整后'))
+            data['rrr_small'] = _safe_float(latest.get('中小金融机构-调整后'))
+            data['rrr_date'] = str(latest.get('生效时间', ''))
+
+        # Shibor
+        shibor = ak.macro_china_shibor_all()
+        if shibor is not None and not shibor.empty:
+            latest = shibor.iloc[-1]
+            data['shibor_1w'] = _safe_float(latest.get('1W-定价'))
+            data['shibor_3m'] = _safe_float(latest.get('3M-定价'))
+            data['shibor_date'] = str(latest.get('日期', ''))
+
+        # M2/M1（akshare 最新在头部）
+        m2 = ak.macro_china_money_supply()
+        if m2 is not None and not m2.empty:
+            latest = m2.iloc[0]
+            data['m2_yoy'] = _safe_float(latest.get('货币和准货币(M2)-同比增长'))
+            data['m1_yoy'] = _safe_float(latest.get('货币(M1)-同比增长'))
+            data['m2_date'] = str(latest.get('月份', ''))
+
+        # PMI：按日期排序取最新有效值
+        pmi = ak.macro_china_pmi_yearly()
+        if pmi is not None and not pmi.empty:
+            row = pmi[pmi['商品'] == '中国官方制造业PMI']
+            if not row.empty and '日期' in row.columns:
+                row = row.sort_values('日期', ascending=False)
+                for _, r in row.iterrows():
+                    v = _safe_float(r.get('今值'))
+                    if v == v:  # 允许 0 但跳过 NaN
+                        data['pmi'] = v
+                        data['pmi_date'] = str(r.get('日期', ''))
+                        break
+
+        # CPI：按日期排序取最新有效值
+        cpi = ak.macro_china_cpi_yearly()
+        if cpi is not None and not cpi.empty:
+            row = cpi[cpi['商品'] == '中国CPI年率报告']
+            if not row.empty and '日期' in row.columns:
+                row = row.sort_values('日期', ascending=False)
+                for _, r in row.iterrows():
+                    v = _safe_float(r.get('今值'))
+                    if v == v:  # 允许 0 但跳过 NaN
+                        data['cpi_yoy'] = v
+                        data['china_cpi_date'] = str(r.get('日期', ''))
+                        break
+
+        # PPI：按日期排序取最新有效值
+        ppi = ak.macro_china_ppi_yearly()
+        if ppi is not None and not ppi.empty:
+            row = ppi[ppi['商品'] == '中国PPI年率报告']
+            if not row.empty and '日期' in row.columns:
+                row = row.sort_values('日期', ascending=False)
+                for _, r in row.iterrows():
+                    v = _safe_float(r.get('今值'))
+                    if v == v:  # 允许 0 但跳过 NaN
+                        data['ppi_yoy'] = v
+                        data['ppi_date'] = str(r.get('日期', ''))
+                        break
+
+        # GDP：按日期排序取最新有效值
+        gdp = ak.macro_china_gdp_yearly()
+        if gdp is not None and not gdp.empty:
+            row = gdp[gdp['商品'] == '中国GDP年率报告']
+            if not row.empty and '日期' in row.columns:
+                row = row.sort_values('日期', ascending=False)
+                for _, r in row.iterrows():
+                    v = _safe_float(r.get('今值'))
+                    if v == v:  # 允许 0 但跳过 NaN
+                        data['gdp_yoy'] = v
+                        data['gdp_date'] = str(r.get('日期', ''))
+                        break
+    except Exception as e:
+        data['error'] = str(e)
+    return data
 
 
 def _get_sector_rotation_proxy() -> Dict:
@@ -305,9 +416,10 @@ def analyze(current_date: Optional[str] = None) -> Dict:
 
     breadth = _get_market_breadth()
     us_macro = _get_us_macro_data()
+    china_macro = _get_china_macro_data()
     yield_curve = _get_yield_curve()
     vix_proxy = _get_vix_proxy()
-    risk_on_off = _get_risk_on_off(50, us_macro, vix_proxy, yield_curve)
+    risk_on_off = _get_risk_on_off(50, us_macro, china_macro, vix_proxy, yield_curve)
     sector_rotation = _get_sector_rotation_proxy()
 
     # 综合宏观得分（等权平均指数得分 + 市场广度 + 波动率修正）
@@ -322,7 +434,7 @@ def analyze(current_date: Optional[str] = None) -> Dict:
     macro_score = max(0, min(100, macro_score))
 
     # 重新计算 Risk-on/off 使用真实宏观评分
-    risk_on_off = _get_risk_on_off(macro_score, us_macro, vix_proxy, yield_curve)
+    risk_on_off = _get_risk_on_off(macro_score, us_macro, china_macro, vix_proxy, yield_curve)
 
     # 宏观信号：阈值设置较敏感，50 为中性
     if macro_score >= 55:
@@ -351,6 +463,15 @@ def analyze(current_date: Optional[str] = None) -> Dict:
     summary_lines.append(f"- 广度得分: {breadth['score']}")
     summary_lines.append(f"- 涨停家数: {breadth['limit_up']}")
     summary_lines.append("")
+    summary_lines.append("## 中国宏观（akshare）")
+    summary_lines.append(f"- LPR 1Y: {china_macro.get('lpr_1y')}%, 5Y: {china_macro.get('lpr_5y')}% (日期: {china_macro.get('lpr_date')})")
+    summary_lines.append(f"- 存款准备金率: 大型{china_macro.get('rrr_large')}%, 中小{china_macro.get('rrr_small')}% (日期: {china_macro.get('rrr_date')})")
+    summary_lines.append(f"- Shibor 1W: {china_macro.get('shibor_1w')}%, 3M: {china_macro.get('shibor_3m')}% (日期: {china_macro.get('shibor_date')})")
+    summary_lines.append(f"- M2同比: {china_macro.get('m2_yoy')}%, M1同比: {china_macro.get('m1_yoy')}% (日期: {china_macro.get('m2_date')})")
+    summary_lines.append(f"- PMI: {china_macro.get('pmi')} (日期: {china_macro.get('pmi_date')})")
+    summary_lines.append(f"- CPI同比: {china_macro.get('cpi_yoy')}%, PPI同比: {china_macro.get('ppi_yoy')}% (日期: {china_macro.get('china_cpi_date')})")
+    summary_lines.append(f"- GDP同比: {china_macro.get('gdp_yoy')}% (日期: {china_macro.get('gdp_date')})")
+    summary_lines.append("")
     summary_lines.append("## 美国宏观（akshare）")
     summary_lines.append(f"- 联邦利率: {us_macro.get('fed_rate')}% (日期: {us_macro.get('fed_rate_date')})")
     summary_lines.append(f"- CPI 同比: {us_macro.get('cpi_yoy')}% (日期: {us_macro.get('cpi_date')})")
@@ -376,6 +497,7 @@ def analyze(current_date: Optional[str] = None) -> Dict:
         'index_scores': index_scores,
         'market_breadth': breadth,
         'us_macro': us_macro,
+        'china_macro': china_macro,
         'yield_curve': yield_curve,
         'vix_proxy': vix_proxy,
         'sector_rotation': sector_rotation,

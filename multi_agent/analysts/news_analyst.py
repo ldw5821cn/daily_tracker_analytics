@@ -115,6 +115,144 @@ def _fetch_newsapi(name, ticker):
     return items
 
 
+def _fetch_akshare_stock_news(ticker: str, name: str = "", page_size: int = 10) -> list:
+    """从 akshare 获取东方财富个股新闻。"""
+    try:
+        import akshare as ak
+        # 使用名称搜索更准确
+        keyword = name or ticker
+        df = ak.stock_news_em(symbol=keyword)
+        if df is None or df.empty:
+            return []
+        items = []
+        for _, row in df.head(page_size).iterrows():
+            items.append({
+                'title': str(row.get('新闻标题', '')),
+                'desc': str(row.get('新闻内容', ''))[:200],
+                'source': '东方财富',
+                'date': str(row.get('发布时间', ''))[:10],
+                'url': str(row.get('新闻链接', '')),
+                'type': 'stock_news',
+            })
+        return items
+    except Exception as e:
+        return [{'title': f'akshare 个股新闻错误: {e}', 'desc': '', 'source': '', 'date': '', 'type': 'error'}]
+
+
+def _fetch_akshare_research_report(ticker: str, name: str = "", page_size: int = 5) -> list:
+    """从 akshare 获取个股研报。"""
+    try:
+        import akshare as ak
+        df = ak.stock_research_report_em(symbol=ticker)
+        if df is None or df.empty:
+            return []
+        items = []
+        for _, row in df.head(page_size).iterrows():
+            rating = str(row.get('东财评级', ''))
+            items.append({
+                'title': f"[{rating}] {row.get('报告名称', '')}",
+                'desc': f"机构: {row.get('机构', '')} | 2026EPS: {row.get('2026-盈利预测-收益', '')} | 2026PE: {row.get('2026-盈利预测-市盈率', '')}",
+                'source': '研报',
+                'date': str(row.get('日期', ''))[:10],
+                'url': str(row.get('报告PDF链接', '')),
+                'rating': rating,
+                'type': 'research_report',
+            })
+        return items
+    except Exception as e:
+        return [{'title': f'akshare 研报错误: {e}', 'desc': '', 'source': '', 'date': '', 'type': 'error'}]
+
+
+def _fetch_akshare_cx_news(page_size: int = 10) -> list:
+    """从 akshare 获取财联社财经快讯（全市场）。"""
+    try:
+        import akshare as ak
+        df = ak.stock_news_main_cx()
+        if df is None or df.empty:
+            return []
+        items = []
+        for _, row in df.head(page_size).iterrows():
+            items.append({
+                'title': str(row.get('summary', '')),
+                'desc': '',
+                'source': '财联社',
+                'date': '',
+                'url': str(row.get('url', '')),
+                'tag': str(row.get('tag', '')),
+                'type': 'cx_news',
+            })
+        return items
+    except Exception as e:
+        return [{'title': f'akshare 财联社错误: {e}', 'desc': '', 'source': '', 'date': '', 'type': 'error'}]
+
+
+def _fetch_akshare_hot_rank(page_size: int = 20) -> list:
+    """从 akshare 获取东方财富 A 股热榜。"""
+    try:
+        import akshare as ak
+        df = ak.stock_hot_rank_em()
+        if df is None or df.empty:
+            return []
+        items = []
+        for _, row in df.head(page_size).iterrows():
+            items.append({
+                'title': f"{row.get('当前排名', '')}. {row.get('股票名称', '')}({row.get('代码', '')}) 涨跌幅{row.get('涨跌幅', '')}%",
+                'desc': '',
+                'source': '东财热榜',
+                'date': '',
+                'type': 'hot_rank',
+            })
+        return items
+    except Exception as e:
+        return [{'title': f'akshare 热榜错误: {e}', 'desc': '', 'source': '', 'date': '', 'type': 'error'}]
+
+
+def _fetch_akshare_notices(ticker: str, date: str = None, page_size: int = 10) -> list:
+    """从 akshare 获取 A 股公告（按个股代码过滤）。"""
+    try:
+        import akshare as ak
+        if date is None:
+            date = datetime.now().strftime('%Y%m%d')
+        # ticker 为 6 位 A 股代码才查公告
+        if not (len(ticker) == 6 and ticker.isdigit()):
+            return []
+        df = ak.stock_notice_report(symbol='全部', date=date)
+        if df is None or df.empty:
+            return []
+        df = df[df['代码'] == ticker]
+        items = []
+        for _, row in df.head(page_size).iterrows():
+            items.append({
+                'title': str(row.get('公告标题', '')),
+                'desc': f"类型: {row.get('公告类型', '')}",
+                'source': '公告',
+                'date': str(row.get('公告日期', '')),
+                'url': str(row.get('网址', '')),
+                'type': 'notice',
+            })
+        return items
+    except Exception as e:
+        return [{'title': f'akshare 公告错误: {e}', 'desc': '', 'source': '', 'date': '', 'type': 'error'}]
+
+
+def _rate_research_sentiment(items: list) -> dict:
+    """根据研报评级统计情绪。"""
+    positive = {'买入', '增持', '推荐', '强烈买入', '跑赢行业', '优于大市'}
+    negative = {'卖出', '减持', '中性偏空', '跑输行业'}
+    pos = neg = 0
+    for it in items:
+        r = str(it.get('rating', ''))
+        if r in positive:
+            pos += 1
+        elif r in negative:
+            neg += 1
+    total = pos + neg
+    if total == 0:
+        return {'score': 0, 'pos': pos, 'neg': neg, 'total': 0}
+    score = (pos - neg) / total
+    return {'score': round(max(-1, min(1, score)), 2), 'pos': pos, 'neg': neg, 'total': total}
+
+
 def _calc_sentiment(news_items):
     """基于新闻标题和描述的情绪打分"""
     total_score = 0
@@ -158,14 +296,31 @@ def analyze(ticker, name="", current_date="2026-07-02"):
     
     # 2. 从东方财富获取新闻
     news_items = _fetch_eastmoney_news(search_keyword)
-    
+
     # 3. 如果东方财富没拿到，尝试NewsAPI
     if len(news_items) < 2 or '错误' in news_items[0].get('title', ''):
         newsapi_items = _fetch_newsapi(name, ticker)
         if newsapi_items:
             news_items = newsapi_items
 
-    # 4. 补充社交媒体/全网搜索舆情（Twitter/Exa/Jina）
+    # 4. 通过 akshare 补充 A 股/新闻/研报/公告/热榜
+    akshare_news = _fetch_akshare_stock_news(ticker, name)
+    research_items = _fetch_akshare_research_report(ticker, name)
+    cx_items = _fetch_akshare_cx_news()
+    hot_rank_items = _fetch_akshare_hot_rank()
+    notice_items = _fetch_akshare_notices(ticker, current_date)
+
+    # 合并去重（以标题为 key）
+    seen = set()
+    all_news = []
+    for it in news_items + akshare_news + cx_items + hot_rank_items + notice_items:
+        t = it.get('title', '')
+        if t and t not in seen and '错误' not in t:
+            seen.add(t)
+            all_news.append(it)
+    news_items = all_news if all_news else news_items
+
+    # 5. 补充社交媒体/全网搜索舆情（Twitter/Exa/Jina）
     social_items = []
     if _SOCIAL_AVAILABLE and get_social_sentiment:
         try:
@@ -189,6 +344,10 @@ def analyze(ticker, name="", current_date="2026-07-02"):
     # 5. 情绪分析（合并东方财富 + 社交媒体）
     all_for_sentiment = news_items + [{'title': i.get('title', ''), 'desc': i.get('summary', '')} for i in social_items]
     sentiment = _calc_sentiment(all_for_sentiment) if _calc_sentiment else _calc_sentiment_fallback(all_for_sentiment)
+    # 叠加研报情绪（权重 25%）
+    research_sentiment = _rate_research_sentiment(research_items)
+    if research_sentiment['total'] > 0:
+        sentiment['score'] = round(sentiment['score'] * 0.75 + research_sentiment['score'] * 0.25, 2)
     # 叠加社交媒体情绪（权重 30%）
     if social_sentiment.get('scored_articles', 0) > 0:
         sentiment['score'] = round(sentiment['score'] * 0.7 + social_sentiment['score'] * 0.3, 2)
@@ -205,6 +364,9 @@ def analyze(ticker, name="", current_date="2026-07-02"):
         'news_count': len(news_items),
         'social_count': len(social_items),
         'news_items': news_items,
+        'research_items': research_items,
+        'notice_items': notice_items,
+        'hot_rank_items': hot_rank_items,
         'social_items': social_items[:10],
         'sentiment_score': sentiment['score'],
         'sentiment_detail': sentiment,
