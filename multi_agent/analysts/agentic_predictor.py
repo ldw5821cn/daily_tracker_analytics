@@ -34,7 +34,7 @@ sys.path.insert(0, MULTI_AGENT)
 
 warnings.filterwarnings('ignore')
 
-from analysts import fundamentals_analyst, news_analyst, fundamental_factor_analyst, technical_analyst
+from analysts import fundamentals_analyst, news_analyst, fundamental_factor_analyst, technical_analyst, futures_fundamental_analyst
 from core.debate_engine import DebateEngine
 from core.data_layer import get_realtime_price, is_futures, get_stock_data, calc_technical_indicators, multi_period_backtest, tf_quotes
 from core.us_data import get_us_stock_data, is_us_ticker
@@ -141,7 +141,7 @@ def _calc_target_stop(current_price: float, signal: str, tech_snapshot: Dict, av
 
 def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_report: Dict,
                      bull_arg: Dict, bear_arg: Dict,
-                     macro_report: Optional[Dict] = None) -> Dict:
+                     macro_report: Optional[Dict] = None, ticker: str = '') -> Dict:
     tech_score = technical_report.get('score', 50)
     tech_rating = technical_report.get('rating', '中性')
     tech_snapshot = technical_report.get('tech_snapshot', {})
@@ -154,13 +154,31 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     bear_score = bear_arg.get('score', 0)
     net_debate = bull_score - bear_score
 
+    # 动态权重：期货基本面信号极端时提高其权重，降低技术面滞后干扰
+    ticker = ticker or technical_report.get('ticker', '')
+    if is_futures(ticker) and abs(fund_score - 50) >= 5:
+        w_tech = max(0.10, WEIGHTS['technical'] - 0.08)
+        w_fund = min(0.40, WEIGHTS['fundamental'] + 0.10)
+        shift = WEIGHTS['technical'] - w_tech
+        w_news = max(0.05, WEIGHTS['sentiment'] - shift / 2)
+    else:
+        w_tech = WEIGHTS['technical']
+        w_fund = WEIGHTS['fundamental']
+        w_news = WEIGHTS['sentiment']
+
     weighted = (
-        tech_score * WEIGHTS['technical'] +
-        fund_score * WEIGHTS['fundamental'] +
-        news_score * WEIGHTS['sentiment'] +
+        tech_score * w_tech +
+        fund_score * w_fund +
+        news_score * w_news +
         macro_score * WEIGHTS['macro'] +
         (50 + net_debate * 8) * WEIGHTS['debate']
     )
+    # 期货基本面信号足够强时，直接给予方向性偏置
+    if is_futures(ticker) and abs(fund_score - 50) >= 5:
+        if fund_score < 45:
+            weighted -= 6  # 基本面偏空，压低综合分
+        elif fund_score > 55:
+            weighted += 6
     weighted = max(0, min(100, weighted))
 
     # 叠加宏观修正（单次评分，不循环放大）
@@ -182,6 +200,11 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
                 macro_override *= 2.0
             elif macro_report.get('macro_signal') == 'bullish' and breadth_score > 70:
                 macro_override *= 1.5
+            # 期货对宏观更敏感：宏观 bearish 时额外 -5，宏观 bullish 时额外 +3
+            if is_futures(technical_report.get('ticker', '')) and macro_report.get('macro_signal') == 'bearish':
+                macro_override -= 5
+            elif is_futures(technical_report.get('ticker', '')) and macro_report.get('macro_signal') == 'bullish':
+                macro_override += 3
             weighted = max(0, min(100, weighted + macro_override))
 
     # 统一信号判定：收窄 neutral 范围，46-52 才为中性
@@ -413,8 +436,23 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
             if not technical.get('prediction'):
                 technical = _fast_technical_analysis(ticker, name, macro_report, category=category)
 
-        # 期货和 fast 模式跳过基本面和新闻；ultra 模式启用基本面和新闻
-        if is_fut or fast:
+        # 期货 fast 模式跳过新闻；期货使用专门基本面分析师
+        if is_fut:
+            ff = futures_fundamental_analyst.analyze(ticker, name)
+            fundamental = {
+                'score': ff.get('score', 50),
+                'rating': ff.get('bias', 'N/A'),
+                'fundamentals': {
+                    'inventory': ff.get('data', {}).get('inventory'),
+                    'basis': ff.get('data', {}).get('basis'),
+                    'foreign': ff.get('data', {}).get('foreign'),
+                    'warehouse': ff.get('data', {}).get('warehouse'),
+                    'reasons': ff.get('reasons', []),
+                },
+                'error': 'ok',
+            }
+            news = {'sentiment_score': 0, 'sentiment': '中性', 'keywords': []}
+        elif fast or ultra:
             fundamental = {'score': 50, 'rating': 'N/A', 'fundamentals': {}, 'error': 'skipped'}
             news = {'sentiment_score': 0, 'sentiment': '中性', 'keywords': []}
         else:
@@ -477,7 +515,7 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
         bull = DebateEngine.bull_argument(technical, fundamental, news)
         bear = DebateEngine.bear_argument(technical, fundamental, news)
 
-        verdict = _manager_verdict(technical, fundamental, news, bull, bear, macro_report=macro_report)
+        verdict = _manager_verdict(technical, fundamental, news, bull, bear, macro_report=macro_report, ticker=ticker)
 
         current_price = technical.get('current_price', 0)
         price_date = technical.get('price_date') or technical.get('tech_snapshot', {}).get('price_date', '')

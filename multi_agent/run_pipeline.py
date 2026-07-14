@@ -266,53 +266,72 @@ def format_market_top10(all_scores: list, top10_detailed: list = None) -> str:
 # ============================================================
 
 def update_pages(all_scores: list):
-    """更新Pages页面"""
+    """更新Pages页面: 1) 通用预测页 2) 持仓组合页"""
     sys.path.insert(0, os.path.join(BASE, 'scripts'))
-    from generate_pages import generate_html, get_db_stats
-    
-    stats = get_db_stats()
-    if stats is None:
-        stats = {
-            'total_preds': 0, 'today_preds': 0,
-            'validated': 0, 'correct': 0, 'accuracy': 0,
-            'by_horizon': {}, 'by_sector': {}, 'today_details': [],
-        }
-    
-    # 补充全市场推荐数据
-    stats['market_top10'] = [
-        {
-            'rank': i+1,
-            'name': s['name'],
-            'code': s['code'],
-            'score': s['composite_score'],
-            'changepercent': f"{s['changepercent']:+.2f}%",
-            'price': s['price'],
-        }
-        for i, s in enumerate(all_scores[:10])
-    ]
-    
-    html = generate_html(stats)
-    
-    docs_dir = os.path.join(BASE, 'docs')
-    os.makedirs(docs_dir, exist_ok=True)
-    with open(os.path.join(docs_dir, 'prediction.html'), 'w', encoding='utf-8') as f:
-        f.write(html)
-    
-    print(f"  ✅ Pages 更新: {docs_dir}/prediction.html")
-    
-    # 生成组合页面
-    try:
-        sys.path.insert(0, os.path.join(BASE, 'scripts'))
-        from generate_portfolio_pages import fetch_portfolio, generate_html as gen_portfolio_html
-        port_data = fetch_portfolio()
-        port_html = gen_portfolio_html(port_data)
-        with open(os.path.join(docs_dir, 'portfolio.html'), 'w', encoding='utf-8') as f:
-            f.write(port_html)
-        print(f"  ✅ 组合页面更新: {docs_dir}/portfolio.html")
-    except Exception as e:
-        print(f"  ⚠️ 组合页面生成失败: {e}")
-        import traceback; traceback.print_exc()
 
+    # 1) 通用预测页 (generate_pages.py 无 generate_html 接口,直接调主函数)
+    try:
+        import generate_pages
+        if hasattr(generate_pages, 'main'):
+            generate_pages.main()
+    except Exception as e:
+        print(f"  ⚠️ 生成 prediction.html 失败: {e}")
+
+    # 2) 持仓组合页 (generate_portfolio_pages.py 有 generate_html)
+    try:
+        from generate_portfolio_pages import generate_html
+        portfolio_data = build_portfolio_data(all_scores)
+        html = generate_html(portfolio_data)
+        docs_dir = os.path.join(BASE, 'docs')
+        os.makedirs(docs_dir, exist_ok=True)
+        with open(os.path.join(docs_dir, 'portfolio.html'), 'w', encoding='utf-8') as f:
+            f.write(html)
+    except Exception as e:
+        print(f"  ⚠️ 生成 portfolio.html 失败: {e}")
+
+
+def build_portfolio_data(all_scores: list) -> dict:
+    """构造组合页数据，取Top10为推荐持仓等权"""
+    holdings = []
+    total = len(all_scores[:10])
+    total_asset = 1000000.0
+    stock_value = total_asset * 0.9 if total else 0.0
+    for i, s in enumerate(all_scores[:10], 1):
+        weight = round(90 / total, 2) if total else 0
+        price = s.get('price', 0)
+        entry_price = price * (1 - s.get('changepercent', 0) / 100) if price else price
+        holdings.append({
+            'name': s['name'],
+            'symbol': s['code'],
+            'code': s['code'],
+            'price': price,
+            'entry_price': entry_price,
+            'chg_pct': s.get('changepercent', 0),
+            'weight': weight,
+            'market_value': total_asset * (weight / 100),
+            'volume': s.get('amount', 0) / 1e8 if s.get('amount') else 0,
+            'market': s.get('market', ''),
+            'pe': s.get('pe', 0) or 0,
+        })
+    return {
+        'name': 'ZH3650487',
+        'net_value': 1.0,
+        'daily_gain': 0.0,
+        'total_gain': 0.0,
+        'annualized_gain': 0.0,
+        'monthly_gain': 0.0,
+        'holdings': holdings,
+        'recommendations': holdings,
+        'initial_capital': 1000000,
+        'cash_pct': 10.0,
+        'cash_ratio': 0.10,
+        'cash': total_asset - stock_value,
+        'total_asset': total_asset,
+        'stock_value': stock_value,
+        'rebalance_history': [],
+        'updated_at': datetime.now().strftime('%Y-%m-%d %H:%M'),
+        'date': datetime.now().strftime('%Y-%m-%d %H:%M'),
+    }
 
 # ============================================================
 # 验证到期预测
