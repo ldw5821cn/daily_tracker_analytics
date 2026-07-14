@@ -164,6 +164,8 @@ class TencentLoader:
         for code in codes:
             try:
                 pure = _normalize_a_share(code)
+                if _is_index_code(code):
+                    continue
                 # 腾讯接口：code 前缀规则
                 prefix = 'sh' if pure.startswith('6') or pure.startswith('5') or pure.startswith('8') or pure.startswith('9') or pure.startswith('11') or pure.startswith('13') else 'sz'
                 if pure.startswith('68') or pure.startswith('30'):
@@ -265,10 +267,43 @@ class MootdxLoader:
         return result
 
 
+def _is_index_code(code: str) -> bool:
+    """判断是否为 A 股主要指数代码（不含 .SH/.SZ 后缀）。"""
+    pure = _normalize_a_share(code)
+    # 常见指数前缀与代码段
+    if pure in (
+        '000001', '000002', '000003', '000004', '000005', '000006', '000007', '000008', '000009', '000010',
+        '000016', '000050', '000043', '000300', '000303', '000688', '000850', '000903', '000904', '000905',
+        '000906', '000852', '000819', '000827', '000836', '000820', '000010', '000015', '000018', '000020',
+        '399001', '399002', '399003', '399004', '399005', '399006', '399007', '399008', '399009', '399010',
+        '399011', '399012', '399013', '399015', '399016', '399017', '399018', '399019', '399020', '399021',
+        '399106', '399107', '399108', '399101', '399102', '399103', '399104', '399105', '399330', '399333',
+        '399341', '399344', '399346', '399348', '399351', '399353', '399357', '399361', '399364', '399366',
+        '399367', '399369', '399370', '399371', '399372', '399373', '399376', '399377', '399379', '399381',
+        '399382', '399384', '399385', '399386', '399387', '399388', '399389', '399390', '399391', '399392',
+        '399393', '399394', '399395', '399396', '399397', '399398', '399399', '399905', '399997', '399998',
+        '399999', '930050', '930300', '931580', '931643', '932000', '932006', '932066', '932100', '932200',
+        '950090', '950106', '950111', '950305', '950330', '950660', '950886', '950996', '000932', '000933',
+    ):
+        return True
+    if len(pure) == 6 and pure.startswith('88') and pure.isdigit():
+        return True  # 同花顺行业指数
+    return False
+
+
+def _index_to_sina_symbol(pure: str) -> str:
+    """将 A 股指数代码转换为新浪 symbol。"""
+    if pure.startswith('88'):
+        return pure
+    if pure.startswith('399') or pure.startswith('3') or pure.startswith('2'):
+        return f'sz{pure}'
+    return f'sh{pure}'
+
+
 # ---------------------------------------------------------------------------
 # A 股 Loader：akshare
 # ---------------------------------------------------------------------------
-@register_loader('akshare', ['a_share', 'futures', 'fund', 'macro'])
+@register_loader('akshare', ['a_share', 'index', 'futures', 'fund', 'macro'])
 class AkshareLoader:
     """AKShare 免费数据。"""
 
@@ -286,6 +321,19 @@ class AkshareLoader:
         for code in codes:
             try:
                 pure = _normalize_a_share(code)
+                if _is_index_code(code):
+                    sina_symbol = _index_to_sina_symbol(pure)
+                    df = ak.stock_zh_index_daily(symbol=sina_symbol)
+                    if df is not None and not df.empty:
+                        df.columns = [str(c).lower() for c in df.columns]
+                        df['date'] = pd.to_datetime(df['date'])
+                        df.set_index('date', inplace=True)
+                        df = df[(df.index >= pd.Timestamp(start_date)) & (df.index <= pd.Timestamp(end_date))]
+                        df = df.rename(columns={'amount': 'turnover'})
+                        df = _validate_ohlc(df)
+                        if not df.empty:
+                            result[code] = df
+                    continue
                 if _is_etf(code):
                     df = ak.fund_etf_hist_em(symbol=pure, period='daily', start_date=start_date.replace('-', ''),
                                               end_date=end_date.replace('-', ''), adjust='qfq')
@@ -309,7 +357,7 @@ class AkshareLoader:
 # ---------------------------------------------------------------------------
 # A 股 Loader：eastmoney
 # ---------------------------------------------------------------------------
-@register_loader('eastmoney', ['a_share', 'hk_equity', 'us_equity'])
+@register_loader('eastmoney', ['a_share', 'index', 'hk_equity', 'us_equity'])
 class EastmoneyLoader:
     """东方财富。"""
 
@@ -502,6 +550,7 @@ class LocalLoader:
 # ---------------------------------------------------------------------------
 FALLBACK_CHAINS = {
     'a_share': ['mootdx', 'tencent', 'akshare', 'eastmoney', 'local'],
+    'index': ['akshare', 'eastmoney', 'local'],
     'futures': ['akshare_futures', 'sina_futures', 'local'],
     'us_equity': ['yfinance', 'local'],
     'hk_equity': ['yfinance', 'local'],
@@ -520,6 +569,8 @@ def _detect_market(code: str) -> str:
         return 'us_equity'
     if c.endswith('.HK'):
         return 'hk_equity'
+    if _is_index_code(code):
+        return 'index'
     pure = c.split('.')[0]
     # ETF：6 位数字且以 51/15/56/58/50/16/18 开头，归为 a_share，与个股共享 loader 和 fallback
     if _is_a_share(code):

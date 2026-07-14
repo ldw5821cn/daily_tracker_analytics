@@ -569,7 +569,7 @@ def _get_sina_data(ticker, datalen=500):
 def _get_yfinance_data(ticker, period="2y"):
     """yfinance（通用备用）"""
     try:
-        yf_ticker = f"{ticker}.SS" if ticker.startswith(('6', '5')) else f"{ticker}.SZ"
+        yf_ticker = f"{ticker}.SS" if ticker.startswith('6') else f"{ticker}.SZ"
         stock = yf.Ticker(yf_ticker)
         df = stock.history(period=period)
         if len(df) < 20:
@@ -690,7 +690,9 @@ def _verify_data(ticker, primary_df, primary_source):
     verify_df = _get_yfinance_data(ticker)
     if verify_df is None and primary_source != "sina":
         verify_df = _get_sina_data(ticker)
-    if verify_df is None:
+    if verify_df is None or verify_df.empty or len(verify_df) < 20:
+        return
+    if 'close' not in verify_df.columns or 'close' not in primary_df.columns:
         return
 
     common_dates = sorted(set(primary_df.index.date) & set(verify_df.index.date))
@@ -721,9 +723,10 @@ def _verify_data(ticker, primary_df, primary_source):
     last_v_dates = verify_df[verify_df.index.date == primary_df.index[-1].date()]
     if len(last_v_dates) > 0:
         last_v = float(last_v_dates['close'].iloc[-1])
-        today_dev = abs(last_p / last_v - 1) * 100
-        if today_dev > 2.0:
-            print(f"  ⚠️ 今日({primary_df.index[-1].date()})价格偏差 {today_dev:.2f}%")
+        if last_v > 0:
+            today_dev = abs(last_p / last_v - 1) * 100
+            if today_dev > 2.0:
+                print(f"  ⚠️ 今日({primary_df.index[-1].date()})价格偏差 {today_dev:.2f}%")
 
     CALIBRATION_CACHE[cache_key] = {
         'primary_source': primary_source,
