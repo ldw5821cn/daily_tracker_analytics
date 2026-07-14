@@ -219,6 +219,17 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     else:
         signal = 'neutral'
 
+    # 期货基本面强信号时，收窄 neutral 区间到 48-50，并给方向性偏置
+    if is_futures(ticker) and signal == 'neutral':
+        if weighted < 50 and fund_score < 45:
+            signal = 'bearish'
+            weighted = THRESHOLD['bear'] - 1
+        elif weighted > 50 and fund_score > 55:
+            signal = 'bullish'
+            weighted = THRESHOLD['bull']
+        elif weighted == 50 and abs(fund_score - 50) >= 5:
+            signal = 'bearish' if fund_score < 50 else 'bullish'
+
     # 复盘硬规则：宏观 < 50 时禁止 bullish；技术面 < 55 且宏观 < 50 强制 bearish
     if (HARD_RULES.get('macro_bearish_block_bullish') and macro_report and
             macro_report.get('macro_score', 50) < HARD_RULES.get('macro_bearish_score_threshold', 50)):
@@ -232,8 +243,13 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
 
     confidence = round(max(0.5, min(0.95, 0.5 + abs(weighted - 50) / 50 * 0.5 + min(abs(net_debate) * 0.08, 0.4))), 2)
 
-    base_position = POSITION_MAP[signal]
-    position_pct = round(min(base_position * confidence, 0.25), 3)
+    # 低置信度信号降级为 weak_neutral，不输出方向性建议
+    if confidence < 0.62:
+        signal = 'weak_neutral'
+        position_pct = 0.0
+    else:
+        base_position = POSITION_MAP[signal]
+        position_pct = round(min(base_position * confidence, 0.25), 3)
 
     support = tech_snapshot.get('boll_down') or tech_snapshot.get('ma60') or 0
     resistance = tech_snapshot.get('boll_up') or tech_snapshot.get('ma5') or 0

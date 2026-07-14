@@ -177,12 +177,17 @@ def _score_fundamentals(inv: Dict, basis: Dict, foreign: Dict, wh: Dict) -> Dict
     weights = []
     reasons = []
 
-    # 库存：库存增加利空，库存减少利多
+    # 库存：库存增加利空，库存减少利多；使用 5 日变化率平滑单日跳变
     if inv:
-        if inv['inventory_change_pct'] < -0.02:
-            scores.append(65); weights.append(1.0); reasons.append('库存下降')
-        elif inv['inventory_change_pct'] > 0.02:
-            scores.append(35); weights.append(1.0); reasons.append('库存上升')
+        pct = inv['inventory_change_pct']
+        if pct < -0.05:
+            scores.append(60); weights.append(1.0); reasons.append('库存下降')
+        elif pct < -0.02:
+            scores.append(55); weights.append(1.0); reasons.append('库存下降')
+        elif pct > 0.05:
+            scores.append(40); weights.append(1.0); reasons.append('库存上升')
+        elif pct > 0.02:
+            scores.append(45); weights.append(1.0); reasons.append('库存上升')
         else:
             scores.append(50); weights.append(1.0); reasons.append('库存持平')
 
@@ -208,15 +213,19 @@ def _score_fundamentals(inv: Dict, basis: Dict, foreign: Dict, wh: Dict) -> Dict
             scores[-1] = max(0, scores[-1] - 5)
             reasons[-1] += ' 中度贴水'
 
-    # 外盘：外盘上涨利多，下跌利空
+    # 外盘：外盘上涨利多，下跌利空；权重提高，对下跌趋势更敏感
     if foreign:
         r = foreign['weighted_daily_return']
         if r > 0.01:
-            scores.append(65); weights.append(1.0); reasons.append(f'外盘上涨 {r:.2%}')
+            scores.append(65); weights.append(1.5); reasons.append(f'外盘上涨 {r:.2%}')
         elif r < -0.01:
-            scores.append(35); weights.append(1.0); reasons.append(f'外盘下跌 {r:.2%}')
+            scores.append(35); weights.append(1.5); reasons.append(f'外盘下跌 {r:.2%}')
+        elif r > 0.003:
+            scores.append(55); weights.append(1.5); reasons.append(f'外盘微涨 {r:.2%}')
+        elif r < -0.003:
+            scores.append(45); weights.append(1.5); reasons.append(f'外盘微跌 {r:.2%}')
         else:
-            scores.append(50); weights.append(1.0); reasons.append('外盘持平')
+            scores.append(50); weights.append(1.5); reasons.append('外盘持平')
 
     # 仓单：仓单增加利空，减少利多
     if wh:
