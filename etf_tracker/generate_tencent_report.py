@@ -238,11 +238,22 @@ def main():
 【板块排名（近20日）】
 """
     for i, r in sector_groups.iterrows():
+        abs_val = abs(r['avg_20d'])
         if r['avg_20d'] >= 0:
-            bar = '  ' + 'G' * max(1, int(min(abs(r['avg_20d']), 50)/5))
+            if abs_val >= 10:
+                label = '极强 ★★★'
+            elif abs_val >= 5:
+                label = '较强 ★★'
+            else:
+                label = '偏强 ★'
         else:
-            bar = 'R' * max(1, int(min(abs(r['avg_20d']), 50)/5))
-        summary += f"  {bar} {r['sector']}: {r['avg_20d']:+.2f}%\n"
+            if abs_val >= 10:
+                label = '极弱 ☆☆☆'
+            elif abs_val >= 5:
+                label = '较弱 ☆☆'
+            else:
+                label = '偏弱 ☆'
+        summary += f"  {label} {r['sector']}: {r['avg_20d']:+.2f}%\n"
 
     summary += """
 ━━━━━━━━━━━━━━━━━━
