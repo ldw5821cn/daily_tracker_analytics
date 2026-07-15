@@ -37,9 +37,12 @@ SCENARIO_DESC = {
     'weekly_long_only_risk_with_cost': '每周五只做多 + 8% 止损，含成本',
 }
 
-SIGNAL_EMOJI = {'bullish': '🔥', 'neutral': '➖', 'bearish': '❄️'}
-SIGNAL_COLOR = {'bullish': '#ef4444', 'neutral': '#94a3b8', 'bearish': '#22c55e'}
-SIGNAL_CN = {'bullish': '看多', 'neutral': '中性', 'bearish': '看空'}
+SIGNAL_EMOJI = {'bullish': '🔥', 'neutral': '➖', 'bearish': '❄️', 'weak_neutral': '➖'}
+SIGNAL_COLOR = {'bullish': '#ef4444', 'neutral': '#94a3b8', 'bearish': '#22c55e', 'weak_neutral': '#94a3b8'}
+SIGNAL_CN = {'bullish': '看多', 'neutral': '中性', 'bearish': '看空', 'weak_neutral': '弱中性'}
+
+# 分类页统计：把弱中性并入中性，统计时只看多/看空/中性三档
+SIGNAL_GROUP = {'bullish': 'bullish', 'bearish': 'bearish', 'neutral': 'neutral', 'weak_neutral': 'neutral'}
 
 TABS = [
     ('index.html', '🏠', '首页'),
@@ -235,7 +238,7 @@ def _row_html(p, is_us=False):
 def _table_html(items, title, is_us=False):
     if not items:
         return f'<div class="section-title">{title}</div>\n<div class="empty">暂无数据</div>'
-    order = {'bullish': 0, 'bearish': 1, 'neutral': 2}
+    order = {'bullish': 0, 'bearish': 1, 'neutral': 2, 'weak_neutral': 2}
     items = sorted(items, key=lambda x: (order.get(x.get('signal'), 99), -x.get('weighted_score', 0)))
     rows = "".join(_row_html(p, is_us=is_us) for p in items)
     return f"""
@@ -482,9 +485,9 @@ def generate_archive_page(pred_date, dates=None):
 
 def generate_category_page(rows, category, out_name, title_cn, dates=None):
     items = [r for r in rows if r.get('category') == category]
-    bullish = [r for r in items if r.get('signal') == 'bullish']
-    bearish = [r for r in items if r.get('signal') == 'bearish']
-    neutral = [r for r in items if r.get('signal') == 'neutral']
+    bullish = [r for r in items if SIGNAL_GROUP.get(r.get('signal'), 'neutral') == 'bullish']
+    bearish = [r for r in items if SIGNAL_GROUP.get(r.get('signal'), 'neutral') == 'bearish']
+    neutral = [r for r in items if SIGNAL_GROUP.get(r.get('signal'), 'neutral') == 'neutral']
 
     stats_cards = "".join([
         _stat_card(len(items), '总数'),
@@ -512,8 +515,8 @@ def generate_category_page(rows, category, out_name, title_cn, dates=None):
 
 
 def generate_index_page(stats, rows, dates=None):
-    bullish = [r for r in rows if r.get('signal') == 'bullish']
-    bearish = [r for r in rows if r.get('signal') == 'bearish']
+    bullish = [r for r in rows if SIGNAL_GROUP.get(r.get('signal'), 'neutral') == 'bullish']
+    bearish = [r for r in rows if SIGNAL_GROUP.get(r.get('signal'), 'neutral') == 'bearish']
     cats = {}
     for r in rows:
         cats.setdefault(r.get('category'), []).append(r)
@@ -564,9 +567,9 @@ def generate_us_market_page(dates=None):
     rows = [r for r in all_rows if r.get('category') == 'US']
     for r in rows:
         inject_backtest_metrics(r)
-    bullish = [r for r in rows if r.get('signal') == 'bullish']
-    bearish = [r for r in rows if r.get('signal') == 'bearish']
-    neutral = [r for r in rows if r.get('signal') == 'neutral']
+    bullish = [r for r in rows if SIGNAL_GROUP.get(r.get('signal'), 'neutral') == 'bullish']
+    bearish = [r for r in rows if SIGNAL_GROUP.get(r.get('signal'), 'neutral') == 'bearish']
+    neutral = [r for r in rows if SIGNAL_GROUP.get(r.get('signal'), 'neutral') == 'neutral']
 
     stats_cards = "".join([
         _stat_card(len(rows), '美股标的'),
