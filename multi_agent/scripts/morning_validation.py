@@ -25,15 +25,19 @@ DIRECTION_THRESHOLD = 1.5  # 1日方向阈值 1.5%
 
 
 def _direction_correct(signal: str, return_pct: float, threshold: float = DIRECTION_THRESHOLD) -> bool:
-    """方向正确性判定。
+    """方向正确性判定。兼容中英文信号值。
 
-    - bullish: 实际收益 > 0 即正确（允许小幅上涨，避免阈值过滤掉温和上涨）
-    - bearish: 实际收益 < 0 即正确
-    - neutral: 实际收益在 [-threshold, threshold] 区间内正确
+    - 看多/bullish: 实际收益 > 0 即正确
+    - 看空/bearish: 实际收益 < 0 即正确
+    - 中性/neutral/weak_neutral: 收益在 [-threshold, threshold] 内正确
     """
-    if signal == 'bullish':
+    # 中英文信号映射
+    _MAP = {'bullish': 'bullish', 'bearish': 'bearish', 'neutral': 'neutral',
+            'weak_neutral': 'neutral', '看多': 'bullish', '看空': 'bearish', '中性': 'neutral'}
+    sig = _MAP.get(signal, 'neutral')
+    if sig == 'bullish':
         return return_pct > 0
-    elif signal == 'bearish':
+    elif sig == 'bearish':
         return return_pct < 0
     else:
         return abs(return_pct) <= threshold

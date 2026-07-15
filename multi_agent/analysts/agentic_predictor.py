@@ -66,12 +66,12 @@ WEIGHTS = _PARAMS.get('weights', {
     'debate': 0.25,
 })
 THRESHOLD = _PARAMS.get('threshold', {
-    'strong_bull': 62,
-    'bull': 55,
-    'neutral_high': 52,
-    'neutral_low': 48,
-    'bear': 43,
-    'strong_bear': 38,
+    'strong_bull': 65,
+    'bull': 58,
+    'neutral_high': 55,
+    'neutral_low': 45,
+    'bear': 42,
+    'strong_bear': 35,
 })
 HARD_RULES = _PARAMS.get('hard_rules', {
     'macro_bearish_block_bullish': True,
@@ -305,17 +305,17 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
             macro_note = f"宏观 bullish 拦截 bearish ({macro_report.get('macro_score', 50)}/100)"
         else:
             macro_override = get_macro_score_override(macro_report, raw_signal)
-            # 高波动环境下（如宏观 bearish 或市场广度<30），修正力度加倍
-            breadth_score = macro_report.get('market_breadth', {}).get('score', 50)
-            if macro_report.get('macro_signal') == 'bearish' and breadth_score < 30:
-                macro_override *= 2.0
-            elif macro_report.get('macro_signal') == 'bullish' and breadth_score > 70:
-                macro_override *= 1.5
-            # 期货对宏观更敏感：宏观 bearish 时额外 -5，宏观 bullish 时额外 +3
+            # 市场广度修正（有数据时生效，score=-1 表示无数据则跳过）
+            breadth_score = macro_report.get('market_breadth', {}).get('score', -1)
+            if breadth_score >= 0 and macro_report.get('macro_signal') == 'bearish' and breadth_score < 30:
+                macro_override *= 1.2
+            elif breadth_score >= 0 and macro_report.get('macro_signal') == 'bullish' and breadth_score > 70:
+                macro_override *= 1.1
+            # 期货宏观加成 
             if is_futures(technical_report.get('ticker', '')) and macro_report.get('macro_signal') == 'bearish':
-                macro_override -= 5
+                macro_override -= 1
             elif is_futures(technical_report.get('ticker', '')) and macro_report.get('macro_signal') == 'bullish':
-                macro_override += 3
+                macro_override += 1
             weighted = max(0, min(100, weighted + macro_override))
 
     # 统一信号判定：收窄 neutral 范围，46-52 才为中性
@@ -343,7 +343,7 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
 
     # 复盘硬规则：宏观 bearish 时压制 bullish；若市场 5 日强反弹则放宽
     market_momentum = _get_market_momentum()
-    market_bullish = any(m.get('ret5', 0) > 0.015 for m in market_momentum.values()) if market_momentum else False
+    market_bullish = (sum(1 for m in market_momentum.values() if m.get('ret5', 0) > 0.015) >= 2) if market_momentum else False
     sector_momentum = _get_sector_momentum(sector) if sector else {}
     sector_bullish = sector_momentum.get('ret5', 0) > 0.015
     sector_bearish = sector_momentum.get('ret5', 0) < -0.015
@@ -352,12 +352,13 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         tech_threshold = HARD_RULES.get('macro_bearish_force_bearish_if_tech_below', 55)
         if signal == '看多':
             if market_bullish:
-                # 市场反弹时保留 bullish 但压降评分
-                weighted = min(weighted, THRESHOLD['bull'] - 1)
+                # 市场反弹时保留 bullish 但大幅压降评分
+                weighted = min(weighted, max(THRESHOLD['neutral_low'], 48))
             else:
-                signal = '看空' if tech_score < tech_threshold else '中性'
-                weighted = THRESHOLD['bear'] - 1 if tech_score < tech_threshold else 50
-        elif signal == '中性' and tech_score < tech_threshold and not market_bullish:
+                # 宏观偏空 + 大盘下跌：仅对技术极弱(tech<45)转看空，其余转中性
+                signal = '看空' if tech_score < 45 else '中性'
+                weighted = THRESHOLD['bear'] - 1 if tech_score < 45 else 50
+        elif signal == '中性' and tech_score < 40 and not market_bullish:
             signal = '看空'
             weighted = THRESHOLD['bear'] - 1
     # 行业动量修正：行业与大盘同步反弹时，不强制 bearish；行业同步下跌时，不强制 bullish
@@ -623,9 +624,10 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
                 'error': 'ok',
             }
             news = {'sentiment_score': 0, 'sentiment': '中性', 'keywords': []}
-        elif fast or ultra:
+        elif fast:
             fundamental = {'score': 50, 'rating': 'N/A', 'fundamentals': {}, 'error': 'skipped'}
             news = {'sentiment_score': 0, 'sentiment': '中性', 'keywords': []}
+        # ultra 模式：跳过复杂技术面（用轻量版），但新闻情绪正常获取（已优化至3-7s/个）
         else:
             if category == 'US':
                 # 美股使用轻量基本面因子模型

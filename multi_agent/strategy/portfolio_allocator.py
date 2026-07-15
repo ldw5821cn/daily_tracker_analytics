@@ -24,6 +24,12 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..
 DB_PATH = os.path.join(PROJECT_ROOT, 'multi_agent', 'data', 'llm_predictions.db')
 OUTPUT_PATH = os.path.join(PROJECT_ROOT, 'multi_agent', 'data', 'target_weights.json')
 
+# 数据库存中文信号，映射到英文 canonical
+SIGNAL_CN_TO_EN = {'看多': 'bullish', '看空': 'bearish', '中性': 'neutral', 'weak_neutral': 'weak_neutral'}
+
+def _canonical_signal(sig):
+    return SIGNAL_CN_TO_EN.get(sig, sig)
+
 # 分类敞口上限（绝对值和）
 CATEGORY_LIMIT = {
     'ETF': 0.30,
@@ -42,7 +48,7 @@ MAX_POSITION = {
 SECTOR_CAP = 0.30
 
 # 净敞口上限：|long - short| <= 10%，控制风险偏好
-NET_EXPOSURE_LIMIT = 0.10
+NET_EXPOSURE_LIMIT = 0.70  # 当只有单向信号时，总敞口不受净敞口过度压缩
 
 # 做空权重衰减
 SHORT_DECAY = 0.3
@@ -90,8 +96,8 @@ def allocate() -> Dict:
     # 初始权重：方向 * 信心 * 回测得分缩放 * 因子得分
     targets = []
     for p in preds:
-        signal = p.get('signal', 'neutral')
-        if signal == 'neutral':
+        signal = _canonical_signal(p.get('signal', 'neutral'))
+        if signal in ('neutral', 'weak_neutral'):
             continue
         direction = 1 if signal == 'bullish' else -1
         confidence = p.get('confidence', 0.5)

@@ -24,7 +24,7 @@ def main():
         watchlist_path=os.path.join(MULTI_AGENT, 'watchlist.json'),
         categories=['ETF', '个股', '期货'],
         max_workers=4,
-        fast=True,
+        fast=False,
         ultra=True,
         macro_report=macro_report,
     )

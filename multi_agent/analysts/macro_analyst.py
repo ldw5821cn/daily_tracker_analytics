@@ -516,7 +516,7 @@ def get_macro_score_override(macro_report: Dict, individual_signal: str) -> floa
     macro_score = macro_report.get('macro_score', 50)
     # 距离中性（50）越远，修正幅度越大；熊市环境下最高可修正 12 分
     strength = abs(macro_score - 50) / 50  # 0~1
-    base = 12
+    base = 8
     if macro_signal == 'bullish':
         return base * strength if individual_signal == 'bullish' else -base * strength if individual_signal == 'bearish' else 0
     elif macro_signal == 'bearish':
