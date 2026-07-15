@@ -1,26 +1,26 @@
 {
   "pred_date": "2026-07-13",
   "macro_signal": "bullish",
-  "macro_score": 71.2,
+  "macro_score": 70.2,
   "old_counts": {
     "bullish": 0,
     "neutral": 61,
     "bearish": 123
   },
   "new_counts": {
-    "bullish": 39,
-    "neutral": 145,
+    "bullish": 24,
+    "neutral": 160,
     "bearish": 0
   },
   "transitions": {
     "bullish→bullish": 0,
     "bullish→neutral": 0,
     "bullish→bearish": 0,
-    "neutral→bullish": 21,
-    "neutral→neutral": 40,
+    "neutral→bullish": 7,
+    "neutral→neutral": 54,
     "neutral→bearish": 0,
-    "bearish→bullish": 18,
-    "bearish→neutral": 105,
+    "bearish→bullish": 17,
+    "bearish→neutral": 106,
     "bearish→bearish": 0
   },
   "changed": [
@@ -31,7 +31,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.8,
-      "new_score": 47.9,
+      "new_score": 47.7,
       "macro_override": 0.0
     },
     {
@@ -41,28 +41,8 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 53.8,
+      "new_score": 53.6,
       "macro_override": 0.0
-    },
-    {
-      "ticker": "512800",
-      "name": "银行ETF",
-      "category": "ETF",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 53.3,
-      "new_score": 64.8,
-      "macro_override": 7.6320000000000014
-    },
-    {
-      "ticker": "159928",
-      "name": "消费ETF",
-      "category": "ETF",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 53.3,
-      "new_score": 64.8,
-      "macro_override": 7.6320000000000014
     },
     {
       "ticker": "512480",
@@ -71,18 +51,8 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.4,
-      "new_score": 47.5,
+      "new_score": 47.2,
       "macro_override": 0.0
-    },
-    {
-      "ticker": "563180",
-      "name": "高股息ETF",
-      "category": "ETF",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 53.3,
-      "new_score": 64.8,
-      "macro_override": 7.6320000000000014
     },
     {
       "ticker": "562500",
@@ -91,7 +61,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 51.3,
+      "new_score": 51.0,
       "macro_override": 0.0
     },
     {
@@ -101,7 +71,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 53.8,
+      "new_score": 53.6,
       "macro_override": 0.0
     },
     {
@@ -111,7 +81,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 41.9,
-      "new_score": 47.0,
+      "new_score": 46.8,
       "macro_override": 0.0
     },
     {
@@ -121,7 +91,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.1,
-      "new_score": 47.2,
+      "new_score": 47.0,
       "macro_override": 0.0
     },
     {
@@ -131,7 +101,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.4,
-      "new_score": 47.5,
+      "new_score": 47.2,
       "macro_override": 0.0
     },
     {
@@ -141,7 +111,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.8,
-      "new_score": 47.9,
+      "new_score": 47.7,
       "macro_override": 0.0
     },
     {
@@ -151,18 +121,8 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.8,
-      "new_score": 47.9,
+      "new_score": 47.7,
       "macro_override": 0.0
-    },
-    {
-      "ticker": "512170",
-      "name": "医疗ETF华宝",
-      "category": "ETF",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 52.6,
-      "new_score": 64.1,
-      "macro_override": 7.6320000000000014
     },
     {
       "ticker": "513120",
@@ -171,18 +131,8 @@
       "old_signal": "bearish",
       "new_signal": "bullish",
       "old_score": 42.0,
-      "new_score": 66.4,
-      "macro_override": 7.6320000000000014
-    },
-    {
-      "ticker": "512890",
-      "name": "红利低波ETF华泰柏瑞",
-      "category": "ETF",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 53.3,
-      "new_score": 64.8,
-      "macro_override": 7.6320000000000014
+      "new_score": 65.8,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "515880",
@@ -191,7 +141,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.4,
-      "new_score": 47.5,
+      "new_score": 47.2,
       "macro_override": 0.0
     },
     {
@@ -201,7 +151,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 48.7,
+      "new_score": 48.4,
       "macro_override": 0.0
     },
     {
@@ -211,7 +161,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 51.4,
+      "new_score": 51.2,
       "macro_override": 0.0
     },
     {
@@ -221,7 +171,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 51.2,
+      "new_score": 51.0,
       "macro_override": 0.0
     },
     {
@@ -231,8 +181,8 @@
       "old_signal": "neutral",
       "new_signal": "bullish",
       "old_score": 52.6,
-      "new_score": 65.0,
-      "macro_override": 7.6320000000000014
+      "new_score": 64.3,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "300054",
@@ -241,7 +191,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 51.4,
+      "new_score": 51.2,
       "macro_override": 0.0
     },
     {
@@ -251,8 +201,8 @@
       "old_signal": "neutral",
       "new_signal": "bullish",
       "old_score": 54.8,
-      "new_score": 66.4,
-      "macro_override": 7.6320000000000014
+      "new_score": 65.8,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "688981",
@@ -261,8 +211,8 @@
       "old_signal": "bearish",
       "new_signal": "bullish",
       "old_score": 42.0,
-      "new_score": 67.8,
-      "macro_override": 7.6320000000000014
+      "new_score": 67.2,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "688012",
@@ -271,8 +221,8 @@
       "old_signal": "neutral",
       "new_signal": "bullish",
       "old_score": 54.6,
-      "new_score": 66.2,
-      "macro_override": 7.6320000000000014
+      "new_score": 65.5,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "688047",
@@ -281,18 +231,8 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 54.8,
+      "new_score": 54.5,
       "macro_override": 0.0
-    },
-    {
-      "ticker": "688072",
-      "name": "拓荆科技",
-      "category": "个股",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 51.7,
-      "new_score": 64.0,
-      "macro_override": 7.6320000000000014
     },
     {
       "ticker": "300782",
@@ -301,7 +241,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.4,
-      "new_score": 47.5,
+      "new_score": 47.2,
       "macro_override": 0.0
     },
     {
@@ -311,7 +251,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 54.3,
+      "new_score": 54.1,
       "macro_override": 0.0
     },
     {
@@ -321,7 +261,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 49.9,
+      "new_score": 49.6,
       "macro_override": 0.0
     },
     {
@@ -331,7 +271,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 49.9,
+      "new_score": 49.6,
       "macro_override": 0.0
     },
     {
@@ -341,7 +281,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.8,
-      "new_score": 47.9,
+      "new_score": 47.7,
       "macro_override": 0.0
     },
     {
@@ -351,7 +291,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 51.2,
+      "new_score": 50.9,
       "macro_override": 0.0
     },
     {
@@ -361,7 +301,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 48.9,
+      "new_score": 48.6,
       "macro_override": 0.0
     },
     {
@@ -371,7 +311,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.4,
-      "new_score": 47.5,
+      "new_score": 47.2,
       "macro_override": 0.0
     },
     {
@@ -381,7 +321,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 41.9,
-      "new_score": 47.0,
+      "new_score": 46.8,
       "macro_override": 0.0
     },
     {
@@ -391,7 +331,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 48.7,
+      "new_score": 48.4,
       "macro_override": 0.0
     },
     {
@@ -401,7 +341,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 48.4,
+      "new_score": 48.2,
       "macro_override": 0.0
     },
     {
@@ -411,7 +351,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 49.6,
+      "new_score": 49.4,
       "macro_override": 0.0
     },
     {
@@ -421,7 +361,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.4,
-      "new_score": 47.5,
+      "new_score": 47.2,
       "macro_override": 0.0
     },
     {
@@ -431,7 +371,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.4,
-      "new_score": 47.5,
+      "new_score": 47.2,
       "macro_override": 0.0
     },
     {
@@ -441,7 +381,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.1,
-      "new_score": 47.2,
+      "new_score": 47.0,
       "macro_override": 0.0
     },
     {
@@ -451,7 +391,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 48.4,
+      "new_score": 48.2,
       "macro_override": 0.0
     },
     {
@@ -461,7 +401,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 51.4,
+      "new_score": 51.2,
       "macro_override": 0.0
     },
     {
@@ -471,7 +411,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 51.4,
+      "new_score": 51.2,
       "macro_override": 0.0
     },
     {
@@ -481,7 +421,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 48.4,
+      "new_score": 48.2,
       "macro_override": 0.0
     },
     {
@@ -491,7 +431,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 48.6,
+      "new_score": 48.4,
       "macro_override": 0.0
     },
     {
@@ -501,7 +441,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 48.4,
+      "new_score": 48.2,
       "macro_override": 0.0
     },
     {
@@ -511,7 +451,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 51.4,
+      "new_score": 51.2,
       "macro_override": 0.0
     },
     {
@@ -521,7 +461,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 49.6,
+      "new_score": 49.4,
       "macro_override": 0.0
     },
     {
@@ -531,7 +471,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 48.7,
+      "new_score": 48.4,
       "macro_override": 0.0
     },
     {
@@ -541,7 +481,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 49.6,
+      "new_score": 49.4,
       "macro_override": 0.0
     },
     {
@@ -551,7 +491,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 48.7,
+      "new_score": 48.4,
       "macro_override": 0.0
     },
     {
@@ -561,7 +501,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.1,
-      "new_score": 47.2,
+      "new_score": 47.0,
       "macro_override": 0.0
     },
     {
@@ -571,7 +511,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 49.6,
+      "new_score": 49.4,
       "macro_override": 0.0
     },
     {
@@ -581,7 +521,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.6,
-      "new_score": 47.7,
+      "new_score": 47.4,
       "macro_override": 0.0
     },
     {
@@ -591,7 +531,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.4,
-      "new_score": 47.5,
+      "new_score": 47.2,
       "macro_override": 0.0
     },
     {
@@ -601,7 +541,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 51.4,
+      "new_score": 51.2,
       "macro_override": 0.0
     },
     {
@@ -611,7 +551,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 51.4,
+      "new_score": 51.2,
       "macro_override": 0.0
     },
     {
@@ -621,7 +561,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.4,
-      "new_score": 47.5,
+      "new_score": 47.2,
       "macro_override": 0.0
     },
     {
@@ -631,7 +571,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.4,
-      "new_score": 47.5,
+      "new_score": 47.2,
       "macro_override": 0.0
     },
     {
@@ -641,7 +581,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 51.4,
+      "new_score": 51.2,
       "macro_override": 0.0
     },
     {
@@ -651,7 +591,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 52.2,
+      "new_score": 51.9,
       "macro_override": 0.0
     },
     {
@@ -661,7 +601,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.1,
-      "new_score": 47.2,
+      "new_score": 47.0,
       "macro_override": 0.0
     },
     {
@@ -671,7 +611,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.4,
-      "new_score": 47.5,
+      "new_score": 47.2,
       "macro_override": 0.0
     },
     {
@@ -681,7 +621,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.1,
-      "new_score": 47.2,
+      "new_score": 47.0,
       "macro_override": 0.0
     },
     {
@@ -691,7 +631,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 48.4,
+      "new_score": 48.2,
       "macro_override": 0.0
     },
     {
@@ -701,7 +641,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.6,
-      "new_score": 47.7,
+      "new_score": 47.4,
       "macro_override": 0.0
     },
     {
@@ -711,7 +651,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.1,
-      "new_score": 47.2,
+      "new_score": 47.0,
       "macro_override": 0.0
     },
     {
@@ -721,7 +661,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 52.2,
+      "new_score": 51.9,
       "macro_override": 0.0
     },
     {
@@ -731,7 +671,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 52.4,
+      "new_score": 52.1,
       "macro_override": 0.0
     },
     {
@@ -741,7 +681,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 53.6,
+      "new_score": 53.3,
       "macro_override": 0.0
     },
     {
@@ -751,7 +691,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 52.4,
+      "new_score": 52.1,
       "macro_override": 0.0
     },
     {
@@ -761,7 +701,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 52.4,
+      "new_score": 52.1,
       "macro_override": 0.0
     },
     {
@@ -771,7 +711,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.6,
-      "new_score": 47.7,
+      "new_score": 47.4,
       "macro_override": 0.0
     },
     {
@@ -781,7 +721,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 51.7,
+      "new_score": 51.4,
       "macro_override": 0.0
     },
     {
@@ -791,7 +731,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 52.6,
+      "new_score": 52.4,
       "macro_override": 0.0
     },
     {
@@ -801,7 +741,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 55.0,
+      "new_score": 54.8,
       "macro_override": 0.0
     },
     {
@@ -811,7 +751,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 52.6,
+      "new_score": 52.4,
       "macro_override": 0.0
     },
     {
@@ -821,7 +761,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 52.6,
+      "new_score": 52.4,
       "macro_override": 0.0
     },
     {
@@ -831,7 +771,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 52.6,
+      "new_score": 52.4,
       "macro_override": 0.0
     },
     {
@@ -841,18 +781,8 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 53.8,
+      "new_score": 53.6,
       "macro_override": 0.0
-    },
-    {
-      "ticker": "600583",
-      "name": "海油工程",
-      "category": "个股",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 53.1,
-      "new_score": 64.5,
-      "macro_override": 7.6320000000000014
     },
     {
       "ticker": "002353",
@@ -861,7 +791,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 48.4,
+      "new_score": 48.2,
       "macro_override": 0.0
     },
     {
@@ -871,7 +801,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 55.0,
+      "new_score": 54.8,
       "macro_override": 0.0
     },
     {
@@ -881,7 +811,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 52.6,
+      "new_score": 52.4,
       "macro_override": 0.0
     },
     {
@@ -891,7 +821,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.6,
-      "new_score": 47.7,
+      "new_score": 47.4,
       "macro_override": 0.0
     },
     {
@@ -901,18 +831,8 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.1,
-      "new_score": 47.2,
+      "new_score": 47.0,
       "macro_override": 0.0
-    },
-    {
-      "ticker": "600028",
-      "name": "中国石化",
-      "category": "个股",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 53.1,
-      "new_score": 64.5,
-      "macro_override": 7.6320000000000014
     },
     {
       "ticker": "000301",
@@ -921,7 +841,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 51.7,
+      "new_score": 51.4,
       "macro_override": 0.0
     },
     {
@@ -931,7 +851,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 49.9,
+      "new_score": 49.6,
       "macro_override": 0.0
     },
     {
@@ -941,7 +861,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 53.8,
+      "new_score": 53.6,
       "macro_override": 0.0
     },
     {
@@ -951,7 +871,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 52.6,
+      "new_score": 52.4,
       "macro_override": 0.0
     },
     {
@@ -961,7 +881,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 41.9,
-      "new_score": 47.0,
+      "new_score": 46.8,
       "macro_override": 0.0
     },
     {
@@ -971,7 +891,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 52.6,
+      "new_score": 52.4,
       "macro_override": 0.0
     },
     {
@@ -981,8 +901,8 @@
       "old_signal": "neutral",
       "new_signal": "bullish",
       "old_score": 53.9,
-      "new_score": 66.3,
-      "macro_override": 7.6320000000000014
+      "new_score": 65.7,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "HC0",
@@ -991,7 +911,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 51.2,
+      "new_score": 51.0,
       "macro_override": 0.0
     },
     {
@@ -1001,7 +921,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 52.2,
+      "new_score": 52.0,
       "macro_override": 0.0
     },
     {
@@ -1011,7 +931,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 49.8,
+      "new_score": 49.6,
       "macro_override": 0.0
     },
     {
@@ -1021,7 +941,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 53.8,
+      "new_score": 53.6,
       "macro_override": 0.0
     },
     {
@@ -1031,7 +951,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 53.8,
+      "new_score": 53.6,
       "macro_override": 0.0
     },
     {
@@ -1041,7 +961,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 52.6,
+      "new_score": 52.4,
       "macro_override": 0.0
     },
     {
@@ -1051,7 +971,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 51.0,
+      "new_score": 50.8,
       "macro_override": 0.0
     },
     {
@@ -1061,8 +981,8 @@
       "old_signal": "neutral",
       "new_signal": "bullish",
       "old_score": 53.9,
-      "new_score": 66.3,
-      "macro_override": 7.6320000000000014
+      "new_score": 65.7,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "SPY",
@@ -1071,8 +991,8 @@
       "old_signal": "bearish",
       "new_signal": "bullish",
       "old_score": 42.0,
-      "new_score": 68.7,
-      "macro_override": 7.6320000000000014
+      "new_score": 68.1,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "VTI",
@@ -1081,8 +1001,8 @@
       "old_signal": "bearish",
       "new_signal": "bullish",
       "old_score": 42.0,
-      "new_score": 68.7,
-      "macro_override": 7.6320000000000014
+      "new_score": 68.1,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "AAPL",
@@ -1091,8 +1011,8 @@
       "old_signal": "bearish",
       "new_signal": "bullish",
       "old_score": 42.0,
-      "new_score": 68.0,
-      "macro_override": 7.6320000000000014
+      "new_score": 67.4,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "MSFT",
@@ -1101,7 +1021,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 52.6,
+      "new_score": 52.4,
       "macro_override": 0.0
     },
     {
@@ -1109,10 +1029,10 @@
       "name": "谷歌A",
       "category": "US",
       "old_signal": "bearish",
-      "new_signal": "bullish",
+      "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 63.9,
-      "macro_override": 7.6320000000000014
+      "new_score": 56.0,
+      "macro_override": 0.0
     },
     {
       "ticker": "AMZN",
@@ -1121,7 +1041,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 53.8,
+      "new_score": 53.6,
       "macro_override": 0.0
     },
     {
@@ -1131,18 +1051,8 @@
       "old_signal": "bearish",
       "new_signal": "bullish",
       "old_score": 42.0,
-      "new_score": 68.0,
-      "macro_override": 7.6320000000000014
-    },
-    {
-      "ticker": "TSLA",
-      "name": "特斯拉",
-      "category": "US",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 50.8,
-      "new_score": 64.0,
-      "macro_override": 7.6320000000000014
+      "new_score": 67.4,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "NVDA",
@@ -1151,8 +1061,8 @@
       "old_signal": "bearish",
       "new_signal": "bullish",
       "old_score": 42.0,
-      "new_score": 68.0,
-      "macro_override": 7.6320000000000014
+      "new_score": 67.4,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "NFLX",
@@ -1161,7 +1071,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 52.6,
+      "new_score": 52.4,
       "macro_override": 0.0
     },
     {
@@ -1171,7 +1081,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 52.6,
+      "new_score": 52.4,
       "macro_override": 0.0
     },
     {
@@ -1181,7 +1091,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 52.4,
+      "new_score": 52.2,
       "macro_override": 0.0
     },
     {
@@ -1191,18 +1101,8 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 48.2,
+      "new_score": 47.9,
       "macro_override": 0.0
-    },
-    {
-      "ticker": "IBM",
-      "name": "IBM",
-      "category": "US",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 51.9,
-      "new_score": 64.3,
-      "macro_override": 7.6320000000000014
     },
     {
       "ticker": "UBER",
@@ -1211,8 +1111,8 @@
       "old_signal": "bearish",
       "new_signal": "bullish",
       "old_score": 42.0,
-      "new_score": 68.0,
-      "macro_override": 7.6320000000000014
+      "new_score": 67.4,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "JPM",
@@ -1221,8 +1121,8 @@
       "old_signal": "neutral",
       "new_signal": "bullish",
       "old_score": 53.7,
-      "new_score": 65.2,
-      "macro_override": 7.6320000000000014
+      "new_score": 64.6,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "BAC",
@@ -1231,8 +1131,8 @@
       "old_signal": "neutral",
       "new_signal": "bullish",
       "old_score": 53.7,
-      "new_score": 65.2,
-      "macro_override": 7.6320000000000014
+      "new_score": 64.6,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "WFC",
@@ -1241,18 +1141,8 @@
       "old_signal": "bearish",
       "new_signal": "bullish",
       "old_score": 42.0,
-      "new_score": 69.9,
-      "macro_override": 7.6320000000000014
-    },
-    {
-      "ticker": "GS",
-      "name": "高盛",
-      "category": "US",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 51.7,
-      "new_score": 64.0,
-      "macro_override": 7.6320000000000014
+      "new_score": 69.3,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "V",
@@ -1261,8 +1151,8 @@
       "old_signal": "bearish",
       "new_signal": "bullish",
       "old_score": 42.0,
-      "new_score": 68.7,
-      "macro_override": 7.6320000000000014
+      "new_score": 68.1,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "MA",
@@ -1271,8 +1161,8 @@
       "old_signal": "bearish",
       "new_signal": "bullish",
       "old_score": 42.0,
-      "new_score": 68.7,
-      "macro_override": 7.6320000000000014
+      "new_score": 68.1,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "JNJ",
@@ -1281,18 +1171,8 @@
       "old_signal": "bearish",
       "new_signal": "bullish",
       "old_score": 42.0,
-      "new_score": 66.7,
-      "macro_override": 7.6320000000000014
-    },
-    {
-      "ticker": "UNH",
-      "name": "联合健康",
-      "category": "US",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 51.7,
-      "new_score": 64.0,
-      "macro_override": 7.6320000000000014
+      "new_score": 66.1,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "ABBV",
@@ -1301,7 +1181,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 54.3,
+      "new_score": 54.1,
       "macro_override": 0.0
     },
     {
@@ -1311,7 +1191,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 51.0,
+      "new_score": 50.8,
       "macro_override": 0.0
     },
     {
@@ -1321,8 +1201,8 @@
       "old_signal": "bearish",
       "new_signal": "bullish",
       "old_score": 42.0,
-      "new_score": 68.7,
-      "macro_override": 7.6320000000000014
+      "new_score": 68.1,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "PEP",
@@ -1331,7 +1211,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 51.0,
+      "new_score": 50.8,
       "macro_override": 0.0
     },
     {
@@ -1341,8 +1221,8 @@
       "old_signal": "bearish",
       "new_signal": "bullish",
       "old_score": 42.0,
-      "new_score": 66.8,
-      "macro_override": 7.6320000000000014
+      "new_score": 66.2,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "DIS",
@@ -1351,28 +1231,8 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 51.0,
+      "new_score": 50.8,
       "macro_override": 0.0
-    },
-    {
-      "ticker": "CVX",
-      "name": "雪佛龙",
-      "category": "US",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 53.1,
-      "new_score": 64.5,
-      "macro_override": 7.6320000000000014
-    },
-    {
-      "ticker": "GE",
-      "name": "通用电气",
-      "category": "US",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 51.7,
-      "new_score": 64.0,
-      "macro_override": 7.6320000000000014
     },
     {
       "ticker": "BA",
@@ -1381,7 +1241,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 55.0,
+      "new_score": 54.8,
       "macro_override": 0.0
     },
     {
@@ -1391,8 +1251,8 @@
       "old_signal": "bearish",
       "new_signal": "bullish",
       "old_score": 42.0,
-      "new_score": 68.7,
-      "macro_override": 7.6320000000000014
+      "new_score": 68.1,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "AMT",
@@ -1401,7 +1261,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.8,
-      "new_score": 47.9,
+      "new_score": 47.7,
       "macro_override": 0.0
     },
     {
@@ -1411,7 +1271,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 53.8,
+      "new_score": 53.6,
       "macro_override": 0.0
     },
     {
@@ -1421,7 +1281,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 53.8,
+      "new_score": 53.6,
       "macro_override": 0.0
     },
     {
@@ -1431,7 +1291,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 53.8,
+      "new_score": 53.6,
       "macro_override": 0.0
     },
     {
@@ -1441,8 +1301,8 @@
       "old_signal": "bearish",
       "new_signal": "bullish",
       "old_score": 42.0,
-      "new_score": 66.8,
-      "macro_override": 7.6320000000000014
+      "new_score": 66.2,
+      "macro_override": 7.272000000000001
     },
     {
       "ticker": "BIDU",
@@ -1451,7 +1311,7 @@
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 53.8,
+      "new_score": 53.6,
       "macro_override": 0.0
     },
     {
@@ -1461,8 +1321,8 @@
       "old_signal": "bearish",
       "new_signal": "bullish",
       "old_score": 42.0,
-      "new_score": 66.8,
-      "macro_override": 7.6320000000000014
+      "new_score": 66.2,
+      "macro_override": 7.272000000000001
     }
   ]
 }
