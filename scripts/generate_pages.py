@@ -37,6 +37,14 @@ SCENARIO_DESC = {
     'weekly_long_only_risk_with_cost': '每周五只做多 + 8% 止损，含成本',
 }
 
+# 数据库中信号存的是中文，先映射到英文 canonical 再用于统计/排序/颜色
+SIGNAL_CN_TO_EN = {'看多': 'bullish', '看空': 'bearish', '中性': 'neutral', 'weak_neutral': 'weak_neutral'}
+SIGNAL_EN_TO_CN = {'bullish': '看多', 'bearish': '看空', 'neutral': '中性', 'weak_neutral': '弱中性'}
+
+def _canonical_signal(p):
+    sig = p.get('signal', 'neutral')
+    return SIGNAL_CN_TO_EN.get(sig, sig)
+
 SIGNAL_EMOJI = {'bullish': '🔥', 'neutral': '➖', 'bearish': '❄️', 'weak_neutral': '➖'}
 SIGNAL_COLOR = {'bullish': '#ef4444', 'neutral': '#94a3b8', 'bearish': '#22c55e', 'weak_neutral': '#94a3b8'}
 SIGNAL_CN = {'bullish': '看多', 'neutral': '中性', 'bearish': '看空', 'weak_neutral': '弱中性'}
@@ -193,7 +201,7 @@ def _stat_grid(cards_html):
 
 
 def _row_html(p, is_us=False):
-    sig = p.get('signal', 'neutral')
+    sig = _canonical_signal(p)
     conf = (p.get('confidence') or 0.5) * 100
     color = SIGNAL_COLOR.get(sig, '#94a3b8')
     emoji = SIGNAL_EMOJI.get(sig, '⚪')
@@ -214,7 +222,7 @@ def _row_html(p, is_us=False):
             <td><b>{p.get('ticker', '')}</b></td>
             <td>{p.get('name', '')}</td>
             <td>{sector}</td>
-            <td style="color:{color};font-weight:bold">{emoji} {SIGNAL_CN.get(sig, sig)}</td>
+            <td style="color:{color};font-weight:bold">{emoji} {SIGNAL_EN_TO_CN.get(sig, sig)}</td>
             <td>{p.get('weighted_score', 0)}</td>
             <td>{conf:.0f}%</td>
             <td>{p.get('horizon_1d', '')}</td>
@@ -239,7 +247,7 @@ def _table_html(items, title, is_us=False):
     if not items:
         return f'<div class="section-title">{title}</div>\n<div class="empty">暂无数据</div>'
     order = {'bullish': 0, 'bearish': 1, 'neutral': 2, 'weak_neutral': 2}
-    items = sorted(items, key=lambda x: (order.get(x.get('signal'), 99), -x.get('weighted_score', 0)))
+    items = sorted(items, key=lambda x: (order.get(_canonical_signal(x), 99), -x.get('weighted_score', 0)))
     rows = "".join(_row_html(p, is_us=is_us) for p in items)
     return f"""
     <div class="section-title">{title}</div>
@@ -252,7 +260,7 @@ def _table_html(items, title, is_us=False):
 
 
 def _top_cards(rows, title, sig, color_class):
-    filtered = [r for r in rows if r.get('signal') == sig]
+    filtered = [r for r in rows if _canonical_signal(r) == sig]
     if not filtered:
         return ""
     for r in filtered:
@@ -405,8 +413,8 @@ def _build_page_skeleton(title, body, active_tab, subtitle, tag='', dates=None):
 
 def generate_prediction_page(stats, rows, out_name='prediction.html', dates=None):
     now = datetime.now().strftime('%Y-%m-%d %H:%M')
-    bullish = [r for r in rows if r.get('signal') == 'bullish']
-    bearish = [r for r in rows if r.get('signal') == 'bearish']
+    bullish = [r for r in rows if _canonical_signal(r) == 'bullish']
+    bearish = [r for r in rows if _canonical_signal(r) == 'bearish']
 
     cards = ""
     cards += _top_cards(rows, '🏆 重点看多（按回测排序）', 'bullish', 'bull')
@@ -448,8 +456,8 @@ def generate_archive_page(pred_date, dates=None):
         inject_backtest_metrics(p)
     rows = sorted(rows, key=lambda x: x.get('bt_score', 0), reverse=True)
 
-    bullish = [r for r in rows if r.get('signal') == 'bullish']
-    bearish = [r for r in rows if r.get('signal') == 'bearish']
+    bullish = [r for r in rows if _canonical_signal(r) == 'bullish']
+    bearish = [r for r in rows if _canonical_signal(r) == 'bearish']
 
     stats_cards = "".join([
         _stat_card(len(rows), '当日预测'),
@@ -485,9 +493,9 @@ def generate_archive_page(pred_date, dates=None):
 
 def generate_category_page(rows, category, out_name, title_cn, dates=None):
     items = [r for r in rows if r.get('category') == category]
-    bullish = [r for r in items if SIGNAL_GROUP.get(r.get('signal'), 'neutral') == 'bullish']
-    bearish = [r for r in items if SIGNAL_GROUP.get(r.get('signal'), 'neutral') == 'bearish']
-    neutral = [r for r in items if SIGNAL_GROUP.get(r.get('signal'), 'neutral') == 'neutral']
+    bullish = [r for r in items if _canonical_signal(r) == 'bullish']
+    bearish = [r for r in items if _canonical_signal(r) == 'bearish']
+    neutral = [r for r in items if _canonical_signal(r) in ('neutral', 'weak_neutral')]
 
     stats_cards = "".join([
         _stat_card(len(items), '总数'),
@@ -515,8 +523,8 @@ def generate_category_page(rows, category, out_name, title_cn, dates=None):
 
 
 def generate_index_page(stats, rows, dates=None):
-    bullish = [r for r in rows if SIGNAL_GROUP.get(r.get('signal'), 'neutral') == 'bullish']
-    bearish = [r for r in rows if SIGNAL_GROUP.get(r.get('signal'), 'neutral') == 'bearish']
+    bullish = [r for r in rows if _canonical_signal(r) == 'bullish']
+    bearish = [r for r in rows if _canonical_signal(r) == 'bearish']
     cats = {}
     for r in rows:
         cats.setdefault(r.get('category'), []).append(r)
@@ -567,9 +575,9 @@ def generate_us_market_page(dates=None):
     rows = [r for r in all_rows if r.get('category') == 'US']
     for r in rows:
         inject_backtest_metrics(r)
-    bullish = [r for r in rows if SIGNAL_GROUP.get(r.get('signal'), 'neutral') == 'bullish']
-    bearish = [r for r in rows if SIGNAL_GROUP.get(r.get('signal'), 'neutral') == 'bearish']
-    neutral = [r for r in rows if SIGNAL_GROUP.get(r.get('signal'), 'neutral') == 'neutral']
+    bullish = [r for r in rows if _canonical_signal(r) == 'bullish']
+    bearish = [r for r in rows if _canonical_signal(r) == 'bearish']
+    neutral = [r for r in rows if _canonical_signal(r) in ('neutral', 'weak_neutral')]
 
     stats_cards = "".join([
         _stat_card(len(rows), '美股标的'),
