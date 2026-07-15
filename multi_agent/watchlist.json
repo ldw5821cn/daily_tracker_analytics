@@ -915,5 +915,201 @@
     "category": "期货",
     "theme": "农产品",
     "sector": "农产品"
+  },
+  {
+    "ticker": "FG0",
+    "name": "玻璃",
+    "category": "期货",
+    "theme": "建材",
+    "sector": "建材"
+  },
+  {
+    "ticker": "SA0",
+    "name": "纯碱",
+    "category": "期货",
+    "theme": "化工",
+    "sector": "化工"
+  },
+  {
+    "ticker": "EB0",
+    "name": "苯乙烯",
+    "category": "期货",
+    "theme": "化工",
+    "sector": "化工"
+  },
+  {
+    "ticker": "EG0",
+    "name": "乙二醇",
+    "category": "期货",
+    "theme": "化工",
+    "sector": "化工"
+  },
+  {
+    "ticker": "LU0",
+    "name": "低硫燃油",
+    "category": "期货",
+    "theme": "能源",
+    "sector": "能源"
+  },
+  {
+    "ticker": "FU0",
+    "name": "燃油",
+    "category": "期货",
+    "theme": "能源",
+    "sector": "能源"
+  },
+  {
+    "ticker": "PG0",
+    "name": "LPG",
+    "category": "期货",
+    "theme": "能源",
+    "sector": "能源"
+  },
+  {
+    "ticker": "PP0",
+    "name": "聚丙烯",
+    "category": "期货",
+    "theme": "化工",
+    "sector": "化工"
+  },
+  {
+    "ticker": "L0",
+    "name": "塑料",
+    "category": "期货",
+    "theme": "化工",
+    "sector": "化工"
+  },
+  {
+    "ticker": "BU0",
+    "name": "沥青",
+    "category": "期货",
+    "theme": "建材",
+    "sector": "建材"
+  },
+  {
+    "ticker": "RU0",
+    "name": "橡胶",
+    "category": "期货",
+    "theme": "工业品",
+    "sector": "工业品"
+  },
+  {
+    "ticker": "NR0",
+    "name": "20号胶",
+    "category": "期货",
+    "theme": "工业品",
+    "sector": "工业品"
+  },
+  {
+    "ticker": "SP0",
+    "name": "纸浆",
+    "category": "期货",
+    "theme": "工业品",
+    "sector": "工业品"
+  },
+  {
+    "ticker": "PF0",
+    "name": "短纤",
+    "category": "期货",
+    "theme": "化工",
+    "sector": "化工"
+  },
+  {
+    "ticker": "UR0",
+    "name": "尿素",
+    "category": "期货",
+    "theme": "化工",
+    "sector": "化工"
+  },
+  {
+    "ticker": "AP0",
+    "name": "苹果",
+    "category": "期货",
+    "theme": "农产品",
+    "sector": "农产品"
+  },
+  {
+    "ticker": "CJ0",
+    "name": "红枣",
+    "category": "期货",
+    "theme": "农产品",
+    "sector": "农产品"
+  },
+  {
+    "ticker": "CY0",
+    "name": "棉纱",
+    "category": "期货",
+    "theme": "农产品",
+    "sector": "农产品"
+  },
+  {
+    "ticker": "JD0",
+    "name": "鸡蛋",
+    "category": "期货",
+    "theme": "农产品",
+    "sector": "农产品"
+  },
+  {
+    "ticker": "LH0",
+    "name": "生猪",
+    "category": "期货",
+    "theme": "农产品",
+    "sector": "农产品"
+  },
+  {
+    "ticker": "PB0",
+    "name": "沪铅",
+    "category": "期货",
+    "theme": "有色",
+    "sector": "有色"
+  },
+  {
+    "ticker": "NI0",
+    "name": "沪镍",
+    "category": "期货",
+    "theme": "有色",
+    "sector": "有色"
+  },
+  {
+    "ticker": "SN0",
+    "name": "沪锡",
+    "category": "期货",
+    "theme": "有色",
+    "sector": "有色"
+  },
+  {
+    "ticker": "SS0",
+    "name": "不锈钢",
+    "category": "期货",
+    "theme": "黑色",
+    "sector": "黑色"
+  },
+  {
+    "ticker": "BC0",
+    "name": "国际铜",
+    "category": "期货",
+    "theme": "有色",
+    "sector": "有色"
+  },
+  {
+    "ticker": "AO0",
+    "name": "氧化铝",
+    "category": "期货",
+    "theme": "有色",
+    "sector": "有色"
+  },
+  {
+    "ticker": "SI0",
+    "name": "工业硅",
+    "category": "期货",
+    "theme": "新能源",
+    "sector": "新能源"
+  },
+  {
+    "ticker": "LC0",
+    "name": "碳酸锂",
+    "category": "期货",
+    "theme": "新能源",
+    "sector": "新能源"
   }
 ]
