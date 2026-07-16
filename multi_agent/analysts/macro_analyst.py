@@ -400,6 +400,73 @@ def _get_sector_rotation_proxy() -> Dict:
     return {'heat': heat[:10], 'top_sector': heat[0]['name'] if heat else 'unknown'}
 
 
+def _score_china_macro(china_macro: Dict, yield_curve: Dict) -> float:
+    """基于中国宏观数据计算综合宏观偏置评分（0-100）。
+
+    因子：
+      - PMI: 50为荣枯线，偏离越大信号越强（权重30%）
+      - Shibor 趋势: 3M利率趋势（权重20%）
+      - 收益率曲线斜率: 10Y-2Y利差，倒挂=偏空（权重20%）
+      - M2增速: 货币宽松=偏多，收紧=偏空（权重15%）
+      - CPI/PPI: 通缩偏空，温和通胀中性，恶性通胀偏空（权重15%）
+    """
+    score = 50.0
+
+    # 1. PMI (30%)
+    pmi = china_macro.get('pmi')
+    if pmi is not None:
+        # PMI > 50 偏多，< 50 偏空，偏离越大信号越强
+        pmi_bias = (pmi - 50) * 3  # PMI=49 → -3分；PMI=51 → +3分
+        score += pmi_bias * 0.30
+
+    # 2. Shibor 3M 趋势 (20%) - 用最近两次的差值判断趋势
+    shibor_3m = china_macro.get('shibor_3m')
+    # 该模块的数据是标量（最新值），无历史，所以用绝对值判断
+    if shibor_3m is not None:
+        if shibor_3m > 2.5:
+            score -= 5 * 0.20  # 利率过高=紧缩偏空
+        elif shibor_3m < 1.5:
+            score += 3 * 0.20  # 利率过低=宽松偏多
+        # 1.5-2.5 正常范围，不调整
+
+    # 3. 收益率曲线斜率 (20%)
+    spread = yield_curve.get('spread', 0)
+    if spread is not None:
+        if isinstance(spread, (int, float)):
+            if spread < 0:
+                score -= 10 * 0.20  # 倒挂=衰退信号
+            elif spread < 0.5:
+                score -= 3 * 0.20   # 平坦=中性偏空
+            elif spread > 1.5:
+                score += 5 * 0.20   # 陡峭=经济扩张
+
+    # 4. M2增速 (15%)
+    m2 = china_macro.get('m2_yoy')
+    if m2 is not None:
+        if m2 < 8:
+            score -= 3 * 0.15  # 货币收紧
+        elif m2 > 12:
+            score += 3 * 0.15  # 大幅宽松
+
+    # 5. CPI/PPI (15%)
+    cpi = china_macro.get('cpi_yoy')
+    ppi = china_macro.get('ppi_yoy')
+    if cpi is not None:
+        if cpi < 0:
+            score -= 8 * 0.15  # 通缩=严重偏空
+        elif cpi > 5:
+            score -= 5 * 0.15  # 恶性通胀=偏空
+        elif cpi > 3:
+            score -= 2 * 0.15  # 通胀偏高=微偏空
+    if ppi is not None:
+        if ppi < -3:
+            score -= 5 * 0.15  # 工业通缩
+        elif ppi > 5:
+            score -= 3 * 0.15  # 工业过热
+
+    return max(0, min(100, round(score, 1)))
+
+
 def analyze(current_date: Optional[str] = None) -> Dict:
     """
     宏观市场分析主入口。
@@ -422,15 +489,15 @@ def analyze(current_date: Optional[str] = None) -> Dict:
     risk_on_off = _get_risk_on_off(50, us_macro, china_macro, vix_proxy, yield_curve)
     sector_rotation = _get_sector_rotation_proxy()
 
-    # 综合宏观得分（等权平均指数得分 + 市场广度 + 波动率修正）
+    # 综合宏观得分（指数动量40% + 市场广度15% + 中国宏观数据30% + 风险修正）
     avg_index_score = sum(s['score'] for s in index_scores) / len(index_scores) if index_scores else 50
-    # Risk-off 状态额外压低宏观得分
+    china_macro_bias = _score_china_macro(china_macro, yield_curve)
     risk_adjustment = 0
     if risk_on_off['state'] == 'risk_off':
         risk_adjustment = -5
     elif risk_on_off['state'] == 'risk_on':
         risk_adjustment = 3
-    macro_score = round(avg_index_score * 0.7 + breadth['score'] * 0.3 + risk_adjustment, 1)
+    macro_score = round(avg_index_score * 0.40 + breadth['score'] * 0.15 + china_macro_bias * 0.30 + risk_adjustment, 1)
     macro_score = max(0, min(100, macro_score))
 
     # 重新计算 Risk-on/off 使用真实宏观评分
@@ -498,6 +565,7 @@ def analyze(current_date: Optional[str] = None) -> Dict:
         'market_breadth': breadth,
         'us_macro': us_macro,
         'china_macro': china_macro,
+        'china_macro_bias': china_macro_bias,
         'yield_curve': yield_curve,
         'vix_proxy': vix_proxy,
         'sector_rotation': sector_rotation,
