@@ -260,7 +260,7 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     bear_score = bear_arg.get('score', 0)
     net_debate = bull_score - bear_score
 
-    # 动态权重：期货基本面信号极端时提高其权重，降低技术面滞后干扰
+    # 动态权重：期货基本面信号极端时提高其权重
     ticker = ticker or technical_report.get('ticker', '')
     if is_futures(ticker) and abs(fund_score - 50) >= 5:
         w_tech = max(0.10, WEIGHTS['technical'] - 0.08)
@@ -279,46 +279,24 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         macro_score * WEIGHTS['macro'] +
         (50 + net_debate * 8) * WEIGHTS['debate']
     )
-    # 期货基本面信号足够强时，直接给予方向性偏置
+    # 期货基本面强信号时给予方向性偏置
     if is_futures(ticker) and abs(fund_score - 50) >= 5:
         if fund_score < 45:
-            weighted -= 6  # 基本面偏空，压低综合分
+            weighted -= 6
         elif fund_score > 55:
             weighted += 6
     weighted = max(0, min(100, weighted))
 
-    # 叠加宏观修正（单次评分，不循环放大）
+    # 宏观修正（来自 macro_analyst 的数据驱动修正）
     macro_override = 0
     macro_note = ""
     if macro_report:
         from analysts.macro_analyst import get_macro_score_override
         raw_signal = 'bullish' if weighted >= THRESHOLD['bull'] else 'bearish' if weighted <= THRESHOLD['bear'] else 'neutral'
-        # 强干预：宏观 bearish 环境下直接拦截 bullish 信号
-        if macro_report.get('macro_signal') == 'bearish' and raw_signal == 'bullish':
-            weighted = THRESHOLD['bear'] - 1  # 强制压入 bearish 区间
-            macro_override = -20
-            macro_note = f"宏观 bearish 拦截 bullish ({macro_report.get('macro_score', 50)}/100)"
-        # 对称规则：宏观 bullish 环境下直接拦截 bearish 信号
-        elif macro_report.get('macro_signal') == 'bullish' and raw_signal == 'bearish' and macro_report.get('macro_score', 50) >= 60:
-            weighted = THRESHOLD['neutral_low']  # 强制压入 neutral 区间
-            macro_override = 15
-            macro_note = f"宏观 bullish 拦截 bearish ({macro_report.get('macro_score', 50)}/100)"
-        else:
-            macro_override = get_macro_score_override(macro_report, raw_signal)
-            # 市场广度修正（有数据时生效，score=-1 表示无数据则跳过）
-            breadth_score = macro_report.get('market_breadth', {}).get('score', -1)
-            if breadth_score >= 0 and macro_report.get('macro_signal') == 'bearish' and breadth_score < 30:
-                macro_override *= 1.2
-            elif breadth_score >= 0 and macro_report.get('macro_signal') == 'bullish' and breadth_score > 70:
-                macro_override *= 1.1
-            # 期货宏观加成 
-            if is_futures(technical_report.get('ticker', '')) and macro_report.get('macro_signal') == 'bearish':
-                macro_override -= 1
-            elif is_futures(technical_report.get('ticker', '')) and macro_report.get('macro_signal') == 'bullish':
-                macro_override += 1
-            weighted = max(0, min(100, weighted + macro_override))
+        macro_override = get_macro_score_override(macro_report, raw_signal)
+        weighted = max(0, min(100, weighted + macro_override))
 
-    # 统一信号判定：收窄 neutral 范围，46-52 才为中性
+    # 信号判定
     if weighted >= THRESHOLD['strong_bull']:
         signal = '看多'
     elif weighted >= THRESHOLD['bull']:
@@ -330,75 +308,10 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     else:
         signal = '中性'
 
-    # 期货基本面强信号时，收窄 neutral 区间到 48-50，并给方向性偏置
-    if is_futures(ticker) and signal == '中性':
-        if weighted < 50 and fund_score < 45:
-            signal = '看空'
-            weighted = THRESHOLD['bear'] - 1
-        elif weighted > 50 and fund_score > 55:
-            signal = '看多'
-            weighted = THRESHOLD['bull']
-        elif weighted == 50 and abs(fund_score - 50) >= 5:
-            signal = '看空' if fund_score < 50 else '看多'
-
-    # 复盘硬规则：宏观 bearish 时压制 bullish；若市场 5 日强反弹则放宽
-    market_momentum = _get_market_momentum()
-    market_bullish = (sum(1 for m in market_momentum.values() if m.get('ret5', 0) > 0.015) >= 2) if market_momentum else False
-    sector_momentum = _get_sector_momentum(sector) if sector else {}
-    sector_bullish = sector_momentum.get('ret5', 0) > 0.015
-    sector_bearish = sector_momentum.get('ret5', 0) < -0.015
-    if (HARD_RULES.get('macro_bearish_block_bullish') and macro_report and
-            macro_report.get('macro_score', 50) < HARD_RULES.get('macro_bearish_score_threshold', 50)):
-        tech_threshold = HARD_RULES.get('macro_bearish_force_bearish_if_tech_below', 55)
-        if signal == '看多':
-            if market_bullish:
-                # 市场反弹时保留 bullish 但大幅压降评分
-                weighted = min(weighted, max(THRESHOLD['neutral_low'], 48))
-            else:
-                # 宏观偏空 + 大盘下跌：仅对技术极弱(tech<45)转看空，其余转中性
-                signal = '看空' if tech_score < 45 else '中性'
-                weighted = THRESHOLD['bear'] - 1 if tech_score < 45 else 50
-        elif signal == '中性' and tech_score < 40 and not market_bullish:
-            signal = '看空'
-            weighted = THRESHOLD['bear'] - 1
-    # 行业动量修正：行业与大盘同步反弹时，不强制 bearish；行业同步下跌时，不强制 bullish
-    if sector_bullish and market_bullish and signal == '看空':
-        signal = '中性'
-        weighted = 50
-    if sector_bearish and not market_bullish and signal == '看多':
-        signal = '中性'
-        weighted = 50
-
-    # 宏观偏多时禁止看空硬规则（对称于 macro_bearish_block_bullish）
-    if (HARD_RULES.get('macro_bullish_block_bearish') and macro_report and
-            macro_report.get('macro_score', 50) >= HARD_RULES.get('macro_bullish_score_threshold', 60) and
-            signal == '看空'):
-        macro_sig = macro_report.get('macro_signal', 'neutral')
-        if macro_sig == 'bullish':
-            # 除非技术面极弱(score<40)，否则强制转 neutral
-            if tech_score >= HARD_RULES.get('macro_bullish_force_bullish_if_tech_above', 50):
-                signal = '看多'
-                weighted = THRESHOLD['bull']
-            else:
-                signal = '中性'
-                weighted = THRESHOLD['neutral_low']
-
-    # 宏观-市场一致性规则：避免在市场普涨/普跌日方向大量错误
-    strong_breadth = sum(1 for m in market_momentum.values() if m.get('ret5', 0) > 0.015)
-    weak_breadth = sum(1 for m in market_momentum.values() if m.get('ret5', 0) < -0.015)
-    market_breadth_score = macro_report.get('market_breadth', {}).get('score', 50) if macro_report else 50
-    high_breadth = market_breadth_score > 60 and macro_report.get('market_breadth', {}).get('advances', 0) > macro_report.get('market_breadth', {}).get('declines', 0)
-    low_breadth = market_breadth_score < 20 and macro_report.get('market_breadth', {}).get('declines', 0) > macro_report.get('market_breadth', {}).get('advances', 0)
-    if macro_report and macro_report.get('macro_score', 50) > 60 and (strong_breadth >= 2 or high_breadth) and signal == '看空':
-        signal = '中性'
-        weighted = 50
-    elif macro_report and macro_report.get('macro_score', 50) < 40 and (weak_breadth >= 2 or low_breadth) and signal == '看多':
-        signal = '中性'
-        weighted = 50
-
+    # 置信度
     confidence = round(max(0.5, min(0.95, 0.5 + abs(weighted - 50) / 50 * 0.5 + min(abs(net_debate) * 0.08, 0.4))), 2)
 
-    # 低置信度信号降级为 weak_neutral，不输出方向性建议
+    # 低置信度降级
     if confidence < 0.62:
         signal = 'weak_neutral'
         position_pct = 0.0
