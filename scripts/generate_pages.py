@@ -725,6 +725,24 @@ def generate_portfolio_page(dates=None):
     _write('portfolio.html', html)
 
 
+
+def _contract_cn(contract: str) -> str:
+    """将期货合约代码转换为中文名称。"""
+    code = contract.rstrip('0123456789')
+    cn = {
+        'RM':'菜粕','OI':'菜油','CF':'棉花','ZN':'沪锌','HC':'热卷',
+        'CU':'沪铜','AL':'沪铝','AU':'黄金','AG':'白银','RB':'螺纹钢',
+        'I':'铁矿石','JM':'焦煤','J':'焦炭','MA':'甲醇','TA':'PTA',
+        'EG':'乙二醇','FG':'玻璃','SA':'纯碱','RU':'橡胶','NR':'20号胶',
+        'SC':'原油','FU':'燃油','LU':'低硫燃油','BU':'沥青','L':'聚乙烯',
+        'PP':'聚丙烯','PG':'液化气','EB':'苯乙烯','SM':'硅锰','SF':'硅铁',
+        'SP':'纸浆','AP':'苹果','CJ':'红枣','CY':'棉纱','PF':'短纤',
+        'UR':'尿素','V':'PVC','PB':'沪铅','SN':'沪锡','NI':'沪镍',
+        'SS':'不锈钢','BC':'国际铜','SI':'工业硅','LH':'生猪','JD':'鸡蛋',
+        'M':'豆粕','Y':'豆油','P':'棕榈油','SR':'白糖','AO':'氧化铝',
+    }.get(code, contract)
+    return f"{cn}({contract})"
+
 def _load_futures_positions():
     """通过 DAO 读取期货模拟盘持仓并生成 HTML 行。"""
     rows = _db_get_futures_positions(active_only=True)
@@ -737,7 +755,7 @@ def _load_futures_positions():
         color = '#ef4444' if pnl >= 0 else '#22c55e'
         html += f"""
         <tr>
-            <td><b>{r.get('contract')}</b></td>
+            <td><b>{_contract_cn(r.get('contract', ''))}</b></td>
             <td>{direction_cn}</td>
             <td>{r.get('lots')}</td>
             <td>{r.get('entry_price')}</td>
