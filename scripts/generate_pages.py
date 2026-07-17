@@ -766,6 +766,43 @@ def _load_futures_positions():
 
 
 
+def _get_stock_fundamentals(ticker: str) -> dict:
+    """从 DB 查询个股基本面数据，用于稳健型评分。"""
+    try:
+        conn = sqlite3.connect(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'llm_predictions.db'))
+        cur = conn.execute('SELECT component_scores FROM agentic_predictions WHERE ticker=? ORDER BY pred_date DESC LIMIT 1', (ticker,))
+        row = cur.fetchone()
+        conn.close()
+        if row and row[0]:
+            import json
+            sc = json.loads(row[0]) if isinstance(row[0], str) else row[0]
+            return sc.get('fundamental', {})
+    except: pass
+    return {}
+
+def _compute_stability(fd: dict) -> tuple:
+    """根据基本面数据计算稳健型评分(0-100)和标签。"""
+    score = 50
+    mcap = fd.get('market_cap', 0)
+    pe = fd.get('pe_ratio', 50)
+    div = fd.get('dividend_yield', 0)
+    pb = fd.get('pb_ratio', 5)
+    if mcap > 5000: score += 25
+    elif mcap > 1000: score += 20
+    elif mcap > 500: score += 10
+    if 8 <= pe <= 25: score += 15
+    elif 25 < pe <= 40: score += 5
+    elif pe < 0 or pe > 100: score -= 10
+    if div > 5: score += 20
+    elif div > 3: score += 15
+    elif div > 2: score += 5
+    if pb < 2: score += 10
+    elif pb < 4: score += 5
+    elif pb > 10: score -= 5
+    score = max(0, min(100, score))
+    tag = '🛡️稳健型' if score >= 75 else '📈成长型' if score <= 45 else '⚖️均衡型'
+    return score, tag
+
 def _write(name, html):
     path = os.path.join(DOCS_DIR, name)
     os.makedirs(os.path.dirname(path), exist_ok=True)
