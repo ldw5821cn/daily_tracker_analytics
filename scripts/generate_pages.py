@@ -220,7 +220,7 @@ def _row_html(p, is_us=False):
     return f"""
         <tr>
             <td><b>{p.get('ticker', '')}</b></td>
-            <td>{p.get('name', '')}</td>
+            <td>{p.get('name', '')} {_compute_stability(_get_stock_fundamentals(p.get('ticker','')))[1] if p.get('category') == '个股' else ''}</td>
             <td>{sector}</td>
             <td style="color:{color};font-weight:bold">{emoji} {SIGNAL_EN_TO_CN.get(sig, sig)}</td>
             <td>{p.get('weighted_score', 0)}</td>
@@ -641,7 +641,7 @@ def generate_portfolio_page(dates=None):
             rows += f"""
         <tr>
             <td><b>{t.get('ticker')}</b></td>
-            <td>{t.get('name')}</td>
+            <td>{t.get('name')} {_compute_stability(_get_stock_fundamentals(t.get('ticker','')))[1]}</td>
             <td style="color:{color}">{cn}</td>
             <td>{t.get('target_weight', 0)*100:.2f}%</td>
             <td>{price_label} {t.get('current_price', 0)}</td>
@@ -662,7 +662,7 @@ def generate_portfolio_page(dates=None):
         <tr>
             <td style="color:{action_color}"><b>{item.get('action')}</b></td>
             <td>{item.get('ticker')}</td>
-            <td>{item.get('name')}</td>
+            <td>{item.get('name')} {_compute_stability(_get_stock_fundamentals(item.get('ticker','')))[1]}</td>
             <td>¥{item.get('target_amount', 0):,.0f}</td>
             <td>{item.get('target_weight', 0)*100:.2f}%</td>
             <td>{price_label} {item.get('current_price', 0)}</td>
