@@ -1,0 +1,29 @@
+{
+  "_说明": "雪球组合自动调仓配置",
+  "cookies": "xq_a_token=4ec86ccf2914b2c446c95d01ed17eb23a14992a5; xq_r_token=b2f9fe91ef19318884e18571a60d952a13df81d0; xq_id_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1aWQiOjk4NzQwNTQ3OTQsImlzcyI6InVjIiwiZXhwIjoxNzg2MTY0NzQ4LCJjdG0iOjE3ODQyNzY3MjI4NjQsImNpZCI6ImQ5ZDBuNEFadXAifQ.jRNJIsjtRU7hSa7XbpxN9ZDBz5R8nWFCipcsTA5zLIzyXLanL0L2kl-IilzQaXoLDjep8wXo_ryAfa-LKdXbz4P8-FV1gvJEfQNr5ZWriDSQ5LDzMlES9JMiOMINsZ274IldiNhadjLBU5A1WjI3lVtdmpElOkNRfXy-78krfRn8GDHz8IGxPGrI2BP4qJIwsXkHz7fYKewOyOjeEgpYOLigYYnVC0arOUobre0WsQUlEip4oss9AZ9L_e19JNPfvmMxdNYB4VgAUVOJVME2HNhl6dOpxorkkrhDFBJr87-nWVQmXvUQ_gtkSmmrIz9tX_z5ktriUYE3GCBhxVqu7A; xq_is_login=1; u=9874054794; cookiesu=141775807577106; device_id=00b65c7d3884d5ebfaaf1e61d87031ae; xqat=4ec86ccf2914b2c446c95d01ed17eb23a14992a5",
+  "portfolios": {
+    "ZH3650487": {
+      "name": "全A股精选TOP10",
+      "market": "cn",
+      "source": "allocator",
+      "max_weight": 0.15
+    },
+    "ZH3650823": {
+      "name": "高股息红利",
+      "market": "cn",
+      "source": "fixed",
+      "holdings": {
+        "600642": 0.18,
+        "600023": 0.18,
+        "600011": 0.18,
+        "600027": 0.18,
+        "601398": 0.18
+      }
+    },
+    "ZH3650824": {
+      "name": "期货模拟盘",
+      "market": "cn",
+      "source": "futures_simulator"
+    }
+  }
+}

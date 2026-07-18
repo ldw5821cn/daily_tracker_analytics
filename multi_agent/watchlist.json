@@ -1111,5 +1111,68 @@
     "category": "期货",
     "theme": "新能源",
     "sector": "新能源"
+  },
+  {
+    "ticker": "688017",
+    "name": "绿的谐波",
+    "category": "个股",
+    "theme": "机器人-谐波减速器",
+    "sector": "机器人"
+  },
+  {
+    "ticker": "603662",
+    "name": "柯力传感",
+    "category": "个股",
+    "theme": "机器人-六维力传感器",
+    "sector": "机器人"
+  },
+  {
+    "ticker": "002472",
+    "name": "双环传动",
+    "category": "个股",
+    "theme": "机器人-RV减速器",
+    "sector": "机器人"
+  },
+  {
+    "ticker": "603728",
+    "name": "鸣志电器",
+    "category": "个股",
+    "theme": "机器人-空心杯电机",
+    "sector": "机器人"
+  },
+  {
+    "ticker": "601100",
+    "name": "恒立液压",
+    "category": "个股",
+    "theme": "机器人-丝杠导轨",
+    "sector": "机器人"
+  },
+  {
+    "ticker": "002371",
+    "name": "北方华创",
+    "category": "个股",
+    "theme": "半导体-综合设备",
+    "sector": "半导体"
+  },
+  {
+    "ticker": "600584",
+    "name": "长电科技",
+    "category": "个股",
+    "theme": "半导体-先进封装",
+    "sector": "半导体"
+  },
+  {
+    "ticker": "002156",
+    "name": "通富微电",
+    "category": "个股",
+    "theme": "半导体-先进封装",
+    "sector": "半导体"
+  },
+  {
+    "ticker": "301269",
+    "name": "华大九天",
+    "category": "个股",
+    "theme": "半导体-EDA",
+    "sector": "半导体"
   }
 ]
