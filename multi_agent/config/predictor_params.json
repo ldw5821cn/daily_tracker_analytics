@@ -1,27 +1,100 @@
 {
-  "weights": {
-    "technical": 0.30,
-    "fundamental": 0.25,
-    "sentiment": 0.15,
-    "macro": 0.0,
-    "debate": 0.30
+  "_version": 2,
+  "updated_at": "2026-07-18T14:53:03",
+  "个股": {
+    "weights": {
+      "technical": 0.35,
+      "fundamental": 0.2,
+      "sentiment": 0.15,
+      "macro": 0.0,
+      "debate": 0.3
+    },
+    "threshold": {
+      "strong_bull": 69,
+      "bull": 64,
+      "neutral_high": 61,
+      "neutral_low": 45,
+      "bear": 43,
+      "strong_bear": 38
+    },
+    "stats": "train=60.1%(233) val=100.0%(31)",
+    "score": 76.1
   },
-  "threshold": {
-    "strong_bull": 64,
-    "bull": 59,
-    "neutral_high": 56,
-    "neutral_low": 44,
-    "bear": 41,
-    "strong_bear": 36
+  "ETF": {
+    "weights": {
+      "technical": 0.3,
+      "fundamental": 0.25,
+      "sentiment": 0.15,
+      "macro": 0.0,
+      "debate": 0.3
+    },
+    "threshold": {
+      "strong_bull": 67,
+      "bull": 62,
+      "neutral_high": 59,
+      "neutral_low": 39,
+      "bear": 37,
+      "strong_bear": 32
+    },
+    "stats": "train=74.3%(35) val=100.0%(5)",
+    "score": 84.6
   },
-  "hard_rules": {},
-  "updated_at": "2026-07-16T00:05:00",
-  "updated_by": "parameter_optimizer+manual_tune",
-  "updated_reason": "data-driven: tech=0.30 fund=0.25 debate=0.30; bull=64 bear=37; 适度放宽为bull=59 bear=41以提高覆盖率，保留优化器找到的权重比",
-  "optimization_metadata": {
-    "training_accuracy": 58.6,
-    "training_signals": 140,
-    "validation_accuracy": 100.0,
-    "validation_signals": 3
-  }
+  "期货": {
+    "weights": {
+      "technical": 0.3,
+      "fundamental": 0.25,
+      "sentiment": 0.15,
+      "macro": 0.0,
+      "debate": 0.3
+    },
+    "threshold": {
+      "strong_bull": 67,
+      "bull": 62,
+      "neutral_high": 59,
+      "neutral_low": 41,
+      "bear": 39,
+      "strong_bear": 34
+    },
+    "stats": "train=37.5%(8) val=33.3%(6)",
+    "score": 35.8
+  },
+  "US": {
+    "weights": {
+      "technical": 0.3,
+      "fundamental": 0.25,
+      "sentiment": 0.15,
+      "macro": 0.0,
+      "debate": 0.3
+    },
+    "threshold": {
+      "strong_bull": 67,
+      "bull": 62,
+      "neutral_high": 59,
+      "neutral_low": 41,
+      "bear": 39,
+      "strong_bear": 34
+    },
+    "stats": "train=75.0%(8) val=100.0%(4)",
+    "score": 85.0
+  },
+  "_default": {
+    "weights": {
+      "technical": 0.35,
+      "fundamental": 0.25,
+      "sentiment": 0.1,
+      "macro": 0.0,
+      "debate": 0.3
+    },
+    "threshold": {
+      "strong_bull": 69,
+      "bull": 64,
+      "neutral_high": 61,
+      "neutral_low": 41,
+      "bear": 39,
+      "strong_bear": 34
+    },
+    "stats": "train=61.0%(213) val=87.9%(33)",
+    "score": 71.8
+  },
+  "updated_by": "param_opt_v2"
 }

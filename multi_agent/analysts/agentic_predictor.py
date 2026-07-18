@@ -90,6 +90,25 @@ POSITION_MAP = {
 
 HORIZON_THRESHOLD = {'strong': 1.5, 'weak': 0.5}
 
+def _get_weights(category=''):
+    v = _PARAMS.get(category, _PARAMS.get('_default', {})) if _PARAMS.get('_version') == 2 else _PARAMS
+    if isinstance(v, dict) and 'weights' in v: return v['weights']
+    return WEIGHTS
+
+def _get_threshold(category=''):
+    v = _PARAMS.get(category, _PARAMS.get('_default', {})) if _PARAMS.get('_version') == 2 else _PARAMS
+    if isinstance(v, dict) and 'threshold' in v: return v['threshold']
+    return THRESHOLD
+
+def _get_weights(category: str = '') -> dict:
+    """\u8fd4\u56de\u7c7b\u522b\u7279\u5b9a\u6743\u91cd\u3002\u652f\u6301 V2 \u591a\u7c7b\u522b\u4f18\u5316\u683c\u5f0f\u3002"""
+    v = _PARAMS.get(category, _PARAMS.get('_default', {})) if _PARAMS.get('_version') == 2 else _PARAMS
+    return v.get('weights', WEIGHTS) if isinstance(v, dict) else WEIGHTS
+
+def _get_threshold(category: str = '') -> dict:
+    v = _PARAMS.get(category, _PARAMS.get('_default', {})) if _PARAMS.get('_version') == 2 else _PARAMS
+    return v.get('threshold', THRESHOLD) if isinstance(v, dict) else THRESHOLD
+
 # 信号中文化映射
 SIGNAL_CN = {
     'bullish': '看多',
@@ -272,21 +291,22 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     # 动态权重：期货基本面信号极端时提高其权重
     ticker = ticker or technical_report.get('ticker', '')
     if is_futures(ticker) and abs(fund_score - 50) >= 5:
-        w_tech = max(0.10, WEIGHTS['technical'] - 0.08)
-        w_fund = min(0.40, WEIGHTS['fundamental'] + 0.10)
-        shift = WEIGHTS['technical'] - w_tech
-        w_news = max(0.05, WEIGHTS['sentiment'] - shift / 2)
+        _W = _get_weights(category)
+        w_tech = max(0.10, _W['technical'] - 0.08)
+        w_fund = min(0.40, _W['fundamental'] + 0.10)
+        shift = _W['technical'] - w_tech
+        w_news = max(0.05, _W['sentiment'] - shift / 2)
     else:
-        w_tech = WEIGHTS['technical']
-        w_fund = WEIGHTS['fundamental']
-        w_news = WEIGHTS['sentiment']
+        w_tech = _W['technical']
+        w_fund = _W['fundamental']
+        w_news = _W['sentiment']
 
     weighted = (
         tech_score * w_tech +
         fund_score * w_fund +
         news_score * w_news +
-        macro_score * WEIGHTS['macro'] +
-        (50 + net_debate * 8) * WEIGHTS['debate']
+        macro_score * _W.get('macro', 0) +
+        (50 + net_debate * 8) * _W['debate']
     )
     # 期货基本面强信号时给予方向性偏置
     if is_futures(ticker) and abs(fund_score - 50) >= 5:
@@ -301,14 +321,15 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     macro_note = ""
     if macro_report:
         from analysts.macro_analyst import get_macro_score_override
-        raw_signal = 'bullish' if weighted >= THRESHOLD['bull'] else 'bearish' if weighted <= THRESHOLD['bear'] else 'neutral'
+        _T = _get_threshold(category)
+        raw_signal = 'bullish' if weighted >= _T['bull'] else 'bearish' if weighted <= _T['bear'] else 'neutral'
         macro_override = get_macro_score_override(macro_report, raw_signal)
         weighted = max(0, min(100, weighted + macro_override))
 
     # 信号判定
-    if weighted >= THRESHOLD['strong_bull']:
+    if weighted >= _T['strong_bull']:
         signal = '看多'
-    elif weighted >= THRESHOLD['bull']:
+    elif weighted >= _T['bull']:
         signal = '看多'
     elif weighted <= THRESHOLD['strong_bear']:
         signal = '看空'
