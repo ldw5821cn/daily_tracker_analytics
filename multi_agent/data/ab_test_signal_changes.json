@@ -1,1032 +1,162 @@
 {
   "pred_date": "2026-07-13",
-  "macro_signal": "bullish",
-  "macro_score": 70.2,
+  "macro_signal": "bearish",
+  "macro_score": 34.2,
   "old_counts": {
     "bullish": 0,
     "neutral": 61,
     "bearish": 123
   },
   "new_counts": {
-    "bullish": 24,
-    "neutral": 160,
-    "bearish": 0
+    "bullish": 0,
+    "neutral": 78,
+    "bearish": 106
   },
   "transitions": {
     "bullish→bullish": 0,
     "bullish→neutral": 0,
     "bullish→bearish": 0,
-    "neutral→bullish": 7,
-    "neutral→neutral": 54,
+    "neutral→bullish": 0,
+    "neutral→neutral": 61,
     "neutral→bearish": 0,
-    "bearish→bullish": 17,
-    "bearish→neutral": 106,
-    "bearish→bearish": 0
+    "bearish→bullish": 0,
+    "bearish→neutral": 17,
+    "bearish→bearish": 106
   },
   "changed": [
-    {
-      "ticker": "516150",
-      "name": "稀土ETF嘉实",
-      "category": "ETF",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.8,
-      "new_score": 47.7,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "512760",
-      "name": "芯片ETF",
-      "category": "ETF",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 53.6,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "512480",
-      "name": "半导体ETF",
-      "category": "ETF",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.4,
-      "new_score": 47.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "562500",
-      "name": "机器人ETF华夏",
-      "category": "ETF",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 51.0,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "588200",
-      "name": "科创芯片ETF嘉实",
-      "category": "ETF",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 53.6,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "159516",
-      "name": "半导体设备ETF国泰",
-      "category": "ETF",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 41.9,
-      "new_score": 46.8,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "159530",
-      "name": "机器人ETF易方达",
-      "category": "ETF",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.1,
-      "new_score": 47.0,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "159995",
-      "name": "芯片ETF华夏",
-      "category": "ETF",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.4,
-      "new_score": 47.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "512400",
-      "name": "有色金属ETF南方",
-      "category": "ETF",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.8,
-      "new_score": 47.7,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "159755",
-      "name": "电池ETF广发",
-      "category": "ETF",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.8,
-      "new_score": 47.7,
-      "macro_override": 0.0
-    },
     {
       "ticker": "513120",
       "name": "港股创新药ETF广发",
       "category": "ETF",
       "old_signal": "bearish",
-      "new_signal": "bullish",
-      "old_score": 42.0,
-      "new_score": 65.8,
-      "macro_override": 7.272000000000001
-    },
-    {
-      "ticker": "515880",
-      "name": "通信ETF国泰",
-      "category": "ETF",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.4,
-      "new_score": 47.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "601991",
-      "name": "大唐发电",
-      "category": "个股",
-      "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 48.4,
+      "new_score": 55.9,
       "macro_override": 0.0
-    },
-    {
-      "ticker": "600206",
-      "name": "有研新材",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 51.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "510300",
-      "name": "沪深300ETF华泰柏瑞",
-      "category": "ETF",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 51.0,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "688019",
-      "name": "安集科技",
-      "category": "个股",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 52.6,
-      "new_score": 64.3,
-      "macro_override": 7.272000000000001
-    },
-    {
-      "ticker": "300054",
-      "name": "鼎龙股份",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 51.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "688041",
-      "name": "海光信息",
-      "category": "个股",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 54.8,
-      "new_score": 65.8,
-      "macro_override": 7.272000000000001
     },
     {
       "ticker": "688981",
       "name": "中芯国际",
       "category": "个股",
       "old_signal": "bearish",
-      "new_signal": "bullish",
-      "old_score": 42.0,
-      "new_score": 67.2,
-      "macro_override": 7.272000000000001
-    },
-    {
-      "ticker": "688012",
-      "name": "中微公司",
-      "category": "个股",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 54.6,
-      "new_score": 65.5,
-      "macro_override": 7.272000000000001
-    },
-    {
-      "ticker": "688047",
-      "name": "龙芯中科",
-      "category": "个股",
-      "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 54.5,
+      "new_score": 58.0,
       "macro_override": 0.0
-    },
-    {
-      "ticker": "300782",
-      "name": "卓胜微",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.4,
-      "new_score": 47.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "300474",
-      "name": "景嘉微",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 54.1,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "000657",
-      "name": "中钨高新",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 49.6,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "600549",
-      "name": "厦门钨业",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 49.6,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "002378",
-      "name": "章源钨业",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.8,
-      "new_score": 47.7,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "688146",
-      "name": "中船特气",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 50.9,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "601958",
-      "name": "金钼股份",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 48.6,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "000969",
-      "name": "安泰科技",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.4,
-      "new_score": 47.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "603993",
-      "name": "洛阳钼业",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 41.9,
-      "new_score": 46.8,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "600392",
-      "name": "盛和资源",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 48.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "300263",
-      "name": "隆华科技",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 48.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "301319",
-      "name": "唯特偶",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 49.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "000426",
-      "name": "兴业银锡",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.4,
-      "new_score": 47.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "600301",
-      "name": "华锡有色",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.4,
-      "new_score": 47.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "000960",
-      "name": "锡业股份",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.1,
-      "new_score": 47.0,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "600961",
-      "name": "株冶集团",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 48.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "688530",
-      "name": "欧莱新材",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 51.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "300346",
-      "name": "南大光电",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 51.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "600703",
-      "name": "三安光电",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 48.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "000612",
-      "name": "焦作万方",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 48.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "600497",
-      "name": "驰宏锌锗",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 48.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "300489",
-      "name": "光智科技",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 51.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "000962",
-      "name": "东方钽业",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 49.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "688313",
-      "name": "仕佳光子",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 48.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "002428",
-      "name": "云南锗业",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 49.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "300726",
-      "name": "宏达电子",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 48.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "000733",
-      "name": "振华科技",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.1,
-      "new_score": 47.0,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "002138",
-      "name": "顺络电子",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 49.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "300618",
-      "name": "寒锐钴业",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.6,
-      "new_score": 47.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "301219",
-      "name": "腾远钴业",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.4,
-      "new_score": 47.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "603678",
-      "name": "火炬电子",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 51.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "300666",
-      "name": "江丰电子",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 51.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "600459",
-      "name": "贵研铂业",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.4,
-      "new_score": 47.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "301026",
-      "name": "浩通科技",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.4,
-      "new_score": 47.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "300706",
-      "name": "阿石创",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 51.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "601899",
-      "name": "紫金矿业",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 51.9,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "000630",
-      "name": "铜陵有色",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.1,
-      "new_score": 47.0,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "600362",
-      "name": "江西铜业",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.4,
-      "new_score": 47.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "000878",
-      "name": "云南铜业",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.1,
-      "new_score": 47.0,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "002203",
-      "name": "海亮股份",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 48.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "300502",
-      "name": "新易盛",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.6,
-      "new_score": 47.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "300394",
-      "name": "天孚通信",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.1,
-      "new_score": 47.0,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "600547",
-      "name": "山东黄金",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 51.9,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "000975",
-      "name": "银泰黄金",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 52.1,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "600988",
-      "name": "赤峰黄金",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 53.3,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "000807",
-      "name": "云铝股份",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 52.1,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "600219",
-      "name": "南山铝业",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 52.1,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "600010",
-      "name": "包钢股份",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.6,
-      "new_score": 47.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "600489",
-      "name": "中金黄金",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 51.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "000932",
-      "name": "华菱钢铁",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 52.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "000959",
-      "name": "首钢股份",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 54.8,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "601898",
-      "name": "中煤能源",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 52.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "000983",
-      "name": "山西焦煤",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 52.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "600188",
-      "name": "兖矿能源",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 52.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "601808",
-      "name": "中海油服",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 53.6,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "002353",
-      "name": "杰瑞股份",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 48.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "600309",
-      "name": "万华化学",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 54.8,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "600989",
-      "name": "宝丰能源",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 52.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "600426",
-      "name": "华鲁恒升",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.6,
-      "new_score": 47.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "600346",
-      "name": "恒力石化",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.1,
-      "new_score": 47.0,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "000301",
-      "name": "东方盛虹",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 51.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "002493",
-      "name": "荣盛石化",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 49.6,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "002385",
-      "name": "大北农",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 53.6,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "000876",
-      "name": "新希望",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 52.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "001203",
-      "name": "大中矿业",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 41.9,
-      "new_score": 46.8,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "AG0",
-      "name": "白银",
-      "category": "期货",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 52.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "ZN0",
-      "name": "沪锌",
-      "category": "期货",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 53.9,
-      "new_score": 65.7,
-      "macro_override": 7.272000000000001
-    },
-    {
-      "ticker": "HC0",
-      "name": "热卷",
-      "category": "期货",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 51.0,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "J0",
-      "name": "焦炭",
-      "category": "期货",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 52.0,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "JM0",
-      "name": "焦煤",
-      "category": "期货",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 49.6,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "MA0",
-      "name": "甲醇",
-      "category": "期货",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 53.6,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "SC0",
-      "name": "原油",
-      "category": "期货",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 53.6,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "TA0",
-      "name": "PTA",
-      "category": "期货",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 52.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "C0",
-      "name": "玉米",
-      "category": "期货",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 50.8,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "OI0",
-      "name": "菜油",
-      "category": "期货",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 53.9,
-      "new_score": 65.7,
-      "macro_override": 7.272000000000001
     },
     {
       "ticker": "SPY",
       "name": "SPDR标普500ETF",
       "category": "US",
       "old_signal": "bearish",
-      "new_signal": "bullish",
+      "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 68.1,
-      "macro_override": 7.272000000000001
+      "new_score": 59.4,
+      "macro_override": 0.0
     },
     {
       "ticker": "VTI",
       "name": "全美股票ETF",
       "category": "US",
       "old_signal": "bearish",
-      "new_signal": "bullish",
+      "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 68.1,
-      "macro_override": 7.272000000000001
+      "new_score": 59.4,
+      "macro_override": 0.0
     },
     {
       "ticker": "AAPL",
       "name": "苹果",
       "category": "US",
       "old_signal": "bearish",
-      "new_signal": "bullish",
+      "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 67.4,
-      "macro_override": 7.272000000000001
+      "new_score": 58.4,
+      "macro_override": 0.0
     },
     {
-      "ticker": "MSFT",
-      "name": "微软",
+      "ticker": "META",
+      "name": "Meta",
       "category": "US",
       "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 52.4,
+      "new_score": 58.4,
       "macro_override": 0.0
     },
     {
-      "ticker": "GOOGL",
-      "name": "谷歌A",
+      "ticker": "NVDA",
+      "name": "英伟达",
+      "category": "US",
+      "old_signal": "bearish",
+      "new_signal": "neutral",
+      "old_score": 42.0,
+      "new_score": 58.4,
+      "macro_override": 0.0
+    },
+    {
+      "ticker": "UBER",
+      "name": "Uber",
+      "category": "US",
+      "old_signal": "bearish",
+      "new_signal": "neutral",
+      "old_score": 42.0,
+      "new_score": 58.4,
+      "macro_override": 0.0
+    },
+    {
+      "ticker": "WFC",
+      "name": "富国银行",
+      "category": "US",
+      "old_signal": "bearish",
+      "new_signal": "neutral",
+      "old_score": 42.0,
+      "new_score": 61.8,
+      "macro_override": 0.0
+    },
+    {
+      "ticker": "V",
+      "name": "Visa",
+      "category": "US",
+      "old_signal": "bearish",
+      "new_signal": "neutral",
+      "old_score": 42.0,
+      "new_score": 59.4,
+      "macro_override": 0.0
+    },
+    {
+      "ticker": "MA",
+      "name": "万事达",
+      "category": "US",
+      "old_signal": "bearish",
+      "new_signal": "neutral",
+      "old_score": 42.0,
+      "new_score": 59.4,
+      "macro_override": 0.0
+    },
+    {
+      "ticker": "JNJ",
+      "name": "强生",
+      "category": "US",
+      "old_signal": "bearish",
+      "new_signal": "neutral",
+      "old_score": 42.0,
+      "new_score": 56.2,
+      "macro_override": 0.0
+    },
+    {
+      "ticker": "KO",
+      "name": "可口可乐",
+      "category": "US",
+      "old_signal": "bearish",
+      "new_signal": "neutral",
+      "old_score": 42.0,
+      "new_score": 59.4,
+      "macro_override": 0.0
+    },
+    {
+      "ticker": "NKE",
+      "name": "耐克",
       "category": "US",
       "old_signal": "bearish",
       "new_signal": "neutral",
@@ -1035,263 +165,13 @@
       "macro_override": 0.0
     },
     {
-      "ticker": "AMZN",
-      "name": "亚马逊",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 53.6,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "META",
-      "name": "Meta",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "bullish",
-      "old_score": 42.0,
-      "new_score": 67.4,
-      "macro_override": 7.272000000000001
-    },
-    {
-      "ticker": "NVDA",
-      "name": "英伟达",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "bullish",
-      "old_score": 42.0,
-      "new_score": 67.4,
-      "macro_override": 7.272000000000001
-    },
-    {
-      "ticker": "NFLX",
-      "name": "奈飞",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 52.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "CRM",
-      "name": "Salesforce",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 52.4,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "ADBE",
-      "name": "Adobe",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 52.2,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "ORCL",
-      "name": "甲骨文",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 47.9,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "UBER",
-      "name": "Uber",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "bullish",
-      "old_score": 42.0,
-      "new_score": 67.4,
-      "macro_override": 7.272000000000001
-    },
-    {
-      "ticker": "JPM",
-      "name": "摩根大通",
-      "category": "US",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 53.7,
-      "new_score": 64.6,
-      "macro_override": 7.272000000000001
-    },
-    {
-      "ticker": "BAC",
-      "name": "美国银行",
-      "category": "US",
-      "old_signal": "neutral",
-      "new_signal": "bullish",
-      "old_score": 53.7,
-      "new_score": 64.6,
-      "macro_override": 7.272000000000001
-    },
-    {
-      "ticker": "WFC",
-      "name": "富国银行",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "bullish",
-      "old_score": 42.0,
-      "new_score": 69.3,
-      "macro_override": 7.272000000000001
-    },
-    {
-      "ticker": "V",
-      "name": "Visa",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "bullish",
-      "old_score": 42.0,
-      "new_score": 68.1,
-      "macro_override": 7.272000000000001
-    },
-    {
-      "ticker": "MA",
-      "name": "万事达",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "bullish",
-      "old_score": 42.0,
-      "new_score": 68.1,
-      "macro_override": 7.272000000000001
-    },
-    {
-      "ticker": "JNJ",
-      "name": "强生",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "bullish",
-      "old_score": 42.0,
-      "new_score": 66.1,
-      "macro_override": 7.272000000000001
-    },
-    {
-      "ticker": "ABBV",
-      "name": "艾伯维",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 54.1,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "COST",
-      "name": "开市客",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 50.8,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "KO",
-      "name": "可口可乐",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "bullish",
-      "old_score": 42.0,
-      "new_score": 68.1,
-      "macro_override": 7.272000000000001
-    },
-    {
-      "ticker": "PEP",
-      "name": "百事",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 50.8,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "NKE",
-      "name": "耐克",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "bullish",
-      "old_score": 42.0,
-      "new_score": 66.2,
-      "macro_override": 7.272000000000001
-    },
-    {
-      "ticker": "DIS",
-      "name": "迪士尼",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 50.8,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "BA",
-      "name": "波音",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 54.8,
-      "macro_override": 0.0
-    },
-    {
       "ticker": "LIN",
       "name": "林德",
       "category": "US",
       "old_signal": "bearish",
-      "new_signal": "bullish",
-      "old_score": 42.0,
-      "new_score": 68.1,
-      "macro_override": 7.272000000000001
-    },
-    {
-      "ticker": "AMT",
-      "name": "美国塔",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.8,
-      "new_score": 47.7,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "BABA",
-      "name": "阿里巴巴",
-      "category": "US",
-      "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 53.6,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "PDD",
-      "name": "拼多多",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 53.6,
-      "macro_override": 0.0
-    },
-    {
-      "ticker": "JD",
-      "name": "京东",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 53.6,
+      "new_score": 59.4,
       "macro_override": 0.0
     },
     {
@@ -1299,19 +179,9 @@
       "name": "网易",
       "category": "US",
       "old_signal": "bearish",
-      "new_signal": "bullish",
-      "old_score": 42.0,
-      "new_score": 66.2,
-      "macro_override": 7.272000000000001
-    },
-    {
-      "ticker": "BIDU",
-      "name": "百度",
-      "category": "US",
-      "old_signal": "bearish",
       "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 53.6,
+      "new_score": 56.0,
       "macro_override": 0.0
     },
     {
@@ -1319,10 +189,10 @@
       "name": "腾讯ADR",
       "category": "US",
       "old_signal": "bearish",
-      "new_signal": "bullish",
+      "new_signal": "neutral",
       "old_score": 42.0,
-      "new_score": 66.2,
-      "macro_override": 7.272000000000001
+      "new_score": 56.0,
+      "macro_override": 0.0
     }
   ]
 }
