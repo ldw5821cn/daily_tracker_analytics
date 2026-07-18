@@ -266,7 +266,7 @@ def _calc_target_stop(current_price: float, signal: str, tech_snapshot: Dict, av
 
 def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_report: Dict,
                      bull_arg: Dict, bear_arg: Dict,
-                     macro_report: Optional[Dict] = None, ticker: str = '', sector: str = '') -> Dict:
+                     macro_report: Optional[Dict] = None, ticker: str = '', sector: str = '', category: str = '') -> Dict:
     tech_score = technical_report.get('score', 50)
     tech_rating = technical_report.get('rating', '中性')
     tech_snapshot = technical_report.get('tech_snapshot', {})
@@ -297,6 +297,7 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         shift = _W['technical'] - w_tech
         w_news = max(0.05, _W['sentiment'] - shift / 2)
     else:
+        _W = _get_weights(category)
         w_tech = _W['technical']
         w_fund = _W['fundamental']
         w_news = _W['sentiment']
@@ -319,9 +320,9 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     # 宏观修正（来自 macro_analyst 的数据驱动修正）
     macro_override = 0
     macro_note = ""
+    _T = _get_threshold(category)
     if macro_report:
         from analysts.macro_analyst import get_macro_score_override
-        _T = _get_threshold(category)
         raw_signal = 'bullish' if weighted >= _T['bull'] else 'bearish' if weighted <= _T['bear'] else 'neutral'
         macro_override = get_macro_score_override(macro_report, raw_signal)
         weighted = max(0, min(100, weighted + macro_override))
@@ -331,9 +332,9 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         signal = '看多'
     elif weighted >= _T['bull']:
         signal = '看多'
-    elif weighted <= THRESHOLD['strong_bear']:
+    elif weighted <= _T['strong_bear']:
         signal = '看空'
-    elif weighted <= THRESHOLD['bear']:
+    elif weighted <= _T['bear']:
         signal = '看空'
     else:
         signal = '中性'
@@ -640,7 +641,7 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
         bull = DebateEngine.bull_argument(technical, fundamental, news)
         bear = DebateEngine.bear_argument(technical, fundamental, news)
 
-        verdict = _manager_verdict(technical, fundamental, news, bull, bear, macro_report=macro_report, ticker=ticker, sector=sector)
+        verdict = _manager_verdict(technical, fundamental, news, bull, bear, macro_report=macro_report, ticker=ticker, sector=sector, category=category)
 
         current_price = technical.get('current_price', 0)
         price_date = technical.get('price_date') or technical.get('tech_snapshot', {}).get('price_date', '')
