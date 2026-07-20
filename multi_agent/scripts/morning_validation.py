@@ -90,6 +90,32 @@ def _next_trading_date_us(date_str: str) -> str:
     return (dt + timedelta(days=delta)).strftime('%Y-%m-%d')
 
 
+def _next_trading_date_cn(date_str: str) -> str:
+    """A股/期货下一交易日：周五->周一，周六/周日->周一，其他->+1。"""
+    dt = datetime.strptime(date_str, '%Y-%m-%d')
+    wd = dt.weekday()
+    if wd == 4:       # 周五 -> 周一
+        delta = 3
+    elif wd >= 5:     # 周六/周日 -> 下周一
+        delta = 7 - wd
+    else:
+        delta = 1
+    return (dt + timedelta(days=delta)).strftime('%Y-%m-%d')
+
+
+def _next_trading_date_cn(date_str: str) -> str:
+    """A股/期货下一交易日：周五->周一，周六/周日->周一，其他->+1。"""
+    dt = datetime.strptime(date_str, '%Y-%m-%d')
+    wd = dt.weekday()
+    if wd == 4:       # 周五 -> 周一
+        delta = 3
+    elif wd >= 5:     # 周六/周日 -> 下周一
+        delta = 7 - wd
+    else:
+        delta = 1
+    return (dt + timedelta(days=delta)).strftime('%Y-%m-%d')
+
+
 def _validate_row(row: sqlite3.Row, pred_date: str) -> dict:
     pred_price = row['current_price']
     signal = row['signal']
@@ -97,7 +123,12 @@ def _validate_row(row: sqlite3.Row, pred_date: str) -> dict:
     category = row['category']
     name = row['name']
 
-    validate_date = _next_trading_date_us(pred_date) if category == 'US' else None
+    if category == 'US':
+        validate_date = _next_trading_date_us(pred_date)
+    elif category in ('个股', 'ETF', '期货'):
+        validate_date = _next_trading_date_cn(pred_date)
+    else:
+        validate_date = None
     today_price = _get_current_price(ticker, category, name, as_of_date=validate_date, pred_date=pred_date)
     if today_price is None or pred_price is None or pred_price == 0:
         return {
@@ -127,17 +158,29 @@ def main():
         print('❌ 无预测数据')
         sys.exit(1)
 
-    # 默认验证前一日预测（当前最新预测是今日收盘后生成，次日才有收盘价用于验证）
+    # 呼出周末问题：验证日必须是已完成的交易日后的下一个完整交易日
+    # 例如周六最新价格是周五收盘，应该验证周四的预测
     from datetime import datetime, timedelta
     latest_dt = datetime.strptime(latest, '%Y-%m-%d')
-    pred_date = (latest_dt - timedelta(days=1)).strftime('%Y-%m-%d')
-    # 如果前一日没有预测，则退回到最新预测日期
-    exists = conn.execute(
-        "SELECT COUNT(*) FROM agentic_predictions WHERE pred_date=?",
-        (pred_date,)
-    ).fetchone()[0]
-    if exists == 0:
-        pred_date = latest
+    wd = latest_dt.weekday()
+    # 计算最新可用的下一交易日价格日期对应的验证日
+    if wd == 5:         # 周六: 最新价格是周五，验证周四的预测
+        pred_date = (latest_dt - timedelta(days=2)).strftime('%Y-%m-%d')
+    elif wd == 6:       # 周日: 最新价格也是周五，验证周四的预测
+        pred_date = (latest_dt - timedelta(days=3)).strftime('%Y-%m-%d')
+    elif wd == 0:       # 周一上午: 最新价格也是周五，验证周四的预测
+        pred_date = (latest_dt - timedelta(days=3)).strftime('%Y-%m-%d')
+    else:
+        pred_date = (latest_dt - timedelta(days=1)).strftime('%Y-%m-%d')
+    # 如果选定的日期没有预测，逐日回退
+    while True:
+        exists = conn.execute(
+            "SELECT COUNT(*) FROM agentic_predictions WHERE pred_date=?",
+            (pred_date,)
+        ).fetchone()[0]
+        if exists > 0 or pred_date < (latest_dt - timedelta(days=7)).strftime('%Y-%m-%d'):
+            break
+        pred_date = (datetime.strptime(pred_date, '%Y-%m-%d') - timedelta(days=1)).strftime('%Y-%m-%d')
 
     rows = conn.execute(
         "SELECT * FROM agentic_predictions WHERE pred_date=?",
@@ -168,7 +211,7 @@ def main():
         overall['total'] += 1
 
     out = {
-        'pred_date': latest,
+        'pred_date': pred_date,
         'validate_date': datetime.now().strftime('%Y-%m-%d'),
         'direction_threshold': DIRECTION_THRESHOLD,
         'overall': {

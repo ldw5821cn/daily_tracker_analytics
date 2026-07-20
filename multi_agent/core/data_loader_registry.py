@@ -562,7 +562,7 @@ class LocalLoader:
 # Fallback 链与解析
 # ---------------------------------------------------------------------------
 FALLBACK_CHAINS = {
-    'a_share': ['mootdx', 'tencent', 'akshare', 'eastmoney', 'local'],
+    'a_share': ['tencent', 'mootdx', 'akshare', 'eastmoney', 'local'],
     'index': ['akshare', 'eastmoney', 'local'],
     'futures': ['akshare_futures', 'sina_futures', 'local'],
     'us_equity': ['yfinance', 'local'],
