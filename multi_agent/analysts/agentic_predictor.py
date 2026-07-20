@@ -266,7 +266,8 @@ def _calc_target_stop(current_price: float, signal: str, tech_snapshot: Dict, av
 
 def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_report: Dict,
                      bull_arg: Dict, bear_arg: Dict,
-                     macro_report: Optional[Dict] = None, ticker: str = '', sector: str = '', category: str = '') -> Dict:
+                     macro_report: Optional[Dict] = None, ticker: str = '', name: str = '',
+                     sector: str = '', category: str = '') -> Dict:
     tech_score = technical_report.get('score', 50)
     tech_rating = technical_report.get('rating', '中性')
     tech_snapshot = technical_report.get('tech_snapshot', {})
@@ -332,15 +333,13 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     fund_flow_note = ""
     if not is_futures(ticker) and not is_us_ticker(ticker):
         try:
-            from analysts.fund_flow_analyst import analyze as _ff_analyze, get_sector_score, get_concept_score
+            from analysts.fund_flow_analyst import analyze as _ff_analyze, analyze_etf as _ff_analyze_etf
             # ETF 没有个股资金流，用行业/概念资金流替代
             if category == 'ETF':
-                sector_score = get_sector_score(sector)
-                concept_score = get_concept_score(sector)
-                ff_score = round(sector_score * 0.6 + concept_score * 0.4, 1)
+                ff = _ff_analyze_etf(ticker, name, sector)
             else:
                 ff = _ff_analyze(ticker, name, sector)
-                ff_score = ff.get('score', 50)
+            ff_score = ff.get('score', 50)
             ff_override = max(-10, min(10, (ff_score - 50) / 2.5))
             weighted = max(0, min(100, weighted + ff_override))
             fund_flow_override = round(ff_override, 1)
@@ -665,7 +664,7 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
         bull = DebateEngine.bull_argument(technical, fundamental, news)
         bear = DebateEngine.bear_argument(technical, fundamental, news)
 
-        verdict = _manager_verdict(technical, fundamental, news, bull, bear, macro_report=macro_report, ticker=ticker, sector=sector, category=category)
+        verdict = _manager_verdict(technical, fundamental, news, bull, bear, macro_report=macro_report, ticker=ticker, name=name, sector=sector, category=category)
 
         current_price = technical.get('current_price', 0)
         price_date = technical.get('price_date') or technical.get('tech_snapshot', {}).get('price_date', '')

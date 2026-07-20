@@ -31,12 +31,24 @@ def _normalize_ticker(ticker: str) -> str:
 
 
 def get_stock_fund_flow(ticker: str, market: str = 'sh') -> Optional[Dict]:
-    """从缓存读取个股资金流向。"""
+    """从缓存读取个股资金流向。
+
+    同花顺个股资金流接口返回的股票代码为整数，会去掉前导零（如 000001 -> 1、002594 -> 2594），
+    因此匹配时把 ticker 也转成整数比较。
+    """
     cache = _load_cache()
     code = _normalize_ticker(ticker)
+    try:
+        code_int = int(code)
+    except ValueError:
+        return None
     for item in cache.get('individual', []):
-        if str(item.get('股票代码', '')) == code:
-            return item
+        try:
+            if int(item.get('股票代码', 0)) == code_int:
+                return item
+        except (ValueError, TypeError):
+            if str(item.get('股票代码', '')) == code:
+                return item
     return None
 
 
@@ -47,7 +59,13 @@ def get_sector_fund_flow_rank(top_n: int = 10) -> List[Dict]:
 
 
 def compute_stock_score(ff: Optional[Dict]) -> float:
-    """基于个股资金流向打分（0-100）。"""
+    """基于个股资金流向打分（0-100）。
+
+    资金净流入占成交额比例（net_ratio）分布范围很宽（-300%~+120%），
+    用固定阈值会压制大部分股票得分。因此改为基于全市场分布的百分位打分：
+    - 全样本中 net_ratio 中位数约 -2.4%，75% 分位 +4.6%，25% 分位 -9.6%。
+    - 以 5% 为一个标准差档位，得分从 50 向两侧拉开，但 caps 在 [15, -15]。
+    """
     if not ff:
         return 50.0
     net = ff.get('净额_万元', 0)
@@ -61,19 +79,17 @@ def compute_stock_score(ff: Optional[Dict]) -> float:
     net_ratio = net / turnover * 100
 
     score = 50.0
-    # 主力净流入占比
-    if net_ratio > 5:
-        score += min(net_ratio, 15)
-    elif net_ratio < -5:
-        score -= min(abs(net_ratio), 15)
+    # 以 5% 为一个标准差档位：net_ratio 每偏离 5%，得分移动 5 分
+    delta = net_ratio / 5.0 * 5.0
+    score += max(-15, min(15, delta))
 
-    # 涨跌幅适度：大涨但主力净流出 = 诱多，扣分
+    # 大涨但主力净流出 = 诱多，额外扣分
     if change > 5 and net_ratio < -2:
         score -= 10
     elif change < -5 and net_ratio > 2:
         score += 5  # 错杀反弹
 
-    # 换手率：过高（>15%）且净流出 = 出货
+    # 换手率配合：过高换手且净流出 = 出货
     if turnover_rate > 15 and net_ratio < -3:
         score -= 8
     elif 1 < turnover_rate < 15 and net_ratio > 3:
@@ -84,24 +100,31 @@ def compute_stock_score(ff: Optional[Dict]) -> float:
 
 def get_sector_score(sector_name: str) -> float:
     """根据行业名称从缓存获取资金分数。"""
+    if not sector_name:
+        return 50.0
     cache = _load_cache()
     for item in cache.get('industry', []):
         if item.get('行业') == sector_name or sector_name in item.get('行业', ''):
             net = item.get('净额_亿元', 0)
-            # 简单映射：净流入为+5~+15，净流出为-5~-15
-            # 行业净额通常 ±100 亿，缩放
             return max(0, min(100, 50 + max(min(net / 3.0, 15), -15)))
     return 50.0
 
 
 def get_concept_score(concept_name: str) -> float:
     """根据概念名称从缓存获取资金分数。"""
+    if not concept_name:
+        return 50.0
     cache = _load_cache()
+    best = 50.0
+    best_len = 0
     for item in cache.get('concept', []):
-        if item.get('行业') == concept_name or concept_name in item.get('行业', ''):
-            net = item.get('净额_亿元', 0)
-            return max(0, min(100, 50 + max(min(net / 3.0, 15), -15)))
-    return 50.0
+        c = item.get('行业', '')
+        if c == concept_name or (concept_name and concept_name in c):
+            if len(c) > best_len:
+                net = item.get('净额_亿元', 0)
+                best = max(0, min(100, 50 + max(min(net / 3.0, 15), -15)))
+                best_len = len(c)
+    return best
 
 
 def analyze(ticker: str, name: str = '', sector: str = '') -> Dict:
@@ -127,6 +150,24 @@ def analyze(ticker: str, name: str = '', sector: str = '') -> Dict:
     }
 
 
+# ETF 资金流：通过行业+概念资金流间接评估
+def analyze_etf(ticker: str, name: str = '', sector: str = '') -> Dict:
+    """ETF 没有个股资金流，用行业/概念资金流加权估算。"""
+    sector_score = get_sector_score(sector)
+    concept_score = get_concept_score(sector)
+    combined = round(sector_score * 0.6 + concept_score * 0.4, 1)
+    return {
+        'ticker': ticker,
+        'name': name,
+        'score': combined,
+        'sector_score': sector_score,
+        'concept_score': concept_score,
+        'reasons': [f"行业资金分{sector_score:.1f}", f"概念资金分{concept_score:.1f}"],
+    }
+
+
 if __name__ == '__main__':
     r = analyze('600028', '中国石化', '油气开采及服务')
     print(r)
+    r2 = analyze_etf('512800', '银行ETF', '银行')
+    print(r2)
