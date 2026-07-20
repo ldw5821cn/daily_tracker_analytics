@@ -1,6 +1,6 @@
 {
   "_version": 2,
-  "updated_at": "2026-07-18T14:53:03",
+  "updated_at": "2026-07-20T13:50:50",
   "个股": {
     "weights": {
       "technical": 0.35,
@@ -93,8 +93,8 @@
       "bear": 39,
       "strong_bear": 34
     },
-    "stats": "train=61.0%(213) val=87.9%(33)",
-    "score": 71.8
+    "stats": "train=61.0%(213) val=87.5%(32)",
+    "score": 71.6
   },
   "updated_by": "param_opt_v2"
 }
