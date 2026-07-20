@@ -327,6 +327,27 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         macro_override = get_macro_score_override(macro_report, raw_signal)
         weighted = max(0, min(100, weighted + macro_override))
 
+    # 资金流修正（个股/ETF 使用）
+    fund_flow_override = 0
+    fund_flow_note = ""
+    if not is_futures(ticker) and not is_us_ticker(ticker):
+        try:
+            from analysts.fund_flow_analyst import analyze as _ff_analyze, get_sector_score, get_concept_score
+            # ETF 没有个股资金流，用行业/概念资金流替代
+            if category == 'ETF':
+                sector_score = get_sector_score(sector)
+                concept_score = get_concept_score(sector)
+                ff_score = round(sector_score * 0.6 + concept_score * 0.4, 1)
+            else:
+                ff = _ff_analyze(ticker, name, sector)
+                ff_score = ff.get('score', 50)
+            ff_override = max(-10, min(10, (ff_score - 50) / 2.5))
+            weighted = max(0, min(100, weighted + ff_override))
+            fund_flow_override = round(ff_override, 1)
+            fund_flow_note = f"资金流{ff_score:.1f}"
+        except Exception:
+            pass
+
     # 信号判定
     if weighted >= _T['strong_bull']:
         signal = '看多'
@@ -365,6 +386,8 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     ]
     if macro_note:
         reasons.append(macro_note)
+    if fund_flow_note:
+        reasons.append(fund_flow_note)
 
     return {
         'signal': signal,
@@ -382,6 +405,7 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
             'sentiment': round(news_score, 1),
             'debate_net': net_debate,
             'macro_override': macro_override,
+            'fund_flow_override': fund_flow_override,
         },
     }
 

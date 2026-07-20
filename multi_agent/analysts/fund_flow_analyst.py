@@ -1,85 +1,132 @@
 #!/usr/bin/env python3
-"""资金流分析器：个股主力资金流向 + 板块资金流向评分。"""
-import json, os, time
-from typing import Dict, List, Optional
-import requests
+"""资金流分析器：基于 akshare 资金流向缓存，给个股/行业/概念打分。
 
-_PROXY = os.environ.get('HTTPS_PROXY') or os.environ.get('https_proxy') or ''
+使用 multi_agent/scripts/fetch_fund_flow_cache.py 预拉取的缓存，
+避免每次调用东财接口，提高稳定性。
+"""
+from __future__ import annotations
 
-def _s():
-    s = requests.Session()
-    s.headers.update({'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
-                       'Referer': 'http://quote.eastmoney.com/'})
-    if _PROXY: s.proxies = {'http': _PROXY, 'https': _PROXY}
-    s.trust_env = bool(_PROXY)
-    return s
+import json
+import os
+import sys
+from typing import Dict, List, Optional, Tuple
 
-def get_stock_fund_flow(ticker: str, market: str = 'sh', days: int = 20) -> Optional[Dict]:
-    secid = {'sh': 1, 'sz': 0, 'SH': 1, 'SZ': 0}.get(market, 1)
-    params = {'lmt': days, 'klt': 101, 'secid': f'{secid}.{ticker}',
-              'fields1': 'f1,f2,f3,f7',
-              'fields2': 'f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61,f62,f63,f64,f65',
-              'ut': 'b2884a393a59ad64002292a3e90d46a5'}
-    for _ in range(2):
-        try:
-            r = _s().get('http://push2his.eastmoney.com/api/qt/stock/fflow/daykline/get',
-                         params=params, timeout=10)
-            if r.status_code != 200: continue
-            data = r.json()
-            klines = data.get('data', {}).get('klines', [])
-            if not klines: continue
-            rows = []
-            for k in klines:
-                p = k.split(',')
-                if len(p) >= 13:
-                    rows.append({'date': p[0], 'main_net': float(p[3]), 'main_ratio': float(p[4]),
-                                 'super_large_ratio': float(p[6]), 'large_ratio': float(p[8]),
-                                 'medium_ratio': float(p[10]), 'small_ratio': float(p[12])})
-            if not rows: return None
-            r5 = rows[-5:] if len(rows)>=5 else rows
-            return {'ticker': ticker, 'date': rows[-1]['date'],
-                    'main_net_flow': rows[-1]['main_net'], 'main_net_ratio': rows[-1]['main_ratio'],
-                    'super_large_ratio': rows[-1]['super_large_ratio'], 'large_ratio': rows[-1]['large_ratio'],
-                    'medium_ratio': rows[-1]['medium_ratio'], 'small_ratio': rows[-1]['small_ratio'],
-                    'avg_5d_main_flow': sum(r['main_net'] for r in r5)/len(r5),
-                    'recent_5d_flow_trend': rows[-1]['main_net']-rows[-6]['main_net'] if len(rows)>=6 else 0}
-        except:
-            if _ == 0: time.sleep(0.5)
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+MULTI_AGENT = os.path.join(PROJECT_ROOT, 'multi_agent')
+sys.path.insert(0, MULTI_AGENT)
+
+from scripts.fetch_fund_flow_cache import load_latest_cache, fetch_and_cache
+
+
+def _load_cache() -> Dict:
+    cache = load_latest_cache()
+    if not cache:
+        cache = fetch_and_cache()
+    return cache or {}
+
+
+def _normalize_ticker(ticker: str) -> str:
+    """统一去掉市场后缀。"""
+    return ticker.replace('.SH', '').replace('.SZ', '').replace('.BJ', '').replace('/US', '').strip()
+
+
+def get_stock_fund_flow(ticker: str, market: str = 'sh') -> Optional[Dict]:
+    """从缓存读取个股资金流向。"""
+    cache = _load_cache()
+    code = _normalize_ticker(ticker)
+    for item in cache.get('individual', []):
+        if str(item.get('股票代码', '')) == code:
+            return item
     return None
 
-def get_sector_fund_flow_rank(top_n: int = 10) -> List[Dict]:
-    params = {'pn': 1, 'pz': top_n, 'po': 1, 'np': 1, 'ut': 'b2884a393a59ad64002292a3e90d46a5',
-              'fltt': 2, 'invt': 2, 'fid0': 'f62', 'fs': 'm:90+t:2', 'stat': 1,
-              'fields': 'f12,f14,f2,f3,f62,f184,f66,f69,f72,f75,f78,f81,f84,f87,f204,f205'}
-    for _ in range(2):
-        try:
-            r = _s().get('http://push2.eastmoney.com/api/qt/clist/get', params=params, timeout=10)
-            if r.status_code != 200: continue
-            items = r.json().get('data', {}).get('diff', [])
-            return [{'sector': i.get('f14',''), 'change_pct': i.get('f3',0),
-                     'main_net_flow': i.get('f62',0), 'flow_3d': i.get('f204',0),
-                     'flow_5d': i.get('f205',0)} for i in items] if items else []
-        except:
-            if _ == 0: time.sleep(0.5)
-    return []
 
-def compute_score(ff: Optional[Dict]) -> float:
-    if not ff: return 50.0
-    s = 50.0
-    ratio = ff.get('main_net_ratio', 0)
-    if ratio > 2: s += min(ratio, 15)
-    elif ratio < -2: s -= min(abs(ratio), 15)
-    s += min(max(ff.get('avg_5d_main_flow',0)/1000, -10), 10)
-    s += min(max(ff.get('recent_5d_flow_trend',0)/2000, -10), 10)
-    delta = ff.get('super_large_ratio',0) - ff.get('small_ratio',0)
-    if delta > 5: s += min(delta, 15)
-    elif delta < -5: s -= min(abs(delta), 15)
-    return max(0, min(100, s))
+def get_sector_fund_flow_rank(top_n: int = 10) -> List[Dict]:
+    """返回行业资金净流入排行。"""
+    cache = _load_cache()
+    return sorted(cache.get('industry', []), key=lambda x: x.get('净额_亿元', 0), reverse=True)[:top_n]
+
+
+def compute_stock_score(ff: Optional[Dict]) -> float:
+    """基于个股资金流向打分（0-100）。"""
+    if not ff:
+        return 50.0
+    net = ff.get('净额_万元', 0)
+    turnover = ff.get('成交额_万元', 1)
+    change = ff.get('涨跌幅_pct', 0)
+    turnover_rate = ff.get('换手率_pct', 0)
+
+    if turnover <= 0:
+        return 50.0
+
+    net_ratio = net / turnover * 100
+
+    score = 50.0
+    # 主力净流入占比
+    if net_ratio > 5:
+        score += min(net_ratio, 15)
+    elif net_ratio < -5:
+        score -= min(abs(net_ratio), 15)
+
+    # 涨跌幅适度：大涨但主力净流出 = 诱多，扣分
+    if change > 5 and net_ratio < -2:
+        score -= 10
+    elif change < -5 and net_ratio > 2:
+        score += 5  # 错杀反弹
+
+    # 换手率：过高（>15%）且净流出 = 出货
+    if turnover_rate > 15 and net_ratio < -3:
+        score -= 8
+    elif 1 < turnover_rate < 15 and net_ratio > 3:
+        score += 3
+
+    return max(0, min(100, score))
+
+
+def get_sector_score(sector_name: str) -> float:
+    """根据行业名称从缓存获取资金分数。"""
+    cache = _load_cache()
+    for item in cache.get('industry', []):
+        if item.get('行业') == sector_name or sector_name in item.get('行业', ''):
+            net = item.get('净额_亿元', 0)
+            # 简单映射：净流入为+5~+15，净流出为-5~-15
+            # 行业净额通常 ±100 亿，缩放
+            return max(0, min(100, 50 + max(min(net / 3.0, 15), -15)))
+    return 50.0
+
+
+def get_concept_score(concept_name: str) -> float:
+    """根据概念名称从缓存获取资金分数。"""
+    cache = _load_cache()
+    for item in cache.get('concept', []):
+        if item.get('行业') == concept_name or concept_name in item.get('行业', ''):
+            net = item.get('净额_亿元', 0)
+            return max(0, min(100, 50 + max(min(net / 3.0, 15), -15)))
+    return 50.0
+
+
+def analyze(ticker: str, name: str = '', sector: str = '') -> Dict:
+    """个股资金流向分析主入口。"""
+    ff = get_stock_fund_flow(ticker)
+    stock_score = compute_stock_score(ff)
+    sector_score = get_sector_score(sector) if sector else 50.0
+
+    # 综合分数：个股 70% + 行业 30%
+    combined = round(stock_score * 0.7 + sector_score * 0.3, 1)
+
+    return {
+        'ticker': ticker,
+        'name': name,
+        'score': combined,
+        'stock_score': stock_score,
+        'sector_score': sector_score,
+        'data': ff or {},
+        'reasons': [
+            f"个股资金分{stock_score:.1f}",
+            f"行业资金分{sector_score:.1f}",
+        ],
+    }
+
 
 if __name__ == '__main__':
-    r = get_stock_fund_flow('600028', 'sh')
-    if r:
-        print(f'{r["ticker"]}: main_ratio={r["main_net_ratio"]:.1f}% super_large={r["super_large_ratio"]:.1f}% small={r["small_ratio"]:.1f}%')
-        print(f'  score={compute_score(r):.1f}')
-    else:
-        print('获取失败')
+    r = analyze('600028', '中国石化', '油气开采及服务')
+    print(r)

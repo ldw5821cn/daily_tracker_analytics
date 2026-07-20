@@ -1,9 +1,9 @@
 {
   "pred_date": "2026-07-20",
-  "generated_at": "2026-07-20 18:18:48",
-  "macro_score": 41.1,
-  "macro_signal": "bearish",
-  "allow_long": false,
+  "generated_at": "2026-07-20 19:05:33",
+  "macro_score": 47.6,
+  "macro_signal": "neutral",
+  "allow_long": true,
   "longs": [],
   "shorts_or_avoids": [
     {
