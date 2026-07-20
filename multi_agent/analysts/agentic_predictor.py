@@ -326,6 +326,10 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         from analysts.macro_analyst import get_macro_score_override
         raw_signal = 'bullish' if weighted >= _T['bull'] else 'bearish' if weighted <= _T['bear'] else 'neutral'
         macro_override = get_macro_score_override(macro_report, raw_signal)
+        # 强化宏观偏空压制：当宏观评分<45且原始信号为中性/看多时，额外下修
+        macro_score = macro_report.get('macro_score', 50)
+        if macro_score < 45 and raw_signal in ('neutral', 'bullish'):
+            macro_override -= (45 - macro_score) * 0.35
         weighted = max(0, min(100, weighted + macro_override))
 
     # 资金流修正（个股/ETF 使用）
@@ -347,7 +351,7 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         except Exception:
             pass
 
-    # 信号判定
+    # 信号判定（中性区间已自动收窄由 threshold 控制）
     if weighted >= _T['strong_bull']:
         signal = '看多'
     elif weighted >= _T['bull']:
@@ -358,9 +362,20 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         signal = '看空'
     else:
         signal = '中性'
+    # 宏观偏空环境下的中性陷阱修正：若技术分<55且情绪未显著偏多，降级为看空
+    if macro_report and signal == '中性':
+        macro_score = macro_report.get('macro_score', 50)
+        debate_bearish = bear_score > bull_score
+        if macro_score < 45 and tech_score < 55 and news_score < 60 and debate_bearish:
+            signal = '看空'
+            # 同步降低置信度，避免高置信度陷阱
+            confidence_penalty = 0.08
 
     # 置信度
     confidence = round(max(0.5, min(0.95, 0.5 + abs(weighted - 50) / 50 * 0.5 + min(abs(net_debate) * 0.08, 0.4))), 2)
+    # 应用宏观偏空中性降级带来的置信度惩罚
+    if 'confidence_penalty' in locals():
+        confidence = round(max(0.5, confidence - confidence_penalty), 2)
 
     # 低置信度降级
     if confidence < 0.62:
