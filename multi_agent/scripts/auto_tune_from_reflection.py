@@ -48,12 +48,18 @@ def apply_auto_tuning():
     pred_date = refl.get('pred_date')
     params = _load_json(PARAMS_PATH)
     if not params:
-        # 首次创建默认参数
-        params = {
-            'weights': {'technical': 0.30, 'fundamental': 0.25, 'sentiment': 0.15, 'macro': 0.10, 'debate': 0.20},
-            'threshold': {'strong_bull': 62, 'bull': 55, 'neutral_high': 52, 'neutral_low': 48, 'bear': 43, 'strong_bear': 38},
-            'hard_rules': {'macro_bearish_block_bullish': True, 'macro_bearish_force_bearish_if_tech_below': 55, 'macro_bearish_score_threshold': 50},
-        }
+        params = {}
+    # 兼容新版按类别参数：以默认fallback的阈值/权重，或创建默认值
+    default_params = {
+        'weights': {'technical': 0.30, 'fundamental': 0.25, 'sentiment': 0.15, 'macro': 0.10, 'debate': 0.20},
+        'threshold': {'strong_bull': 69, 'bull': 64, 'neutral_high': 61, 'neutral_low': 39, 'bear': 37, 'strong_bear': 32},
+        'hard_rules': {'macro_bearish_block_bullish': True, 'macro_bearish_force_bearish_if_tech_below': 55, 'macro_bearish_score_threshold': 50},
+    }
+    for k, v in default_params.items():
+        params.setdefault(k, v)
+    # 确保 threshold 存在且包含所有键
+    for k, v in default_params['threshold'].items():
+        params['threshold'].setdefault(k, v)
 
     # 安全：同 pred_date 不重复调参
     last_update = params.get('updated_at', '')
