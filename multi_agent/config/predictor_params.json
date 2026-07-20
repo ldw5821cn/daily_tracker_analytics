@@ -1,26 +1,7 @@
 {
   "_version": 2,
-  "updated_at": "2026-07-20T13:50:50",
+  "updated_at": "2026-07-20T18:13:06",
   "个股": {
-    "weights": {
-      "technical": 0.35,
-      "fundamental": 0.2,
-      "sentiment": 0.15,
-      "macro": 0.0,
-      "debate": 0.3
-    },
-    "threshold": {
-      "strong_bull": 69,
-      "bull": 64,
-      "neutral_high": 61,
-      "neutral_low": 45,
-      "bear": 43,
-      "strong_bear": 38
-    },
-    "stats": "train=60.1%(233) val=100.0%(31)",
-    "score": 76.1
-  },
-  "ETF": {
     "weights": {
       "technical": 0.3,
       "fundamental": 0.25,
@@ -29,15 +10,34 @@
       "debate": 0.3
     },
     "threshold": {
-      "strong_bull": 67,
-      "bull": 62,
-      "neutral_high": 59,
-      "neutral_low": 39,
-      "bear": 37,
-      "strong_bear": 32
+      "strong_bull": 63,
+      "bull": 58,
+      "neutral_high": 55,
+      "neutral_low": 37,
+      "bear": 35,
+      "strong_bear": 30
     },
-    "stats": "train=74.3%(35) val=100.0%(5)",
-    "score": 84.6
+    "stats": "train=16.7%(42) val=14.3%(7)",
+    "score": 15.7
+  },
+  "ETF": {
+    "weights": {
+      "technical": 0.35,
+      "fundamental": 0.25,
+      "sentiment": 0.15,
+      "macro": 0.0,
+      "debate": 0.25
+    },
+    "threshold": {
+      "strong_bull": 63,
+      "bull": 58,
+      "neutral_high": 55,
+      "neutral_low": 37,
+      "bear": 35,
+      "strong_bear": 30
+    },
+    "stats": "train=60.0%(5) val=100.0%(2)",
+    "score": 76.0
   },
   "期货": {
     "weights": {
@@ -55,27 +55,27 @@
       "bear": 39,
       "strong_bear": 34
     },
-    "stats": "train=37.5%(8) val=33.3%(6)",
-    "score": 35.8
+    "stats": "train=35.7%(14) val=33.3%(6)",
+    "score": 34.8
   },
   "US": {
     "weights": {
-      "technical": 0.3,
+      "technical": 0.35,
       "fundamental": 0.25,
       "sentiment": 0.15,
       "macro": 0.0,
-      "debate": 0.3
+      "debate": 0.25
     },
     "threshold": {
       "strong_bull": 67,
       "bull": 62,
       "neutral_high": 59,
-      "neutral_low": 41,
-      "bear": 39,
-      "strong_bear": 34
+      "neutral_low": 47,
+      "bear": 45,
+      "strong_bear": 40
     },
-    "stats": "train=75.0%(8) val=100.0%(4)",
-    "score": 85.0
+    "stats": "train=31.8%(44) val=35.7%(14)",
+    "score": 33.4
   },
   "_default": {
     "weights": {
@@ -86,15 +86,15 @@
       "debate": 0.3
     },
     "threshold": {
-      "strong_bull": 69,
-      "bull": 64,
-      "neutral_high": 61,
-      "neutral_low": 41,
-      "bear": 39,
-      "strong_bear": 34
+      "strong_bull": 63,
+      "bull": 58,
+      "neutral_high": 55,
+      "neutral_low": 37,
+      "bear": 35,
+      "strong_bear": 30
     },
-    "stats": "train=61.0%(213) val=87.5%(32)",
-    "score": 71.6
+    "stats": "train=14.3%(105) val=27.8%(18)",
+    "score": 19.7
   },
   "updated_by": "param_opt_v2"
 }

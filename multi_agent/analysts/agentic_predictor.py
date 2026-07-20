@@ -654,7 +654,8 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
                 key = {0: '1d', 1: '3d', 2: '5d', 3: '10d'}.get(i)
                 if key:
                     horizons[key] = _horizon_label(p.get('pred_return', 0))
-                    horizon_returns[f'{key}_return'] = p.get('pred_return', 0)
+                    # 统一存为小数（百分比 / 100），供后续回测/优化器一致使用
+                    horizon_returns[f"{key}_return"] = p.get("pred_return", 0) / 100.0
         else:
             avg_return = 0
             horizons = {'1d': '震荡', '3d': '震荡', '5d': '震荡', '10d': '震荡'}
