@@ -1174,5 +1174,68 @@
     "category": "个股",
     "theme": "半导体-EDA",
     "sector": "半导体"
+  },
+  {
+    "ticker": "688525",
+    "name": "佰维存储",
+    "category": "个股",
+    "theme": "存储-NAND/DRAM",
+    "sector": "半导体"
+  },
+  {
+    "ticker": "603986",
+    "name": "兆易创新",
+    "category": "个股",
+    "theme": "存储-NOR/DRAM",
+    "sector": "半导体"
+  },
+  {
+    "ticker": "300223",
+    "name": "北京君正",
+    "category": "个股",
+    "theme": "存储-利基型DRAM",
+    "sector": "半导体"
+  },
+  {
+    "ticker": "688008",
+    "name": "澜起科技",
+    "category": "个股",
+    "theme": "内存接口芯片",
+    "sector": "半导体"
+  },
+  {
+    "ticker": "001309",
+    "name": "德明利",
+    "category": "个股",
+    "theme": "存储-主控模组",
+    "sector": "半导体"
+  },
+  {
+    "ticker": "688018",
+    "name": "乐鑫科技",
+    "category": "个股",
+    "theme": "Wi-Fi MCU",
+    "sector": "半导体"
+  },
+  {
+    "ticker": "688220",
+    "name": "翱捷科技",
+    "category": "个股",
+    "theme": "蜂窝基带芯片",
+    "sector": "半导体"
+  },
+  {
+    "ticker": "603501",
+    "name": "韦尔股份",
+    "category": "个股",
+    "theme": "CIS图像传感器",
+    "sector": "半导体"
+  },
+  {
+    "ticker": "688012",
+    "name": "中微公司",
+    "category": "个股",
+    "theme": "半导体-刻蚀设备",
+    "sector": "半导体"
   }
 ]
