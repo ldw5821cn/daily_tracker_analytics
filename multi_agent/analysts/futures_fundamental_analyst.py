@@ -11,11 +11,38 @@ sys.path.insert(0, '/home/liudawei/github/daily_tracker_analytics/multi_agent')
 
 import json
 from datetime import datetime, timedelta
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 from dataclasses import dataclass
 
 import warnings
 warnings.filterwarnings('ignore')
+
+
+# 舆情基本面辅助函数
+def _get_news_sentiment(name: str, pagesize: int = 10) -> Dict:
+    """获取期货品种新闻舆情，返回情绪分和原始新闻列表。"""
+    try:
+        from core.news_engine import fetch_futures_news
+        from analysts.news_analyst import _calc_sentiment
+        items = fetch_futures_news(name, pagesize=pagesize)
+        if not items:
+            return {'score': 0.0, 'count': 0, 'items': []}
+        sentiment = _calc_sentiment(items)
+        return {
+            'score': sentiment['score'],
+            'count': len(items),
+            'positive_keywords': sentiment.get('positive_keywords', []),
+            'negative_keywords': sentiment.get('negative_keywords', []),
+            'items': items[:5],
+        }
+    except Exception:
+        return {'score': 0.0, 'count': 0, 'items': []}
+
+
+def _score_news_sentiment(sentiment: Dict) -> float:
+    """将新闻舆情得分 [-1, 1] 映射到基本面得分 [35, 65]。"""
+    score = 50.0 + sentiment['score'] * 15.0
+    return max(0.0, min(100.0, score))
 
 
 # 品种代码映射：系统代码 -> akshare 名称/代码
@@ -221,11 +248,11 @@ def _get_warehouse_receipt(ticker: str) -> Optional[Dict]:
     return _try_akshare(fetch, default=None)
 
 
-def _score_fundamentals(inv: Dict, basis: Dict, foreign: Dict, wh: Dict) -> Dict:
+def _score_fundamentals(inv: Dict, basis: Dict, foreign: Dict, wh: Dict, news_sentiment: Dict = None) -> Dict:
     """
     基本面打分，0-100，50 为中性。
-    偏空信号：库存增加、基差走弱/深度贴水扩大、外盘跌、仓单增加
-    偏多信号：库存减少、基差走强/升水扩大、外盘涨、仓单减少
+    偏空信号：库存增加、基差走弱/深度贴水扩大、外盘跌、仓单增加、舆情偏空
+    偏多信号：库存减少、基差走强/升水扩大、外盘涨、仓单减少、舆情偏多
     """
     scores = []
     weights = []
@@ -290,6 +317,14 @@ def _score_fundamentals(inv: Dict, basis: Dict, foreign: Dict, wh: Dict) -> Dict
         else:
             scores.append(50); weights.append(0.6); reasons.append('仓单持平')
 
+    # 新闻舆情：作为增量信号，权重 0.3；有 5 条以上新闻才参与
+    if news_sentiment and news_sentiment.get('count', 0) >= 5:
+        news_score = _score_news_sentiment(news_sentiment)
+        scores.append(news_score)
+        weights.append(0.3)
+        news_bias = '舆情偏多' if news_sentiment['score'] > 0.1 else '舆情偏空' if news_sentiment['score'] < -0.1 else '舆情中性'
+        reasons.append(f"{news_bias}({news_sentiment['score']:+.2f})")
+
     if not scores:
         return {'score': 50, 'bias': 'neutral', 'reasons': ['无基本面数据']}
 
@@ -330,8 +365,9 @@ def analyze(ticker: str, name: str = "") -> Dict:
     basis = _get_basis(spec['spot_symbol'])
     foreign = _get_foreign(ticker)
     wh = _get_warehouse_receipt(ticker)
+    news_sentiment = _get_news_sentiment(spec['name'])
 
-    result = _score_fundamentals(inv, basis, foreign, wh)
+    result = _score_fundamentals(inv, basis, foreign, wh, news_sentiment)
 
     return {
         'ticker': ticker,
@@ -344,6 +380,7 @@ def analyze(ticker: str, name: str = "") -> Dict:
             'basis': basis,
             'foreign': foreign,
             'warehouse': wh,
+            'news_sentiment': news_sentiment,
         },
     }
 
