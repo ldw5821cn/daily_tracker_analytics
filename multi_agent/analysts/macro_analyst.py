@@ -45,13 +45,11 @@ INDEX_TICKERS = {
 RISK_ON_SCORE = 60
 RISK_OFF_SCORE = 40
 
-
 def _safe_float(val, default=0.0):
     try:
         return float(val)
     except Exception:
         return default
-
 
 def _get_index_data(ticker: str, period: str = '30d') -> Optional[pd.DataFrame]:
     """获取指数数据。"""
@@ -62,7 +60,6 @@ def _get_index_data(ticker: str, period: str = '30d') -> Optional[pd.DataFrame]:
     except Exception:
         return None
     return None
-
 
 def _calc_index_score(ticker: str, name: str) -> Dict:
     """计算单个指数的技术得分。"""
@@ -107,7 +104,6 @@ def _calc_index_score(ticker: str, name: str) -> Dict:
         'vol_20d': round(vol, 2),
     }
 
-
 def _get_market_breadth() -> Dict:
     """市场广度：基于沪深300/中证500/上证指数的涨跌情况 + 涨停池数量估算。"""
     breadth = {'advances': 0, 'declines': 0, 'score': 50, 'limit_up': 0, 'limit_down': 0}
@@ -134,7 +130,6 @@ def _get_market_breadth() -> Dict:
         pass
 
     return breadth
-
 
 def _get_us_macro_data() -> Dict:
     """获取美国宏观数据（利率、CPI、失业率、初请失业金）。"""
@@ -168,7 +163,6 @@ def _get_us_macro_data() -> Dict:
         data['error'] = str(e)
     return data
 
-
 def _get_yield_curve() -> Dict:
     """获取中美国债收益率曲线代理数据。"""
     data = {'china_10y': None, 'china_2y': None, 'us_10y_proxy': None, 'spread': None}
@@ -188,7 +182,6 @@ def _get_yield_curve() -> Dict:
         data['error'] = str(e)
     return data
 
-
 def _get_vix_proxy() -> Dict:
     """VIX 代理：基于沪深300 20日波动率。"""
     proxy = {'vix_proxy': None, 'level': 'normal'}
@@ -200,7 +193,6 @@ def _get_vix_proxy() -> Dict:
         elif vol > 30: proxy['level'] = 'high'
         elif vol > 45: proxy['level'] = 'extreme'
     return proxy
-
 
 def _get_risk_on_off(macro_score: float, us_macro: Dict, china_macro: Dict, vix_proxy: Dict, yield_curve: Dict) -> Dict:
     """
@@ -277,7 +269,6 @@ def _get_risk_on_off(macro_score: float, us_macro: Dict, china_macro: Dict, vix_
         'score': score,
         'reasons': reasons,
     }
-
 
 def _get_china_macro_data() -> Dict:
     """获取中国宏观数据：LPR、存款准备金率、Shibor、M2、PMI、CPI、PPI、GDP。"""
@@ -373,7 +364,6 @@ def _get_china_macro_data() -> Dict:
         data['error'] = str(e)
     return data
 
-
 def _get_sector_rotation_proxy() -> Dict:
     """板块轮动热度代理：基于主要行业 ETF / 指数相对强弱。"""
     sectors = {
@@ -398,6 +388,14 @@ def _get_sector_rotation_proxy() -> Dict:
             pass
     heat = sorted(heat, key=lambda x: x['ret_5d'], reverse=True)
     return {'heat': heat[:10], 'top_sector': heat[0]['name'] if heat else 'unknown'}
+
+def _get_global_semi_momentum() -> Dict:
+    """获取全球半导体（美日韩）综合动量。"""
+    try:
+        from core.global_semi_data import get_global_semi_momentum
+        return get_global_semi_momentum()
+    except Exception as e:
+        return {'error': str(e), 'composite_score': 50, 'composite_signal': 'neutral'}
 
 
 def _score_china_macro(china_macro: Dict, yield_curve: Dict) -> float:
@@ -466,7 +464,6 @@ def _score_china_macro(china_macro: Dict, yield_curve: Dict) -> float:
 
     return max(0, min(100, round(score, 1)))
 
-
 def analyze(current_date: Optional[str] = None) -> Dict:
     """
     宏观市场分析主入口。
@@ -488,6 +485,7 @@ def analyze(current_date: Optional[str] = None) -> Dict:
     vix_proxy = _get_vix_proxy()
     risk_on_off = _get_risk_on_off(50, us_macro, china_macro, vix_proxy, yield_curve)
     sector_rotation = _get_sector_rotation_proxy()
+    global_semi = _get_global_semi_momentum()
 
     # 综合宏观得分（指数动量40% + 市场广度15% + 中国宏观数据30% + 风险修正）
     avg_index_score = sum(s['score'] for s in index_scores) / len(index_scores) if index_scores else 50
@@ -550,6 +548,12 @@ def analyze(current_date: Optional[str] = None) -> Dict:
     summary_lines.append(f"- 美国10Y代理: {yield_curve.get('us_10y_proxy')}%")
     summary_lines.append(f"- VIX 代理(A股波动率): {vix_proxy.get('vix_proxy')}, 状态: {vix_proxy.get('level')}")
     summary_lines.append("")
+    summary_lines.append("## 全球半导体动量（美日韩）")
+    summary_lines.append(f"- 综合得分: {global_semi.get('composite_score', 50)} / 信号: {global_semi.get('composite_signal', 'neutral')}")
+    summary_lines.append(f"- 美股: {global_semi.get('us', {}).get('score', 50)} (5日 {global_semi.get('us', {}).get('ret_5d_avg', 0):+.2f}%, 20日 {global_semi.get('us', {}).get('ret_20d_avg', 0):+.2f}%)")
+    summary_lines.append(f"- 日本: {global_semi.get('jp', {}).get('score', 50)} (5日 {global_semi.get('jp', {}).get('ret_5d_avg', 0):+.2f}%, 20日 {global_semi.get('jp', {}).get('ret_20d_avg', 0):+.2f}%)")
+    summary_lines.append(f"- 韩国: {global_semi.get('kr', {}).get('score', 50)} (5日 {global_semi.get('kr', {}).get('ret_5d_avg', 0):+.2f}%, 20日 {global_semi.get('kr', {}).get('ret_20d_avg', 0):+.2f}%)")
+    summary_lines.append("")
     summary_lines.append("## 板块轮动")
     if sector_rotation['heat']:
         summary_lines.append(f"- 领涨板块: {sector_rotation['top_sector']}")
@@ -569,9 +573,9 @@ def analyze(current_date: Optional[str] = None) -> Dict:
         'yield_curve': yield_curve,
         'vix_proxy': vix_proxy,
         'sector_rotation': sector_rotation,
+        'global_semi': global_semi,
         'summary': "\n".join(summary_lines),
     }
-
 
 def get_macro_score_override(macro_report: Dict, individual_signal: str) -> float:
     """
@@ -590,7 +594,6 @@ def get_macro_score_override(macro_report: Dict, individual_signal: str) -> floa
     elif macro_signal == 'bearish':
         return base * strength if individual_signal == 'bearish' else -base * strength if individual_signal == 'bullish' else 0
     return 0
-
 
 if __name__ == '__main__':
     r = analyze()

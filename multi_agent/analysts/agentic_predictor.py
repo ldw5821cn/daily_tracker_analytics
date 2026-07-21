@@ -351,6 +351,25 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         except Exception:
             pass
 
+    # 全球半导体修正（影响 A 股半导体/芯片/机器人/AI 相关标的）
+    global_semi_override = 0
+    global_semi_note = ""
+    if macro_report and not is_futures(ticker) and not is_us_ticker(ticker):
+        try:
+            gs = macro_report.get('global_semi', {})
+            if gs:
+                gs_score = gs.get('composite_score', 50)
+                gs_signal = gs.get('composite_signal', 'neutral')
+                # 相关板块：半导体、芯片、CPU/GPU、半导体材料、半导体设备、机器人、人工智能
+                related = ('半导体', '芯片', 'CPU', 'GPU', '半导体材料', '半导体设备', '机器人', '人工智能', '算力')
+                if any(k in (sector or '') for k in related):
+                    # 海外半导体每偏离 50 一点，A 股相关板块修正 0.35 分，上限 ±8 分
+                    global_semi_override = max(-8, min(8, (gs_score - 50) * 0.35))
+                    global_semi_note = f"海外半导体{gs_signal}({gs_score})修正{global_semi_override:+.1f}"
+                    weighted = max(0, min(100, weighted + global_semi_override))
+        except Exception:
+            pass
+
     # 信号判定（中性区间已自动收窄由 threshold 控制）
     if weighted >= _T['strong_bull']:
         signal = '看多'
@@ -420,6 +439,7 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
             'debate_net': net_debate,
             'macro_override': macro_override,
             'fund_flow_override': fund_flow_override,
+            'global_semi_override': global_semi_override,
         },
     }
 

@@ -1237,5 +1237,26 @@
     "category": "个股",
     "theme": "半导体-刻蚀设备",
     "sector": "半导体"
+  },
+  {
+    "ticker": "SMH",
+    "name": "美国半导体ETF-VanEck",
+    "category": "US",
+    "theme": "半导体",
+    "sector": "半导体"
+  },
+  {
+    "ticker": "SOXX",
+    "name": "美国半导体ETF-iShares",
+    "category": "US",
+    "theme": "半导体",
+    "sector": "半导体"
+  },
+  {
+    "ticker": "QQQ",
+    "name": "纳斯达克100ETF",
+    "category": "US",
+    "theme": "科技宽基",
+    "sector": "纳斯达克100"
   }
 ]
