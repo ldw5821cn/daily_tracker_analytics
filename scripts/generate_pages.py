@@ -60,6 +60,7 @@ TABS = [
     ('futures.html', '📉', '期货'),
     ('prediction.html', '🏛️', '预测'),
     ('portfolio.html', '💼', '持仓组合'),
+    ('backtest.html', '📈', '回测'),
     ('reflection.html', '🧠', '复盘'),
 ]
 
@@ -313,6 +314,90 @@ def _portfolio_backtest_html():
     </div>"""
 
 
+def _forward_return_html():
+    """生成 forward return 回测统计 HTML。"""
+    bt = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'prediction_backtest.json'))
+    if not bt or 'summary' not in bt:
+        return ''
+
+    summary = bt.get('summary', {})
+    portfolio = bt.get('portfolio_summary', {})
+    rows = []
+    for h in ['1d', '3d', '5d', '10d']:
+        s = summary.get(h, {})
+        p = portfolio.get(h, {})
+        if not s:
+            continue
+        rows.append(
+            f'<tr><td><b>{h}</b></td>'
+            f'<td>{s.get("overall_mean_return", 0):+.2f}%</td>'
+            f'<td>{s.get("overall_median_return", 0):+.2f}%</td>'
+            f'<td>{s.get("overall_win_rate", 0):.1f}%</td>'
+            f'<td>{s.get("overall_direction_accuracy", 0):.1f}%</td>'
+            f'<td>{s.get("total", 0)}</td>'
+            f'<td>{p.get("mean_return", 0):+.2f}%</td>'
+            f'<td>{p.get("cumulative_return", 0):+.2f}%</td>'
+            f'<td>{p.get("win_rate", 0):.1f}%</td></tr>'
+        )
+    if not rows:
+        return ''
+
+    sig_rows = []
+    for h in ['1d', '3d', '5d', '10d']:
+        s = summary.get(h, {})
+        for sig, st in s.get('by_signal', {}).items():
+            sig_rows.append(
+                f'<tr><td>{h}</td><td>{sig}</td><td>{st.get("count", 0)}</td>'
+                f'<td>{st.get("mean_return", 0):+.2f}%</td>'
+                f'<td>{st.get("median_return", 0):+.2f}%</td>'
+                f'<td>{st.get("win_rate", 0):.1f}%</td>'
+                f'<td>{st.get("direction_accuracy", 0):.1f}%</td></tr>'
+            )
+
+    cat_rows = []
+    for h in ['1d', '3d', '5d', '10d']:
+        s = summary.get(h, {})
+        for cat, st in s.get('by_category', {}).items():
+            cat_rows.append(
+                f'<tr><td>{h}</td><td>{cat}</td><td>{st.get("count", 0)}</td>'
+                f'<td>{st.get("mean_return", 0):+.2f}%</td>'
+                f'<td>{st.get("win_rate", 0):.1f}%</td>'
+                f'<td>{st.get("direction_accuracy", 0):.1f}%</td></tr>'
+            )
+
+    date_range = bt.get('date_range', {})
+    n_preds = bt.get('n_predictions', 0)
+    n_recs = bt.get('n_records', 0)
+    generated = bt.get('generated_at', '')
+
+    return f"""
+    <div class="section-title">📈 全历史预测 Forward Return 回测</div>
+    <div class="note">
+        <p><b>样本范围：</b>{date_range.get('start', '')} ~ {date_range.get('end', '')} · 共 {n_preds} 条预测 · {n_recs} 条记录 · 生成于 {generated}</p>
+        <p>Forward Return = 以预测日收盘价为基准，未来 N 个交易日的实际收益率。推荐组合统计只取看多信号做等权持有。</p>
+    </div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>horizon</th><th>整体均值</th><th>整体中位</th><th>整体胜率</th><th>方向准确率</th><th>样本数</th><th>组合日均</th><th>组合累计</th><th>组合胜率</th></tr></thead>
+        <tbody>{"".join(rows)}</tbody>
+    </table>
+    </div>
+    <div class="section-title">📊 按信号方向</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>horizon</th><th>信号</th><th>样本数</th><th>均值</th><th>中位</th><th>胜率</th><th>方向准确率</th></tr></thead>
+        <tbody>{"".join(sig_rows)}</tbody>
+    </table>
+    </div>
+    <div class="section-title">📂 按资产类别</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>horizon</th><th>类别</th><th>样本数</th><th>均值</th><th>胜率</th><th>方向准确率</th></tr></thead>
+        <tbody>{"".join(cat_rows)}</tbody>
+    </table>
+    </div>"""
+
+
 def _validation_html():
     val = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'morning_validation.json'))
     if not val or not val.get('overall'):
@@ -438,8 +523,7 @@ def generate_prediction_page(stats, rows, out_name='prediction.html', dates=None
 {_stat_grid(stats_cards)}
 {cards}
 {_validation_html()}
-{_portfolio_backtest_html()}
-{cat_tables}
+{_portfolio_backtest_html()}\n{_forward_return_html()}\n{cat_tables}
 """
     price_dates = sorted(set(r.get('price_date') for r in rows if r.get('price_date')))
     price_date_str = f"价格日期: {', '.join(price_dates)}" if price_dates else "价格日期: 未知"
@@ -478,8 +562,9 @@ def generate_archive_page(pred_date, dates=None):
     body = f"""
 {_stat_grid(stats_cards)}
 {cards}
-{_archive_validation_html(pred_date)}
-{_archive_reflection_html(pred_date)}
+{_validation_html()}
+{_portfolio_backtest_html()}
+{_forward_return_html()}
 {cat_tables}
 """
     price_dates = sorted(set(r.get('price_date') for r in rows if r.get('price_date')))
@@ -558,6 +643,7 @@ def generate_index_page(stats, rows, dates=None):
 {scenario_cards}
 </div>
 {_portfolio_backtest_html()}
+{_forward_return_html()}
 {_table_html(sorted(bullish, key=lambda x: x.get('bt_score', 0), reverse=True)[:10], '🏆 Top 10 看多个股/ETF/期货')}
 """
     date = datetime.now().strftime('%Y-%m-%d %H:%M')
@@ -811,6 +897,18 @@ def _write(name, html):
     print(f"✅ 生成: {path}")
 
 
+def generate_backtest_page(dates=None):
+    """生成 Forward Return 回测独立页面。"""
+    body = f"""
+{_forward_return_html()}
+{_portfolio_backtest_html()}
+"""
+    title = "📈 回测验证"
+    subtitle = "全历史预测 forward return 回测 · 按信号方向/资产类别拆解"
+    html = _build_page_skeleton(title, body, 'backtest.html', subtitle, tag='📊 数据驱动回测', dates=dates)
+    _write('backtest.html', html)
+
+
 def generate_reflection_page(dates=None):
     refl = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'prediction_reflection.json'))
     if not refl:
@@ -916,6 +1014,7 @@ if __name__ == '__main__':
     generate_category_page(rows, '期货', 'futures.html', '📉 期货', dates=dates)
     generate_prediction_page(stats, rows, dates=dates)
     generate_portfolio_page(dates=dates)
+    generate_backtest_page(dates=dates)
     generate_reflection_page(dates=dates)
     for d in dates:
         generate_archive_page(d, dates=dates)

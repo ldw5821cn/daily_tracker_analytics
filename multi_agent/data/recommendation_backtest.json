@@ -1,0 +1,157 @@
+{
+  "generated_at": "2026-07-22 12:14:23",
+  "n_records": 9,
+  "n_files": 1,
+  "summary": {
+    "1d": {
+      "total": 1,
+      "overall_mean_return": -1.269,
+      "overall_win_rate": 0.0,
+      "by_signal": {
+        "看空_short/avoid": {
+          "count": 1,
+          "mean_return": -1.269,
+          "median_return": -1.269,
+          "win_rate": 0.0,
+          "direction_accuracy": 100.0
+        }
+      },
+      "by_category": {
+        "ETF": {
+          "count": 1,
+          "mean_return": -1.269,
+          "win_rate": 0.0
+        }
+      }
+    }
+  },
+  "portfolio_summary": {},
+  "records": [
+    {
+      "pred_date": "2026-07-21",
+      "ticker": "000612",
+      "name": "焦作万方",
+      "category": "个股",
+      "signal": "看多",
+      "side": "long",
+      "entry_price": 10.73,
+      "forward_return_1d": null,
+      "forward_return_3d": null,
+      "forward_return_5d": null,
+      "forward_return_10d": null,
+      "status": "ok"
+    },
+    {
+      "pred_date": "2026-07-21",
+      "ticker": "601600",
+      "name": "中国铝业",
+      "category": "个股",
+      "signal": "看多",
+      "side": "long",
+      "entry_price": 9.16,
+      "forward_return_1d": null,
+      "forward_return_3d": null,
+      "forward_return_5d": null,
+      "forward_return_10d": null,
+      "status": "ok"
+    },
+    {
+      "pred_date": "2026-07-21",
+      "ticker": "V",
+      "name": "Visa",
+      "category": "US",
+      "signal": "看多",
+      "side": "long",
+      "entry_price": 360.57,
+      "forward_return_1d": null,
+      "forward_return_3d": null,
+      "forward_return_5d": null,
+      "forward_return_10d": null,
+      "status": "ok"
+    },
+    {
+      "pred_date": "2026-07-21",
+      "ticker": "MA",
+      "name": "万事达",
+      "category": "US",
+      "signal": "看多",
+      "side": "long",
+      "entry_price": 547.44,
+      "forward_return_1d": null,
+      "forward_return_3d": null,
+      "forward_return_5d": null,
+      "forward_return_10d": null,
+      "status": "ok"
+    },
+    {
+      "pred_date": "2026-07-21",
+      "ticker": "NTES",
+      "name": "网易",
+      "category": "US",
+      "signal": "看多",
+      "side": "long",
+      "entry_price": 134.2,
+      "forward_return_1d": null,
+      "forward_return_3d": null,
+      "forward_return_5d": null,
+      "forward_return_10d": null,
+      "status": "ok"
+    },
+    {
+      "pred_date": "2026-07-21",
+      "ticker": "LC0",
+      "name": "碳酸锂",
+      "category": "期货",
+      "signal": "看空",
+      "side": "short/avoid",
+      "entry_price": 143900.0,
+      "forward_return_1d": null,
+      "forward_return_3d": null,
+      "forward_return_5d": null,
+      "forward_return_10d": null,
+      "status": "ok"
+    },
+    {
+      "pred_date": "2026-07-21",
+      "ticker": "000733",
+      "name": "振华科技",
+      "category": "个股",
+      "signal": "看空",
+      "side": "short/avoid",
+      "entry_price": 37.65,
+      "forward_return_1d": null,
+      "forward_return_3d": null,
+      "forward_return_5d": null,
+      "forward_return_10d": null,
+      "status": "ok"
+    },
+    {
+      "pred_date": "2026-07-21",
+      "ticker": "159530",
+      "name": "机器人ETF易方达",
+      "category": "ETF",
+      "signal": "看空",
+      "side": "short/avoid",
+      "entry_price": 1.34,
+      "forward_return_1d": -0.012686567164179197,
+      "forward_return_3d": null,
+      "forward_return_5d": null,
+      "forward_return_10d": null,
+      "status": "ok"
+    },
+    {
+      "pred_date": "2026-07-21",
+      "ticker": "600703",
+      "name": "三安光电",
+      "category": "个股",
+      "signal": "看空",
+      "side": "short/avoid",
+      "entry_price": 11.6,
+      "forward_return_1d": null,
+      "forward_return_3d": null,
+      "forward_return_5d": null,
+      "forward_return_10d": null,
+      "status": "ok"
+    }
+  ]
+}

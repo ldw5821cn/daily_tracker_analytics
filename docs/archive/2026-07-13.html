@@ -51,6 +51,7 @@ tr:hover { background: #334155; }
 <a href="futures.html" class="">📉 期货</a>
 <a href="prediction.html" class="">🏛️ 预测</a>
 <a href="portfolio.html" class="">💼 持仓组合</a>
+<a href="backtest.html" class="">📈 回测</a>
 <a href="reflection.html" class="">🧠 复盘</a>
 <select onchange="location.href=this.value" style="background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:20px;padding:8px 14px;font-size:13px;outline:none;cursor:pointer"><option value="" disabled>📅 历史归档</option><option value="archive/2026-07-21.html" >2026-07-21</option><option value="archive/2026-07-20.html" >2026-07-20</option><option value="archive/2026-07-18.html" >2026-07-18</option><option value="archive/2026-07-16.html" >2026-07-16</option><option value="archive/2026-07-14.html" >2026-07-14</option><option value="archive/2026-07-13.html" selected>2026-07-13</option><option value="archive/2026-07-12.html" >2026-07-12</option></select>
 </div>
@@ -115,7 +116,65 @@ tr:hover { background: #334155; }
             </div>
 </div>
 
+    <div class="section-title">🎯 昨日 1 日方向验证（2026-07-16 预测）</div>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="num" style="color:#22c55e">32.5%</div>
+            <div class="label">总体准确率 (69/212)</div>
+        </div>
+        
+            <div class="stat-card">
+                <div class="num" style="color:#ef4444">52.2%</div>
+                <div class="label">ETF (12/23)</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" style="color:#22c55e">13.8%</div>
+                <div class="label">个股 (12/87)</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" style="color:#ef4444">51.0%</div>
+                <div class="label">期货 (25/49)</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" style="color:#22c55e">37.7%</div>
+                <div class="label">US (20/53)</div>
+            </div>
+    </div>
 
+
+    <div class="section-title">📊 VectorBT 组合滚动回测</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>场景</th><th>年化</th><th>回撤</th><th>夏普</th><th>Calmar</th><th>交易次数</th><th>含义</th></tr></thead>
+        <tbody><tr ><td>每日多空（无成本）</td><td style="color:#ef4444">+39.50%</td><td>-26.13%</td><td>1.19</td><td>1.51</td><td>4655</td><td>每日按技术得分 Top 做多、Bottom 做空，无交易成本</td></tr><tr ><td>每日多空（含成本）</td><td style="color:#ef4444">+12.43%</td><td>-34.59%</td><td>0.52</td><td>0.36</td><td>4695</td><td>每日按技术得分 Top 做多、Bottom 做空，扣 0.1% 单边成本</td></tr><tr ><td>每周只做多（无成本）</td><td style="color:#ef4444">+44.40%</td><td>-24.70%</td><td>1.29</td><td>1.80</td><td>3871</td><td>每周五按技术得分判定下周方向，无成本</td></tr><tr ><td>每周只做多（含成本）</td><td style="color:#ef4444">+31.52%</td><td>-28.63%</td><td>1.01</td><td>1.10</td><td>3900</td><td>每周五按技术得分判定下周方向，扣 0.1% 成本</td></tr><tr ><td>每周只做多+止损（无成本）</td><td style="color:#ef4444">+19.81%</td><td>-24.62%</td><td>0.79</td><td>0.80</td><td>2294</td><td>每周五只做多 + 8% 止损，无成本</td></tr><tr style="background:#1e293b;font-weight:bold"><td>每周只做多+止损（含成本） ⭐</td><td style="color:#ef4444">+10.86%</td><td>-27.42%</td><td>0.51</td><td>0.40</td><td>2318</td><td>每周五只做多 + 8% 止损，含成本</td></tr></tbody>
+    </table>
+    </div>
+
+    <div class="section-title">📈 全历史预测 Forward Return 回测</div>
+    <div class="note">
+        <p><b>样本范围：</b>2026-07-10 ~ 2026-07-21 · 共 1644 条预测 · 6576 条记录 · 生成于 2026-07-22 12:19:51</p>
+        <p>Forward Return = 以预测日收盘价为基准，未来 N 个交易日的实际收益率。推荐组合统计只取看多信号做等权持有。</p>
+    </div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>horizon</th><th>整体均值</th><th>整体中位</th><th>整体胜率</th><th>方向准确率</th><th>样本数</th><th>组合日均</th><th>组合累计</th><th>组合胜率</th></tr></thead>
+        <tbody><tr><td><b>1d</b></td><td>-1.37%</td><td>-0.52%</td><td>42.3%</td><td>41.4%</td><td>1428</td><td>-2.17%</td><td>-8.69%</td><td>0.0%</td></tr><tr><td><b>3d</b></td><td>-2.76%</td><td>-0.70%</td><td>41.6%</td><td>39.6%</td><td>985</td><td>-3.35%</td><td>-13.42%</td><td>0.0%</td></tr><tr><td><b>5d</b></td><td>-6.28%</td><td>-2.42%</td><td>35.0%</td><td>41.1%</td><td>761</td><td>-6.63%</td><td>-26.51%</td><td>0.0%</td></tr></tbody>
+    </table>
+    </div>
+    <div class="section-title">📊 按信号方向</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>horizon</th><th>信号</th><th>样本数</th><th>均值</th><th>中位</th><th>胜率</th><th>方向准确率</th></tr></thead>
+        <tbody><tr><td>1d</td><td>bearish</td><td>298</td><td>-1.93%</td><td>-1.61%</td><td>37.2%</td><td>62.4%</td></tr><tr><td>1d</td><td>bullish</td><td>107</td><td>-0.97%</td><td>-0.33%</td><td>37.4%</td><td>37.4%</td></tr><tr><td>1d</td><td>neutral</td><td>1023</td><td>-1.25%</td><td>-0.38%</td><td>44.3%</td><td>35.7%</td></tr><tr><td>3d</td><td>bearish</td><td>263</td><td>-2.90%</td><td>-2.10%</td><td>34.6%</td><td>65.4%</td></tr><tr><td>3d</td><td>bullish</td><td>107</td><td>-2.28%</td><td>-0.62%</td><td>32.7%</td><td>32.7%</td></tr><tr><td>3d</td><td>neutral</td><td>615</td><td>-2.78%</td><td>-0.31%</td><td>46.2%</td><td>29.8%</td></tr><tr><td>5d</td><td>bearish</td><td>247</td><td>-9.03%</td><td>-8.32%</td><td>23.9%</td><td>76.1%</td></tr><tr><td>5d</td><td>bullish</td><td>107</td><td>-3.04%</td><td>-0.96%</td><td>39.2%</td><td>39.2%</td></tr><tr><td>5d</td><td>neutral</td><td>407</td><td>-5.46%</td><td>-1.14%</td><td>40.5%</td><td>20.4%</td></tr></tbody>
+    </table>
+    </div>
+    <div class="section-title">📂 按资产类别</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>horizon</th><th>类别</th><th>样本数</th><th>均值</th><th>胜率</th><th>方向准确率</th></tr></thead>
+        <tbody><tr><td>1d</td><td>ETF</td><td>194</td><td>-3.82%</td><td>43.8%</td><td>46.4%</td></tr><tr><td>1d</td><td>US</td><td>265</td><td>-0.39%</td><td>42.3%</td><td>50.9%</td></tr><tr><td>1d</td><td>个股</td><td>717</td><td>-1.65%</td><td>40.7%</td><td>31.0%</td></tr><tr><td>1d</td><td>期货</td><td>252</td><td>+0.25%</td><td>45.6%</td><td>57.1%</td></tr><tr><td>3d</td><td>ETF</td><td>148</td><td>-4.80%</td><td>42.6%</td><td>52.7%</td></tr><tr><td>3d</td><td>US</td><td>159</td><td>-0.57%</td><td>45.9%</td><td>40.9%</td></tr><tr><td>3d</td><td>个股</td><td>524</td><td>-3.76%</td><td>36.6%</td><td>33.0%</td></tr><tr><td>3d</td><td>期货</td><td>154</td><td>+0.35%</td><td>53.2%</td><td>48.0%</td></tr><tr><td>5d</td><td>ETF</td><td>115</td><td>-9.01%</td><td>28.7%</td><td>47.8%</td></tr><tr><td>5d</td><td>US</td><td>106</td><td>-1.11%</td><td>42.5%</td><td>46.2%</td></tr><tr><td>5d</td><td>个股</td><td>435</td><td>-8.38%</td><td>31.0%</td><td>37.5%</td></tr><tr><td>5d</td><td>期货</td><td>105</td><td>+0.22%</td><td>50.5%</td><td>43.8%</td></tr></tbody>
+    </table>
+    </div>
 
     <div class="section-title">📂 ETF (23只)</div>
     <div class="table-responsive">

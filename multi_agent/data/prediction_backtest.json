@@ -1,0 +1,220 @@
+{
+  "generated_at": "2026-07-22 12:19:51",
+  "n_predictions": 1644,
+  "n_records": 6576,
+  "date_range": {
+    "start": "2026-07-10",
+    "end": "2026-07-21"
+  },
+  "summary": {
+    "1d": {
+      "total": 1428,
+      "overall_mean_return": -1.374,
+      "overall_median_return": -0.517,
+      "overall_win_rate": 42.3,
+      "overall_direction_accuracy": 41.39,
+      "by_signal": {
+        "bearish": {
+          "count": 298,
+          "mean_return": -1.926,
+          "median_return": -1.609,
+          "std": 6.224,
+          "win_rate": 37.25,
+          "direction_accuracy": 62.42
+        },
+        "bullish": {
+          "count": 107,
+          "mean_return": -0.974,
+          "median_return": -0.333,
+          "std": 4.213,
+          "win_rate": 37.38,
+          "direction_accuracy": 37.38
+        },
+        "neutral": {
+          "count": 1023,
+          "mean_return": -1.255,
+          "median_return": -0.377,
+          "std": 7.448,
+          "win_rate": 44.28,
+          "direction_accuracy": 35.68
+        }
+      },
+      "by_category": {
+        "ETF": {
+          "count": 194,
+          "mean_return": -3.824,
+          "win_rate": 43.81,
+          "direction_accuracy": 46.39
+        },
+        "US": {
+          "count": 265,
+          "mean_return": -0.393,
+          "win_rate": 42.26,
+          "direction_accuracy": 50.94
+        },
+        "个股": {
+          "count": 717,
+          "mean_return": -1.646,
+          "win_rate": 40.73,
+          "direction_accuracy": 30.96
+        },
+        "期货": {
+          "count": 252,
+          "mean_return": 0.254,
+          "win_rate": 45.63,
+          "direction_accuracy": 57.14
+        }
+      }
+    },
+    "3d": {
+      "total": 985,
+      "overall_mean_return": -2.76,
+      "overall_median_return": -0.698,
+      "overall_win_rate": 41.62,
+      "overall_direction_accuracy": 39.59,
+      "by_signal": {
+        "bearish": {
+          "count": 263,
+          "mean_return": -2.904,
+          "median_return": -2.105,
+          "std": 7.308,
+          "win_rate": 34.6,
+          "direction_accuracy": 65.4
+        },
+        "bullish": {
+          "count": 107,
+          "mean_return": -2.281,
+          "median_return": -0.621,
+          "std": 5.633,
+          "win_rate": 32.71,
+          "direction_accuracy": 32.71
+        },
+        "neutral": {
+          "count": 615,
+          "mean_return": -2.782,
+          "median_return": -0.31,
+          "std": 9.316,
+          "win_rate": 46.18,
+          "direction_accuracy": 29.76
+        }
+      },
+      "by_category": {
+        "ETF": {
+          "count": 148,
+          "mean_return": -4.802,
+          "win_rate": 42.57,
+          "direction_accuracy": 52.7
+        },
+        "US": {
+          "count": 159,
+          "mean_return": -0.575,
+          "win_rate": 45.91,
+          "direction_accuracy": 40.88
+        },
+        "个股": {
+          "count": 524,
+          "mean_return": -3.761,
+          "win_rate": 36.64,
+          "direction_accuracy": 33.02
+        },
+        "期货": {
+          "count": 154,
+          "mean_return": 0.35,
+          "win_rate": 53.25,
+          "direction_accuracy": 48.05
+        }
+      }
+    },
+    "5d": {
+      "total": 761,
+      "overall_mean_return": -6.279,
+      "overall_median_return": -2.417,
+      "overall_win_rate": 34.95,
+      "overall_direction_accuracy": 41.13,
+      "by_signal": {
+        "bearish": {
+          "count": 247,
+          "mean_return": -9.026,
+          "median_return": -8.318,
+          "std": 11.408,
+          "win_rate": 23.89,
+          "direction_accuracy": 76.11
+        },
+        "bullish": {
+          "count": 107,
+          "mean_return": -3.043,
+          "median_return": -0.959,
+          "std": 7.42,
+          "win_rate": 39.25,
+          "direction_accuracy": 39.25
+        },
+        "neutral": {
+          "count": 407,
+          "mean_return": -5.463,
+          "median_return": -1.144,
+          "std": 12.506,
+          "win_rate": 40.54,
+          "direction_accuracy": 20.39
+        }
+      },
+      "by_category": {
+        "ETF": {
+          "count": 115,
+          "mean_return": -9.008,
+          "win_rate": 28.7,
+          "direction_accuracy": 47.83
+        },
+        "US": {
+          "count": 106,
+          "mean_return": -1.113,
+          "win_rate": 42.45,
+          "direction_accuracy": 46.23
+        },
+        "个股": {
+          "count": 435,
+          "mean_return": -8.384,
+          "win_rate": 31.03,
+          "direction_accuracy": 37.47
+        },
+        "期货": {
+          "count": 105,
+          "mean_return": 0.216,
+          "win_rate": 50.48,
+          "direction_accuracy": 43.81
+        }
+      }
+    }
+  },
+  "portfolio_summary": {
+    "1d": {
+      "n_days": 4,
+      "mean_return": -2.172,
+      "median_return": -2.648,
+      "std": 1.479,
+      "win_rate": 0.0,
+      "cumulative_return": -8.687,
+      "max_drawdown": -5.312,
+      "sharpe": -11.654
+    },
+    "3d": {
+      "n_days": 4,
+      "mean_return": -3.355,
+      "median_return": -3.331,
+      "std": 1.546,
+      "win_rate": 0.0,
+      "cumulative_return": -13.421,
+      "max_drawdown": -8.183,
+      "sharpe": -17.227
+    },
+    "5d": {
+      "n_days": 4,
+      "mean_return": -6.628,
+      "median_return": -7.762,
+      "std": 4.528,
+      "win_rate": 0.0,
+      "cumulative_return": -26.513,
+      "max_drawdown": -15.717,
+      "sharpe": -11.618
+    }
+  }
+}
