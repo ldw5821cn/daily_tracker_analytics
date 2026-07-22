@@ -40,9 +40,8 @@ from predictor import collect_market_data, build_prediction_prompt
 # ============================================================
 
 def get_stock_pool() -> list:
-    """获取股票池（带缓存，每日刷新一次；Tushare 频率受限时回退到本地缓存/文件）"""
+    """获取股票池（带缓存，每日刷新一次；Tushare stock_basic 频率受限时回退到 daily 截面）"""
     cache_file = '/tmp/a_share_stock_pool.json'
-    backup_pickle = '/tmp/a_share_pool_20260722.pkl'
     
     today = datetime.now().strftime('%Y-%m-%d')
     
@@ -56,28 +55,37 @@ def get_stock_pool() -> list:
             print(f"  ✅ 使用缓存: {len(cached)} 只股票")
             return cached
     
-    # 检查 pickle 缓存（外部预取）
-    if os.path.exists(backup_pickle):
-        import pandas as pd
-        try:
-            df = pd.read_pickle(backup_pickle)
-            if 'market' in df.columns:
-                df = df[df['market'].isin(['主板', '创业板', '科创板'])]
-                df = df[~df['name'].str.startswith(('ST', '*ST', '退', 'N', 'C'))]
-                stocks = df.to_dict('records')
-                with open(cache_file, 'w', encoding='utf-8') as f:
-                    json.dump(stocks, f, ensure_ascii=False, indent=2)
-                print(f"  ✅ 使用 pickle 缓存: {len(stocks)} 只股票")
-                return stocks
-        except Exception:
-            pass
-    
     # 从Tushare获取
     import tushare as ts
     print(f"  📡 从Tushare获取股票列表...")
     pro = ts.pro_api()
-    df = pro.stock_basic(exchange='', list_status='L',
-                         fields='ts_code,symbol,name,market,list_date')
+    try:
+        df = pro.stock_basic(exchange='', list_status='L',
+                             fields='ts_code,symbol,name,market,list_date')
+    except Exception as e:
+        msg = str(e)
+        if 'stock_basic' in msg and ('超限' in msg or 'frequency' in msg.lower() or '权限' in msg):
+            print(f"  ⚠️ stock_basic 频率受限，回退到每日行情截面构建池...")
+            # 取最近一个交易日的 daily 全量 A 股
+            trade_date = (datetime.now() - __import__('datetime').timedelta(days=1)).strftime('%Y%m%d')
+            for _ in range(5):
+                df_daily = pro.daily(trade_date=trade_date)
+                if df_daily is not None and len(df_daily) > 1000:
+                    break
+                trade_date = (datetime.strptime(trade_date, '%Y%m%d') - __import__('datetime').timedelta(days=1)).strftime('%Y%m%d')
+            else:
+                raise RuntimeError("无法获取股票池：stock_basic 超限且 daily 接口无数据") from e
+            df = df_daily[['ts_code']].copy()
+            df['symbol'] = df['ts_code'].str.split('.', n=1).str[0]
+            df['market'] = df['ts_code'].map(lambda x: '主板' if x.endswith('.SH') else '创业板' if x.startswith('30') else '主板')
+            # 创业板/科创板按代码开头判断
+            df['market'] = df['symbol'].apply(
+                lambda c: '科创板' if c.startswith('68') else ('创业板' if c.startswith('30') or c.startswith('43') else '主板')
+            )
+            df['name'] = ''
+            df['list_date'] = ''
+        else:
+            raise
     df = df[df['market'].isin(['主板', '创业板', '科创板'])]
     df = df[~df['name'].str.startswith(('ST', '*ST', '退', 'N', 'C'))]
     stocks = df.to_dict('records')
