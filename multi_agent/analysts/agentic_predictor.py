@@ -101,14 +101,27 @@ def _get_threshold(category=''):
     return THRESHOLD
 
 def _get_weights(category: str = '') -> dict:
-    """\u8fd4\u56de\u7c7b\u522b\u7279\u5b9a\u6743\u91cd\u3002\u652f\u6301 V2 \u591a\u7c7b\u522b\u4f18\u5316\u683c\u5f0f\u3002"""
-    v = _PARAMS.get(category, _PARAMS.get('_default', {})) if _PARAMS.get('_version') == 2 else _PARAMS
-    return v.get('weights', WEIGHTS) if isinstance(v, dict) else WEIGHTS
+    """返回类别特定权重。支持 V2/V4 多类别优化格式。"""
+    if _PARAMS.get('_version') in (2, 4):
+        v = _PARAMS.get(category, _PARAMS.get('_default', {}))
+        return v.get('weights', WEIGHTS) if isinstance(v, dict) else WEIGHTS
+    return _PARAMS.get('weights', WEIGHTS)
+
 
 def _get_threshold(category: str = '') -> dict:
-    v = _PARAMS.get(category, _PARAMS.get('_default', {})) if _PARAMS.get('_version') == 2 else _PARAMS
-    return v.get('threshold', THRESHOLD) if isinstance(v, dict) else THRESHOLD
+    """返回类别特定阈值。支持 V2/V4 多类别优化格式。"""
+    if _PARAMS.get('_version') in (2, 4):
+        v = _PARAMS.get(category, _PARAMS.get('_default', {}))
+        return v.get('threshold', THRESHOLD) if isinstance(v, dict) else THRESHOLD
+    return _PARAMS.get('threshold', THRESHOLD)
 
+
+def _get_fund_flow_strength(category: str = '') -> float:
+    """返回类别特定资金流修正强度。"""
+    if _PARAMS.get('_version') in (2, 4):
+        v = _PARAMS.get(category, _PARAMS.get('_default', {}))
+        return v.get('fund_flow_strength', 0.0) if isinstance(v, dict) else 0.0
+    return _PARAMS.get('fund_flow_strength', 0.0)
 # 信号中文化映射
 SIGNAL_CN = {
     'bullish': '看多',

@@ -40,18 +40,37 @@ from predictor import collect_market_data, build_prediction_prompt
 # ============================================================
 
 def get_stock_pool() -> list:
-    """获取股票池（带缓存，每日刷新一次）"""
+    """获取股票池（带缓存，每日刷新一次；Tushare 频率受限时回退到本地缓存/文件）"""
     cache_file = '/tmp/a_share_stock_pool.json'
+    backup_pickle = '/tmp/a_share_pool_20260722.pkl'
     
-    # 检查缓存是否当天
+    today = datetime.now().strftime('%Y-%m-%d')
+    
+    # 检查 JSON 缓存是否当天
     if os.path.exists(cache_file):
         mtime = os.path.getmtime(cache_file)
         cache_date = datetime.fromtimestamp(mtime).strftime('%Y-%m-%d')
-        if cache_date == datetime.now().strftime('%Y-%m-%d'):
+        if cache_date == today:
             with open(cache_file, 'r', encoding='utf-8') as f:
                 cached = json.load(f)
             print(f"  ✅ 使用缓存: {len(cached)} 只股票")
             return cached
+    
+    # 检查 pickle 缓存（外部预取）
+    if os.path.exists(backup_pickle):
+        import pandas as pd
+        try:
+            df = pd.read_pickle(backup_pickle)
+            if 'market' in df.columns:
+                df = df[df['market'].isin(['主板', '创业板', '科创板'])]
+                df = df[~df['name'].str.startswith(('ST', '*ST', '退', 'N', 'C'))]
+                stocks = df.to_dict('records')
+                with open(cache_file, 'w', encoding='utf-8') as f:
+                    json.dump(stocks, f, ensure_ascii=False, indent=2)
+                print(f"  ✅ 使用 pickle 缓存: {len(stocks)} 只股票")
+                return stocks
+        except Exception:
+            pass
     
     # 从Tushare获取
     import tushare as ts

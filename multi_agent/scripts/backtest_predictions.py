@@ -241,6 +241,7 @@ def backtest():
         },
         'summary': summary,
         'portfolio_summary': portfolio_summary,
+        'records': rdf[rdf['forward_return'].notna()].to_dict('records'),
     }
     with open(OUTPUT_PATH, 'w', encoding='utf-8') as f:
         json.dump(report, f, ensure_ascii=False, indent=2)
