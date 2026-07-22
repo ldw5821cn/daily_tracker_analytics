@@ -34,6 +34,10 @@ def _connect(path: str, timeout: int = 10) -> sqlite3.Connection:
 
 def init_predictions_db(conn: sqlite3.Connection) -> None:
     """初始化预测数据库表结构。"""
+    # WAL 模式提升并发读写性能，避免长时间锁表
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA busy_timeout=5000")
+    conn.execute("PRAGMA synchronous=NORMAL")
     conn.executescript("""
         CREATE TABLE IF NOT EXISTS agentic_predictions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -71,6 +75,9 @@ def init_predictions_db(conn: sqlite3.Connection) -> None:
         CREATE INDEX IF NOT EXISTS idx_agentic_pred_date ON agentic_predictions(pred_date);
         CREATE INDEX IF NOT EXISTS idx_agentic_ticker ON agentic_predictions(ticker);
         CREATE INDEX IF NOT EXISTS idx_agentic_category ON agentic_predictions(category);
+        CREATE INDEX IF NOT EXISTS idx_agentic_pred_date_category ON agentic_predictions(pred_date, category);
+        CREATE INDEX IF NOT EXISTS idx_agentic_ticker_pred_date ON agentic_predictions(ticker, pred_date);
+        CREATE INDEX IF NOT EXISTS idx_agentic_pred_date_signal ON agentic_predictions(pred_date, signal);
 
         CREATE TABLE IF NOT EXISTS unified_validation_results (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -107,31 +114,37 @@ def save_predictions(predictions: List[Dict[str, Any]]) -> Dict[str, int]:
         today = datetime.now().strftime('%Y-%m-%d')
         now = datetime.now().strftime('%H:%M')
 
-        for p in predictions:
-            if 'error' in p:
-                stats['errors'] += 1
-                continue
+        valid = [p for p in predictions if 'error' not in p]
+        stats['errors'] = len(predictions) - len(valid)
+        if not valid:
+            return stats
+
+        # 先批量删除旧记录
+        tickers = tuple({p['ticker'] for p in valid})
+        if len(tickers) == 1:
+            conn.execute(
+                "DELETE FROM agentic_predictions WHERE ticker=? AND pred_date=?",
+                (tickers[0], today)
+            )
+        else:
+            conn.execute(
+                f"DELETE FROM agentic_predictions WHERE ticker IN ({','.join('?'*len(tickers))}) AND pred_date=?",
+                tickers + (today,)
+            )
+
+        # 再批量插入
+        rows = []
+        for p in valid:
             try:
-                conn.execute(
-                    "DELETE FROM agentic_predictions WHERE ticker=? AND pred_date=?",
-                    (p['ticker'], today)
-                )
-                conn.execute("""
-                    INSERT INTO agentic_predictions
-                    (ticker, name, sector, category, signal, confidence, weighted_score,
-                     target_price, stop_loss, position_pct,
-                     horizon_1d, horizon_3d, horizon_5d, horizon_10d,
-                     horizon_1d_return, horizon_3d_return, horizon_5d_return, horizon_10d_return,
-                     key_support, key_resistance, reasoning,
-                     bull_points, bear_points, component_scores, backtest_summary,
-                     current_price, price_date, pred_date, pred_time)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """, (
+                rows.append((
                     p['ticker'], p['name'], p.get('sector', ''), p.get('category', '个股'),
                     p['signal'], p['confidence'], p['weighted_score'],
                     p['target_price'], p['stop_loss'], p['position_pct'],
                     p['horizon_1d'], p['horizon_3d'], p['horizon_5d'], p['horizon_10d'],
-                    p['horizon_1d_return'], p['horizon_3d_return'], p['horizon_5d_return'], p['horizon_10d_return'],
+                    _to_float(p['horizon_1d_return']),
+                    _to_float(p['horizon_3d_return']),
+                    _to_float(p['horizon_5d_return']),
+                    _to_float(p['horizon_10d_return']),
                     p['key_support'], p['key_resistance'], p['reasoning'],
                     json.dumps(p['bull_points'], ensure_ascii=False) if isinstance(p['bull_points'], (list, dict)) else p['bull_points'],
                     json.dumps(p['bear_points'], ensure_ascii=False) if isinstance(p['bear_points'], (list, dict)) else p['bear_points'],
@@ -139,14 +152,43 @@ def save_predictions(predictions: List[Dict[str, Any]]) -> Dict[str, int]:
                     json.dumps(p['backtest_summary'], ensure_ascii=False) if isinstance(p['backtest_summary'], (list, dict)) else p['backtest_summary'],
                     p['current_price'], p.get('price_date', ''), today, now
                 ))
-                stats['saved'] += 1
             except Exception as e:
-                print(f"保存预测失败 {p.get('ticker')}: {e}")
+                print(f"准备预测失败 {p.get('ticker')}: {e}")
                 stats['errors'] += 1
+
+        if rows:
+            conn.executemany("""
+                INSERT INTO agentic_predictions
+                (ticker, name, sector, category, signal, confidence, weighted_score,
+                 target_price, stop_loss, position_pct,
+                 horizon_1d, horizon_3d, horizon_5d, horizon_10d,
+                 horizon_1d_return, horizon_3d_return, horizon_5d_return, horizon_10d_return,
+                 key_support, key_resistance, reasoning,
+                 bull_points, bear_points, component_scores, backtest_summary,
+                 current_price, price_date, pred_date, pred_time)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, rows)
+            stats['saved'] = len(rows)
         conn.commit()
         return stats
     finally:
         conn.close()
+
+
+def _to_float(v):
+    """将可能为字符串/数字的 horizon return 统一转为 float。"""
+    if v is None:
+        return None
+    if isinstance(v, (int, float)):
+        return float(v)
+    try:
+        return float(v)
+    except (ValueError, TypeError):
+        return None
+
+
+# 保持向后兼容的导入
+init_predictions_db(get_predictions_conn())
 
 
 def get_latest_predictions(pred_date: Optional[str] = None) -> List[Dict[str, Any]]:
