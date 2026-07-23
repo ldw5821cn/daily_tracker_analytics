@@ -40,6 +40,7 @@ from core.data_layer import get_realtime_price, is_futures, get_stock_data, calc
 from core.us_data import get_us_stock_data, is_us_ticker
 from core.scenario_backtests import scenario_backtests, recommend_scenario, SCENARIO_NAME_CN, SCENARIO_DESC
 from core.db import get_predictions_conn, save_predictions as _db_save_predictions
+from core.warehouse import save_features as _warehouse_save_features
 import pandas as pd
 
 DB_PATH = os.path.join(PROJECT_ROOT, 'multi_agent', 'data', 'llm_predictions.db')
@@ -108,12 +109,31 @@ def _get_weights(category: str = '') -> dict:
     return _PARAMS.get('weights', WEIGHTS)
 
 
-def _get_threshold(category: str = '') -> dict:
-    """返回类别特定阈值。支持 V2/V4 多类别优化格式。"""
+def _get_threshold(category: str = '', macro_report: Optional[Dict] = None) -> dict:
+    """返回类别特定阈值，并叠加宏观状态感知动态调整。支持 V2/V4 多类别优化格式。"""
     if _PARAMS.get('_version') in (2, 4):
         v = _PARAMS.get(category, _PARAMS.get('_default', {}))
-        return v.get('threshold', THRESHOLD) if isinstance(v, dict) else THRESHOLD
-    return _PARAMS.get('threshold', THRESHOLD)
+        base = v.get('threshold', THRESHOLD) if isinstance(v, dict) else THRESHOLD
+    else:
+        base = _PARAMS.get('threshold', THRESHOLD)
+    # 动态阈值：根据宏观评分调整 bullish/bearish 门槛
+    macro_score = macro_report.get('macro_score', 50) if macro_report else 50
+    adjusted = dict(base)
+    if macro_score < 45:  # 宏观偏空：降低看多门槛、提高看空门槛
+        adjusted['bull'] = max(48, adjusted['bull'] - 6)
+        adjusted['strong_bull'] = adjusted['bull'] + 5
+        adjusted['bear'] = min(50, adjusted['bear'] + 4)
+        adjusted['strong_bear'] = adjusted['bear'] - 5
+        adjusted['neutral_high'] = adjusted['bull'] - 3
+        adjusted['neutral_low'] = adjusted['bear'] + 2
+    elif macro_score > 60:  # 宏观偏多：提高看空门槛、降低看多门槛
+        adjusted['bull'] = max(48, adjusted['bull'] - 3)
+        adjusted['strong_bull'] = adjusted['bull'] + 5
+        adjusted['bear'] = min(50, adjusted['bear'] - 3)
+        adjusted['strong_bear'] = adjusted['bear'] - 5
+        adjusted['neutral_high'] = adjusted['bull'] - 3
+        adjusted['neutral_low'] = adjusted['bear'] + 2
+    return adjusted
 
 
 def _get_fund_flow_strength(category: str = '') -> float:
@@ -334,7 +354,7 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     # 宏观修正（来自 macro_analyst 的数据驱动修正）
     macro_override = 0
     macro_note = ""
-    _T = _get_threshold(category)
+    _T = _get_threshold(category, macro_report)
     if macro_report:
         from analysts.macro_analyst import get_macro_score_override
         raw_signal = 'bullish' if weighted >= _T['bull'] else 'bearish' if weighted <= _T['bear'] else 'neutral'
@@ -831,6 +851,47 @@ def generate_for_watchlist(watchlist_path: str = None, categories: List[str] = N
 
     stats = save_predictions(predictions)
     stats['errors'] += errors
+
+    # 同步保存 LLM 特征快照到 warehouse（用于长期参数优化与回测）
+    try:
+        pred_date = datetime.now().strftime('%Y-%m-%d')
+        snapshots = []
+        for pr in predictions:
+            snapshots.append({
+                'date': pred_date,
+                'ticker': pr['ticker'],
+                'category': pr['category'],
+                'features': {
+                    'name': pr.get('name'),
+                    'sector': pr.get('sector'),
+                    'current_price': pr.get('current_price'),
+                    'price_date': pr.get('price_date'),
+                    'signal': pr.get('signal'),
+                    'confidence': pr.get('confidence'),
+                    'weighted_score': pr.get('weighted_score'),
+                    'target_price': pr.get('target_price'),
+                    'stop_loss': pr.get('stop_loss'),
+                    'position_pct': pr.get('position_pct'),
+                    'component_scores': pr.get('component_scores', {}),
+                    'horizon_1d': pr.get('horizon_1d'),
+                    'horizon_3d': pr.get('horizon_3d'),
+                    'horizon_5d': pr.get('horizon_5d'),
+                    'horizon_10d': pr.get('horizon_10d'),
+                    'horizon_1d_return': pr.get('horizon_1d_return'),
+                    'horizon_3d_return': pr.get('horizon_3d_return'),
+                    'horizon_5d_return': pr.get('horizon_5d_return'),
+                    'horizon_10d_return': pr.get('horizon_10d_return'),
+                },
+                'signal': pr.get('signal', 'neutral'),
+                'confidence': pr.get('confidence', 0.5),
+                'score': pr.get('weighted_score', 50),
+                'source': 'agentic_llm',
+            })
+        wh_stats = _warehouse_save_features(snapshots)
+        print(f"[warehouse] 保存特征快照 {wh_stats['saved']} 条, 失败 {wh_stats['errors']} 条")
+    except Exception as e:
+        print(f'[warehouse] 特征快照保存失败: {e}')
+
     print(f"\n✅ 保存 {stats['saved']} 条, 失败 {stats['errors']} 条")
     return {'predictions': predictions, 'stats': stats}
 

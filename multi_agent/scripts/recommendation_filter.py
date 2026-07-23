@@ -50,9 +50,12 @@ def build_recommendations(pred_date: Optional[str] = None, max_long_positions: i
 
     for p in rows:
         sig = p.get('signal', '中性')
+        conf = p.get('confidence', 0.5)
         sig_en = SIGNAL_CN.get(sig, 'neutral')
+        # 过滤低置信度信号：中性/weak_neutral 一律不进入；看多/看空需满足最低置信度
         if sig_en == 'neutral':
             continue
+
         price = p.get('current_price')
         if not price or price <= 0:
             continue
