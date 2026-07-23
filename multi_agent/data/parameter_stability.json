@@ -1,0 +1,167 @@
+{
+  "generated_at": "2026-07-23T13:10:48",
+  "pred_date_range": [
+    "2026-07-10",
+    "2026-07-23"
+  ],
+  "n_days": 11,
+  "n_predictions": 1923,
+  "categories": {
+    "个股": {
+      "status": "ok",
+      "windows": [
+        {
+          "name": "前半段",
+          "dates": [
+            "2026-07-10",
+            "2026-07-14"
+          ],
+          "n": 435,
+          "coverage": 0.48735632183908045,
+          "n_bull": 12,
+          "n_bear": 200,
+          "accuracy": 72.16981132075472,
+          "bull_mean": -11.17,
+          "bear_mean": -9.79
+        },
+        {
+          "name": "后半段",
+          "dates": [
+            "2026-07-16",
+            "2026-07-23"
+          ],
+          "n": 488,
+          "coverage": 0.004098360655737705,
+          "n_bull": 1,
+          "n_bear": 1,
+          "accuracy": 50.0,
+          "bull_mean": -3.39,
+          "bear_mean": -11.46
+        }
+      ],
+      "mean_accuracy": 61.1,
+      "accuracy_cv": 0.18,
+      "mean_coverage": 24.6,
+      "coverage_cv": 0.98,
+      "trainable": false,
+      "note": "数据不足或跨窗口不稳定，暂不训练"
+    },
+    "ETF": {
+      "status": "ok",
+      "windows": [
+        {
+          "name": "前半段",
+          "dates": [
+            "2026-07-10",
+            "2026-07-14"
+          ],
+          "n": 115,
+          "coverage": 0.2956521739130435,
+          "n_bull": 4,
+          "n_bear": 30,
+          "accuracy": 97.05882352941177,
+          "bull_mean": -0.61,
+          "bear_mean": -11.12
+        },
+        {
+          "name": "后半段",
+          "dates": [
+            "2026-07-16",
+            "2026-07-23"
+          ],
+          "n": 115,
+          "coverage": 0.034782608695652174,
+          "n_bull": 1,
+          "n_bear": 3,
+          "accuracy": 75.0,
+          "bull_mean": -0.75,
+          "bear_mean": -3.9
+        }
+      ],
+      "mean_accuracy": 86.0,
+      "accuracy_cv": 0.13,
+      "mean_coverage": 16.5,
+      "coverage_cv": 0.79,
+      "trainable": false,
+      "note": "数据不足或跨窗口不稳定，暂不训练"
+    },
+    "期货": {
+      "status": "ok",
+      "windows": [
+        {
+          "name": "前半段",
+          "dates": [
+            "2026-07-10",
+            "2026-07-14"
+          ],
+          "n": 105,
+          "coverage": 0.22857142857142856,
+          "n_bull": 9,
+          "n_bear": 15,
+          "accuracy": 41.66666666666667,
+          "bull_mean": -0.47,
+          "bear_mean": 0.78
+        },
+        {
+          "name": "后半段",
+          "dates": [
+            "2026-07-16",
+            "2026-07-23"
+          ],
+          "n": 294,
+          "coverage": 0.0,
+          "n_bull": 0,
+          "n_bear": 0,
+          "accuracy": 0,
+          "bull_mean": null,
+          "bear_mean": null
+        }
+      ],
+      "mean_accuracy": 20.8,
+      "accuracy_cv": 1.0,
+      "mean_coverage": 11.4,
+      "coverage_cv": 1.0,
+      "trainable": false,
+      "note": "数据不足或跨窗口不稳定，暂不训练"
+    },
+    "US": {
+      "status": "ok",
+      "windows": [
+        {
+          "name": "前半段",
+          "dates": [
+            "2026-07-10",
+            "2026-07-14"
+          ],
+          "n": 106,
+          "coverage": 0.4716981132075472,
+          "n_bull": 27,
+          "n_bear": 23,
+          "accuracy": 46.0,
+          "bull_mean": -0.09,
+          "bear_mean": -1.4
+        },
+        {
+          "name": "后半段",
+          "dates": [
+            "2026-07-16",
+            "2026-07-23"
+          ],
+          "n": 265,
+          "coverage": 0.0,
+          "n_bull": 0,
+          "n_bear": 0,
+          "accuracy": 0,
+          "bull_mean": null,
+          "bear_mean": null
+        }
+      ],
+      "mean_accuracy": 23.0,
+      "accuracy_cv": 1.0,
+      "mean_coverage": 23.6,
+      "coverage_cv": 1.0,
+      "trainable": false,
+      "note": "数据不足或跨窗口不稳定，暂不训练"
+    }
+  }
+}
