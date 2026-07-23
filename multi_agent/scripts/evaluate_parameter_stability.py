@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""参数稳定性评估：按时间窗口切片，检查当前参数在不同日期段的稳定性。"""
+"""参数稳定性评估：按时间窗口切片，仅评估有真实 5d 收益的样本。"""
 import json
 import os
 import sqlite3
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime
 from collections import defaultdict
 
 PR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -21,22 +21,37 @@ def load_params():
         return json.load(f)
 
 
-def load_returns():
+def load_bars_by_ticker():
     conn = sqlite3.connect(WH, timeout=10)
     conn.row_factory = sqlite3.Row
-    rows = conn.execute("SELECT date, ticker, close FROM daily_bar ORDER BY ticker, date").fetchall()
+    rows = conn.execute("SELECT date, ticker, close, category FROM daily_bar ORDER BY ticker, date").fetchall()
     conn.close()
     bars = {}
     for r in rows:
-        bars.setdefault(r["ticker"], []).append((r["date"], r["close"]))
+        bars.setdefault(r["ticker"], []).append((r["date"], r["close"], r["category"]))
+    return bars
+
+
+def build_returns(bars_by_ticker):
     ret_map = {}
-    for tk, seq in bars.items():
+    for tk, seq in bars_by_ticker.items():
         dates = [s[0] for s in seq]
         closes = [s[1] for s in seq]
         for i, d in enumerate(dates):
             if i + 5 < len(dates) and closes[i] and closes[i + 5]:
                 ret_map[(d, tk)] = (closes[i + 5] - closes[i]) / closes[i]
     return ret_map
+
+
+def category_max_dates(bars_by_ticker):
+    max_dates = {}
+    for tk, seq in bars_by_ticker.items():
+        cat = seq[0][2] if seq else None
+        if cat:
+            max_dates[cat] = max(max_dates.get(cat, ""), seq[-1][0])
+    if max_dates.get("futures"):
+        max_dates["期货"] = max_dates["futures"]
+    return max_dates
 
 
 def load_predictions():
@@ -93,17 +108,16 @@ def classify(score, th):
 
 
 def evaluate_window(rows, cfg, ret_map):
+    evaluable = [r for r in rows if (r["d"], r["ticker"]) in ret_map]
     bull_rets, bear_rets = [], []
     correct = total = 0
     n_bull = n_bear = 0
-    for r in rows:
+    for r in evaluable:
         score = compute_weighted(r, cfg)
         sig = classify(score, cfg["threshold"])
         if sig == "neutral":
             continue
-        fwd = ret_map.get((r["d"], r["ticker"]))
-        if fwd is None:
-            continue
+        fwd = ret_map[(r["d"], r["ticker"])]
         total += 1
         if sig == "bullish":
             n_bull += 1
@@ -120,7 +134,8 @@ def evaluate_window(rows, cfg, ret_map):
     bear_mean = sum(bear_rets) / len(bear_rets) if bear_rets else None
     return {
         "n": len(rows),
-        "coverage": total / len(rows) if rows else 0,
+        "n_evaluable": len(evaluable),
+        "coverage": total / len(evaluable) if evaluable else 0,
         "n_bull": n_bull,
         "n_bear": n_bear,
         "accuracy": acc,
@@ -131,23 +146,28 @@ def evaluate_window(rows, cfg, ret_map):
 
 def main():
     params = load_params()
-    ret_map = load_returns()
+    bars_by_ticker = load_bars_by_ticker()
+    ret_map = build_returns(bars_by_ticker)
+    cat_max = category_max_dates(bars_by_ticker)
     preds = load_predictions()
-    all_dates = sorted(set(p["d"] for p in preds))
+
+    # 只保留有真实 5d 收益的预测，避免跨类别延迟污染
+    evaluable_preds = [p for p in preds if (p["d"], p["ticker"]) in ret_map]
+    all_dates = sorted(set(p["d"] for p in evaluable_preds))
     if len(all_dates) < 3:
-        print(f"预测日期不足: {len(all_dates)} 天，无法评估稳定性")
+        print(f"可评估日期不足: {len(all_dates)} 天，无法评估稳定性")
         return
 
-    # 按类别分组
     by_cat = defaultdict(list)
-    for p in preds:
+    for p in evaluable_preds:
         by_cat[p["cat"]].append(p)
 
     report = {
         "generated_at": datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
         "pred_date_range": [all_dates[0], all_dates[-1]],
         "n_days": len(all_dates),
-        "n_predictions": len(preds),
+        "n_predictions": len(evaluable_preds),
+        "warehouse_max_dates": cat_max,
         "categories": {},
     }
 
@@ -158,22 +178,18 @@ def main():
             report["categories"][cat] = {"status": "insufficient_data"}
             continue
 
-        # 按日期切分为 2-3 个窗口
         n = len(all_dates)
         windows = []
         if n >= 8:
-            windows = [
-                ("前半段", all_dates[:n // 2]),
-                ("后半段", all_dates[n // 2:]),
-            ]
+            windows = ["前半段", all_dates[:n // 2]], ["后半段", all_dates[n // 2:]]
         if n >= 12:
             windows = [
-                ("第一段", all_dates[:n // 3]),
-                ("第二段", all_dates[n // 3:2 * n // 3]),
-                ("第三段", all_dates[2 * n // 3:]),
+                ["第一段", all_dates[:n // 3]],
+                ["第二段", all_dates[n // 3:2 * n // 3]],
+                ["第三段", all_dates[2 * n // 3:]],
             ]
         if not windows:
-            windows = [("全部", all_dates)]
+            windows = [["全部", all_dates]]
 
         window_results = []
         for name, dates in windows:
@@ -181,9 +197,10 @@ def main():
             ev = evaluate_window(subset, cfg, ret_map)
             window_results.append({"name": name, "dates": [dates[0], dates[-1]], **ev})
 
-        # 稳定性评分：准确率变异系数、覆盖率变异系数、bull_mean 范围
-        accs = [w["accuracy"] for w in window_results if w["n"] >= 5]
-        covs = [w["coverage"] for w in window_results if w["n"] >= 5]
+        # 只统计有可评估样本的窗口
+        valid_windows = [w for w in window_results if w["n_evaluable"] >= 5]
+        accs = [w["accuracy"] for w in valid_windows]
+        covs = [w["coverage"] for w in valid_windows]
         mean_acc = sum(accs) / len(accs) if accs else 0
         std_acc = (sum((a - mean_acc) ** 2 for a in accs) / len(accs)) ** 0.5 if accs else 0
         cv_acc = std_acc / mean_acc if mean_acc else 0
@@ -191,7 +208,6 @@ def main():
         std_cov = (sum((c - mean_cov) ** 2 for c in covs) / len(covs)) ** 0.5 if covs else 0
         cv_cov = std_cov / mean_cov if mean_cov else 0
 
-        # 如果数据足够且稳定性好，才建议训练
         trainable = len(all_dates) >= 30 and cv_acc < 0.5 and cv_cov < 0.5 and mean_cov >= 0.2
         report["categories"][cat] = {
             "status": "ok",
