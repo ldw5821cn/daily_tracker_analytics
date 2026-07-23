@@ -314,6 +314,41 @@ def _portfolio_backtest_html():
     </div>"""
 
 
+def _model_performance_html():
+    """生成 warehouse 真实 5d 收益模型表现 HTML。"""
+    mp = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'model_performance.json'))
+    if not mp or 'categories' not in mp:
+        return ''
+    generated = mp.get('generated_at', '')[:19]
+    rows = []
+    for cat, st in mp['categories'].items():
+        if st.get('status') != 'ok':
+            rows.append(f'<tr><td>{cat}</td><td colspan="6" style="color:#94a3b8">数据不足（{st.get("n", 0)} 条）</td></tr>')
+            continue
+        rows.append(
+            f'<tr><td><b>{cat}</b></td>'
+            f'<td>{st.get("n", 0)}</td>'
+            f'<td>{st.get("n_bull", 0)}</td>'
+            f'<td>{st.get("n_bear", 0)}</td>'
+            f'<td style="color:{"#ef4444" if (st.get("bullish_mean") or 0) >= 0 else "#22c55e"}">{st.get("bullish_mean") if st.get("bullish_mean") is not None else "-"}</td>'
+            f'<td style="color:{"#ef4444" if (st.get("bearish_mean") or 0) >= 0 else "#22c55e"}">{st.get("bearish_mean") if st.get("bearish_mean") is not None else "-"}</td>'
+            f'<td>{st.get("direction_accuracy", 0):.1f}%</td>'
+            f'<td>{st.get("coverage", 0):.1f}%</td></tr>'
+        )
+    return f"""
+    <div class="section-title">🏭 Warehouse 真实 5d 收益模型表现</div>
+    <div class="note">
+        <p><b>基于仓库实际收盘价的 5 日 forward return 回测。</b>当前样本来自 {mp.get('pred_date', '')} 前所有历史预测，共 {mp.get('ret_map_count', 0)} 条价格-收益记录。生成于 {generated}。</p>
+        <p><b>说明：</b>看多信号偏多表示模型偏乐观；看多信号均值为负表示当前参数在 bull 阈值附近表现不佳。数据仍偏少，结果仅供参考，不用于直接调整参数。</p>
+    </div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>类别</th><th>样本</th><th>看多</th><th>看空</th><th>看多平均</th><th>看空平均</th><th>方向准确率</th><th>覆盖率</th></tr></thead>
+        <tbody>{"".join(rows)}</tbody>
+    </table>
+    </div>"""
+
+
 def _forward_return_html():
     """生成 forward return 回测统计 HTML。"""
     bt = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'prediction_backtest.json'))
@@ -563,6 +598,7 @@ def generate_archive_page(pred_date, dates=None):
 {_stat_grid(stats_cards)}
 {cards}
 {_validation_html()}
+{_model_performance_html()}
 {_portfolio_backtest_html()}
 {_forward_return_html()}
 {cat_tables}
@@ -642,6 +678,7 @@ def generate_index_page(stats, rows, dates=None):
 <div class="stats-grid">
 {scenario_cards}
 </div>
+{_model_performance_html()}
 {_portfolio_backtest_html()}
 {_forward_return_html()}
 {_table_html(sorted(bullish, key=lambda x: x.get('bt_score', 0), reverse=True)[:10], '🏆 Top 10 看多个股/ETF/期货')}
@@ -900,6 +937,7 @@ def _write(name, html):
 def generate_backtest_page(dates=None):
     """生成 Forward Return 回测独立页面。"""
     body = f"""
+{_model_performance_html()}
 {_forward_return_html()}
 {_portfolio_backtest_html()}
 """
