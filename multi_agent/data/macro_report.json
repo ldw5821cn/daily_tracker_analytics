@@ -1,12 +1,13 @@
 {
   "analyst": "宏观市场分析师",
-  "macro_score": 50.7,
-  "macro_signal": "neutral",
+  "macro_score": 36.5,
+  "macro_signal": "bearish",
   "risk_on_off": {
-    "state": "neutral",
-    "label": "中性（风险/避险平衡）",
-    "score": -1,
+    "state": "risk_off",
+    "label": "Risk-off（偏好避险资产）",
+    "score": -3,
     "reasons": [
+      "A股宏观偏空",
       "中国LPR宽松(3.5%)",
       "Shibor低位(1.43%)",
       "PMI收缩(49.4)",
@@ -17,74 +18,74 @@
     {
       "ticker": "000300",
       "name": "沪深300",
-      "score": 51,
+      "score": 48,
       "trend": "neutral",
-      "close": 4739.23,
-      "ma20": 4812.09,
-      "ma60": 4847.11,
-      "return_1d": 3.06,
-      "return_5d": -1.19,
-      "return_20d": -3.66,
-      "vol_20d": 30.7
+      "close": 4717.24,
+      "ma20": 4800.8,
+      "ma60": 4845.96,
+      "return_1d": -0.46,
+      "return_5d": -1.45,
+      "return_20d": -4.57,
+      "vol_20d": 30.62
     },
     {
       "ticker": "000905",
       "name": "中证500",
-      "score": 51,
+      "score": 48,
       "trend": "neutral",
-      "close": 7800.61,
-      "ma20": 8437.75,
-      "ma60": 8459.3,
-      "return_1d": 5.25,
-      "return_5d": -5.74,
-      "return_20d": -10.22,
-      "vol_20d": 42.46
+      "close": 7751.66,
+      "ma20": 8383.19,
+      "ma60": 8450.24,
+      "return_1d": -0.63,
+      "return_5d": -4.86,
+      "return_20d": -12.34,
+      "vol_20d": 41.6
     },
     {
       "ticker": "000001",
       "name": "上证指数",
-      "score": 53,
+      "score": 50,
       "trend": "neutral",
-      "close": 3864.37,
-      "ma20": 3989.52,
-      "ma60": 4066.93,
-      "return_1d": 1.79,
-      "return_5d": -2.59,
-      "return_20d": -5.89,
-      "vol_20d": 22.42
+      "close": 3867.03,
+      "ma20": 3977.33,
+      "ma60": 4063.16,
+      "return_1d": 0.07,
+      "return_5d": -2.24,
+      "return_20d": -5.93,
+      "vol_20d": 22.41
     },
     {
       "ticker": "399006",
       "name": "创业板指",
-      "score": 57,
+      "score": 45,
       "trend": "neutral",
-      "close": 3685.97,
-      "ma20": 3943.57,
-      "ma60": 3939.99,
-      "return_1d": 7.05,
-      "return_5d": -4.29,
-      "return_20d": -12.08,
-      "vol_20d": 56.88
+      "close": 3566.73,
+      "ma20": 3909.34,
+      "ma60": 3937.43,
+      "return_1d": -3.23,
+      "return_5d": -6.25,
+      "return_20d": -16.11,
+      "vol_20d": 57.11
     },
     {
       "ticker": "399673",
       "name": "创业板50",
-      "score": 51,
+      "score": 45,
       "trend": "neutral",
-      "close": 3931.52,
-      "ma20": 4196.72,
-      "ma60": 4219.7,
-      "return_1d": 7.16,
-      "return_5d": -4.09,
-      "return_20d": -12.81,
-      "vol_20d": 60.11
+      "close": 3789.41,
+      "ma20": 4158.14,
+      "ma60": 4216.44,
+      "return_1d": -3.61,
+      "return_5d": -6.31,
+      "return_20d": -16.91,
+      "vol_20d": 60.63
     }
   ],
   "market_breadth": {
-    "advances": 5,
-    "declines": 0,
-    "score": 100.0,
-    "limit_up": 47,
+    "advances": 1,
+    "declines": 4,
+    "score": 20.0,
+    "limit_up": 116,
     "limit_down": 0
   },
   "us_macro": {
@@ -102,7 +103,7 @@
     "lpr_5y": 3.5,
     "rrr_large": 9.0,
     "rrr_small": 6.0,
-    "shibor_1w": 1.401,
+    "shibor_1w": 1.393,
     "shibor_3m": 1.43,
     "m2_yoy": 8.0,
     "m1_yoy": 4.0,
@@ -112,7 +113,7 @@
     "gdp_yoy": 5.2,
     "lpr_date": "2026-07-20",
     "rrr_date": "2025年05月15日",
-    "shibor_date": "2026-07-22",
+    "shibor_date": "2026-07-23",
     "m2_date": "2026年06月份",
     "pmi_date": "2025-08-31",
     "china_cpi_date": "2025-08-09",
@@ -121,280 +122,280 @@
   },
   "china_macro_bias": 48.7,
   "yield_curve": {
-    "china_10y": 1.745,
-    "china_2y": 1.2689,
-    "us_10y_proxy": 4.63,
-    "spread": 0.48,
-    "date": "2026-07-21"
+    "china_10y": 1.7297,
+    "china_2y": 1.2649,
+    "us_10y_proxy": 4.67,
+    "spread": 0.46,
+    "date": "2026-07-22"
   },
   "vix_proxy": {
-    "vix_proxy": 30.7,
+    "vix_proxy": 30.62,
     "level": "high"
   },
   "sector_rotation": {
     "heat": [
       {
-        "ticker": "512010",
-        "name": "医药ETF",
-        "ret_5d": 2.45,
-        "ret_20d": 12.91
-      },
-      {
         "ticker": "510880",
         "name": "红利ETF",
         "ret_5d": 2.14,
-        "ret_20d": 3.25
-      },
-      {
-        "ticker": "512800",
-        "name": "银行ETF",
-        "ret_5d": 1.15,
-        "ret_20d": 1.54
+        "ret_20d": 6.73
       },
       {
         "ticker": "515790",
         "name": "光伏ETF",
-        "ret_5d": -3.53,
-        "ret_20d": -17.84
+        "ret_5d": 1.57,
+        "ret_20d": -16.77
       },
       {
-        "ticker": "512200",
-        "name": "房地产ETF",
-        "ret_5d": -3.62,
-        "ret_20d": -7.22
+        "ticker": "512800",
+        "name": "银行ETF",
+        "ret_5d": 1.14,
+        "ret_20d": 4.99
       },
       {
         "ticker": "515030",
         "name": "新能源车ETF",
-        "ret_5d": -4.26,
-        "ret_20d": -18.79
+        "ret_5d": 0.44,
+        "ret_20d": -14.88
+      },
+      {
+        "ticker": "512010",
+        "name": "医药ETF",
+        "ret_5d": -0.53,
+        "ret_20d": 10.56
+      },
+      {
+        "ticker": "512200",
+        "name": "房地产ETF",
+        "ret_5d": -3.1,
+        "ret_20d": -4.46
       },
       {
         "ticker": "512760",
         "name": "芯片ETF",
-        "ret_5d": -11.02,
-        "ret_20d": -6.82
+        "ret_5d": -5.37,
+        "ret_20d": -11.28
       },
       {
         "ticker": "512480",
         "name": "半导体ETF",
-        "ret_5d": -12.54,
-        "ret_20d": -8.92
+        "ret_5d": -6.49,
+        "ret_20d": -13.12
       }
     ],
-    "top_sector": "医药ETF"
+    "top_sector": "红利ETF"
   },
   "global_semi": {
     "us": {
-      "score": 54.8,
-      "ret_5d_avg": -3.19,
-      "ret_20d_avg": -14.96,
+      "score": 60.0,
+      "ret_5d_avg": -0.43,
+      "ret_20d_avg": -6.81,
       "count": 10
     },
     "jp": {
-      "score": 55.3,
-      "ret_5d_avg": -4.4,
-      "ret_20d_avg": -6.19,
-      "count": 3
-    },
-    "kr": {
-      "score": 52.0,
-      "ret_5d_avg": 1.27,
-      "ret_20d_avg": -23.36,
+      "score": 55.0,
+      "ret_5d_avg": -9.55,
+      "ret_20d_avg": -4.3,
       "count": 4
     },
-    "composite_score": 54.2,
-    "composite_signal": "neutral",
+    "kr": {
+      "score": 51.3,
+      "ret_5d_avg": -6.92,
+      "ret_20d_avg": -22.32,
+      "count": 3
+    },
+    "composite_score": 56.6,
+    "composite_signal": "bullish",
     "details": {
-      "SMH": {
-        "ticker": "SMH",
-        "name": "美国半导体ETF-VanEck",
-        "close": 584.08,
-        "date": "2026-07-21",
-        "ret_1d": 4.52,
-        "ret_5d": -2.7,
-        "ret_20d": -12.68,
-        "above_ma20": false,
-        "above_ma60": false
-      },
       "SOXX": {
         "ticker": "SOXX",
         "name": "美国半导体ETF-iShares",
-        "close": 552.69,
-        "date": "2026-07-21",
-        "ret_1d": 5.45,
-        "ret_5d": -2.68,
-        "ret_20d": -15.62,
+        "close": 555.52,
+        "date": "2026-07-22",
+        "ret_1d": 0.51,
+        "ret_5d": 0.05,
+        "ret_20d": -7.93,
         "above_ma20": false,
         "above_ma60": true
       },
       "NVDA": {
         "ticker": "NVDA",
         "name": "英伟达",
-        "close": 207.29,
-        "date": "2026-07-21",
-        "ret_1d": 1.97,
-        "ret_5d": -2.13,
-        "ret_20d": -0.65,
+        "close": 212.06,
+        "date": "2026-07-22",
+        "ret_1d": 2.3,
+        "ret_5d": -0.21,
+        "ret_20d": 6.01,
         "above_ma20": true,
-        "above_ma60": false
+        "above_ma60": true
+      },
+      "AMD": {
+        "ticker": "AMD",
+        "name": "AMD",
+        "close": 552.33,
+        "date": "2026-07-22",
+        "ret_1d": 1.45,
+        "ret_5d": 4.38,
+        "ret_20d": 6.25,
+        "above_ma20": true,
+        "above_ma60": true
       },
       "INTC": {
         "ticker": "INTC",
         "name": "英特尔",
-        "close": 105.45,
-        "date": "2026-07-21",
-        "ret_1d": 8.64,
-        "ret_5d": -2.14,
-        "ret_20d": -25.18,
+        "close": 102.62,
+        "date": "2026-07-22",
+        "ret_1d": -2.68,
+        "ret_5d": -0.36,
+        "ret_20d": -22.42,
         "above_ma20": false,
         "above_ma60": false
       },
       "AVGO": {
         "ticker": "AVGO",
         "name": "博通",
-        "close": 386.5,
-        "date": "2026-07-21",
-        "ret_1d": 2.21,
-        "ret_5d": -0.67,
-        "ret_20d": -1.44,
+        "close": 396.81,
+        "date": "2026-07-22",
+        "ret_1d": 2.67,
+        "ret_5d": 0.64,
+        "ret_20d": 4.38,
         "above_ma20": true,
         "above_ma60": false
       },
       "QCOM": {
         "ticker": "QCOM",
         "name": "高通",
-        "close": 173.5,
-        "date": "2026-07-21",
-        "ret_1d": 1.87,
-        "ret_5d": -2.58,
-        "ret_20d": -21.81,
+        "close": 175.63,
+        "date": "2026-07-22",
+        "ret_1d": 1.23,
+        "ret_5d": -1.32,
+        "ret_20d": -13.96,
         "above_ma20": false,
         "above_ma60": false
       },
       "MU": {
         "ticker": "MU",
         "name": "美光科技",
-        "close": 970.82,
-        "date": "2026-07-21",
-        "ret_1d": 12.17,
-        "ret_5d": -1.25,
-        "ret_20d": -19.85,
+        "close": 959.48,
+        "date": "2026-07-22",
+        "ret_1d": -1.17,
+        "ret_5d": 6.1,
+        "ret_20d": -8.76,
         "above_ma20": false,
         "above_ma60": true
       },
       "LRCX": {
         "ticker": "LRCX",
         "name": "拉姆研究",
-        "close": 322.0,
-        "date": "2026-07-21",
-        "ret_1d": 4.97,
-        "ret_5d": -6.96,
-        "ret_20d": -21.38,
+        "close": 319.29,
+        "date": "2026-07-22",
+        "ret_1d": -0.84,
+        "ret_5d": -4.81,
+        "ret_20d": -14.01,
         "above_ma20": false,
         "above_ma60": false
       },
       "KLAC": {
         "ticker": "KLAC",
         "name": "科磊",
-        "close": 217.56,
-        "date": "2026-07-21",
-        "ret_1d": 4.8,
-        "ret_5d": -5.56,
-        "ret_20d": -19.17,
+        "close": 214.69,
+        "date": "2026-07-22",
+        "ret_1d": -1.32,
+        "ret_5d": -4.37,
+        "ret_20d": -12.19,
         "above_ma20": false,
         "above_ma60": true
       },
       "AMAT": {
         "ticker": "AMAT",
         "name": "应用材料",
-        "close": 564.55,
-        "date": "2026-07-21",
-        "ret_1d": 7.39,
-        "ret_5d": -5.23,
-        "ret_20d": -11.81,
+        "close": 553.92,
+        "date": "2026-07-22",
+        "ret_1d": -1.88,
+        "ret_5d": -4.4,
+        "ret_20d": -5.46,
         "above_ma20": false,
         "above_ma60": true
       },
       "8035.T": {
         "ticker": "8035.T",
         "name": "东京电子",
-        "close": 65960.0,
-        "date": "2026-07-22",
-        "ret_1d": -0.92,
-        "ret_5d": -7.27,
-        "ret_20d": -9.59,
-        "above_ma20": false,
-        "above_ma60": true
-      },
-      "6857.T": {
-        "ticker": "6857.T",
-        "name": "Advantest",
-        "close": 29585.0,
-        "date": "2026-07-22",
-        "ret_1d": -0.15,
-        "ret_5d": -0.64,
-        "ret_20d": -5.87,
+        "close": 65950.0,
+        "date": "2026-07-23",
+        "ret_1d": -0.02,
+        "ret_5d": -11.17,
+        "ret_20d": -5.65,
         "above_ma20": false,
         "above_ma60": true
       },
       "4063.T": {
         "ticker": "4063.T",
         "name": "信越化学",
-        "close": 7075.0,
-        "date": "2026-07-22",
-        "ret_1d": -1.8,
-        "ret_5d": -5.3,
-        "ret_20d": -3.1,
+        "close": 6970.0,
+        "date": "2026-07-23",
+        "ret_1d": -1.48,
+        "ret_5d": -9.36,
+        "ret_20d": -1.83,
+        "above_ma20": false,
+        "above_ma60": false
+      },
+      "7735.T": {
+        "ticker": "7735.T",
+        "name": "Screen Holdings",
+        "close": 16650.0,
+        "date": "2026-07-23",
+        "ret_1d": 0.91,
+        "ret_5d": -12.04,
+        "ret_20d": 3.22,
+        "above_ma20": false,
+        "above_ma60": true
+      },
+      "6146.T": {
+        "ticker": "6146.T",
+        "name": "DISCO",
+        "close": 69410.0,
+        "date": "2026-07-23",
+        "ret_1d": 1.2,
+        "ret_5d": -5.63,
+        "ret_20d": -12.95,
         "above_ma20": false,
         "above_ma60": false
       },
       "005930.KS": {
         "ticker": "005930.KS",
         "name": "三星电子",
-        "close": 260500.0,
-        "date": "2026-07-22",
-        "ret_1d": 0.58,
-        "ret_5d": -0.95,
-        "ret_20d": -15.97,
-        "above_ma20": false,
-        "above_ma60": false
-      },
-      "000660.KS": {
-        "ticker": "000660.KS",
-        "name": "SK海力士",
-        "close": 1830000.0,
-        "date": "2026-07-22",
-        "ret_1d": -0.33,
-        "ret_5d": -4.34,
-        "ret_20d": -28.38,
+        "close": 270000.0,
+        "date": "2026-07-23",
+        "ret_1d": 3.65,
+        "ret_5d": -3.4,
+        "ret_20d": -20.7,
         "above_ma20": false,
         "above_ma60": false
       },
       "042700.KS": {
         "ticker": "042700.KS",
         "name": "韩华半导体",
-        "close": 215000.0,
-        "date": "2026-07-22",
-        "ret_1d": -4.02,
-        "ret_5d": 3.61,
-        "ret_20d": -16.67,
+        "close": 216000.0,
+        "date": "2026-07-23",
+        "ret_1d": 0.47,
+        "ret_5d": -19.85,
+        "ret_20d": -20.0,
         "above_ma20": false,
         "above_ma60": false
       },
       "009150.KS": {
         "ticker": "009150.KS",
         "name": "三星电机",
-        "close": 1345000.0,
-        "date": "2026-07-22",
-        "ret_1d": 2.67,
-        "ret_5d": 6.75,
-        "ret_20d": -32.41,
+        "close": 1448000.0,
+        "date": "2026-07-23",
+        "ret_1d": 7.66,
+        "ret_5d": 2.48,
+        "ret_20d": -26.27,
         "above_ma20": false,
         "above_ma60": false
       }
     },
-    "updated_at": "2026-07-22 15:38:57"
+    "updated_at": "2026-07-23 15:31:47"
   },
-  "summary": "# 宏观市场分析报告 (2026-07-22)\n\n综合宏观评分: 50.7/100 | 信号: neutral | 状态: 中性（风险/避险平衡）\n\n## 大盘指数\n- 沪深300(000300): 评分51, 趋势neutral, 1日+3.06%, 5日-1.19%, 20日-3.66%\n- 中证500(000905): 评分51, 趋势neutral, 1日+5.25%, 5日-5.74%, 20日-10.22%\n- 上证指数(000001): 评分53, 趋势neutral, 1日+1.79%, 5日-2.59%, 20日-5.89%\n- 创业板指(399006): 评分57, 趋势neutral, 1日+7.05%, 5日-4.29%, 20日-12.08%\n- 创业板50(399673): 评分51, 趋势neutral, 1日+7.16%, 5日-4.09%, 20日-12.81%\n\n## 市场广度\n- 指数上涨: 5 / 下跌: 0\n- 广度得分: 100.0\n- 涨停家数: 47\n\n## 中国宏观（akshare）\n- LPR 1Y: 3.0%, 5Y: 3.5% (日期: 2026-07-20)\n- 存款准备金率: 大型9.0%, 中小6.0% (日期: 2025年05月15日)\n- Shibor 1W: 1.401%, 3M: 1.43% (日期: 2026-07-22)\n- M2同比: 8.0%, M1同比: 4.0% (日期: 2026年06月份)\n- PMI: 49.4 (日期: 2025-08-31)\n- CPI同比: 0.0%, PPI同比: -3.6% (日期: 2025-08-09)\n- GDP同比: 5.2% (日期: 2025-07-15)\n\n## 美国宏观（akshare）\n- 联邦利率: 4.5% (日期: 2025-07-31)\n- CPI 同比: 3.5% (日期: 2026-07-14)\n- 失业率: 4.2% (日期: 2025-08-01)\n- 初请失业金: 23.7万 (日期: 2025-09-04)\n\n## 收益率曲线与波动率\n- 中国10Y: 1.745%, 2Y: 1.2689%, 利差: 0.48\n- 美国10Y代理: 4.63%\n- VIX 代理(A股波动率): 30.7, 状态: high\n\n## 全球半导体动量（美日韩）\n- 综合得分: 54.2 / 信号: neutral\n- 美股: 54.8 (5日 -3.19%, 20日 -14.96%)\n- 日本: 55.3 (5日 -4.40%, 20日 -6.19%)\n- 韩国: 52.0 (5日 +1.27%, 20日 -23.36%)\n\n## 板块轮动\n- 领涨板块: 医药ETF\n  - 医药ETF: 5日+2.45%, 20日+12.91%\n  - 红利ETF: 5日+2.14%, 20日+3.25%\n  - 银行ETF: 5日+1.15%, 20日+1.54%\n  - 光伏ETF: 5日-3.53%, 20日-17.84%\n  - 房地产ETF: 5日-3.62%, 20日-7.22%"
+  "summary": "# 宏观市场分析报告 (2026-07-23)\n\n综合宏观评分: 36.5/100 | 信号: bearish | 状态: Risk-off（偏好避险资产）\n\n## 大盘指数\n- 沪深300(000300): 评分48, 趋势neutral, 1日-0.46%, 5日-1.45%, 20日-4.57%\n- 中证500(000905): 评分48, 趋势neutral, 1日-0.63%, 5日-4.86%, 20日-12.34%\n- 上证指数(000001): 评分50, 趋势neutral, 1日+0.07%, 5日-2.24%, 20日-5.93%\n- 创业板指(399006): 评分45, 趋势neutral, 1日-3.23%, 5日-6.25%, 20日-16.11%\n- 创业板50(399673): 评分45, 趋势neutral, 1日-3.61%, 5日-6.31%, 20日-16.91%\n\n## 市场广度\n- 指数上涨: 1 / 下跌: 4\n- 广度得分: 20.0\n- 涨停家数: 116\n\n## 中国宏观（akshare）\n- LPR 1Y: 3.0%, 5Y: 3.5% (日期: 2026-07-20)\n- 存款准备金率: 大型9.0%, 中小6.0% (日期: 2025年05月15日)\n- Shibor 1W: 1.393%, 3M: 1.43% (日期: 2026-07-23)\n- M2同比: 8.0%, M1同比: 4.0% (日期: 2026年06月份)\n- PMI: 49.4 (日期: 2025-08-31)\n- CPI同比: 0.0%, PPI同比: -3.6% (日期: 2025-08-09)\n- GDP同比: 5.2% (日期: 2025-07-15)\n\n## 美国宏观（akshare）\n- 联邦利率: 4.5% (日期: 2025-07-31)\n- CPI 同比: 3.5% (日期: 2026-07-14)\n- 失业率: 4.2% (日期: 2025-08-01)\n- 初请失业金: 23.7万 (日期: 2025-09-04)\n\n## 收益率曲线与波动率\n- 中国10Y: 1.7297%, 2Y: 1.2649%, 利差: 0.46\n- 美国10Y代理: 4.67%\n- VIX 代理(A股波动率): 30.62, 状态: high\n\n## 全球半导体动量（美日韩）\n- 综合得分: 56.6 / 信号: bullish\n- 美股: 60.0 (5日 -0.43%, 20日 -6.81%)\n- 日本: 55.0 (5日 -9.55%, 20日 -4.30%)\n- 韩国: 51.3 (5日 -6.92%, 20日 -22.32%)\n\n## 板块轮动\n- 领涨板块: 红利ETF\n  - 红利ETF: 5日+2.14%, 20日+6.73%\n  - 光伏ETF: 5日+1.57%, 20日-16.77%\n  - 银行ETF: 5日+1.14%, 20日+4.99%\n  - 新能源车ETF: 5日+0.44%, 20日-14.88%\n  - 医药ETF: 5日-0.53%, 20日+10.56%"
 }
