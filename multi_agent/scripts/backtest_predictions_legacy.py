@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
-"""基于 agentic_predictions 全库历史预测的真实回测（warehouse 数据源）。"""
+"""基于 agentic_predictions 全库历史预测的真实回测。
+
+对每个 pred_date 的每个预测，按 signal 计算未来 1d/3d/5d/10d 的实际收益。
+数据源：get_stock_data / get_us_stock_data
+
+核心输出：
+- 按信号分组的未来收益统计（mean/median/win_rate/direction_accuracy）
+- 每日推荐组合（只看多信号）的等权持有收益
+- 最大回撤、夏普等基础指标
+"""
 import json
 import os
-import shutil
-import sqlite3
 import sys
 from datetime import datetime
-from collections import defaultdict
 
 import pandas as pd
 import numpy as np
@@ -15,11 +21,13 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..
 MULTI_AGENT = os.path.join(PROJECT_ROOT, 'multi_agent')
 sys.path.insert(0, MULTI_AGENT)
 
-from core.warehouse import get_warehouse_conn
+from core.data_layer import get_stock_data
+from core.us_data import get_us_stock_data
 from core.db import get_predictions_conn
 
 OUTPUT_PATH = os.path.join(MULTI_AGENT, 'data', 'prediction_backtest.json')
-LEGACY_CACHE_DIR = os.path.join(MULTI_AGENT, 'data', 'backtest_prices')
+HIST_PRICES_DIR = os.path.join(MULTI_AGENT, 'data', 'backtest_prices')
+os.makedirs(HIST_PRICES_DIR, exist_ok=True)
 
 
 def _load_predictions():
@@ -36,28 +44,79 @@ def _load_predictions():
     return df
 
 
-def _load_warehouse_prices():
-    conn = get_warehouse_conn()
+def _price_cache_path(ticker):
+    return os.path.join(HIST_PRICES_DIR, f'{ticker}.csv')
+
+
+def _load_cached_price(ticker):
+    p = _price_cache_path(ticker)
+    if not os.path.exists(p):
+        return None
+    df = pd.read_csv(p)
+    df['date'] = pd.to_datetime(df['date'])
+    df.set_index('date', inplace=True)
+    return df
+
+
+def _cache_price(ticker, df):
+    if df is None or df.empty:
+        return
+    p = _price_cache_path(ticker)
+    df.to_csv(p)
+
+
+def _get_price_df(ticker, category):
+    cached = _load_cached_price(ticker)
+    if cached is not None:
+        return cached
     try:
-        rows = conn.execute("SELECT date, ticker, close, category FROM daily_bar ORDER BY ticker, date").fetchall()
-    finally:
-        conn.close()
-    bars = defaultdict(list)
-    for r in rows:
-        bars[r['ticker']].append((r['date'], r['close'], r['category']))
-    return bars
+        if category == 'US':
+            df = get_us_stock_data(ticker, period='2y')
+        else:
+            df, _ = get_stock_data(ticker, period='2y', calibrate=False)
+    except Exception:
+        df = None
+    if df is not None and not df.empty:
+        df.index = pd.to_datetime(df.index)
+        df = df[['close']].copy()
+        _cache_price(ticker, df)
+    return df
 
 
-def _build_return_map(bars):
-    ret_map = {}
-    for tk, seq in bars.items():
-        dates = [s[0] for s in seq]
-        closes = [s[1] for s in seq]
-        for i, d in enumerate(dates):
-            for h in [1, 3, 5, 10]:
-                if i + h < len(dates) and closes[i] and closes[i + h]:
-                    ret_map[(h, d, tk)] = (closes[i + h] - closes[i]) / closes[i]
-    return ret_map
+def _next_trading_date(df, start_date, n=1):
+    if df is None or df.empty:
+        return None
+    dates = pd.to_datetime(df.index)
+    start_dt = pd.to_datetime(start_date)
+    valid = dates[dates > start_dt]
+    if len(valid) < n:
+        return None
+    return valid[n - 1]
+
+
+def _get_price_on_or_after(df, date):
+    if df is None or df.empty:
+        return None
+    date = pd.to_datetime(date)
+    if date in df.index:
+        return float(df.loc[date, 'close'])
+    future = df[df.index > date]
+    if future.empty:
+        return None
+    return float(future.iloc[0]['close'])
+
+
+def _compute_forward_return(ticker, category, pred_date, pred_price, horizon):
+    df = _get_price_df(ticker, category)
+    if df is None or df.empty:
+        return None
+    future_date = _next_trading_date(df, pred_date, n=horizon)
+    if future_date is None:
+        return None
+    future_price = _get_price_on_or_after(df, future_date)
+    if future_price is None or pred_price is None or pred_price == 0:
+        return None
+    return (future_price - pred_price) / pred_price
 
 
 def _signal_en(signal):
@@ -81,32 +140,31 @@ def backtest():
     df = _load_predictions()
     print(f'[bt] loaded {len(df)} predictions from {df["pred_date"].min()} to {df["pred_date"].max()}')
 
-    bars = _load_warehouse_prices()
-    ret_map = _build_return_map(bars)
-    print(f'[bt] loaded {len(bars)} tickers from warehouse, return map size={len(ret_map)}')
-
     records = []
     for _, row in df.iterrows():
         ticker = row['ticker']
+        category = row['category']
         pred_date = row['pred_date']
+        pred_price = row['current_price']
         for h in [1, 3, 5, 10]:
-            ret = ret_map.get((h, pred_date, ticker))
+            ret = _compute_forward_return(ticker, category, pred_date, pred_price, h)
             records.append({
                 'pred_date': pred_date,
                 'ticker': ticker,
                 'name': row['name'],
-                'category': row['category'],
+                'category': category,
                 'signal': row['signal'],
                 'signal_en': _signal_en(row['signal']),
                 'confidence': row['confidence'],
                 'weighted_score': row['weighted_score'],
-                'entry_price': row['current_price'],
+                'entry_price': pred_price,
                 'horizon': h,
                 'forward_return': ret,
                 'direction_correct': _direction_correct(row['signal'], ret) if ret is not None else None,
             })
     rdf = pd.DataFrame(records)
 
+    # 按信号分组统计
     summary = {}
     for h in [1, 3, 5, 10]:
         sub = rdf[(rdf['horizon'] == h) & (rdf['forward_return'].notna())].copy()
@@ -140,6 +198,7 @@ def backtest():
             'by_category': by_category,
         }
 
+    # 推荐组合：每日等权持有 bullish 信号
     portfolio = []
     for pred_date, g in rdf[rdf['signal_en'] == 'bullish'].groupby('pred_date'):
         for h in [1, 3, 5, 10]:
@@ -174,7 +233,6 @@ def backtest():
 
     report = {
         'generated_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        'data_source': 'warehouse.daily_bar',
         'n_predictions': len(df),
         'n_records': len(rdf),
         'date_range': {
@@ -189,13 +247,6 @@ def backtest():
         json.dump(report, f, ensure_ascii=False, indent=2)
     print(f'[bt] saved {OUTPUT_PATH}')
     print(json.dumps({k: v for k, v in report.items() if k != 'records'}, ensure_ascii=False, indent=2))
-
-    if os.path.exists(LEGACY_CACHE_DIR):
-        try:
-            shutil.rmtree(LEGACY_CACHE_DIR)
-            print(f'[bt] removed legacy cache {LEGACY_CACHE_DIR}')
-        except Exception as e:
-            print(f'[bt] warning: could not remove legacy cache: {e}')
 
 
 if __name__ == '__main__':

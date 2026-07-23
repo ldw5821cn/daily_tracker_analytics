@@ -9,3 +9,4 @@ logs/
 *.db
 .DS_Store
 *.log
+multi_agent/data/backtest_prices/

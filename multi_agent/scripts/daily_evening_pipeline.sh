@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# 盘后全链路自动化：验证 → 错误分析 → 生成反思 → 生成 Pages → 推送
+# 盘后全链路自动化：更新数据 → 验证 → 回测 → 模型表现 → 生成 Pages → 推送
 REPO_DIR="/home/liudawei/github/daily_tracker_analytics"
 LOG_DIR="${REPO_DIR}/logs"
 LOG_FILE="${LOG_DIR}/daily_evening_pipeline_$(date +%F).log"
@@ -50,18 +50,23 @@ echo "[$(date +'%Y-%m-%d %H:%M:%S')] 4/8 运行 auto_tune_from_reflection.py + A
 "${PYTHON}" multi_agent/scripts/auto_tune_from_reflection.py
 "${PYTHON}" multi_agent/scripts/ab_test_predictions.py
 
-# 5. 计算模型表现（warehouse 真实 5d 收益）
-echo "[$(date +'%Y-%m-%d %H:%M:%S')] 5/8 计算模型表现（model_performance + parameter_stability）"
+# 5. 生成 warehouse 真实收益回测报告
+# 替换旧版实时拉价回测，使用统一 warehouse 日线数据源
+echo "[$(date +'%Y-%m-%d %H:%M:%S')] 5/9 运行 backtest_predictions.py（warehouse 数据源）"
+"${PYTHON}" multi_agent/scripts/backtest_predictions.py
+
+# 6. 计算模型表现（warehouse 真实 5d 收益）
+echo "[$(date +'%Y-%m-%d %H:%M:%S')] 6/9 计算模型表现（model_performance + parameter_stability）"
 "${PYTHON}" multi_agent/scripts/generate_model_performance.py
 "${PYTHON}" multi_agent/scripts/evaluate_parameter_stability.py
 
-# 6. 生成 GitHub Pages 静态页面（包含预测、持仓、分类等）
-echo "[$(date +'%Y-%m-%d %H:%M:%S')] 6/8 运行 scripts/generate_pages.py"
+# 7. 生成 GitHub Pages 静态页面（包含预测、持仓、分类等）
+echo "[$(date +'%Y-%m-%d %H:%M:%S')] 7/9 运行 scripts/generate_pages.py"
 "${PYTHON}" scripts/generate_pages.py
 
-# 7. 提交并推送 docs/ 与数据 JSON（不推送 llm_predictions.db）
+# 8. 提交并推送 docs/ 与数据 JSON（不推送 llm_predictions.db）
 # .gitignore 已排除 *.db，因此无需特别处理
-echo "[$(date +'%Y-%m-%d %H:%M:%S')] 7/8 提交并推送 docs/ 与数据 JSON"
+echo "[$(date +'%Y-%m-%d %H:%M:%S')] 8/9 提交并推送 docs/ 与数据 JSON"
 if git diff --cached --quiet && git diff --quiet -- docs/ multi_agent/data/*.json; then
     echo "[$(date +'%Y-%m-%d %H:%M:%S')] 没有可提交的变更，跳过 git commit/push"
 else
@@ -70,4 +75,4 @@ else
     git push
 fi
 
-echo "[$(date +'%Y-%m-%d %H:%M:%S')] 盘后全链路流水线完成"
+echo "[$(date +'%Y-%m-%d %H:%M:%S')] 9/9 盘后全链路流水线完成"
