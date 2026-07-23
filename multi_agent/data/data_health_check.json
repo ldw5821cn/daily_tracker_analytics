@@ -1,0 +1,103 @@
+{
+  "generated_at": "2026-07-23T15:30:21",
+  "today": "2026-07-23",
+  "warehouse": {
+    "daily_bar": {
+      "count": 105781,
+      "min_date": "1990-12-19",
+      "max_date": "2026-07-23",
+      "up_to_date": true,
+      "lag_days": 0
+    },
+    "feature_snapshot": {
+      "count": 27650,
+      "min_date": "2025-09-22",
+      "max_date": "2026-07-22",
+      "up_to_date": false,
+      "lag_days": 1
+    },
+    "sentiment": {
+      "count": 7057,
+      "min_date": "2026-04-24",
+      "max_date": "2026-07-23",
+      "up_to_date": true,
+      "lag_days": 0
+    },
+    "macro": {
+      "count": 123,
+      "min_date": "2015-12-01",
+      "max_date": "2026-07-23",
+      "up_to_date": true,
+      "lag_days": 0
+    },
+    "fund_flow": {
+      "count": 127,
+      "min_date": "2026-07-23",
+      "max_date": "2026-07-23",
+      "up_to_date": true,
+      "lag_days": 0
+    },
+    "daily_bar_by_category": {
+      "个股": {
+        "max_date": "2026-07-23",
+        "count": 26772,
+        "lag_days": 0
+      },
+      "ETF": {
+        "max_date": "2026-07-23",
+        "count": 5944,
+        "lag_days": 0
+      },
+      "futures": {
+        "max_date": "2026-07-22",
+        "count": 18375,
+        "lag_days": 1
+      },
+      "US": {
+        "max_date": "2026-07-22",
+        "count": 20974,
+        "lag_days": 1
+      },
+      "index": {
+        "max_date": "2026-07-22",
+        "count": 33716,
+        "lag_days": 1
+      }
+    }
+  },
+  "predictions": {
+    "latest_pred_date": "2026-07-23",
+    "total_predictions": 1923,
+    "pred_lag_days": 0,
+    "latest_by_category": {
+      "个股": 0,
+      "ETF": 0,
+      "期货": 49,
+      "US": 0
+    }
+  },
+  "trainable_status": {
+    "个股": {
+      "evaluable_days": 4,
+      "trainable": false,
+      "note": "需继续积累 16 天"
+    },
+    "ETF": {
+      "evaluable_days": 4,
+      "trainable": false,
+      "note": "需继续积累 16 天"
+    },
+    "期货": {
+      "evaluable_days": 3,
+      "trainable": false,
+      "note": "需继续积累 17 天"
+    },
+    "US": {
+      "evaluable_days": 2,
+      "trainable": false,
+      "note": "需继续积累 18 天"
+    }
+  },
+  "status": "ok",
+  "issues": []
+}

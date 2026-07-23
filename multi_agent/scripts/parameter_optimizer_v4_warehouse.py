@@ -171,16 +171,41 @@ def score(ev):
     return 0.45 * spread + 0.30 * acc + 0.25 * cov
 
 
+
+# V4 参数作为正则化锚点
+V4_PARAMS = json.load(open(os.path.join(PR, "multi_agent", "config", "predictor_params.json")))
+
+def _weight_reg(w, cat):
+    anchor = V4_PARAMS.get(cat, V4_PARAMS.get("_default", {})).get("weights", {})
+    if not anchor:
+        return 0.0
+    return sum((w.get(k, 0) - anchor.get(k, 0)) ** 2 for k in ["technical", "fundamental", "sentiment", "debate"])
+
+
+def _threshold_reg(b, be, cat):
+    anchor = V4_PARAMS.get(cat, V4_PARAMS.get("_default", {})).get("threshold", {})
+    if not anchor:
+        return 0.0
+    return (b - anchor.get("bull", 54)) ** 2 + (be - anchor.get("bear", 44)) ** 2
+
+
 def optimize_category(cat, label, ret_map):
     rs = load_predictions(cat, ret_map)
-    if len(rs) < 30:
-        print("  %s: %d recs (skip)" % (label, len(rs)))
+    ds = sorted(set(r["d"] for r in rs))
+    n_days = len(ds)
+    # 严格门槛：至少 20 个交易日，防止用短期记录数造假
+    if n_days < 20 or len(rs) < 80:
+        print("  %s: %d recs / %d days (skip: need >=20 days & >=80 recs)" % (label, len(rs), n_days))
         return None
 
-    ds = sorted(set(r["d"] for r in rs))
-    train_rs = [r for r in rs if r["d"] in ds[:-2]]
-    val_rs = [r for r in rs if r["d"] in ds[-2:]]
-    print("  %s: %d recs | train=%d val=%d" % (label, len(rs), len(train_rs), len(val_rs)))
+    # 时间分层：前 70% train，后 30% val
+    split_idx = int(n_days * 0.7)
+    train_dates = set(ds[:split_idx])
+    val_dates = set(ds[split_idx:])
+    train_rs = [r for r in rs if r["d"] in train_dates]
+    val_rs = [r for r in rs if r["d"] in val_dates]
+    print("  %s: %d recs / %d days | train=%d recs/%d days | val=%d recs/%d days" % (
+        label, len(rs), n_days, len(train_rs), split_idx, len(val_rs), n_days - split_idx))
 
     wcs = []
     for a, b, c, d in product(*WG.values()):
@@ -191,18 +216,25 @@ def optimize_category(cat, label, ret_map):
     for w in wcs:
         for b in TG["bull"]:
             for be in TG["bear"]:
-                if b <= be + 5:
+                # neutral 区间不能太窄，否则信号全是极端
+                if b - be < 12:
                     continue
                 for ff_strength in FF_STRENGTH:
                     te = evaluate(train_rs, w, b, be, ff_strength)
-                    if te["n_bull"] < 3 or te["n_bear"] < 3:
+                    # 训练集每侧至少 15 条，避免过拟合到少数样本
+                    if te["n_bull"] < 15 or te["n_bear"] < 15 or te["coverage"] < 0.15:
                         continue
                     ve = evaluate(val_rs, w, b, be, ff_strength)
-                    if ve["n_bull"] < 2 or ve["n_bear"] < 2:
+                    if ve["n_bull"] < 5 or ve["n_bear"] < 5 or ve["coverage"] < 0.10:
+                        continue
+                    # 验证集不能比训练集差太多（防止过拟合）
+                    if ve["direction_accuracy"] < te["direction_accuracy"] * 0.6:
                         continue
                     ts = score(te)
                     vs = score(ve)
-                    co = ts * 0.6 + vs * 0.4
+                    # 加入 L2 正则化，奖励接近 V4 的参数
+                    reg = 0.05 * _weight_reg(w, cat or "_default") + 0.02 * _threshold_reg(b, be, cat or "_default")
+                    co = ts * 0.6 + vs * 0.4 - reg
                     if best is None or co > best["score"]:
                         best = {
                             "score": co,
@@ -215,6 +247,7 @@ def optimize_category(cat, label, ret_map):
                         }
 
     if not best:
+        print("  %s: no stable params found (skip)" % label)
         return None
 
     w = best["w"]
