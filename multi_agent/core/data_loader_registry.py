@@ -772,6 +772,118 @@ class EastmoneyLoader:
 
 
 # ---------------------------------------------------------------------------
+# 美股 / 港股 / A股 Loader：tickflow
+# ---------------------------------------------------------------------------
+@register_loader('tickflow', ['a_share', 'index', 'us_equity', 'hk_equity'], requires_auth=True)
+class TickFlowLoader:
+    """TickFlow REST API 日 K 加载器。"""
+
+    _MIN_INTERVAL = 60.0 / 10  # 10 次/分钟，每次至少间隔 6 秒
+    _last_request_time: float = 0.0
+
+    def __init__(self, timeout: Optional[float] = None):
+        self.timeout = timeout or DEFAULT_TIMEOUT
+
+    def is_available(self) -> bool:
+        try:
+            import tickflow
+            api_key = os.environ.get('TICKFLOW_API_KEY')
+            if not api_key:
+                return False
+            client = tickflow.TickFlow(api_key=api_key, timeout=10)
+            _ = client.klines.get('510300.SH', period='1d', count=2, as_dataframe=True)
+            client.close()
+            return True
+        except Exception:
+            return False
+
+    @classmethod
+    def _sleep_rate_limit(cls) -> None:
+        """串行请求间按 10 次/分钟限速。"""
+        elapsed = time.monotonic() - cls._last_request_time
+        if elapsed < cls._MIN_INTERVAL:
+            time.sleep(cls._MIN_INTERVAL - elapsed)
+        cls._last_request_time = time.monotonic()
+
+    @staticmethod
+    def _normalize_tickflow_symbol(code: str) -> str:
+        """将内部代码转换为 TickFlow 标准 symbol。"""
+        c = code.upper().strip()
+        # 美股：纯字母或已带 .US 的代码
+        if c.endswith('.US'):
+            return c
+        alpha_only = ''.join(ch for ch in c if ch.isalpha())
+        if alpha_only and alpha_only == c:
+            return f'{c}.US'
+        # 港股：已带 .HK 直接使用；5 位数字补零为 HKxxxxx
+        if c.endswith('.HK'):
+            return c
+        if c.isdigit() and len(c) == 5:
+            return f'HK{c.zfill(5)}'
+        # A 股 / 指数：支持 000001.SZ / 510300.SH 等
+        if '.' in c:
+            return c
+        # 纯 6 位数字，按规则加后缀
+        if c.isdigit() and len(c) == 6:
+            if c.startswith(('5', '6', '8', '9', '11', '13', '68')):
+                return f'{c}.SH'
+            return f'{c}.SZ'
+        return code
+
+    def fetch(self, codes: List[str], start_date: str, end_date: str, *,
+              interval: str = '1D', fields: Optional[List[str]] = None) -> Dict[str, pd.DataFrame]:
+        import tickflow
+        result = {}
+        api_key = os.environ.get('TICKFLOW_API_KEY')
+        if not api_key:
+            logger.warning('tickflow loader skipped: TICKFLOW_API_KEY not set')
+            return result
+
+        def _fetch_one(raw_code: str) -> Optional[pd.DataFrame]:
+            symbol = self._normalize_tickflow_symbol(raw_code)
+            self._sleep_rate_limit()
+            client = tickflow.TickFlow(api_key=api_key, timeout=int(self.timeout))
+            try:
+                period = '1d' if interval in ('1D', '1d') else interval.lower()
+                start_dt = pd.Timestamp(start_date)
+                end_dt = pd.Timestamp(end_date)
+                calendar_days = max((end_dt - start_dt).days + 5, 30)
+                count = min(calendar_days * 2, 10000)
+                df = client.klines.get(symbol, period=period, count=count, as_dataframe=True)
+            finally:
+                try:
+                    client.close()
+                except Exception:
+                    pass
+            if df is None or df.empty:
+                return None
+            df = df.rename(columns=str.lower)
+            df['date'] = pd.to_datetime(df['timestamp'], unit='ms')
+            df.set_index('date', inplace=True)
+            df = df[(df.index >= start_dt) & (df.index <= end_dt)]
+            if 'amount' in df.columns:
+                df['turnover'] = df['amount']
+            keep = ['open', 'high', 'low', 'close', 'volume', 'turnover']
+            available = [c for c in keep if c in df.columns]
+            df = df[available].astype(float)
+            df = _validate_ohlc(df)
+            return df if not df.empty else None
+
+        for raw_code in codes:
+            try:
+                df = run_with_retry(
+                    lambda: _fetch_one(raw_code),
+                    label=f'tickflow {raw_code}',
+                    timeout=self.timeout,
+                )
+                if df is not None and not df.empty:
+                    result[raw_code] = df
+            except Exception as e:
+                logger.warning('tickflow loader %s failed: %s', raw_code, e)
+        return result
+
+
+# ---------------------------------------------------------------------------
 # 美股 Loader：yfinance
 # ---------------------------------------------------------------------------
 @register_loader('yfinance', ['us_equity', 'hk_equity'])
@@ -972,15 +1084,15 @@ class LocalLoader:
 # ---------------------------------------------------------------------------
 # 按 IP 封禁风险排序：公开、低频、免登录的接口在前；爬虫密集/限速源在后。
 FALLBACK_CHAINS = {
-    # A 股：腾讯公开接口最稳 -> 东方财富公开接口 -> mootdx（通达信本地协议） -> akshare（爬虫聚合） -> 本地缓存
-    'a_share': ['tencent', 'eastmoney', 'mootdx', 'akshare', 'local'],
-    # 指数：公开指数接口优先，akshare 兜底
-    'index': ['eastmoney', 'akshare', 'local'],
+    # A 股：TickFlow（付费稳定）优先 -> 腾讯公开接口 -> 东方财富 -> mootdx -> akshare -> 本地缓存
+    'a_share': ['tickflow', 'tencent', 'eastmoney', 'mootdx', 'akshare', 'local'],
+    # 指数：TickFlow 优先 -> 东方财富 -> akshare -> 本地
+    'index': ['tickflow', 'eastmoney', 'akshare', 'local'],
     # 期货：新浪期货公开接口优先，akshare 兜底
     'futures': ['sina_futures', 'akshare_futures', 'local'],
-    # 美股：yfinance 在前，本地兜底（当前暂无其他免费源注册）
-    'us_equity': ['yfinance', 'local'],
-    'hk_equity': ['yfinance', 'local'],
+    # 美股/港股：TickFlow（付费稳定）优先 -> yfinance 兜底 -> 本地
+    'us_equity': ['tickflow', 'yfinance', 'local'],
+    'hk_equity': ['tickflow', 'yfinance', 'local'],
     # 基金：akshare 基金历史接口优先，东方财富次之，mootdx 兜底
     'fund': ['akshare', 'eastmoney', 'mootdx', 'local'],
     # 宏观：akshare 宏观数据优先

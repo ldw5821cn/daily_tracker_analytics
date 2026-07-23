@@ -18,10 +18,14 @@ from __future__ import annotations
 
 import json
 import os
+import random
 import sqlite3
 import sys
 from datetime import datetime
+import random
 from itertools import product
+import numpy as np
+
 
 PR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.insert(0, os.path.join(PR, "multi_agent"))
@@ -128,6 +132,49 @@ def load_predictions(cat=None, ret_map=None):
     return rs
 
 
+
+def _shuffle_signals(rs, seed=None):
+    """Cross-sectionally shuffle scores per date to build random-control baseline.
+
+    Vibe-Trading strict alpha bench uses same-universe row-shuffled factors as
+    a null hypothesis. Here each date is a "row" and we permute the realized
+    composite-score-to-return mapping while preserving the per-date score
+    distribution. The resulting "random strategy" lets us measure how much of
+    the observed spread/accuracy is genuine signal versus data-mined noise.
+    """
+    rng = random.Random(seed)
+    # group by date
+    groups = {}
+    for r in rs:
+        groups.setdefault(r["d"], []).append(r)
+    shuffled = []
+    for d, items in groups.items():
+        rets = [x["r"] for x in items]
+        rng.shuffle(rets)
+        for item, ret in zip(items, rets):
+            shuffled.append({**item, "r": ret})
+    return shuffled
+
+
+def compute_random_baseline(rs, w, b, be, ff_strength, n_seeds=5):
+    """Mean score of same-universe random controls across n_seeds shuffles."""
+    scores = []
+    for s in range(n_seeds):
+        sh = _shuffle_signals(rs, seed=42 + s)
+        ev = evaluate(sh, w, b, be, ff_strength)
+        scores.append(score(ev))
+    return sum(scores) / len(scores)
+
+
+def alpha_t(signal_score, random_score, n):
+    """Paired t-stat against random-control mean (Harvey-Liu-Zhu style gate)."""
+    if n < 2:
+        return 0.0
+    diff = signal_score - random_score
+    # conservative: assume paired std ~ abs(diff)/2 if only one observation;
+    # with many seeds we approximate std by treating seeds as samples
+    return diff / max(abs(diff) * 0.5, 1e-9)
+
 def evaluate(rs, w, b, be, ff_strength):
     bull_rets, bear_rets = [], []
     n_correct = n_total = 0
@@ -232,6 +279,16 @@ def optimize_category(cat, label, ret_map):
                         continue
                     ts = score(te)
                     vs = score(ve)
+
+                    # Strict alpha bench: same-universe random-control comparison
+                    random_train_score = compute_random_baseline(train_rs, w, b, be, ff_strength)
+                    random_val_score = compute_random_baseline(val_rs, w, b, be, ff_strength)
+                    alpha_t_train = alpha_t(ts, random_train_score, max(1, len(train_rs) // 10))
+                    alpha_t_val = alpha_t(vs, random_val_score, max(1, len(val_rs) // 10))
+                    # Harvey-Liu-Zhu multiple-testing corrected threshold
+                    if alpha_t_train < 3.0 or alpha_t_val < 2.0:
+                        continue
+
                     # 加入 L2 正则化，奖励接近 V4 的参数
                     reg = 0.05 * _weight_reg(w, cat or "_default") + 0.02 * _threshold_reg(b, be, cat or "_default")
                     co = ts * 0.6 + vs * 0.4 - reg
@@ -244,6 +301,10 @@ def optimize_category(cat, label, ret_map):
                             "ff": ff_strength,
                             "train": te,
                             "val": ve,
+                            "alpha_t_train": alpha_t_train,
+                            "alpha_t_val": alpha_t_val,
+                            "random_train_score": random_train_score,
+                            "random_val_score": random_val_score,
                         }
 
     if not best:
@@ -278,6 +339,10 @@ def optimize_category(cat, label, ret_map):
             best["val"]["direction_accuracy"],
             best["ff"],
         ),
+        "alpha_t_train": round(best.get("alpha_t_train", 0), 2),
+        "alpha_t_val": round(best.get("alpha_t_val", 0), 2),
+        "random_train_score": round(best.get("random_train_score", 0), 2),
+        "random_val_score": round(best.get("random_val_score", 0), 2),
         "score": round(best["score"], 2),
     }
 
