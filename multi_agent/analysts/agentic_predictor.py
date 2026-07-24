@@ -136,6 +136,26 @@ def _get_threshold(category: str = '', macro_report: Optional[Dict] = None) -> d
     return adjusted
 
 
+def _get_debate_params(category: str = '') -> dict:
+    """返回 debate 相关参数，支持从参数文件学习。"""
+    if _PARAMS.get('_version') in (2, 4, 5):
+        v = _PARAMS.get(category, _PARAMS.get('_default', {}))
+        return (v.get('debate_params') if isinstance(v, dict) else None) or {
+            'net_multiplier': 8.0,
+            'quality_min': 2.0,
+            'neutral_override_threshold': 2.0,
+            'neutral_override_weight': 0.6,
+            'low_confidence_threshold': 0.62,
+        }
+    return {
+        'net_multiplier': 8.0,
+        'quality_min': 2.0,
+        'neutral_override_threshold': 2.0,
+        'neutral_override_weight': 0.6,
+        'low_confidence_threshold': 0.62,
+    }
+
+
 def _get_fund_flow_strength(category: str = '') -> float:
     """返回类别特定资金流修正强度。"""
     if _PARAMS.get('_version') in (2, 4):
@@ -419,12 +439,24 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         w_fund = _W['fundamental']
         w_news = _W['sentiment']
 
+    # debate 参数化：可学习 net_multiplier / quality_min / neutral_override
+    _D = _get_debate_params(category)
+    debate_net_multiplier = _D.get('net_multiplier', 8.0)
+    debate_quality_min = _D.get('quality_min', 2.0)
+    debate_neutral_override_threshold = _D.get('neutral_override_threshold', 2.0)
+    debate_neutral_override_weight = _D.get('neutral_override_weight', 0.6)
+
+    # 辩论质量：证据不足时降低 debate 贡献，避免低质量多空对撞压成中性
+    debate_total = bull_score + bear_score
+    debate_quality = min(1.0, debate_total / max(debate_quality_min, 1.0)) if debate_quality_min > 0 else 1.0
+    debate_score = (50 + net_debate * debate_net_multiplier) * debate_quality
+
     weighted = (
         tech_score * w_tech +
         fund_score * w_fund +
         news_score * w_news +
         macro_score * _W.get('macro', 0) +
-        (50 + net_debate * 8) * _W['debate']
+        debate_score * _W['debate']
     )
     # 期货基本面强信号时给予方向性偏置
     if is_futures(ticker) and abs(fund_score - 50) >= 5:
@@ -501,12 +533,21 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     elif weighted <= _T['bear']:
         signal = '看空'
     else:
+        # 中性区间：若多空辩论强度差异显著且证据充分，偏向净方向
         signal = '中性'
+        if debate_total >= debate_quality_min and abs(net_debate) >= debate_neutral_override_threshold:
+            if net_debate > 0:
+                signal = '看多'
+                weighted = max(weighted, _T['bull'] - 1 + (_T['bull'] - weighted) * debate_neutral_override_weight)
+            else:
+                signal = '看空'
+                weighted = min(weighted, _T['bear'] + 1 + (_T['bear'] - weighted) * debate_neutral_override_weight)
     # 置信度
     confidence = round(max(0.5, min(0.95, 0.5 + abs(weighted - 50) / 50 * 0.5 + min(abs(net_debate) * 0.08, 0.4))), 2)
 
-    # 低置信度降级
-    if confidence < 0.62:
+    # 低置信度降级（参数化）
+    low_conf_threshold = _D.get('low_confidence_threshold', 0.62)
+    if confidence < low_conf_threshold:
         signal = '观望'
         position_pct = 0.0
     else:

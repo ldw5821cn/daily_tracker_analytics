@@ -1,6 +1,6 @@
 {
-  "_version": 4,
-  "updated_at": "2026-07-22T15:33:38",
+  "_version": 5,
+  "updated_at": "2026-07-24T16:01:17",
   "个股": {
     "weights": {
       "technical": 0.3,
@@ -19,7 +19,13 @@
     },
     "fund_flow_strength": 0.0,
     "stats": "train=-11.71%/-12.05%/76.0% val=-5.71%/-7.10%/62.6% ff=0.0",
-    "score": 40.9
+    "score": 40.9,
+    "debate_params": {
+      "net_multiplier": 8.0,
+      "quality_min": 2.0,
+      "neutral_override_threshold": 2.0,
+      "neutral_override_weight": 0.6
+    }
   },
   "ETF": {
     "weights": {
@@ -39,7 +45,13 @@
     },
     "fund_flow_strength": 0.0,
     "stats": "train=-2.63%/-13.99%/86.1% val=1.03%/-8.81%/95.7% ff=0.0",
-    "score": 39.85
+    "score": 39.85,
+    "debate_params": {
+      "net_multiplier": 8.0,
+      "quality_min": 2.0,
+      "neutral_override_threshold": 2.0,
+      "neutral_override_weight": 0.6
+    }
   },
   "期货": {
     "weights": {
@@ -59,7 +71,13 @@
     },
     "fund_flow_strength": 0.0,
     "stats": "train=-1.19%/0.62%/34.4% val=0.22%/0.31%/53.8% ff=0.0",
-    "score": 23.36
+    "score": 23.36,
+    "debate_params": {
+      "net_multiplier": 8.0,
+      "quality_min": 2.0,
+      "neutral_override_threshold": 2.0,
+      "neutral_override_weight": 0.6
+    }
   },
   "_default": {
     "weights": {
@@ -79,7 +97,13 @@
     },
     "fund_flow_strength": 0.0,
     "stats": "train=-5.97%/-11.39%/75.4% val=-0.71%/-6.25%/61.1% ff=0.0",
-    "score": 36.85
+    "score": 36.85,
+    "debate_params": {
+      "net_multiplier": 8.0,
+      "quality_min": 2.0,
+      "neutral_override_threshold": 2.0,
+      "neutral_override_weight": 0.6
+    }
   },
-  "updated_by": "param_opt_v4_realized_return"
+  "updated_by": "manual_after_0722_reflection"
 }
