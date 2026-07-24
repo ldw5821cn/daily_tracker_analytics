@@ -729,6 +729,64 @@ def generate_us_market_page(dates=None):
     _write('us_market.html', html)
 
 
+def _load_xueqiu_portfolios():
+    """加载雪球组合配置与最近一次调仓状态。"""
+    cfg = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'config', 'xueqiu_config.json'))
+    state = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'portfolio_state.json'))
+    portfolios = []
+    xq_weights = (state.get('xueqiu_r') or {}).get('weights', {})
+    for code, p in cfg.get('portfolios', {}).items():
+        if p.get('source') == 'futures_simulator':
+            continue
+        holdings = []
+        source_label = p.get('source', '')
+        if source_label == 'fixed':
+            for code6, w in (p.get('holdings') or {}).items():
+                holdings.append({'ticker': code6, 'name': '', 'weight': w, 'actual': None})
+        elif source_label == 'allocator':
+            # 使用最近一次执行后的真实权重
+            for k, w in xq_weights.items():
+                # 去掉 SH/SZ 前缀
+                code6 = k[2:] if k.startswith(('SH', 'SZ', 'BJ')) else k
+                if code6.isdigit():
+                    holdings.append({'ticker': code6, 'name': '', 'weight': w/100.0, 'actual': w/100.0})
+        portfolios.append({
+            'code': code,
+            'name': p.get('name', code),
+            'source': source_label,
+            'holdings': holdings,
+        })
+    return portfolios
+
+
+def _load_xueqiu_portfolios():
+    """加载雪球组合配置与最近一次调仓状态。"""
+    cfg = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'config', 'xueqiu_config.json'))
+    state = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'portfolio_state.json'))
+    portfolios = []
+    xq_weights = (state.get('xueqiu_r') or {}).get('weights', {})
+    for code, p in cfg.get('portfolios', {}).items():
+        if p.get('source') == 'futures_simulator':
+            continue
+        holdings = []
+        source_label = p.get('source', '')
+        if source_label == 'fixed':
+            for code6, w in (p.get('holdings') or {}).items():
+                holdings.append({'ticker': code6, 'name': '', 'weight': w, 'actual': None})
+        elif source_label == 'allocator':
+            for k, w in xq_weights.items():
+                code6 = k[2:] if k.startswith(('SH', 'SZ', 'BJ')) else k
+                if code6.isdigit():
+                    holdings.append({'ticker': code6, 'name': '', 'weight': w/100.0, 'actual': w/100.0})
+        portfolios.append({
+            'code': code,
+            'name': p.get('name', code),
+            'source': source_label,
+            'holdings': holdings,
+        })
+    return portfolios
+
+
 def generate_portfolio_page(dates=None):
     now = datetime.now().strftime('%Y-%m-%d %H:%M')
     tw = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'target_weights.json'))
@@ -805,13 +863,56 @@ def generate_portfolio_page(dates=None):
     # 期货模拟盘持仓
     futures_positions = _load_futures_positions()
 
+    xq_portfolios = _load_xueqiu_portfolios()
+
+    # 构建 ticker -> name/price 映射（从最新预测）
+    conn = get_predictions_conn()
+    try:
+        cur = conn.execute("SELECT ticker, name, current_price, price_date FROM agentic_predictions WHERE pred_date=(SELECT MAX(pred_date) FROM agentic_predictions)")
+        rows = cur.fetchall()
+        _name_map = {r['ticker']: r['name'] for r in rows}
+        _price_map = {r['ticker']: r['current_price'] for r in rows}
+        _pdate_map = {r['ticker']: r['price_date'] for r in rows}
+    finally:
+        conn.close()
+
+    def _xueqiu_rows(holdings):
+        rows = ""
+        for h in holdings:
+            ticker = h.get('ticker', '')
+            name = h.get('name') or _name_map.get(ticker, '')
+            price_date = _pdate_map.get(ticker, '')
+            price_date_fmt = price_date.replace('-', '/') if price_date else ''
+            price_label = f"{price_date_fmt} 现价" if price_date_fmt else '现价'
+            current_price = _price_map.get(ticker, 0) or 0
+            w = h.get('weight', 0)
+            rows += f"""
+        <tr>
+            <td><b>{ticker}</b></td>
+            <td>{name}</td>
+            <td>{w*100:.2f}%</td>
+            <td>{price_label} {current_price}</td>
+        </tr>"""
+        return rows
+
+    xq_sections = ""
+    for xp in xq_portfolios:
+        h = xp.get('holdings', [])
+        xq_sections += f"""
+    <div class="section-title">📌 雪球 {xp['code']} ({xp['name']})</div>
+    <table>
+        <thead><tr><th>代码</th><th>名称</th><th>目标权重</th><th>现价</th></tr></thead>
+        <tbody>{_xueqiu_rows(h) if h else '<tr><td colspan="4" class="empty">暂无持仓</td></tr>'}</tbody>
+    </table>"""
+
     body = f"""
 {_stat_grid(stats_cards)}
     <div class="note">
-        <p>📌 本地目标权重模拟盘，非雪球真实持仓。</p>
+        <p>📌 本地目标权重模拟盘，非雪球真实持仓。股票/ETF 以雪球组合实际持仓为准。</p>
         <p>买入金额合计: <b>¥{long_amount:,.0f}</b> | 融券金额: <b>¥{short_amount:,.0f}</b> | 跳过 <b>{skipped}</b> 只（A股一手约束）。</p>
         <p>A 股个股不能做空，负权重仅输出为"减持/卖出"建议；ETF 做空需开通融券账户。</p>
     </div>
+{xq_sections}
     <div class="section-title">📈 股票持仓</div>
     <table>
         <thead><tr><th>代码</th><th>名称</th><th>信号</th><th>目标权重</th><th>现价</th><th>目标价</th><th>止损</th><th>理由</th></tr></thead>
