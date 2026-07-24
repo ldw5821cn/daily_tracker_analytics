@@ -106,12 +106,12 @@ def get_predictions_conn() -> sqlite3.Connection:
     return conn
 
 
-def save_predictions(predictions: List[Dict[str, Any]]) -> Dict[str, int]:
-    """批量保存/覆盖预测记录。同一天同一 ticker 去重。"""
+def save_predictions(predictions: List[Dict[str, Any]], pred_date: Optional[str] = None) -> Dict[str, int]:
+    """批量保存/覆盖预测记录。同一天整批去重，并保证单日内 ticker 唯一。"""
     conn = get_predictions_conn()
     try:
         stats = {'saved': 0, 'errors': 0}
-        today = datetime.now().strftime('%Y-%m-%d')
+        today = pred_date or datetime.now().strftime('%Y-%m-%d')
         now = datetime.now().strftime('%H:%M')
 
         valid = [p for p in predictions if 'error' not in p]
@@ -119,20 +119,25 @@ def save_predictions(predictions: List[Dict[str, Any]]) -> Dict[str, int]:
         if not valid:
             return stats
 
-        # 先批量删除旧记录
-        tickers = tuple({p['ticker'] for p in valid})
-        if len(tickers) == 1:
-            conn.execute(
-                "DELETE FROM agentic_predictions WHERE ticker=? AND pred_date=?",
-                (tickers[0], today)
-            )
-        else:
-            conn.execute(
-                f"DELETE FROM agentic_predictions WHERE ticker IN ({','.join('?'*len(tickers))}) AND pred_date=?",
-                tickers + (today,)
-            )
+        # 1. 输入层去重：同一 ticker 只保留第一条（watchlist 防重复）
+        seen_tickers = set()
+        deduped = []
+        for p in valid:
+            t = p['ticker']
+            if t in seen_tickers:
+                print(f"  ⚠️ 跳过重复输入 {t} {p.get('name','')}")
+                continue
+            seen_tickers.add(t)
+            deduped.append(p)
+        valid = deduped
 
-        # 再批量插入
+        # 2. 按 pred_date 整批删除旧记录，避免多批次跑导致重复
+        conn.execute(
+            "DELETE FROM agentic_predictions WHERE pred_date=?",
+            (today,)
+        )
+
+        # 3. 批量插入
         rows = []
         for p in valid:
             try:

@@ -882,16 +882,30 @@ def generate_portfolio_page(dates=None):
             ticker = h.get('ticker', '')
             name = h.get('name') or _name_map.get(ticker, '')
             price_date = _pdate_map.get(ticker, '')
+            current_price = _price_map.get(ticker, 0) or 0
+            # 当最新预测表中无价格/名称时，实时补一次行情
+            if not name or not current_price:
+                try:
+                    from core.data_layer import get_realtime_price
+                    rt = get_realtime_price(ticker)
+                    if rt:
+                        if not name:
+                            name = rt.get('name', '')
+                        if not current_price:
+                            current_price = rt.get('price', 0)
+                            price_date = '实时'
+                except Exception:
+                    pass
             price_date_fmt = price_date.replace('-', '/') if price_date else ''
             price_label = f"{price_date_fmt} 现价" if price_date_fmt else '现价'
-            current_price = _price_map.get(ticker, 0) or 0
+            price_str = f"{price_label} {current_price:.2f}" if current_price else f"{price_label} —"
             w = h.get('weight', 0)
             rows += f"""
         <tr>
             <td><b>{ticker}</b></td>
             <td>{name}</td>
             <td>{w*100:.2f}%</td>
-            <td>{price_label} {current_price}</td>
+            <td>{price_str}</td>
         </tr>"""
         return rows
 
