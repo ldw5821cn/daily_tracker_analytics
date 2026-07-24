@@ -178,6 +178,89 @@ def _get_market_momentum() -> Dict:
     except Exception:
         return {}
 
+def _get_market_flow_override() -> float:
+    """从 warehouse.sentiment 读取市场资金/情绪指标，返回 -10~10 的 override。"""
+    try:
+        from core.warehouse import get_warehouse_conn
+        conn = get_warehouse_conn()
+        cur = conn.cursor()
+        # 取最新一日的指标
+        metrics = ["margin_sse_total_balance", "margin_szse_total_balance", "northbound_net_buy", "option_pcr", "option_vix_close"]
+        rows = cur.execute(
+            "SELECT metric, date, value, ticker FROM sentiment WHERE metric IN ({}) ORDER BY date DESC"
+            .format(",".join(["?"]*len(metrics))),
+            metrics
+        ).fetchall()
+        conn.close()
+        if not rows:
+            return 0.0
+
+        # 按 metric 取最新一条
+        latest = {}
+        for r in rows:
+            m = r["metric"]
+            if m not in latest or r["date"] > latest[m]["date"]:
+                latest[m] = dict(r)
+
+        # 需要至少两天的融资数据算变化
+        def _prev_value(metric, days=1):
+            try:
+                from core.warehouse import get_warehouse_conn
+                c2 = get_warehouse_conn()
+                cur2 = c2.cursor()
+                rows2 = cur2.execute(
+                    "SELECT date, value FROM sentiment WHERE metric=? ORDER BY date DESC LIMIT ?",
+                    (metric, days+1)
+                ).fetchall()
+                c2.close()
+                if len(rows2) >= 2:
+                    return rows2[0]["value"], rows2[1]["value"]
+            except Exception:
+                pass
+            return None, None
+
+        score = 50.0
+        reasons = []
+
+        # 融资余额：增加看多，减少看空
+        for metric in ["margin_sse_total_balance", "margin_szse_total_balance"]:
+            if metric in latest:
+                cur_v, prev_v = _prev_value(metric)
+                if cur_v and prev_v and prev_v != 0:
+                    chg = (cur_v - prev_v) / prev_v
+                    # 100 亿级别余额，1% 变化对应 2 分
+                    delta = max(-5, min(5, chg * 200))
+                    score += delta
+                    reasons.append(f"{metric}{chg:+.2%}修正{delta:+.1f}")
+
+        # 北向资金：净买入/100亿 = 1 分
+        if "northbound_net_buy" in latest:
+            v = latest["northbound_net_buy"]["value"]
+            if v is not None:
+                delta = max(-5, min(5, v / 1e10))
+                score += delta
+                reasons.append(f"北向{v/1e8:+.0f}亿修正{delta:+.1f}")
+
+        # 50ETF PCR：偏离 1 反向修正
+        if "option_pcr" in latest:
+            # 找 50ETF
+            pcr_rows = [r for k, r in latest.items() if k == "option_pcr" and "50ETF" in r.get("ticker", "")]
+            if not pcr_rows:
+                pcr_rows = [r for k, r in latest.items() if k == "option_pcr"]
+            if pcr_rows:
+                pcr = pcr_rows[0]["value"]
+                if pcr is not None:
+                    # PCR 越低=认购踊跃=偏多；PCR 越高=恐慌=偏空（但极端高也可能触底）
+                    delta = max(-4, min(4, (1 - pcr) * 2))
+                    score += delta
+                    reasons.append(f"PCR{pcr:.2f}修正{delta:+.1f}")
+
+        override = max(-10, min(10, (score - 50) * 0.4))
+        return round(override, 1)
+    except Exception as e:
+        print(f"  ⚠️ market_flow override: {e}")
+        return 0.0
+
 
 # 同花顺行业名称 -> 行业代码 (THS)
 _THS_INDUSTRY_MAP = {
@@ -365,6 +448,15 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
             macro_override -= (45 - macro_score) * 0.35
         weighted = max(0, min(100, weighted + macro_override))
 
+    # 市场资金流修正（全市场指标，适用于 A 股/ETF/期货）
+    market_flow_override = 0.0
+    market_flow_note = ""
+    if not is_us_ticker(ticker):
+        market_flow_override = _get_market_flow_override()
+        if abs(market_flow_override) >= 1:
+            weighted = max(0, min(100, weighted + market_flow_override))
+            market_flow_note = f"市场资金流修正{market_flow_override:+.1f}"
+
     # 资金流修正（个股/ETF 使用）
     fund_flow_override = 0
     fund_flow_note = ""
@@ -454,6 +546,8 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         reasons.append(macro_note)
     if fund_flow_note:
         reasons.append(fund_flow_note)
+    if market_flow_note:
+        reasons.append(market_flow_note)
 
     return {
         'signal': signal,
@@ -472,6 +566,7 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
             'debate_net': net_debate,
             'macro_override': macro_override,
             'fund_flow_override': fund_flow_override,
+            'market_flow_override': market_flow_override,
             'global_semi_override': global_semi_override,
         },
     }
