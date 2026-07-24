@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-07-23T16:30:21",
-  "pred_date": "2026-07-23",
-  "ret_map_count": 104582,
+  "generated_at": "2026-07-24T16:30:35",
+  "pred_date": "2026-07-24",
+  "ret_map_count": 104643,
   "warehouse_max_dates": {
     "个股": "2026-07-23",
     "ETF": "2026-07-23",
-    "US": "2026-07-22",
-    "futures": "2026-07-22",
+    "US": "2026-07-23",
+    "futures": "2026-07-23",
     "index": "2026-07-22",
-    "期货": "2026-07-22"
+    "期货": "2026-07-23"
   },
   "categories": {
     "个股": {
       "status": "ok",
-      "n": 1028,
+      "n": 1133,
       "n_evaluable": 262,
-      "skipped_no_forward": 766,
+      "skipped_no_forward": 871,
       "n_bull": 13,
       "n_bear": 201,
       "bullish_mean": -10.57,
@@ -26,9 +26,9 @@
     },
     "ETF": {
       "status": "ok",
-      "n": 253,
+      "n": 276,
       "n_evaluable": 79,
-      "skipped_no_forward": 174,
+      "skipped_no_forward": 197,
       "n_bull": 5,
       "n_bear": 33,
       "bullish_mean": -0.64,
@@ -39,29 +39,29 @@
     },
     "期货": {
       "status": "ok",
-      "n": 399,
-      "n_evaluable": 63,
+      "n": 448,
+      "n_evaluable": 112,
       "skipped_no_forward": 336,
-      "n_bull": 9,
-      "n_bear": 15,
-      "bullish_mean": -0.47,
-      "bearish_mean": 0.78,
-      "direction_accuracy": 41.7,
-      "coverage": 38.1,
-      "warehouse_max_date": "2026-07-22"
+      "n_bull": 13,
+      "n_bear": 34,
+      "bullish_mean": 0.14,
+      "bearish_mean": 1.78,
+      "direction_accuracy": 42.6,
+      "coverage": 42.0,
+      "warehouse_max_date": "2026-07-23"
     },
     "US": {
       "status": "ok",
-      "n": 424,
-      "n_evaluable": 104,
-      "skipped_no_forward": 320,
+      "n": 477,
+      "n_evaluable": 107,
+      "skipped_no_forward": 370,
       "n_bull": 27,
       "n_bear": 23,
       "bullish_mean": -0.09,
       "bearish_mean": -1.4,
       "direction_accuracy": 46.0,
-      "coverage": 48.1,
-      "warehouse_max_date": "2026-07-22"
+      "coverage": 46.7,
+      "warehouse_max_date": "2026-07-23"
     }
   }
 }
