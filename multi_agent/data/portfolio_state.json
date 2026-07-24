@@ -1,80 +1,80 @@
 {
-  "scan_time": "2026-07-09 13:03",
+  "scan_time": "2026-07-24 17:54",
   "top10": [
     {
-      "name": "华安证券",
-      "code": "600909",
-      "score": 89,
-      "price": 9.8,
-      "change": 6.754
+      "ticker": "601899",
+      "name": "紫金矿业",
+      "category": "个股",
+      "weighted_score": 68.2,
+      "current_price": 31.51
     },
     {
-      "name": "甘咨询",
-      "code": "000779",
-      "score": 87,
-      "price": 9.64,
-      "change": 5.011
+      "ticker": "601991",
+      "name": "大唐发电",
+      "category": "个股",
+      "weighted_score": 63.2,
+      "current_price": 6.29
     },
     {
-      "name": "硅宝科技",
-      "code": "300019",
-      "score": 87,
-      "price": 21.59,
-      "change": 5.368
+      "ticker": "601600",
+      "name": "中国铝业",
+      "category": "个股",
+      "weighted_score": 62.7,
+      "current_price": 9.44
     },
     {
-      "name": "神州泰岳",
-      "code": "300002",
-      "score": 85,
-      "price": 8.43,
-      "change": 4.203
+      "ticker": "000612",
+      "name": "焦作万方",
+      "category": "个股",
+      "weighted_score": 61.4,
+      "current_price": 10.41
     },
     {
-      "name": "商络电子",
-      "code": "300975",
-      "score": 83,
-      "price": 36.17,
-      "change": 4.146
+      "ticker": "603993",
+      "name": "洛阳钼业",
+      "category": "个股",
+      "weighted_score": 60.4,
+      "current_price": 19.04
     },
     {
-      "name": "中鼎股份",
-      "code": "000887",
-      "score": 82,
-      "price": 18.8,
-      "change": 10.006
+      "ticker": "601088",
+      "name": "中国神华",
+      "category": "个股",
+      "weighted_score": 60.2,
+      "current_price": 45.7
     },
     {
-      "name": "泰山石油",
-      "code": "000554",
-      "score": 81,
-      "price": 6.19,
-      "change": 4.915
+      "ticker": "688072",
+      "name": "拓荆科技",
+      "category": "个股",
+      "weighted_score": 60.1,
+      "current_price": 791.0
     },
     {
-      "name": "上峰材料",
-      "code": "000672",
-      "score": 81,
-      "price": 21.0,
-      "change": 5.954
+      "ticker": "600988",
+      "name": "赤峰黄金",
+      "category": "个股",
+      "weighted_score": 59.8,
+      "current_price": 36.49
     },
     {
-      "name": "模塑科技",
-      "code": "000700",
-      "score": 81,
-      "price": 14.97,
-      "change": 2.534
+      "ticker": "000807",
+      "name": "云铝股份",
+      "category": "个股",
+      "weighted_score": 59.5,
+      "current_price": 25.4
     },
     {
-      "name": "依依股份",
-      "code": "001206",
-      "score": 81,
-      "price": 21.39,
-      "change": 3.684
+      "ticker": "001309",
+      "name": "德明利",
+      "category": "个股",
+      "weighted_score": 59.1,
+      "current_price": 399.89
     }
   ],
   "simulator": {
     "total": 100000.0,
-    "cash": 16080.0,
+    "cash": 10000.0,
     "positions": 10
   },
   "xueqiu_r": {
@@ -83,16 +83,16 @@
     "error_count": 0,
     "errors": [],
     "weights": {
-      "SH600909": 9.0,
-      "SZ000779": 9.0,
-      "SZ300019": 9.0,
-      "SZ300002": 9.0,
-      "SZ300975": 9.0,
-      "SZ000887": 9.0,
-      "SZ000554": 9.0,
-      "SZ000672": 9.0,
-      "SZ000700": 9.0,
-      "SZ001206": 9.0
+      "SH601899": 9.0,
+      "SH601991": 9.0,
+      "SH601600": 9.0,
+      "SZ000612": 9.0,
+      "SH603993": 9.0,
+      "SH601088": 9.0,
+      "SH688072": 9.0,
+      "SH600988": 9.0,
+      "SZ000807": 9.0,
+      "SZ001309": 9.0
     }
   }
 }
