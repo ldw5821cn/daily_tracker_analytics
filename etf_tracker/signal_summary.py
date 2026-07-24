@@ -139,7 +139,18 @@ class SignalAggregator:
         
         # 仓位建议
         if isinstance(position, dict):
-            pos_size = float(position.get('position_size', 0) or position.get('suggested_position', 0) or 0)
+            pos_size = position.get('position_size', 0) or position.get('suggested_position', 0) or 0
+            # 兼容百分比字符串
+            if isinstance(pos_size, str):
+                pos_size = pos_size.replace('%', '').strip()
+                try:
+                    pos_size = float(pos_size) / 100
+                except (ValueError, TypeError):
+                    pos_size = 0
+            try:
+                pos_size = float(pos_size)
+            except (ValueError, TypeError):
+                pos_size = 0
             if pos_size > 0.5:
                 score += 5
             elif pos_size > 0.3:

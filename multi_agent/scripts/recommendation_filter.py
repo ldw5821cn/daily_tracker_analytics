@@ -16,9 +16,17 @@ from core.db import get_latest_predictions
 from core.backtest_utils import inject_backtest_metrics
 
 MAX_SINGLE_POSITION = 0.10
-MAX_LONG_POSITIONS = 5
+MAX_LONG_POSITIONS = 10
 STOP_LOSS_PCT = 0.05
-MACRO_BULLISH_MIN = 45
+MACRO_BULLISH_MIN = 30  # 软风控阈值：低于此仍允许 long，但降低分配权重
+
+# 按资产类别分散，避免单一 category 垄断全部仓位；未来交给参数优化器学习
+CATEGORY_QUOTA = {
+    '个股': 5,
+    'ETF': 2,
+    'US': 2,
+    '期货': 1,
+}
 
 SIGNAL_CN = {'看多': 'bullish', '看空': 'bearish', '中性': 'neutral', 'weak_neutral': 'neutral'}
 
@@ -95,8 +103,24 @@ def build_recommendations(pred_date: Optional[str] = None, max_long_positions: i
                 item['note'] = 'A股不可做空，建议规避/卖出'
             shorts.append(item)
 
-    longs = sorted(longs, key=lambda x: (x['confidence'], x['bt_sharpe_60d'], x['bt_return_60d']), reverse=True)
-    longs = longs[:max_long_positions]
+    # 按类别分别排序，按 weighted_score 优先（避免 confidence 硬排序淹没高综合分信号）
+    category_longs = {}
+    for item in longs:
+        category_longs.setdefault(item['category'], []).append(item)
+    for cat in category_longs:
+        category_longs[cat].sort(key=lambda x: (x['weighted_score'], x['confidence'], x['bt_sharpe_60d'], x['bt_return_60d']), reverse=True)
+
+    selected = []
+    for cat, quota in CATEGORY_QUOTA.items():
+        selected.extend(category_longs.get(cat, [])[:quota])
+    # 兜底：如果类别配额不足，从剩余高 score 中补充
+    selected_tickers = {x['ticker'] for x in selected}
+    remaining = [x for x in longs if x['ticker'] not in selected_tickers]
+    remaining.sort(key=lambda x: (x['weighted_score'], x['confidence'], x['bt_sharpe_60d'], x['bt_return_60d']), reverse=True)
+    selected = selected + remaining[:max(0, max_long_positions - len(selected))]
+
+    longs = selected[:max_long_positions]
+    longs.sort(key=lambda x: (x['weighted_score'], x['confidence'], x['bt_sharpe_60d'], x['bt_return_60d']), reverse=True)
 
     n = len(longs)
     pos = round(min(1.0 / n, MAX_SINGLE_POSITION), 3) if n > 0 else 0

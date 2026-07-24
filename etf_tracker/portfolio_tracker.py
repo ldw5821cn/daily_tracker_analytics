@@ -343,7 +343,7 @@ class PortfolioTracker:
             print("  quantstats 未安装，请执行: pip install quantstats")
             return ""
 
-        output_dir = output_dir or "/home/zhihu/daily-_tracker_analytics/reports"
+        output_dir = output_dir or "/home/liudawei/github/daily_tracker_analytics/reports"
         os.makedirs(output_dir, exist_ok=True)
 
         # 获取净值序列

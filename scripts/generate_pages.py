@@ -62,6 +62,7 @@ TABS = [
     ('portfolio.html', '💼', '持仓组合'),
     ('backtest.html', '📈', '回测'),
     ('reflection.html', '🧠', '复盘'),
+    ('data_health.html', '❤️', '数据健康'),
 ]
 
 CSS = """<style>
@@ -947,6 +948,101 @@ def generate_backtest_page(dates=None):
     _write('backtest.html', html)
 
 
+def generate_data_health_page(dates=None):
+    """生成数据健康检查页面。"""
+    dh = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'data_health_check.json'))
+    if not dh:
+        return
+    today = dh.get('today', '')
+    generated = dh.get('generated_at', '')[:19]
+    status = dh.get('status', 'unknown')
+    issues = dh.get('issues', [])
+    warehouse = dh.get('warehouse', {})
+    predictions = dh.get('predictions', {})
+    trainable = dh.get('trainable_status', {})
+
+    status_color = '#22c55e' if status == 'ok' else '#ef4444'
+    status_cn = '正常' if status == 'ok' else '异常'
+
+    wh_rows = ""
+    for t, st in warehouse.items():
+        if isinstance(st, dict) and 'count' in st:
+            lag = st.get('lag_days', 'N/A')
+            up = st.get('up_to_date', '')
+            up_cn = '✅' if up else '⚠️' if up is False else ''
+            wh_rows += f"<tr><td><b>{t}</b></td><td>{st.get('count', 0):,}</td><td>{st.get('min_date', '-')}</td><td>{st.get('max_date', '-')}</td><td>{lag}</td><td>{up_cn}</td></tr>"
+        elif isinstance(st, dict):
+            for cat, cst in st.items():
+                lag = cst.get('lag_days', 'N/A')
+                wh_rows += f"<tr><td>{t}.{cat}</td><td>{cst.get('count', 0):,}</td><td>-</td><td>{cst.get('max_date', '-')}</td><td>{lag}</td><td></td></tr>"
+
+    pred_cat = predictions.get('latest_by_category', {})
+    pred_rows = ""
+    for cat, n in pred_cat.items():
+        pred_rows += f"<tr><td>{cat}</td><td>{n}</td></tr>"
+
+    train_rows = ""
+    for cat, st in trainable.items():
+        trainable_flag = st.get('trainable', False)
+        color = '#22c55e' if trainable_flag else '#ef4444'
+        train_rows += f"<tr><td>{cat}</td><td>{st.get('evaluable_days', 0)}</td><td style='color:{color}'>{'可训练' if trainable_flag else '不可训练'}</td><td>{st.get('note', '')}</td></tr>"
+
+    issues_html = ''.join(f'<li>{i}</li>' for i in issues) or '<li>无异常</li>'
+
+    body = f"""
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="num" style="color:{status_color}">{status_cn}</div>
+            <div class="label">数据健康状态</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">{today}</div>
+            <div class="label">检查日期</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">{generated}</div>
+            <div class="label">生成时间</div>
+        </div>
+    </div>
+
+    <div class="section-title">⚠️ 检查结果</div>
+    <div class="note">
+        <ul>{issues_html}</ul>
+    </div>
+
+    <div class="section-title">🏭 Warehouse 表状态</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>表</th><th>记录数</th><th>最早日期</th><th>最新日期</th><th>滞后天数</th><th>最新</th></tr></thead>
+        <tbody>{wh_rows}</tbody>
+    </table>
+    </div>
+
+    <div class="section-title">📝 预测最新分布</div>
+    <div class="note">
+        <p>最新预测日期：<b>{predictions.get('latest_pred_date', '-')}</b> · 总数 <b>{predictions.get('total_predictions', 0):,}</b> · 滞后 <b>{predictions.get('pred_lag_days', 'N/A')}</b> 天</p>
+    </div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>类别</th><th>数量</th></tr></thead>
+        <tbody>{pred_rows}</tbody>
+    </table>
+    </div>
+
+    <div class="section-title">🧠 参数优化训练状态</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>类别</th><th>可评估天数</th><th>状态</th><th>说明</th></tr></thead>
+        <tbody>{train_rows}</tbody>
+    </table>
+    </div>
+"""
+    title = f"❤️ 数据健康 - {today}"
+    subtitle = f"{today} · Warehouse / 预测 / 训练状态检查"
+    html = _build_page_skeleton(title, body, 'data_health.html', subtitle, tag='📡 监控', dates=dates)
+    _write('data_health.html', html)
+
+
 def generate_reflection_page(dates=None):
     refl = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'prediction_reflection.json'))
     if not refl:
@@ -1053,6 +1149,7 @@ if __name__ == '__main__':
     generate_prediction_page(stats, rows, dates=dates)
     generate_portfolio_page(dates=dates)
     generate_backtest_page(dates=dates)
+    generate_data_health_page(dates=dates)
     generate_reflection_page(dates=dates)
     for d in dates:
         generate_archive_page(d, dates=dates)
