@@ -23,6 +23,10 @@ PYTHON="python3"
 echo "[$(date +'%Y-%m-%d %H:%M:%S')] 0/9 更新 warehouse 日线行情（最近 5 个交易日）"
 "${PYTHON}" multi_agent/scripts/fetch_warehouse_data.py --start $(date -d '5 days ago' +%Y-%m-%d) --workers 1
 
+# 0.05 更新市场资金/情绪指标（融资融券、期权 PCR/VIX、北向资金）
+echo "[$(date +'%Y-%m-%d %H:%M:%S')] 0.05/9 更新市场资金/情绪指标"
+"${PYTHON}" multi_agent/scripts/save_market_flow.py || echo "⚠️ save_market_flow.py 失败，继续执行"
+
 # 0.1 更新美股缺失标的（如新增标的）
 echo "[$(date +'%Y-%m-%d %H:%M:%S')] 0.1/9 更新美股缺失标的"
 "${PYTHON}" multi_agent/scripts/backfill_us_patch.py || echo "⚠️ backfill_us_patch.py 失败，继续执行"
