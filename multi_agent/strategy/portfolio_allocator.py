@@ -25,7 +25,7 @@ DB_PATH = os.path.join(PROJECT_ROOT, 'multi_agent', 'data', 'llm_predictions.db'
 OUTPUT_PATH = os.path.join(PROJECT_ROOT, 'multi_agent', 'data', 'target_weights.json')
 
 # 数据库存中文信号，映射到英文 canonical
-SIGNAL_CN_TO_EN = {'看多': 'bullish', '看空': 'bearish', '中性': 'neutral', 'weak_neutral': 'weak_neutral'}
+SIGNAL_CN_TO_EN = {'看多': 'bullish', '看空': 'bearish', '中性': 'neutral', '观望': 'weak_neutral'}
 
 def _canonical_signal(sig):
     return SIGNAL_CN_TO_EN.get(sig, sig)

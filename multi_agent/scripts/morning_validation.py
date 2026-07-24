@@ -29,11 +29,11 @@ def _direction_correct(signal: str, return_pct: float, threshold: float = DIRECT
 
     - 看多/bullish: 实际收益 > 0 即正确
     - 看空/bearish: 实际收益 < 0 即正确
-    - 中性/neutral/weak_neutral: 收益在 [-threshold, threshold] 内正确
+    - 中性/neutral/观望: 收益在 [-threshold, threshold] 内正确
     """
     # 中英文信号映射
     _MAP = {'bullish': 'bullish', 'bearish': 'bearish', 'neutral': 'neutral',
-            'weak_neutral': 'neutral', '看多': 'bullish', '看空': 'bearish', '中性': 'neutral'}
+            '观望': 'neutral', '看多': 'bullish', '看空': 'bearish', '中性': 'neutral'}
     sig = _MAP.get(signal, 'neutral')
     if sig == 'bullish':
         return return_pct > 0

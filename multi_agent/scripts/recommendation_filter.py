@@ -28,7 +28,7 @@ CATEGORY_QUOTA = {
     '期货': 1,
 }
 
-SIGNAL_CN = {'看多': 'bullish', '看空': 'bearish', '中性': 'neutral', 'weak_neutral': 'neutral'}
+SIGNAL_CN = {'看多': 'bullish', '看空': 'bearish', '中性': 'neutral', '观望': 'neutral'}
 
 
 def _load_macro_report() -> Optional[Dict]:
@@ -60,7 +60,7 @@ def build_recommendations(pred_date: Optional[str] = None, max_long_positions: i
         sig = p.get('signal', '中性')
         conf = p.get('confidence', 0.5)
         sig_en = SIGNAL_CN.get(sig, 'neutral')
-        # 过滤低置信度信号：中性/weak_neutral 一律不进入；看多/看空需满足最低置信度
+        # 过滤低置信度信号：中性/观望 一律不进入；看多/看空需满足最低置信度
         if sig_en == 'neutral':
             continue
 

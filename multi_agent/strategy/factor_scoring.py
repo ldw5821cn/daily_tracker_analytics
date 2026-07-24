@@ -1,5 +1,7 @@
-"""精选因子评分：对每个标的执行精选因子代码，汇总因子投票得分。"""
 from __future__ import annotations
+from datetime import datetime
+"""精选因子评分：对每个标的执行精选因子代码，汇总因子投票得分。"""
+
 
 import json
 import os
@@ -13,6 +15,8 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..
 sys.path.insert(0, os.path.join(PROJECT_ROOT, 'multi_agent'))
 
 from core.data_layer import get_stock_data, calc_technical_indicators
+from core.warehouse import load_bar_df
+from core.warehouse import load_bar_df
 
 SELECTED_FACTORS_PATH = os.path.join(PROJECT_ROOT, 'multi_agent', 'data', 'llm_factors_selected.json')
 
@@ -60,7 +64,16 @@ def compute_factor_scores(tickers: List[str]) -> Dict[str, float]:
     scores = {}
     for ticker in tickers:
         try:
-            df, _ = get_stock_data(ticker)
+            # 优先从 warehouse 读取缓存日线
+            rows = load_bar_df(ticker, start="2024-01-01", end=datetime.now().strftime("%Y-%m-%d"))
+            if rows and len(rows) >= 60:
+                df = pd.DataFrame(rows)
+                df["date"] = pd.to_datetime(df["date"])
+                df.set_index("date", inplace=True)
+                df = df[["open", "high", "low", "close", "volume"]].astype(float)
+                df.sort_index(inplace=True)
+            else:
+                df, _ = get_stock_data(ticker)
             df = calc_technical_indicators(df)
             votes = []
             weights = []
