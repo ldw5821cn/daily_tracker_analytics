@@ -26,7 +26,8 @@ def _load_predictions():
     conn = get_predictions_conn()
     try:
         df = pd.read_sql(
-            "SELECT id, ticker, name, category, signal, pred_date, current_price, price_date, confidence, weighted_score "
+            "SELECT id, ticker, name, category, signal, pred_date, current_price, price_date, "
+            "confidence, weighted_score, target_price, stop_loss "
             "FROM agentic_predictions WHERE pred_date IS NOT NULL AND current_price > 0 "
             "ORDER BY pred_date, ticker",
             conn
@@ -39,12 +40,14 @@ def _load_predictions():
 def _load_warehouse_prices():
     conn = get_warehouse_conn()
     try:
-        rows = conn.execute("SELECT date, ticker, close, category FROM daily_bar ORDER BY ticker, date").fetchall()
+        rows = conn.execute(
+            "SELECT date, ticker, open, high, low, close, category FROM daily_bar ORDER BY ticker, date"
+        ).fetchall()
     finally:
         conn.close()
     bars = defaultdict(list)
     for r in rows:
-        bars[r['ticker']].append((r['date'], r['close'], r['category']))
+        bars[r['ticker']].append((r['date'], r['open'], r['high'], r['low'], r['close'], r['category']))
     return bars
 
 
@@ -52,12 +55,32 @@ def _build_return_map(bars):
     ret_map = {}
     for tk, seq in bars.items():
         dates = [s[0] for s in seq]
-        closes = [s[1] for s in seq]
+        closes = [s[4] for s in seq]
         for i, d in enumerate(dates):
             for h in [1, 3, 5, 10]:
                 if i + h < len(dates) and closes[i] and closes[i + h]:
                     ret_map[(h, d, tk)] = (closes[i + h] - closes[i]) / closes[i]
     return ret_map
+
+
+def _build_bar_map(bars):
+    """把 warehouse 日线序列映射为 (ticker, date) -> {open, high, low, close}。"""
+    bar_map = {}
+    for tk, seq in bars.items():
+        for s in seq:
+            d, o, h, l, c, _ = s
+            bar_map[(tk, d)] = {'open': o, 'high': h, 'low': l, 'close': c}
+    return bar_map
+
+
+def _forward_bars(bar_map, ticker, pred_date, horizon):
+    """取出 pred_date 之后 horizon 个交易日的 OHLC 序列。"""
+    seq = sorted((d, bar_map[(ticker, d)]) for d, _ in bar_map if _[0] == ticker and d > pred_date)
+    bars = []
+    for d, b in seq:
+        if all(v is not None for v in (b['open'], b['high'], b['low'], b['close'])):
+            bars.append({'date': d, 'open': b['open'], 'high': b['high'], 'low': b['low'], 'close': b['close']})
+    return bars[:horizon]
 
 
 def _signal_en(signal):
@@ -77,34 +100,122 @@ def _direction_correct(signal, ret):
     return abs(ret) <= 0.015
 
 
+def _evaluate_targets(signal_en, entry_price, stop_loss, take_profit, forward_bars):
+    """基于 forward K 线评估止盈止损首触结果与模拟收益。"""
+    result = {
+        'hit_stop_loss': None,
+        'hit_take_profit': None,
+        'first_hit': None,
+        'first_hit_date': None,
+        'first_hit_trading_days': None,
+        'simulated_exit_price': None,
+        'simulated_return_pct': None,
+    }
+    if signal_en not in ('bullish',) or not forward_bars:
+        return result
+    if entry_price is None or entry_price <= 0:
+        return result
+
+    entry = forward_bars[0].get('open') or forward_bars[0].get('close')
+    if entry is None or entry <= 0:
+        entry = entry_price
+    sl = stop_loss if stop_loss and stop_loss > 0 else entry * 0.95
+    tp = take_profit if take_profit and take_profit > 0 else entry * 1.10
+
+    for i, bar in enumerate(forward_bars):
+        if i == 0:
+            continue
+        low = bar.get('low')
+        high = bar.get('high')
+        if low is None or high is None:
+            continue
+        hit_sl = low <= sl
+        hit_tp = high >= tp
+        if hit_sl and hit_tp:
+            result['hit_stop_loss'] = True
+            result['hit_take_profit'] = True
+            result['first_hit'] = 'ambiguous'
+            result['first_hit_date'] = bar.get('date')
+            result['first_hit_trading_days'] = i
+            result['simulated_exit_price'] = sl
+            break
+        if hit_sl:
+            result['hit_stop_loss'] = True
+            result['hit_take_profit'] = False
+            result['first_hit'] = 'stop_loss'
+            result['first_hit_date'] = bar.get('date')
+            result['first_hit_trading_days'] = i
+            result['simulated_exit_price'] = sl
+            break
+        if hit_tp:
+            result['hit_stop_loss'] = False
+            result['hit_take_profit'] = True
+            result['first_hit'] = 'take_profit'
+            result['first_hit_date'] = bar.get('date')
+            result['first_hit_trading_days'] = i
+            result['simulated_exit_price'] = tp
+            break
+    else:
+        last_close = forward_bars[-1].get('close')
+        if last_close is not None:
+            result['hit_stop_loss'] = False
+            result['hit_take_profit'] = False
+            result['first_hit'] = 'none'
+            result['first_hit_date'] = forward_bars[-1].get('date')
+            result['first_hit_trading_days'] = len(forward_bars)
+            result['simulated_exit_price'] = last_close
+
+    if result['simulated_exit_price'] is not None:
+        result['simulated_return_pct'] = (result['simulated_exit_price'] - entry) / entry * 100
+    return result
+
+
 def backtest():
     df = _load_predictions()
     print(f'[bt] loaded {len(df)} predictions from {df["pred_date"].min()} to {df["pred_date"].max()}')
 
     bars = _load_warehouse_prices()
     ret_map = _build_return_map(bars)
+    bar_map = _build_bar_map(bars)
     print(f'[bt] loaded {len(bars)} tickers from warehouse, return map size={len(ret_map)}')
 
     records = []
     for _, row in df.iterrows():
         ticker = row['ticker']
         pred_date = row['pred_date']
+        signal_en = _signal_en(row['signal'])
+        # 预取该预测之后最长 horizon 的 forward bars，供各 horizon 复用
+        max_h = 10
+        fb = _forward_bars(bar_map, ticker, pred_date, max_h)
+        target_eval = _evaluate_targets(
+            signal_en, row['current_price'], row['stop_loss'], row['target_price'], fb
+        )
         for h in [1, 3, 5, 10]:
             ret = ret_map.get((h, pred_date, ticker))
-            records.append({
+            rec = {
                 'pred_date': pred_date,
                 'ticker': ticker,
                 'name': row['name'],
                 'category': row['category'],
                 'signal': row['signal'],
-                'signal_en': _signal_en(row['signal']),
+                'signal_en': signal_en,
                 'confidence': row['confidence'],
                 'weighted_score': row['weighted_score'],
                 'entry_price': row['current_price'],
+                'target_price': row['target_price'],
+                'stop_loss': row['stop_loss'],
                 'horizon': h,
                 'forward_return': ret,
                 'direction_correct': _direction_correct(row['signal'], ret) if ret is not None else None,
-            })
+                'hit_stop_loss': target_eval['hit_stop_loss'],
+                'hit_take_profit': target_eval['hit_take_profit'],
+                'first_hit': target_eval['first_hit'],
+                'first_hit_date': target_eval['first_hit_date'],
+                'first_hit_trading_days': target_eval['first_hit_trading_days'],
+                'simulated_exit_price': target_eval['simulated_exit_price'],
+                'simulated_return_pct': target_eval['simulated_return_pct'],
+            }
+            records.append(rec)
     rdf = pd.DataFrame(records)
 
     summary = {}

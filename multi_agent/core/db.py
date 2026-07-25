@@ -92,6 +92,25 @@ def init_predictions_db(conn: sqlite3.Connection) -> None:
             confidence REAL,
             validated_at TEXT DEFAULT CURRENT_TIMESTAMP
         );
+
+        CREATE TABLE IF NOT EXISTS provider_runs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            source TEXT NOT NULL,
+            ticker TEXT NOT NULL,
+            market TEXT,
+            start_date TEXT,
+            end_date TEXT,
+            interval TEXT,
+            status TEXT NOT NULL CHECK(status IN ('success','failure','fallback')),
+            rows INTEGER,
+            latency_ms INTEGER,
+            error_msg TEXT,
+            run_date TEXT DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE INDEX IF NOT EXISTS idx_provider_runs_ticker ON provider_runs(ticker);
+        CREATE INDEX IF NOT EXISTS idx_provider_runs_source ON provider_runs(source);
+        CREATE INDEX IF NOT EXISTS idx_provider_runs_run_date ON provider_runs(run_date);
+
     """)
     # 兼容旧表
     cols = [r[1] for r in conn.execute("PRAGMA table_info(agentic_predictions)")]
@@ -99,6 +118,85 @@ def init_predictions_db(conn: sqlite3.Connection) -> None:
         conn.execute("ALTER TABLE agentic_predictions ADD COLUMN price_date TEXT")
     conn.commit()
 
+
+
+def _ensure_provider_runs_table(conn: sqlite3.Connection) -> None:
+    """确保 provider_runs 诊断表存在（兼容老数据库）。"""
+    conn.executescript("""
+        CREATE TABLE IF NOT EXISTS provider_runs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            source TEXT NOT NULL,
+            ticker TEXT NOT NULL,
+            market TEXT,
+            start_date TEXT,
+            end_date TEXT,
+            interval TEXT,
+            status TEXT NOT NULL CHECK(status IN ('success','failure','fallback')),
+            rows INTEGER,
+            latency_ms INTEGER,
+            error_msg TEXT,
+            run_date TEXT DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE INDEX IF NOT EXISTS idx_provider_runs_ticker ON provider_runs(ticker);
+        CREATE INDEX IF NOT EXISTS idx_provider_runs_source ON provider_runs(source);
+        CREATE INDEX IF NOT EXISTS idx_provider_runs_run_date ON provider_runs(run_date);
+    """)
+    conn.commit()
+
+
+def record_provider_run(
+    *,
+    source: str,
+    ticker: str,
+    market: Optional[str] = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    interval: Optional[str] = None,
+    status: str,
+    rows: Optional[int] = None,
+    latency_ms: Optional[int] = None,
+    error_msg: Optional[str] = None,
+) -> None:
+    """记录一次数据源加载的运行结果。"""
+    conn = _connect(PREDICTIONS_DB)
+    try:
+        _ensure_provider_runs_table(conn)
+        conn.execute(
+            """
+            INSERT INTO provider_runs
+            (source, ticker, market, start_date, end_date, interval, status, rows, latency_ms, error_msg)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (source, ticker, market, start_date, end_date, interval, status, rows, latency_ms, error_msg),
+        )
+        conn.commit()
+    except Exception:
+        pass
+    finally:
+        conn.close()
+
+def get_provider_runs(
+    ticker: Optional[str] = None,
+    source: Optional[str] = None,
+    limit: int = 50,
+) -> List[Dict[str, Any]]:
+    """获取最近的数据源运行记录。"""
+    conn = get_predictions_conn()
+    try:
+        sql = "SELECT * FROM provider_runs WHERE 1=1"
+        params: List[Any] = []
+        if ticker:
+            sql += " AND ticker=?"
+            params.append(ticker)
+        if source:
+            sql += " AND source=?"
+            params.append(source)
+        sql += " ORDER BY run_date DESC LIMIT ?"
+        params.append(limit)
+        cur = conn.execute(sql, params)
+        return [dict(r) for r in cur.fetchall()]
+    finally:
+        conn.close()
 
 def get_predictions_conn() -> sqlite3.Connection:
     conn = _connect(PREDICTIONS_DB)

@@ -33,6 +33,11 @@ from typing import Any, Callable, Dict, List, Optional, Protocol, Tuple, Type
 
 import pandas as pd
 
+try:
+    from core.db import record_provider_run
+except Exception:
+    record_provider_run = None
+
 warnings.filterwarnings('ignore')
 logger = logging.getLogger(__name__)
 
@@ -1056,6 +1061,66 @@ class SinaFuturesLoader:
 
 
 # ---------------------------------------------------------------------------
+# 实时行情 Loader：腾讯证券（单价接口，不走缓存）
+# ---------------------------------------------------------------------------
+@register_loader('tencent_realtime', ['a_share', 'index'])
+class TencentRealtimeLoader:
+    """腾讯证券实时行情：返回当日 open/high/low/close/volume 的单条 K 线。"""
+
+    def __init__(self, timeout: Optional[float] = None):
+        self.timeout = timeout or DEFAULT_TIMEOUT
+
+    def is_available(self) -> bool:
+        try:
+            import urllib.request
+            return True
+        except Exception:
+            return False
+
+    def fetch(self, codes: List[str], start_date: str, end_date: str, *,
+              interval: str = '1D', fields: Optional[List[str]] = None) -> Dict[str, pd.DataFrame]:
+        result = {}
+        for code in codes:
+            try:
+                df = self._fetch_one(code)
+                if df is not None and not df.empty:
+                    result[code] = df
+            except Exception as e:
+                logger.warning('tencent_realtime loader %s failed: %s', code, e)
+        return result
+
+    def _fetch_one(self, code: str) -> Optional[pd.DataFrame]:
+        import urllib.request
+
+        pure = code.split('.')[0]
+        prefix = 'sh' if pure.startswith(('6', '5', '8', '9', '11', '13', '68', '88')) else 'sz'
+        url = f'http://qt.gtimg.cn/q={prefix}{pure}'
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+
+        def _fetch() -> Optional[pd.DataFrame]:
+            with urllib.request.urlopen(req, timeout=self.timeout) as resp:
+                text = resp.read().decode('gbk')
+            parts = text.split('~')
+            if len(parts) < 40:
+                return None
+            row = {
+                'open': float(parts[5]) if parts[5] else None,
+                'high': float(parts[33]) if parts[33] else None,
+                'low': float(parts[34]) if parts[34] else None,
+                'close': float(parts[3]) if parts[3] else None,
+                'volume': float(parts[6]) if parts[6] else None,
+            }
+            if row['close'] is None or row['close'] <= 0:
+                return None
+            df = pd.DataFrame([row])
+            df.index = [pd.Timestamp.now().normalize()]
+            df.index.name = 'date'
+            return df[['open', 'high', 'low', 'close', 'volume']].astype(float)
+
+        return run_with_retry(_fetch, label=f'tencent_realtime {code}', timeout=self.timeout)
+
+
+# ---------------------------------------------------------------------------
 # 本地 Loader
 # ---------------------------------------------------------------------------
 @register_loader('local', ['a_share', 'futures', 'fund', 'macro'])
@@ -1144,6 +1209,21 @@ def resolve_loader(market: str, source: Optional[str] = None) -> Optional[BaseLo
 # ---------------------------------------------------------------------------
 # 统一 fetch 入口
 # ---------------------------------------------------------------------------
+def _record(source: str, ticker: str, market: Optional[str], start_date: str, end_date: str,
+            interval: str, status: str, rows: Optional[int] = None, latency_ms: Optional[int] = None,
+            error_msg: Optional[str] = None) -> None:
+    """记录 loader 运行结果到诊断表。"""
+    if callable(record_provider_run):
+        try:
+            record_provider_run(
+                source=source, ticker=ticker, market=market,
+                start_date=start_date, end_date=end_date, interval=interval,
+                status=status, rows=rows, latency_ms=latency_ms, error_msg=error_msg,
+            )
+        except Exception:
+            pass
+
+
 def fetch_market_data(codes: List[str], start_date: str, end_date: str, *,
                       market: Optional[str] = None, source: Optional[str] = None,
                       interval: str = '1D', fields: Optional[List[str]] = None,
@@ -1174,16 +1254,24 @@ def fetch_market_data(codes: List[str], start_date: str, end_date: str, *,
             continue
 
         for symbol in symbols:
+            t0 = time.monotonic()
+            success = False
+            last_error: Optional[str] = None
             # 先尝试缓存（以第一个候选 loader 名义）
             if use_cache:
                 df = _load_cache(candidate_names[0], symbol, interval, start_date, end_date, fields=fields)
                 if df is not None and not df.empty:
                     result[symbol] = df
+                    _record(
+                        candidate_names[0], symbol, m, start_date, end_date, interval,
+                        'success', rows=len(df), latency_ms=int((time.monotonic() - t0) * 1000),
+                    )
                     continue
             for name in candidate_names:
                 cls = LOADER_REGISTRY.get(name)
                 if not cls:
                     continue
+                t1 = time.monotonic()
                 try:
                     loader = cls()
                     if not loader.is_available():
@@ -1191,11 +1279,41 @@ def fetch_market_data(codes: List[str], start_date: str, end_date: str, *,
                     fetched = loader.fetch([symbol], start_date, end_date, interval=interval, fields=fields)
                     df = fetched.get(symbol)
                     if df is not None and not df.empty:
+                        latency_ms = int((time.monotonic() - t1) * 1000)
                         _save_cache(df, name, symbol, interval, start_date, end_date, fields=fields)
                         result[symbol] = df
+                        _record(
+                            name, symbol, m, start_date, end_date, interval,
+                            'success', rows=len(df), latency_ms=latency_ms,
+                        )
+                        success = True
                         break
+                    else:
+                        last_error = f'{name}: empty'
                 except Exception as e:
+                    last_error = f'{name}: {e}'
                     logger.debug('loader %s failed for %s: %s', name, symbol, e)
+                latency_ms = int((time.monotonic() - t1) * 1000)
+                _record(
+                    name, symbol, m, start_date, end_date, interval,
+                    'failure', latency_ms=latency_ms, error_msg=last_error,
+                )
+            if not success and last_error:
+                # 最终 fallback 到本地缓存，记录兜底状态
+                df = _load_cache('local', symbol, interval, start_date, end_date, fields=fields)
+                if df is not None and not df.empty:
+                    result[symbol] = df
+                    _record(
+                        candidate_names[0], symbol, m, start_date, end_date, interval,
+                        'fallback', rows=len(df), latency_ms=int((time.monotonic() - t0) * 1000),
+                        error_msg=last_error,
+                    )
+                else:
+                    _record(
+                        candidate_names[0], symbol, m, start_date, end_date, interval,
+                        'failure', latency_ms=int((time.monotonic() - t0) * 1000),
+                        error_msg=last_error,
+                    )
     return result
 
 
@@ -1210,6 +1328,25 @@ def list_loaders() -> List[Dict[str, Any]]:
         }
         for cls in LOADER_REGISTRY.values()
     ]
+
+
+# ---------------------------------------------------------------------------
+# 统一实时行情入口
+# ---------------------------------------------------------------------------
+def get_realtime_price(codes: List[str], *, market: Optional[str] = None,
+                       source: Optional[str] = None) -> Dict[str, float]:
+    """获取实时价格，默认使用 tencent_realtime，可通过 source 切换。"""
+    if not codes:
+        return {}
+    target_market = market or _detect_market(codes[0])
+    src = source or 'tencent_realtime'
+    end = dt_date.today().isoformat()
+    dfs = fetch_market_data(codes, end, end, market=target_market, source=src, use_cache=False)
+    prices = {}
+    for code, df in dfs.items():
+        if not df.empty and 'close' in df.columns:
+            prices[code] = float(df['close'].iloc[-1])
+    return prices
 
 
 if __name__ == '__main__':

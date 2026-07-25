@@ -41,6 +41,12 @@ from core.us_data import get_us_stock_data, is_us_ticker
 from core.scenario_backtests import scenario_backtests, recommend_scenario, SCENARIO_NAME_CN, SCENARIO_DESC
 from core.db import get_predictions_conn, save_predictions as _db_save_predictions
 from core.warehouse import save_features as _warehouse_save_features
+from core.daily_market_context import (
+    DailyMarketContext,
+    format_daily_market_context_prompt_section,
+    get_context as _get_market_context,
+    region_from_ticker,
+)
 import pandas as pd
 
 DB_PATH = os.path.join(PROJECT_ROOT, 'multi_agent', 'data', 'llm_predictions.db')
@@ -403,7 +409,8 @@ def _calc_target_stop(current_price: float, signal: str, tech_snapshot: Dict, av
 def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_report: Dict,
                      bull_arg: Dict, bear_arg: Dict,
                      macro_report: Optional[Dict] = None, ticker: str = '', name: str = '',
-                     sector: str = '', category: str = '') -> Dict:
+                     sector: str = '', category: str = '',
+                     market_context: Optional[DailyMarketContext] = None) -> Dict:
     tech_score = technical_report.get('score', 50)
     tech_rating = technical_report.get('rating', '中性')
     tech_snapshot = technical_report.get('tech_snapshot', {})
@@ -561,6 +568,9 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     if macro_report:
         ms = macro_report.get('macro_signal', 'neutral')
         macro_note = f"宏观{MACRO_SIGNAL_CN.get(ms, ms)}({macro_report.get('macro_score', 50)}/100)"
+    market_ctx_note = ""
+    if market_context is not None:
+        market_ctx_note = f"市场上下文{market_context.market_phase}({market_context.macro_score}/100)上限{market_context.position_cap:.0%}"
     reasons = [
         f"技术面{tech_rating}({tech_score}/100)",
         f"基本面{fundamental_report.get('rating', 'N/A')}({fund_score}/100)",
@@ -569,10 +579,17 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     ]
     if macro_note:
         reasons.append(macro_note)
+    if market_ctx_note:
+        reasons.append(market_ctx_note)
     if fund_flow_note:
         reasons.append(fund_flow_note)
     if market_flow_note:
         reasons.append(market_flow_note)
+    if market_context is not None:
+        cap = getattr(market_context, 'position_cap', 1.0)
+        if cap < 1.0:
+            position_pct = round(min(position_pct, cap), 3)
+            reasons.append(f"市场仓位上限{cap:.0%}")
 
     return {
         'signal': signal,
@@ -750,7 +767,8 @@ def _fast_technical_analysis(ticker: str, name: str = "", macro_report: Optional
 
 def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '个股',
                 fast: bool = False, ultra: bool = False,
-                macro_report: Optional[Dict] = None) -> Optional[Dict]:
+                macro_report: Optional[Dict] = None,
+                market_context: Optional[DailyMarketContext] = None) -> Optional[Dict]:
     """对单个标的进行统一多 Agent 预测。fast=True 跳过基本面和新闻情绪，仅技术面+多空辩论。ultra=True 使用轻量技术面分析，速度最快。macro_report 为全局宏观分析，影响经理裁决。"""
     try:
         is_fut = is_futures(ticker)
@@ -852,7 +870,7 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
         bull = DebateEngine.bull_argument(technical, fundamental, news)
         bear = DebateEngine.bear_argument(technical, fundamental, news)
 
-        verdict = _manager_verdict(technical, fundamental, news, bull, bear, macro_report=macro_report, ticker=ticker, name=name, sector=sector, category=category)
+        verdict = _manager_verdict(technical, fundamental, news, bull, bear, macro_report=macro_report, ticker=ticker, name=name, sector=sector, category=category, market_context=market_context)
 
         current_price = technical.get('current_price', 0)
         price_date = technical.get('price_date') or technical.get('tech_snapshot', {}).get('price_date', '')
@@ -951,7 +969,9 @@ def generate_for_watchlist(watchlist_path: str = None, categories: List[str] = N
     errors = 0
 
     def _predict(item):
-        return predict_one(item['ticker'], item['name'], item.get('sector', item.get('theme', '')), item.get('category', '个股'), fast=fast, ultra=ultra, macro_report=macro_report)
+        region = region_from_ticker(item['ticker'], item.get('category', '个股'))
+        mctx = _get_market_context(region=region, allow_generate=False)
+        return predict_one(item['ticker'], item['name'], item.get('sector', item.get('theme', '')), item.get('category', '个股'), fast=fast, ultra=ultra, macro_report=macro_report, market_context=mctx)
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         future_to_item = {executor.submit(_predict, item): item for item in items}

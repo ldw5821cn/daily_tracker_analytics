@@ -29,6 +29,9 @@ sys.path.insert(0, os.path.join(PR, "multi_agent"))
 DB = os.path.join(PR, "multi_agent", "data", "llm_predictions.db")
 BT = os.path.join(PR, "multi_agent", "data", "prediction_backtest.json")
 OUT = os.path.join(PR, "multi_agent", "config", "predictor_params.json")
+OPTIMIZE_TARGET = os.environ.get("OPTIMIZE_TARGET", "forward_return")
+# forward_return: 期末收益；simulated_return: 止盈止损模拟收益
+assert OPTIMIZE_TARGET in ("forward_return", "simulated_return"), OPTIMIZE_TARGET
 
 WG = {
     "technical": [0.20, 0.25, 0.30, 0.35, 0.40],
@@ -60,14 +63,20 @@ def load_backtest_returns():
     with open(BT, "r", encoding="utf-8") as f:
         data = json.load(f)
     ret_map = {}
+    sim_map = {}
+    first_hit_map = {}
     for rec in data.get("records", []):
         if rec.get("horizon") == 5:
             key = (rec.get("pred_date"), rec.get("ticker"))
             ret_map[key] = rec.get("forward_return")
-    return ret_map
+            sim_map[key] = rec.get("simulated_return_pct")
+            first_hit_map[key] = rec.get("first_hit_trading_days")
+    return {"forward_return": ret_map, "simulated_return": sim_map, "first_hit": first_hit_map}
 
 
 def load_predictions(cat=None, ret_map=None):
+    target_ret_map = ret_map.get(OPTIMIZE_TARGET, {}) if isinstance(ret_map, dict) else ret_map
+    first_hit_map = ret_map.get("first_hit", {}) if isinstance(ret_map, dict) else {}
     co = sqlite3.connect(DB)
     co.row_factory = sqlite3.Row
     q = """
@@ -90,9 +99,10 @@ def load_predictions(cat=None, ret_map=None):
             continue
 
         key = (r["pred_date"], r["ticker"])
-        fwd_ret = ret_map.get(key)
+        fwd_ret = target_ret_map.get(key)
         if fwd_ret is None:
             continue
+        first_hit = first_hit_map.get(key)
 
         t = sc.get("technical", 50)
         if isinstance(t, dict):
@@ -114,12 +124,14 @@ def load_predictions(cat=None, ret_map=None):
             "dn": dn,
             "ff": ff_override,
             "r": float(fwd_ret),
+            "first_hit": first_hit,
         })
     return rs
 
 
 def evaluate(rs, w, b, be, ff_strength):
     bull_rets, bear_rets = [], []
+    rs_used = []
     n_correct = n_total = 0
 
     for r in rs:
@@ -131,11 +143,13 @@ def evaluate(rs, w, b, be, ff_strength):
         if sig == "bullish":
             bull_rets.append(ret)
             n_total += 1
+            rs_used.append(r)
             if ret > 0:
                 n_correct += 1
         elif sig == "bearish":
             bear_rets.append(ret)
             n_total += 1
+            rs_used.append(r)
             if ret < 0:
                 n_correct += 1
 
@@ -144,6 +158,10 @@ def evaluate(rs, w, b, be, ff_strength):
     direction_accuracy = n_correct / n_total * 100 if n_total else 0
     coverage = (len(bull_rets) + len(bear_rets)) / len(rs) if rs else 0
 
+    avg_first_hit = None
+    fh = [r["first_hit"] for r in rs_used if r.get("first_hit") is not None]
+    if fh:
+        avg_first_hit = round(sum(fh) / len(fh), 2)
     return {
         "bullish_mean": bull_mean,
         "bearish_mean": bear_mean,
@@ -151,6 +169,7 @@ def evaluate(rs, w, b, be, ff_strength):
         "coverage": coverage,
         "n_bull": len(bull_rets),
         "n_bear": len(bear_rets),
+        "avg_first_hit_days": avg_first_hit,
     }
 
 
@@ -226,7 +245,8 @@ def optimize_category(cat, label, ret_map):
             "strong_bear": best["be"] - 5,
         },
         "fund_flow_strength": best["ff"],
-        "stats": "train=%.2f%%/%.2f%%/%.1f%% val=%.2f%%/%.2f%%/%.1f%% ff=%.1f" % (
+        "stats": "target=%s train=%.2f%%/%.2f%%/%.1f%% val=%.2f%%/%.2f%%/%.1f%% ff=%.1f first_hit=%s" % (
+            OPTIMIZE_TARGET,
             best["train"]["bullish_mean"] * 100,
             best["train"]["bearish_mean"] * 100,
             best["train"]["direction_accuracy"],
@@ -234,6 +254,7 @@ def optimize_category(cat, label, ret_map):
             best["val"]["bearish_mean"] * 100,
             best["val"]["direction_accuracy"],
             best["ff"],
+            best["val"].get("avg_first_hit_days", "N/A"),
         ),
         "score": round(best["score"], 2),
     }
@@ -241,7 +262,7 @@ def optimize_category(cat, label, ret_map):
 
 def main():
     print("=" * 48)
-    print(" Optimizer V4 - optimize on realized 5d forward return")
+    print(" Optimizer V4 - optimize on realized 5d %s" % OPTIMIZE_TARGET)
     print("=" * 48)
     if not os.path.exists(BT):
         print("  %s not found, run backtest_predictions.py first" % BT)

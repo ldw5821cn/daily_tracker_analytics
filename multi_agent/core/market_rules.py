@@ -149,6 +149,47 @@ def calc_futures_commission(symbol: str, price: float, contracts: int) -> float:
     return contracts * p["commission_value"]
 
 
+def market_phase(macro_score: float, risk_state: str = "neutral") -> str:
+    """Return coarse market phase used for position sizing and tone.
+
+    Args:
+        macro_score: 0-100 composite macro score.
+        risk_state: 'risk_on', 'risk_off', or 'neutral'.
+
+    Returns:
+        One of: 'strong_bull', 'bull', 'neutral', 'bear', 'strong_bear'.
+    """
+    if macro_score >= 65 or (macro_score >= 60 and risk_state == "risk_on"):
+        return "strong_bull"
+    if macro_score >= 55:
+        return "bull"
+    if macro_score <= 35 or (macro_score <= 40 and risk_state == "risk_off"):
+        return "strong_bear"
+    if macro_score <= 45:
+        return "bear"
+    return "neutral"
+
+
+def market_light(index_scores: list) -> str:
+    """Traffic-light summary from a list of index score dicts.
+
+    Args:
+        index_scores: List of dicts with keys 'score' and 'trend'.
+
+    Returns:
+        One of: 'red', 'yellow', 'green'.
+    """
+    if not index_scores:
+        return "yellow"
+    bullish = sum(1 for s in index_scores if s.get("score", 50) >= 60)
+    bearish = sum(1 for s in index_scores if s.get("score", 50) <= 40)
+    if bearish >= 2:
+        return "red"
+    if bullish >= 2:
+        return "green"
+    return "yellow"
+
+
 if __name__ == "__main__":
     # Quick sanity checks
     print("000001.SZ limit:", get_price_limit("000001.SZ"))          # 0.10
@@ -161,3 +202,5 @@ if __name__ == "__main__":
     print("A-share buy cost:", calc_a_share_cost(10.0, 1000, is_buy=True))
     print("A-share sell cost:", calc_a_share_cost(10.0, 1000, is_buy=False))
     print("IF commission:", calc_futures_commission("IF2406.CFFEX", 3500.0, 1))
+    print("phase:", market_phase(72, "risk_on"))
+    print("light:", market_light([{"score": 70, "trend": "bullish"}, {"score": 45, "trend": "neutral"}]))

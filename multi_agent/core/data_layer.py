@@ -587,8 +587,8 @@ def _get_yfinance_data(ticker, period="2y"):
         return None
 
 
-def get_realtime_price(ticker):
-    """腾讯证券实时价格"""
+def _get_realtime_price_legacy(ticker):
+    """腾讯证券实时价格（旧实现，作为 registry 失败后的兜底）。"""
     try:
         prefix = "sh" if ticker.startswith(('6', '5')) else "sz"
         url = f"http://qt.gtimg.cn/q={prefix}{ticker}"
@@ -613,6 +613,18 @@ def get_realtime_price(ticker):
     except Exception:
         pass
     return None
+
+
+def get_realtime_price(ticker):
+    """统一实时价格入口：优先走 registry，失败回退到腾讯证券。"""
+    try:
+        from core.data_loader_registry import get_realtime_price as registry_realtime
+        prices = registry_realtime([ticker])
+        if prices and ticker in prices:
+            return {'price': float(prices[ticker])}
+    except Exception:
+        pass
+    return _get_realtime_price_legacy(ticker)
 
 
 def get_stock_data(ticker, period="2y", calibrate=True) -> tuple[pd.DataFrame, dict]:
