@@ -1,0 +1,72 @@
+[
+  {
+    "ticker": "601899",
+    "name": "紫金矿业",
+    "price": 31.51,
+    "composite_score": 68.2,
+    "xueqiu_code": "SH601899"
+  },
+  {
+    "ticker": "601991",
+    "name": "大唐发电",
+    "price": 6.29,
+    "composite_score": 63.2,
+    "xueqiu_code": "SH601991"
+  },
+  {
+    "ticker": "601600",
+    "name": "中国铝业",
+    "price": 9.44,
+    "composite_score": 62.7,
+    "xueqiu_code": "SH601600"
+  },
+  {
+    "ticker": "000612",
+    "name": "焦作万方",
+    "price": 10.41,
+    "composite_score": 61.4,
+    "xueqiu_code": "SZ000612"
+  },
+  {
+    "ticker": "603993",
+    "name": "洛阳钼业",
+    "price": 19.04,
+    "composite_score": 60.4,
+    "xueqiu_code": "SH603993"
+  },
+  {
+    "ticker": "601088",
+    "name": "中国神华",
+    "price": 45.7,
+    "composite_score": 60.2,
+    "xueqiu_code": "SH601088"
+  },
+  {
+    "ticker": "688072",
+    "name": "拓荆科技",
+    "price": 791.0,
+    "composite_score": 60.1,
+    "xueqiu_code": "SH688072"
+  },
+  {
+    "ticker": "600988",
+    "name": "赤峰黄金",
+    "price": 36.49,
+    "composite_score": 59.8,
+    "xueqiu_code": "SH600988"
+  },
+  {
+    "ticker": "000807",
+    "name": "云铝股份",
+    "price": 25.4,
+    "composite_score": 59.5,
+    "xueqiu_code": "SZ000807"
+  },
+  {
+    "ticker": "001309",
+    "name": "德明利",
+    "price": 399.89,
+    "composite_score": 59.1,
+    "xueqiu_code": "SZ001309"
+  }
+]

@@ -41,6 +41,7 @@ from core.us_data import get_us_stock_data, is_us_ticker
 from core.scenario_backtests import scenario_backtests, recommend_scenario, SCENARIO_NAME_CN, SCENARIO_DESC
 from core.db import get_predictions_conn, save_predictions as _db_save_predictions
 from core.warehouse import save_features as _warehouse_save_features
+from services.notification import notify_summary
 from core.daily_market_context import (
     DailyMarketContext,
     format_daily_market_context_prompt_section,
@@ -1033,6 +1034,14 @@ def generate_for_watchlist(watchlist_path: str = None, categories: List[str] = N
         print(f'[warehouse] 特征快照保存失败: {e}')
 
     print(f"\n✅ 保存 {stats['saved']} 条, 失败 {stats['errors']} 条")
+
+    # 通知：汇总每日预测结果（失败不阻塞）
+    try:
+        from datetime import datetime
+        notify_summary(predictions, date=datetime.now().strftime('%Y-%m-%d'))
+    except Exception as e:
+        print(f'[notify] 通知发送失败（非阻断）: {e}')
+
     return {'predictions': predictions, 'stats': stats}
 
 
