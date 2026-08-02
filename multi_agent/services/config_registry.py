@@ -46,7 +46,7 @@ class Registry:
     data_dir: Path = DATA_DIR
 
     # 文件路径
-    watchlist_path: Path = DATA_DIR / "watchlist.json"
+    watchlist_path: Path = MULTI_AGENT / "watchlist.json"
     portfolio_state_path: Path = DATA_DIR / "portfolio_state.json"
     predictor_params_path: Path = MULTI_AGENT / "config" / "predictor_params.json"
     prediction_backtest_path: Path = DATA_DIR / "prediction_backtest.json"
