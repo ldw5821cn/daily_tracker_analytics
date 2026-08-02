@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-24T16:30:35",
-  "pred_date": "2026-07-24",
+  "generated_at": "2026-08-02T17:46:08",
+  "pred_date": "2026-08-02",
   "ret_map_count": 104643,
   "warehouse_max_dates": {
     "个股": "2026-07-23",
@@ -13,9 +13,9 @@
   "categories": {
     "个股": {
       "status": "ok",
-      "n": 1133,
+      "n": 1130,
       "n_evaluable": 262,
-      "skipped_no_forward": 871,
+      "skipped_no_forward": 868,
       "n_bull": 13,
       "n_bear": 201,
       "bullish_mean": -10.57,
@@ -52,9 +52,9 @@
     },
     "US": {
       "status": "ok",
-      "n": 477,
+      "n": 530,
       "n_evaluable": 107,
-      "skipped_no_forward": 370,
+      "skipped_no_forward": 423,
       "n_bull": 27,
       "n_bear": 23,
       "bullish_mean": -0.09,
