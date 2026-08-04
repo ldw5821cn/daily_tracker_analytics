@@ -229,10 +229,12 @@ def save_predictions(predictions: List[Dict[str, Any]], pred_date: Optional[str]
             deduped.append(p)
         valid = deduped
 
-        # 2. 按 pred_date 整批删除旧记录，避免多批次跑导致重复
+        # 2. 按 pred_date + category 删除旧记录，避免多批次按品类跑时互相覆盖
+        categories = sorted({p.get('category', '个股') for p in valid})
+        placeholders = ','.join('?' * len(categories))
         conn.execute(
-            "DELETE FROM agentic_predictions WHERE pred_date=?",
-            (today,)
+            f"DELETE FROM agentic_predictions WHERE pred_date=? AND category IN ({placeholders})",
+            (today, *categories)
         )
 
         # 3. 批量插入

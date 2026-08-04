@@ -80,6 +80,13 @@ def refresh_index() -> None:
     _build_index.cache_clear()
 
 
+INDEX_CODES = {
+    "000300", "000016", "000001", "000688", "000905", "000852",
+    "399001", "399006", "399005", "399330", "399673", "399006",
+    "930050", "930083", "930758", "950095", "950350", "950335",
+}
+
+
 def detect_market(ticker: str, category: Optional[str] = None) -> str:
     """推断 ticker 所属市场。"""
     if category:
@@ -99,8 +106,8 @@ def detect_market(ticker: str, category: Optional[str] = None) -> str:
     if t.isdigit():
         if len(t) in (4, 5):
             return "hk"
-        # 指数/ETF 代码：000/399/930/950 等开头且为 6 位数字
-        if len(t) == 6 and t.startswith(("000", "399", "930", "950")):
+        # 指数代码：白名单匹配
+        if len(t) == 6 and t in INDEX_CODES:
             return "index"
         if len(t) == 6:
             if t.startswith(SH_PREFIXES):

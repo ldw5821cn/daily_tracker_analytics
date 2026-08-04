@@ -1149,15 +1149,15 @@ class LocalLoader:
 # ---------------------------------------------------------------------------
 # 按 IP 封禁风险排序：公开、低频、免登录的接口在前；爬虫密集/限速源在后。
 FALLBACK_CHAINS = {
-    # A 股：TickFlow（付费稳定）优先 -> 腾讯公开接口 -> 东方财富 -> mootdx -> akshare -> 本地缓存
-    'a_share': ['tickflow', 'tencent', 'eastmoney', 'mootdx', 'akshare', 'local'],
-    # 指数：TickFlow 优先 -> 东方财富 -> akshare -> 本地
-    'index': ['tickflow', 'eastmoney', 'akshare', 'local'],
-    # 期货：新浪期货公开接口优先，akshare 兜底
-    'futures': ['sina_futures', 'akshare_futures', 'local'],
-    # 美股/港股：TickFlow（付费稳定）优先 -> yfinance 兜底 -> 本地
-    'us_equity': ['tickflow', 'yfinance', 'local'],
-    'hk_equity': ['tickflow', 'yfinance', 'local'],
+    # A 股：富途（需 OpenD）-> TickFlow（付费稳定） -> 腾讯公开接口 -> 东方财富 -> mootdx -> akshare -> 本地缓存
+    'a_share': ['futu', 'tickflow', 'tencent', 'eastmoney', 'mootdx', 'akshare', 'local'],
+    # 指数：富途 -> TickFlow -> 东方财富 -> akshare -> 本地
+    'index': ['futu', 'tickflow', 'eastmoney', 'akshare', 'local'],
+    # 期货：富途（需 OpenD+权限）-> 新浪期货 -> akshare -> 本地
+    'futures': ['futu', 'sina_futures', 'akshare_futures', 'local'],
+    # 美股/港股：富途 -> TickFlow -> yfinance -> 本地
+    'us_equity': ['futu', 'tickflow', 'yfinance', 'local'],
+    'hk_equity': ['futu', 'tickflow', 'yfinance', 'local'],
     # 基金：akshare 基金历史接口优先，东方财富次之，mootdx 兜底
     'fund': ['akshare', 'eastmoney', 'mootdx', 'local'],
     # 宏观：akshare 宏观数据优先
@@ -1349,5 +1349,29 @@ def get_realtime_price(codes: List[str], *, market: Optional[str] = None,
     return prices
 
 
+# ---------------------------------------------------------------------------
+# 自动发现 multi_agent/data_sources 下的外部 loader
+# ---------------------------------------------------------------------------
+def _auto_discover_data_sources() -> None:
+    """导入 data_sources 包下所有模块，触发 @register_loader 注册。"""
+    try:
+        import importlib
+        import pkgutil
+        import data_sources
+        pkg_path = os.path.dirname(data_sources.__file__)
+        for _, name, is_pkg in pkgutil.iter_modules([pkg_path]):
+            if is_pkg:
+                continue
+            try:
+                importlib.import_module(f'data_sources.{name}')
+            except Exception as e:
+                logger.debug('auto discover data_sources.%s failed: %s', name, e)
+    except Exception as e:
+        logger.debug('auto discover data_sources failed: %s', e)
+
+
+_auto_discover_data_sources()
+
+
 if __name__ == '__main__':
-    print('registered loaders:', list_loaders())
+    print(list_loaders())

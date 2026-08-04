@@ -766,6 +766,112 @@ def _fast_technical_analysis(ticker: str, name: str = "", macro_report: Optional
     }
 
 
+def _futures_technical_analysis(ticker: str, name: str = "", macro_report: Optional[Dict] = None, category: str = '') -> Dict:
+    """期货专用轻量技术面分析：使用 data_loader_registry 获取期货日线。"""
+    from core.data_loader_registry import fetch_market_data
+
+    end = datetime.now()
+    start = (end - timedelta(days=365)).strftime('%Y-%m-%d')
+    end_str = end.strftime('%Y-%m-%d')
+
+    result = fetch_market_data([ticker], start_date=start, end_date=end_str, market='futures')
+    df = result.get(ticker)
+    if df is None or df.empty:
+        raise ValueError(f"无法获取期货数据: {ticker}")
+
+    df = calc_technical_indicators(df)
+    latest = df.iloc[-1]
+    cp = float(latest['close'])
+
+    def _val(col, ndigits=2, default=0):
+        v = latest.get(col)
+        return round(float(v), ndigits) if pd.notna(v) and v is not None else default
+
+    tech_snapshot = {
+        'current_price': round(cp, 2),
+        'price_date': str(df.index[-1].date()) if hasattr(df.index[-1], 'date') else str(df.index[-1]),
+        'ma5': _val('ma5'), 'ma10': _val('ma10'), 'ma20': _val('ma20'), 'ma60': _val('ma60'),
+        'macd_dif': _val('macd_dif', 4), 'macd_dea': _val('macd_dea', 4), 'macd_hist': _val('macd_hist', 4),
+        'rsi_14': _val('rsi_14', 1), 'kdj_k': _val('kdj_k', 1), 'kdj_d': _val('kdj_d', 1),
+        'boll_up': _val('boll_up'), 'boll_mid': _val('boll_mid'), 'boll_down': _val('boll_down'),
+        'vol_ratio': _val('vol_ratio', 2), 'annual_vol_20d': _val('annual_vol_20d', 1),
+        'momentum_5d': _val('momentum_5d', 2), 'momentum_20d': _val('momentum_20d', 2),
+    }
+
+    signals = []
+    if pd.notna(latest['ma5']) and pd.notna(latest['ma10']) and pd.notna(latest['ma20']):
+        if float(latest['ma5']) > float(latest['ma10']) > float(latest['ma20']):
+            signals.append(("🟢", "均线多头排列"))
+        elif float(latest['ma5']) < float(latest['ma10']) < float(latest['ma20']):
+            signals.append(("🔴", "均线空头排列"))
+    if latest['macd_hist'] > 0:
+        signals.append(("🟢", "MACD红柱"))
+    else:
+        signals.append(("🔴", "MACD绿柱"))
+    if latest['rsi_14'] < 30: signals.append(("🟢", "RSI超卖"))
+    elif latest['rsi_14'] > 70: signals.append(("🔴", "RSI超买"))
+
+    score = 50
+    reasons = []
+    if pd.notna(latest['ma60']):
+        ma60_dist = (cp / float(latest['ma60']) - 1) * 100
+        if ma60_dist > 0:
+            score += 8; reasons.append(f"MA60上方{ma60_dist:+.1f}%")
+        else:
+            score -= 5; reasons.append(f"MA60下方{ma60_dist:+.1f}%")
+    if latest['macd_hist'] > 0: score += 6; reasons.append("MACD红柱")
+    else: score -= 4; reasons.append("MACD绿柱")
+    if 30 < latest['rsi_14'] < 70: score += 3; reasons.append("RSI合理")
+    elif latest['rsi_14'] < 30: score += 4; reasons.append("RSI超卖反弹")
+    else: score -= 3; reasons.append("RSI超买")
+    vol = tech_snapshot['annual_vol_20d']
+    if vol < 30: score += 3; reasons.append("低波")
+    elif vol > 60: score -= 2; reasons.append("高波")
+    score = max(0, min(100, score))
+
+    rating = "偏多" if score >= 75 else "中性偏多" if score >= 60 else "中性" if score >= 40 else "中性偏空" if score >= 25 else "偏空"
+
+    m5 = tech_snapshot['momentum_5d'] / 5 if tech_snapshot['momentum_5d'] else 0
+    m20 = tech_snapshot['momentum_20d'] / 20 if tech_snapshot['momentum_20d'] else 0
+    avg_daily = (m5 + m20) / 2
+    predictions = []
+    for days, label in [(1, '1d'), (3, '3d'), (5, '5d'), (10, '10d')]:
+        pred_return = avg_daily * days
+        thr = 1.5 + max(0, (days - 1)) * 0.5
+        pred_direction = '上涨' if pred_return > thr else '下跌' if pred_return < -thr else '震荡'
+        predictions.append({
+            'day': days, 'pred_price': round(cp * (1 + pred_return / 100), 3), 'pred_return': round(pred_return, 3),
+            'pred_direction': pred_direction,
+        })
+    prediction = {
+        'trend': '看涨' if avg_daily > 0.3 else '看跌' if avg_daily < -0.3 else '震荡',
+        'avg_return': round(avg_daily / 100, 5),
+        'predictions': predictions,
+    }
+
+    backtest = multi_period_backtest(df, periods=[30, 60]) if len(df) >= 30 else []
+    scenarios = scenario_backtests(df, periods=[30, 60], ticker=ticker) if len(df) >= 30 else []
+    macro_signal = 'neutral'
+    macro_score = 50
+    if macro_report:
+        macro_signal = macro_report.get('macro_signal', 'neutral')
+        macro_score = macro_report.get('macro_score', 50)
+    recommended = recommend_scenario(scenarios, macro_signal=macro_signal, macro_score=macro_score) if scenarios else {}
+
+    return {
+        'analyst': '技术面分析师(期货)',
+        'ticker': ticker, 'name': name, 'current_price': round(cp, 2),
+        'score': score, 'rating': rating,
+        'backtest_results': backtest,
+        'scenarios': scenarios,
+        'recommended_scenario': recommended,
+        'tech_snapshot': tech_snapshot,
+        'signals': signals,
+        'reasons': reasons,
+        'prediction': prediction,
+    }
+
+
 def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '个股',
                 fast: bool = False, ultra: bool = False,
                 macro_report: Optional[Dict] = None,
@@ -774,7 +880,10 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
     try:
         is_fut = is_futures(ticker)
 
-        if ultra:
+        if is_fut:
+            # 期货走专用技术面，避免 get_stock_data 不支持期货主连代码
+            technical = _futures_technical_analysis(ticker, name, macro_report, category=category)
+        elif ultra:
             technical = _fast_technical_analysis(ticker, name, macro_report, category=category)
         else:
             technical = technical_analyst.analyze(ticker, name)
@@ -783,7 +892,19 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
                 technical = _fast_technical_analysis(ticker, name, macro_report, category=category)
 
         # 期货 fast 模式跳过新闻；期货使用专门基本面分析师
-        if is_fut:
+        if is_fut and fast:
+            ff = {'score': 50, 'bias': '中性', 'data': {}, 'reasons': ['fast 模式跳过基本面']}
+            fundamental = {
+                'score': 50,
+                'rating': 'N/A',
+                'fundamentals': {'note': 'fast 模式跳过基本面'},
+                'error': 'skipped',
+            }
+            from analysts.sentiment_analyst import compute_sentiment_score as _get_sent
+            _clean_ticker = ticker.replace('.SH','').replace('.SZ','')
+            _senti = _get_sent(_clean_ticker)
+            news = {'sentiment_score': _senti / 50 - 1, 'sentiment': '中性', 'keywords': []}
+        elif is_fut:
             ff = futures_fundamental_analyst.analyze(ticker, name)
             fundamental = {
                 'score': ff.get('score', 50),

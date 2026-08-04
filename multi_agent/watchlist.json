@@ -1,5 +1,12 @@
 [
   {
+    "ticker": "000300",
+    "name": "沪深300",
+    "category": "指数",
+    "theme": "宽基",
+    "sector": "沪深300"
+  },
+  {
     "ticker": "516150",
     "name": "稀土ETF嘉实",
     "category": "ETF",

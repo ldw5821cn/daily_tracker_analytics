@@ -64,11 +64,11 @@ def load_predictions(pred_date=None):
 
 
 def _emoji(signal):
-    return {'bullish': '🔥', 'bearish': '❄️', 'neutral': '➖'}.get(signal, '➖')
+    return {'bullish': '🔥', 'bearish': '❄️', 'neutral': '➖', '看多': '🔥', '看空': '❄️', '中性': '➖'}.get(signal, '➖')
 
 
 def _signal_cn(signal):
-    return {'bullish': '看多', 'bearish': '看空', 'neutral': '中性'}.get(signal, signal)
+    return {'bullish': '看多', 'bearish': '看空', 'neutral': '中性', '看多': '看多', '看空': '看空', '中性': '中性'}.get(signal, signal)
 
 
 def build_markdown(pred_date=None, top_n=3):
@@ -85,9 +85,9 @@ def build_markdown(pred_date=None, top_n=3):
     for p in preds:
         groups.setdefault(p.get('category') or '其他', []).append(p)
 
-    bullish = [p for p in preds if p['signal'] == 'bullish']
-    bearish = [p for p in preds if p['signal'] == 'bearish']
-    neutral = [p for p in preds if p['signal'] == 'neutral']
+    bullish = [p for p in preds if p['signal'] in ('bullish', '看多')]
+    bearish = [p for p in preds if p['signal'] in ('bearish', '看空')]
+    neutral = [p for p in preds if p['signal'] in ('neutral', '中性', 'weak_neutral')]
 
     lines = [
         f"📊 多 Agent 统一预测日报 ({pred_date})",
@@ -96,7 +96,7 @@ def build_markdown(pred_date=None, top_n=3):
     ]
 
     # 重点推荐：按回测综合分排序（只看 top3）
-    top_recs = [p for p in preds if p['bt_score'] > 0][:3]
+    top_recs = [p for p in preds if p.get('bt_score', 0) > 0][:3]
     if top_recs:
         lines.append("🏆 重点推荐")
         for p in top_recs:

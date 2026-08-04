@@ -100,8 +100,14 @@ def _direction_correct(signal, ret):
     return abs(ret) <= 0.015
 
 
-def _evaluate_targets(signal_en, entry_price, stop_loss, take_profit, forward_bars):
-    """基于 forward K 线评估止盈止损首触结果与模拟收益。"""
+def _evaluate_targets(signal_en, entry_price, stop_loss, take_profit, forward_bars, neutral_band_pct=0.015):
+    """基于 forward K 线评估止盈止损首触结果与模拟收益。
+
+    支持 bullish/bearish/neutral 三种信号：
+    - bullish: 低点<=stop 止损，高点>=target 止盈；否则持有到最后一根 K 线。
+    - bearish: 反向做空，高点>=stop 止损，低点<=target 止盈。
+    - neutral: 用 entry*(1±band) 作为上下边界，超出即视为"打破区间"。
+    """
     result = {
         'hit_stop_loss': None,
         'hit_take_profit': None,
@@ -111,16 +117,72 @@ def _evaluate_targets(signal_en, entry_price, stop_loss, take_profit, forward_ba
         'simulated_exit_price': None,
         'simulated_return_pct': None,
     }
-    if signal_en not in ('bullish',) or not forward_bars:
+    if signal_en not in ('bullish', 'bearish', 'neutral') or not forward_bars:
         return result
     if entry_price is None or entry_price <= 0:
         return result
 
-    entry = forward_bars[0].get('open') or forward_bars[0].get('close')
+    entry = forward_bars[0].get('open') or forward_bars[0].get('close') or entry_price
     if entry is None or entry <= 0:
         entry = entry_price
-    sl = stop_loss if stop_loss and stop_loss > 0 else entry * 0.95
-    tp = take_profit if take_profit and take_profit > 0 else entry * 1.10
+
+    if signal_en == 'neutral':
+        upper = entry * (1 + neutral_band_pct)
+        lower = entry * (1 - neutral_band_pct)
+        for i, bar in enumerate(forward_bars):
+            if i == 0:
+                continue
+            high = bar.get('high')
+            low = bar.get('low')
+            if low is None or high is None:
+                continue
+            hit_upper = high >= upper
+            hit_lower = low <= lower
+            if hit_upper and hit_lower:
+                result['hit_stop_loss'] = True
+                result['hit_take_profit'] = True
+                result['first_hit'] = 'ambiguous'
+                result['first_hit_date'] = bar.get('date')
+                result['first_hit_trading_days'] = i
+                result['simulated_exit_price'] = entry
+                break
+            if hit_upper:
+                result['hit_stop_loss'] = False
+                result['hit_take_profit'] = True
+                result['first_hit'] = 'take_profit'
+                result['first_hit_date'] = bar.get('date')
+                result['first_hit_trading_days'] = i
+                result['simulated_exit_price'] = upper
+                break
+            if hit_lower:
+                result['hit_stop_loss'] = True
+                result['hit_take_profit'] = False
+                result['first_hit'] = 'stop_loss'
+                result['first_hit_date'] = bar.get('date')
+                result['first_hit_trading_days'] = i
+                result['simulated_exit_price'] = lower
+                break
+        else:
+            last_close = forward_bars[-1].get('close')
+            if last_close is not None:
+                result['hit_stop_loss'] = False
+                result['hit_take_profit'] = False
+                result['first_hit'] = 'none'
+                result['first_hit_date'] = forward_bars[-1].get('date')
+                result['first_hit_trading_days'] = len(forward_bars)
+                result['simulated_exit_price'] = last_close
+        if result['simulated_exit_price'] is not None:
+            result['simulated_return_pct'] = (result['simulated_exit_price'] - entry) / entry * 100
+        return result
+
+    # bullish / bearish
+    if signal_en == 'bullish':
+        sl = stop_loss if stop_loss and stop_loss > 0 else entry * 0.95
+        tp = take_profit if take_profit and take_profit > 0 else entry * 1.10
+    else:
+        # bearish: 做空，止损在 entry 上方，止盈在 entry 下方
+        sl = stop_loss if stop_loss and stop_loss > 0 else entry * 1.05
+        tp = take_profit if take_profit and take_profit > 0 else entry * 0.90
 
     for i, bar in enumerate(forward_bars):
         if i == 0:
@@ -129,8 +191,12 @@ def _evaluate_targets(signal_en, entry_price, stop_loss, take_profit, forward_ba
         high = bar.get('high')
         if low is None or high is None:
             continue
-        hit_sl = low <= sl
-        hit_tp = high >= tp
+        if signal_en == 'bullish':
+            hit_sl = low <= sl
+            hit_tp = high >= tp
+        else:
+            hit_sl = high >= sl
+            hit_tp = low <= tp
         if hit_sl and hit_tp:
             result['hit_stop_loss'] = True
             result['hit_take_profit'] = True
@@ -172,6 +238,22 @@ def _evaluate_targets(signal_en, entry_price, stop_loss, take_profit, forward_ba
 
 def backtest():
     df = _load_predictions()
+    if df.empty:
+        print('[bt] agentic_predictions is empty, writing empty report')
+        report = {
+            'generated_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'data_source': 'warehouse.daily_bar',
+            'n_predictions': 0,
+            'n_records': 0,
+            'date_range': {'start': None, 'end': None},
+            'summary': {},
+            'portfolio_summary': {},
+            'records': [],
+        }
+        with open(OUTPUT_PATH, 'w', encoding='utf-8') as f:
+            json.dump(report, f, ensure_ascii=False, indent=2)
+        print(f'[bt] saved empty {OUTPUT_PATH}')
+        return
     print(f'[bt] loaded {len(df)} predictions from {df["pred_date"].min()} to {df["pred_date"].max()}')
 
     bars = _load_warehouse_prices()
