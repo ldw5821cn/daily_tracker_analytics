@@ -792,11 +792,17 @@ def generate_portfolio_page(dates=None):
     tw = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'target_weights.json'))
     rb = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'stock_etf_rebalance_list.json'))
 
-    total_value = rb.get('total_portfolio_value', 50000)
+    total_value = tw.get('total_value', rb.get('total_portfolio_value', 50000))
     long_amount = rb.get('long_amount', 0)
     short_amount = rb.get('short_amount', 0)
     skipped = rb.get('skipped_count', 0)
-    date = tw.get('date', '') or rb.get('date', '')
+    date = tw.get('date', '') or rb.get('date', '') or datetime.now().strftime('%Y-%m-%d')
+
+    # 从 target_weights 直接显示目标持仓（当 rebalance list 为空时兜底）
+    all_targets = tw.get('targets', [])
+    if not all_targets:
+        # 兼容旧字段
+        all_targets = rb.get('items', [])
 
     # 从数据库读取价格日期
     price_date_map = get_price_date_map()
@@ -853,9 +859,9 @@ def generate_portfolio_page(dates=None):
         return rows
 
     # 按类别分组
-    stock_targets = [t for t in tw.get('targets', []) if t.get('category') == '个股']
-    etf_targets = [t for t in tw.get('targets', []) if t.get('category') == 'ETF']
-    futures_targets = [t for t in tw.get('targets', []) if t.get('category') == '期货']
+    stock_targets = [t for t in all_targets if t.get('category') == '个股']
+    etf_targets = [t for t in all_targets if t.get('category') == 'ETF']
+    futures_targets = [t for t in all_targets if t.get('category') == '期货']
 
     stock_actions = [i for i in rb.get('items', []) if i.get('category') == '个股']
     etf_actions = [i for i in rb.get('items', []) if i.get('category') == 'ETF']
@@ -1159,7 +1165,26 @@ def generate_data_health_page(dates=None):
 
 
 def generate_reflection_page(dates=None):
-    refl = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'prediction_reflection.json'))
+    refl_path = os.path.join(REPO_ROOT, 'multi_agent', 'data', 'prediction_reflection.json')
+    refl_history_path = os.path.join(REPO_ROOT, 'multi_agent', 'data', 'prediction_reflection_history.jsonl')
+    refl = _load_json(refl_path) or {}
+    # 优先使用历史文件中的最新 reflection（prediction_reflection.json 可能过期）
+    history_lines = []
+    try:
+        with open(refl_history_path, 'r', encoding='utf-8') as f:
+            history_lines = [json.loads(line) for line in f if line.strip()]
+    except Exception:
+        pass
+    if history_lines:
+        latest_hist = max(history_lines, key=lambda x: x.get('pred_date', '') or '')
+        if latest_hist.get('pred_date', '') > refl.get('pred_date', ''):
+            refl = latest_hist
+            # 同步刷新主文件，避免后续被过期文件覆盖
+            try:
+                with open(refl_path, 'w', encoding='utf-8') as f:
+                    json.dump(refl, f, ensure_ascii=False, indent=2)
+            except Exception:
+                pass
     if not refl:
         return
     pred_date = refl.get('pred_date', '未知')

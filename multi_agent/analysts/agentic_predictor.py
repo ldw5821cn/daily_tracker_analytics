@@ -152,14 +152,14 @@ def _get_debate_params(category: str = '') -> dict:
             'quality_min': 2.0,
             'neutral_override_threshold': 2.0,
             'neutral_override_weight': 0.6,
-            'low_confidence_threshold': 0.62,
+            'low_confidence_threshold': 0.60,
         }
     return {
         'net_multiplier': 8.0,
         'quality_min': 2.0,
         'neutral_override_threshold': 2.0,
         'neutral_override_weight': 0.6,
-        'low_confidence_threshold': 0.62,
+        'low_confidence_threshold': 0.60,
     }
 
 
@@ -457,7 +457,9 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     # 辩论质量：证据不足时降低 debate 贡献，避免低质量多空对撞压成中性
     debate_total = bull_score + bear_score
     debate_quality = min(1.0, debate_total / max(debate_quality_min, 1.0)) if debate_quality_min > 0 else 1.0
-    debate_score = (50 + net_debate * debate_net_multiplier) * debate_quality
+    # 以技术评分为锚点，避免独立辩论计数把技术面强势标的压回中性
+    debate_anchor = tech_score
+    debate_score = (debate_anchor + net_debate * debate_net_multiplier) * debate_quality
 
     weighted = (
         tech_score * w_tech +
@@ -487,8 +489,10 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     # 市场资金流修正（全市场指标，适用于 A 股/ETF/期货）
     market_flow_override = 0.0
     market_flow_note = ""
-    if not is_us_ticker(ticker):
-        market_flow_override = _get_market_flow_override()
+    market_flow_strength = _PARAMS.get('market_flow_strength', 0.0) if isinstance(_PARAMS, dict) else 0.0
+    if not is_us_ticker(ticker) and abs(market_flow_strength) > 1e-6:
+        raw_market_flow = _get_market_flow_override()
+        market_flow_override = max(-10, min(10, raw_market_flow * market_flow_strength))
         if abs(market_flow_override) >= 1:
             weighted = max(0, min(100, weighted + market_flow_override))
             market_flow_note = f"市场资金流修正{market_flow_override:+.1f}"
@@ -496,7 +500,8 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     # 资金流修正（个股/ETF 使用）
     fund_flow_override = 0
     fund_flow_note = ""
-    if not is_futures(ticker) and not is_us_ticker(ticker):
+    fund_flow_strength = _get_fund_flow_strength(category)
+    if not is_futures(ticker) and not is_us_ticker(ticker) and abs(fund_flow_strength) > 1e-6:
         try:
             from analysts.fund_flow_analyst import analyze as _ff_analyze, analyze_etf as _ff_analyze_etf
             # ETF 没有个股资金流，用行业/概念资金流替代
@@ -505,7 +510,8 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
             else:
                 ff = _ff_analyze(ticker, name, sector)
             ff_score = ff.get('score', 50)
-            ff_override = max(-10, min(10, (ff_score - 50) / 2.5))
+            raw_ff_override = (ff_score - 50) / 2.5
+            ff_override = max(-10, min(10, raw_ff_override * fund_flow_strength))
             weighted = max(0, min(100, weighted + ff_override))
             fund_flow_override = round(ff_override, 1)
             fund_flow_note = f"资金流{ff_score:.1f}"
@@ -515,7 +521,8 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     # 全球半导体修正（影响 A 股半导体/芯片/机器人/AI 相关标的）
     global_semi_override = 0
     global_semi_note = ""
-    if macro_report and not is_futures(ticker) and not is_us_ticker(ticker):
+    global_semi_strength = _PARAMS.get('global_semi_strength', 0.0) if isinstance(_PARAMS, dict) else 0.0
+    if macro_report and not is_futures(ticker) and not is_us_ticker(ticker) and abs(global_semi_strength) > 1e-6:
         try:
             gs = macro_report.get('global_semi', {})
             if gs:
@@ -524,8 +531,7 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
                 # 相关板块：半导体、芯片、CPU/GPU、半导体材料、半导体设备、机器人、人工智能
                 related = ('半导体', '芯片', 'CPU', 'GPU', '半导体材料', '半导体设备', '机器人', '人工智能', '算力')
                 if any(k in (sector or '') for k in related):
-                    # 海外半导体每偏离 50 一点，A 股相关板块修正 0.35 分，上限 ±8 分
-                    global_semi_override = max(-8, min(8, (gs_score - 50) * 0.35))
+                    global_semi_override = max(-8, min(8, (gs_score - 50) * 0.35 * global_semi_strength))
                     global_semi_note = f"海外半导体{gs_signal}({gs_score})修正{global_semi_override:+.1f}"
                     weighted = max(0, min(100, weighted + global_semi_override))
         except Exception:
@@ -554,7 +560,7 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     confidence = round(max(0.5, min(0.95, 0.5 + abs(weighted - 50) / 50 * 0.5 + min(abs(net_debate) * 0.08, 0.4))), 2)
 
     # 低置信度降级（参数化）
-    low_conf_threshold = _D.get('low_confidence_threshold', 0.62)
+    low_conf_threshold = _get_debate_params(category).get('low_confidence_threshold', 0.60)
     if confidence < low_conf_threshold:
         signal = '观望'
         position_pct = 0.0

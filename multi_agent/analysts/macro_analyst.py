@@ -32,13 +32,13 @@ from core.data_layer import get_stock_data, is_futures, is_etf, is_stock
 import pandas as pd
 import numpy as np
 
-# 大盘指数代码
+# 大盘指数代码（带交易所后缀，避免与个股代码混淆）
 INDEX_TICKERS = {
-    '000300': '沪深300',
-    '000905': '中证500',
-    '000001': '上证指数',
-    '399006': '创业板指',
-    '399673': '创业板50',
+    '000001.SH': '上证指数',
+    '000300.SH': '沪深300',
+    '000905.SH': '中证500',
+    '399006.SZ': '创业板指',
+    '399673.SZ': '创业板50',
 }
 
 # Risk-on/off 阈值

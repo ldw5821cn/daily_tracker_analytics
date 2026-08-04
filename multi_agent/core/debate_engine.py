@@ -95,6 +95,16 @@ class DebateEngine:
             if f.get('pe_ratio') and 0 < f['pe_ratio'] < 15:
                 bull_points.append(f"PE({f['pe_ratio']})偏低，估值合理")
         
+        # 与技术面评分对齐：避免独立机械计数导致与综合评分背离
+        tech_score = technical_report.get('score', 50) if technical_report else 50
+        if tech_score > 50:
+            bull_score = max(bull_score, (tech_score - 50) / 10)
+        if tech_score <= 40:
+            bull_score = 0.0
+        # 技术面明显偏多时，至少拉平多空强度，防止均线压制类噪音过度主导
+        if tech_score > 55:
+            bull_score = max(bull_score, 1.0)
+
         lines.append(f"看涨强度: {bull_score} 个积极信号")
         if bull_points:
             lines.append(f"")
@@ -132,9 +142,10 @@ class DebateEngine:
             s = t.get('tech_snapshot', {})
             
             # MACD空头
-            if s.get('macd_hist', 0) < 0:
-                bear_score += 2
-                bear_points.append(f"MACD柱状为负({s['macd_hist']:.2f})，动能偏空")
+            macd_hist = s.get('macd_hist', 0)
+            if macd_hist is not None and macd_hist < 0:
+                bear_score += 1
+                bear_points.append(f"MACD柱状为负({macd_hist:.2f})，动能偏空")
             
             # 均线压制
             cp = t.get('current_price', 0)
@@ -150,14 +161,15 @@ class DebateEngine:
                 bear_points.append(f"价格在布林中轨({s['boll_mid']})下方")
             
             # RSI
-            if s.get('rsi_14', 50) > 60:
-                bear_points.append(f"RSI({s['rsi_14']:.0f})偏高")
+            rsi = s.get('rsi_14', 50)
+            if rsi is not None and rsi > 70:
+                bear_points.append(f"RSI({rsi:.0f})偏高")
             
             # 近1月回撤
             if tr:
                 r30 = next((p for p in tr if p['days'] == 30), None)
                 if r30 and r30['max_drawdown'] < -15:
-                    bear_score += 2
+                    bear_score += 1
                     bear_points.append(f"近1月最大回撤{r30['max_drawdown']:.1f}%，波动剧烈")
             
             # 高波动
@@ -187,6 +199,15 @@ class DebateEngine:
             if f.get('pe_ratio') and f['pe_ratio'] > 50:
                 bear_points.append(f"PE({f['pe_ratio']:.0f})过高")
         
+        # 与技术面评分对齐
+        tech_score = technical_report.get('score', 50) if technical_report else 50
+        if tech_score < 50:
+            bear_score = max(bear_score, (50 - tech_score) / 10)
+        if tech_score >= 60:
+            bear_score = 0.0
+        if tech_score < 45:
+            bear_score = max(bear_score, 1.0)
+
         lines.append(f"看跌强度: {bear_score} 个消极信号")
         if bear_points:
             lines.append(f"")

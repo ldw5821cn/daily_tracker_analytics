@@ -194,9 +194,9 @@ def notify_summary(
     """生成并发送每日预测摘要。"""
     if date is None:
         date = datetime.now().strftime("%Y-%m-%d")
-    bullish = [p for p in predictions if p.get("signal") in ("bullish", "强烈看多")]
-    bearish = [p for p in predictions if p.get("signal") in ("bearish", "看空")]
-    neutral = [p for p in predictions if p not in bullish and p not in bearish]
+    bullish = [p for p in predictions if p.get("signal") in ("bullish", "看多", "强烈看多")]
+    bearish = [p for p in predictions if p.get("signal") in ("bearish", "看空", "强烈看空")]
+    neutral = [p for p in predictions if p.get("signal") in ("neutral", "中性", "观望")]
 
     lines = [
         f"日期：{date}",
