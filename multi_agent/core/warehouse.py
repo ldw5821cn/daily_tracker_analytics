@@ -127,10 +127,11 @@ def save_daily_bars(bars: List[Dict[str, Any]]) -> Dict[str, int]:
     """批量保存日线行情。bars: list of dict with date, ticker, open, high, low, close, volume, ..."""
     if not bars:
         return {"saved": 0, "errors": 0}
+    import datetime as _dt
     conn = get_warehouse_conn()
     cur = conn.cursor()
     stats = {"saved": 0, "errors": 0}
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    now = _dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     for b in bars:
         try:
             cur.execute("""
@@ -167,10 +168,11 @@ def load_bar_df(ticker: str, start: str, end: str) -> List[Dict[str, Any]]:
 def save_features(snapshots: List[Dict[str, Any]]) -> Dict[str, int]:
     if not snapshots:
         return {"saved": 0, "errors": 0}
+    import datetime as _dt
     conn = get_warehouse_conn()
     cur = conn.cursor()
     stats = {"saved": 0, "errors": 0}
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    now = _dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     for s in snapshots:
         try:
             cur.execute("""
