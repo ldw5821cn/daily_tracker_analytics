@@ -618,7 +618,7 @@ def _get_realtime_price_legacy(ticker):
 def get_realtime_price(ticker):
     """统一实时价格入口：优先走 registry，失败回退到腾讯证券。"""
     try:
-        from core.data_loader_registry import get_realtime_price as registry_realtime
+        from multi_agent.core.data_loader_registry import get_realtime_price as registry_realtime
         prices = registry_realtime([ticker])
         if prices and ticker in prices:
             return {'price': float(prices[ticker])}
@@ -627,16 +627,72 @@ def get_realtime_price(ticker):
     return _get_realtime_price_legacy(ticker)
 
 
+def _period_to_days(period: str) -> int:
+    """把 yfinance 风格 period 转换为近似交易日数。"""
+    p = period.lower().strip()
+    if p.endswith('y'):
+        try:
+            years = float(p[:-1])
+            return int(years * 252)
+        except ValueError:
+            return 252
+    if p.endswith('mo'):
+        try:
+            months = float(p[:-2])
+            return int(months * 21)
+        except ValueError:
+            return 21
+    if p.endswith('d'):
+        try:
+            return int(p[:-1])
+        except ValueError:
+            return 30
+    return 252
+
+
+def _get_registry_data(ticker: str, period: str = "2y", interval: str = "1D"):
+    """通过统一 data_loader_registry 取数据（富途优先），返回 DataFrame 或 None。"""
+    try:
+        from multi_agent.core.data_loader_registry import fetch_market_data
+        end = datetime.now().strftime('%Y-%m-%d')
+        start = (datetime.now() - timedelta(days=_period_to_days(period))).strftime('%Y-%m-%d')
+        result = fetch_market_data([ticker], start, end, interval=interval, use_cache=False)
+        df = result.get(ticker)
+        if df is None or len(df) < 20:
+            return None
+        # 标准化列名与索引
+        df = df.rename(columns=lambda c: c.lower().strip())
+        need_cols = ['open', 'high', 'low', 'close', 'volume']
+        if not all(c in df.columns for c in need_cols):
+            return None
+        df.index = pd.to_datetime(df.index, errors='coerce')
+        df = df.dropna(subset=['close'])
+        df = df[need_cols].astype(float)
+        df.sort_index(inplace=True)
+        return df
+    except Exception:
+        return None
+
+
 def get_stock_data(ticker, period="2y", calibrate=True) -> tuple[pd.DataFrame, dict]:
     """
     智能获取数据：自动选择最优数据源
     期货: 新浪期货(主)
-    个股: mootdx(主) > Tushare(备) > 新浪(备) > yfinance(备)
-    ETF:  akshare前复权(主) > mootdx(备) > 新浪(备) > yfinance(备)
+    个股: 富途(需OpenD在线) -> mootdx(主) -> Tushare(备) -> 新浪(备) -> yfinance(备)
+    ETF:  富途 -> akshare前复权(主) -> mootdx(备) -> 新浪(备) -> yfinance(备)
     """
     df = None
     source = None
     info = {}
+
+    # 1) 优先尝试统一 registry 数据源（富途 fallback 链）
+    df = _get_registry_data(ticker, period=period)
+    if df is not None:
+        source = "registry:futu"
+        print(f"  📡 数据源: registry 富途链 {len(df)}天")
+        if calibrate and not is_futures(ticker):
+            _verify_data(ticker, df, source)
+        return df, info
 
     if is_futures(ticker):
         df = _get_sina_futures_data(ticker)
@@ -862,7 +918,7 @@ _USE_V2 = os.environ.get('USE_DATA_LOADER_REGISTRY_V2', '1') == '1'
 
 def get_stock_data_v2(ticker, period="2y", calibrate=True, source=None) -> tuple[pd.DataFrame, dict]:
     """基于 data_loader_registry 的智能数据获取（V2 实验版）。"""
-    from core.data_loader_registry import fetch_market_data
+    from multi_agent.core.data_loader_registry import fetch_market_data
 
     # period 转起止日期
     if isinstance(period, str) and period.endswith('y'):
