@@ -7,6 +7,10 @@ models/
 logs/
 .env
 *.db
+*.db-*
+*.db.bak
+*.db.restored
+*.db.corrupt*
 .DS_Store
 *.log
 multi_agent/data/backtest_prices/
