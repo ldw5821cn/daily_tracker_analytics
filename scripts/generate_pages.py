@@ -862,6 +862,7 @@ def generate_portfolio_page(dates=None):
     stock_targets = [t for t in all_targets if t.get('category') == '个股']
     etf_targets = [t for t in all_targets if t.get('category') == 'ETF']
     futures_targets = [t for t in all_targets if t.get('category') == '期货']
+    us_targets = [t for t in all_targets if t.get('category') == 'US']
 
     stock_actions = [i for i in rb.get('items', []) if i.get('category') == '个股']
     etf_actions = [i for i in rb.get('items', []) if i.get('category') == 'ETF']
@@ -952,6 +953,11 @@ def generate_portfolio_page(dates=None):
     <table>
         <thead><tr><th>操作</th><th>代码</th><th>名称</th><th>目标金额</th><th>目标权重</th><th>现价</th><th>约束</th></tr></thead>
         <tbody>{_action_rows(etf_actions) if etf_actions else '<tr><td colspan="7" class="empty">暂无 ETF 调仓建议</td></tr>'}</tbody>
+    </table>
+    <div class="section-title">🇺🇸 美股目标持仓</div>
+    <table>
+        <thead><tr><th>代码</th><th>名称</th><th>信号</th><th>目标权重</th><th>现价</th><th>目标价</th><th>止损</th><th>理由</th></tr></thead>
+        <tbody>{_target_rows(us_targets) if us_targets else '<tr><td colspan="8" class="empty">暂无美股目标持仓</td></tr>'}</tbody>
     </table>
     <div class="section-title">📉 期货持仓</div>
     <table>
