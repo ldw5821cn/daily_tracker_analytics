@@ -26,6 +26,7 @@ import logging
 import os
 import time
 from datetime import datetime, timedelta
+import threading
 from typing import Any, Dict, List, Optional, Tuple
 
 import pandas as pd
@@ -33,7 +34,7 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 # 复用 registry 已有的 helpers
-from core.data_loader_registry import (
+from multi_agent.core.data_loader_registry import (
     BaseLoader,
     register_loader,
     run_with_retry,
@@ -43,7 +44,7 @@ from core.data_loader_registry import (
 
 FUTU_HOST = os.environ.get('FUTU_OPEND_HOST', '127.0.0.1')
 FUTU_PORT = int(os.environ.get('FUTU_OPEND_PORT', '11111'))
-FUTU_SECURITY_FIRM = os.environ.get('FUTU_SECURITY_FIRM', 'FUTU')
+FUTU_SECURITY_FIRM = os.environ.get('FUTU_SECURITY_FIRM', 'FUTUSECURITIES')
 
 # 商品期货主连代码 -> 富途期货代码（示例，按需扩展）
 # 富途期货代码格式为 HK.{code} / US.{code} / SG.{code} 等，具体以品种所在市场为准
@@ -99,7 +100,7 @@ def _map_security_firm(firm_name: str):
     """将字符串券商标识映射为 futu.SecurityFirm 枚举。"""
     futu = _import_futu()
     mapping = {
-        'FUTU': futu.SecurityFirm.FUTU,
+        'FUTU': futu.SecurityFirm.FUTUSECURITIES,
         'FUTUSECURITIES': futu.SecurityFirm.FUTUSECURITIES,
         'FUTUINC': futu.SecurityFirm.FUTUINC,
         'FUTUSG': futu.SecurityFirm.FUTUSG,
@@ -108,7 +109,7 @@ def _map_security_firm(firm_name: str):
         'FUTUMY': futu.SecurityFirm.FUTUMY,
         'FUTUJP': futu.SecurityFirm.FUTUJP,
     }
-    return mapping.get(firm_name.upper(), futu.SecurityFirm.FUTU)
+    return mapping.get(firm_name.upper(), futu.SecurityFirm.FUTUSECURITIES)
 
 
 def _to_futu_symbol(code: str) -> Tuple[str, str]:
@@ -170,7 +171,6 @@ def _to_futu_kl_type(interval: str):
         '1Mo': futu.KLType.K_MON,
     }
     return mapping.get(interval, futu.KLType.K_DAY)
-
 
 class FutuQuoteContext:
     """OpenQuoteContext 的上下文管理器包装，支持复用连接。"""
@@ -272,15 +272,44 @@ class FutuLoader(BaseLoader):
         self.host = host or FUTU_HOST
         self.port = port or FUTU_PORT
         self.security_firm = security_firm or FUTU_SECURITY_FIRM
+        self._ctx: Optional[Any] = None
+        self._lock = threading.Lock()
+
+    def _ensure_ctx(self) -> Any:
+        """返回复用的 OpenQuoteContext；首次调用时创建连接。"""
+        if self._ctx is not None:
+            return self._ctx
+        with self._lock:
+            if self._ctx is not None:
+                return self._ctx
+            futu = _import_futu()
+            self._ctx = futu.OpenQuoteContext(
+                host=self.host,
+                port=self.port,
+                security_firm=_map_security_firm(self.security_firm),
+            )
+            return self._ctx
+
+    def close(self) -> None:
+        if self._ctx is not None:
+            try:
+                self._ctx.close()
+            except Exception as e:
+                logger.debug('close futu context failed: %s', e)
+            self._ctx = None
+
+    def __del__(self):
+        self.close()
 
     def is_available(self) -> bool:
         """检查是否能连上 OpenD 并取到全局状态。"""
         try:
-            with FutuQuoteContext(self.host, self.port, self.security_firm) as ctx:
-                ret, data = ctx.get_global_state()
-                return ret == 0
+            ctx = self._ensure_ctx()
+            ret, _ = ctx.get_global_state()
+            return ret == 0
         except Exception as e:
             logger.debug('futu loader not available: %s', e)
+            self.close()
             return False
 
     def fetch(self, codes: List[str], start_date: str, end_date: str, *,
@@ -291,31 +320,33 @@ class FutuLoader(BaseLoader):
 
         result: Dict[str, pd.DataFrame] = {}
         try:
-            with FutuQuoteContext(self.host, self.port, self.security_firm) as ctx:
-                for code in codes:
-                    try:
-                        df = self._fetch_one(ctx, code, start_date, end_date, interval)
-                        if df is not None and not df.empty:
-                            result[code] = df
-                    except Exception as e:
-                        logger.warning('futu loader %s failed: %s', code, e)
+            ctx = self._ensure_ctx()
+            for code in codes:
+                try:
+                    df = self._fetch_one(ctx, code, start_date, end_date, interval)
+                    if df is not None and not df.empty:
+                        result[code] = df
+                except Exception as e:
+                    import traceback
+                    logger.warning('futu loader %s failed: %s\n%s', code, e, traceback.format_exc())
         except Exception as e:
             logger.warning('futu loader connect failed: %s', e)
+            self.close()
         return result
 
     def _fetch_one(self, ctx: Any, code: str, start_date: str, end_date: str,
                    interval: str) -> Optional[pd.DataFrame]:
+        futu = _import_futu()
         market_str, futu_code = _to_futu_symbol(code)
         market_enum = _to_futu_market_enum(market_str)
-        if market_enum is None or market_enum.value == 0:
+        if market_enum is None or market_enum == futu.Market.NONE:
             logger.warning('futu loader unknown market for %s', code)
             return None
 
         kl_type = _to_futu_kl_type(interval)
 
-        # 富途 get_history_klines 参数
-        # (code, start=None, end=None, ktype=KLType.K_DAY, autype=AuType.QFQ, fields=[KL_FIELD.ALL])
-        futu = _import_futu()
+        # 富途 request_history_kline 参数
+        # (code, start=None, end=None, ktype=KLType.K_DAY, autype=AuType.QFQ, ...)
         start_dt = pd.Timestamp(start_date)
         end_dt = pd.Timestamp(end_date)
         today = pd.Timestamp.now().normalize()
@@ -325,7 +356,7 @@ class FutuLoader(BaseLoader):
             return self._fetch_snapshot(ctx, futu_code)
 
         def _fetch() -> Optional[pd.DataFrame]:
-            ret, data, _ = ctx.get_history_klines(
+            ret, data, _ = ctx.request_history_kline(
                 code=futu_code,
                 start=start_date,
                 end=end_date,

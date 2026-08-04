@@ -1253,6 +1253,9 @@ def fetch_market_data(codes: List[str], start_date: str, end_date: str, *,
             logger.warning('no fallback chain for market %s', m)
             continue
 
+        loader_instances: Dict[str, BaseLoader] = {}
+        loader_available: Dict[str, bool] = {}
+
         for symbol in symbols:
             t0 = time.monotonic()
             success = False
@@ -1267,14 +1270,23 @@ def fetch_market_data(codes: List[str], start_date: str, end_date: str, *,
                         'success', rows=len(df), latency_ms=int((time.monotonic() - t0) * 1000),
                     )
                     continue
+
             for name in candidate_names:
                 cls = LOADER_REGISTRY.get(name)
                 if not cls:
                     continue
                 t1 = time.monotonic()
                 try:
-                    loader = cls()
-                    if not loader.is_available():
+                    loader = loader_instances.get(name)
+                    if loader is None:
+                        loader = cls()
+                        loader_instances[name] = loader
+                    if name in loader_available:
+                        available = loader_available[name]
+                    else:
+                        available = loader.is_available()
+                        loader_available[name] = available
+                    if not available:
                         continue
                     fetched = loader.fetch([symbol], start_date, end_date, interval=interval, fields=fields)
                     df = fetched.get(symbol)
@@ -1353,21 +1365,21 @@ def get_realtime_price(codes: List[str], *, market: Optional[str] = None,
 # 自动发现 multi_agent/data_sources 下的外部 loader
 # ---------------------------------------------------------------------------
 def _auto_discover_data_sources() -> None:
-    """导入 data_sources 包下所有模块，触发 @register_loader 注册。"""
+    """导入 multi_agent/data_sources 包下所有模块，触发 @register_loader 注册。"""
     try:
         import importlib
         import pkgutil
-        import data_sources
+        from multi_agent import data_sources
         pkg_path = os.path.dirname(data_sources.__file__)
         for _, name, is_pkg in pkgutil.iter_modules([pkg_path]):
-            if is_pkg:
+            if is_pkg or name.startswith('_'):
                 continue
             try:
-                importlib.import_module(f'data_sources.{name}')
+                importlib.import_module(f'multi_agent.data_sources.{name}')
             except Exception as e:
-                logger.debug('auto discover data_sources.%s failed: %s', name, e)
+                logger.debug('auto discover multi_agent.data_sources.%s failed: %s', name, e)
     except Exception as e:
-        logger.debug('auto discover data_sources failed: %s', e)
+        logger.debug('auto discover multi_agent.data_sources failed: %s', e)
 
 
 _auto_discover_data_sources()
