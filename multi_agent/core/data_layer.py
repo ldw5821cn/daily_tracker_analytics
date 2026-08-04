@@ -412,8 +412,22 @@ def is_etf(ticker):
 
 
 def is_futures(ticker):
-    """判断是否为期货代码（非数字，如MA0, TA0, I0等）"""
-    return not ticker.isdigit()
+    """判断是否为期货主连代码（如 MA0, M0, I0, TA0, CU0, 5128880 等）。
+
+    规则：纯字母缩写 + 数字结尾（通常 0 表示主连），且不含市场后缀。
+    排除港股/美股/A 股带后缀代码（如 00700.HK, AAPL, 000001.SZ）。
+    """
+    if not ticker:
+        return False
+    c = ticker.upper().strip()
+    pure = c.split('.')[0]
+    if len(pure) < 2 or len(pure) > 6:
+        return False
+    if not pure[0].isalpha():
+        return False
+    if not pure[-1].isdigit():
+        return False
+    return all(ch.isalpha() or ch.isdigit() for ch in pure)
 
 
 def _get_sina_futures_data(ticker, datalen=500):
