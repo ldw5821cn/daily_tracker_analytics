@@ -264,7 +264,11 @@ def _normalize_snapshot(data: pd.DataFrame, code: str) -> Optional[pd.DataFrame]
 
 @register_loader('futu', ['a_share', 'index', 'hk_equity', 'us_equity', 'futures'], requires_auth=True)
 class FutuLoader(BaseLoader):
-    """富途 OpenD 行情加载器。"""
+    """富途 OpenD 行情加载器。进程内复用同一连接。"""
+
+    _shared_ctx: Optional[Any] = None
+    _shared_refs: int = 0
+    _shared_lock: threading.Lock = threading.Lock()
 
     def __init__(self, timeout: Optional[float] = None, host: Optional[str] = None,
                  port: Optional[int] = None, security_firm: Optional[str] = None):
@@ -276,26 +280,35 @@ class FutuLoader(BaseLoader):
         self._lock = threading.Lock()
 
     def _ensure_ctx(self) -> Any:
-        """返回复用的 OpenQuoteContext；首次调用时创建连接。"""
+        """返回进程级复用的 OpenQuoteContext；首次调用时创建连接。"""
         if self._ctx is not None:
             return self._ctx
-        with self._lock:
-            if self._ctx is not None:
+        with FutuLoader._shared_lock:
+            if FutuLoader._shared_ctx is not None:
+                self._ctx = FutuLoader._shared_ctx
+                FutuLoader._shared_refs += 1
                 return self._ctx
             futu = _import_futu()
-            self._ctx = futu.OpenQuoteContext(
+            FutuLoader._shared_ctx = futu.OpenQuoteContext(
                 host=self.host,
                 port=self.port,
                 security_firm=_map_security_firm(self.security_firm),
             )
+            FutuLoader._shared_refs = 1
+            self._ctx = FutuLoader._shared_ctx
             return self._ctx
 
     def close(self) -> None:
-        if self._ctx is not None:
-            try:
-                self._ctx.close()
-            except Exception as e:
-                logger.debug('close futu context failed: %s', e)
+        with FutuLoader._shared_lock:
+            if self._ctx is None:
+                return
+            FutuLoader._shared_refs -= 1
+            if FutuLoader._shared_refs <= 0 and FutuLoader._shared_ctx is not None:
+                try:
+                    FutuLoader._shared_ctx.close()
+                except Exception as e:
+                    logger.debug('close shared futu context failed: %s', e)
+                FutuLoader._shared_ctx = None
             self._ctx = None
 
     def __del__(self):

@@ -1207,6 +1207,60 @@ def resolve_loader(market: str, source: Optional[str] = None) -> Optional[BaseLo
 
 
 # ---------------------------------------------------------------------------
+# Loader 实例缓存：跨 fetch_market_data 调用复用连接（如富途 OpenD）
+# ---------------------------------------------------------------------------
+_loader_cache: Dict[str, BaseLoader] = {}
+_loader_availability: Dict[str, bool] = {}
+
+
+def _get_cached_loader(name: str) -> Optional[BaseLoader]:
+    """获取缓存的 loader 实例；如果不可用则尝试创建。"""
+    loader = _loader_cache.get(name)
+    if loader is not None:
+        return loader
+    cls = LOADER_REGISTRY.get(name)
+    if not cls:
+        return None
+    try:
+        loader = cls()
+        _loader_cache[name] = loader
+        return loader
+    except Exception as e:
+        logger.debug('create loader %s failed: %s', name, e)
+        return None
+
+
+def _is_cached_loader_available(name: str) -> bool:
+    """检查缓存 loader 是否可用；结果也缓存。"""
+    if name in _loader_availability:
+        return _loader_availability[name]
+    loader = _get_cached_loader(name)
+    if loader is None:
+        _loader_availability[name] = False
+        return False
+    try:
+        available = loader.is_available()
+    except Exception as e:
+        logger.debug('loader %s is_available failed: %s', name, e)
+        available = False
+    _loader_availability[name] = available
+    return available
+
+
+def close_cached_loaders() -> None:
+    """关闭并清空所有缓存的 loader 连接。"""
+    global _loader_cache, _loader_availability
+    for name, loader in _loader_cache.items():
+        try:
+            if hasattr(loader, 'close'):
+                loader.close()
+        except Exception as e:
+            logger.debug('close cached loader %s failed: %s', name, e)
+    _loader_cache.clear()
+    _loader_availability.clear()
+
+
+# ---------------------------------------------------------------------------
 # 统一 fetch 入口
 # ---------------------------------------------------------------------------
 def _record(source: str, ticker: str, market: Optional[str], start_date: str, end_date: str,
@@ -1277,15 +1331,10 @@ def fetch_market_data(codes: List[str], start_date: str, end_date: str, *,
                     continue
                 t1 = time.monotonic()
                 try:
-                    loader = loader_instances.get(name)
+                    loader = _get_cached_loader(name)
                     if loader is None:
-                        loader = cls()
-                        loader_instances[name] = loader
-                    if name in loader_available:
-                        available = loader_available[name]
-                    else:
-                        available = loader.is_available()
-                        loader_available[name] = available
+                        continue
+                    available = _is_cached_loader_available(name)
                     if not available:
                         continue
                     fetched = loader.fetch([symbol], start_date, end_date, interval=interval, fields=fields)
