@@ -8,6 +8,7 @@ sys.path.insert(0, MULTI_AGENT)
 from analysts.macro_analyst import analyze as macro_analyze
 from analysts.agentic_predictor import generate_for_watchlist
 from scripts.daily_us_predictor import run_us_predictions
+from multi_agent.core.data_loader_registry import close_cached_loaders
 
 
 def main():
@@ -32,6 +33,7 @@ def main():
     print('[daily_agentic_predictor] 生成美股预测...')
     us_result = run_us_predictions(ultra=True, macro_report=macro_report)
     print(f"[daily_agentic_predictor] 美股完成: {us_result}")
+    close_cached_loaders()
 
 
 if __name__ == '__main__':
