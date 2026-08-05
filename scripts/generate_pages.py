@@ -160,6 +160,67 @@ def _us_etf_quality_html(report: dict) -> str:
 """
 
 
+def _macro_liquidity_html() -> str:
+    """生成宏观流动性 HTML 卡片。"""
+    path = _latest_macro_liquidity_path()
+    if not path:
+        return ''
+    m = _load_json(path)
+    if not m or 'assessment' not in m:
+        return ''
+    a = m.get('assessment', {})
+    rating = a.get('rating', '')
+    red_count = a.get('red_count', 0)
+    red_alerts = a.get('red_alerts', [])
+    fred = m.get('fred', {})
+    proxies = m.get('proxies', {})
+    
+    fed = fred.get('fed_total_assets', {}).get('latest', {})
+    tga = fred.get('tga_balance', {}).get('latest', {})
+    sofr = fred.get('sofr', {}).get('latest', {})
+    dgs10 = fred.get('dgs10', {}).get('latest', {})
+    net = a.get('fed_net_liquidity', {})
+    
+    cards = ""
+    if net:
+        cards += _stat_card(f"{net.get('value_b', 0):.2f}B", "Fed 净流动性", '#ef4444' if red_count > 0 else '#22c55e')
+        cards += _stat_card(f"{net.get('week_change_pct', 0):+.2f}%", "周环比", '#22c55e' if net.get('week_change_pct', 0) >= 0 else '#ef4444')
+    if sofr:
+        cards += _stat_card(f"{sofr.get('value', 0):.2f}%", f"SOFR ({sofr.get('date', '')})")
+    if dgs10:
+        cards += _stat_card(f"{dgs10.get('value', 0):.2f}%", f"10Y ({dgs10.get('date', '')})")
+    if proxies.get('US.VIXY'):
+        cards += _stat_card(f"{proxies['US.VIXY']['price']:.2f}", "VIXY 代理")
+    if proxies.get('US.UUP'):
+        cards += _stat_card(f"{proxies['US.UUP']['price']:.3f}", "UUP 美元")
+    
+    alerts_html = '<br>'.join(f'🔴 {x}' for x in red_alerts) if red_alerts else '无红色预警'
+    return f"""
+    <div class="section-title">🌍 宏观流动性 ({rating})</div>
+    <div class="stats-grid">
+{cards}
+    </div>
+    <div class="note">
+        <p><b>综合评级：</b>{rating}</p>
+        <p><b>红色预警：</b>{alerts_html}</p>
+        <p>数据源：FRED 公开 CSV + 富途 ETF 代理（UUP/VIXY/FXY）。SOFR 最新日期 {sofr.get('date', 'N/A')}，10Y 最新日期 {dgs10.get('date', 'N/A')}。</p>
+    </div>
+"""
+
+
+def _latest_macro_liquidity_path() -> str:
+    """返回最新宏观流动性报告路径。"""
+    d = os.path.join(REPO_ROOT, 'multi_agent', 'data', 'macro_liquidity')
+    if not os.path.isdir(d):
+        return ''
+    files = sorted(
+        [f for f in os.listdir(d) if f.endswith('.json')],
+        key=lambda f: os.path.getmtime(os.path.join(d, f)),
+        reverse=True,
+    )
+    return os.path.join(d, files[0]) if files else ''
+
+
 def get_all_pred_dates():
     """返回数据库中所有预测日期（降序）。"""
     conn = get_predictions_conn()
@@ -764,10 +825,11 @@ def generate_us_market_page(dates=None):
 <div class="stats-grid">
 {stats_cards}
 </div>
+{_macro_liquidity_html()}
 {_table_html(rows, f'🇺🇸 美股预测 ({len(rows)}只)', is_us=True)}
 <div class="note">
-    <p>美股数据源：akshare 新浪美股前复权 / yfinance 备用。价格为美元。</p>
-    <p>行业与市值数据来自 FinanceDatabase。受网络限制，基本面与新闻情绪暂未接入，当前仅基于技术面与宏观偏置。</p>
+    <p>美股数据源：富途 OpenD / akshare 新浪美股前复权 / yfinance 备用。价格为美元。</p>
+    <p>宏观流动性数据来自 FRED 公开 CSV + 富途 ETF 代理（UUP/VIXY/FXY）。</p>
 </div>
 """
     date = datetime.now().strftime('%Y-%m-%d %H:%M')
