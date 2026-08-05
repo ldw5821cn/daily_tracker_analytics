@@ -1,0 +1,371 @@
+{
+  "date": "20260805",
+  "fred": {
+    "fed_total_assets": {
+      "series": "WALCL",
+      "latest": {
+        "date": "2026-07-29",
+        "value": 6738190.0
+      },
+      "previous": {
+        "date": "2026-07-22",
+        "value": 6747378.0
+      },
+      "history_tail": [
+        {
+          "date": "2026-05-27",
+          "value": 6704383.0
+        },
+        {
+          "date": "2026-06-03",
+          "value": 6711495.0
+        },
+        {
+          "date": "2026-06-10",
+          "value": 6725397.0
+        },
+        {
+          "date": "2026-06-17",
+          "value": 6736424.0
+        },
+        {
+          "date": "2026-06-24",
+          "value": 6735645.0
+        },
+        {
+          "date": "2026-07-01",
+          "value": 6724564.0
+        },
+        {
+          "date": "2026-07-08",
+          "value": 6735609.0
+        },
+        {
+          "date": "2026-07-15",
+          "value": 6743028.0
+        },
+        {
+          "date": "2026-07-22",
+          "value": 6747378.0
+        },
+        {
+          "date": "2026-07-29",
+          "value": 6738190.0
+        }
+      ]
+    },
+    "tga_balance": {
+      "series": "WDTGAL",
+      "latest": {
+        "date": "2026-07-29",
+        "value": 970442.0
+      },
+      "previous": {
+        "date": "2026-07-22",
+        "value": 835417.0
+      },
+      "history_tail": [
+        {
+          "date": "2026-05-27",
+          "value": 842660.0
+        },
+        {
+          "date": "2026-06-03",
+          "value": 845722.0
+        },
+        {
+          "date": "2026-06-10",
+          "value": 801084.0
+        },
+        {
+          "date": "2026-06-17",
+          "value": 956502.0
+        },
+        {
+          "date": "2026-06-24",
+          "value": 901845.0
+        },
+        {
+          "date": "2026-07-01",
+          "value": 807359.0
+        },
+        {
+          "date": "2026-07-08",
+          "value": 749244.0
+        },
+        {
+          "date": "2026-07-15",
+          "value": 795976.0
+        },
+        {
+          "date": "2026-07-22",
+          "value": 835417.0
+        },
+        {
+          "date": "2026-07-29",
+          "value": 970442.0
+        }
+      ]
+    },
+    "on_rrp": {
+      "series": "RRPONTSYD",
+      "latest": {
+        "date": "2026-08-03",
+        "value": 2.127
+      },
+      "previous": {
+        "date": "2026-07-31",
+        "value": 2.151
+      },
+      "history_tail": [
+        {
+          "date": "2026-07-21",
+          "value": 0.275
+        },
+        {
+          "date": "2026-07-22",
+          "value": 0.376
+        },
+        {
+          "date": "2026-07-23",
+          "value": 0.904
+        },
+        {
+          "date": "2026-07-24",
+          "value": 0.675
+        },
+        {
+          "date": "2026-07-27",
+          "value": 1.38
+        },
+        {
+          "date": "2026-07-28",
+          "value": 1.126
+        },
+        {
+          "date": "2026-07-29",
+          "value": 2.576
+        },
+        {
+          "date": "2026-07-30",
+          "value": 1.076
+        },
+        {
+          "date": "2026-07-31",
+          "value": 2.151
+        },
+        {
+          "date": "2026-08-03",
+          "value": 2.127
+        }
+      ]
+    },
+    "sofr": {
+      "series": "SOFR",
+      "latest": {
+        "date": "2026-08-03",
+        "value": 3.65
+      },
+      "previous": {
+        "date": "2026-07-31",
+        "value": 3.66
+      },
+      "history_tail": [
+        {
+          "date": "2026-07-21",
+          "value": 3.61
+        },
+        {
+          "date": "2026-07-22",
+          "value": 3.62
+        },
+        {
+          "date": "2026-07-23",
+          "value": 3.64
+        },
+        {
+          "date": "2026-07-24",
+          "value": 3.64
+        },
+        {
+          "date": "2026-07-27",
+          "value": 3.64
+        },
+        {
+          "date": "2026-07-28",
+          "value": 3.65
+        },
+        {
+          "date": "2026-07-29",
+          "value": 3.65
+        },
+        {
+          "date": "2026-07-30",
+          "value": 3.65
+        },
+        {
+          "date": "2026-07-31",
+          "value": 3.66
+        },
+        {
+          "date": "2026-08-03",
+          "value": 3.65
+        }
+      ]
+    },
+    "fed_upper_target": {
+      "series": "DFEDTARU",
+      "latest": {
+        "date": "2026-08-04",
+        "value": 3.75
+      },
+      "previous": {
+        "date": "2026-08-03",
+        "value": 3.75
+      },
+      "history_tail": [
+        {
+          "date": "2026-07-26",
+          "value": 3.75
+        },
+        {
+          "date": "2026-07-27",
+          "value": 3.75
+        },
+        {
+          "date": "2026-07-28",
+          "value": 3.75
+        },
+        {
+          "date": "2026-07-29",
+          "value": 3.75
+        },
+        {
+          "date": "2026-07-30",
+          "value": 3.75
+        },
+        {
+          "date": "2026-07-31",
+          "value": 3.75
+        },
+        {
+          "date": "2026-08-01",
+          "value": 3.75
+        },
+        {
+          "date": "2026-08-02",
+          "value": 3.75
+        },
+        {
+          "date": "2026-08-03",
+          "value": 3.75
+        },
+        {
+          "date": "2026-08-04",
+          "value": 3.75
+        }
+      ]
+    },
+    "dgs10": {
+      "series": "DGS10",
+      "latest": {
+        "date": "2026-07-31",
+        "value": 4.75
+      },
+      "previous": {
+        "date": "2026-07-30",
+        "value": 4.68
+      },
+      "history_tail": [
+        {
+          "date": "2026-07-20",
+          "value": 4.6
+        },
+        {
+          "date": "2026-07-21",
+          "value": 4.63
+        },
+        {
+          "date": "2026-07-22",
+          "value": 4.67
+        },
+        {
+          "date": "2026-07-23",
+          "value": 4.71
+        },
+        {
+          "date": "2026-07-24",
+          "value": 4.69
+        },
+        {
+          "date": "2026-07-27",
+          "value": 4.65
+        },
+        {
+          "date": "2026-07-28",
+          "value": 4.61
+        },
+        {
+          "date": "2026-07-29",
+          "value": 4.67
+        },
+        {
+          "date": "2026-07-30",
+          "value": 4.68
+        },
+        {
+          "date": "2026-07-31",
+          "value": 4.75
+        }
+      ]
+    }
+  },
+  "proxies": {
+    "US.UUP": {
+      "ticker": "US.UUP",
+      "price": 28.1501,
+      "change_rate_pct": -0.071,
+      "date": "2026-08-04 12:11:31"
+    },
+    "US.VIXY": {
+      "ticker": "US.VIXY",
+      "price": 20.0678,
+      "change_rate_pct": -1.387,
+      "date": "2026-08-04 12:12:39"
+    },
+    "US.FXY": {
+      "ticker": "US.FXY",
+      "price": 58.215,
+      "change_rate_pct": -0.487,
+      "date": "2026-08-04 12:09:28"
+    }
+  },
+  "assessment": {
+    "fed_net_liquidity": {
+      "value_b": 5765.62,
+      "week_change_pct": -2.4398,
+      "status": "🔴 预警"
+    },
+    "sofr": {
+      "latest": 3.65,
+      "fed_upper": 3.75,
+      "spread_bp": -10.0,
+      "status": "✅ 正常"
+    },
+    "volatility_proxy": {
+      "ticker": "VIXY",
+      "price": 20.0678,
+      "status": "✅ 正常"
+    },
+    "yen_carry_proxy": {
+      "fxy_change_pct": -0.487,
+      "uup_change_pct": -0.071,
+      "status": "✅ 正常"
+    },
+    "red_alerts": [
+      "fed_net_liquidity"
+    ],
+    "red_count": 1,
+    "rating": "🟡 中性"
+  }
+}

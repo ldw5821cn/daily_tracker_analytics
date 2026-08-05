@@ -1,0 +1,65 @@
+[
+  {
+    "ticker": "SMH",
+    "price": 572.75,
+    "volume_m": 2342.26,
+    "turnover_m": 2324.14,
+    "aum_b": 67.65,
+    "expense_ratio_pct": 0.35,
+    "top10_pct": 71.46,
+    "max_single_pct": 21.7,
+    "index": "MVIS US Listed Semiconductor 25",
+    "scores": {
+      "expense_ratio": 2,
+      "tracking_error": 2,
+      "aum": 3,
+      "concentration": 1,
+      "liquidity": 3,
+      "index_quality": 2
+    },
+    "total": 13,
+    "rating": "B"
+  },
+  {
+    "ticker": "SOXX",
+    "price": 539.4,
+    "volume_m": 2867.56,
+    "turnover_m": 2834.84,
+    "aum_b": 44.81,
+    "expense_ratio_pct": 0.35,
+    "top10_pct": 60.71,
+    "max_single_pct": 8.57,
+    "index": "NYSE Semiconductor Index",
+    "scores": {
+      "expense_ratio": 2,
+      "tracking_error": 2,
+      "aum": 3,
+      "concentration": 2,
+      "liquidity": 3,
+      "index_quality": 2
+    },
+    "total": 14,
+    "rating": "B"
+  },
+  {
+    "ticker": "QQQ",
+    "price": 718.95,
+    "volume_m": 18112.36,
+    "turnover_m": 18000.66,
+    "aum_b": 465.88,
+    "expense_ratio_pct": 0.2,
+    "top10_pct": 55.0,
+    "max_single_pct": 8.0,
+    "index": "NASDAQ-100 Index",
+    "scores": {
+      "expense_ratio": 2,
+      "tracking_error": 2,
+      "aum": 3,
+      "concentration": 2,
+      "liquidity": 3,
+      "index_quality": 2
+    },
+    "total": 14,
+    "rating": "B"
+  }
+]

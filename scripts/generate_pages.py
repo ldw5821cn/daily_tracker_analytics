@@ -110,6 +110,56 @@ def _load_json(path):
         return {}
 
 
+def _latest_us_etf_quality_path():
+    """返回 multi_agent/data/us_etf_quality/ 下最新的 JSON 报告路径。"""
+    d = os.path.join(REPO_ROOT, 'multi_agent', 'data', 'us_etf_quality')
+    if not os.path.isdir(d):
+        return ''
+    files = sorted(
+        [f for f in os.listdir(d) if f.endswith('.json')],
+        key=lambda f: os.path.getmtime(os.path.join(d, f)),
+        reverse=True,
+    )
+    return os.path.join(d, files[0]) if files else ''
+
+
+def _us_etf_quality_html(report: dict) -> str:
+    """生成美股 ETF 质量评分 HTML 区块。"""
+    if not report:
+        return ''
+    # 兼容两种格式：顶层是对象 {etfs:[...]} 或顶层数组
+    etfs = report.get('etfs', []) if isinstance(report, dict) else (report if isinstance(report, list) else [])
+    if not etfs:
+        return ''
+    generated = report.get('generated_at', '')[:19] if isinstance(report, dict) else ''
+    rows = []
+    for e in etfs:
+        total = e.get('total', e.get('total_score', 0))
+        grade = e.get('rating', e.get('grade', 'N/A'))
+        sc = e.get('scores', {})
+        color = '#22c55e' if grade == 'A' else '#f59e0b' if grade == 'B' else '#ef4444'
+        rows.append(
+            f"<tr><td><b>{e.get('ticker', '')}</b></td><td>{e.get('name', '')}</td>"
+            f"<td style='color:{color};font-weight:bold'>{grade} ({total}/{18})</td>"
+            f"<td>{e.get('expense_ratio_pct', 0):.3f}%</td><td>{e.get('aum_b', 0):.2f}B</td>"
+            f"<td>{sc.get('tracking_error', 0)}</td><td>{e.get('top10_pct', 0):.1f}%</td>"
+            f"<td>{sc.get('liquidity', 0)}</td><td>{sc.get('index_quality', 0)}</td>"
+            f"<td title='{e.get('verdict', '')}'>{e.get('verdict', '')[:60]}</td></tr>"
+        )
+    return f"""
+    <div class="section-title">🇺🇸 美股 ETF 质量评分（{generated or '最新'}）</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>代码</th><th>名称</th><th>评级</th><th>费率</th><th>AUM</th><th>跟踪误差</th><th>前10集中度</th><th>流动性</th><th>指数质量</th><th>结论</th></tr></thead>
+        <tbody>{"".join(rows)}</tbody>
+    </table>
+    </div>
+    <div class="note">
+        <p>基于富途实时数据。评分维度：费用率（3）、跟踪误差（3）、规模（3）、板块集中度（3）、流动性（3）、指数质量（3）。</p>
+    </div>
+"""
+
+
 def get_all_pred_dates():
     """返回数据库中所有预测日期（降序）。"""
     conn = get_predictions_conn()
@@ -807,6 +857,9 @@ def generate_portfolio_page(dates=None):
     # 从数据库读取价格日期
     price_date_map = get_price_date_map()
 
+    # 加载 ETF 质量评分（美股）
+    us_etf_quality = _load_json(_latest_us_etf_quality_path())
+
     stats_cards = "".join([
         _stat_card(f"{tw.get('total_exposure', 0)*100:.1f}%", '总敞口'),
         _stat_card(f"{tw.get('long_exposure', 0)*100:.1f}%", '做多', '#ef4444'),
@@ -934,6 +987,7 @@ def generate_portfolio_page(dates=None):
         <p>A 股个股不能做空，负权重仅输出为"减持/卖出"建议；ETF 做空需开通融券账户。</p>
     </div>
 {xq_sections}
+    {_us_etf_quality_html(us_etf_quality)}
     <div class="section-title">📈 股票持仓</div>
     <table>
         <thead><tr><th>代码</th><th>名称</th><th>信号</th><th>目标权重</th><th>现价</th><th>目标价</th><th>止损</th><th>理由</th></tr></thead>

@@ -15,6 +15,8 @@ import sqlite3
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+from .db_guardian import ensure_db_healthy
+
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
 PREDICTIONS_DB = os.path.join(REPO_ROOT, 'multi_agent', 'data', 'llm_predictions.db')
@@ -275,6 +277,11 @@ def save_predictions(predictions: List[Dict[str, Any]], pred_date: Optional[str]
             """, rows)
             stats['saved'] = len(rows)
         conn.commit()
+        # 写入成功后立即快照，防止数据库损坏丢失历史
+        try:
+            ensure_db_healthy(PREDICTIONS_DB)
+        except Exception as e:
+            print(f"  ⚠️ db_guardian snapshot failed: {e}")
         return stats
     finally:
         conn.close()
@@ -445,6 +452,11 @@ def set_futures_config(key: str, value: str) -> None:
     try:
         conn.execute("INSERT OR REPLACE INTO config (key, value) VALUES (?, ?)", (key, value))
         conn.commit()
+        # 期货 DB 写入后也触发健康快照
+        try:
+            ensure_db_healthy(FUTURES_DB)
+        except Exception as e:
+            print(f"  ⚠️ futures db_guardian snapshot failed: {e}")
     finally:
         conn.close()
 
