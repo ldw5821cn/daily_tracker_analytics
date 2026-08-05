@@ -221,6 +221,36 @@ def _latest_macro_liquidity_path() -> str:
     return os.path.join(d, files[0]) if files else ''
 
 
+def _latest_tech_earnings_path() -> str:
+    """返回最新美股科技龙头财报 review 路径。"""
+    d = os.path.join(REPO_ROOT, 'multi_agent', 'data', 'tech_earnings')
+    if not os.path.isdir(d):
+        return ''
+    files = sorted(
+        [f for f in os.listdir(d) if f.endswith('.html')],
+        key=lambda f: os.path.getmtime(os.path.join(d, f)),
+        reverse=True,
+    )
+    return os.path.join(d, files[0]) if files else ''
+
+
+def _tech_earnings_html() -> str:
+    """读取本地最新的美股科技龙头 review HTML 并内嵌。"""
+    path = _latest_tech_earnings_path()
+    if not path or not os.path.exists(path):
+        return ''
+    try:
+        html = open(path, 'r', encoding='utf-8').read()
+        # 只取 body 内容
+        body_start = html.find('<body>')
+        body_end = html.find('</body>')
+        if body_start != -1 and body_end != -1:
+            return html[body_start + len('<body>'):body_end]
+        return html
+    except Exception:
+        return ''
+
+
 def get_all_pred_dates():
     """返回数据库中所有预测日期（降序）。"""
     conn = get_predictions_conn()
@@ -1050,6 +1080,7 @@ def generate_portfolio_page(dates=None):
     </div>
 {xq_sections}
     {_us_etf_quality_html(us_etf_quality)}
+    {_tech_earnings_html()}
     <div class="section-title">📈 股票持仓</div>
     <table>
         <thead><tr><th>代码</th><th>名称</th><th>信号</th><th>目标权重</th><th>现价</th><th>目标价</th><th>止损</th><th>理由</th></tr></thead>
