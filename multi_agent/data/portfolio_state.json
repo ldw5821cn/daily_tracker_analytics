@@ -1,75 +1,40 @@
 {
-  "scan_time": "2026-07-24 17:54",
+  "scan_time": "2026-08-05 15:50",
   "top10": [
-    {
-      "ticker": "601899",
-      "name": "紫金矿业",
-      "category": "个股",
-      "weighted_score": 68.2,
-      "current_price": 31.51
-    },
-    {
-      "ticker": "601991",
-      "name": "大唐发电",
-      "category": "个股",
-      "weighted_score": 63.2,
-      "current_price": 6.29
-    },
-    {
-      "ticker": "601600",
-      "name": "中国铝业",
-      "category": "个股",
-      "weighted_score": 62.7,
-      "current_price": 9.44
-    },
     {
       "ticker": "000612",
       "name": "焦作万方",
       "category": "个股",
-      "weighted_score": 61.4,
-      "current_price": 10.41
+      "weighted_score": 77.1,
+      "current_price": 11.5
+    },
+    {
+      "ticker": "600547",
+      "name": "山东黄金",
+      "category": "个股",
+      "weighted_score": 76.9,
+      "current_price": 28.78
     },
     {
       "ticker": "603993",
       "name": "洛阳钼业",
       "category": "个股",
-      "weighted_score": 60.4,
-      "current_price": 19.04
-    },
-    {
-      "ticker": "601088",
-      "name": "中国神华",
-      "category": "个股",
-      "weighted_score": 60.2,
-      "current_price": 45.7
-    },
-    {
-      "ticker": "688072",
-      "name": "拓荆科技",
-      "category": "个股",
-      "weighted_score": 60.1,
-      "current_price": 791.0
-    },
-    {
-      "ticker": "600988",
-      "name": "赤峰黄金",
-      "category": "个股",
-      "weighted_score": 59.8,
-      "current_price": 36.49
+      "weighted_score": 76.4,
+      "current_price": 20.52
     },
     {
       "ticker": "000807",
       "name": "云铝股份",
       "category": "个股",
-      "weighted_score": 59.5,
-      "current_price": 25.4
+      "weighted_score": 75.6,
+      "current_price": 26.7
     },
     {
-      "ticker": "001309",
-      "name": "德明利",
+      "ticker": "300999",
+      "name": "金龙鱼",
       "category": "个股",
-      "weighted_score": 59.1,
-      "current_price": 399.89
+      "weighted_score": 75.1,
+      "current_price": 26.13
     }
   ],
   "simulator": {
@@ -79,20 +44,15 @@
   },
   "xueqiu_r": {
     "rebalanced": true,
-    "success_count": 10,
+    "success_count": 5,
     "error_count": 0,
     "errors": [],
     "weights": {
-      "SH601899": 9.0,
-      "SH601991": 9.0,
-      "SH601600": 9.0,
-      "SZ000612": 9.0,
-      "SH603993": 9.0,
-      "SH601088": 9.0,
-      "SH688072": 9.0,
-      "SH600988": 9.0,
-      "SZ000807": 9.0,
-      "SZ001309": 9.0
+      "SZ000612": 15.0,
+      "SH600547": 15.0,
+      "SH603993": 15.0,
+      "SZ000807": 15.0,
+      "SZ300999": 15.0
     }
   }
 }
