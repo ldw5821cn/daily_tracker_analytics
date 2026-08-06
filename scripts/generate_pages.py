@@ -1321,7 +1321,7 @@ def generate_reflection_page(dates=None):
     refl_path = os.path.join(REPO_ROOT, 'multi_agent', 'data', 'prediction_reflection.json')
     refl_history_path = os.path.join(REPO_ROOT, 'multi_agent', 'data', 'prediction_reflection_history.jsonl')
     refl = _load_json(refl_path) or {}
-    # 优先使用历史文件中的最新 reflection（prediction_reflection.json 可能过期）
+    # 历史文件作为 fallback：只有当前 reflection 为空/过旧时，才用历史文件补全
     history_lines = []
     try:
         with open(refl_history_path, 'r', encoding='utf-8') as f:
@@ -1330,9 +1330,17 @@ def generate_reflection_page(dates=None):
         pass
     if history_lines:
         latest_hist = max(history_lines, key=lambda x: x.get('pred_date', '') or '')
-        if latest_hist.get('pred_date', '') > refl.get('pred_date', ''):
+        # 如果当前 reflection 没有 llm_reflection 内容，且历史中有，则补全
+        if not refl.get('llm_reflection') and latest_hist.get('llm_reflection'):
             refl = latest_hist
-            # 同步刷新主文件，避免后续被过期文件覆盖
+            try:
+                with open(refl_path, 'w', encoding='utf-8') as f:
+                    json.dump(refl, f, ensure_ascii=False, indent=2)
+            except Exception:
+                pass
+        # 如果历史更新，则采用历史（正常情况不应发生，主文件应由脚本最新写入）
+        elif latest_hist.get('pred_date', '') > refl.get('pred_date', ''):
+            refl = latest_hist
             try:
                 with open(refl_path, 'w', encoding='utf-8') as f:
                     json.dump(refl, f, ensure_ascii=False, indent=2)
@@ -1364,6 +1372,10 @@ def generate_reflection_page(dates=None):
         return rows
 
     llm_html = llm_reflection.replace('\n', '<br>')
+    # 简单 markdown 标题加粗转换，提升可读性
+    import re
+    llm_html = re.sub(r'^(#{1,6})\s*(.+)$', r'<strong>\2</strong>', llm_html, flags=re.MULTILINE)
+    llm_html = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', llm_html)
 
     body = f"""
     <div class="header">

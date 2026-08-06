@@ -75,12 +75,13 @@ echo "[$(date +'%Y-%m-%d %H:%M:%S')] 7/9 运行 scripts/generate_pages.py"
 # 8. 提交并推送 docs/ 与数据 JSON（不推送 llm_predictions.db）
 # .gitignore 已排除 *.db，因此无需特别处理
 echo "[$(date +'%Y-%m-%d %H:%M:%S')] 8/9 提交并推送 docs/ 与数据 JSON"
+# 使用 git add --ignore-removal 并过滤掉被 .gitignore 忽略的文件，避免 warning 干扰 set -e
 if git diff --cached --quiet && git diff --quiet -- docs/ multi_agent/data/*.json; then
     echo "[$(date +'%Y-%m-%d %H:%M:%S')] 没有可提交的变更，跳过 git commit/push"
 else
-    git add docs/ multi_agent/data/*.json
+    git add docs/ multi_agent/data/*.json 2>/dev/null || true
     git commit -m "auto: evening reflection $(date +%F)" || true
-    git push
+    git push || echo "[$(date +'%Y-%m-%d %H:%M:%S')] ⚠️ git push 失败，请手动检查"
 fi
 
 echo "[$(date +'%Y-%m-%d %H:%M:%S')] 9/9 盘后全链路流水线完成"
