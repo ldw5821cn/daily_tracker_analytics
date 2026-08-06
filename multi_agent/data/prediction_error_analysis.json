@@ -2,16 +2,16 @@
   "pred_date": "2026-08-05",
   "validation_date": null,
   "summary": {
-    "total": 176,
+    "total": 178,
     "correct": 77,
-    "wrong": 99,
-    "accuracy": 43.75
+    "wrong": 101,
+    "accuracy": 43.26
   },
   "by_category": {
     "ETF": {
-      "total": 22,
-      "wrong": 9,
-      "error_rate": 40.91
+      "total": 23,
+      "wrong": 10,
+      "error_rate": 43.48
     },
     "个股": {
       "total": 106,
@@ -19,9 +19,9 @@
       "error_rate": 50.94
     },
     "期货": {
-      "total": 48,
-      "wrong": 36,
-      "error_rate": 75.0
+      "total": 49,
+      "wrong": 37,
+      "error_rate": 75.51
     }
   },
   "by_signal": {
@@ -36,9 +36,9 @@
       "error_rate": 44.74
     },
     "看空": {
-      "total": 54,
-      "wrong": 43,
-      "error_rate": 79.63
+      "total": 56,
+      "wrong": 45,
+      "error_rate": 80.36
     },
     "观望": {
       "total": 22,
@@ -49,7 +49,7 @@
   "feature_compare": {
     "weighted_score": {
       "correct_avg": 58.51,
-      "wrong_avg": 51.51
+      "wrong_avg": 51.29
     },
     "confidence": {
       "correct_avg": 0.73,
@@ -59,11 +59,11 @@
   "component_compare": {
     "technical": {
       "correct_avg": 57.04,
-      "wrong_avg": 53.63
+      "wrong_avg": 53.44
     },
     "sentiment": {
       "correct_avg": 61.24,
-      "wrong_avg": 60.3
+      "wrong_avg": 60.24
     }
   },
   "wrong_top10": [
@@ -140,6 +140,18 @@
       "reasoning": "技术面中性(45/100) | 基本面一般(56/100) | 新闻情绪+0.40 | 多空辩论 看涨1 vs 看跌3 | 宏观中性(53.0/100) | 市场上下文neutral(50.0/100)上限100%"
     },
     {
+      "ticker": "CJ0",
+      "name": "红枣",
+      "category": "期货",
+      "signal": "看空",
+      "return_pct": 9.803,
+      "pred_price": 7600.0,
+      "today_price": 8345.0,
+      "weighted_score": 38.9,
+      "confidence": 0.77,
+      "reasoning": "技术面中性(48/100) | 基本面neutral(50/100) | 新闻情绪+0.10 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(53.0/100) | 市场上下文neutral(50.0/100)上限100%"
+    },
+    {
       "ticker": "000657",
       "name": "中钨高新",
       "category": "个股",
@@ -174,18 +186,6 @@
       "weighted_score": 37.0,
       "confidence": 0.87,
       "reasoning": "技术面中性(45/100) | 基本面良好(69/100) | 新闻情绪+0.45 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(53.0/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "RU0",
-      "name": "橡胶",
-      "category": "期货",
-      "signal": "看空",
-      "return_pct": 6.773,
-      "pred_price": 16685.0,
-      "today_price": 17815.0,
-      "weighted_score": 39.2,
-      "confidence": 0.77,
-      "reasoning": "技术面中性(47/100) | 基本面bullish(50/100) | 新闻情绪+0.10 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(53.0/100) | 市场上下文neutral(50.0/100)上限100%"
     }
   ],
   "correct_top10": [

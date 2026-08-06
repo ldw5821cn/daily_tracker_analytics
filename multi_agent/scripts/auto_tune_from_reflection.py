@@ -10,8 +10,11 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 from datetime import datetime
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s: %(message)s')
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 MULTI_AGENT = os.path.join(PROJECT_ROOT, 'multi_agent')
@@ -85,8 +88,7 @@ def apply_auto_tuning():
         params['weights']['macro'] = _clamp(params['weights']['macro'] + 0.05, 0.05, 0.30)
         params['weights']['technical'] = _clamp(params['weights']['technical'] - 0.05, 0.10, 0.45)
         params['weights']['debate'] = _clamp(params['weights']['debate'] + 0.03, 0.10, 0.40)
-        params['hard_rules']['macro_bearish_block_bullish'] = True
-        changes.append('宏观 bearish 拦截：提高 macro/debate，降低 technical')
+        changes.append('宏观 bearish 看多失败：提高 macro/debate，降低 technical')
 
     # 2. 中性信号过度乐观 → 收窄 neutral 区间
     if neutral_err > 50 or '中性' in text:
@@ -100,9 +102,11 @@ def apply_auto_tuning():
         params['threshold']['bear'] = _clamp(params['threshold']['bear'] - 1, 38, 48)
         changes.append('提高 bullish/bearish 阈值门槛')
 
-    # 4. 看空信号表现很好 → 保持 bearish 阈值不动，不挤压高胜率区间
-    if bearish_err < 15:
-        changes.append('bearish 信号错误率低，保持 bearish 区间')
+    # 4. 看空信号错误率高 → 扩大 bear 阈值区间（减少看空信号生成）
+    if bearish_err > 60:
+        params['threshold']['bear'] = _clamp(params['threshold']['bear'] + 2, 38, 48)
+        params['threshold']['strong_bear'] = _clamp(params['threshold']['strong_bear'] + 2, 25, 40)
+        changes.append('看空错误率高，放宽 bear 区间')
 
     if not changes:
         print('[auto_tune] 无需要调整的参数')
@@ -118,8 +122,13 @@ def apply_auto_tuning():
     params['trigger_accuracy'] = accuracy
     params['trigger_pred_date'] = pred_date
 
-    _save_json(PARAMS_PATH, params)
-
+    # 关键修复：auto_tune 不再直接覆盖线上参数，而是写入 warehouse 候选参数文件，由 parameter_optimizer_v4_warehouse 评估后采用。
+    # 避免基于规则的临时调参加剧系统性偏差。
+    candidate_path = os.path.join(MULTI_AGENT, 'config', 'predictor_params_warehouse_v4_candidates.json')
+    _save_json(candidate_path, params)
+    logging.warning(f"已生成候选参数（未写入线上）: {candidate_path}")
+    logging.warning(f"线上参数 {PARAMS_PATH} 保持原状，由 parameter_optimizer_v4_warehouse 统一学习调整。")
+    print(f"candidate saved: {candidate_path}")
     # 记录日志
     logs = _load_json(LOG_PATH)
     logs.append({
@@ -131,7 +140,7 @@ def apply_auto_tuning():
     })
     _save_json(LOG_PATH, logs)
 
-    print(f'[auto_tune] 已调整参数，原因: {" | ".join(changes)}')
+    print(f'[auto_tune] 已生成候选参数，原因: {" | ".join(changes)}')
     print(f'[auto_tune] 新权重: {params["weights"]}')
     print(f'[auto_tune] 新阈值: {params["threshold"]}')
     return True

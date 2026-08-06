@@ -67,23 +67,34 @@ def chat(messages: List[Dict[str, str]],
          max_tokens: int = 800) -> Optional[str]:
     """
     发送 chat completion 请求。无 API key 时返回 None。
+    增加模型 fallback：部分模型（如 deepseek-v4-flash）会返回空内容，自动切换到 deepseek-chat 重试。
     """
     client = _get_client()
     if client is None:
         return None
 
     _model = model or os.getenv('OPENAI_MODEL') or os.getenv('LLM_MODEL') or 'gpt-4o-mini'
-    try:
-        resp = client.chat.completions.create(
-            model=_model,
-            messages=messages,
-            temperature=temperature,
-            max_tokens=max_tokens,
-        )
-        return resp.choices[0].message.content
-    except Exception as e:
-        print(f"[llm_client] LLM 调用失败: {e}", file=sys.stderr)
-        return None
+    fallback_models = ['deepseek-chat']
+    if _model == 'deepseek-chat':
+        fallback_models = ['deepseek-reasoner']
+
+    for attempt_model in [_model] + fallback_models:
+        try:
+            resp = client.chat.completions.create(
+                model=attempt_model,
+                messages=messages,
+                temperature=temperature,
+                max_tokens=max_tokens,
+            )
+            content = resp.choices[0].message.content
+            if content:
+                if attempt_model != _model:
+                    print(f"[llm_client] 模型 {_model} 返回空，已 fallback 到 {attempt_model}", file=sys.stderr)
+                return content
+        except Exception as e:
+            print(f"[llm_client] 模型 {attempt_model} 调用失败: {e}", file=sys.stderr)
+            continue
+    return None
 
 
 def summarize_news(ticker: str, name: str, news_items: List[Dict]) -> Optional[str]:

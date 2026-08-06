@@ -45,16 +45,63 @@ def _load_history(limit: int = 7) -> list:
     return items[-limit:]
 
 
+def _format_error_analysis(error_analysis: dict) -> str:
+    """把错误分析 JSON 转成自然语言，避免 LLM API 对中文 JSON 返回空。"""
+    summary = error_analysis.get('summary', {})
+    lines = [
+        f"预测日期: {error_analysis.get('pred_date', '未知')}",
+        f"总体准确率: {summary.get('accuracy', 0)}% ({summary.get('correct', 0)}/{summary.get('total', 0)})",
+        f"总错误数: {summary.get('wrong', 0)}",
+    ]
+    by_signal = error_analysis.get('by_signal', {})
+    if by_signal:
+        lines.append("按信号方向错误率:")
+        for signal, d in by_signal.items():
+            lines.append(f"  {signal}: 共{d.get('total',0)}条，错{d.get('wrong',0)}条，错误率{d.get('error_rate',0)}%")
+    by_category = error_analysis.get('by_category', {})
+    if by_category:
+        lines.append("按资产类别错误率:")
+        for cat, d in by_category.items():
+            lines.append(f"  {cat}: 共{d.get('total',0)}条，错{d.get('wrong',0)}条，错误率{d.get('error_rate',0)}%")
+    feature_compare = error_analysis.get('feature_compare', {})
+    if feature_compare:
+        lines.append("预测特征对比（正确 vs 错误样本平均）:")
+        for k, v in feature_compare.items():
+            if isinstance(v, dict):
+                lines.append(f"  {k}: 正确{v.get('correct_avg',0):.2f} vs 错误{v.get('wrong_avg',0):.2f}")
+    component_compare = error_analysis.get('component_compare', {})
+    if component_compare:
+        lines.append("分项得分对比（正确 vs 错误样本平均）:")
+        for k, v in component_compare.items():
+            if isinstance(v, dict):
+                lines.append(f"  {k}: 正确{v.get('correct_avg',0):.2f} vs 错误{v.get('wrong_avg',0):.2f}")
+    suggestions = error_analysis.get('suggestions', [])
+    if suggestions:
+        lines.append("规则分析建议:")
+        for s in suggestions:
+            lines.append(f"  - {s}")
+    return '\n'.join(lines)
+
+
+def _format_top_samples(samples: list, label: str, max_items: int = 5) -> str:
+    if not samples:
+        return f"{label}: 无"
+    lines = [f"{label} (Top {min(len(samples), max_items)}):"]
+    for s in samples[:max_items]:
+        lines.append(
+            f"  {s.get('ticker','')} {s.get('name','')} | "
+            f"信号{s.get('signal','')} | 收益{s.get('return_pct',0):+.2f}% | "
+            f"评分{s.get('weighted_score',0):.1f} | 置信{s.get('confidence',0):.2f} | "
+            f"原因: {s.get('reasoning','')[:120]}"
+        )
+    return '\n'.join(lines)
+
+
 def _build_prompt(validation: dict, error_analysis: dict, history: list, ab_test: dict) -> str:
     pred_date = error_analysis.get('pred_date', validation.get('pred_date', '未知'))
-    summary = error_analysis.get('summary', {})
-    by_signal = error_analysis.get('by_signal', {})
-    by_category = error_analysis.get('by_category', {})
-    feature_compare = error_analysis.get('feature_compare', {})
-    component_compare = error_analysis.get('component_compare', {})
+    analysis_text = _format_error_analysis(error_analysis)
     wrong_top10 = error_analysis.get('wrong_top10', [])
     correct_top10 = error_analysis.get('correct_top10', [])
-    suggestions = error_analysis.get('suggestions', [])
 
     history_text = ""
     if history:
@@ -77,29 +124,11 @@ def _build_prompt(validation: dict, error_analysis: dict, history: list, ab_test
     prompt = f"""你是量化投资系统的策略反思 Agent。请基于以下预测验证结果，写一份深度复盘报告。
 
 ===== 预测与验证摘要 =====
-预测日期: {pred_date}
-总体准确率: {summary.get('accuracy', 0)}% ({summary.get('correct', 0)}/{summary.get('total', 0)})
+{analysis_text}
 
-按信号方向错误率:
-{json.dumps(by_signal, ensure_ascii=False, indent=2)}
+{_format_top_samples(wrong_top10, '失败样本')}
 
-按资产类别错误率:
-{json.dumps(by_category, ensure_ascii=False, indent=2)}
-
-预测特征对比（正确 vs 错误样本平均）:
-{json.dumps(feature_compare, ensure_ascii=False, indent=2)}
-
-分项得分对比（正确 vs 错误样本平均）:
-{json.dumps(component_compare, ensure_ascii=False, indent=2)}
-
-失败样本 Top10:
-{json.dumps(wrong_top10, ensure_ascii=False, indent=2)}
-
-成功样本 Top10:
-{json.dumps(correct_top10, ensure_ascii=False, indent=2)}
-
-规则分析建议:
-{chr(10).join('- ' + s for s in suggestions)}
+{_format_top_samples(correct_top10, '成功样本')}
 {ab_text}
 {history_text}
 
@@ -109,12 +138,12 @@ def _build_prompt(validation: dict, error_analysis: dict, history: list, ab_test
 1. 一句话总结：当日预测准确率的本质原因（50字以内）
 2. 主要错误模式：列出2-3个导致错误的核心模式
 3. 成功信号特征：总结正确样本的共性
-4. 权重/阈值/硬规则调整建议：给出可落地的参数调整（如 threshold、weights、宏观修正幅度、拦截规则等）
+4. 数据驱动改进建议：建议扩展哪些历史数据、增加哪些因子或特征，让 parameter_optimizer 自动学习权重/阈值；禁止建议任何硬编码拦截规则、固定阈值或方向否决门。
 5. 策略回测建议：基于当前市场状态，6种策略中哪种更值得采用，是否需要调整推荐策略的打分权重
 6. 今日操作建议：基于反思对当前持仓或明日预测给出1-2条具体建议
 7. 需要新增/改进的数据源或因子：指出当前系统缺少哪些信号
 
-请尽量具体、量化，避免空泛。"""
+重要约束：本系统坚持数据驱动，拒绝硬编码规则。当信号质量差时，正确做法是获取更多数据、建立数据仓库、积累真实收益标签，让优化器自动学习阈值和权重，而不是在代码中加门控。请严格遵守此原则。"""
     return prompt
 
 

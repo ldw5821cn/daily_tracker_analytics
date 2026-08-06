@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-08-06T16:30:01",
+  "generated_at": "2026-08-06T21:56:55",
   "today": "2026-08-06",
   "warehouse": {
     "daily_bar": {
-      "count": 106428,
+      "count": 106435,
       "min_date": "1990-12-19",
-      "max_date": "2026-08-05",
-      "up_to_date": false,
-      "lag_days": 1
+      "max_date": "2026-08-06",
+      "up_to_date": true,
+      "lag_days": 0
     },
     "feature_snapshot": {
       "count": 28184,
@@ -17,7 +17,7 @@
       "lag_days": 2
     },
     "sentiment": {
-      "count": 9124,
+      "count": 9133,
       "min_date": "2024-08-16",
       "max_date": "2026-08-06",
       "up_to_date": true,
@@ -59,9 +59,9 @@
         "lag_days": 1
       },
       "index": {
-        "max_date": "2026-08-05",
-        "count": 33786,
-        "lag_days": 1
+        "max_date": "2026-08-06",
+        "count": 33793,
+        "lag_days": 0
       }
     }
   },
@@ -100,7 +100,6 @@
   },
   "status": "warning",
   "issues": [
-    "daily_bar 最新日期 2026-08-05，滞后 1 天，预期滞后 <= 0 天",
     "feature_snapshot 最新日期 2026-08-04，滞后 2 天，预期滞后 <= 1 天",
     "daily_bar.期货 最新日期 2026-07-23，滞后 14 天",
     "daily_bar.个股 最新日期 2026-08-05，滞后 1 天",

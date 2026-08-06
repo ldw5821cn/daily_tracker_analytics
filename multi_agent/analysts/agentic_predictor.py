@@ -109,38 +109,24 @@ def _get_threshold(category=''):
     return THRESHOLD
 
 def _get_weights(category: str = '') -> dict:
-    """返回类别特定权重。支持 V2/V4 多类别优化格式。"""
-    if _PARAMS.get('_version') in (2, 4):
+    """返回类别特定权重。支持 V2/V4/V5 多类别优化格式。"""
+    if _PARAMS.get('_version') in (2, 4, 5):
         v = _PARAMS.get(category, _PARAMS.get('_default', {}))
         return v.get('weights', WEIGHTS) if isinstance(v, dict) else WEIGHTS
     return _PARAMS.get('weights', WEIGHTS)
 
 
 def _get_threshold(category: str = '', macro_report: Optional[Dict] = None) -> dict:
-    """返回类别特定阈值，并叠加宏观状态感知动态调整。支持 V2/V4 多类别优化格式。"""
-    if _PARAMS.get('_version') in (2, 4):
+    """返回类别特定阈值。禁止在代码中硬编码宏观状态动态调整；所有阈值必须来自参数文件或后续由优化器学习。
+
+    历史教训：2026-08-04 当 macro_score < 45 时，代码曾自动降低看多门槛/提高看空门槛，导致系统在上涨市中产生大量错误看空信号（看空错误率 79.6%）。因此移除所有基于 macro_score 的阈值动态调整。
+    """
+    if _PARAMS.get('_version') in (2, 4, 5):
         v = _PARAMS.get(category, _PARAMS.get('_default', {}))
         base = v.get('threshold', THRESHOLD) if isinstance(v, dict) else THRESHOLD
     else:
         base = _PARAMS.get('threshold', THRESHOLD)
-    # 动态阈值：根据宏观评分调整 bullish/bearish 门槛
-    macro_score = macro_report.get('macro_score', 50) if macro_report else 50
-    adjusted = dict(base)
-    if macro_score < 45:  # 宏观偏空：降低看多门槛、提高看空门槛
-        adjusted['bull'] = max(48, adjusted['bull'] - 6)
-        adjusted['strong_bull'] = adjusted['bull'] + 5
-        adjusted['bear'] = min(50, adjusted['bear'] + 4)
-        adjusted['strong_bear'] = adjusted['bear'] - 5
-        adjusted['neutral_high'] = adjusted['bull'] - 3
-        adjusted['neutral_low'] = adjusted['bear'] + 2
-    elif macro_score > 60:  # 宏观偏多：提高看空门槛、降低看多门槛
-        adjusted['bull'] = max(48, adjusted['bull'] - 3)
-        adjusted['strong_bull'] = adjusted['bull'] + 5
-        adjusted['bear'] = min(50, adjusted['bear'] - 3)
-        adjusted['strong_bear'] = adjusted['bear'] - 5
-        adjusted['neutral_high'] = adjusted['bull'] - 3
-        adjusted['neutral_low'] = adjusted['bear'] + 2
-    return adjusted
+    return dict(base)
 
 
 def _get_debate_params(category: str = '') -> dict:
@@ -165,7 +151,7 @@ def _get_debate_params(category: str = '') -> dict:
 
 def _get_fund_flow_strength(category: str = '') -> float:
     """返回类别特定资金流修正强度。"""
-    if _PARAMS.get('_version') in (2, 4):
+    if _PARAMS.get('_version') in (2, 4, 5):
         v = _PARAMS.get(category, _PARAMS.get('_default', {}))
         return v.get('fund_flow_strength', 0.0) if isinstance(v, dict) else 0.0
     return _PARAMS.get('fund_flow_strength', 0.0)
