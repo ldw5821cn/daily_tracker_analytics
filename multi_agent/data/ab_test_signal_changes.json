@@ -1,7 +1,7 @@
 {
   "pred_date": "2026-07-12",
-  "macro_signal": "neutral",
-  "macro_score": 53.0,
+  "macro_signal": "bearish",
+  "macro_score": 43.0,
   "old_counts": {
     "bullish": 0,
     "neutral": 0,
