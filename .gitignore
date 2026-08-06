@@ -18,3 +18,5 @@ multi_agent/data/loader_cache/
 multi_agent/data/market_context_cache.json
 multi_agent/data/xueqiu_token_cache.json
 multi_agent/data/db_snapshots/
+*.duckdb
+*.duckdb-*

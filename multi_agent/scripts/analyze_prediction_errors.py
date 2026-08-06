@@ -110,7 +110,8 @@ def main():
 
     # component scores 对比
     print('\n🧩 分项得分对比（技术/基本面/新闻）')
-    comp_keys = ['technical', 'sentiment']  # fundamental 可能是 dict，用 fundamental_score
+    comp_keys = ['technical', 'sentiment', 'fundamental_score', 'debate_net']
+    comp_names = {'technical': '技术面', 'sentiment': '新闻情绪', 'fundamental_score': '基本面', 'debate_net': '多空辩论净得分'}
     for key in comp_keys:
         c_vals = []
         w_vals = []
@@ -125,13 +126,28 @@ def main():
             if isinstance(v, (int, float)):
                 w_vals.append(v)
         if c_vals and w_vals:
-            print(f'  {key}: 正确 {sum(c_vals)/len(c_vals):.2f} vs 错误 {sum(w_vals)/len(w_vals):.2f}')
-    # fundamental_score 单独处理
-    for key in ['fundamental_score']:
-        c_vals = [v for r in correct_items for v in [_parse_component_scores(r['pred']).get(key)] if isinstance(v, (int, float))]
-        w_vals = [v for r in wrong_items for v in [_parse_component_scores(r['pred']).get(key)] if isinstance(v, (int, float))]
-        if c_vals and w_vals:
-            print(f'  {key}: 正确 {sum(c_vals)/len(c_vals):.2f} vs 错误 {sum(w_vals)/len(w_vals):.2f}')
+            print(f'  {comp_names.get(key, key)}: 正确 {sum(c_vals)/len(c_vals):.2f} vs 错误 {sum(w_vals)/len(w_vals):.2f}')
+
+    # 因子背离度：基本面 - 技术面；正值表示基本面比技术面更乐观
+    print('\n⚡ 基本面-技术面背离度（fundamental_score - technical）')
+    def _divergence(r):
+        comp = _parse_component_scores(r['pred'])
+        f = comp.get('fundamental_score')
+        t = comp.get('technical')
+        if isinstance(f, (int, float)) and isinstance(t, (int, float)):
+            return f - t
+        return None
+
+    c_div = [v for r in correct_items if (v := _divergence(r)) is not None]
+    w_div = [v for r in wrong_items if (v := _divergence(r)) is not None]
+    if c_div and w_div:
+        print(f'  正确样本平均背离: {sum(c_div)/len(c_div):.2f}')
+        print(f'  错误样本平均背离: {sum(w_div)/len(w_div):.2f}')
+        # 按信号细分
+        for sig in ['看多', '看空', '中性', '观望']:
+            sig_wrong_div = [v for r in wrong_items if r['signal']==sig and (v := _divergence(r)) is not None]
+            if sig_wrong_div:
+                print(f'  {sig}错误样本平均背离: {sum(sig_wrong_div)/len(sig_wrong_div):.2f} (n={len(sig_wrong_div)})')
 
     # 失败 Top10
     print('\n❌ 失败样本 Top10（按 |实际收益| 排序）')
@@ -192,17 +208,33 @@ def main():
         w_vals = []
         for r in correct_items:
             comp = _parse_component_scores(r['pred'])
-            if key in comp:
+            if key in comp and isinstance(comp[key], (int, float)):
                 c_vals.append(comp[key])
         for r in wrong_items:
             comp = _parse_component_scores(r['pred'])
-            if key in comp:
+            if key in comp and isinstance(comp[key], (int, float)):
                 w_vals.append(comp[key])
         if c_vals and w_vals:
-            analysis['component_compare'][key] = {
+            analysis['component_compare'][comp_names.get(key, key)] = {
                 'correct_avg': round(sum(c_vals) / len(c_vals), 2),
                 'wrong_avg': round(sum(w_vals) / len(w_vals), 2),
             }
+
+    # 加入背离度特征到输出
+    analysis['divergence_analysis'] = {}
+    if c_div and w_div:
+        analysis['divergence_analysis']['fundamental_technical_divergence'] = {
+            'correct_avg': round(sum(c_div) / len(c_div), 2),
+            'wrong_avg': round(sum(w_div) / len(w_div), 2),
+            'by_wrong_signal': {},
+        }
+        for sig in ['看多', '看空', '中性', '观望']:
+            sig_wrong_div = [v for r in wrong_items if r['signal'] == sig and (v := _divergence(r)) is not None]
+            if sig_wrong_div:
+                analysis['divergence_analysis']['fundamental_technical_divergence']['by_wrong_signal'][sig] = {
+                    'avg': round(sum(sig_wrong_div) / len(sig_wrong_div), 2),
+                    'n': len(sig_wrong_div),
+                }
 
     analysis['wrong_top10'] = [
         {

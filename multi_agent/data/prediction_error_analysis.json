@@ -57,13 +57,21 @@
     }
   },
   "component_compare": {
-    "technical": {
+    "技术面": {
       "correct_avg": 57.04,
       "wrong_avg": 53.44
     },
-    "sentiment": {
+    "新闻情绪": {
       "correct_avg": 61.24,
       "wrong_avg": 60.24
+    },
+    "基本面": {
+      "correct_avg": 68.65,
+      "wrong_avg": 62.15
+    },
+    "多空辩论净得分": {
+      "correct_avg": -0.14,
+      "wrong_avg": -0.84
     }
   },
   "wrong_top10": [
@@ -304,5 +312,29 @@
     "整体胜率不足 50%，建议收紧信号阈值或提高置信度门槛",
     "建议对失败标的增加日内 TickFlow 数据校验，减少滞后技术面影响",
     "建议引入宏观/资金流向 Agent，提升对大盘方向的判断"
-  ]
+  ],
+  "divergence_analysis": {
+    "fundamental_technical_divergence": {
+      "correct_avg": 11.61,
+      "wrong_avg": 8.72,
+      "by_wrong_signal": {
+        "看多": {
+          "avg": 6.28,
+          "n": 34
+        },
+        "看空": {
+          "avg": 13.95,
+          "n": 45
+        },
+        "中性": {
+          "avg": 6.07,
+          "n": 11
+        },
+        "观望": {
+          "avg": -2.51,
+          "n": 11
+        }
+      }
+    }
+  }
 }

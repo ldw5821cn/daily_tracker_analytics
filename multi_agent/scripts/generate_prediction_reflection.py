@@ -75,6 +75,17 @@ def _format_error_analysis(error_analysis: dict) -> str:
         for k, v in component_compare.items():
             if isinstance(v, dict):
                 lines.append(f"  {k}: 正确{v.get('correct_avg',0):.2f} vs 错误{v.get('wrong_avg',0):.2f}")
+    divergence = error_analysis.get('divergence_analysis', {})
+    if divergence:
+        lines.append("因子背离度分析:")
+        for k, v in divergence.items():
+            if isinstance(v, dict):
+                lines.append(f"  {k}: 正确样本平均{v.get('correct_avg', 0):.2f} vs 错误样本平均{v.get('wrong_avg', 0):.2f}")
+                by_sig = v.get('by_wrong_signal', {})
+                if by_sig:
+                    lines.append("  按错误信号细分:")
+                    for sig, d in by_sig.items():
+                        lines.append(f"    {sig}: 平均背离{d.get('avg', 0):.2f} (n={d.get('n', 0)})")
     suggestions = error_analysis.get('suggestions', [])
     if suggestions:
         lines.append("规则分析建议:")
@@ -180,6 +191,7 @@ def generate_reflection():
         'by_category': error_analysis.get('by_category', {}),
         'feature_compare': error_analysis.get('feature_compare', {}),
         'component_compare': error_analysis.get('component_compare', {}),
+        'divergence_analysis': error_analysis.get('divergence_analysis', {}),
         'llm_reflection': llm_output,
         'key_suggestions': error_analysis.get('suggestions', []),
         'generated_at': datetime.now().isoformat(),

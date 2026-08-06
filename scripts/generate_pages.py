@@ -1365,9 +1365,23 @@ def generate_reflection_page(dates=None):
             rows += f"\n        <tr><td>{sig}</td><td>{stat.get('total', 0)}</td><td>{stat.get('wrong', 0)}</td><td>{stat.get('error_rate', 0)}%</td></tr>"
         return rows
 
+    def _divergence_rows(data):
+        rows = ""
+        for key, stat in data.items():
+            if not isinstance(stat, dict):
+                continue
+            rows += f"\n        <tr><td>{key}</td><td>{stat.get('correct_avg', 0)}</td><td>{stat.get('wrong_avg', 0)}</td></tr>"
+            by_sig = stat.get('by_wrong_signal', {})
+            for sig, d in by_sig.items():
+                if isinstance(d, dict):
+                    rows += f"\n        <tr><td style='padding-left:24px;color:#94a3b8'>└ {sig}错误样本</td><td>{d.get('avg', 0)}</td><td>n={d.get('n', 0)}</td></tr>"
+        return rows
+
     def _compare_rows(data):
         rows = ""
         for key, stat in data.items():
+            if not isinstance(stat, dict):
+                continue
             rows += f"\n        <tr><td>{key}</td><td>{stat.get('correct_avg', 0)}</td><td>{stat.get('wrong_avg', 0)}</td></tr>"
         return rows
 
@@ -1376,6 +1390,8 @@ def generate_reflection_page(dates=None):
     import re
     llm_html = re.sub(r'^(#{1,6})\s*(.+)$', r'<strong>\2</strong>', llm_html, flags=re.MULTILINE)
     llm_html = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', llm_html)
+
+    divergence_analysis = refl.get('divergence_analysis', {})
 
     body = f"""
     <div class="header">
@@ -1427,6 +1443,14 @@ def generate_reflection_page(dates=None):
     <table>
         <thead><tr><th>分项</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>{_compare_rows(component_compare)}</tbody>
+    </table>
+    </div>
+
+    <div class="section-title">⚡ 因子背离度分析</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>背离指标</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
+        <tbody>{_divergence_rows(divergence_analysis)}</tbody>
     </table>
     </div>
 
