@@ -1,198 +1,27 @@
 {
-  "pred_date": "2026-07-13",
+  "pred_date": "2026-07-12",
   "macro_signal": "neutral",
-  "macro_score": 47.6,
+  "macro_score": 53.0,
   "old_counts": {
     "bullish": 0,
-    "neutral": 61,
-    "bearish": 123
+    "neutral": 0,
+    "bearish": 0
   },
   "new_counts": {
     "bullish": 0,
-    "neutral": 78,
-    "bearish": 106
+    "neutral": 0,
+    "bearish": 0
   },
   "transitions": {
     "bullish→bullish": 0,
     "bullish→neutral": 0,
     "bullish→bearish": 0,
     "neutral→bullish": 0,
-    "neutral→neutral": 61,
+    "neutral→neutral": 0,
     "neutral→bearish": 0,
     "bearish→bullish": 0,
-    "bearish→neutral": 17,
-    "bearish→bearish": 106
+    "bearish→neutral": 0,
+    "bearish→bearish": 0
   },
-  "changed": [
-    {
-      "ticker": "513120",
-      "name": "港股创新药ETF广发",
-      "category": "ETF",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 54.4,
-      "macro_override": 0
-    },
-    {
-      "ticker": "688981",
-      "name": "中芯国际",
-      "category": "个股",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 56.2,
-      "macro_override": 0
-    },
-    {
-      "ticker": "SPY",
-      "name": "SPDR标普500ETF",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 57.4,
-      "macro_override": 0
-    },
-    {
-      "ticker": "VTI",
-      "name": "全美股票ETF",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 57.4,
-      "macro_override": 0
-    },
-    {
-      "ticker": "AAPL",
-      "name": "苹果",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 56.5,
-      "macro_override": 0
-    },
-    {
-      "ticker": "META",
-      "name": "Meta",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 56.5,
-      "macro_override": 0
-    },
-    {
-      "ticker": "NVDA",
-      "name": "英伟达",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 56.5,
-      "macro_override": 0
-    },
-    {
-      "ticker": "UBER",
-      "name": "Uber",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 56.5,
-      "macro_override": 0
-    },
-    {
-      "ticker": "WFC",
-      "name": "富国银行",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 59.0,
-      "macro_override": 0
-    },
-    {
-      "ticker": "V",
-      "name": "Visa",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 57.4,
-      "macro_override": 0
-    },
-    {
-      "ticker": "MA",
-      "name": "万事达",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 57.4,
-      "macro_override": 0
-    },
-    {
-      "ticker": "JNJ",
-      "name": "强生",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 54.7,
-      "macro_override": 0
-    },
-    {
-      "ticker": "KO",
-      "name": "可口可乐",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 57.4,
-      "macro_override": 0
-    },
-    {
-      "ticker": "NKE",
-      "name": "耐克",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 54.9,
-      "macro_override": 0
-    },
-    {
-      "ticker": "LIN",
-      "name": "林德",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 57.4,
-      "macro_override": 0
-    },
-    {
-      "ticker": "NTES",
-      "name": "网易",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 54.9,
-      "macro_override": 0
-    },
-    {
-      "ticker": "TCEHY",
-      "name": "腾讯ADR",
-      "category": "US",
-      "old_signal": "bearish",
-      "new_signal": "neutral",
-      "old_score": 42.0,
-      "new_score": 54.9,
-      "macro_override": 0
-    }
-  ]
+  "changed": []
 }

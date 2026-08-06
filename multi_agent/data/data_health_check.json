@@ -1,76 +1,76 @@
 {
-  "generated_at": "2026-07-24T09:29:53",
-  "today": "2026-07-24",
+  "generated_at": "2026-08-06T00:53:07",
+  "today": "2026-08-06",
   "warehouse": {
     "daily_bar": {
-      "count": 105833,
+      "count": 106296,
       "min_date": "1990-12-19",
-      "max_date": "2026-07-23",
+      "max_date": "2026-08-05",
       "up_to_date": false,
       "lag_days": 1
     },
     "feature_snapshot": {
-      "count": 27826,
+      "count": 28184,
       "min_date": "2025-09-22",
-      "max_date": "2026-07-23",
+      "max_date": "2026-08-04",
       "up_to_date": false,
-      "lag_days": 1
+      "lag_days": 2
     },
     "sentiment": {
-      "count": 7268,
+      "count": 8969,
       "min_date": "2024-08-16",
-      "max_date": "2026-07-23",
+      "max_date": "2026-08-05",
       "up_to_date": false,
       "lag_days": 1
     },
     "macro": {
-      "count": 123,
+      "count": 126,
       "min_date": "2015-12-01",
-      "max_date": "2026-07-23",
-      "up_to_date": false,
-      "lag_days": 1
+      "max_date": "2026-08-06",
+      "up_to_date": true,
+      "lag_days": 0
     },
     "fund_flow": {
-      "count": 127,
+      "count": 764,
       "min_date": "2026-07-23",
-      "max_date": "2026-07-23",
+      "max_date": "2026-08-05",
       "up_to_date": false,
       "lag_days": 1
     },
     "daily_bar_by_category": {
       "个股": {
-        "max_date": "2026-07-23",
-        "count": 26772,
-        "lag_days": 1
+        "max_date": "2026-08-04",
+        "count": 27090,
+        "lag_days": 2
       },
       "ETF": {
-        "max_date": "2026-07-23",
-        "count": 5944,
-        "lag_days": 1
+        "max_date": "2026-08-04",
+        "count": 6013,
+        "lag_days": 2
       },
       "futures": {
         "max_date": "2026-07-23",
         "count": 18424,
-        "lag_days": 1
+        "lag_days": 14
       },
       "US": {
-        "max_date": "2026-07-22",
-        "count": 20974,
+        "max_date": "2026-08-04",
+        "count": 20980,
         "lag_days": 2
       },
       "index": {
-        "max_date": "2026-07-22",
-        "count": 33716,
-        "lag_days": 2
+        "max_date": "2026-08-05",
+        "count": 33786,
+        "lag_days": 1
       }
     }
   },
   "predictions": {
-    "latest_pred_date": "2026-07-23",
-    "total_predictions": 2104,
+    "latest_pred_date": "2026-08-05",
+    "total_predictions": 583,
     "pred_lag_days": 1,
     "latest_by_category": {
-      "个股": 105,
+      "个股": 106,
       "ETF": 23,
       "期货": 49,
       "US": 53
@@ -78,35 +78,36 @@
   },
   "trainable_status": {
     "个股": {
-      "evaluable_days": 4,
+      "evaluable_days": 0,
       "trainable": false,
-      "note": "需继续积累 16 天"
+      "note": "需继续积累 20 天"
     },
     "ETF": {
-      "evaluable_days": 4,
+      "evaluable_days": 0,
       "trainable": false,
-      "note": "需继续积累 16 天"
+      "note": "需继续积累 20 天"
     },
     "期货": {
-      "evaluable_days": 4,
+      "evaluable_days": 0,
       "trainable": false,
-      "note": "需继续积累 16 天"
+      "note": "需继续积累 20 天"
     },
     "US": {
-      "evaluable_days": 3,
+      "evaluable_days": 0,
       "trainable": false,
-      "note": "需继续积累 17 天"
+      "note": "需继续积累 20 天"
     }
   },
   "status": "warning",
   "issues": [
-    "daily_bar 最新日期 2026-07-23，滞后 1 天，预期滞后 <= 0 天",
-    "sentiment 最新日期 2026-07-23，滞后 1 天，预期滞后 <= 0 天",
-    "macro 最新日期 2026-07-23，滞后 1 天，预期滞后 <= 0 天",
-    "fund_flow 最新日期 2026-07-23，滞后 1 天，预期滞后 <= 0 天",
-    "daily_bar.US 最新日期 2026-07-22，滞后 2 天",
-    "daily_bar.个股 最新日期 2026-07-23，滞后 1 天",
-    "daily_bar.ETF 最新日期 2026-07-23，滞后 1 天",
-    "最新预测日期 2026-07-23，滞后 1 天"
+    "daily_bar 最新日期 2026-08-05，滞后 1 天，预期滞后 <= 0 天",
+    "feature_snapshot 最新日期 2026-08-04，滞后 2 天，预期滞后 <= 1 天",
+    "sentiment 最新日期 2026-08-05，滞后 1 天，预期滞后 <= 0 天",
+    "fund_flow 最新日期 2026-08-05，滞后 1 天，预期滞后 <= 0 天",
+    "daily_bar.期货 最新日期 2026-07-23，滞后 14 天",
+    "daily_bar.US 最新日期 2026-08-04，滞后 2 天",
+    "daily_bar.个股 最新日期 2026-08-04，滞后 2 天",
+    "daily_bar.ETF 最新日期 2026-08-04，滞后 2 天",
+    "最新预测日期 2026-08-05，滞后 1 天"
   ]
 }

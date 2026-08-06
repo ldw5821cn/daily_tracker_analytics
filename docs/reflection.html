@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🧠 复盘 - 2026-07-22</title>
+<title>🧠 复盘 - 2026-08-04</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -59,25 +59,25 @@ tr:hover { background: #334155; }
 
     <div class="header">
         <h1>🧠 复盘 </h1>
-        <div class="sub">2026-07-22 预测验证后反思 · 生成于 2026-07-24T11:43:51</div>
+        <div class="sub">2026-08-04 预测验证后反思 · 生成于 2026-08-06T01:02:32</div>
     </div>
 
     <div class="header">
         <h1>🧠 每日预测反思 </h1>
-        <div class="sub">2026-07-22 预测 · 验证准确率 63.49% (40/63) · 错误 23 个</div>
+        <div class="sub">2026-08-04 预测 · 验证准确率 26.14% (46/176) · 错误 130 个</div>
     </div>
 
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="num" style="color:#ef4444">63.49%</div>
+            <div class="num" style="color:#22c55e">26.14%</div>
             <div class="label">总体准确率</div>
         </div>
         <div class="stat-card">
-            <div class="num">40</div>
+            <div class="num">46</div>
             <div class="label">正确</div>
         </div>
         <div class="stat-card">
-            <div class="num">23</div>
+            <div class="num">130</div>
             <div class="label">错误</div>
         </div>
     </div>
@@ -87,10 +87,10 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>信号</th><th>总数</th><th>错误</th><th>错误率</th></tr></thead>
         <tbody>
-        <tr><td>weak_neutral</td><td>27</td><td>4</td><td>14.81%</td></tr>
-        <tr><td>中性</td><td>13</td><td>8</td><td>61.54%</td></tr>
-        <tr><td>看多</td><td>2</td><td>0</td><td>0.0%</td></tr>
-        <tr><td>看空</td><td>21</td><td>11</td><td>52.38%</td></tr></tbody>
+        <tr><td>中性</td><td>20</td><td>12</td><td>60.0%</td></tr>
+        <tr><td>看多</td><td>39</td><td>18</td><td>46.15%</td></tr>
+        <tr><td>看空</td><td>71</td><td>66</td><td>92.96%</td></tr>
+        <tr><td>观望</td><td>46</td><td>34</td><td>73.91%</td></tr></tbody>
     </table>
     </div>
 
@@ -99,10 +99,9 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>类别</th><th>总数</th><th>错误</th><th>错误率</th></tr></thead>
         <tbody>
-        <tr><td>期货</td><td>49</td><td>18</td><td>36.73%</td></tr>
-        <tr><td>ETF</td><td>10</td><td>3</td><td>30.0%</td></tr>
-        <tr><td>个股</td><td>3</td><td>2</td><td>66.67%</td></tr>
-        <tr><td>US</td><td>1</td><td>0</td><td>0.0%</td></tr></tbody>
+        <tr><td>ETF</td><td>23</td><td>18</td><td>78.26%</td></tr>
+        <tr><td>个股</td><td>104</td><td>76</td><td>73.08%</td></tr>
+        <tr><td>期货</td><td>49</td><td>36</td><td>73.47%</td></tr></tbody>
     </table>
     </div>
 
@@ -111,8 +110,8 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>特征</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>weighted_score</td><td>48.09</td><td>44.16</td></tr>
-        <tr><td>confidence</td><td>0.67</td><td>0.76</td></tr></tbody>
+        <tr><td>weighted_score</td><td>55.43</td><td>47.5</td></tr>
+        <tr><td>confidence</td><td>0.69</td><td>0.72</td></tr></tbody>
     </table>
     </div>
 
@@ -121,13 +120,13 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>分项</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>technical</td><td>55.67</td><td>53.09</td></tr>
-        <tr><td>sentiment</td><td>46.38</td><td>46.94</td></tr></tbody>
+        <tr><td>technical</td><td>59.5</td><td>50.89</td></tr>
+        <tr><td>sentiment</td><td>55.0</td><td>55.68</td></tr></tbody>
     </table>
     </div>
 
     <div class="section-title">🤖 LLM 深度反思</div>
-    <div class="note"># 量化投资系统预测复盘报告（2026-07-22）<br><br>## 1. 一句话总结（50字以内）<br>**中性/看空信号错误率高，高置信度反而导致误判，期货方向反转是主因，个股和宏观因子缺失放大偏差。**<br><br>## 2. 主要错误模式<br><br>### 模式A：中性信号“假平坦”——技术面滞后与多空辩论误导<br>- **现象**：中性信号错误率高达61.54%（8/13），且错误样本中多空辩论几乎均为看跌>看涨（如翱捷科技看涨1 vs 看跌5、中芯国际看涨1 vs 看跌5）。实际价格却大幅下跌（-6%以上），说明多空辩论在短时间内倾向于空头但系统未能捕捉到下跌动能。<br>- **根因**：多空辩论因子（新闻/舆情）在个股上具有短期方向性，但系统将“看跌多”解读为中性（因为技术面也中性），导致权重均衡后给出中性信号。本质上是对“负面情绪积累”的权重过低。<br>- **量化指标**：错误样本中多空辩论平均看跌占比约80%，而正确样本中看跌占比约30%。<br><br>### 模式B：看空信号“逆转”——期货品种受宏观/资金面驱动上涨<br>- **现象**：看空信号错误率52.38%（11/21），失败Top10中电池ETF、稀土ETF、原油、燃油等多空看跌一致（看涨0 vs 看跌5或2），但实际涨幅2.4%~3%。这些品种大多属于商品期货或周期性ETF。<br>- **根因**：当前宏观信号为中性（47.6），但资金流（如有）或大盘情绪可能偏多，系统未纳入宏观/资金流向Agent。此外，技术面打分偏低（如原油技术48/100）但实际市场因库存或政策预期反转。<br>- **量化指标**：失败看空样本平均weighted_score为43.4，confidence却高达0.73，说明低分+高置信度组合应触发“拦截规则”。<br><br>### 模式C：高置信度陷阱——confidence与准确率负相关<br>- **对比**：正确样本平均confidence 0.67，错误样本平均confidence 0.76。高出约9个百分点，但错误率更高。说明当前置信度计算存在偏差（可能过度依赖分歧度或历史胜率），高置信度反而代表模型过于自信的错误方向。<br>- **根因**：置信度未与宏观或资金流交叉验证，且历史统计权重过高。<br><br>## 3. 成功信号特征<br><br>- **特征1**：弱看空（weak_neutral）或看空信号中，weighted_score较低（如40.3~42.6），但confidence也适中（0.73~0.84），且资产类别为美国ETF或期货（玻璃、沪锌等），这些品种趋势性强，技术面与新闻情绪一致性较好。<br>- **特征2**：成功样本平均weighted_score 48.09，失败样本44.16，但差异不显著。不过成功样本中technical分平均55.67 vs 失败53.09，说明技术面略高时更准确。<br>- **特征3**：多空辩论在成功样本中往往无显著倾斜（如沪锌看涨0 vs 看跌0），或方向与最终价格一致（如玻璃看空成功，多空辩论可能看跌多）。<br><br>## 4. 权重/阈值/硬规则调整建议<br><br>### 4.1 参数调整<br><br>| 参数 | 当前值 | 建议调整值 | 理由 |<br>|------|--------|-------------|------|<br>| 中性信号置信度门限 | 无 | `confidence > 0.85` 且 `weighted_score < 50` → 转为“weak_neutral”或拦截 | 高置信度中性信号错误率高 |<br>| 看空信号基本面权重 | 50/100（恒定） | 对期货引入“库存/基差”动态权重（若缺失则下调至30） | 失败样本基本面均为50（neutral），实际可能偏多 |<br>| 多空辩论权重 | 隐含在情感/宏观中 | 显式加权：若看跌比例>80%且技术分<50，则强制向下调整weighted_score -5 | 避免多空辩论被稀释 |<br>| 置信度计算公式 | 未知 | 增加“技术分与历史正确率的协方差”惩罚项 | 高置信度但技术分低时降低置信度 |<br><br>### 4.2 硬规则拦截<br><br>- **规则1**：`signal=="看空"` 且 `confidence>=0.9` 且 `weighted_score<=40` 且 `category=="期货"` → **强制转为“weak_neutral”**（当前失败样本如电池ETF、稀土ETF满足此条件但未被拦截）<br>- **规则2**：`signal=="中性"` 且 `多空辩论看跌数>=4`（max=5）且 `return_pct_abs` 潜在波动>2% → **转为“weak_bearish”**（建议新增信号类型或输出概率区间）<br>- **规则3**：`confidence`与`weighted_score`差距超过30分（如confidence>0.8且weighted_score<45）→ **标记为“低分高信”警告，交易时需人工复核**<br><br>### 4.3 宏观修正幅度<br><br>- 当前宏观信号`neutral/47.6`，但期货类资产普遍上涨，建议引入**资金流向因子**作为宏观修正：<br>  - 若“股票-商品”资金流向偏商品，则对期货类看空信号整体减半权重（或向上修正weighted_score +5）<br>  - 若大盘成交量放大且指数上涨，则对ETF看空信号向上修正+3<br><br>## 5. 策略回测建议（基于6种策略）<br><br>| 策略类型 | 当前市场状态（中性+期货反转） | 采用建议 | 打分权重调整 |<br>|----------|-------------------------------|----------|--------------|<br>| 趋势跟踪 | 适合期货（如玻璃、沪锌成功） | 维持或微幅上调 | +0.1 |<br>| 均值回归 | 个股中性信号失败多，建议降低 | 降低权重 | -0.2 |<br>| 事件驱动 | 多空辩论失败率高，暂避 | 降低权重 | -0.15 |<br>| 动量因子 | 看空错误多，动量可能已耗尽 | 观望或结合资金流 | +0.0 |<br>| 统计套利 | 个股分化大，适合做多空组合 | 可尝试但需控制敞口 | +0.05 |<br>| 宏观对冲 | **当前最需要采用** | **提升至核心策略** | **+0.3** |<br><br>**结论**：建议将“宏观对冲”策略权重从默认上调，同时降低“均值回归”和“事件驱动”权重。当前市场状态（中性宏观+期货偏多）适合基于宏观因子（库存、CPI、PMI）的偏向判断。<br><br>## 6. 今日操作建议（基于反思）<br><br>1. **对持仓中的期货看空头寸（如原油、燃油、PTA等）**：由于失败样本显示看空信号易被宏观/资金流逆转，建议**立即平仓或转为“弱中性”持有**，等待宏观Agent确认方向后再入场。<br>2. **对明日的个股预测**：关注多空辩论看跌>4的标的中性信号，应人工检查资金流或日内TickFlow，若开盘后半小时资金净流出，则果断转为看空。<br><br>## 7. 需要新增/改进的数据源或因子<br><br>| 因子类型 | 当前缺失 | 建议新增 | 优先级 |<br>|----------|----------|----------|--------|<br>| **日内TickFlow数据** | 缺失，失败样本中技术面滞后明显 | 引入逐笔成交资金流（大单净流入/流出），用于过滤滞后技术面 | **最高** |<br>| **宏观/资金流向Agent** | 仅用宏观中性分数，无资金流方向 |</div>
+    <div class="note">LLM 调用失败，未生成反思内容。</div>
 
     <div class="footer">
         数据由 Hermes Agent + 多Agent LLM 预测系统自动生成 · 研究辅助非投资建议 ·
