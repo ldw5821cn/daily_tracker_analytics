@@ -404,12 +404,14 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
 
     fund_score = fundamental_report.get('score', 50) if 'error' not in fundamental_report else 50
     news_score = (news_report.get('sentiment_score', 0) + 1) * 50
-    # 叠加涨停/龙虎榜情绪信号（对已被 news_analyst 覆盖的品种也生效）
+    social_detail = {}
+    # 叠加涨停/龙虎榜情绪信号 + 海外社媒/搜索 overlay（对已被 news_analyst 覆盖的品种也生效）
     try:
         from analysts.sentiment_analyst import compute_sentiment_score as _get_sent
         _ct = ticker.replace('.SH','').replace('.SZ','').replace('/US','')
-        _sent_extra = _get_sent(_ct)
-        # blended: 70% 原新闻情绪 + 30% 涨停/龙虎榜情绪
+        _sent_extra, _sent_detail = _get_sent(_ct, category=category, name=name)
+        social_detail = _sent_detail.get('social', {})
+        # blended: 70% 原新闻情绪 + 30% 涨停/龙虎榜/社媒情绪
         news_score = news_score * 0.7 + _sent_extra * 0.3
     except Exception:
         pass
@@ -598,6 +600,7 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
             'technical': tech_score,
             'fundamental': fund_score,
             'sentiment': round(news_score, 1),
+            'sentiment_social_detail': social_detail,
             'debate_net': net_debate,
             'macro_override': macro_override,
             'fund_flow_override': fund_flow_override,
@@ -893,8 +896,8 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
                 'error': 'skipped',
             }
             from analysts.sentiment_analyst import compute_sentiment_score as _get_sent
-            _clean_ticker = ticker.replace('.SH','').replace('.SZ','')
-            _senti = _get_sent(_clean_ticker)
+            _clean_ticker = ticker.replace('.SH','').replace('.SZ','').replace('/US','')
+            _senti, _ = _get_sent(_clean_ticker, category=category, name=name)
             news = {'sentiment_score': _senti / 50 - 1, 'sentiment': '中性', 'keywords': []}
         elif is_fut:
             ff = futures_fundamental_analyst.analyze(ticker, name)
@@ -911,14 +914,14 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
                 'error': 'ok',
             }
             from analysts.sentiment_analyst import compute_sentiment_score as _get_sent
-            _clean_ticker = ticker.replace('.SH','').replace('.SZ','')
-            _senti = _get_sent(_clean_ticker)
+            _clean_ticker = ticker.replace('.SH','').replace('.SZ','').replace('/US','')
+            _senti, _ = _get_sent(_clean_ticker, category=category, name=name)
             news = {'sentiment_score': _senti / 50 - 1, 'sentiment': '中性', 'keywords': []}
         elif fast:
             fundamental = {'score': 50, 'rating': 'N/A', 'fundamentals': {}, 'error': 'skipped'}
             from analysts.sentiment_analyst import compute_sentiment_score as _get_sent
-            _clean_ticker = ticker.replace('.SH','').replace('.SZ','')
-            _senti = _get_sent(_clean_ticker)
+            _clean_ticker = ticker.replace('.SH','').replace('.SZ','').replace('/US','')
+            _senti, _ = _get_sent(_clean_ticker, category=category, name=name)
             news = {'sentiment_score': _senti / 50 - 1, 'sentiment': '中性', 'keywords': []}
         # ultra 模式：跳过复杂技术面（用轻量版），但新闻情绪正常获取（已优化至3-7s/个）
         else:
@@ -953,7 +956,7 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
                 }
                 from analysts.sentiment_analyst import compute_sentiment_score as _get_sent
                 clean_ticker = ticker.replace('.SH','').replace('.SZ','').replace('/US','')
-                _senti_extra = _get_sent(clean_ticker)
+                _senti_extra, _ = _get_sent(clean_ticker, category=category, name=name)
                 news = {'sentiment_score': _senti_extra / 50 - 1, 'sentiment': '中性', 'keywords': []}
             elif category == 'ETF':
                 # ETF 使用费率/规模/集中度/跟踪误差质量因子
