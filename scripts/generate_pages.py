@@ -46,8 +46,24 @@ def _canonical_signal(p):
     return SIGNAL_CN_TO_EN.get(sig, sig)
 
 SIGNAL_EMOJI = {'bullish': '🔥', 'neutral': '➖', 'bearish': '❄️', 'weak_neutral': '➖'}
+# A股习惯：涨=红色，跌=绿色
 SIGNAL_COLOR = {'bullish': '#ef4444', 'neutral': '#94a3b8', 'bearish': '#22c55e', 'weak_neutral': '#94a3b8'}
 SIGNAL_CN = {'bullish': '看多', 'neutral': '中性', 'bearish': '看空', 'weak_neutral': '弱中性'}
+
+
+def _color_for_return(value, default='#e2e8f0'):
+    """A股习惯：涨=红(#ef4444)，跌=绿(#22c55e)；0或缺失用default。"""
+    if value is None:
+        return default
+    try:
+        v = float(value)
+    except (TypeError, ValueError):
+        return default
+    if v > 0:
+        return '#ef4444'
+    if v < 0:
+        return '#22c55e'
+    return default
 
 # 分类页统计：把弱中性并入中性，统计时只看多/看空/中性三档
 SIGNAL_GROUP = {'bullish': 'bullish', 'bearish': 'bearish', 'neutral': 'neutral', 'weak_neutral': 'neutral'}
@@ -86,8 +102,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto
 .model-tag { display: inline-block; background: #6366f1; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 8px; }
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 24px; }
 .card { background: #1e293b; border-radius: 12px; padding: 16px; border-left: 4px solid #6366f1; }
-.card.bull { border-left-color: #ef4444; }
-.card.bear { border-left-color: #22c55e; }
+.card.bull { border-left-color: #22c55e; }
+.card.bear { border-left-color: #ef4444; }
 .card-title { font-weight: 600; margin-bottom: 6px; }
 .card-meta { color: #94a3b8; font-size: 12px; margin-bottom: 6px; }
 .card-price { color: #e2e8f0; font-size: 13px; margin-bottom: 6px; }
@@ -372,11 +388,11 @@ def _row_html(p, is_us=False):
             <td>{p.get('horizon_3d', '')}</td>
             <td>{p.get('horizon_5d', '')}</td>
             <td>{p.get('horizon_10d', '')}</td>
-            <td>{p.get('bt_return_60d', 0):+.1f}%</td>
+            <td style="color:{_color_for_return(p.get('bt_return_60d', 0))}">{p.get('bt_return_60d', 0):+.1f}%</td>
             <td>{p.get('bt_max_dd_60d', 0):.1f}%</td>
             <td>{p.get('bt_sharpe_60d', 0):.2f}</td>
             <td title="{SCENARIO_DESC.get(p.get('recommended_scenario'), '')}">{SCENARIO_NAME_CN.get(p.get('recommended_scenario'), p.get('recommended_scenario', 'N/A'))}</td>
-            <td>{p.get('recommended_return', 0):+.1f}%</td>
+            <td style="color:{_color_for_return(p.get('recommended_return', 0))}">{p.get('recommended_return', 0):+.1f}%</td>
             <td>{p.get('recommended_dd', 0):.1f}%</td>
             <td>{price_str}</td>
             <td>{p.get('target_price', '')}</td>
@@ -417,8 +433,8 @@ def _top_cards(rows, title, sig, color_class):
         cards += f"""
             <div class="card {color_class}">
                 <div class="card-title">{SIGNAL_EMOJI[sig]} {p.get('name', p.get('ticker'))} ({p.get('ticker')})</div>
-                <div class="card-meta">评分 {p.get('weighted_score')} | 60日收益 {p.get('bt_return_60d', 0):+.1f}% | 回撤 {p.get('bt_max_dd_60d', 0):.1f}%</div>
-                <div class="card-meta">推荐策略：{SCENARIO_NAME_CN.get(p.get('recommended_scenario'), 'N/A')} | 收益 {p.get('recommended_return', 0):+.1f}% | 回撤 {p.get('recommended_dd', 0):.1f}%</div>
+                <div class="card-meta">评分 {p.get('weighted_score')} | 60日收益 <span style="color:{_color_for_return(p.get('bt_return_60d', 0))}">{p.get('bt_return_60d', 0):+.1f}%</span> | 回撤 {p.get('bt_max_dd_60d', 0):.1f}%</div>
+                <div class="card-meta">推荐策略：{SCENARIO_NAME_CN.get(p.get('recommended_scenario'), 'N/A')} | 收益 <span style="color:{_color_for_return(p.get('recommended_return', 0))}">{p.get('recommended_return', 0):+.1f}%</span> | 回撤 {p.get('recommended_dd', 0):.1f}%</div>
                 <div class="card-price">{price_label} {p.get('current_price')} | 目标 {p.get('target_price')} | 止损 {p.get('stop_loss')}</div>
                 <div class="card-reason">{p.get('reasoning', '')}</div>
             </div>"""
@@ -439,7 +455,7 @@ def _portfolio_backtest_html():
         desc = SCENARIO_DESC.get(name, '')
         rows.append(
             f"<tr {style}><td>{cn_name}{' ⭐' if highlight else ''}</td>"
-            f"<td style=\"color:{'#ef4444' if v['annualized_return'] >= 0 else '#22c55e'}\">{v['annualized_return']:+.2f}%</td>"
+            f"<td style=\"color:{_color_for_return(v['annualized_return'])}\">{v['annualized_return']:+.2f}%</td>"
             f"<td>{v['max_drawdown']:.2f}%</td>"
             f"<td>{v['sharpe_ratio']:.2f}</td>"
             f"<td>{v['calmar_ratio']:.2f}</td>"

@@ -26,8 +26,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto
 .model-tag { display: inline-block; background: #6366f1; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 8px; }
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 24px; }
 .card { background: #1e293b; border-radius: 12px; padding: 16px; border-left: 4px solid #6366f1; }
-.card.bull { border-left-color: #ef4444; }
-.card.bear { border-left-color: #22c55e; }
+.card.bull { border-left-color: #22c55e; }
+.card.bear { border-left-color: #ef4444; }
 .card-title { font-weight: 600; margin-bottom: 6px; }
 .card-meta { color: #94a3b8; font-size: 12px; margin-bottom: 6px; }
 .card-price { color: #e2e8f0; font-size: 13px; margin-bottom: 6px; }
@@ -82,15 +82,15 @@ tr:hover { background: #334155; }
 
             <div class="card bull">
                 <div class="card-title">🔥 银行ETF (512800)</div>
-                <div class="card-meta">评分 56.8 | 60日收益 +6.5% | 回撤 -9.8%</div>
-                <div class="card-meta">推荐策略：每日多空（无成本） | 收益 +7.6% | 回撤 -4.5%</div>
+                <div class="card-meta">评分 56.8 | 60日收益 <span style="color:#ef4444">+6.5%</span> | 回撤 -9.8%</div>
+                <div class="card-meta">推荐策略：每日多空（无成本） | 收益 <span style="color:#ef4444">+7.6%</span> | 回撤 -4.5%</div>
                 <div class="card-price">2026/07/31 现价 0.83 | 目标 0.842 | 止损 0.813</div>
                 <div class="card-reason">技术面中性偏多(65/100) | 基本面N/A(50/100) | 新闻情绪+0.02 | 多空辩论 看涨2 vs 看跌0 | 宏观偏空(33.7/100) | 市场上下文neutral(50.0/100)上限100% | 资金流61.5 | 市场资金流修正-2.2</div>
             </div>
             <div class="card bull">
                 <div class="card-title">🔥 陕西煤业 (601225)</div>
-                <div class="card-meta">评分 55.2 | 60日收益 +5.5% | 回撤 -24.3%</div>
-                <div class="card-meta">推荐策略：每日多空（无成本） | 收益 -2.8% | 回撤 -13.7%</div>
+                <div class="card-meta">评分 55.2 | 60日收益 <span style="color:#ef4444">+5.5%</span> | 回撤 -24.3%</div>
+                <div class="card-meta">推荐策略：每日多空（无成本） | 收益 <span style="color:#22c55e">-2.8%</span> | 回撤 -13.7%</div>
                 <div class="card-price">2026/08/03 现价 24.18 | 目标 23.287 | 止损 23.696</div>
                 <div class="card-reason">技术面中性偏多(67/100) | 基本面N/A(50/100) | 新闻情绪+0.02 | 多空辩论 看涨2 vs 看跌1 | 宏观偏空(33.7/100) | 市场上下文neutral(50.0/100)上限100% | 资金流61.3 | 市场资金流修正-2.2</div>
             </div>
@@ -99,36 +99,36 @@ tr:hover { background: #334155; }
 
             <div class="card bear">
                 <div class="card-title">❄️ 中船特气 (688146)</div>
-                <div class="card-meta">评分 46.2 | 60日收益 +231.9% | 回撤 -48.5%</div>
-                <div class="card-meta">推荐策略：每周只做多（无成本） | 收益 +293.0% | 回撤 -22.4%</div>
+                <div class="card-meta">评分 46.2 | 60日收益 <span style="color:#ef4444">+231.9%</span> | 回撤 -48.5%</div>
+                <div class="card-meta">推荐策略：每周只做多（无成本） | 收益 <span style="color:#ef4444">+293.0%</span> | 回撤 -22.4%</div>
                 <div class="card-price">2026/07/31 现价 266.0 | 目标 270.324 | 止损 260.68</div>
                 <div class="card-reason">技术面中性偏多(65/100) | 基本面N/A(50/100) | 新闻情绪+0.02 | 多空辩论 看涨1 vs 看跌3 | 宏观偏空(33.7/100) | 市场上下文neutral(50.0/100)上限100% | 资金流51.2 | 市场资金流修正-2.2</div>
             </div>
             <div class="card bear">
                 <div class="card-title">❄️ 拓荆科技 (688072)</div>
-                <div class="card-meta">评分 44.9 | 60日收益 +71.3% | 回撤 -25.1%</div>
-                <div class="card-meta">推荐策略：每周只做多（无成本） | 收益 +13.0% | 回撤 0.0%</div>
+                <div class="card-meta">评分 44.9 | 60日收益 <span style="color:#ef4444">+71.3%</span> | 回撤 -25.1%</div>
+                <div class="card-meta">推荐策略：每周只做多（无成本） | 收益 <span style="color:#ef4444">+13.0%</span> | 回撤 0.0%</div>
                 <div class="card-price">2026/07/31 现价 664.97 | 目标 607.231 | 止损 651.671</div>
                 <div class="card-reason">技术面中性(55/100) | 基本面N/A(50/100) | 新闻情绪+0.02 | 多空辩论 看涨2 vs 看跌5 | 宏观偏空(33.7/100) | 市场上下文neutral(50.0/100)上限100% | 资金流60.6 | 市场资金流修正-2.2</div>
             </div>
             <div class="card bear">
                 <div class="card-title">❄️ 盛美上海 (688082)</div>
-                <div class="card-meta">评分 45.9 | 60日收益 +70.4% | 回撤 -41.5%</div>
-                <div class="card-meta">推荐策略：每日多空（无成本） | 收益 +132.1% | 回撤 -29.6%</div>
+                <div class="card-meta">评分 45.9 | 60日收益 <span style="color:#ef4444">+70.4%</span> | 回撤 -41.5%</div>
+                <div class="card-meta">推荐策略：每日多空（无成本） | 收益 <span style="color:#ef4444">+132.1%</span> | 回撤 -29.6%</div>
                 <div class="card-price">2026/07/31 现价 271.89 | 目标 251.944 | 止损 266.452</div>
                 <div class="card-reason">技术面中性(43/100) | 基本面N/A(50/100) | 新闻情绪+0.02 | 多空辩论 看涨1 vs 看跌5 | 宏观偏空(33.7/100) | 市场上下文neutral(50.0/100)上限100% | 资金流63.2 | 市场资金流修正-2.2</div>
             </div>
             <div class="card bear">
                 <div class="card-title">❄️ 中微公司 (688012)</div>
-                <div class="card-meta">评分 41.2 | 60日收益 +38.7% | 回撤 -27.4%</div>
-                <div class="card-meta">推荐策略：每周只做多（无成本） | 收益 +16.3% | 回撤 -17.2%</div>
+                <div class="card-meta">评分 41.2 | 60日收益 <span style="color:#ef4444">+38.7%</span> | 回撤 -27.4%</div>
+                <div class="card-meta">推荐策略：每周只做多（无成本） | 收益 <span style="color:#ef4444">+16.3%</span> | 回撤 -17.2%</div>
                 <div class="card-price">2026/07/31 现价 344.0 | 目标 318.407 | 止损 337.12</div>
                 <div class="card-reason">技术面中性(42/100) | 基本面N/A(50/100) | 新闻情绪+0.02 | 多空辩论 看涨1 vs 看跌5 | 宏观偏空(33.7/100) | 市场上下文neutral(50.0/100)上限100% | 资金流52.0 | 市场资金流修正-2.2</div>
             </div>
             <div class="card bear">
                 <div class="card-title">❄️ 北方华创 (002371)</div>
-                <div class="card-meta">评分 44.7 | 60日收益 +27.2% | 回撤 -28.5%</div>
-                <div class="card-meta">推荐策略：每日多空（无成本） | 收益 +16.1% | 回撤 -22.1%</div>
+                <div class="card-meta">评分 44.7 | 60日收益 <span style="color:#ef4444">+27.2%</span> | 回撤 -28.5%</div>
+                <div class="card-meta">推荐策略：每日多空（无成本） | 收益 <span style="color:#ef4444">+16.1%</span> | 回撤 -22.1%</div>
                 <div class="card-price">2026/07/31 现价 687.0 | 目标 643.917 | 止损 673.26</div>
                 <div class="card-reason">技术面中性(42/100) | 基本面N/A(50/100) | 新闻情绪+0.02 | 多空辩论 看涨1 vs 看跌5 | 宏观偏空(33.7/100) | 市场上下文neutral(50.0/100)上限100% | 资金流60.8 | 市场资金流修正-2.2</div>
             </div>
@@ -218,11 +218,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>+6.5%</td>
+            <td style="color:#ef4444">+6.5%</td>
             <td>-9.8%</td>
             <td>1.43</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+7.6%</td>
+            <td style="color:#ef4444">+7.6%</td>
             <td>-4.5%</td>
             <td>2026/07/31 现价 0.83</td>
             <td>0.842</td>
@@ -241,11 +241,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-7.5%</td>
+            <td style="color:#22c55e">-7.5%</td>
             <td>-20.6%</td>
             <td>-0.67</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+33.6%</td>
+            <td style="color:#ef4444">+33.6%</td>
             <td>-8.1%</td>
             <td>2026/08/03 现价 1.14</td>
             <td>1.115</td>
@@ -264,11 +264,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-23.7%</td>
+            <td style="color:#22c55e">-23.7%</td>
             <td>-27.5%</td>
             <td>-3.15</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+5.9%</td>
+            <td style="color:#ef4444">+5.9%</td>
             <td>-6.8%</td>
             <td>2026/08/03 现价 0.94</td>
             <td>0.922</td>
@@ -287,11 +287,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>偏空</td>
             <td>偏空</td>
-            <td>+0.4%</td>
+            <td style="color:#ef4444">+0.4%</td>
             <td>-9.5%</td>
             <td>0.14</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-2.2%</td>
+            <td style="color:#22c55e">-2.2%</td>
             <td>-7.7%</td>
             <td>2026/08/03 现价 0.53</td>
             <td>0.527</td>
@@ -310,11 +310,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>偏空</td>
             <td>偏空</td>
-            <td>+0.7%</td>
+            <td style="color:#ef4444">+0.7%</td>
             <td>-9.2%</td>
             <td>0.19</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-2.6%</td>
+            <td style="color:#22c55e">-2.6%</td>
             <td>-7.8%</td>
             <td>2026/08/03 现价 1.1</td>
             <td>1.094</td>
@@ -333,11 +333,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>震荡</td>
             <td>偏多</td>
-            <td>-23.6%</td>
+            <td style="color:#22c55e">-23.6%</td>
             <td>-30.8%</td>
             <td>-2.44</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+13.7%</td>
+            <td style="color:#ef4444">+13.7%</td>
             <td>-7.1%</td>
             <td>2026/08/03 现价 1.65</td>
             <td>1.657</td>
@@ -356,11 +356,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>偏多</td>
             <td>看涨</td>
-            <td>-3.5%</td>
+            <td style="color:#22c55e">-3.5%</td>
             <td>-14.4%</td>
             <td>-0.49</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+14.2%</td>
+            <td style="color:#ef4444">+14.2%</td>
             <td>-5.4%</td>
             <td>2026/08/03 现价 0.33</td>
             <td>0.334</td>
@@ -379,11 +379,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>偏空</td>
             <td>偏空</td>
-            <td>-19.5%</td>
+            <td style="color:#22c55e">-19.5%</td>
             <td>-26.4%</td>
             <td>-1.75</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-3.1%</td>
+            <td style="color:#22c55e">-3.1%</td>
             <td>-11.2%</td>
             <td>2026/08/03 现价 1.78</td>
             <td>1.771</td>
@@ -402,11 +402,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-7.4%</td>
+            <td style="color:#22c55e">-7.4%</td>
             <td>-9.9%</td>
             <td>-1.35</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+2.3%</td>
+            <td style="color:#ef4444">+2.3%</td>
             <td>-4.2%</td>
             <td>2026/08/03 现价 4.6</td>
             <td>4.498</td>
@@ -425,11 +425,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-5.0%</td>
+            <td style="color:#22c55e">-5.0%</td>
             <td>-18.1%</td>
             <td>-0.90</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+22.9%</td>
+            <td style="color:#ef4444">+22.9%</td>
             <td>-6.0%</td>
             <td>2026/07/31 现价 0.69</td>
             <td>0.701</td>
@@ -448,11 +448,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-16.8%</td>
+            <td style="color:#22c55e">-16.8%</td>
             <td>-30.2%</td>
             <td>-1.21</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-16.1%</td>
+            <td style="color:#22c55e">-16.1%</td>
             <td>-23.0%</td>
             <td>2026/08/03 现价 1.35</td>
             <td>1.393</td>
@@ -471,11 +471,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-8.8%</td>
+            <td style="color:#22c55e">-8.8%</td>
             <td>-37.2%</td>
             <td>-0.25</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+20.2%</td>
+            <td style="color:#ef4444">+20.2%</td>
             <td>-17.9%</td>
             <td>2026/08/03 现价 1.0</td>
             <td>0.812</td>
@@ -494,11 +494,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-8.7%</td>
+            <td style="color:#22c55e">-8.7%</td>
             <td>-38.7%</td>
             <td>-0.23</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+36.9%</td>
+            <td style="color:#ef4444">+36.9%</td>
             <td>-11.4%</td>
             <td>2026/08/03 现价 0.92</td>
             <td>0.747</td>
@@ -517,11 +517,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>+30.1%</td>
+            <td style="color:#ef4444">+30.1%</td>
             <td>-34.8%</td>
             <td>1.81</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+33.7%</td>
+            <td style="color:#ef4444">+33.7%</td>
             <td>-22.2%</td>
             <td>2026/07/31 现价 0.67</td>
             <td>0.543</td>
@@ -540,11 +540,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-21.6%</td>
+            <td style="color:#22c55e">-21.6%</td>
             <td>-41.1%</td>
             <td>-1.19</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+17.7%</td>
+            <td style="color:#ef4444">+17.7%</td>
             <td>-15.3%</td>
             <td>2026/08/03 现价 0.58</td>
             <td>0.529</td>
@@ -563,11 +563,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-10.1%</td>
+            <td style="color:#22c55e">-10.1%</td>
             <td>-38.7%</td>
             <td>-0.32</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+28.8%</td>
+            <td style="color:#ef4444">+28.8%</td>
             <td>-12.8%</td>
             <td>2026/08/03 现价 1.04</td>
             <td>0.909</td>
@@ -586,11 +586,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>+3.2%</td>
+            <td style="color:#ef4444">+3.2%</td>
             <td>-34.5%</td>
             <td>0.52</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+5.1%</td>
+            <td style="color:#ef4444">+5.1%</td>
             <td>-24.3%</td>
             <td>2026/07/31 现价 1.11</td>
             <td>0.941</td>
@@ -609,11 +609,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>偏空</td>
             <td>看跌</td>
-            <td>-15.4%</td>
+            <td style="color:#22c55e">-15.4%</td>
             <td>-25.7%</td>
             <td>-1.46</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+3.4%</td>
+            <td style="color:#ef4444">+3.4%</td>
             <td>-10.4%</td>
             <td>2026/08/03 现价 0.96</td>
             <td>0.951</td>
@@ -632,11 +632,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-11.7%</td>
+            <td style="color:#22c55e">-11.7%</td>
             <td>-25.2%</td>
             <td>-0.71</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+10.3%</td>
+            <td style="color:#ef4444">+10.3%</td>
             <td>-11.7%</td>
             <td>2026/08/03 现价 1.72</td>
             <td>1.579</td>
@@ -655,11 +655,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-5.5%</td>
+            <td style="color:#22c55e">-5.5%</td>
             <td>-16.9%</td>
             <td>-0.72</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+5.5%</td>
+            <td style="color:#ef4444">+5.5%</td>
             <td>-5.0%</td>
             <td>2026/08/03 现价 0.61</td>
             <td>0.624</td>
@@ -678,11 +678,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>震荡</td>
             <td>震荡</td>
-            <td>-0.4%</td>
+            <td style="color:#22c55e">-0.4%</td>
             <td>-11.8%</td>
             <td>-0.14</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+7.4%</td>
+            <td style="color:#ef4444">+7.4%</td>
             <td>-5.4%</td>
             <td>2026/08/03 现价 1.15</td>
             <td>1.148</td>
@@ -701,11 +701,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>+2.1%</td>
+            <td style="color:#ef4444">+2.1%</td>
             <td>-9.7%</td>
             <td>0.52</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+10.2%</td>
+            <td style="color:#ef4444">+10.2%</td>
             <td>-4.1%</td>
             <td>2026/08/03 现价 1.2</td>
             <td>1.229</td>
@@ -724,11 +724,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-9.4%</td>
+            <td style="color:#22c55e">-9.4%</td>
             <td>-26.9%</td>
             <td>-0.94</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+17.8%</td>
+            <td style="color:#ef4444">+17.8%</td>
             <td>-9.1%</td>
             <td>2026/08/03 现价 0.63</td>
             <td>0.66</td>
@@ -754,11 +754,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>+5.5%</td>
+            <td style="color:#ef4444">+5.5%</td>
             <td>-24.3%</td>
             <td>0.70</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-2.8%</td>
+            <td style="color:#22c55e">-2.8%</td>
             <td>-13.7%</td>
             <td>2026/08/03 现价 24.18</td>
             <td>23.287</td>
@@ -777,11 +777,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-18.5%</td>
+            <td style="color:#22c55e">-18.5%</td>
             <td>-36.4%</td>
             <td>-1.33</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td>+17.0%</td>
+            <td style="color:#ef4444">+17.0%</td>
             <td>-6.9%</td>
             <td>2026/07/31 现价 23.01</td>
             <td>24.213</td>
@@ -800,11 +800,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-21.9%</td>
+            <td style="color:#22c55e">-21.9%</td>
             <td>-30.2%</td>
             <td>-1.57</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td>+2.9%</td>
+            <td style="color:#ef4444">+2.9%</td>
             <td>-1.0%</td>
             <td>2026/07/31 现价 15.82</td>
             <td>16.175</td>
@@ -823,11 +823,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>+6.7%</td>
+            <td style="color:#ef4444">+6.7%</td>
             <td>-38.0%</td>
             <td>0.73</td>
             <td title="每周五只做多 + 8% 止损，无成本">每周只做多+止损（无成本）</td>
-            <td>+21.6%</td>
+            <td style="color:#ef4444">+21.6%</td>
             <td>-20.8%</td>
             <td>2026/07/31 现价 5.91</td>
             <td>5.579</td>
@@ -846,11 +846,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>+231.9%</td>
+            <td style="color:#ef4444">+231.9%</td>
             <td>-48.5%</td>
             <td>4.12</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td>+293.0%</td>
+            <td style="color:#ef4444">+293.0%</td>
             <td>-22.4%</td>
             <td>2026/07/31 现价 266.0</td>
             <td>270.324</td>
@@ -869,11 +869,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-10.2%</td>
+            <td style="color:#22c55e">-10.2%</td>
             <td>-41.5%</td>
             <td>-0.28</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+5.2%</td>
+            <td style="color:#ef4444">+5.2%</td>
             <td>-13.4%</td>
             <td>2026/07/31 现价 39.56</td>
             <td>42.393</td>
@@ -892,11 +892,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-7.5%</td>
+            <td style="color:#22c55e">-7.5%</td>
             <td>-33.9%</td>
             <td>0.01</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td>+13.6%</td>
+            <td style="color:#ef4444">+13.6%</td>
             <td>-5.1%</td>
             <td>2026/07/31 现价 134.7</td>
             <td>130.84</td>
@@ -915,11 +915,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>+70.4%</td>
+            <td style="color:#ef4444">+70.4%</td>
             <td>-41.5%</td>
             <td>2.66</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+132.1%</td>
+            <td style="color:#ef4444">+132.1%</td>
             <td>-29.6%</td>
             <td>2026/07/31 现价 271.89</td>
             <td>251.944</td>
@@ -938,11 +938,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>+1.8%</td>
+            <td style="color:#ef4444">+1.8%</td>
             <td>-23.7%</td>
             <td>0.33</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+30.9%</td>
+            <td style="color:#ef4444">+30.9%</td>
             <td>-8.6%</td>
             <td>2026/08/03 现价 11.05</td>
             <td>11.256</td>
@@ -961,11 +961,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-2.0%</td>
+            <td style="color:#22c55e">-2.0%</td>
             <td>-22.1%</td>
             <td>0.17</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-13.8%</td>
+            <td style="color:#22c55e">-13.8%</td>
             <td>-11.8%</td>
             <td>2026/07/31 现价 19.52</td>
             <td>19.879</td>
@@ -984,11 +984,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>震荡</td>
             <td>震荡</td>
-            <td>-8.4%</td>
+            <td style="color:#22c55e">-8.4%</td>
             <td>-17.8%</td>
             <td>-0.44</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-17.6%</td>
+            <td style="color:#22c55e">-17.6%</td>
             <td>-20.5%</td>
             <td>2026/07/31 现价 11.77</td>
             <td>11.765</td>
@@ -1007,11 +1007,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>震荡</td>
             <td>震荡</td>
-            <td>-29.0%</td>
+            <td style="color:#22c55e">-29.0%</td>
             <td>-33.8%</td>
             <td>-2.63</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-3.5%</td>
+            <td style="color:#22c55e">-3.5%</td>
             <td>-9.9%</td>
             <td>2026/08/03 现价 33.58</td>
             <td>33.559</td>
@@ -1030,11 +1030,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-13.6%</td>
+            <td style="color:#22c55e">-13.6%</td>
             <td>-23.5%</td>
             <td>-0.90</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+1.8%</td>
+            <td style="color:#ef4444">+1.8%</td>
             <td>-17.9%</td>
             <td>2026/08/03 现价 11.06</td>
             <td>11.338</td>
@@ -1053,11 +1053,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-44.8%</td>
+            <td style="color:#22c55e">-44.8%</td>
             <td>-46.9%</td>
             <td>-3.97</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+5.3%</td>
+            <td style="color:#ef4444">+5.3%</td>
             <td>-11.0%</td>
             <td>2026/07/31 现价 25.93</td>
             <td>25.203</td>
@@ -1076,11 +1076,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>+71.3%</td>
+            <td style="color:#ef4444">+71.3%</td>
             <td>-25.1%</td>
             <td>2.77</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td>+13.0%</td>
+            <td style="color:#ef4444">+13.0%</td>
             <td>0.0%</td>
             <td>2026/07/31 现价 664.97</td>
             <td>607.231</td>
@@ -1099,11 +1099,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-14.5%</td>
+            <td style="color:#22c55e">-14.5%</td>
             <td>-30.8%</td>
             <td>-0.88</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+38.9%</td>
+            <td style="color:#ef4444">+38.9%</td>
             <td>-5.5%</td>
             <td>2026/07/31 现价 26.62</td>
             <td>27.819</td>
@@ -1122,11 +1122,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>+13.6%</td>
+            <td style="color:#ef4444">+13.6%</td>
             <td>-56.7%</td>
             <td>1.01</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+145.1%</td>
+            <td style="color:#ef4444">+145.1%</td>
             <td>-26.8%</td>
             <td>2026/07/31 现价 378.6</td>
             <td>327.897</td>
@@ -1145,11 +1145,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>偏空</td>
             <td>看跌</td>
-            <td>-50.0%</td>
+            <td style="color:#22c55e">-50.0%</td>
             <td>-54.5%</td>
             <td>-3.46</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+2.0%</td>
+            <td style="color:#ef4444">+2.0%</td>
             <td>-10.9%</td>
             <td>2026/08/03 现价 44.97</td>
             <td>44.331</td>
@@ -1168,11 +1168,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>+27.2%</td>
+            <td style="color:#ef4444">+27.2%</td>
             <td>-28.5%</td>
             <td>1.84</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+16.1%</td>
+            <td style="color:#ef4444">+16.1%</td>
             <td>-22.1%</td>
             <td>2026/07/31 现价 687.0</td>
             <td>643.917</td>
@@ -1191,11 +1191,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-30.9%</td>
+            <td style="color:#22c55e">-30.9%</td>
             <td>-48.5%</td>
             <td>-1.51</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+23.6%</td>
+            <td style="color:#ef4444">+23.6%</td>
             <td>-12.7%</td>
             <td>2026/07/31 现价 41.14</td>
             <td>40.262</td>
@@ -1214,11 +1214,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>+16.8%</td>
+            <td style="color:#ef4444">+16.8%</td>
             <td>-46.9%</td>
             <td>1.13</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+41.9%</td>
+            <td style="color:#ef4444">+41.9%</td>
             <td>-37.3%</td>
             <td>2026/07/31 现价 35.39</td>
             <td>30.637</td>
@@ -1237,11 +1237,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-19.6%</td>
+            <td style="color:#22c55e">-19.6%</td>
             <td>-33.0%</td>
             <td>-1.28</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+25.9%</td>
+            <td style="color:#ef4444">+25.9%</td>
             <td>-7.7%</td>
             <td>2026/07/31 现价 9.57</td>
             <td>9.802</td>
@@ -1260,11 +1260,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-19.5%</td>
+            <td style="color:#22c55e">-19.5%</td>
             <td>-28.1%</td>
             <td>-2.15</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-8.1%</td>
+            <td style="color:#22c55e">-8.1%</td>
             <td>-8.1%</td>
             <td>2026/07/31 现价 2.23</td>
             <td>2.262</td>
@@ -1283,11 +1283,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-0.6%</td>
+            <td style="color:#22c55e">-0.6%</td>
             <td>-29.0%</td>
             <td>0.42</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td>-8.8%</td>
+            <td style="color:#22c55e">-8.8%</td>
             <td>-14.6%</td>
             <td>2026/07/31 现价 56.73</td>
             <td>48.891</td>
@@ -1306,11 +1306,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-22.4%</td>
+            <td style="color:#22c55e">-22.4%</td>
             <td>-37.2%</td>
             <td>-1.81</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td>+17.7%</td>
+            <td style="color:#ef4444">+17.7%</td>
             <td>-5.9%</td>
             <td>2026/07/31 现价 28.2</td>
             <td>29.664</td>
@@ -1329,11 +1329,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-13.0%</td>
+            <td style="color:#22c55e">-13.0%</td>
             <td>-30.8%</td>
             <td>-0.87</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+11.9%</td>
+            <td style="color:#ef4444">+11.9%</td>
             <td>-6.9%</td>
             <td>2026/07/31 现价 4.72</td>
             <td>4.925</td>
@@ -1352,11 +1352,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-24.3%</td>
+            <td style="color:#22c55e">-24.3%</td>
             <td>-32.8%</td>
             <td>-2.00</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+10.9%</td>
+            <td style="color:#ef4444">+10.9%</td>
             <td>-19.1%</td>
             <td>2026/07/31 现价 16.72</td>
             <td>16.983</td>
@@ -1375,11 +1375,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-45.4%</td>
+            <td style="color:#22c55e">-45.4%</td>
             <td>-64.0%</td>
             <td>-2.13</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+104.0%</td>
+            <td style="color:#ef4444">+104.0%</td>
             <td>-16.7%</td>
             <td>2026/08/03 现价 349.0</td>
             <td>301.31</td>
@@ -1398,11 +1398,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-17.5%</td>
+            <td style="color:#22c55e">-17.5%</td>
             <td>-31.8%</td>
             <td>-0.94</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td>+8.6%</td>
+            <td style="color:#ef4444">+8.6%</td>
             <td>-9.6%</td>
             <td>2026/07/31 现价 102.7</td>
             <td>99.79</td>
@@ -1421,11 +1421,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-22.2%</td>
+            <td style="color:#22c55e">-22.2%</td>
             <td>-52.5%</td>
             <td>-0.61</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+31.8%</td>
+            <td style="color:#ef4444">+31.8%</td>
             <td>-19.2%</td>
             <td>2026/07/31 现价 66.95</td>
             <td>59.534</td>
@@ -1444,11 +1444,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>偏空</td>
             <td>偏空</td>
-            <td>-36.1%</td>
+            <td style="color:#22c55e">-36.1%</td>
             <td>-47.1%</td>
             <td>-2.17</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td>-4.6%</td>
+            <td style="color:#22c55e">-4.6%</td>
             <td>-6.2%</td>
             <td>2026/07/31 现价 31.8</td>
             <td>31.629</td>
@@ -1467,11 +1467,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-39.9%</td>
+            <td style="color:#22c55e">-39.9%</td>
             <td>-43.1%</td>
             <td>-3.86</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+11.1%</td>
+            <td style="color:#ef4444">+11.1%</td>
             <td>-16.3%</td>
             <td>2026/08/03 现价 107.63</td>
             <td>104.063</td>
@@ -1490,11 +1490,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>震荡</td>
             <td>偏空</td>
-            <td>-16.4%</td>
+            <td style="color:#22c55e">-16.4%</td>
             <td>-36.4%</td>
             <td>-0.61</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-18.8%</td>
+            <td style="color:#22c55e">-18.8%</td>
             <td>-17.5%</td>
             <td>2026/07/31 现价 18.37</td>
             <td>18.294</td>
@@ -1513,11 +1513,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-22.1%</td>
+            <td style="color:#22c55e">-22.1%</td>
             <td>-58.6%</td>
             <td>-0.50</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+51.3%</td>
+            <td style="color:#ef4444">+51.3%</td>
             <td>-17.4%</td>
             <td>2026/07/31 现价 225.99</td>
             <td>208.603</td>
@@ -1536,11 +1536,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>偏多</td>
             <td>看涨</td>
-            <td>-10.1%</td>
+            <td style="color:#22c55e">-10.1%</td>
             <td>-28.8%</td>
             <td>-0.29</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td>-5.6%</td>
+            <td style="color:#22c55e">-5.6%</td>
             <td>-8.1%</td>
             <td>2026/07/31 现价 43.28</td>
             <td>43.731</td>
@@ -1559,11 +1559,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-21.9%</td>
+            <td style="color:#22c55e">-21.9%</td>
             <td>-61.6%</td>
             <td>0.08</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+49.2%</td>
+            <td style="color:#ef4444">+49.2%</td>
             <td>-19.2%</td>
             <td>2026/08/03 现价 81.81</td>
             <td>71.062</td>
@@ -1582,11 +1582,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-15.4%</td>
+            <td style="color:#22c55e">-15.4%</td>
             <td>-37.5%</td>
             <td>-0.48</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+4.2%</td>
+            <td style="color:#ef4444">+4.2%</td>
             <td>-11.9%</td>
             <td>2026/07/31 现价 34.1</td>
             <td>35.145</td>
@@ -1605,11 +1605,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-35.8%</td>
+            <td style="color:#22c55e">-35.8%</td>
             <td>-61.8%</td>
             <td>-0.94</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+64.2%</td>
+            <td style="color:#ef4444">+64.2%</td>
             <td>-19.2%</td>
             <td>2026/08/03 现价 38.09</td>
             <td>30.666</td>
@@ -1628,11 +1628,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-9.1%</td>
+            <td style="color:#22c55e">-9.1%</td>
             <td>-56.3%</td>
             <td>0.04</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+33.0%</td>
+            <td style="color:#ef4444">+33.0%</td>
             <td>-34.0%</td>
             <td>2026/07/31 现价 43.88</td>
             <td>39.757</td>
@@ -1651,11 +1651,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-37.6%</td>
+            <td style="color:#22c55e">-37.6%</td>
             <td>-54.1%</td>
             <td>-2.18</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+12.0%</td>
+            <td style="color:#ef4444">+12.0%</td>
             <td>-18.2%</td>
             <td>2026/08/03 现价 67.02</td>
             <td>62.059</td>
@@ -1674,11 +1674,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-7.5%</td>
+            <td style="color:#22c55e">-7.5%</td>
             <td>-40.6%</td>
             <td>0.07</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+11.4%</td>
+            <td style="color:#ef4444">+11.4%</td>
             <td>-17.4%</td>
             <td>2026/08/03 现价 62.9</td>
             <td>56.081</td>
@@ -1697,11 +1697,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>偏空</td>
             <td>看跌</td>
-            <td>-13.2%</td>
+            <td style="color:#22c55e">-13.2%</td>
             <td>-41.2%</td>
             <td>-0.45</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+12.5%</td>
+            <td style="color:#ef4444">+12.5%</td>
             <td>-19.9%</td>
             <td>2026/07/31 现价 18.31</td>
             <td>18.059</td>
@@ -1720,11 +1720,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-19.0%</td>
+            <td style="color:#22c55e">-19.0%</td>
             <td>-29.4%</td>
             <td>-3.08</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+37.2%</td>
+            <td style="color:#ef4444">+37.2%</td>
             <td>-9.0%</td>
             <td>2026/08/03 现价 3.11</td>
             <td>3.192</td>
@@ -1743,11 +1743,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>+38.7%</td>
+            <td style="color:#ef4444">+38.7%</td>
             <td>-27.4%</td>
             <td>2.00</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td>+16.3%</td>
+            <td style="color:#ef4444">+16.3%</td>
             <td>-17.2%</td>
             <td>2026/07/31 现价 344.0</td>
             <td>318.407</td>
@@ -1766,11 +1766,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-20.6%</td>
+            <td style="color:#22c55e">-20.6%</td>
             <td>-32.9%</td>
             <td>-2.16</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+18.2%</td>
+            <td style="color:#ef4444">+18.2%</td>
             <td>-10.6%</td>
             <td>2026/07/31 现价 21.55</td>
             <td>22.328</td>
@@ -1789,11 +1789,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-4.9%</td>
+            <td style="color:#22c55e">-4.9%</td>
             <td>-32.7%</td>
             <td>0.13</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+0.2%</td>
+            <td style="color:#ef4444">+0.2%</td>
             <td>-26.7%</td>
             <td>2026/08/03 现价 116.5</td>
             <td>103.362</td>
@@ -1812,11 +1812,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>震荡</td>
             <td>偏空</td>
-            <td>-7.6%</td>
+            <td style="color:#22c55e">-7.6%</td>
             <td>-39.6%</td>
             <td>-0.09</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+10.0%</td>
+            <td style="color:#ef4444">+10.0%</td>
             <td>-11.6%</td>
             <td>2026/07/31 现价 40.97</td>
             <td>40.79</td>
@@ -1835,11 +1835,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-28.2%</td>
+            <td style="color:#22c55e">-28.2%</td>
             <td>-42.1%</td>
             <td>-1.93</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+16.2%</td>
+            <td style="color:#ef4444">+16.2%</td>
             <td>-9.7%</td>
             <td>2026/07/31 现价 15.8</td>
             <td>15.296</td>
@@ -1858,11 +1858,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>+15.6%</td>
+            <td style="color:#ef4444">+15.6%</td>
             <td>-46.5%</td>
             <td>1.07</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-2.0%</td>
+            <td style="color:#22c55e">-2.0%</td>
             <td>-28.3%</td>
             <td>2026/07/31 现价 303.65</td>
             <td>294.12</td>
@@ -1881,11 +1881,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>偏多</td>
             <td>看涨</td>
-            <td>-6.2%</td>
+            <td style="color:#22c55e">-6.2%</td>
             <td>-27.5%</td>
             <td>-0.13</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td>+0.8%</td>
+            <td style="color:#ef4444">+0.8%</td>
             <td>-1.3%</td>
             <td>2026/07/31 现价 6.21</td>
             <td>6.279</td>
@@ -1904,11 +1904,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>+21.6%</td>
+            <td style="color:#ef4444">+21.6%</td>
             <td>-54.1%</td>
             <td>1.30</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+109.4%</td>
+            <td style="color:#ef4444">+109.4%</td>
             <td>-28.8%</td>
             <td>2026/07/31 现价 40.62</td>
             <td>37.446</td>
@@ -1927,11 +1927,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-2.4%</td>
+            <td style="color:#22c55e">-2.4%</td>
             <td>-41.9%</td>
             <td>0.43</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-14.7%</td>
+            <td style="color:#22c55e">-14.7%</td>
             <td>-26.3%</td>
             <td>2026/07/31 现价 204.9</td>
             <td>187.447</td>
@@ -1950,11 +1950,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-33.6%</td>
+            <td style="color:#22c55e">-33.6%</td>
             <td>-47.1%</td>
             <td>-2.02</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+4.9%</td>
+            <td style="color:#ef4444">+4.9%</td>
             <td>-12.8%</td>
             <td>2026/07/31 现价 22.22</td>
             <td>21.33</td>
@@ -1973,11 +1973,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-14.3%</td>
+            <td style="color:#22c55e">-14.3%</td>
             <td>-26.2%</td>
             <td>-0.62</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-0.3%</td>
+            <td style="color:#22c55e">-0.3%</td>
             <td>-24.9%</td>
             <td>2026/07/31 现价 277.0</td>
             <td>256.503</td>
@@ -1996,11 +1996,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-18.5%</td>
+            <td style="color:#22c55e">-18.5%</td>
             <td>-54.1%</td>
             <td>-0.25</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+80.9%</td>
+            <td style="color:#ef4444">+80.9%</td>
             <td>-17.8%</td>
             <td>2026/08/03 现价 119.0</td>
             <td>101.172</td>
@@ -2019,11 +2019,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>偏多</td>
             <td>看涨</td>
-            <td>-44.8%</td>
+            <td style="color:#22c55e">-44.8%</td>
             <td>-54.2%</td>
             <td>-2.36</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-2.7%</td>
+            <td style="color:#22c55e">-2.7%</td>
             <td>-13.6%</td>
             <td>2026/08/03 现价 17.87</td>
             <td>18.072</td>
@@ -2042,11 +2042,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>+29.7%</td>
+            <td style="color:#ef4444">+29.7%</td>
             <td>-39.5%</td>
             <td>1.58</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+49.6%</td>
+            <td style="color:#ef4444">+49.6%</td>
             <td>-32.6%</td>
             <td>2026/07/31 现价 65.71</td>
             <td>57.075</td>
@@ -2065,11 +2065,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>+15.4%</td>
+            <td style="color:#ef4444">+15.4%</td>
             <td>-49.0%</td>
             <td>1.09</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+102.2%</td>
+            <td style="color:#ef4444">+102.2%</td>
             <td>-18.3%</td>
             <td>2026/07/31 现价 42.8</td>
             <td>41.404</td>
@@ -2088,11 +2088,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-4.4%</td>
+            <td style="color:#22c55e">-4.4%</td>
             <td>-35.2%</td>
             <td>-0.01</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+24.7%</td>
+            <td style="color:#ef4444">+24.7%</td>
             <td>-10.5%</td>
             <td>2026/07/31 现价 20.19</td>
             <td>18.84</td>
@@ -2111,11 +2111,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-10.5%</td>
+            <td style="color:#22c55e">-10.5%</td>
             <td>-21.8%</td>
             <td>-0.69</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+7.4%</td>
+            <td style="color:#ef4444">+7.4%</td>
             <td>-9.0%</td>
             <td>2026/07/31 现价 88.7</td>
             <td>83.736</td>
@@ -2134,11 +2134,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>+10.2%</td>
+            <td style="color:#ef4444">+10.2%</td>
             <td>-59.7%</td>
             <td>0.93</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+127.5%</td>
+            <td style="color:#ef4444">+127.5%</td>
             <td>-21.8%</td>
             <td>2026/08/03 现价 141.0</td>
             <td>121.412</td>
@@ -2157,11 +2157,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-45.6%</td>
+            <td style="color:#22c55e">-45.6%</td>
             <td>-67.8%</td>
             <td>-1.59</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td>+0.0%</td>
+            <td style="color:#e2e8f0">+0.0%</td>
             <td>0.0%</td>
             <td>2026/08/03 现价 180.5</td>
             <td>163.635</td>
@@ -2180,11 +2180,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-24.0%</td>
+            <td style="color:#22c55e">-24.0%</td>
             <td>-39.7%</td>
             <td>-1.28</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+4.8%</td>
+            <td style="color:#ef4444">+4.8%</td>
             <td>-20.3%</td>
             <td>2026/07/31 现价 22.7</td>
             <td>22.141</td>
@@ -2203,11 +2203,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-17.5%</td>
+            <td style="color:#22c55e">-17.5%</td>
             <td>-49.7%</td>
             <td>-0.45</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+41.2%</td>
+            <td style="color:#ef4444">+41.2%</td>
             <td>-20.0%</td>
             <td>2026/08/03 现价 46.63</td>
             <td>40.791</td>
@@ -2226,11 +2226,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-13.8%</td>
+            <td style="color:#22c55e">-13.8%</td>
             <td>-54.2%</td>
             <td>-0.06</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+63.1%</td>
+            <td style="color:#ef4444">+63.1%</td>
             <td>-28.6%</td>
             <td>2026/08/03 现价 42.17</td>
             <td>37.204</td>
@@ -2249,11 +2249,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-17.8%</td>
+            <td style="color:#22c55e">-17.8%</td>
             <td>-55.2%</td>
             <td>-0.51</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+101.7%</td>
+            <td style="color:#ef4444">+101.7%</td>
             <td>-11.8%</td>
             <td>2026/07/31 现价 49.51</td>
             <td>44.345</td>
@@ -2272,11 +2272,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>震荡</td>
             <td>偏多</td>
-            <td>-21.7%</td>
+            <td style="color:#22c55e">-21.7%</td>
             <td>-26.8%</td>
             <td>-1.59</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+11.8%</td>
+            <td style="color:#ef4444">+11.8%</td>
             <td>-13.9%</td>
             <td>2026/08/03 现价 52.82</td>
             <td>52.969</td>
@@ -2295,11 +2295,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>震荡</td>
             <td>震荡</td>
-            <td>-22.1%</td>
+            <td style="color:#22c55e">-22.1%</td>
             <td>-35.3%</td>
             <td>-1.46</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-10.0%</td>
+            <td style="color:#22c55e">-10.0%</td>
             <td>-25.4%</td>
             <td>2026/07/31 现价 49.44</td>
             <td>49.341</td>
@@ -2318,11 +2318,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>震荡</td>
             <td>震荡</td>
-            <td>-17.1%</td>
+            <td style="color:#22c55e">-17.1%</td>
             <td>-41.7%</td>
             <td>-0.87</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-11.0%</td>
+            <td style="color:#22c55e">-11.0%</td>
             <td>-22.2%</td>
             <td>2026/07/31 现价 50.53</td>
             <td>50.473</td>
@@ -2341,11 +2341,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-7.8%</td>
+            <td style="color:#22c55e">-7.8%</td>
             <td>-36.7%</td>
             <td>-0.01</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+9.9%</td>
+            <td style="color:#ef4444">+9.9%</td>
             <td>-13.9%</td>
             <td>2026/08/03 现价 87.05</td>
             <td>82.071</td>
@@ -2364,11 +2364,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-30.1%</td>
+            <td style="color:#22c55e">-30.1%</td>
             <td>-52.8%</td>
             <td>-0.71</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td>-3.7%</td>
+            <td style="color:#22c55e">-3.7%</td>
             <td>-13.7%</td>
             <td>2026/08/03 现价 394.08</td>
             <td>346.714</td>
@@ -2387,11 +2387,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-48.9%</td>
+            <td style="color:#22c55e">-48.9%</td>
             <td>-58.7%</td>
             <td>-2.39</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+32.5%</td>
+            <td style="color:#ef4444">+32.5%</td>
             <td>-23.5%</td>
             <td>2026/07/31 现价 90.04</td>
             <td>77.164</td>
@@ -2410,11 +2410,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>偏空</td>
             <td>偏空</td>
-            <td>-3.9%</td>
+            <td style="color:#22c55e">-3.9%</td>
             <td>-15.6%</td>
             <td>-0.17</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td>+0.0%</td>
+            <td style="color:#e2e8f0">+0.0%</td>
             <td>0.0%</td>
             <td>2026/07/31 现价 108.45</td>
             <td>107.903</td>
@@ -2433,11 +2433,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-4.0%</td>
+            <td style="color:#22c55e">-4.0%</td>
             <td>-37.5%</td>
             <td>0.19</td>
             <td title="每周五只做多 + 8% 止损，无成本">每周只做多+止损（无成本）</td>
-            <td>+0.7%</td>
+            <td style="color:#ef4444">+0.7%</td>
             <td>-15.0%</td>
             <td>2026/08/03 现价 902.5</td>
             <td>813.902</td>
@@ -2456,11 +2456,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-14.7%</td>
+            <td style="color:#22c55e">-14.7%</td>
             <td>-50.1%</td>
             <td>-0.15</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+40.6%</td>
+            <td style="color:#ef4444">+40.6%</td>
             <td>-12.1%</td>
             <td>2026/08/03 现价 47.08</td>
             <td>43.388</td>
@@ -2479,11 +2479,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-19.4%</td>
+            <td style="color:#22c55e">-19.4%</td>
             <td>-52.4%</td>
             <td>-0.76</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+112.1%</td>
+            <td style="color:#ef4444">+112.1%</td>
             <td>-13.1%</td>
             <td>2026/07/31 现价 47.05</td>
             <td>44.346</td>
@@ -2502,11 +2502,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>+0.0%</td>
+            <td style="color:#ef4444">+0.0%</td>
             <td>-53.1%</td>
             <td>0.56</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+115.4%</td>
+            <td style="color:#ef4444">+115.4%</td>
             <td>-20.6%</td>
             <td>2026/08/03 现价 185.01</td>
             <td>155.105</td>
@@ -2525,11 +2525,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-6.5%</td>
+            <td style="color:#22c55e">-6.5%</td>
             <td>-34.7%</td>
             <td>0.04</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+4.2%</td>
+            <td style="color:#ef4444">+4.2%</td>
             <td>-20.2%</td>
             <td>2026/07/31 现价 1106.0</td>
             <td>1031.002</td>
@@ -2548,11 +2548,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>+4.5%</td>
+            <td style="color:#ef4444">+4.5%</td>
             <td>-36.9%</td>
             <td>0.64</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+2.9%</td>
+            <td style="color:#ef4444">+2.9%</td>
             <td>-38.9%</td>
             <td>2026/08/03 现价 216.91</td>
             <td>191.791</td>
@@ -2571,11 +2571,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-15.4%</td>
+            <td style="color:#22c55e">-15.4%</td>
             <td>-27.7%</td>
             <td>-0.40</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+2.8%</td>
+            <td style="color:#ef4444">+2.8%</td>
             <td>-27.1%</td>
             <td>2026/08/03 现价 91.15</td>
             <td>81.739</td>
@@ -2594,11 +2594,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-8.9%</td>
+            <td style="color:#22c55e">-8.9%</td>
             <td>-24.4%</td>
             <td>-0.40</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-19.9%</td>
+            <td style="color:#22c55e">-19.9%</td>
             <td>-24.3%</td>
             <td>2026/07/31 现价 38.42</td>
             <td>39.187</td>
@@ -2617,11 +2617,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>偏空</td>
             <td>看跌</td>
-            <td>+0.1%</td>
+            <td style="color:#ef4444">+0.1%</td>
             <td>-35.1%</td>
             <td>0.39</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-12.9%</td>
+            <td style="color:#22c55e">-12.9%</td>
             <td>-14.2%</td>
             <td>2026/07/31 现价 20.99</td>
             <td>20.729</td>
@@ -2640,11 +2640,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-24.4%</td>
+            <td style="color:#22c55e">-24.4%</td>
             <td>-50.5%</td>
             <td>-0.77</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+6.2%</td>
+            <td style="color:#ef4444">+6.2%</td>
             <td>-31.4%</td>
             <td>2026/08/03 现价 8.64</td>
             <td>8.019</td>
@@ -2663,11 +2663,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-21.0%</td>
+            <td style="color:#22c55e">-21.0%</td>
             <td>-42.0%</td>
             <td>-1.04</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+33.2%</td>
+            <td style="color:#ef4444">+33.2%</td>
             <td>-17.2%</td>
             <td>2026/07/31 现价 20.7</td>
             <td>20.231</td>
@@ -2686,11 +2686,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-23.8%</td>
+            <td style="color:#22c55e">-23.8%</td>
             <td>-46.8%</td>
             <td>-1.03</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+14.7%</td>
+            <td style="color:#ef4444">+14.7%</td>
             <td>-16.4%</td>
             <td>2026/08/03 现价 12.22</td>
             <td>11.739</td>
@@ -2709,11 +2709,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>偏空</td>
             <td>偏空</td>
-            <td>-8.0%</td>
+            <td style="color:#22c55e">-8.0%</td>
             <td>-33.8%</td>
             <td>-0.10</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-12.9%</td>
+            <td style="color:#22c55e">-12.9%</td>
             <td>-24.4%</td>
             <td>2026/07/31 现价 9.15</td>
             <td>9.088</td>
@@ -2732,11 +2732,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-0.9%</td>
+            <td style="color:#22c55e">-0.9%</td>
             <td>-23.6%</td>
             <td>-0.01</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+3.4%</td>
+            <td style="color:#ef4444">+3.4%</td>
             <td>-7.6%</td>
             <td>2026/08/03 现价 43.73</td>
             <td>40.954</td>
@@ -2755,11 +2755,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-4.3%</td>
+            <td style="color:#22c55e">-4.3%</td>
             <td>-27.1%</td>
             <td>-0.12</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td>+20.4%</td>
+            <td style="color:#ef4444">+20.4%</td>
             <td>-4.7%</td>
             <td>2026/07/31 现价 32.95</td>
             <td>34.387</td>
@@ -2778,11 +2778,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-7.0%</td>
+            <td style="color:#22c55e">-7.0%</td>
             <td>-18.8%</td>
             <td>-1.06</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+9.0%</td>
+            <td style="color:#ef4444">+9.0%</td>
             <td>-6.1%</td>
             <td>2026/08/03 现价 26.66</td>
             <td>27.287</td>
@@ -2801,11 +2801,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>偏多</td>
             <td>看涨</td>
-            <td>-15.7%</td>
+            <td style="color:#22c55e">-15.7%</td>
             <td>-31.2%</td>
             <td>-1.43</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+27.0%</td>
+            <td style="color:#ef4444">+27.0%</td>
             <td>-7.0%</td>
             <td>2026/07/31 现价 23.29</td>
             <td>23.618</td>
@@ -2824,11 +2824,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>+3.6%</td>
+            <td style="color:#ef4444">+3.6%</td>
             <td>-12.5%</td>
             <td>0.67</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+2.5%</td>
+            <td style="color:#ef4444">+2.5%</td>
             <td>-6.4%</td>
             <td>2026/08/03 现价 5.28</td>
             <td>5.403</td>
@@ -2847,11 +2847,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-8.3%</td>
+            <td style="color:#22c55e">-8.3%</td>
             <td>-19.1%</td>
             <td>-1.34</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+6.5%</td>
+            <td style="color:#ef4444">+6.5%</td>
             <td>-2.1%</td>
             <td>2026/08/03 现价 2.11</td>
             <td>2.191</td>
@@ -2870,11 +2870,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-7.3%</td>
+            <td style="color:#22c55e">-7.3%</td>
             <td>-22.6%</td>
             <td>-1.02</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+16.9%</td>
+            <td style="color:#ef4444">+16.9%</td>
             <td>-2.8%</td>
             <td>2026/07/31 现价 5.71</td>
             <td>5.84</td>
@@ -2893,11 +2893,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-12.8%</td>
+            <td style="color:#22c55e">-12.8%</td>
             <td>-25.3%</td>
             <td>-1.82</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+17.4%</td>
+            <td style="color:#ef4444">+17.4%</td>
             <td>-6.0%</td>
             <td>2026/08/03 现价 3.97</td>
             <td>4.128</td>
@@ -2916,11 +2916,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-10.7%</td>
+            <td style="color:#22c55e">-10.7%</td>
             <td>-23.7%</td>
             <td>-1.48</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+23.4%</td>
+            <td style="color:#ef4444">+23.4%</td>
             <td>-4.2%</td>
             <td>2026/07/31 现价 12.67</td>
             <td>13.021</td>
@@ -2939,11 +2939,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-3.3%</td>
+            <td style="color:#22c55e">-3.3%</td>
             <td>-14.7%</td>
             <td>-0.55</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+4.4%</td>
+            <td style="color:#ef4444">+4.4%</td>
             <td>-5.0%</td>
             <td>2026/08/03 现价 6.11</td>
             <td>6.252</td>
@@ -2962,11 +2962,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>偏多</td>
             <td>看涨</td>
-            <td>-17.4%</td>
+            <td style="color:#22c55e">-17.4%</td>
             <td>-30.4%</td>
             <td>-1.47</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+9.0%</td>
+            <td style="color:#ef4444">+9.0%</td>
             <td>-8.2%</td>
             <td>2026/08/03 现价 14.52</td>
             <td>14.692</td>
@@ -2985,11 +2985,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-19.7%</td>
+            <td style="color:#22c55e">-19.7%</td>
             <td>-31.8%</td>
             <td>-2.16</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+24.3%</td>
+            <td style="color:#ef4444">+24.3%</td>
             <td>-10.8%</td>
             <td>2026/07/31 现价 7.0</td>
             <td>7.166</td>
@@ -3008,11 +3008,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-20.0%</td>
+            <td style="color:#22c55e">-20.0%</td>
             <td>-42.6%</td>
             <td>-1.26</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td>+19.8%</td>
+            <td style="color:#ef4444">+19.8%</td>
             <td>-6.8%</td>
             <td>2026/07/31 现价 23.38</td>
             <td>24.68</td>
@@ -3031,11 +3031,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-18.2%</td>
+            <td style="color:#22c55e">-18.2%</td>
             <td>-30.0%</td>
             <td>-1.46</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+8.6%</td>
+            <td style="color:#ef4444">+8.6%</td>
             <td>-11.4%</td>
             <td>2026/08/03 现价 13.49</td>
             <td>12.951</td>
@@ -3054,11 +3054,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-13.6%</td>
+            <td style="color:#22c55e">-13.6%</td>
             <td>-31.3%</td>
             <td>-1.22</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+20.6%</td>
+            <td style="color:#ef4444">+20.6%</td>
             <td>-12.2%</td>
             <td>2026/07/31 现价 3.89</td>
             <td>4.002</td>
@@ -3077,11 +3077,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-4.5%</td>
+            <td style="color:#22c55e">-4.5%</td>
             <td>-25.8%</td>
             <td>-0.29</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+16.8%</td>
+            <td style="color:#ef4444">+16.8%</td>
             <td>-10.4%</td>
             <td>2026/08/03 现价 6.55</td>
             <td>6.704</td>
@@ -3100,11 +3100,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-3.5%</td>
+            <td style="color:#22c55e">-3.5%</td>
             <td>-19.4%</td>
             <td>-0.08</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td>+1.3%</td>
+            <td style="color:#ef4444">+1.3%</td>
             <td>-11.6%</td>
             <td>2026/07/31 现价 12.36</td>
             <td>12.835</td>
@@ -3123,11 +3123,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-8.5%</td>
+            <td style="color:#22c55e">-8.5%</td>
             <td>-18.6%</td>
             <td>-0.86</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+11.3%</td>
+            <td style="color:#ef4444">+11.3%</td>
             <td>-12.9%</td>
             <td>2026/08/03 现价 75.3</td>
             <td>77.203</td>
@@ -3153,11 +3153,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>震荡</td>
             <td>偏空</td>
-            <td>+1.4%</td>
+            <td style="color:#ef4444">+1.4%</td>
             <td>-7.8%</td>
             <td>0.30</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-1.8%</td>
+            <td style="color:#22c55e">-1.8%</td>
             <td>-3.8%</td>
             <td>2026/08/03 现价 9891.0</td>
             <td>9862.069</td>
@@ -3176,11 +3176,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>偏空</td>
             <td>看跌</td>
-            <td>-3.5%</td>
+            <td style="color:#22c55e">-3.5%</td>
             <td>-7.2%</td>
             <td>-0.75</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+3.6%</td>
+            <td style="color:#ef4444">+3.6%</td>
             <td>-7.2%</td>
             <td>2026/08/03 现价 2319.0</td>
             <td>2289.392</td>
@@ -3199,11 +3199,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>偏多</td>
             <td>看涨</td>
-            <td>+3.2%</td>
+            <td style="color:#ef4444">+3.2%</td>
             <td>-14.2%</td>
             <td>0.48</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+1.0%</td>
+            <td style="color:#ef4444">+1.0%</td>
             <td>-8.6%</td>
             <td>2026/08/03 现价 11600.0</td>
             <td>11726.73</td>
@@ -3222,11 +3222,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-10.9%</td>
+            <td style="color:#22c55e">-10.9%</td>
             <td>-24.2%</td>
             <td>-1.34</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+23.8%</td>
+            <td style="color:#ef4444">+23.8%</td>
             <td>-9.2%</td>
             <td>2026/08/03 现价 8359.0</td>
             <td>8483.382</td>
@@ -3245,11 +3245,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-18.6%</td>
+            <td style="color:#22c55e">-18.6%</td>
             <td>-20.5%</td>
             <td>-4.16</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-0.8%</td>
+            <td style="color:#22c55e">-0.8%</td>
             <td>-6.5%</td>
             <td>2026/08/03 现价 7610.0</td>
             <td>7354.171</td>
@@ -3268,11 +3268,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-9.7%</td>
+            <td style="color:#22c55e">-9.7%</td>
             <td>-16.9%</td>
             <td>-1.55</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+8.3%</td>
+            <td style="color:#ef4444">+8.3%</td>
             <td>-4.0%</td>
             <td>2026/08/03 现价 7390.0</td>
             <td>7524.794</td>
@@ -3291,11 +3291,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>偏空</td>
             <td>看跌</td>
-            <td>-12.3%</td>
+            <td style="color:#22c55e">-12.3%</td>
             <td>-15.2%</td>
             <td>-2.76</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+6.1%</td>
+            <td style="color:#ef4444">+6.1%</td>
             <td>-3.2%</td>
             <td>2026/08/03 现价 129430.0</td>
             <td>128157.38</td>
@@ -3314,11 +3314,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>偏空</td>
             <td>看跌</td>
-            <td>-13.7%</td>
+            <td style="color:#22c55e">-13.7%</td>
             <td>-15.6%</td>
             <td>-2.83</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-3.3%</td>
+            <td style="color:#22c55e">-3.3%</td>
             <td>-11.5%</td>
             <td>2026/08/03 现价 886.64</td>
             <td>879.89</td>
@@ -3337,11 +3337,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>偏空</td>
             <td>看跌</td>
-            <td>-22.8%</td>
+            <td style="color:#22c55e">-22.8%</td>
             <td>-36.3%</td>
             <td>-1.77</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+22.5%</td>
+            <td style="color:#ef4444">+22.5%</td>
             <td>-13.2%</td>
             <td>2026/08/03 现价 3397.0</td>
             <td>3365.331</td>
@@ -3360,11 +3360,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>偏多</td>
             <td>看涨</td>
-            <td>-10.0%</td>
+            <td style="color:#22c55e">-10.0%</td>
             <td>-23.0%</td>
             <td>-1.10</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+4.1%</td>
+            <td style="color:#ef4444">+4.1%</td>
             <td>-7.4%</td>
             <td>2026/08/03 现价 2594.0</td>
             <td>2616.6</td>
@@ -3383,11 +3383,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-28.7%</td>
+            <td style="color:#22c55e">-28.7%</td>
             <td>-36.8%</td>
             <td>-2.65</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-7.4%</td>
+            <td style="color:#22c55e">-7.4%</td>
             <td>-16.3%</td>
             <td>2026/08/03 现价 14218.0</td>
             <td>13963.249</td>
@@ -3406,11 +3406,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>偏空</td>
             <td>偏空</td>
-            <td>-4.2%</td>
+            <td style="color:#22c55e">-4.2%</td>
             <td>-5.3%</td>
             <td>-2.41</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-2.5%</td>
+            <td style="color:#22c55e">-2.5%</td>
             <td>-5.9%</td>
             <td>2026/08/03 现价 2253.0</td>
             <td>2242.084</td>
@@ -3429,11 +3429,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>偏空</td>
             <td>看跌</td>
-            <td>-5.2%</td>
+            <td style="color:#22c55e">-5.2%</td>
             <td>-7.8%</td>
             <td>-1.88</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-1.7%</td>
+            <td style="color:#22c55e">-1.7%</td>
             <td>-4.7%</td>
             <td>2026/08/03 现价 5602.0</td>
             <td>5522.494</td>
@@ -3452,11 +3452,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-7.7%</td>
+            <td style="color:#22c55e">-7.7%</td>
             <td>-8.2%</td>
             <td>-4.12</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+0.8%</td>
+            <td style="color:#ef4444">+0.8%</td>
             <td>-2.9%</td>
             <td>2026/08/03 现价 5057.0</td>
             <td>4974.419</td>
@@ -3475,11 +3475,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-8.6%</td>
+            <td style="color:#22c55e">-8.6%</td>
             <td>-8.6%</td>
             <td>-4.65</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+0.2%</td>
+            <td style="color:#ef4444">+0.2%</td>
             <td>-2.8%</td>
             <td>2026/08/03 现价 3197.0</td>
             <td>3141.724</td>
@@ -3498,11 +3498,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-9.4%</td>
+            <td style="color:#22c55e">-9.4%</td>
             <td>-9.4%</td>
             <td>-4.52</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+1.1%</td>
+            <td style="color:#ef4444">+1.1%</td>
             <td>-2.0%</td>
             <td>2026/08/03 现价 2976.0</td>
             <td>2918.184</td>
@@ -3521,11 +3521,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-6.6%</td>
+            <td style="color:#22c55e">-6.6%</td>
             <td>-11.2%</td>
             <td>-1.02</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-6.0%</td>
+            <td style="color:#22c55e">-6.0%</td>
             <td>-8.2%</td>
             <td>2026/08/03 现价 14095.0</td>
             <td>13849.113</td>
@@ -3544,11 +3544,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-8.8%</td>
+            <td style="color:#22c55e">-8.8%</td>
             <td>-11.1%</td>
             <td>-1.93</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-4.5%</td>
+            <td style="color:#22c55e">-4.5%</td>
             <td>-5.9%</td>
             <td>2026/08/03 现价 16295.0</td>
             <td>16010.163</td>
@@ -3567,11 +3567,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-6.2%</td>
+            <td style="color:#22c55e">-6.2%</td>
             <td>-16.2%</td>
             <td>-0.77</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+8.1%</td>
+            <td style="color:#ef4444">+8.1%</td>
             <td>-2.9%</td>
             <td>2026/08/03 现价 1753.0</td>
             <td>1686.737</td>
@@ -3590,11 +3590,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-9.7%</td>
+            <td style="color:#22c55e">-9.7%</td>
             <td>-19.1%</td>
             <td>-1.03</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-1.3%</td>
+            <td style="color:#22c55e">-1.3%</td>
             <td>-7.5%</td>
             <td>2026/08/03 现价 1182.0</td>
             <td>1131.765</td>
@@ -3613,11 +3613,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-15.1%</td>
+            <td style="color:#22c55e">-15.1%</td>
             <td>-15.1%</td>
             <td>-4.37</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+0.7%</td>
+            <td style="color:#ef4444">+0.7%</td>
             <td>-3.3%</td>
             <td>2026/08/03 现价 698.0</td>
             <td>674.275</td>
@@ -3636,11 +3636,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-18.9%</td>
+            <td style="color:#22c55e">-18.9%</td>
             <td>-18.9%</td>
             <td>-4.67</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+5.0%</td>
+            <td style="color:#ef4444">+5.0%</td>
             <td>-2.5%</td>
             <td>2026/08/03 现价 868.0</td>
             <td>842.767</td>
@@ -3659,11 +3659,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>偏空</td>
             <td>看跌</td>
-            <td>-0.6%</td>
+            <td style="color:#22c55e">-0.6%</td>
             <td>-2.9%</td>
             <td>-0.40</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-3.6%</td>
+            <td style="color:#22c55e">-3.6%</td>
             <td>-4.5%</td>
             <td>2026/08/03 现价 22130.0</td>
             <td>21913.237</td>
@@ -3682,11 +3682,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>偏空</td>
             <td>看跌</td>
-            <td>-4.0%</td>
+            <td style="color:#22c55e">-4.0%</td>
             <td>-5.0%</td>
             <td>-1.45</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-2.6%</td>
+            <td style="color:#22c55e">-2.6%</td>
             <td>-5.3%</td>
             <td>2026/08/03 现价 15675.0</td>
             <td>15490.505</td>
@@ -3705,11 +3705,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>偏空</td>
             <td>偏空</td>
-            <td>-4.4%</td>
+            <td style="color:#22c55e">-4.4%</td>
             <td>-6.8%</td>
             <td>-1.13</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-3.8%</td>
+            <td style="color:#22c55e">-3.8%</td>
             <td>-4.3%</td>
             <td>2026/08/03 现价 9253.0</td>
             <td>9194.637</td>
@@ -3728,11 +3728,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>偏空</td>
             <td>看跌</td>
-            <td>-4.7%</td>
+            <td style="color:#22c55e">-4.7%</td>
             <td>-6.5%</td>
             <td>-1.45</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-4.6%</td>
+            <td style="color:#22c55e">-4.6%</td>
             <td>-4.9%</td>
             <td>2026/08/03 现价 14470.0</td>
             <td>14335.465</td>
@@ -3751,11 +3751,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>偏空</td>
             <td>看跌</td>
-            <td>-7.5%</td>
+            <td style="color:#22c55e">-7.5%</td>
             <td>-7.9%</td>
             <td>-3.08</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-9.0%</td>
+            <td style="color:#22c55e">-9.0%</td>
             <td>-9.7%</td>
             <td>2026/08/03 现价 15430.0</td>
             <td>15280.329</td>
@@ -3774,11 +3774,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-9.3%</td>
+            <td style="color:#22c55e">-9.3%</td>
             <td>-10.7%</td>
             <td>-3.04</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-0.9%</td>
+            <td style="color:#22c55e">-0.9%</td>
             <td>-4.8%</td>
             <td>2026/08/03 现价 4654.0</td>
             <td>4584.76</td>
@@ -3797,11 +3797,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>偏空</td>
             <td>看跌</td>
-            <td>-6.8%</td>
+            <td style="color:#22c55e">-6.8%</td>
             <td>-10.3%</td>
             <td>-1.69</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+1.0%</td>
+            <td style="color:#ef4444">+1.0%</td>
             <td>-3.5%</td>
             <td>2026/08/03 现价 2633.0</td>
             <td>2597.856</td>
@@ -3820,11 +3820,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-12.7%</td>
+            <td style="color:#22c55e">-12.7%</td>
             <td>-12.7%</td>
             <td>-2.78</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-10.4%</td>
+            <td style="color:#22c55e">-10.4%</td>
             <td>-10.4%</td>
             <td>2026/08/03 现价 1666.0</td>
             <td>1617.207</td>
@@ -3843,11 +3843,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>偏空</td>
             <td>看跌</td>
-            <td>-13.3%</td>
+            <td style="color:#22c55e">-13.3%</td>
             <td>-16.4%</td>
             <td>-2.43</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-0.3%</td>
+            <td style="color:#22c55e">-0.3%</td>
             <td>-5.2%</td>
             <td>2026/08/03 现价 4451.0</td>
             <td>4411.586</td>
@@ -3866,11 +3866,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-25.1%</td>
+            <td style="color:#22c55e">-25.1%</td>
             <td>-25.1%</td>
             <td>-7.13</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+22.6%</td>
+            <td style="color:#ef4444">+22.6%</td>
             <td>-1.6%</td>
             <td>2026/08/03 现价 919.0</td>
             <td>867.612</td>
@@ -3889,11 +3889,11 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-6.8%</td>
+            <td style="color:#22c55e">-6.8%</td>
             <td>-19.1%</td>
             <td>-0.98</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-1.5%</td>
+            <td style="color:#22c55e">-1.5%</td>
             <td>-13.8%</td>
             <td>2026/08/03 现价 4061.0</td>
             <td>3983.455</td>
@@ -3912,11 +3912,11 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td>-32.2%</td>
+            <td style="color:#22c55e">-32.2%</td>
             <td>-32.9%</td>
             <td>-3.65</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-11.4%</td>
+            <td style="color:#22c55e">-11.4%</td>
             <td>-16.6%</td>
             <td>2026/08/03 现价 138900.0</td>
             <td>132600.885</td>
@@ -3935,11 +3935,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>+1.9%</td>
+            <td style="color:#ef4444">+1.9%</td>
             <td>-19.2%</td>
             <td>0.34</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+22.6%</td>
+            <td style="color:#ef4444">+22.6%</td>
             <td>-4.8%</td>
             <td>2026/08/03 现价 4924.0</td>
             <td>5128.137</td>
@@ -3958,11 +3958,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-5.0%</td>
+            <td style="color:#22c55e">-5.0%</td>
             <td>-28.9%</td>
             <td>-0.28</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+12.9%</td>
+            <td style="color:#ef4444">+12.9%</td>
             <td>-7.1%</td>
             <td>2026/08/03 现价 4581.0</td>
             <td>4657.869</td>
@@ -3981,11 +3981,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-5.2%</td>
+            <td style="color:#22c55e">-5.2%</td>
             <td>-20.8%</td>
             <td>-0.66</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+9.0%</td>
+            <td style="color:#ef4444">+9.0%</td>
             <td>-4.8%</td>
             <td>2026/08/03 现价 8231.0</td>
             <td>8429.696</td>
@@ -4004,11 +4004,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-6.2%</td>
+            <td style="color:#22c55e">-6.2%</td>
             <td>-17.6%</td>
             <td>-0.94</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+8.5%</td>
+            <td style="color:#ef4444">+8.5%</td>
             <td>-4.6%</td>
             <td>2026/08/03 现价 7671.0</td>
             <td>7783.227</td>
@@ -4027,11 +4027,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>偏多</td>
             <td>看涨</td>
-            <td>-7.8%</td>
+            <td style="color:#22c55e">-7.8%</td>
             <td>-28.0%</td>
             <td>-0.52</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+15.6%</td>
+            <td style="color:#ef4444">+15.6%</td>
             <td>-7.8%</td>
             <td>2026/08/03 现价 5338.0</td>
             <td>5392.835</td>
@@ -4050,11 +4050,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>震荡</td>
             <td>偏多</td>
-            <td>-5.7%</td>
+            <td style="color:#22c55e">-5.7%</td>
             <td>-18.1%</td>
             <td>-0.65</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-1.7%</td>
+            <td style="color:#22c55e">-1.7%</td>
             <td>-6.0%</td>
             <td>2026/08/03 现价 4102.0</td>
             <td>4116.378</td>
@@ -4073,11 +4073,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-16.5%</td>
+            <td style="color:#22c55e">-16.5%</td>
             <td>-36.2%</td>
             <td>-1.31</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+27.1%</td>
+            <td style="color:#ef4444">+27.1%</td>
             <td>-12.6%</td>
             <td>2026/08/03 现价 530.2</td>
             <td>537.806</td>
@@ -4096,11 +4096,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>偏多</td>
             <td>看涨</td>
-            <td>+5.4%</td>
+            <td style="color:#ef4444">+5.4%</td>
             <td>-4.8%</td>
             <td>1.50</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-1.2%</td>
+            <td style="color:#22c55e">-1.2%</td>
             <td>-3.8%</td>
             <td>2026/08/03 现价 25380.0</td>
             <td>25726.31</td>
@@ -4119,11 +4119,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>偏多</td>
             <td>看涨</td>
-            <td>+0.8%</td>
+            <td style="color:#ef4444">+0.8%</td>
             <td>-14.3%</td>
             <td>0.20</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-2.2%</td>
+            <td style="color:#22c55e">-2.2%</td>
             <td>-7.4%</td>
             <td>2026/08/03 现价 426750.0</td>
             <td>431366.368</td>
@@ -4142,11 +4142,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>震荡</td>
             <td>偏多</td>
-            <td>+2.6%</td>
+            <td style="color:#ef4444">+2.6%</td>
             <td>-4.1%</td>
             <td>0.58</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-2.8%</td>
+            <td style="color:#22c55e">-2.8%</td>
             <td>-6.0%</td>
             <td>2026/08/03 现价 7775.0</td>
             <td>7808.607</td>
@@ -4165,11 +4165,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>偏多</td>
             <td>看涨</td>
-            <td>+1.9%</td>
+            <td style="color:#ef4444">+1.9%</td>
             <td>-7.2%</td>
             <td>0.46</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+1.3%</td>
+            <td style="color:#ef4444">+1.3%</td>
             <td>-2.3%</td>
             <td>2026/08/03 现价 94580.0</td>
             <td>95483.003</td>
@@ -4188,11 +4188,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>偏多</td>
             <td>看涨</td>
-            <td>+1.4%</td>
+            <td style="color:#ef4444">+1.4%</td>
             <td>-6.7%</td>
             <td>0.35</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+0.5%</td>
+            <td style="color:#ef4444">+0.5%</td>
             <td>-2.4%</td>
             <td>2026/08/03 现价 106120.0</td>
             <td>107021.224</td>
@@ -4211,11 +4211,11 @@ tr:hover { background: #334155; }
             <td>偏多</td>
             <td>偏多</td>
             <td>看涨</td>
-            <td>-3.6%</td>
+            <td style="color:#22c55e">-3.6%</td>
             <td>-10.1%</td>
             <td>-1.15</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+4.2%</td>
+            <td style="color:#ef4444">+4.2%</td>
             <td>-3.6%</td>
             <td>2026/08/03 现价 23640.0</td>
             <td>23948.147</td>
@@ -4234,11 +4234,11 @@ tr:hover { background: #334155; }
             <td>震荡</td>
             <td>震荡</td>
             <td>震荡</td>
-            <td>-8.5%</td>
+            <td style="color:#22c55e">-8.5%</td>
             <td>-10.4%</td>
             <td>-2.37</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>-3.4%</td>
+            <td style="color:#22c55e">-3.4%</td>
             <td>-7.2%</td>
             <td>2026/08/03 现价 8335.0</td>
             <td>8345.065</td>
@@ -4257,11 +4257,11 @@ tr:hover { background: #334155; }
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td>-9.7%</td>
+            <td style="color:#22c55e">-9.7%</td>
             <td>-18.0%</td>
             <td>-1.27</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td>+6.2%</td>
+            <td style="color:#ef4444">+6.2%</td>
             <td>-6.7%</td>
             <td>2026/08/03 现价 5854.0</td>
             <td>6017.649</td>
