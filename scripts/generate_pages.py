@@ -76,6 +76,7 @@ TABS = [
     ('futures.html', '📉', '期货'),
     ('prediction.html', '🏛️', '预测'),
     ('portfolio.html', '💼', '持仓组合'),
+    ('xueqiu_returns.html', '💰', '雪球收益'),
     ('backtest.html', '📈', '回测'),
     ('reflection.html', '🧠', '复盘'),
     ('data_health.html', '❤️', '数据健康'),
@@ -1479,6 +1480,79 @@ def generate_reflection_page(dates=None):
     _write('reflection.html', html)
 
 
+def generate_xueqiu_returns_page(dates=None):
+    """生成雪球组合收益跟踪页面。"""
+    path = os.path.join(REPO_ROOT, 'multi_agent', 'data', 'xueqiu_portfolio_returns.json')
+    data = _load_json(path)
+    if not data or not data.get('portfolios'):
+        return
+
+    portfolios = data['portfolios']
+    today = datetime.now().strftime('%Y-%m-%d')
+
+    # 汇总卡片
+    cards = ""
+    for code, p in portfolios.items():
+        total = p.get('total_return_pct', 0)
+        color = _color_for_return(total)
+        cards += f"""
+        <div class="card" style="border-left-color:{color}">
+            <div class="card-title">{p.get('name', code)} <span style="font-size:12px;color:#94a3b8">{code}</span></div>
+            <div class="card-meta">最新净值 {p.get('latest_nav', 0):.4f} · {p.get('latest_date', '-')}</div>
+            <div class="card-price" style="color:{color};font-size:24px;font-weight:bold">{total:+.2f}%</div>
+            <div class="card-meta">最高 {p.get('max_return_pct', 0):.2f}% ({p.get('max_return_date', '-')}) · 最低 {p.get('min_return_pct', 0):.2f}% ({p.get('min_return_date', '-')})</div>
+        </div>
+        """
+
+    # 历史曲线表格
+    rows = ""
+    # 取所有历史日期并合并
+    all_dates = set()
+    for p in portfolios.values():
+        all_dates.update(h.get('date', '') for h in p.get('history', []))
+    all_dates = sorted(all_dates, reverse=True)
+
+    for d in all_dates[:30]:
+        row_cells = f"<td>{d}</td>"
+        for code in portfolios.keys():
+            hist = portfolios[code].get('history', [])
+            match = next((h for h in hist if h.get('date') == d), None)
+            if match:
+                pct = match.get('percent', 0)
+                color = _color_for_return(pct)
+                row_cells += f"<td style='color:{color}'>{pct:+.2f}%</td>"
+            else:
+                row_cells += "<td>-</td>"
+        rows += f"<tr>{row_cells}</tr>"
+
+    header_cells = "<th>日期</th>" + "".join(f"<th>{portfolios[code].get('name', code)}</th>" for code in portfolios.keys())
+
+    body = f"""
+    <div class="header">
+        <h1>💰 雪球组合收益跟踪</h1>
+        <div class="sub">每日自动更新 · 最后更新 {data.get('last_updated', '-')}</div>
+    </div>
+
+    <div class="cards">{cards}</div>
+
+    <div class="section-title">📅 最近30日每日收益</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr>{header_cells}</tr></thead>
+        <tbody>{rows}</tbody>
+    </table>
+    </div>
+
+    <div class="note">
+        <p>数据来源：雪球组合净值 API（https://xueqiu.com/cubes/nav_daily/all.json）。累计收益 = 最新净值 - 1。</p>
+    </div>
+    """
+    title = f"💰 雪球收益 - {today}"
+    subtitle = f"{today} · 雪球组合累计收益跟踪"
+    html = _build_page_skeleton(title, body, 'xueqiu_returns.html', subtitle, dates=dates)
+    _write('xueqiu_returns.html', html)
+
+
 if __name__ == '__main__':
     stats, rows = _load_db_stats()
     if stats is None:
@@ -1496,6 +1570,7 @@ if __name__ == '__main__':
     generate_backtest_page(dates=dates)
     generate_data_health_page(dates=dates)
     generate_reflection_page(dates=dates)
+    generate_xueqiu_returns_page(dates=dates)
     for d in dates:
         generate_archive_page(d, dates=dates)
 

@@ -24,23 +24,29 @@ PORTFOLIOS = {
 
 
 def load_cookies():
-    """从 config 文件或 .env 加载雪球 cookies"""
-    cookies = None
-    if os.path.exists(CONFIG_FILE):
-        with open(CONFIG_FILE, encoding='utf-8') as f:
-            cfg = json.load(f)
-        cookies = cfg.get('cookies')
-        if isinstance(cookies, dict):
-            # 如果是 dict 格式，转成字符串
-            cookies = '; '.join(f"{k}={v}" for k, v in cookies.items())
+    """加载雪球 cookies：环境变量 XUEQIU_COOKIES 优先，其次 .env，最后 config 文件"""
+    cookies = os.environ.get('XUEQIU_COOKIES', '').strip()
     if not cookies and os.path.exists(os.path.join(REPO, '.env')):
         try:
             from dotenv import load_dotenv
             load_dotenv(os.path.join(REPO, '.env'))
-            cookies = os.environ.get('XUEQIU_COOKIES')
+            cookies = os.environ.get('XUEQIU_COOKIES', '').strip()
         except Exception:
             pass
+    if not cookies and os.path.exists(CONFIG_FILE):
+        with open(CONFIG_FILE, encoding='utf-8') as f:
+            cfg = json.load(f)
+        cookies = cfg.get('cookies', '')
+        if isinstance(cookies, dict):
+            cookies = '; '.join(f"{k}={v}" for k, v in cookies.items())
     return cookies or ''
+
+
+XUEQIU_COOKIE_ENV_VAR = 'XUEQIU_COOKIES'
+
+
+def _is_cookie_env_set():
+    return bool(os.environ.get(XUEQIU_COOKIE_ENV_VAR, '').strip())
 
 
 def fetch_nav(cube_symbol: str, cookies: str):
@@ -110,6 +116,8 @@ def update_portfolio_returns(dry_run=False):
                     'fetched_at': data['last_updated']
                 }]
             })
+            portfolio.pop('last_error', None)
+            portfolio.pop('last_error_time', None)
             # 去重 history 保留最新 100 条
             seen = set()
             dedup = []
