@@ -1,0 +1,34 @@
+{
+  "_description": "雪球组合每日收益跟踪，由 xueqiu_nav_updater.py 自动更新",
+  "last_updated": "2026-08-07 16:44:00",
+  "portfolios": {
+    "ZH3650487": {
+      "name": "郑希框架模拟盘",
+      "start_date": "2026-07-09",
+      "latest_date": "2026-08-06",
+      "latest_nav": 1.0342,
+      "total_return_pct": 3.42,
+      "max_return_pct": 3.5,
+      "max_return_date": "2026-08-05",
+      "min_return_pct": -1.39,
+      "min_return_date": "2026-07-13",
+      "history": [],
+      "last_error": "HTTP Error 400: Bad Request",
+      "last_error_time": "2026-08-07 16:44:01"
+    },
+    "ZH3650823": {
+      "name": "高股息",
+      "start_date": "2026-07-10",
+      "latest_date": "2026-08-06",
+      "latest_nav": 1.0234,
+      "total_return_pct": 2.34,
+      "max_return_pct": 7.16,
+      "max_return_date": "2026-07-23",
+      "min_return_pct": -0.04,
+      "min_return_date": "2026-07-16",
+      "history": [],
+      "last_error": "HTTP Error 400: Bad Request",
+      "last_error_time": "2026-08-07 16:44:01"
+    }
+  }
+}
