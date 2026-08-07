@@ -49,8 +49,12 @@ def _get_conn():
     return conn
 
 
-def _get_current_price(ticker: str, category: str, name: str, as_of_date: str = None, pred_date: str = None) -> float | None:
-    """获取最新收盘价（验证日收盘价）。如果数据源最新日期不晚于 pred_date，尝试用实时价格补充。"""
+def _get_current_price(ticker: str, category: str, name: str, as_of_date: str = None, pred_date: str = None, price_cache: dict = None) -> float | None:
+    """获取验证日收盘价。优先用批量缓存 price_cache，其次单点查询。"""
+    if price_cache is not None:
+        key = (ticker, as_of_date)
+        if key in price_cache:
+            return price_cache[key]
     try:
         if category == 'US':
             from core.us_data import get_us_price, get_us_stock_data
@@ -74,7 +78,6 @@ def _get_current_price(ticker: str, category: str, name: str, as_of_date: str = 
             # 否则尝试用实时价格补充（腾讯实时行情）
             rt = get_realtime_price(ticker)
             if rt and rt.get('price') and rt.get('price') > 0:
-                # 如果实时价有昨收，用实时价；否则仍用 df 最新收盘价
                 return float(rt['price'])
             return float(df['close'].iloc[-1])
     except Exception as e:
@@ -116,7 +119,7 @@ def _next_trading_date_cn(date_str: str) -> str:
     return (dt + timedelta(days=delta)).strftime('%Y-%m-%d')
 
 
-def _validate_row(row: sqlite3.Row, pred_date: str) -> dict:
+def _validate_row(row: sqlite3.Row, pred_date: str, price_cache: dict = None) -> dict:
     pred_price = row['current_price']
     signal = row['signal']
     ticker = row['ticker']
@@ -129,7 +132,7 @@ def _validate_row(row: sqlite3.Row, pred_date: str) -> dict:
         validate_date = _next_trading_date_cn(pred_date)
     else:
         validate_date = None
-    today_price = _get_current_price(ticker, category, name, as_of_date=validate_date, pred_date=pred_date)
+    today_price = _get_current_price(ticker, category, name, as_of_date=validate_date, pred_date=pred_date, price_cache=price_cache)
     if today_price is None or pred_price is None or pred_price == 0:
         return {
             'ticker': ticker, 'name': name, 'category': category,
@@ -149,6 +152,48 @@ def _validate_row(row: sqlite3.Row, pred_date: str) -> dict:
         'direction_correct': correct,
         'note': 'ok',
     }
+
+
+def _build_price_cache(rows, pred_date):
+    """从 warehouse.daily_bar 批量预加载下一交易日收盘价。"""
+    cache = {}
+    db_path = os.path.join(MULTI_AGENT, 'data', 'warehouse.db')
+    if not os.path.exists(db_path):
+        return cache
+
+    # 计算每个 category 的验证日期
+    dates_by_cat = {}
+    for row in rows:
+        cat = row['category']
+        if cat not in dates_by_cat:
+            if cat == 'US':
+                dates_by_cat[cat] = _next_trading_date_us(pred_date)
+            elif cat in ('个股', 'ETF', '期货'):
+                dates_by_cat[cat] = _next_trading_date_cn(pred_date)
+            else:
+                dates_by_cat[cat] = None
+
+    tickers_by_date = {}
+    for row in rows:
+        cat = row['category']
+        vd = dates_by_cat.get(cat)
+        if vd is None:
+            continue
+        tickers_by_date.setdefault(vd, set()).add(row['ticker'])
+
+    try:
+        conn_wh = sqlite3.connect(db_path)
+        cur = conn_wh.cursor()
+        for vd, tickers in tickers_by_date.items():
+            placeholders = ','.join('?' * len(tickers))
+            cur.execute(f"SELECT ticker, date, close FROM daily_bar WHERE date=? AND ticker IN ({placeholders})", (vd, *tickers))
+            for ticker, date, close in cur.fetchall():
+                if close is not None:
+                    cache[(ticker, date)] = float(close)
+        conn_wh.close()
+    except Exception as e:
+        print(f'  warehouse 批量缓存失败: {e}')
+    return cache
 
 
 def main():
@@ -189,24 +234,34 @@ def main():
     conn.close()
 
     print(f'[morning] 验证 {pred_date} 预测 vs 下一交易日收盘价，共 {len(rows)} 只...')
+
+    price_cache = _build_price_cache(rows, pred_date)
+    print(f'  从 warehouse 预加载 {len(price_cache)} 条价格')
+
     results = []
     for row in rows:
-        r = _validate_row(row, pred_date)
+        r = _validate_row(row, pred_date, price_cache=price_cache)
         results.append(r)
-        if r['note'] == 'ok':
-            print(f"  {r['ticker']:8s} {r['signal']:8s} 预测{r['pred_price']:.2f} 现{r['today_price']:.2f} 收益{r['return_pct']:+.2f}% 正确{'✓' if r['direction_correct'] else '✗'}")
+        # 静默模式，只打印失败样本用于调试
+        if r['note'] != 'ok':
+            print(f"  {r['ticker']:8s} {r['signal']:8s} 无数据")
 
     # 统计
     by_category = {}
+    by_signal = {}
     overall = {'total': 0, 'correct': 0}
     for r in results:
         if r['note'] != 'ok':
             continue
         cat = r['category']
+        sig = r['signal']
         by_category.setdefault(cat, {'total': 0, 'correct': 0})
         by_category[cat]['total'] += 1
+        by_signal.setdefault(sig, {'total': 0, 'correct': 0})
+        by_signal[sig]['total'] += 1
         if r['direction_correct']:
             by_category[cat]['correct'] += 1
+            by_signal[sig]['correct'] += 1
             overall['correct'] += 1
         overall['total'] += 1
 
@@ -220,8 +275,15 @@ def main():
             'accuracy': round(overall['correct'] / max(overall['total'], 1) * 100, 2),
         },
         'by_category': {k: {'total': v['total'], 'correct': v['correct'], 'accuracy': round(v['correct']/max(v['total'],1)*100,2)} for k, v in by_category.items()},
+        'by_signal': {k: {'total': v['total'], 'correct': v['correct'], 'accuracy': round(v['correct']/max(v['total'],1)*100,2)} for k, v in by_signal.items()},
         'items': results,
     }
+
+    # 打印错误明细摘要
+    wrong_items = [r for r in results if r['note'] == 'ok' and not r['direction_correct']][:20]
+    print(f"\n  错误样本 (前20):")
+    for r in wrong_items:
+        print(f"  {r['ticker']:8s} {r['signal']:8s} 收益{r['return_pct']:+.2f}% | {r['category']} {r['name']}")
 
     with open(OUTPUT_PATH, 'w', encoding='utf-8') as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
@@ -229,6 +291,8 @@ def main():
     print(f"\n[morning] 总体: {out['overall']['correct']}/{out['overall']['total']} = {out['overall']['accuracy']}%")
     for cat, stat in out['by_category'].items():
         print(f"  {cat}: {stat['correct']}/{stat['total']} = {stat['accuracy']}%")
+    for sig, stat in out['by_signal'].items():
+        print(f"  {sig}: {stat['correct']}/{stat['total']} = {stat['accuracy']}%")
     print(f"[morning] 详细结果保存到 {OUTPUT_PATH}")
 
 
