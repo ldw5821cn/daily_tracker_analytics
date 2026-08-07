@@ -2,9 +2,13 @@
 """社会情绪抓取分析器（海外社交媒体 + 搜索聚合）。
 
 设计原则：
-- 可插拔 provider，默认支持 Exa/Brave/Reddit/搜索聚合；未来可接 last30days-skill 引擎。
+- 可插拔 provider，默认支持 Exa/SerpApi/Reddit/搜索聚合；未来可接 last30days-skill 引擎。
 - 无凭证时返回中性（50）并记录原因，不中断主流程。
 - 输出 0-100 情绪分和关键词，接入 sentiment_analyst 做加权。
+
+环境变量（支持 .env 文件）：
+  EXA_API_KEY
+  SERPAPI_API_KEY
 
 用法：
   from analysts.social_sentiment_analyst import get_social_sentiment
@@ -15,12 +19,20 @@ from __future__ import annotations
 import os
 import re
 import json
-import random
 from typing import Dict, List, Optional, Tuple
 from datetime import datetime, timedelta
 from collections import Counter
 
 import requests
+
+# 尝试加载 .env
+try:
+    from dotenv import load_dotenv
+    _env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '.env')
+    if os.path.exists(_env_path):
+        load_dotenv(_env_path)
+except Exception:
+    pass
 
 
 # ─── 工具函数 ─────────────────────────
@@ -65,6 +77,34 @@ def _clamp_score(score: float) -> float:
     return max(0.0, min(100.0, round(score, 1)))
 
 
+
+# ─── 通用情感评分函数 ─────────────────────────
+def _sentiment_score_from_texts(texts: List[str]) -> float:
+    """基于情感词频的朴素评分。"""
+    pos_words = {
+        'bullish', 'strong', 'growth', 'beat', 'rally', 'surge', 'outperform',
+        'upgrade', 'buy', 'moon', 'rocket', 'recover', 'opportunity', 'optimistic',
+        'positive', 'gain', 'rally', 'bounce', 'rises', 'soar', 'rallies',
+        '看涨', '买入', '反弹', '利好', '强势', '增长', '超预期',
+    }
+    neg_words = {
+        'bearish', 'weak', 'miss', 'crash', 'drop', 'plunge', 'underperform',
+        'downgrade', 'sell', 'dump', 'recession', 'concern', 'warning', 'pessimistic',
+        'negative', 'loss', 'fall', 'falls', 'decline', 'fear', 'panic',
+        '看跌', '卖出', '下跌', '利空', '弱势', '衰退', '不及预期',
+    }
+    total = len(texts)
+    if not total:
+        return 50.0
+    pos = neg = 0
+    for t in texts:
+        txt = (t or '').lower()
+        pos += sum(1 for w in pos_words if w in txt)
+        neg += sum(1 for w in neg_words if w in txt)
+    raw = 50.0 + (pos - neg) / max(total, 1) * 15.0
+    return _clamp_score(raw)
+
+
 # ─── Provider 接口 ─────────────────────────
 class SocialSentimentProvider:
     name: str = "base"
@@ -83,12 +123,13 @@ class ExaSearchProvider(SocialSentimentProvider):
             return 50.0, [], 'no_exa_api_key'
         url = 'https://api.exa.ai/search'
         headers = {'x-api-key': key, 'Content-Type': 'application/json'}
+        start_dt = (datetime.utcnow() - timedelta(days=7)).strftime('%Y-%m-%dT%H:%M:%S') + 'Z'
         payload = {
             'query': query,
             'type': 'auto',
             'numResults': 10,
             'useAutoprompt': True,
-            'startPublishedDate': (datetime.utcnow() - timedelta(days=7)).isoformat() + 'Z',
+            'startPublishedDate': start_dt,
         }
         try:
             r = requests.post(url, headers=headers, json=payload, timeout=20)
@@ -98,36 +139,11 @@ class ExaSearchProvider(SocialSentimentProvider):
             texts = [x.get('text', x.get('title', '')) for x in results if x]
             if not texts:
                 return 50.0, [], 'exa_empty_results'
-            score = self._sentiment_score(texts)
+            score = _sentiment_score_from_texts(texts)
             keywords = _extract_keywords(texts, topk=5)
             return _clamp_score(score), keywords, 'exa_ok'
         except Exception as e:
             return 50.0, [], f'exa_error:{type(e).__name__}'
-
-    def _sentiment_score(self, texts: List[str]) -> float:
-        """基于情感词频的朴素评分。"""
-        pos_words = {
-            'bullish', 'strong', 'growth', 'beat', 'rally', 'surge', 'outperform',
-            'upgrade', 'buy', 'moon', 'rocket', 'recover', 'opportunity', 'optimistic',
-            'positive', 'gain', 'rally', 'bounce', 'rises', 'soar', 'rallies',
-            '看涨', '买入', '反弹', '利好', '强势', '增长', '超预期',
-        }
-        neg_words = {
-            'bearish', 'weak', 'miss', 'crash', 'drop', 'plunge', 'underperform',
-            'downgrade', 'sell', 'dump', 'recession', 'concern', 'warning', 'pessimistic',
-            'negative', 'loss', 'fall', 'falls', 'decline', 'fear', 'panic',
-            '看跌', '卖出', '下跌', '利空', '弱势', '衰退', '不及预期',
-        }
-        total = len(texts)
-        if not total:
-            return 50.0
-        pos = neg = 0
-        for t in texts:
-            txt = (t or '').lower()
-            pos += sum(1 for w in pos_words if w in txt)
-            neg += sum(1 for w in neg_words if w in txt)
-        raw = 50.0 + (pos - neg) / max(total, 1) * 15.0
-        return _clamp_score(raw)
 
 
 class BraveSearchProvider(SocialSentimentProvider):
@@ -148,11 +164,45 @@ class BraveSearchProvider(SocialSentimentProvider):
             texts = [f"{x.get('title','')} {x.get('description','')}" for x in results]
             if not texts:
                 return 50.0, [], 'brave_empty_results'
-            score = ExaSearchProvider()._sentiment_score(texts)
+            score = _sentiment_score_from_texts(texts)
             keywords = _extract_keywords(texts, topk=5)
             return _clamp_score(score), keywords, 'brave_ok'
         except Exception as e:
             return 50.0, [], f'brave_error:{type(e).__name__}'
+
+
+class SerpApiProvider(SocialSentimentProvider):
+    """SerpApi 搜索（Google / Bing / 新闻）情绪抓取。"""
+    name = "serpapi"
+
+    def fetch(self, query: str, ticker: str, name: Optional[str]) -> Tuple[float, List[str], str]:
+        key = os.environ.get('SERPAPI_API_KEY')
+        if not key:
+            return 50.0, [], 'no_serpapi_api_key'
+        url = 'https://serpapi.com/search'
+        params = {
+            'q': query,
+            'api_key': key,
+            'engine': 'google',
+            'tbm': 'nws',
+            'num': 10,
+            'tbs': 'qdr:w',  # 过去一周
+        }
+        try:
+            r = requests.get(url, params=params, timeout=25)
+            r.raise_for_status()
+            data = r.json()
+            results = data.get('news_results', [])
+            if not results:
+                results = data.get('organic_results', [])
+            texts = [f"{x.get('title','')} {x.get('snippet','')} {x.get('description','')}" for x in results if x]
+            if not texts:
+                return 50.0, [], 'serpapi_empty_results'
+            score = _sentiment_score_from_texts(texts)
+            keywords = _extract_keywords(texts, topk=5)
+            return _clamp_score(score), keywords, 'serpapi_ok'
+        except Exception as e:
+            return 50.0, [], f'serpapi_error:{type(e).__name__}'
 
 
 class RedditProvider(SocialSentimentProvider):
@@ -186,7 +236,7 @@ class RedditProvider(SocialSentimentProvider):
 # ─── 聚合层 ─────────────────────────
 PROVIDERS: List[SocialSentimentProvider] = [
     ExaSearchProvider(),
-    BraveSearchProvider(),
+    SerpApiProvider(),
     RedditProvider(),
 ]
 

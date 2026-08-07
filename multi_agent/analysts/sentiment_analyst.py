@@ -50,9 +50,11 @@ def _get_lhb(date_str: str) -> pd.DataFrame:
 
 
 def _ticker_to_code(ticker: str) -> str:
-    """标准化 ticker 到 6 位代码（去掉后缀 .SZ/.SH）。"""
+    """标准化 ticker 到可用代码。A股补零到 6 位；美股/ETF 保留原样。"""
     code = ticker.upper().replace('.SZ', '').replace('.SH', '').replace('.BJ', '')
-    return code.zfill(6)[:6]
+    if code.isdigit():
+        return code.zfill(6)[:6]
+    return code
 
 
 def _is_a_share(ticker: str, category: Optional[str]) -> bool:
