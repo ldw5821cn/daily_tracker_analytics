@@ -1,6 +1,6 @@
 {
-  "_说明": "雪球组合自动调仓配置",
-  "cookies": "xq_a_token=4ec86ccf2914b2c446c95d01ed17eb23a14992a5; xq_r_token=b2f9fe91ef19318884e18571a60d952a13df81d0; xq_id_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1aWQiOjk4NzQwNTQ3OTQsImlzcyI6InVjIiwiZXhwIjoxNzg2MTY0NzQ4LCJjdG0iOjE3ODQyNzY3MjI4NjQsImNpZCI6ImQ5ZDBuNEFadXAifQ.jRNJIsjtRU7hSa7XbpxN9ZDBz5R8nWFCipcsTA5zLIzyXLanL0L2kl-IilzQaXoLDjep8wXo_ryAfa-LKdXbz4P8-FV1gvJEfQNr5ZWriDSQ5LDzMlES9JMiOMINsZ274IldiNhadjLBU5A1WjI3lVtdmpElOkNRfXy-78krfRn8GDHz8IGxPGrI2BP4qJIwsXkHz7fYKewOyOjeEgpYOLigYYnVC0arOUobre0WsQUlEip4oss9AZ9L_e19JNPfvmMxdNYB4VgAUVOJVME2HNhl6dOpxorkkrhDFBJr87-nWVQmXvUQ_gtkSmmrIz9tX_z5ktriUYE3GCBhxVqu7A; xq_is_login=1; u=9874054794; cookiesu=141775807577106; device_id=00b65c7d3884d5ebfaaf1e61d87031ae; xqat=4ec86ccf2914b2c446c95d01ed17eb23a14992a5",
+  "_说明": "雪球组合元数据配置（cookies 已从本文件移除，请使用 .env 的 XUEQIU_COOKIES）",
+  "_migration_note": "旧 cookies 已失效并从版本控制中移除。如需更新 cookies，请写入仓库根目录 .env 的 XUEQIU_COOKIES 变量。",
   "portfolios": {
     "ZH3650487": {
       "name": "全A股精选TOP10",
