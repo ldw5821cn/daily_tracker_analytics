@@ -95,15 +95,11 @@ class DebateEngine:
             if f.get('pe_ratio') and 0 < f['pe_ratio'] < 15:
                 bull_points.append(f"PE({f['pe_ratio']})偏低，估值合理")
         
-        # 与技术面评分对齐：避免独立机械计数导致与综合评分背离
+        # 技术面评分可作为 soft prior，但不应强制清零或保底任何一方；
+        # 多空强度由真实证据计数决定，避免技术面短期走弱时系统性压制基本面优秀的标的。
         tech_score = technical_report.get('score', 50) if technical_report else 50
         if tech_score > 50:
             bull_score = max(bull_score, (tech_score - 50) / 10)
-        if tech_score <= 40:
-            bull_score = 0.0
-        # 技术面明显偏多时，至少拉平多空强度，防止均线压制类噪音过度主导
-        if tech_score > 55:
-            bull_score = max(bull_score, 1.0)
 
         lines.append(f"看涨强度: {bull_score} 个积极信号")
         if bull_points:
@@ -199,14 +195,13 @@ class DebateEngine:
             if f.get('pe_ratio') and f['pe_ratio'] > 50:
                 bear_points.append(f"PE({f['pe_ratio']:.0f})过高")
         
-        # 与技术面评分对齐
+        # 技术面评分仅作为 soft prior，不强制清零或保底任何一方；
+        # 让多空强度由真实证据计数决定，减少技术面走弱时对基本面优秀标的的系统性看空。
         tech_score = technical_report.get('score', 50) if technical_report else 50
+        if tech_score > 50:
+            bull_score = max(bull_score, (tech_score - 50) / 10)
         if tech_score < 50:
             bear_score = max(bear_score, (50 - tech_score) / 10)
-        if tech_score >= 60:
-            bear_score = 0.0
-        if tech_score < 45:
-            bear_score = max(bear_score, 1.0)
 
         lines.append(f"看跌强度: {bear_score} 个消极信号")
         if bear_points:

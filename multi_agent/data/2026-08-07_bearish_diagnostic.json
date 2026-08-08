@@ -1,7 +1,7 @@
 {
   "report_date": "2026-08-07",
   "diagnostic_target": "2026-08-06 错误看空信号",
-  "summary": "42 条看空信号中 36 条错误，错误率 85.7%。根因为中性区间 debate override 阈值过低，导致大量 weighted_score 在 42-47（中性区间）的标的被强制标记为看空。",
+  "summary": "42 条看空信号中 36 条错误，错误率 85.7%。根因为：① debate_engine.py 在技术面 ≤40 时强制清零 bull_score、技术面 <45 时保底 bear_score，导致基本面优秀但技术面短期走弱的标的被系统性看空；② 中性区间 debate override 阈值过低，进一步将加权分 42-47 的标的压为看空。",
   "statistics": {
     "total_bearish": 49,
     "wrong_bearish": 36,
@@ -29,10 +29,15 @@
     "40-45": {"wrong": 15, "total": 19, "wrong_rate": 78.9},
     "45-50": {"wrong": 21, "total": 30, "wrong_rate": 70.0}
   },
-  "root_cause": "错误看空样本的 weighted_score 平均 45.3，高于 bear 阈值 42。说明这些标的按阈值应为中性，但 debate neutral override 逻辑将其强制压为看空。2026-08-07 市场普涨，宏观/技术面中性但 debate 偏空的标的被错误看空。",
+  "root_causes": [
+    "debate_engine.py 硬编码清零/保底：技术面评分 ≤40 时强制 bull_score=0；技术面 <45 时保底 bear_score≥1。这导致基本面优秀、技术面短期回调的半导体/芯片标的被强制赋予净看空 debate。",
+    "neutral_override 阈值过激进：threshold=2.0、weight=0.6 时，大量 weighted_score 位于 42-47（中性区间）的标的被 override 为看空。",
+    "market context 修复后的普涨环境中，技术面未完全修复但基本面强劲的标的存在空头误判。"
+  ],
   "action_taken": {
     "parameter_adjustment": "predictor_params.json 中所有类别的 neutral_override_threshold 从 2.0 提高到 4.0，neutral_override_weight 从 0.6 降到 0.2。",
-    "why_not_hard_rule": "这是可学习参数，parameter_optimizer_v4_warehouse 将在数据量足够后自动搜索最优值。当前调整仅作为保守初始值，减少中性 override 导致的空头误杀。",
-    "next_step": "继续积累每日验证样本，待 30-60 天后由优化器自动学习 override 阈值、权重、乘数。"
+    "debate_engine_fix": "移除 debate_engine.py 中 bull_score 强制清零与 bear_score 保底逻辑；改为 tech_score 仅作为 soft prior，多空强度由真实证据计数决定。",
+    "why_not_hard_rule": "这些均为可学习参数/结构。parameter_optimizer_v4_warehouse 将在数据量足够后自动搜索 override 阈值、权重、乘数与 debate 质量函数。当前调整仅作为保守初始值，减少空头误杀。",
+    "next_step": "继续积累每日验证样本，待 30-60 天后由优化器自动学习 override 参数与 debate 质量权重。"
   }
 }
