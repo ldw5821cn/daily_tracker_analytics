@@ -331,7 +331,7 @@ def calc_contract_value(contract: str, price: float, lots: int) -> float:
     return price * spec['multiplier'] * lots
 
 
-def _build_risk_portfolio(conn: sqlite3.Connection, marks: Optional[Dict[str, float]] = None) -> Portfolio:
+def _build_risk_portfolio(conn: sqlite3.Connection, marks: Optional[Dict[str, float]] = None) -> "Optional[Portfolio]":
     """从 DB 构建 RiskGuard Portfolio 快照。
 
     对期货做单位映射：RiskGuard 的 quantity = 手数，mark = 每手保证金。
