@@ -1410,6 +1410,21 @@ def generate_reflection_page(dates=None):
 
     divergence_analysis = refl.get('divergence_analysis', {})
 
+    diagnostic_path = os.path.join(REPO_ROOT, 'multi_agent', 'data', '2026-08-07_bearish_diagnostic.json')
+    diagnostic = _load_json(diagnostic_path) or {}
+
+    diagnostic_html = ""
+    if diagnostic:
+        diagnostic_html = f"""
+    <div class="section-title">🎯 错误看空信号诊断</div>
+    <div class="note">
+        <p><strong>问题：</strong>{diagnostic.get('summary', '')}</p>
+        <p>看空信号 {diagnostic.get('statistics', {}).get('total_bearish')} 条，错误 {diagnostic.get('statistics', {}).get('wrong_bearish')} 条，错误率 {diagnostic.get('statistics', {}).get('wrong_rate')}% | 错误看空平均加权分 {diagnostic.get('statistics', {}).get('avg_weighted_score_wrong_bearish')}（ bear 阈值 {diagnostic.get('statistics', {}).get('threshold_bear')}）</p>
+        <p><strong>根因：</strong>{diagnostic.get('root_cause', '')}</p>
+        <p><strong>已采取措施：</strong>{diagnostic.get('action_taken', {}).get('parameter_adjustment', '')} {diagnostic.get('action_taken', {}).get('why_not_hard_rule', '')}</p>
+    </div>
+"""
+
     body = f"""
     <div class="header">
         <h1>🧠 每日预测反思 </h1>
@@ -1470,7 +1485,7 @@ def generate_reflection_page(dates=None):
         <tbody>{_divergence_rows(divergence_analysis)}</tbody>
     </table>
     </div>
-
+{diagnostic_html}
     <div class="section-title">🤖 LLM 深度反思</div>
     <div class="note">{llm_html}</div>
 """
