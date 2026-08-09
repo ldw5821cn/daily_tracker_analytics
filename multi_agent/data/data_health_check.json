@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-09T11:32:22",
+  "generated_at": "2026-08-09T11:33:56",
   "today": "2026-08-09",
   "warehouse": {
     "daily_bar": {
@@ -48,7 +48,7 @@
         "count": 6082,
         "lag_days": 2
       },
-      "futures": {
+      "期货": {
         "max_date": "2026-08-07",
         "count": 18655,
         "lag_days": 2
@@ -59,9 +59,9 @@
         "lag_days": 2
       },
       "index": {
-        "max_date": "2026-08-06",
-        "count": 33793,
-        "lag_days": 3
+        "max_date": "2026-08-07",
+        "count": 33796,
+        "lag_days": 2
       }
     }
   },

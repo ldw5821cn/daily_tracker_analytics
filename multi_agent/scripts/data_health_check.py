@@ -36,9 +36,13 @@ def check_warehouse():
                 "up_to_date": r[2] == _today() if r[2] else False,
                 "lag_days": (_days_to_today(r[2]) if r[2] else None),
             }
-        # 按 category 检查 daily_bar 最新日期
-        for cat in ["个股", "ETF", "futures", "US", "index"]:
-            r = conn.execute("SELECT MAX(date), COUNT(*) FROM daily_bar WHERE category=?", (cat,)).fetchone()
+        # 按 category 检查 daily_bar 最新日期，兼容历史 'index' 与新 '指数'
+        for cat, aliases in [("个股", ["个股"]), ("ETF", ["ETF"]), ("期货", ["futures"]), ("US", ["US"]), ("index", ["指数", "index"])]:
+            placeholders = ','.join('?' * len(aliases))
+            r = conn.execute(
+                f"SELECT MAX(date), COUNT(*) FROM daily_bar WHERE category IN ({placeholders})",
+                tuple(aliases),
+            ).fetchone()
             checks.setdefault("daily_bar_by_category", {})[cat] = {
                 "max_date": r[0],
                 "count": r[1],
