@@ -225,6 +225,69 @@ def _macro_liquidity_html() -> str:
 """
 
 
+def _latest_macro_indicators_path() -> str:
+    """返回最新 A 股资金面指标路径。"""
+    d = os.path.join(REPO_ROOT, 'multi_agent', 'data', 'macro_indicators')
+    if not os.path.isdir(d):
+        return ''
+    files = sorted(
+        [f for f in os.listdir(d) if f.endswith('.json')],
+        key=lambda f: os.path.getmtime(os.path.join(d, f)),
+        reverse=True,
+    )
+    return os.path.join(d, files[0]) if files else ''
+
+
+def _capital_flow_html() -> str:
+    """生成 A 股资金面指标 HTML 卡片。"""
+    path = _latest_macro_indicators_path()
+    if not path:
+        return ''
+    m = _load_json(path)
+    if not m:
+        return ''
+    nb = m.get('northbound') or {}
+    margin = m.get('margin') or {}
+    pcr = m.get('option_pcr') or {}
+    date = m.get('date', '')
+
+    cards = ""
+    if margin.get('total_balance') is not None:
+        cards += _stat_card(f"{margin['total_balance']:.0f}亿", "两融余额")
+    if nb.get('net_buy') is not None:
+        cards += _stat_card(f"{nb['net_buy']:+.1f}亿", "北向净买入", '#ef4444' if nb['net_buy'] >= 0 else '#22c55e')
+    else:
+        cards += _stat_card("N/A", "北向净买入")
+
+    pcr_records = pcr.get('pcr_records', [])
+    main_pcr = [r for r in pcr_records if r.get('market') == 'SSE' and r.get('underlying_code') in ('510050', '510300', '510500') and r.get('pcr_volume') is not None]
+    if main_pcr:
+        avg_pcr = sum(r['pcr_volume'] for r in main_pcr) / len(main_pcr)
+        cards += _stat_card(f"{avg_pcr:.1f}", "期权 PCR")
+
+    rows = []
+    for r in pcr_records[:5]:
+        if r.get('pcr_volume') is not None:
+            rows.append(f"<tr><td>{r.get('underlying_name','')}</td><td>{r.get('underlying_code','')}</td><td>{r['pcr_volume']:.2f}</td><td>{r.get('call_volume',''):,}</td><td>{r.get('put_volume',''):,}</td></tr>")
+    pcr_table = f"""
+    <table>
+        <thead><tr><th>名称</th><th>代码</th><th>PCR</th><th>认购量</th><th>认沽量</th></tr></thead>
+        <tbody>{''.join(rows)}</tbody>
+    </table>
+    """ if rows else '<p>暂无上交所 PCR 数据</p>'
+
+    return f"""
+    <div class="section-title">💰 A 股资金面指标 ({date})</div>
+    <div class="stats-grid">
+{cards}
+    </div>
+    <div class="note">
+        <p>北向资金、融资融券余额、期权 PCR 来自 akshare。PCR 越高表示看跌防御情绪越强。</p>
+        {pcr_table}
+    </div>
+"""
+
+
 def _latest_macro_liquidity_path() -> str:
     """返回最新宏观流动性报告路径。"""
     d = os.path.join(REPO_ROOT, 'multi_agent', 'data', 'macro_liquidity')
@@ -832,6 +895,7 @@ def generate_index_page(stats, rows, dates=None):
 {stats_cards}
 </div>
 {cards}
+{_capital_flow_html()}
 {_validation_html()}
 <div class="section-title">📊 推荐策略分布</div>
 <div class="stats-grid">
