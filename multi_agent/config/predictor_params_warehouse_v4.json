@@ -1,5 +1,4 @@
 {
-  "_version": 4,
-  "updated_at": "2026-07-24T16:00:16",
-  "updated_by": "param_opt_v4_realized_return"
+  "_placeholder": "This file will be overwritten by parameter_optimizer_v4_warehouse.py once enough evaluable samples (>=20 days) are accumulated.",
+  "_version": 4
 }

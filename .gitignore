@@ -17,6 +17,7 @@ multi_agent/data/backtest_prices/
 multi_agent/data/loader_cache/
 multi_agent/data/fund_flow_cache/
 multi_agent/data/macro_indicators/
+multi_agent/data/market_context_cache.json
 multi_agent/data/xueqiu_token_cache.json
 multi_agent/data/db_snapshots/
 multi_agent/config/xueqiu_config.json

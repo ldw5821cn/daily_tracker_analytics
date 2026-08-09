@@ -482,7 +482,7 @@ def _table_html(items, title, is_us=False):
     </div>"""
 
 
-def _top_cards(rows, title, sig, color_class):
+def _top_cards(rows, title, sig, color_class, with_chart=False, chart_height=180):
     filtered = [r for r in rows if _canonical_signal(r) == sig]
     if not filtered:
         return ""
@@ -494,6 +494,34 @@ def _top_cards(rows, title, sig, color_class):
         price_date = p.get('price_date') or ''
         price_date_fmt = price_date.replace('-', '/') if price_date else ''
         price_label = f"{price_date_fmt} 现价" if price_date_fmt else '现价'
+        chart_html = ""
+        if with_chart:
+            ticker = p.get('ticker', '')
+            chart_id = f"chart_{ticker.replace('.', '_').replace('-', '_')}"
+            ohlcv = _load_ohlcv_from_warehouse(ticker, days=60)
+            if len(ohlcv) >= 20:
+                data_json = json.dumps(ohlcv, ensure_ascii=False)
+                chart_html = f"""
+                <div id="{chart_id}" style="width:100%;height:{chart_height}px;margin-top:10px;border-radius:8px;background:#0f172a;"></div>
+                <script>
+                (function(){{
+                    const chart = LightweightCharts.createChart(document.getElementById('{chart_id}'), {{
+                        layout: {{ background: {{ color: '#0f172a' }}, textColor: '#94a3b8' }},
+                        grid: {{ vertLines: {{ color: '#1e293b' }}, horzLines: {{ color: '#1e293b' }} }},
+                        crosshair: {{ mode: LightweightCharts.CrosshairMode.Normal }},
+                        rightPriceScale: {{ borderColor: '#1e293b' }},
+                        timeScale: {{ borderColor: '#1e293b', timeVisible: false }},
+                    }});
+                    const series = chart.addCandlestickSeries({{
+                        upColor: '#ef4444', downColor: '#22c55e',
+                        borderUpColor: '#ef4444', borderDownColor: '#22c55e',
+                        wickUpColor: '#ef4444', wickDownColor: '#22c55e'
+                    }});
+                    series.setData({data_json});
+                    chart.timeScale().fitContent();
+                }})();
+                </script>
+                """
         cards += f"""
             <div class="card {color_class}">
                 <div class="card-title">{SIGNAL_EMOJI[sig]} {p.get('name', p.get('ticker'))} ({p.get('ticker')})</div>
@@ -501,6 +529,7 @@ def _top_cards(rows, title, sig, color_class):
                 <div class="card-meta">推荐策略：{SCENARIO_NAME_CN.get(p.get('recommended_scenario'), 'N/A')} | 收益 <span style="color:{_color_for_return(p.get('recommended_return', 0))}">{p.get('recommended_return', 0):+.1f}%</span> | 回撤 {p.get('recommended_dd', 0):.1f}%</div>
                 <div class="card-price">{price_label} {p.get('current_price')} | 目标 {p.get('target_price')} | 止损 {p.get('stop_loss')}</div>
                 <div class="card-reason">{p.get('reasoning', '')}</div>
+                {chart_html}
             </div>"""
     return f'<div class="section-title">{title}</div>\n<div class="cards">\n{cards}\n</div>'
 
@@ -737,6 +766,7 @@ def _build_page_skeleton(title, body, active_tab, subtitle, tag='', dates=None):
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title}</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 {CSS}
 </head>
 <body>
@@ -848,8 +878,8 @@ def generate_category_page(rows, category, out_name, title_cn, dates=None):
     ])
 
     cards = ""
-    cards += _top_cards(items, '🏆 重点看多', 'bullish', 'bull')
-    cards += _top_cards(items, '❄️ 重点看空', 'bearish', 'bear')
+    cards += _top_cards(items, '🏆 重点看多', 'bullish', 'bull', with_chart=True)
+    cards += _top_cards(items, '❄️ 重点看空', 'bearish', 'bear', with_chart=True)
 
     body = f"""
 {_stat_grid(stats_cards)}
@@ -1245,6 +1275,25 @@ def _load_futures_positions():
 
 
 
+def _load_ohlcv_from_warehouse(ticker: str, days: int = 60):
+    """从 warehouse.daily_bar 读取最近 N 日 K 线，用于 lightweight-charts。"""
+    try:
+        conn = sqlite3.connect(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'warehouse.db'))
+        conn.row_factory = sqlite3.Row
+        since = (datetime.now() - timedelta(days=days * 1.5)).strftime('%Y-%m-%d')
+        rows = conn.execute(
+            "SELECT date, open, high, low, close, volume FROM daily_bar WHERE ticker=? AND date>=? ORDER BY date",
+            (ticker, since)
+        ).fetchall()
+        conn.close()
+        return [
+            {'time': r['date'], 'open': round(r['open'], 3), 'high': round(r['high'], 3),
+             'low': round(r['low'], 3), 'close': round(r['close'], 3), 'volume': round(r['volume'], 0)}
+            for r in rows
+        ]
+    except Exception:
+        return []
+
 def _get_stock_fundamentals(ticker: str) -> dict:
     """从 DB 查询个股基本面数据，用于稳健型评分。"""
     try:
@@ -1258,6 +1307,7 @@ def _get_stock_fundamentals(ticker: str) -> dict:
             return sc.get('fundamental', {})
     except: pass
     return {}
+
 
 def _compute_stability(fd: dict) -> tuple:
     """根据基本面数据计算稳健型评分(0-100)和标签。"""
@@ -1281,6 +1331,27 @@ def _compute_stability(fd: dict) -> tuple:
     score = max(0, min(100, score))
     tag = '🛡️稳健型' if score >= 75 else '📈成长型' if score <= 45 else '⚖️均衡型'
     return score, tag
+
+
+def _load_ohlcv_from_warehouse(ticker: str, days: int = 60):
+    """从 warehouse.daily_bar 读取最近 N 日 K 线，用于 lightweight-charts。"""
+    try:
+        conn = sqlite3.connect(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'warehouse.db'))
+        conn.row_factory = sqlite3.Row
+        since = (datetime.now() - timedelta(days=days * 1.5)).strftime('%Y-%m-%d')
+        rows = conn.execute(
+            "SELECT date, open, high, low, close, volume FROM daily_bar WHERE ticker=? AND date>=? ORDER BY date",
+            (ticker, since)
+        ).fetchall()
+        conn.close()
+        return [
+            {'time': r['date'], 'open': round(r['open'], 3), 'high': round(r['high'], 3),
+             'low': round(r['low'], 3), 'close': round(r['close'], 3), 'volume': round(r['volume'], 0)}
+            for r in rows
+        ]
+    except Exception:
+        return []
+
 
 def _write(name, html):
     path = os.path.join(DOCS_DIR, name)

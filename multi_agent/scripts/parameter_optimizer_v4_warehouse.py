@@ -402,6 +402,10 @@ def main():
         rs["_default"] = r
     rs["updated_by"] = "param_opt_v4_realized_return"
 
+    # 如果数据不足导致没有任何结果，保留 placeholder 避免覆盖为只有元数据的空文件
+    if len(rs) <= 3 and "_placeholder" not in rs:
+        rs["_placeholder"] = "Not enough evaluable samples yet (need >=20 days & >=80 recs)."
+
     with open(OUT, "w") as f:
         json.dump(rs, f, ensure_ascii=False, indent=2)
     print()
