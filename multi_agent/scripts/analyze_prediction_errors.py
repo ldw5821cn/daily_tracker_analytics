@@ -161,16 +161,16 @@ def main():
         cp = pred.get('current_price', 0) or 0
         print(f"  {r['ticker']:8s} {r['name'][:8]:8s} {r['signal']:8s} 预测价{cp:8.2f} 现价{r['today_price']:8.2f} 收益{r['return_pct']:+.2f}%")
 
-    # 建议
+    # 建议（数据驱动，禁止硬编码阈值/门控）
     suggestions = []
     if len(wrong_items) > len(correct_items):
-        suggestions.append('整体胜率不足 50%，建议收紧信号阈值或提高置信度门槛')
+        suggestions.append('整体胜率不足 50%，当前处于学习期，应继续积累真实标签并扩展数据仓库，由 parameter_optimizer 自动学习权重/阈值映射')
     if sig_wrong.get('bullish', 0) / max(sig_total.get('bullish', 1), 1) > 0.6:
-        suggestions.append('看多信号失败率偏高，可能市场环境为下跌/震荡，基本面/技术面滞后')
+        suggestions.append('看多信号失败率偏高，可能市场环境为下跌/震荡；建议扩展市场宽度/行业轮动/宏观资金流等因子，让模型在更多维度上学习多头条件')
     if sig_wrong.get('bearish', 0) / max(sig_total.get('bearish', 1), 1) > 0.6:
-        suggestions.append('看空信号失败率偏高，可能系统过度悲观或反转信号过早')
-    suggestions.append('建议对失败标的增加日内 TickFlow 数据校验，减少滞后技术面影响')
-    suggestions.append('建议引入宏观/资金流向 Agent，提升对大盘方向的判断')
+        suggestions.append('看空信号失败率偏高，可能系统过度悲观；建议扩展历史看空样本、加入反转动能/筹码结构等因子，由优化器学习空头触发条件')
+    suggestions.append('建议增加日内 TickFlow 数据作为校验，减少滞后技术面影响')
+    suggestions.append('建议继续扩展宏观/资金面 Agent 数据维度，让优化器自动判断各周期下的权重')
 
     print('\n💡 反思与改进建议')
     for s in suggestions:

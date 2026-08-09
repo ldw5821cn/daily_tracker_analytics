@@ -114,6 +114,14 @@ def _build_prompt(validation: dict, error_analysis: dict, history: list, ab_test
     wrong_top10 = error_analysis.get('wrong_top10', [])
     correct_top10 = error_analysis.get('correct_top10', [])
 
+    history_text = ""
+    if history:
+        history_text = "\n\n===== 近7日反思历史 =====\n"
+        for h in history:
+            history_text += f"\n日期: {h.get('pred_date', '')}\n"
+            history_text += f"准确率: {h.get('accuracy', '')}\n"
+            history_text += f"关键改进建议: {h.get('key_suggestions', '')}\n"
+
     pattern_kb = _load_json(os.path.join(DATA_DIR, 'error_pattern_kb.json'))
     active_patterns = [p for p in pattern_kb.get('patterns', []) if p.get('status') in ('fixed', 'monitoring')]
     if active_patterns:
