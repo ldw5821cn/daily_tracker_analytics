@@ -1,74 +1,74 @@
 {
-  "generated_at": "2026-08-07T16:35:24",
-  "today": "2026-08-07",
+  "generated_at": "2026-08-09T11:28:18",
+  "today": "2026-08-09",
   "warehouse": {
     "daily_bar": {
-      "count": 106577,
+      "count": 106808,
       "min_date": "1990-12-19",
       "max_date": "2026-08-07",
-      "up_to_date": true,
-      "lag_days": 0
+      "up_to_date": false,
+      "lag_days": 2
     },
     "feature_snapshot": {
-      "count": 28184,
+      "count": 28731,
       "min_date": "2025-09-22",
-      "max_date": "2026-08-04",
+      "max_date": "2026-08-07",
       "up_to_date": false,
-      "lag_days": 3
+      "lag_days": 2
     },
     "sentiment": {
       "count": 9308,
       "min_date": "2024-08-16",
       "max_date": "2026-08-07",
-      "up_to_date": true,
-      "lag_days": 0
+      "up_to_date": false,
+      "lag_days": 2
     },
     "macro": {
       "count": 129,
       "min_date": "2015-12-01",
       "max_date": "2026-08-07",
-      "up_to_date": true,
-      "lag_days": 0
+      "up_to_date": false,
+      "lag_days": 2
     },
     "fund_flow": {
       "count": 1022,
       "min_date": "2026-07-23",
       "max_date": "2026-08-07",
-      "up_to_date": true,
-      "lag_days": 0
+      "up_to_date": false,
+      "lag_days": 2
     },
     "daily_bar_by_category": {
       "个股": {
         "max_date": "2026-08-07",
         "count": 27302,
-        "lag_days": 0
+        "lag_days": 2
       },
       "ETF": {
         "max_date": "2026-08-07",
         "count": 6069,
-        "lag_days": 0
+        "lag_days": 2
       },
       "futures": {
-        "max_date": "2026-07-23",
-        "count": 18424,
-        "lag_days": 15
+        "max_date": "2026-08-07",
+        "count": 18655,
+        "lag_days": 2
       },
       "US": {
         "max_date": "2026-08-06",
         "count": 20986,
-        "lag_days": 1
+        "lag_days": 3
       },
       "index": {
         "max_date": "2026-08-06",
         "count": 33793,
-        "lag_days": 1
+        "lag_days": 3
       }
     }
   },
   "predictions": {
     "latest_pred_date": "2026-08-07",
     "total_predictions": 992,
-    "pred_lag_days": 0,
+    "pred_lag_days": 2,
     "latest_by_category": {
       "个股": 106,
       "ETF": 23,
@@ -98,9 +98,6 @@
       "note": "需继续积累 20 天"
     }
   },
-  "status": "warning",
-  "issues": [
-    "feature_snapshot 最新日期 2026-08-04，滞后 3 天，预期滞后 <= 1 天",
-    "daily_bar.期货 最新日期 2026-07-23，滞后 15 天"
-  ]
+  "status": "ok",
+  "issues": []
 }

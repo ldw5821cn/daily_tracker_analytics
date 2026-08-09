@@ -82,33 +82,60 @@ def evaluate(checks):
     issues = []
     today = _today()
 
-    # warehouse 最新日期检查
+    # A 股/期货交易日：若今天是周日，允许回退到上周五（滞后 2 天）
+    def _latest_trading_day(lag_allowed=0):
+        dt = datetime.now()
+        for _ in range(7):
+            if dt.weekday() < 5:  # 周一到周五
+                if lag_allowed <= 0:
+                    return dt.strftime('%Y-%m-%d')
+                lag_allowed -= 1
+            dt -= timedelta(days=1)
+        return today
+
+    a_share_latest = _latest_trading_day(0)  # 最近交易日
+    us_latest = _latest_trading_day(1) if datetime.now().weekday() >= 5 else today  # 美股周五交易到周六凌晨
+
+    # warehouse 最新日期检查：A 股表允许周末回退
     for t, cfg in [
         ("daily_bar", 0),
-        ("feature_snapshot", 1),
+        ("feature_snapshot", 1),  # feature_snapshot 可允许周末多 1 天
         ("sentiment", 0),
         ("macro", 0),
         ("fund_flow", 0),
     ]:
         max_d = checks["warehouse"].get(t, {}).get("max_date")
         lag = _days_to_today(max_d)
-        if lag is None or lag > cfg:
-            issues.append(f"{t} 最新日期 {max_d}，滞后 {lag} 天，预期滞后 <= {cfg} 天")
+        if lag is None:
+            issues.append(f"{t} 无数据")
+            continue
+        # 周末放宽：如果最近交易日是周五，滞后 2 天可接受
+        effective_lag = (datetime.now() - datetime.strptime(max_d, '%Y-%m-%d')).days
+        weekday_now = datetime.now().weekday()
+        allowed = cfg + (2 if weekday_now in (5, 6) else 0)  # 周六日额外允许 2 天
+        if effective_lag > allowed:
+            issues.append(f"{t} 最新日期 {max_d}，滞后 {effective_lag} 天，预期滞后 <= {allowed} 天")
 
-    # daily_bar category 延迟（key 映射：warehouse 内是 futures，但显示用 期货）
+    # daily_bar category 延迟
     cat_key_map = {"期货": "futures", "US": "US", "个股": "个股", "ETF": "ETF"}
     for cat, cfg in [("期货", 1), ("US", 1), ("个股", 0), ("ETF", 0)]:
         key = cat_key_map[cat]
         max_d = checks["warehouse"].get("daily_bar_by_category", {}).get(key, {}).get("max_date")
-        lag = _days_to_today(max_d)
-        if lag is None or lag > cfg:
+        if not max_d:
+            issues.append(f"daily_bar.{cat} 无数据")
+            continue
+        lag = (datetime.now() - datetime.strptime(max_d, '%Y-%m-%d')).days
+        allowed = cfg + (2 if datetime.now().weekday() in (5, 6) else 0)
+        if lag > allowed:
             issues.append(f"daily_bar.{cat} 最新日期 {max_d}，滞后 {lag} 天")
 
     # 预测最新日期
     pred_d = checks["predictions"].get("latest_pred_date")
-    pred_lag = _days_to_today(pred_d)
-    if pred_lag is None or pred_lag > 0:
-        issues.append(f"最新预测日期 {pred_d}，滞后 {pred_lag} 天")
+    if pred_d:
+        pred_lag = (datetime.now() - datetime.strptime(pred_d, '%Y-%m-%d')).days
+        allowed = 0 + (2 if datetime.now().weekday() in (5, 6) else 0)
+        if pred_lag > allowed:
+            issues.append(f"最新预测日期 {pred_d}，滞后 {pred_lag} 天")
 
     # 可评估 5d 收益样本
     checks["trainable_status"] = _check_trainable()
