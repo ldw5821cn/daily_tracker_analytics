@@ -33,6 +33,7 @@ echo "[$(date +'%Y-%m-%d %H:%M:%S')] 0.01/9 回填技术面特征快照"
 # 0.05 更新市场资金/情绪指标（融资融券、期权 PCR/VIX、北向资金）
 echo "[$(date +'%Y-%m-%d %H:%M:%S')] 0.05/9 更新市场资金/情绪指标"
 "${PYTHON}" multi_agent/scripts/save_market_flow.py || echo "⚠️ save_market_flow.py 失败，继续执行"
+"${PYTHON}" multi_agent/scripts/fetch_fund_flow_cache.py || echo "⚠️ fetch_fund_flow_cache.py 失败，继续执行"
 "${PYTHON}" multi_agent/scripts/fetch_macro_indicators.py --score || echo "⚠️ fetch_macro_indicators.py 失败，继续执行"
 
 # 0.1 更新美股缺失标的（如新增标的）
