@@ -34,6 +34,27 @@ DB = os.path.join(PR, "multi_agent", "data", "llm_predictions.db")
 WH = os.path.join(PR, "multi_agent", "data", "warehouse.db")
 OUT = os.path.join(PR, "multi_agent", "config", "predictor_params_warehouse_v4.json")
 
+
+def _load_regime_scalar_map():
+    """加载 market_regime_features 的标量字段，用于交互特征。"""
+    if not os.path.exists(WH):
+        return {}
+    conn = sqlite3.connect(WH, timeout=10)
+    conn.row_factory = sqlite3.Row
+    rows = conn.execute("SELECT date, feature_json FROM market_regime_features").fetchall()
+    conn.close()
+    result = {}
+    for r in rows:
+        try:
+            feat = json.loads(r["feature_json"])
+            result[r["date"]] = feat.get("scalar", {})
+        except Exception:
+            continue
+    return result
+
+
+REGIME = _load_regime_scalar_map()
+
 WG = {
     "technical": [0.20, 0.25, 0.30, 0.35, 0.40],
     "fundamental": [0.15, 0.20, 0.25, 0.30],
@@ -49,9 +70,24 @@ FF_STRENGTH = [0.0, 1.0, 2.0, 3.0]
 RET_MAP = {}
 
 
-def cw(t, f, s, dn, ff_override, w, ff_strength):
+def cw(t, f, s, dn, ff_override, w, ff_strength, pred_date=None, regime=None):
     base = t * w["technical"] + f * w["fundamental"] + s * w["sentiment"] + (50 + dn * 8) * w["debate"]
-    return max(0, min(100, base + ff_override * ff_strength))
+    score = max(0, min(100, base + ff_override * ff_strength))
+    # 可学习的市场状态交互修正（数据不足时默认 0）
+    if regime and pred_date:
+        r = regime.get(pred_date, {})
+        adj = 0.0
+        # 示例：涨停数量极端高时，提升多头信号分数（后续由网格搜索学习）
+        limit_up = r.get('limit_up', 0)
+        if limit_up > 100:
+            adj += 0.5
+        elif limit_up < 30:
+            adj -= 0.5
+        hs300_1d = r.get('hs300_ret_1d', 0)
+        if hs300_1d is not None:
+            adj += max(-2, min(2, hs300_1d * 0.1))
+        score = max(0, min(100, score + adj))
+    return score
 
 
 def sg(score, b, be):
@@ -180,7 +216,7 @@ def evaluate(rs, w, b, be, ff_strength):
     n_correct = n_total = 0
 
     for r in rs:
-        score = cw(r["t"], r["f"], r["s"], r["dn"], r["ff"], w, ff_strength)
+        score = cw(r["t"], r["f"], r["s"], r["dn"], r["ff"], w, ff_strength, pred_date=r["d"], regime=REGIME)
         sig = sg(score, b, be)
         if sig == "neutral":
             continue
