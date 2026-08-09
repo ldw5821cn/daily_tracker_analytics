@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-09T11:33:56",
+  "generated_at": "2026-08-09T19:26:05",
   "today": "2026-08-09",
   "warehouse": {
     "daily_bar": {
@@ -33,6 +33,13 @@
     "fund_flow": {
       "count": 1022,
       "min_date": "2026-07-23",
+      "max_date": "2026-08-07",
+      "up_to_date": false,
+      "lag_days": 2
+    },
+    "market_regime_features": {
+      "count": 4,
+      "min_date": "2026-08-04",
       "max_date": "2026-08-07",
       "up_to_date": false,
       "lag_days": 2

@@ -115,6 +115,12 @@ def init_warehouse_db(conn: Optional[sqlite3.Connection] = None) -> sqlite3.Conn
 
     CREATE INDEX IF NOT EXISTS idx_feature_snapshot_date ON feature_snapshot(date);
     CREATE INDEX IF NOT EXISTS idx_feature_snapshot_ticker ON feature_snapshot(ticker);
+
+    CREATE TABLE IF NOT EXISTS market_regime_features (
+        date TEXT PRIMARY KEY,
+        feature_json TEXT,
+        updated_at TEXT
+    );
     """)
     conn.commit()
     return conn

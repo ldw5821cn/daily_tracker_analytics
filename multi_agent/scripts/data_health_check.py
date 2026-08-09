@@ -27,7 +27,7 @@ def check_warehouse():
     conn = get_warehouse_conn()
     checks = {}
     try:
-        for t in ["daily_bar", "feature_snapshot", "sentiment", "macro", "fund_flow"]:
+        for t in ["daily_bar", "feature_snapshot", "sentiment", "macro", "fund_flow", "market_regime_features"]:
             r = conn.execute(f"SELECT COUNT(*), MIN(date), MAX(date) FROM {t}").fetchone()
             checks[t] = {
                 "count": r[0],
@@ -107,6 +107,7 @@ def evaluate(checks):
         ("sentiment", 0),
         ("macro", 0),
         ("fund_flow", 0),
+        ("market_regime_features", 1),
     ]:
         max_d = checks["warehouse"].get(t, {}).get("max_date")
         lag = _days_to_today(max_d)
