@@ -30,6 +30,10 @@ echo "[$(date +'%Y-%m-%d %H:%M:%S')] 0/9 更新 warehouse 日线行情（最近 
 echo "[$(date +'%Y-%m-%d %H:%M:%S')] 0.01/9 回填技术面特征快照"
 "${PYTHON}" multi_agent/scripts/backfill_feature_snapshots.py --start $(date -d '5 days ago' +%Y-%m-%d) --end $(date +%Y-%m-%d) || echo "⚠️ backfill_feature_snapshots.py 失败，继续执行"
 
+# 0.02 回填市场状态（横截面）特征
+echo "[$(date +'%Y-%m-%d %H:%M:%S')] 0.02/9 回填市场状态 regime 特征"
+"${PYTHON}" multi_agent/scripts/backfill_market_regime_features.py --start $(date -d '5 days ago' +%Y-%m-%d) --end $(date +%Y-%m-%d) || echo "⚠️ backfill_market_regime_features.py 失败，继续执行"
+
 # 0.05 更新市场资金/情绪指标（融资融券、期权 PCR/VIX、北向资金）
 echo "[$(date +'%Y-%m-%d %H:%M:%S')] 0.05/9 更新市场资金/情绪指标"
 "${PYTHON}" multi_agent/scripts/save_market_flow.py || echo "⚠️ save_market_flow.py 失败，继续执行"
