@@ -238,52 +238,142 @@ def _latest_macro_indicators_path() -> str:
     return os.path.join(d, files[0]) if files else ''
 
 
-def _capital_flow_html() -> str:
-    """生成 A 股资金面指标 HTML 卡片。"""
-    path = _latest_macro_indicators_path()
-    if not path:
+def _latest_regime_date() -> Optional[str]:
+    """返回 warehouse 中 market_regime_features 的最新日期。"""
+    try:
+        conn = sqlite3.connect(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'warehouse.db'))
+        conn.row_factory = sqlite3.Row
+        cur = conn.execute("SELECT MAX(date) as d FROM market_regime_features")
+        row = cur.fetchone()
+        conn.close()
+        return row['d'] if row and row['d'] else None
+    except Exception:
+        return None
+
+
+def _load_regime_features(date: Optional[str] = None) -> Optional[Dict]:
+    """从 warehouse 读取 market_regime_features 标量数据。"""
+    d = date or _latest_regime_date()
+    if not d:
+        return None
+    try:
+        conn = sqlite3.connect(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'warehouse.db'))
+        conn.row_factory = sqlite3.Row
+        cur = conn.execute("SELECT feature_json FROM market_regime_features WHERE date=?", (d,))
+        row = cur.fetchone()
+        conn.close()
+        if not row or not row['feature_json']:
+            return None
+        data = json.loads(row['feature_json'])
+        scalar = data.get('scalar', {})
+        scalar['date'] = d
+        return scalar
+    except Exception as e:
+        print(f"[_load_regime_features] error: {e}")
+        return None
+
+
+def _market_regime_html() -> str:
+    """生成 A 股市场状态（涨停/炸板/连板、行业/概念资金流向、LHB、资金面）HTML 区块。"""
+    r = _load_regime_features()
+    if not r:
         return ''
-    m = _load_json(path)
-    if not m:
-        return ''
-    nb = m.get('northbound') or {}
-    margin = m.get('margin') or {}
-    pcr = m.get('option_pcr') or {}
-    date = m.get('date', '')
+    date = r.get('date', '')
+    up = r.get('up_count', 0)
+    down = r.get('down_count', 0)
+    breadth_ratio = r.get('breadth_ratio', 0)
+    limit_up = r.get('limit_up', 0)
+    limit_up_zhaban = r.get('limit_up_zhaban', 0)
+    limit_up_lianban = r.get('limit_up_lianban', 0)
+    limit_down = r.get('limit_down', 0)
+    limit_down_lianban = r.get('limit_down_lianban', 0)
+    zhaban_count = r.get('zhaban_count', 0)
+    lianban_count = r.get('lianban_count', 0)
 
-    cards = ""
-    if margin.get('total_balance') is not None:
-        cards += _stat_card(f"{margin['total_balance']:.0f}亿", "两融余额")
-    if nb.get('net_buy') is not None:
-        cards += _stat_card(f"{nb['net_buy']:+.1f}亿", "北向净买入", '#ef4444' if nb['net_buy'] >= 0 else '#22c55e')
-    else:
-        cards += _stat_card("N/A", "北向净买入")
+    ind_total = r.get('industry_total_net', 0)
+    con_total = r.get('concept_total_net', 0)
+    top5_industry = r.get('top5_industry_net', [])
+    top5_concept = r.get('top5_concept_net', [])
 
-    pcr_records = pcr.get('pcr_records', [])
-    main_pcr = [r for r in pcr_records if r.get('market') == 'SSE' and r.get('underlying_code') in ('510050', '510300', '510500') and r.get('pcr_volume') is not None]
-    if main_pcr:
-        avg_pcr = sum(r['pcr_volume'] for r in main_pcr) / len(main_pcr)
-        cards += _stat_card(f"{avg_pcr:.1f}", "期权 PCR")
+    lhb_count = r.get('lhb_count', 0)
+    lhb_inst_net = r.get('lhb_inst_net_buy', 0)
+    lhb_inst_buy = r.get('lhb_inst_buy', 0)
+    lhb_inst_sell = r.get('lhb_inst_sell', 0)
+    lhb_limit_up = r.get('lhb_limit_up_with_inst', 0)
+    lhb_limit_down = r.get('lhb_limit_down_with_inst', 0)
 
-    rows = []
-    for r in pcr_records[:5]:
-        if r.get('pcr_volume') is not None:
-            rows.append(f"<tr><td>{r.get('underlying_name','')}</td><td>{r.get('underlying_code','')}</td><td>{r['pcr_volume']:.2f}</td><td>{r.get('call_volume',''):,}</td><td>{r.get('put_volume',''):,}</td></tr>")
-    pcr_table = f"""
-    <table>
-        <thead><tr><th>名称</th><th>代码</th><th>PCR</th><th>认购量</th><th>认沽量</th></tr></thead>
-        <tbody>{''.join(rows)}</tbody>
-    </table>
-    """ if rows else '<p>暂无上交所 PCR 数据</p>'
+    margin = r.get('margin_total_balance', 0)
+    pcr = r.get('option_pcr_avg', 0)
+
+    # 市场温度：涨跌比 + 涨停/跌停差
+    zt_dt_spread = limit_up - limit_down
+    zt_color = '#ef4444' if zt_dt_spread > 0 else '#22c55e' if zt_dt_spread < 0 else '#94a3b8'
+
+    cards = "".join([
+        _stat_card(f"{up}/{down}", f"涨跌家数 ({breadth_ratio:.2f})", '#ef4444' if breadth_ratio > 1 else '#22c55e'),
+        _stat_card(f"{limit_up}", "涨停", '#ef4444'),
+        _stat_card(f"{limit_up_zhaban}", "炸板", '#f59e0b'),
+        _stat_card(f"{limit_up_lianban}", "连板", '#ef4444'),
+        _stat_card(f"{limit_down}", "跌停", '#22c55e'),
+        _stat_card(f"{zt_dt_spread:+d}", "涨停-跌停", zt_color),
+    ])
+
+    flow_cards = "".join([
+        _stat_card(f"{ind_total:+.2f}亿", "行业净流入", '#ef4444' if ind_total > 0 else '#22c55e'),
+        _stat_card(f"{con_total:+.2f}亿", "概念净流入", '#ef4444' if con_total > 0 else '#22c55e'),
+    ])
+
+    lhb_cards = "".join([
+        _stat_card(f"{lhb_count}", "龙虎榜家数"),
+        _stat_card(f"{lhb_inst_net:+.3f}亿", "机构净买入", '#ef4444' if lhb_inst_net > 0 else '#22c55e'),
+        _stat_card(f"{lhb_inst_buy:.3f}亿", "机构买入"),
+        _stat_card(f"{lhb_inst_sell:.3f}亿", "机构卖出"),
+    ])
+
+    capital_cards = "".join([
+        _stat_card(f"{margin:,.0f}亿", "两融余额") if margin else "",
+        _stat_card(f"{pcr:.2f}", "期权 PCR") if pcr else "",
+    ])
+
+    def _top5_rows(items, label):
+        if not items:
+            return f'<p>暂无 {label} Top5 数据</p>'
+        rows = []
+        for it in items[:5]:
+            name = it.get('name', it.get('行业', 'N/A'))
+            val = it.get('net', it.get('net_amount', it.get('净额_亿元', 0)))
+            color = '#ef4444' if float(val) > 0 else '#22c55e'
+            rows.append(f"<tr><td>{name}</td><td style='color:{color}'>{val:+.2f}亿</td></tr>")
+        return f"""
+        <table>
+            <thead><tr><th>{label}</th><th>净流入</th></tr></thead>
+            <tbody>{''.join(rows)}</tbody>
+        </table>
+        """
 
     return f"""
-    <div class="section-title">💰 A 股资金面指标 ({date})</div>
+    <div class="section-title">🔥 A 股市场状态 ({date})</div>
     <div class="stats-grid">
 {cards}
     </div>
+    <div class="section-title">💰 资金流向</div>
+    <div class="stats-grid">
+{flow_cards}
+    </div>
+    <div class="table-responsive" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        {_top5_rows(top5_industry, '行业 Top5')}
+        {_top5_rows(top5_concept, '概念 Top5')}
+    </div>
+    <div class="section-title">🐉 龙虎榜机构动向</div>
+    <div class="stats-grid">
+{lhb_cards}
+    </div>
+    <div class="section-title">📊 资金面指标</div>
+    <div class="stats-grid">
+{capital_cards}
+    </div>
     <div class="note">
-        <p>北向资金、融资融券余额、期权 PCR 来自 akshare。PCR 越高表示看跌防御情绪越强。</p>
-        {pcr_table}
+        <p>涨停/炸板/连板、行业/概念净流入 Top5、龙虎榜机构席位、融资融券与期权 PCR 均来自 akshare / 交易所公开数据，每日盘后自动缓存。</p>
     </div>
 """
 
@@ -925,7 +1015,7 @@ def generate_index_page(stats, rows, dates=None):
 {stats_cards}
 </div>
 {cards}
-{_capital_flow_html()}
+{_market_regime_html()}
 {_validation_html()}
 <div class="section-title">📊 推荐策略分布</div>
 <div class="stats-grid">
