@@ -26,6 +26,7 @@ echo "[$(date +'%Y-%m-%d %H:%M:%S')] 0/9 更新 warehouse 日线行情（最近 
 # 0.05 更新市场资金/情绪指标（融资融券、期权 PCR/VIX、北向资金）
 echo "[$(date +'%Y-%m-%d %H:%M:%S')] 0.05/9 更新市场资金/情绪指标"
 "${PYTHON}" multi_agent/scripts/save_market_flow.py || echo "⚠️ save_market_flow.py 失败，继续执行"
+"${PYTHON}" multi_agent/scripts/fetch_macro_indicators.py --score || echo "⚠️ fetch_macro_indicators.py 失败，继续执行"
 
 # 0.1 更新美股缺失标的（如新增标的）
 echo "[$(date +'%Y-%m-%d %H:%M:%S')] 0.1/9 更新美股缺失标的"

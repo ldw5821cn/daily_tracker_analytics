@@ -194,6 +194,68 @@ def _get_vix_proxy() -> Dict:
         elif vol > 45: proxy['level'] = 'extreme'
     return proxy
 
+
+def _get_macro_indicators(current_date: str) -> Dict:
+    """加载最近一个有效交易日的资金面指标（北向、融资融券、期权 PCR）。"""
+    data_dir = os.path.join(MULTI_AGENT, 'data', 'macro_indicators')
+    result = {'date': current_date, 'northbound': None, 'margin': None, 'option_pcr': None}
+    if not os.path.exists(data_dir):
+        return result
+
+    def _has_valid_data(loaded: Dict) -> bool:
+        if not loaded:
+            return False
+        nb = loaded.get('northbound') or {}
+        mg = loaded.get('margin') or {}
+        pcr = loaded.get('option_pcr') or {}
+        # 至少有一项有数据（无 error 且含有效数值或记录）
+        nb_ok = nb and not nb.get('error') and any(v is not None for k, v in nb.items() if k not in ('date', 'error'))
+        mg_ok = mg and not mg.get('error') and mg.get('total_balance') is not None
+        pcr_ok = pcr and not pcr.get('error') and pcr.get('pcr_records')
+        return nb_ok or mg_ok or pcr_ok
+
+    files = sorted([f for f in os.listdir(data_dir) if f.endswith('.json')], reverse=True)
+    for f in files:
+        path = os.path.join(data_dir, f)
+        try:
+            with open(path, 'r', encoding='utf-8') as fh:
+                loaded = json.load(fh)
+            if loaded.get('date', '') <= current_date and _has_valid_data(loaded):
+                result = loaded
+                break
+        except Exception:
+            continue
+    return result
+
+
+def _score_capital_flow(macro_indicators: Dict) -> float:
+    """基于北向、融资融券、期权 PCR 计算资金面偏置分（0-100）。"""
+    score = 50.0
+    nb = (macro_indicators.get('northbound') or {}) if macro_indicators else {}
+    if nb and nb.get('net_buy') is not None:
+        net = nb['net_buy']
+        score += max(-8, min(8, net / 30))
+
+    pcr = (macro_indicators.get('option_pcr') or {}) if macro_indicators else {}
+    records = pcr.get('pcr_records', [])
+    if records:
+        # 取上交所 50ETF/300ETF/500ETF 的成交量 PCR 平均
+        pcr_vals = [r['pcr_volume'] for r in records
+                    if r.get('market') == 'SSE'
+                    and r.get('underlying_code') in ('510050', '510300', '510500')
+                    and r.get('pcr_volume') is not None]
+        if pcr_vals:
+            avg_pcr = sum(pcr_vals) / len(pcr_vals)
+            # PCR 越高 -> 看跌防御情绪越强 -> 偏空
+            score += max(-8, min(8, (90 - avg_pcr) / 5))
+
+    mg = (macro_indicators.get('margin') or {}) if macro_indicators else {}
+    if mg and mg.get('total_balance') is not None:
+        # 融资融券余额绝对值不直接可用，需历史比较；当前仅作中性占位
+        score += 0
+
+    return max(0, min(100, round(score, 1)))
+
 def _get_risk_on_off(macro_score: float, us_macro: Dict, china_macro: Dict, vix_proxy: Dict, yield_curve: Dict) -> Dict:
     """
     判断 Risk-on / Risk-off 状态。
@@ -483,11 +545,13 @@ def analyze(current_date: Optional[str] = None) -> Dict:
     china_macro = _get_china_macro_data()
     yield_curve = _get_yield_curve()
     vix_proxy = _get_vix_proxy()
+    macro_indicators = _get_macro_indicators(current_date)
+    capital_flow_score = _score_capital_flow(macro_indicators)
     risk_on_off = _get_risk_on_off(50, us_macro, china_macro, vix_proxy, yield_curve)
     sector_rotation = _get_sector_rotation_proxy()
     global_semi = _get_global_semi_momentum()
 
-    # 综合宏观得分（指数动量40% + 市场广度15% + 中国宏观数据30% + 风险修正）
+    # 综合宏观得分（指数动量40% + 市场广度15% + 中国宏观数据30% + 资金面5% + 风险修正）
     avg_index_score = sum(s['score'] for s in index_scores) / len(index_scores) if index_scores else 50
     china_macro_bias = _score_china_macro(china_macro, yield_curve)
     risk_adjustment = 0
@@ -495,7 +559,7 @@ def analyze(current_date: Optional[str] = None) -> Dict:
         risk_adjustment = -5
     elif risk_on_off['state'] == 'risk_on':
         risk_adjustment = 3
-    macro_score = round(avg_index_score * 0.40 + breadth['score'] * 0.15 + china_macro_bias * 0.30 + risk_adjustment, 1)
+    macro_score = round(avg_index_score * 0.40 + breadth['score'] * 0.15 + china_macro_bias * 0.30 + capital_flow_score * 0.05 + risk_adjustment, 1)
     macro_score = max(0, min(100, macro_score))
 
     # 重新计算 Risk-on/off 使用真实宏观评分
@@ -548,6 +612,18 @@ def analyze(current_date: Optional[str] = None) -> Dict:
     summary_lines.append(f"- 美国10Y代理: {yield_curve.get('us_10y_proxy')}%")
     summary_lines.append(f"- VIX 代理(A股波动率): {vix_proxy.get('vix_proxy')}, 状态: {vix_proxy.get('level')}")
     summary_lines.append("")
+    summary_lines.append("## 资金面指标（akshare）")
+    nb = (macro_indicators.get('northbound') or {})
+    summary_lines.append(f"- 北向资金净买入: {nb.get('net_buy')} 亿元 (日期: {nb.get('date')})")
+    mg = (macro_indicators.get('margin') or {})
+    summary_lines.append(f"- 融资融券余额: 沪市 {mg.get('sh_balance')} 亿元, 深市 {mg.get('sz_balance')} 亿元, 合计 {mg.get('total_balance')} 亿元")
+    pcr = (macro_indicators.get('option_pcr') or {})
+    pcr_records = pcr.get('pcr_records', [])
+    if pcr_records:
+        pcr_summary = ', '.join([f"{r['underlying_name']}({r['underlying_code']}) PCR={r['pcr_volume']}" for r in pcr_records[:5] if r.get('pcr_volume')])
+        summary_lines.append(f"- 期权 PCR（上交所）: {pcr_summary}")
+    summary_lines.append(f"- 资金面情绪分: {capital_flow_score}")
+    summary_lines.append("")
     summary_lines.append("## 全球半导体动量（美日韩）")
     summary_lines.append(f"- 综合得分: {global_semi.get('composite_score', 50)} / 信号: {global_semi.get('composite_signal', 'neutral')}")
     summary_lines.append(f"- 美股: {global_semi.get('us', {}).get('score', 50)} (5日 {global_semi.get('us', {}).get('ret_5d_avg', 0):+.2f}%, 20日 {global_semi.get('us', {}).get('ret_20d_avg', 0):+.2f}%)")
@@ -570,6 +646,8 @@ def analyze(current_date: Optional[str] = None) -> Dict:
         'us_macro': us_macro,
         'china_macro': china_macro,
         'china_macro_bias': china_macro_bias,
+        'macro_indicators': macro_indicators,
+        'capital_flow_score': capital_flow_score,
         'yield_curve': yield_curve,
         'vix_proxy': vix_proxy,
         'sector_rotation': sector_rotation,

@@ -1,0 +1,131 @@
+{
+  "date": "2026-08-07",
+  "fetched_at": "2026-08-09T11:17:08.091589",
+  "northbound": {
+    "date": "2026-08-07",
+    "net_buy": null,
+    "buy_amount": null,
+    "sell_amount": null,
+    "cumulative_net_buy": null,
+    "hs300": 3940.04
+  },
+  "margin": {
+    "date": "2026-08-07",
+    "sh_balance": 13607.07452207,
+    "sz_balance": 12756.52,
+    "total_balance": 26363.59452207
+  },
+  "option_pcr": {
+    "date": "2026-08-07",
+    "pcr_records": [
+      {
+        "market": "SSE",
+        "underlying_code": "510050",
+        "underlying_name": "上证50ETF华夏",
+        "trade_date": "2026-08-07",
+        "call_volume": 373213,
+        "put_volume": 253975,
+        "pcr_volume": 68.05,
+        "call_oi": 859895,
+        "put_oi": 565710,
+        "total_oi": 1425605
+      },
+      {
+        "market": "SSE",
+        "underlying_code": "510300",
+        "underlying_name": "沪深300ETF华泰柏瑞",
+        "trade_date": "2026-08-07",
+        "call_volume": 394250,
+        "put_volume": 307344,
+        "pcr_volume": 77.96,
+        "call_oi": 663128,
+        "put_oi": 502318,
+        "total_oi": 1165446
+      },
+      {
+        "market": "SSE",
+        "underlying_code": "510500",
+        "underlying_name": "中证500ETF南方",
+        "trade_date": "2026-08-07",
+        "call_volume": 1012846,
+        "put_volume": 705162,
+        "pcr_volume": 69.62,
+        "call_oi": 720855,
+        "put_oi": 756531,
+        "total_oi": 1477386
+      },
+      {
+        "market": "SSE",
+        "underlying_code": "588000",
+        "underlying_name": "科创50ETF华夏",
+        "trade_date": "2026-08-07",
+        "call_volume": 1101760,
+        "put_volume": 893981,
+        "pcr_volume": 81.14,
+        "call_oi": 1414488,
+        "put_oi": 1324929,
+        "total_oi": 2739417
+      },
+      {
+        "market": "SSE",
+        "underlying_code": "588080",
+        "underlying_name": "科创50ETF易方达",
+        "trade_date": "2026-08-07",
+        "call_volume": 126861,
+        "put_volume": 131377,
+        "pcr_volume": 103.56,
+        "call_oi": 295646,
+        "put_oi": 264350,
+        "total_oi": 559996
+      },
+      {
+        "market": "SZSE",
+        "underlying_code": "159901",
+        "underlying_name": "深证100ETF易方达",
+        "trade_date": "2026-08-07",
+        "call_volume": 34576,
+        "put_volume": 9918,
+        "pcr_volume": null,
+        "call_oi": 32897,
+        "put_oi": 22304,
+        "total_oi": 55201
+      },
+      {
+        "market": "SZSE",
+        "underlying_code": "159915",
+        "underlying_name": "创业板ETF易方达",
+        "trade_date": "2026-08-07",
+        "call_volume": 1245663,
+        "put_volume": 938656,
+        "pcr_volume": null,
+        "call_oi": 997138,
+        "put_oi": 840564,
+        "total_oi": 1837702
+      },
+      {
+        "market": "SZSE",
+        "underlying_code": "159919",
+        "underlying_name": "沪深300ETF嘉实",
+        "trade_date": "2026-08-07",
+        "call_volume": 44964,
+        "put_volume": 31789,
+        "pcr_volume": null,
+        "call_oi": 155174,
+        "put_oi": 78069,
+        "total_oi": 233243
+      },
+      {
+        "market": "SZSE",
+        "underlying_code": "159922",
+        "underlying_name": "中证500ETF嘉实",
+        "trade_date": "2026-08-07",
+        "call_volume": 145720,
+        "put_volume": 51919,
+        "pcr_volume": null,
+        "call_oi": 229790,
+        "put_oi": 122170,
+        "total_oi": 351960
+      }
+    ]
+  }
+}
