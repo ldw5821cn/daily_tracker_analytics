@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-08-09T11:28:18",
+  "generated_at": "2026-08-09T11:32:22",
   "today": "2026-08-09",
   "warehouse": {
     "daily_bar": {
-      "count": 106808,
+      "count": 106933,
       "min_date": "1990-12-19",
       "max_date": "2026-08-07",
       "up_to_date": false,
@@ -40,12 +40,12 @@
     "daily_bar_by_category": {
       "个股": {
         "max_date": "2026-08-07",
-        "count": 27302,
+        "count": 27408,
         "lag_days": 2
       },
       "ETF": {
         "max_date": "2026-08-07",
-        "count": 6069,
+        "count": 6082,
         "lag_days": 2
       },
       "futures": {
@@ -54,9 +54,9 @@
         "lag_days": 2
       },
       "US": {
-        "max_date": "2026-08-06",
-        "count": 20986,
-        "lag_days": 3
+        "max_date": "2026-08-07",
+        "count": 20989,
+        "lag_days": 2
       },
       "index": {
         "max_date": "2026-08-06",

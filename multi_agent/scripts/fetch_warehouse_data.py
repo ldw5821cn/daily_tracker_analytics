@@ -93,13 +93,16 @@ def fetch_us_history(ticker: str, start: str, end: str) -> List[Dict[str, Any]]:
 
 def backfill_bars(watchlist: List[Dict[str, Any]], start: str, end: str, workers: int = 4) -> Dict[str, int]:
     total = {"saved": 0, "errors": 0}
-    items = [w for w in watchlist if w.get("category") in ("个股", "ETF", "US")]
+    items = [w for w in watchlist if w.get("category") in ("个股", "ETF", "US", "指数")]
     print(f"[backfill_bars] {len(items)} 个标的，{start} ~ {end}")
 
     def _fetch(item):
         cat = item.get("category", "个股")
         if cat == "US":
             return fetch_us_history(item["ticker"], start, end)
+        if cat == "指数":
+            # 复用 A 股/ETF 数据拉取路径，data_loader_registry 会识别指数代码
+            return fetch_a_stock_history(item["ticker"], start, end)
         return fetch_a_stock_history(item["ticker"], start, end)
 
     # 串行避免被封；期货跳过

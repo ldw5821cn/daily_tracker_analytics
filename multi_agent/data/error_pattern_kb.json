@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-09",
+  "patterns": [
+    {
+      "id": "debate_hard_floor_2026-08-09",
+      "status": "fixed",
+      "severity": "high",
+      "description": "debate_engine.py 曾硬编码：当 tech_score <= 40 时强制 bull_score=0.0；当 tech_score < 45 时保底 bear_score >= 1.0。这导致大量基本面/资金面偏多的标的被错误看空。",
+      "fix_commit": "ab5bd72",
+      "diagnostic_file": "multi_agent/data/2026-08-07_bearish_diagnostic.json",
+      "trigger_keywords": ["bearish", "tech_score", "bull_score=0", "bear_score>=1"],
+      "lesson": "禁止在 debate_engine 中用 tech_score 硬阈值钳制多空得分；改用 soft prior 让真实证据计数决定多空强度。"
+    },
+    {
+      "id": "neutral_override_too_strong_2026-08-08",
+      "status": "fixed",
+      "severity": "high",
+      "description": "neutral_override_threshold=2.0 / weight=0.6 把轻微偏空的技术面放大为强烈看空，尤其是在 tech_score 42-45 区间。",
+      "fix_commit": "a98b711",
+      "trigger_keywords": ["neutral_override", "threshold=2.0", "weighted_score"],
+      "lesson": "override 参数应保守初始值（threshold=4.0 / weight=0.2），待数据量足够后由 parameter_optimizer 自动学习。"
+    },
+    {
+      "id": "tech_score_distribution_bias",
+      "status": "monitoring",
+      "severity": "medium",
+      "description": "技术面评分公式 _fast_technical_analysis 输出大量 42-45 分，接近 bearish 触发区，可能系统性压低多头评分。",
+      "trigger_keywords": ["tech_score 42", "tech_score 43", "tech_score 44", "tech_score 45"],
+      "lesson": "需要深入诊断技术面评分公式，积累 30-60 天样本后让优化器学习 tech_score 到最终信号的映射，而非加硬阈值。"
+    },
+    {
+      "id": "fundamental_technical_divergence",
+      "status": "monitoring",
+      "severity": "medium",
+      "description": "错误看空样本中常见 fundamental_score 高（>75）但 tech_score 低（<45）的背离。需要把 divergence 作为可解释特征加入错误分析。",
+      "trigger_keywords": ["divergence", "fundamental", "technical"],
+      "lesson": "把 fund-tech divergence、sentiment-macro divergence 等因子加入 feature_snapshot，让优化器学习背离信号的真实含义。"
+    }
+  ]
+}

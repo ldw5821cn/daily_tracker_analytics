@@ -117,10 +117,19 @@ def evaluate(checks):
             issues.append(f"{t} 最新日期 {max_d}，滞后 {effective_lag} 天，预期滞后 <= {allowed} 天")
 
     # daily_bar category 延迟
-    cat_key_map = {"期货": "futures", "US": "US", "个股": "个股", "ETF": "ETF"}
-    for cat, cfg in [("期货", 1), ("US", 1), ("个股", 0), ("ETF", 0)]:
+    cat_key_map = {"期货": "futures", "US": "US", "个股": "个股", "ETF": "ETF", "指数": "指数"}
+    for cat, cfg in [("期货", 1), ("US", 1), ("个股", 0), ("ETF", 0), ("指数", 0)]:
         key = cat_key_map[cat]
-        max_d = checks["warehouse"].get("daily_bar_by_category", {}).get(key, {}).get("max_date")
+        conn = get_warehouse_conn()
+        try:
+            # 兼容历史 category='index' 数据
+            rows = conn.execute(
+                "SELECT category, MAX(date) FROM daily_bar WHERE category IN (?, 'index') GROUP BY category",
+                (key,)
+            ).fetchall()
+            max_d = max([r[1] for r in rows if r[1]], default=None)
+        finally:
+            conn.close()
         if not max_d:
             issues.append(f"daily_bar.{cat} 无数据")
             continue
