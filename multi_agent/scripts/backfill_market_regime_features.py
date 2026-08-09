@@ -144,6 +144,19 @@ def _get_index_returns(date: str) -> Dict[str, Any]:
     return result
 
 
+def _load_lhb_cache(date: str) -> Optional[Dict]:
+    data_dir = Path(__file__).resolve().parent.parent / "data" / "lhb_cache"
+    if not data_dir.exists():
+        return None
+    for f in sorted(data_dir.glob('*.json'), reverse=True):
+        if f.stem <= date:
+            try:
+                return json.loads(f.read_text(encoding='utf-8'))
+            except Exception:
+                continue
+    return None
+
+
 def _build_regime(date: str) -> Optional[Dict[str, Any]]:
     date = _latest_trading_day(date)
     if not date:
@@ -156,6 +169,7 @@ def _build_regime(date: str) -> Optional[Dict[str, Any]]:
         'concept_flow': _get_concept_top5(date),
         'index_returns': _get_index_returns(date),
         'macro_indicators': _load_macro_indicators(date),
+        'lhb': _load_lhb_cache(date),
     }
 
     # 计算汇总标量
@@ -192,6 +206,15 @@ def _build_regime(date: str) -> Optional[Dict[str, Any]]:
         sse_vals = [r['pcr_volume'] for r in records if r.get('market') == 'SSE' and r.get('pcr_volume') is not None]
         if sse_vals:
             scalar['option_pcr_avg'] = round(sum(sse_vals) / len(sse_vals), 2)
+
+    lhb = features.get('lhb') or {}
+    if lhb and not lhb.get('error'):
+        scalar['lhb_count'] = lhb.get('total_count', 0)
+        scalar['lhb_inst_net_buy'] = lhb.get('inst_net_buy_total', 0.0)
+        scalar['lhb_inst_buy'] = lhb.get('inst_buy_total', 0.0)
+        scalar['lhb_inst_sell'] = lhb.get('inst_sell_total', 0.0)
+        scalar['lhb_limit_up_with_inst'] = lhb.get('limit_up_with_inst', 0)
+        scalar['lhb_limit_down_with_inst'] = lhb.get('limit_down_with_inst_sell', 0)
 
     features['scalar'] = scalar
     return features
