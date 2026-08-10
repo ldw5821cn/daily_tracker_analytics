@@ -5,6 +5,7 @@ import akshare as ak
 import yfinance as yf
 import pandas as pd
 import os
+from functools import lru_cache
 from datetime import datetime, timedelta
 
 US_WATCHLIST = [
@@ -73,8 +74,12 @@ US_WATCHLIST = [
 ]
 
 
+@lru_cache(maxsize=128)
 def get_us_stock_data(ticker: str, period: str = '2y') -> pd.DataFrame:
-    """获取美股数据：优先 akshare 新浪前复权，失败用 yfinance。"""
+    """获取美股数据：优先 akshare 新浪前复权，失败用 yfinance。
+
+    lru_cache：批量预测时同一标的多次调用只下载一次（内存缓存）。
+    """
     # 1. akshare 新浪美股前复权
     try:
         df = ak.stock_us_daily(symbol=ticker, adjust='qfq')
