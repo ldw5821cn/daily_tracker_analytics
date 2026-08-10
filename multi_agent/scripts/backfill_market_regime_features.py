@@ -63,6 +63,42 @@ def _load_macro_indicators(date: str) -> Optional[Dict]:
     return None
 
 
+def _get_breadth_stats(date: str) -> Dict[str, Any]:
+    """统计全市场涨跌家数与涨跌比（市场宽度）。
+
+    优先东财快照（含涨跌幅），失败回退新浪快照。
+    """
+    try:
+        df = ak.stock_zh_a_spot_em()
+        col = '涨跌幅'
+        if df is None or df.empty or col not in df.columns:
+            raise ValueError('spot_em 无涨跌幅列')
+    except Exception:
+        try:
+            df = ak.stock_zh_a_spot()
+            col = '涨跌幅'
+            if df is None or df.empty or col not in df.columns:
+                return {}
+        except Exception as e:
+            return {'error': f'breadth:{type(e).__name__}'}
+    try:
+        pct = pd.to_numeric(df[col], errors='coerce').dropna()
+        up = int((pct > 0).sum())
+        down = int((pct < 0).sum())
+        flat = int((pct == 0).sum())
+        total = len(pct)
+        ratio = round(up / down, 2) if down > 0 else (up if up > 0 else 0)
+        return {
+            'up_count': up,
+            'down_count': down,
+            'flat_count': flat,
+            'total_count': total,
+            'breadth_ratio': ratio,
+        }
+    except Exception as e:
+        return {'error': f'breadth:{type(e).__name__}'}
+
+
 def _get_zt_stats(date: str) -> Dict[str, Any]:
     """基于 akshare 涨停池统计涨停/跌停/炸板数量。"""
     d = date.replace('-', '')
@@ -164,6 +200,7 @@ def _build_regime(date: str) -> Optional[Dict[str, Any]]:
 
     features = {
         'date': date,
+        'breadth': _get_breadth_stats(date),
         'zt_stats': _get_zt_stats(date),
         'industry_flow': _get_industry_top5(date),
         'concept_flow': _get_concept_top5(date),
@@ -174,6 +211,11 @@ def _build_regime(date: str) -> Optional[Dict[str, Any]]:
 
     # 计算汇总标量
     scalar = {}
+    bd = features.get('breadth') or {}
+    if 'up_count' in bd:
+        scalar['up_count'] = bd['up_count']
+        scalar['down_count'] = bd['down_count']
+        scalar['breadth_ratio'] = bd.get('breadth_ratio', 0)
     zt = features.get('zt_stats') or {}
     if 'limit_up' in zt:
         scalar['limit_up'] = zt['limit_up']

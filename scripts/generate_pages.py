@@ -252,7 +252,7 @@ def _latest_regime_date() -> Optional[str]:
 
 
 def _load_regime_features(date: Optional[str] = None) -> Optional[Dict]:
-    """从 warehouse 读取 market_regime_features 标量数据。"""
+    """从 warehouse 读取 market_regime_features 完整数据（scalar + 嵌套列表）。"""
     d = date or _latest_regime_date()
     if not d:
         return None
@@ -265,9 +265,20 @@ def _load_regime_features(date: Optional[str] = None) -> Optional[Dict]:
         if not row or not row['feature_json']:
             return None
         data = json.loads(row['feature_json'])
-        scalar = data.get('scalar', {})
-        scalar['date'] = d
-        return scalar
+        out = dict(data.get('scalar', {}))
+        out['date'] = d
+        # 展开嵌套数据：行业/概念 Top5、zt_stats
+        zt = data.get('zt_stats') or {}
+        for k, v in zt.items():
+            if k not in out:
+                out[k] = v
+        ind = data.get('industry_flow') or {}
+        if isinstance(ind, dict) and ind.get('industry_top5'):
+            out['top5_industry'] = ind['industry_top5']
+        con = data.get('concept_flow') or {}
+        if isinstance(con, dict) and con.get('concept_top5'):
+            out['top5_concept'] = con['concept_top5']
+        return out
     except Exception as e:
         print(f"[_load_regime_features] error: {e}")
         return None
@@ -279,43 +290,39 @@ def _market_regime_html() -> str:
     if not r:
         return ''
     date = r.get('date', '')
-    up = r.get('up_count', 0)
-    down = r.get('down_count', 0)
-    breadth_ratio = r.get('breadth_ratio', 0)
-    limit_up = r.get('limit_up', 0)
-    limit_up_zhaban = r.get('limit_up_zhaban', 0)
-    limit_up_lianban = r.get('limit_up_lianban', 0)
-    limit_down = r.get('limit_down', 0)
-    limit_down_lianban = r.get('limit_down_lianban', 0)
-    zhaban_count = r.get('zhaban_count', 0)
-    lianban_count = r.get('lianban_count', 0)
+    up = r.get('up_count')
+    down = r.get('down_count')
+    breadth_ratio = r.get('breadth_ratio')
+    limit_up = r.get('limit_up') or 0
+    limit_up_zhaban = r.get('limit_up_zhaban') or 0
+    limit_up_lianban = r.get('limit_up_lianban') or 0
 
-    ind_total = r.get('industry_total_net', 0)
-    con_total = r.get('concept_total_net', 0)
-    top5_industry = r.get('top5_industry_net', [])
-    top5_concept = r.get('top5_concept_net', [])
+    ind_total = r.get('industry_total_net', 0) or 0
+    con_total = r.get('concept_total_net', 0) or 0
+    top5_industry = r.get('top5_industry', []) or []
+    top5_concept = r.get('top5_concept', []) or []
 
-    lhb_count = r.get('lhb_count', 0)
-    lhb_inst_net = r.get('lhb_inst_net_buy', 0)
-    lhb_inst_buy = r.get('lhb_inst_buy', 0)
-    lhb_inst_sell = r.get('lhb_inst_sell', 0)
-    lhb_limit_up = r.get('lhb_limit_up_with_inst', 0)
-    lhb_limit_down = r.get('lhb_limit_down_with_inst', 0)
+    lhb_count = r.get('lhb_count') or 0
+    lhb_inst_net = r.get('lhb_inst_net_buy') or 0
+    lhb_inst_buy = r.get('lhb_inst_buy') or 0
+    lhb_inst_sell = r.get('lhb_inst_sell') or 0
+    lhb_limit_up = r.get('lhb_limit_up_with_inst') or 0
+    lhb_limit_down = r.get('lhb_limit_down_with_inst') or 0
 
-    margin = r.get('margin_total_balance', 0)
-    pcr = r.get('option_pcr_avg', 0)
+    margin = r.get('margin_total_balance') or 0
+    pcr = r.get('option_pcr_avg') or 0
 
-    # 市场温度：涨跌比 + 涨停/跌停差
-    zt_dt_spread = limit_up - limit_down
-    zt_color = '#ef4444' if zt_dt_spread > 0 else '#22c55e' if zt_dt_spread < 0 else '#94a3b8'
-
+    # 市场温度：涨跌家数 + 涨停/炸板/连板
+    breadth_cards = ""
+    if up is not None and down is not None:
+        ratio_str = f" ({breadth_ratio:.2f})" if breadth_ratio else ""
+        breadth_cards = _stat_card(f"{up}/{down}", f"涨跌家数{ratio_str}", '#ef4444' if (breadth_ratio or 1) > 1 else '#22c55e')
     cards = "".join([
-        _stat_card(f"{up}/{down}", f"涨跌家数 ({breadth_ratio:.2f})", '#ef4444' if breadth_ratio > 1 else '#22c55e'),
+        breadth_cards,
         _stat_card(f"{limit_up}", "涨停", '#ef4444'),
         _stat_card(f"{limit_up_zhaban}", "炸板", '#f59e0b'),
         _stat_card(f"{limit_up_lianban}", "连板", '#ef4444'),
-        _stat_card(f"{limit_down}", "跌停", '#22c55e'),
-        _stat_card(f"{zt_dt_spread:+d}", "涨停-跌停", zt_color),
+        _stat_card(f"{lhb_count}", "龙虎榜家数"),
     ])
 
     flow_cards = "".join([
@@ -324,10 +331,11 @@ def _market_regime_html() -> str:
     ])
 
     lhb_cards = "".join([
-        _stat_card(f"{lhb_count}", "龙虎榜家数"),
         _stat_card(f"{lhb_inst_net:+.3f}亿", "机构净买入", '#ef4444' if lhb_inst_net > 0 else '#22c55e'),
         _stat_card(f"{lhb_inst_buy:.3f}亿", "机构买入"),
         _stat_card(f"{lhb_inst_sell:.3f}亿", "机构卖出"),
+        _stat_card(f"{lhb_limit_up}", "涨停+机构买", '#ef4444'),
+        _stat_card(f"{lhb_limit_down}", "跌停+机构卖", '#22c55e'),
     ])
 
     capital_cards = "".join([
@@ -340,10 +348,19 @@ def _market_regime_html() -> str:
             return f'<p>暂无 {label} Top5 数据</p>'
         rows = []
         for it in items[:5]:
-            name = it.get('name', it.get('行业', 'N/A'))
-            val = it.get('net', it.get('net_amount', it.get('净额_亿元', 0)))
-            color = '#ef4444' if float(val) > 0 else '#22c55e'
-            rows.append(f"<tr><td>{name}</td><td style='color:{color}'>{val:+.2f}亿</td></tr>")
+            name = it.get('行业', it.get('name', 'N/A'))
+            val = it.get('净额_亿元', it.get('net', it.get('net_amount', 0)))
+            try:
+                val = float(val)
+            except (TypeError, ValueError):
+                val = 0.0
+            color = '#ef4444' if val > 0 else '#22c55e'
+            # 亿 -> 万元显示（0.003亿 = 30万 更直观）
+            if abs(val) >= 1:
+                disp = f"{val:+.2f}亿"
+            else:
+                disp = f"{val*10000:+,.0f}万"
+            rows.append(f"<tr><td>{name}</td><td style='color:{color}'>{disp}</td></tr>")
         return f"""
         <table>
             <thead><tr><th>{label}</th><th>净流入</th></tr></thead>
@@ -664,7 +681,18 @@ def _model_performance_html():
     rows = []
     for cat, st in mp['categories'].items():
         if st.get('status') != 'ok':
-            rows.append(f'<tr><td>{cat}</td><td colspan="6" style="color:#94a3b8">数据不足（{st.get("n", 0)} 条）</td></tr>')
+            rows.append(f'<tr><td>{cat}</td><td colspan="7" style="color:#94a3b8">数据不足（{st.get("n", 0)} 条）</td></tr>')
+            continue
+        n_eval = st.get('n_evaluable', 0)
+        if n_eval == 0:
+            # 无 5 日 forward return 数据：显示待评估状态而非 0.0%
+            skipped = st.get('skipped_no_forward', 0)
+            rows.append(
+                f'<tr><td><b>{cat}</b></td>'
+                f'<td>{st.get("n", 0)}</td>'
+                f'<td colspan="5" style="color:#f59e0b">⏳ 暂无 5 日收益数据（{skipped} 条待评估，需等待收盘价）</td>'
+                f'<td>{st.get("coverage", 0):.1f}%</td></tr>'
+            )
             continue
         rows.append(
             f'<tr><td><b>{cat}</b></td>'
@@ -681,6 +709,7 @@ def _model_performance_html():
     <div class="note">
         <p><b>基于仓库实际收盘价的 5 日 forward return 回测。</b>当前样本来自 {mp.get('pred_date', '')} 前所有历史预测，共 {mp.get('ret_map_count', 0)} 条价格-收益记录。生成于 {generated}。</p>
         <p><b>说明：</b>看多信号偏多表示模型偏乐观；看多信号均值为负表示当前参数在 bull 阈值附近表现不佳。数据仍偏少，结果仅供参考，不用于直接调整参数。</p>
+        <p style="color:#f59e0b">⏳ 每类预测需等待 5 个交易日后才能用真实收盘价评估；当前最新预测 {mp.get('pred_date', '')}，预计 {mp.get('pred_date', '')} +5 交易日后可评估。</p>
     </div>
     <div class="table-responsive">
     <table>

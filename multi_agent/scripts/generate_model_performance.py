@@ -52,6 +52,10 @@ def category_max_dates(bars_by_ticker):
     # 统一映射到预测表中的中文类别名
     if max_dates.get("futures"):
         max_dates["期货"] = max_dates["futures"]
+    if max_dates.get("index"):
+        max_dates["指数"] = max_dates["index"]
+    if max_dates.get("us"):
+        max_dates["US"] = max_dates.get("us", "") if not max_dates.get("US") else max_dates["US"]
     return max_dates
 
 

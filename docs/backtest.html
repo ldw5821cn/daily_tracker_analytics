@@ -56,7 +56,7 @@ tr:hover { background: #334155; }
 <a href="backtest.html" class="active">📈 回测</a>
 <a href="reflection.html" class="">🧠 复盘</a>
 <a href="data_health.html" class="">❤️ 数据健康</a>
-<select onchange="location.href=this.value" style="background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:20px;padding:8px 14px;font-size:13px;outline:none;cursor:pointer"><option value="" disabled>📅 历史归档</option><option value="archive/2026-08-10.html" >2026-08-10</option><option value="archive/2026-08-07.html" >2026-08-07</option><option value="archive/2026-08-06.html" >2026-08-06</option><option value="archive/2026-08-05.html" >2026-08-05</option><option value="archive/2026-08-04.html" >2026-08-04</option><option value="archive/2026-08-03.html" >2026-08-03</option></select>
+<select onchange="location.href=this.value" style="background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:20px;padding:8px 14px;font-size:13px;outline:none;cursor:pointer"><option value="" disabled>📅 历史归档</option><option value="archive/2026-08-07.html" >2026-08-07</option><option value="archive/2026-08-06.html" >2026-08-06</option><option value="archive/2026-08-05.html" >2026-08-05</option><option value="archive/2026-08-04.html" >2026-08-04</option><option value="archive/2026-08-03.html" >2026-08-03</option></select>
 </div>
 
     <div class="header">
@@ -69,11 +69,12 @@ tr:hover { background: #334155; }
     <div class="note">
         <p><b>基于仓库实际收盘价的 5 日 forward return 回测。</b>当前样本来自 2026-08-07 前所有历史预测，共 105365 条价格-收益记录。生成于 2026-08-07T16:46:20。</p>
         <p><b>说明：</b>看多信号偏多表示模型偏乐观；看多信号均值为负表示当前参数在 bull 阈值附近表现不佳。数据仍偏少，结果仅供参考，不用于直接调整参数。</p>
+        <p style="color:#f59e0b">⏳ 每类预测需等待 5 个交易日后才能用真实收盘价评估；当前最新预测 2026-08-07，预计 2026-08-07 +5 交易日后可评估。</p>
     </div>
     <div class="table-responsive">
     <table>
         <thead><tr><th>类别</th><th>样本</th><th>看多</th><th>看空</th><th>看多平均</th><th>看空平均</th><th>方向准确率</th><th>覆盖率</th></tr></thead>
-        <tbody><tr><td><b>个股</b></td><td>526</td><td>0</td><td>0</td><td style="color:#ef4444">-</td><td style="color:#ef4444">-</td><td>0.0%</td><td>0.0%</td></tr><tr><td><b>ETF</b></td><td>115</td><td>0</td><td>0</td><td style="color:#ef4444">-</td><td style="color:#ef4444">-</td><td>0.0%</td><td>0.0%</td></tr><tr><td><b>期货</b></td><td>245</td><td>0</td><td>0</td><td style="color:#ef4444">-</td><td style="color:#ef4444">-</td><td>0.0%</td><td>0.0%</td></tr><tr><td><b>US</b></td><td>106</td><td>0</td><td>0</td><td style="color:#ef4444">-</td><td style="color:#ef4444">-</td><td>0.0%</td><td>0.0%</td></tr></tbody>
+        <tbody><tr><td><b>个股</b></td><td>526</td><td colspan="5" style="color:#f59e0b">⏳ 暂无 5 日收益数据（526 条待评估，需等待收盘价）</td><td>0.0%</td></tr><tr><td><b>ETF</b></td><td>115</td><td colspan="5" style="color:#f59e0b">⏳ 暂无 5 日收益数据（115 条待评估，需等待收盘价）</td><td>0.0%</td></tr><tr><td><b>期货</b></td><td>245</td><td colspan="5" style="color:#f59e0b">⏳ 暂无 5 日收益数据（245 条待评估，需等待收盘价）</td><td>0.0%</td></tr><tr><td><b>US</b></td><td>106</td><td colspan="5" style="color:#f59e0b">⏳ 暂无 5 日收益数据（106 条待评估，需等待收盘价）</td><td>0.0%</td></tr></tbody>
     </table>
     </div>
 
