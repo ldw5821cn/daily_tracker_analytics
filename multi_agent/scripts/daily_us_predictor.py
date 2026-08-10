@@ -27,13 +27,14 @@ def _get_enriched():
     return _US_ENRICHED
 
 
-def run_us_predictions(ultra: bool = True, macro_report: dict = None, per_ticker_timeout: int = 180):
-    """批量生成美股预测。
+def run_us_predictions(ultra: bool = True, macro_report: dict = None, max_workers: int = 4, per_ticker_timeout: int = 180):
+    """批量生成美股预测（并行，防止串行超时被信号终止）。
 
-    - per_ticker_timeout: 单只超时（秒），防止某只标的卡死拖垮整批
-    - 已完成标的（当日已有记录）跳过，支持断点续跑
+    - max_workers: 并发线程数
+    - 当日已完成标的跳过，支持断点续跑
     """
     import sqlite3
+    from concurrent.futures import ThreadPoolExecutor, as_completed
     from datetime import datetime
     db_path = os.path.join(MULTI_AGENT, 'data', 'llm_predictions.db')
     today = datetime.now().strftime('%Y-%m-%d')
@@ -48,12 +49,8 @@ def run_us_predictions(ultra: bool = True, macro_report: dict = None, per_ticker
         pass
 
     enriched = _get_enriched()
-    preds = []
-    errors = []
-    for ticker, name, _ in US_WATCHLIST:
-        if ticker in done:
-            print(f'[US] {ticker} 今日已完成，跳过')
-            continue
+
+    def _predict_one(ticker, name):
         try:
             print(f'[US] {ticker} {name}')
             p = agentic_predictor.predict_one(
@@ -66,20 +63,28 @@ def run_us_predictions(ultra: bool = True, macro_report: dict = None, per_ticker
             p['market_cap'] = info.get('market_cap', '')
             p['country'] = info.get('country', '')
             if p and 'error' not in p:
-                preds.append(p)
-            else:
-                print(f'  ❌ 失败: {p.get("error")}')
-                errors.append(ticker)
+                return p
+            print(f'  ❌ 失败: {p.get("error")}')
+            return None
         except Exception as e:
             print(f'  ❌ 失败: {ticker} {e}')
-            errors.append(ticker)
+            return None
+
+    todo = [(t, n) for t, n, _ in US_WATCHLIST if t not in done]
+    preds = []
+    with ThreadPoolExecutor(max_workers=max_workers) as ex:
+        futs = {ex.submit(_predict_one, t, n): t for t, n in todo}
+        for fut in as_completed(futs):
+            p = fut.result()
+            if p:
+                preds.append(p)
 
     if preds:
         result = save_predictions(preds)
         print(f'[US daily] 完成: {result}')
-        return {'saved': result.get('saved', len(preds)), 'errors': len(errors) + len(US_WATCHLIST) - len(done) - len(preds)}
-    if errors:
-        return {'saved': 0, 'errors': len(errors)}
+        return {'saved': result.get('saved', len(preds)), 'errors': len(todo) - len(preds)}
+    if todo:
+        return {'saved': 0, 'errors': len(todo)}
     return {'saved': 0, 'errors': 0, 'note': '全部已完成'}
 
 

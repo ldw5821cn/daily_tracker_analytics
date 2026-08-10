@@ -30,8 +30,8 @@ def main():
         macro_report=macro_report,
     )
     print(f"[daily_agentic_predictor] A 股完成: {result['stats']}")
-    print('[daily_agentic_predictor] 生成美股预测...')
-    us_result = run_us_predictions(ultra=True, macro_report=macro_report)
+    print('[daily_agentic_predictor] 生成美股预测（并行 4 workers）...')
+    us_result = run_us_predictions(ultra=True, macro_report=macro_report, max_workers=4)
     print(f"[daily_agentic_predictor] 美股完成: {us_result}")
     close_cached_loaders()
 

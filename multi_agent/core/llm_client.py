@@ -64,11 +64,15 @@ def _get_client():
 def chat(messages: List[Dict[str, str]],
          model: Optional[str] = None,
          temperature: float = 0.3,
-         max_tokens: int = 800) -> Optional[str]:
+         max_tokens: int = 800,
+         retries: int = 3,
+         retry_delay: float = 5.0) -> Optional[str]:
     """
     发送 chat completion 请求。无 API key 时返回 None。
     增加模型 fallback：部分模型（如 deepseek-v4-flash）会返回空内容，自动切换到 deepseek-chat 重试。
+    增加连接重试：网络抖动/限流时自动重试（指数退避），避免一次性连接错误中断批量预测。
     """
+    import time
     client = _get_client()
     if client is None:
         return None
@@ -78,22 +82,27 @@ def chat(messages: List[Dict[str, str]],
     if _model == 'deepseek-chat':
         fallback_models = ['deepseek-reasoner']
 
-    for attempt_model in [_model] + fallback_models:
-        try:
-            resp = client.chat.completions.create(
-                model=attempt_model,
-                messages=messages,
-                temperature=temperature,
-                max_tokens=max_tokens,
-            )
-            content = resp.choices[0].message.content
-            if content:
-                if attempt_model != _model:
-                    print(f"[llm_client] 模型 {_model} 返回空，已 fallback 到 {attempt_model}", file=sys.stderr)
-                return content
-        except Exception as e:
-            print(f"[llm_client] 模型 {attempt_model} 调用失败: {e}", file=sys.stderr)
-            continue
+    attempts = [_model] + fallback_models
+    for attempt_model in attempts:
+        for attempt in range(retries):
+            try:
+                resp = client.chat.completions.create(
+                    model=attempt_model,
+                    messages=messages,
+                    temperature=temperature,
+                    max_tokens=max_tokens,
+                )
+                content = resp.choices[0].message.content
+                if content:
+                    if attempt_model != _model:
+                        print(f"[llm_client] 模型 {_model} 返回空，已 fallback 到 {attempt_model}", file=sys.stderr)
+                    return content
+            except Exception as e:
+                is_last = (attempt == retries - 1)
+                print(f"[llm_client] 模型 {attempt_model} 调用失败({attempt+1}/{retries}): {e}", file=sys.stderr)
+                if not is_last:
+                    time.sleep(retry_delay * (attempt + 1))  # 指数退避：5s, 10s, 15s
+                continue
     return None
 
 

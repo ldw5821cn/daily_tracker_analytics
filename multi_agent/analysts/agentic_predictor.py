@@ -1153,7 +1153,6 @@ def generate_for_watchlist(watchlist_path: str = None, categories: List[str] = N
 
     # 通知：汇总每日预测结果（失败不阻塞）
     try:
-        from datetime import datetime
         notify_summary(predictions, date=datetime.now().strftime('%Y-%m-%d'))
     except Exception as e:
         print(f'[notify] 通知发送失败（非阻断）: {e}')
