@@ -1,6 +1,6 @@
 {
   "_description": "雪球组合每日收益跟踪，由 xueqiu_nav_updater.py 自动更新",
-  "last_updated": "2026-08-07 19:47:05",
+  "last_updated": "2026-08-10 16:24:47",
   "portfolios": {
     "ZH3650487": {
       "name": "郑希框架模拟盘",
@@ -17,16 +17,16 @@
           "date": "2026-08-07",
           "value": 1.0515,
           "percent": 5.15,
-          "fetched_at": "2026-08-07 19:47:05"
+          "fetched_at": "2026-08-10 16:24:47"
         }
       ]
     },
     "ZH3650823": {
       "name": "高股息",
       "start_date": "2026-07-10",
-      "latest_date": "2026-08-07",
-      "latest_nav": 1.0194,
-      "total_return_pct": 1.94,
+      "latest_date": "2026-08-10",
+      "latest_nav": 1.0213,
+      "total_return_pct": 2.13,
       "max_return_pct": 7.16,
       "max_return_date": "2026-07-23",
       "min_return_pct": -0.04,
@@ -37,6 +37,12 @@
           "value": 1.0194,
           "percent": 1.94,
           "fetched_at": "2026-08-07 19:47:05"
+        },
+        {
+          "date": "2026-08-10",
+          "value": 1.0213,
+          "percent": 2.13,
+          "fetched_at": "2026-08-10 16:24:47"
         }
       ]
     }
