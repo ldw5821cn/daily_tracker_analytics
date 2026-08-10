@@ -198,8 +198,6 @@ class DebateEngine:
         # 技术面评分仅作为 soft prior，不强制清零或保底任何一方；
         # 让多空强度由真实证据计数决定，减少技术面走弱时对基本面优秀标的的系统性看空。
         tech_score = technical_report.get('score', 50) if technical_report else 50
-        if tech_score > 50:
-            bull_score = max(bull_score, (tech_score - 50) / 10)
         if tech_score < 50:
             bear_score = max(bear_score, (50 - tech_score) / 10)
 
