@@ -203,11 +203,66 @@ def _em_secid(ticker):
     return f'0.{ticker}'
 
 
+def _load_fundamentals_cache(ticker):
+    """优先读取每日 fundamentals_cache（fetch_fundamentals_cache.py 生成），避免逐只请求 akshare/腾讯。"""
+    try:
+        import os
+        cache_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'fundamentals_cache')
+        if not os.path.isdir(cache_dir):
+            return None
+        files = sorted([f for f in os.listdir(cache_dir) if f.endswith('.json')], reverse=True)
+        if not files:
+            return None
+        with open(os.path.join(cache_dir, files[0]), encoding='utf-8') as f:
+            cache = json.load(f)
+        fd = (cache.get('fundamentals') or {}).get(str(ticker).zfill(6))
+        if not fd:
+            return None
+        # 有核心财务字段才使用缓存，否则回退实时抓取
+        if not (fd.get('roe') or fd.get('pe_ratio') or fd.get('market_cap')):
+            return None
+        return {
+            'market_cap': fd.get('market_cap') or 0,
+            'pe_ratio': fd.get('pe_ratio') or 0,
+            'forward_pe': 0.0,
+            'pb_ratio': fd.get('pb_ratio') or 0,
+            'peg_ratio': 0.0,
+            'dividend_yield': fd.get('dividend_yield') or 0,
+            'payout_ratio': 0.0,
+            'eps': fd.get('eps') or 0,
+            'revenue': 0.0,
+            'revenue_growth': fd.get('revenue_yoy') or 0,
+            'net_profit': 0.0,
+            'net_profit_growth': fd.get('profit_yoy') or 0,
+            'gross_margins': fd.get('gross_margin') or 0,
+            'profit_margins': fd.get('net_margin') or 0,
+            'operating_margins': 0.0,
+            'roe': fd.get('roe') or 0,
+            'roa': 0.0,
+            'debt_to_equity': 0.0,
+            'current_ratio': 0.0,
+            'asset_liability_ratio': fd.get('debt_ratio') or 0,
+            'free_cash_flow': 0.0,
+            'sector': 'A股',
+            'industry': '',
+            'full_time_employees': 0,
+            'beta': 0.0,
+            'fifty_two_week_high': 0.0,
+            'fifty_two_week_low': 0.0,
+            'close': fd.get('close') or 0,
+            'report_date': str(fd.get('report_date') or ''),
+        }
+    except Exception:
+        return None
+
+
 def analyze(ticker, name="", current_date="2026-07-02"):
     """
-    基本面分析 - 优先使用同花顺(THS)财务数据，失败 fallback 腾讯财经
+    基本面分析 - 优先使用每日缓存，其次同花顺(THS)财务数据，失败 fallback 腾讯财经
     """
-    fundamentals = _get_ths_fundamentals(ticker)
+    fundamentals = _load_fundamentals_cache(ticker)
+    if fundamentals is None:
+        fundamentals = _get_ths_fundamentals(ticker)
     if fundamentals is None:
         fundamentals = _get_em_fundamentals(ticker)
 
