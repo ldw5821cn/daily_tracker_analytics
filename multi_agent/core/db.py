@@ -304,12 +304,11 @@ init_predictions_db(get_predictions_conn())
 
 
 def get_latest_predictions(pred_date: Optional[str] = None) -> List[Dict[str, Any]]:
-    """获取最新预测记录。"""
+    """获取最新预测记录。pred_date 缺省时使用"最新完整日期"（覆盖 >=3 个主要类别）。"""
     conn = get_predictions_conn()
     try:
         if pred_date is None:
-            row = conn.execute("SELECT MAX(pred_date) FROM agentic_predictions").fetchone()
-            pred_date = row[0]
+            pred_date = get_predictions_stats()['latest_pred_date']
         if not pred_date:
             return []
         cur = conn.execute("""
@@ -327,12 +326,11 @@ def get_latest_predictions(pred_date: Optional[str] = None) -> List[Dict[str, An
 
 
 def get_price_date_map(pred_date: Optional[str] = None) -> Dict[str, str]:
-    """返回 ticker -> price_date 映射。"""
+    """返回 ticker -> price_date 映射。pred_date 缺省时使用最新完整日期。"""
     conn = get_predictions_conn()
     try:
         if pred_date is None:
-            row = conn.execute("SELECT MAX(pred_date) FROM agentic_predictions").fetchone()
-            pred_date = row[0]
+            pred_date = get_predictions_stats()['latest_pred_date']
         if not pred_date:
             return {}
         cur = conn.execute(
@@ -345,18 +343,40 @@ def get_price_date_map(pred_date: Optional[str] = None) -> Dict[str, str]:
 
 
 def get_predictions_stats() -> Dict[str, Any]:
-    """返回预测统计信息。"""
+    """返回预测统计信息。
+
+    latest_pred_date 返回"最新完整日期"：优先取包含主要类别（个股/ETF/期货/US）中
+    至少 3 个类别的最近日期；若最新日期只有单一类别（如仅 US 部分完成），
+    回退到上一个完整日期，避免页面显示不完整的半成品批次。
+    """
     conn = get_predictions_conn()
     try:
         total = conn.execute("SELECT COUNT(*) FROM agentic_predictions").fetchone()[0]
         row = conn.execute("SELECT MAX(pred_date) FROM agentic_predictions").fetchone()
         latest = row[0] if row else None
-        today_count = 0
+
+        # 找最新"完整"日期（覆盖 >=3 个主要类别）
+        main_cats = ('个股', 'ETF', '期货', 'US')
+        display = latest
         if latest:
+            dates = conn.execute(
+                "SELECT pred_date FROM agentic_predictions GROUP BY pred_date ORDER BY pred_date DESC LIMIT 15"
+            ).fetchall()
+            for (d,) in dates:
+                covered = conn.execute(
+                    "SELECT COUNT(DISTINCT category) FROM agentic_predictions WHERE pred_date=? AND category IN (?,?,?,?)",
+                    (d, *main_cats)
+                ).fetchone()[0]
+                if covered >= 3:
+                    display = d
+                    break
+
+        today_count = 0
+        if display:
             today_count = conn.execute(
-                "SELECT COUNT(*) FROM agentic_predictions WHERE pred_date=?", (latest,)
+                "SELECT COUNT(*) FROM agentic_predictions WHERE pred_date=?", (display,)
             ).fetchone()[0]
-        return {'total': total, 'latest_pred_date': latest, 'today_count': today_count}
+        return {'total': total, 'latest_pred_date': display, 'today_count': today_count}
     finally:
         conn.close()
 
