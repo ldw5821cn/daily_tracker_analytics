@@ -90,7 +90,7 @@ def build_markdown(pred_date=None, top_n=3):
     neutral = [p for p in preds if p['signal'] in ('neutral', '中性', 'weak_neutral')]
 
     lines = [
-        f"📊 多 Agent 统一预测日报 ({pred_date})",
+        f"📊 **多Agent量化日报** ({pred_date})",
         f"共 {len(preds)} 只 | 看多 {len(bullish)} | 看空 {len(bearish)} | 中性 {len(neutral)}",
         "",
     ]
