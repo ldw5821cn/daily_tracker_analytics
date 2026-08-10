@@ -3,9 +3,9 @@
   "validation_date": null,
   "summary": {
     "total": 178,
-    "correct": 110,
-    "wrong": 68,
-    "accuracy": 61.8
+    "correct": 108,
+    "wrong": 70,
+    "accuracy": 60.67
   },
   "by_category": {
     "ETF": {
@@ -20,15 +20,15 @@
     },
     "期货": {
       "total": 49,
-      "wrong": 24,
-      "error_rate": 48.98
+      "wrong": 26,
+      "error_rate": 53.06
     }
   },
   "by_signal": {
     "中性": {
       "total": 47,
-      "wrong": 21,
-      "error_rate": 44.68
+      "wrong": 23,
+      "error_rate": 48.94
     },
     "看多": {
       "total": 65,
@@ -49,29 +49,29 @@
   "feature_compare": {
     "weighted_score": {
       "correct_avg": 56.97,
-      "wrong_avg": 50.79
+      "wrong_avg": 50.96
     },
     "confidence": {
-      "correct_avg": 0.7,
-      "wrong_avg": 0.69
+      "correct_avg": 0.71,
+      "wrong_avg": 0.68
     }
   },
   "component_compare": {
     "技术面": {
-      "correct_avg": 56.83,
-      "wrong_avg": 51.13
+      "correct_avg": 56.77,
+      "wrong_avg": 51.39
     },
     "新闻情绪": {
-      "correct_avg": 58.36,
-      "wrong_avg": 57.54
+      "correct_avg": 58.51,
+      "wrong_avg": 57.33
     },
     "基本面": {
-      "correct_avg": 66.87,
-      "wrong_avg": 60.02
+      "correct_avg": 67.36,
+      "wrong_avg": 59.46
     },
     "多空辩论净得分": {
-      "correct_avg": 0.03,
-      "wrong_avg": -0.78
+      "correct_avg": 0.01,
+      "wrong_avg": -0.74
     }
   },
   "wrong_top10": [
@@ -314,23 +314,23 @@
   ],
   "divergence_analysis": {
     "fundamental_technical_divergence": {
-      "correct_avg": 10.04,
-      "wrong_avg": 8.89,
+      "correct_avg": 10.59,
+      "wrong_avg": 8.08,
       "by_wrong_signal": {
         "看多": {
           "avg": 10.11,
           "n": 14
         },
         "看空": {
-          "avg": 9.52,
+          "avg": 9.08,
           "n": 21
         },
         "中性": {
-          "avg": 12.69,
-          "n": 21
+          "avg": 10.17,
+          "n": 23
         },
         "观望": {
-          "avg": -0.28,
+          "avg": -0.03,
           "n": 12
         }
       }
