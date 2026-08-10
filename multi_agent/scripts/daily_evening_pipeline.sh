@@ -40,6 +40,7 @@ echo "[$(date +'%Y-%m-%d %H:%M:%S')] 0.05/9 更新市场资金/情绪指标"
 "${PYTHON}" multi_agent/scripts/fetch_fund_flow_cache.py || echo "⚠️ fetch_fund_flow_cache.py 失败，继续执行"
 "${PYTHON}" multi_agent/scripts/fetch_lhb_cache.py || echo "⚠️ fetch_lhb_cache.py 失败，继续执行"
 "${PYTHON}" multi_agent/scripts/fetch_macro_indicators.py --score || echo "⚠️ fetch_macro_indicators.py 失败，继续执行"
+"${PYTHON}" multi_agent/scripts/fetch_fundamentals_cache.py || echo "⚠️ fetch_fundamentals_cache.py 失败，继续执行"
 
 # 0.1 更新美股缺失标的（如新增标的）
 echo "[$(date +'%Y-%m-%d %H:%M:%S')] 0.1/9 更新美股缺失标的"

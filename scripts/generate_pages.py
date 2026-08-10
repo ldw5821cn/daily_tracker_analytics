@@ -1385,17 +1385,31 @@ def _load_ohlcv_from_warehouse(ticker: str, days: int = 60):
         return []
 
 def _get_stock_fundamentals(ticker: str) -> dict:
-    """从 DB 查询个股基本面数据，用于稳健型评分。"""
+    """获取个股基本面数据：优先 fundamentals_cache，其次 DB component_scores。"""
+    # 优先读取每日财务缓存
+    try:
+        d = os.path.join(REPO_ROOT, 'multi_agent', 'data', 'fundamentals_cache')
+        if os.path.isdir(d):
+            files = sorted([f for f in os.listdir(d) if f.endswith('.json')], reverse=True)
+            if files:
+                with open(os.path.join(d, files[0]), encoding='utf-8') as f:
+                    cache = json.load(f)
+                fd = (cache.get('fundamentals') or {}).get(str(ticker).zfill(6))
+                if fd and (fd.get('roe') or fd.get('pe_ratio') or fd.get('market_cap')):
+                    return fd
+    except Exception:
+        pass
+    # 回退：DB component_scores
     try:
         conn = sqlite3.connect(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'llm_predictions.db'))
         cur = conn.execute('SELECT component_scores FROM agentic_predictions WHERE ticker=? ORDER BY pred_date DESC LIMIT 1', (ticker,))
         row = cur.fetchone()
         conn.close()
         if row and row[0]:
-            import json
             sc = json.loads(row[0]) if isinstance(row[0], str) else row[0]
             return sc.get('fundamental', {})
-    except: pass
+    except Exception:
+        pass
     return {}
 
 
