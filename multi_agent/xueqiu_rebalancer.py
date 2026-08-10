@@ -44,6 +44,16 @@ def get_user():
     user = use('xq', initial_assets=INITIAL_CAPITAL)
     user.prepare(CONFIG_PATH)
     user.autologin()
+    # 安全规范（2026-08-08）：cookies 存于 .env 的 XUEQIU_COOKIES，config.json 不含密钥
+    # 注入 cookies 到 session，否则雪球请求 403（Seek IP Blacklisted）
+    try:
+        from dotenv import load_dotenv
+        load_dotenv(os.path.join(BASE, '.env'))
+    except Exception:
+        pass
+    ck = os.environ.get('XUEQIU_COOKIES', '').strip()
+    if ck and hasattr(user, 's'):
+        user.s.headers.update({'Cookie': ck})
     return user
 
 
