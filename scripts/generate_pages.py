@@ -1414,24 +1414,48 @@ def _get_stock_fundamentals(ticker: str) -> dict:
 
 
 def _compute_stability(fd: dict) -> tuple:
-    """根据基本面数据计算稳健型评分(0-100)和标签。"""
+    """根据基本面数据计算稳健型评分(0-100)和标签。
+
+    仅用于 UI 分类标注（稳健/均衡/成长），不参与预测信号。维度：
+    市值、PE、股息率、PB、ROE、资产负债率。缺失字段按中性 0 分处理，
+    避免数据缺失时把好公司误判为低分。
+    """
     score = 50
-    mcap = fd.get('market_cap', 0)
-    pe = fd.get('pe_ratio', 50)
-    div = fd.get('dividend_yield', 0)
-    pb = fd.get('pb_ratio', 5)
-    if mcap > 5000: score += 25
-    elif mcap > 1000: score += 20
-    elif mcap > 500: score += 10
-    if 8 <= pe <= 25: score += 15
-    elif 25 < pe <= 40: score += 5
-    elif pe < 0 or pe > 100: score -= 10
-    if div > 5: score += 20
-    elif div > 3: score += 15
-    elif div > 2: score += 5
-    if pb < 2: score += 10
-    elif pb < 4: score += 5
-    elif pb > 10: score -= 5
+    mcap = fd.get('market_cap', 0) or 0
+    pe = fd.get('pe_ratio', None)
+    div = fd.get('dividend_yield', 0) or 0
+    pb = fd.get('pb_ratio', None)
+    roe = fd.get('roe', None)
+    debt = fd.get('debt_ratio', None)
+
+    if mcap > 5000: score += 20
+    elif mcap > 1000: score += 15
+    elif mcap > 500: score += 8
+
+    if pe is not None:
+        if 8 <= pe <= 25: score += 12
+        elif 25 < pe <= 40: score += 4
+        elif pe < 0 or pe > 100: score -= 8
+
+    if div > 5: score += 15
+    elif div > 3: score += 10
+    elif div > 2: score += 4
+
+    if pb is not None:
+        if pb < 2: score += 8
+        elif pb < 4: score += 4
+        elif pb > 10: score -= 5
+
+    if roe is not None:
+        if roe > 15: score += 15
+        elif roe > 8: score += 8
+        elif roe < 0: score -= 8
+
+    if debt is not None:
+        if debt < 30: score += 10
+        elif debt < 60: score += 3
+        elif debt > 80: score -= 8
+
     score = max(0, min(100, score))
     tag = '🛡️稳健型' if score >= 75 else '📈成长型' if score <= 45 else '⚖️均衡型'
     return score, tag
