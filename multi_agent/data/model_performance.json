@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-11T16:30:59",
+  "generated_at": "2026-08-11T17:08:40",
   "pred_date": "2026-08-11",
-  "ret_map_count": 105992,
+  "ret_map_count": 106029,
   "warehouse_max_dates": {
     "指数": "2026-08-10",
     "个股": "2026-08-11",
@@ -15,14 +15,14 @@
     "个股": {
       "status": "ok",
       "n": 738,
-      "n_evaluable": 191,
-      "skipped_no_forward": 547,
+      "n_evaluable": 208,
+      "skipped_no_forward": 530,
       "n_bull": 0,
-      "n_bear": 110,
+      "n_bear": 124,
       "bullish_mean": null,
-      "bearish_mean": 16.42,
-      "direction_accuracy": 5.5,
-      "coverage": 57.6,
+      "bearish_mean": 75.35,
+      "direction_accuracy": 4.8,
+      "coverage": 59.6,
       "warehouse_max_date": "2026-08-11"
     },
     "ETF": {
@@ -41,14 +41,14 @@
     "期货": {
       "status": "ok",
       "n": 343,
-      "n_evaluable": 22,
-      "skipped_no_forward": 321,
+      "n_evaluable": 42,
+      "skipped_no_forward": 301,
       "n_bull": 0,
-      "n_bear": 14,
+      "n_bear": 26,
       "bullish_mean": null,
-      "bearish_mean": 2.06,
-      "direction_accuracy": 7.1,
-      "coverage": 63.6,
+      "bearish_mean": 2.53,
+      "direction_accuracy": 7.7,
+      "coverage": 61.9,
       "warehouse_max_date": "2026-08-11"
     },
     "US": {

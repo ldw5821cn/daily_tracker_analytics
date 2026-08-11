@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-08-11T16:32:33",
+  "generated_at": "2026-08-11T17:07:42",
   "today": "2026-08-11",
   "warehouse": {
     "daily_bar": {
-      "count": 107231,
+      "count": 107252,
       "min_date": "1990-12-19",
       "max_date": "2026-08-11",
       "up_to_date": true,
@@ -57,7 +57,7 @@
       },
       "期货": {
         "max_date": "2026-08-11",
-        "count": 18677,
+        "count": 18697,
         "lag_days": 0
       },
       "US": {
@@ -66,9 +66,9 @@
         "lag_days": 1
       },
       "index": {
-        "max_date": "2026-08-10",
-        "count": 33811,
-        "lag_days": 1
+        "max_date": "2026-08-11",
+        "count": 33812,
+        "lag_days": 0
       }
     }
   },
@@ -107,7 +107,6 @@
   },
   "status": "warning",
   "issues": [
-    "sentiment 最新日期 2026-08-10，滞后 1 天，预期滞后 <= 0 天",
-    "daily_bar.指数 最新日期 2026-08-10，滞后 1 天"
+    "sentiment 最新日期 2026-08-10，滞后 1 天，预期滞后 <= 0 天"
   ]
 }
