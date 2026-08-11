@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-08-11T16:07:32",
+  "generated_at": "2026-08-11T16:32:33",
   "today": "2026-08-11",
   "warehouse": {
     "daily_bar": {
-      "count": 107115,
+      "count": 107231,
       "min_date": "1990-12-19",
       "max_date": "2026-08-11",
       "up_to_date": true,
@@ -47,12 +47,12 @@
     "daily_bar_by_category": {
       "个股": {
         "max_date": "2026-08-11",
-        "count": 27517,
+        "count": 27620,
         "lag_days": 0
       },
       "ETF": {
         "max_date": "2026-08-11",
-        "count": 6115,
+        "count": 6128,
         "lag_days": 0
       },
       "期货": {
