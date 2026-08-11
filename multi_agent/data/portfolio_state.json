@@ -1,5 +1,5 @@
 {
-  "scan_time": "2026-08-10 16:24",
+  "scan_time": "2026-08-11 15:39",
   "top10": [
     {
       "ticker": "000612",
@@ -48,11 +48,11 @@
     "error_count": 0,
     "errors": [],
     "weights": {
-      "SH603993": 15.0,
       "SZ000807": 15.0,
-      "SZ000612": 15.0,
+      "SH603993": 15.0,
+      "SH600309": 15.0,
       "SH600989": 15.0,
-      "SZ000898": 15.0
+      "SZ000876": 15.0
     },
     "note": "target weights synced from recommendations.json 2026-08-10 16:19:21"
   }
