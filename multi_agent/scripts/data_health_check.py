@@ -114,11 +114,13 @@ def evaluate(checks):
         if lag is None:
             issues.append(f"{t} 无数据")
             continue
-        # 周末放宽：周六/周日/周一早间（盘后任务未跑前）允许滞后
+        # 周末放宽：周六/周日/周一早间允许滞后；工作日 15:30 前（盘后任务未跑）允许滞后 1 天
         effective_lag = (datetime.now() - datetime.strptime(max_d, '%Y-%m-%d')).days
         weekday_now = datetime.now().weekday()
+        hour_now = datetime.now().hour
         weekend_grace = 2 if weekday_now in (5, 6) else (3 if weekday_now == 0 else 0)  # 周一允许 3 天（上周五收盘）
-        allowed = cfg + weekend_grace
+        pre_evening = 1 if weekday_now in (1, 2, 3, 4) and hour_now < 15 else 0  # 周二~周五 15:30 前允许 1 天
+        allowed = cfg + weekend_grace + pre_evening
         if effective_lag > allowed:
             issues.append(f"{t} 最新日期 {max_d}，滞后 {effective_lag} 天，预期滞后 <= {allowed} 天")
 
@@ -141,8 +143,10 @@ def evaluate(checks):
             continue
         lag = (datetime.now() - datetime.strptime(max_d, '%Y-%m-%d')).days
         wd = datetime.now().weekday()
+        hour_now = datetime.now().hour
         weekend_grace = 2 if wd in (5, 6) else (3 if wd == 0 else 0)  # 周一允许 3 天
-        allowed = cfg + weekend_grace
+        pre_evening = 1 if wd in (1, 2, 3, 4) and hour_now < 15 else 0
+        allowed = cfg + weekend_grace + pre_evening
         if lag > allowed:
             issues.append(f"daily_bar.{cat} 最新日期 {max_d}，滞后 {lag} 天")
 
@@ -151,8 +155,10 @@ def evaluate(checks):
     if pred_d:
         pred_lag = (datetime.now() - datetime.strptime(pred_d, '%Y-%m-%d')).days
         wd = datetime.now().weekday()
+        hour_now = datetime.now().hour
         weekend_grace = 2 if wd in (5, 6) else (3 if wd == 0 else 0)
-        allowed = 0 + weekend_grace
+        pre_evening = 1 if wd in (1, 2, 3, 4) and hour_now < 15 else 0
+        allowed = 0 + weekend_grace + pre_evening
         if pred_lag > allowed:
             issues.append(f"最新预测日期 {pred_d}，滞后 {pred_lag} 天")
 
