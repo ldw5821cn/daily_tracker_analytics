@@ -37,6 +37,10 @@ def _fetch_tencent_realtime_bar(ticker: str, trade_date: str) -> Optional[Dict[s
         # 指数代码转腾讯格式
         if ticker.startswith(('sh', 'sz')):
             tq = ticker
+        elif ticker.startswith('000') or ticker.startswith('880'):
+            tq = f"sh{ticker}"  # 上证指数/沪深300/中证系列
+        elif ticker.startswith('399'):
+            tq = f"sz{ticker}"  # 深证指数
         elif ticker.startswith(('60', '68', '51', '58', '56', '50', '11', '13')):
             tq = f"sh{ticker}"
         else:
@@ -67,32 +71,31 @@ def _fetch_tencent_realtime_bar(ticker: str, trade_date: str) -> Optional[Dict[s
 
 
 def fetch_a_stock_history(ticker: str, start: str, end: str) -> List[Dict[str, Any]]:
-    """拉取 A 股/ETF 日线历史。数据源滞后时用腾讯实时行情补当日 bar。"""
+    """拉取 A 股/ETF 日线历史。数据源滞后/失败时用腾讯实时行情补当日 bar。"""
+    rows = []
     try:
         fetched = fetch_market_data([ticker], start, end, use_cache=True)
         df = fetched.get(ticker)
-        if df is None or df.empty:
-            return []
-        df = df.reset_index()
-        date_col = "date" if "date" in df.columns else df.columns[0]
-        rows = []
-        for _, row in df.iterrows():
-            d = row[date_col]
-            if isinstance(d, pd.Timestamp):
-                d = d.strftime("%Y-%m-%d")
-            rows.append({
-                "date": str(d)[:10],
-                "ticker": ticker,
-                "open": float(row.get("open", 0)) if pd.notna(row.get("open")) else None,
-                "high": float(row.get("high", 0)) if pd.notna(row.get("high")) else None,
-                "low": float(row.get("low", 0)) if pd.notna(row.get("low")) else None,
-                "close": float(row.get("close", 0)) if pd.notna(row.get("close")) else None,
-                "volume": float(row.get("volume", 0)) if pd.notna(row.get("volume")) else None,
-                "turnover": float(row.get("turnover", 0)) if pd.notna(row.get("turnover")) else None,
-                "adj_close": float(row.get("close", 0)) if pd.notna(row.get("close")) else None,
-                "source": "registry",
-            })
-        # 检查 end 日是否缺失（数据源滞后）：缺失且今天是工作日 -> 腾讯实时补当日
+        if df is not None and not df.empty:
+            df = df.reset_index()
+            date_col = "date" if "date" in df.columns else df.columns[0]
+            for _, row in df.iterrows():
+                d = row[date_col]
+                if isinstance(d, pd.Timestamp):
+                    d = d.strftime("%Y-%m-%d")
+                rows.append({
+                    "date": str(d)[:10],
+                    "ticker": ticker,
+                    "open": float(row.get("open", 0)) if pd.notna(row.get("open")) else None,
+                    "high": float(row.get("high", 0)) if pd.notna(row.get("high")) else None,
+                    "low": float(row.get("low", 0)) if pd.notna(row.get("low")) else None,
+                    "close": float(row.get("close", 0)) if pd.notna(row.get("close")) else None,
+                    "volume": float(row.get("volume", 0)) if pd.notna(row.get("volume")) else None,
+                    "turnover": float(row.get("turnover", 0)) if pd.notna(row.get("turnover")) else None,
+                    "adj_close": float(row.get("close", 0)) if pd.notna(row.get("close")) else None,
+                    "source": "registry",
+                })
+        # 检查 end 日是否缺失（数据源滞后/失败）：缺失且实时行情匹配当日 -> 腾讯补当日
         existing = {r["date"] for r in rows}
         if end not in existing:
             bar = _fetch_tencent_realtime_bar(ticker, end)
