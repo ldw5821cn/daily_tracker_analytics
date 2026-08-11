@@ -1,4 +1,6 @@
 {
-  "_placeholder": "This file will be overwritten by parameter_optimizer_v4_warehouse.py once enough evaluable samples (>=20 days) are accumulated.",
-  "_version": 4
+  "_version": 4,
+  "updated_at": "2026-08-11T09:43:03",
+  "updated_by": "param_opt_v4_realized_return",
+  "_placeholder": "Not enough evaluable samples yet (need >=20 days & >=80 recs)."
 }
