@@ -803,6 +803,73 @@ def _forward_return_html():
     </div>"""
 
 
+def _optimizer_status_html() -> str:
+    """生成参数优化器训练进度 HTML 区块（替代纯 JSON 展示）。"""
+    # 1. 训练进度来自 data_health_check.json
+    dh = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'data_health_check.json'))
+    trainable = (dh or {}).get('trainable_status', {})
+    # 2. 优化器输出文件状态
+    opt = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'config', 'predictor_params_warehouse_v4.json'))
+
+    cat_rows = []
+    cat_names = {'个股': 'A股', 'ETF': 'ETF', '期货': '期货', 'US': '美股', 'All': '全部'}
+    for cat in ['个股', 'ETF', '期货', 'US', 'All']:
+        st = trainable.get(cat) if isinstance(trainable, dict) else None
+        if not st or not isinstance(st, dict):
+            continue
+        days = st.get('evaluable_days', 0)
+        ok = st.get('trainable', False)
+        note = st.get('note', '')
+        # 进度条：20 天门槛
+        pct = min(100, int(days / 20 * 100))
+        bar_color = '#22c55e' if ok else ('#ef4444' if pct >= 80 else '#f59e0b')
+        status_txt = '✅ 可训练' if ok else f'⏳ 积累中 {days}/20 天'
+        cat_rows.append(f"""
+        <tr>
+            <td><b>{cat_names.get(cat, cat)}</b></td>
+            <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                    <div style="flex:1;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
+                        <div style="width:{pct}%;height:100%;background:{bar_color};border-radius:4px"></div>
+                    </div>
+                    <span style="white-space:nowrap;color:{bar_color};font-size:13px">{status_txt}</span>
+                </div>
+            </td>
+            <td style="color:#94a3b8;font-size:12px">{note}</td>
+        </tr>""")
+
+    # 优化器输出文件摘要
+    opt_info = ''
+    if opt:
+        updated = opt.get('updated_at', '')[:16]
+        is_placeholder = bool(opt.get('_placeholder'))
+        if is_placeholder:
+            opt_info = f"""
+            <div class="note" style="margin-top:12px">
+                <p>📦 参数仓库 <code>predictor_params_warehouse_v4.json</code>（更新于 {updated}）</p>
+                <p style="color:#f59e0b">⏳ 尚未生成候选参数：{opt.get('_placeholder', '样本不足')}</p>
+                <p style="color:#94a3b8">该文件仅供优化器输出，不会覆盖线上 <code>predictor_params.json</code>。</p>
+            </div>"""
+        else:
+            opt_info = f"""
+            <div class="note" style="margin-top:12px">
+                <p>📦 参数仓库 <code>predictor_params_warehouse_v4.json</code>（更新于 {updated}）已生成候选参数，<a href="predictor_params.html">查看详情</a></p>
+            </div>"""
+
+    if not cat_rows:
+        return ''
+
+    return f"""
+    <div class="section-title">🤖 参数优化器训练进度</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>类别</th><th>可评估样本进度（5日真实收益）</th><th>说明</th></tr></thead>
+        <tbody>{''.join(cat_rows)}</tbody>
+    </table>
+    </div>
+    {opt_info}"""
+
+
 def _validation_html():
     val = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'morning_validation.json'))
     if not val or not val.get('overall'):
@@ -1045,6 +1112,7 @@ def generate_index_page(stats, rows, dates=None):
 </div>
 {cards}
 {_market_regime_html()}
+{_optimizer_status_html()}
 {_validation_html()}
 <div class="section-title">📊 推荐策略分布</div>
 <div class="stats-grid">

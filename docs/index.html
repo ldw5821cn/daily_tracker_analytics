@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🏠 首页 - A股 & 期货 多维度投资分析 - 2026-08-11 16:17</title>
+<title>🏠 首页 - A股 & 期货 多维度投资分析 - 2026-08-11 16:23</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <style>
@@ -61,7 +61,7 @@ tr:hover { background: #334155; }
 
     <div class="header">
         <h1>🏠 首页 </h1>
-        <div class="sub">2026-08-11 16:17 · 首页概览 · 价格日期: 2026-08-10, 2026-08-11</div>
+        <div class="sub">2026-08-11 16:23 · 首页概览 · 价格日期: 2026-08-10, 2026-08-11</div>
     </div>
 
 <div class="stats-grid">
@@ -230,6 +230,68 @@ tr:hover { background: #334155; }
         <p>涨停/炸板/连板、行业/概念净流入 Top5、龙虎榜机构席位、融资融券与期权 PCR 均来自 akshare / 交易所公开数据，每日盘后自动缓存。</p>
     </div>
 
+
+    <div class="section-title">🤖 参数优化器训练进度</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>类别</th><th>可评估样本进度（5日真实收益）</th><th>说明</th></tr></thead>
+        <tbody>
+        <tr>
+            <td><b>A股</b></td>
+            <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                    <div style="flex:1;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
+                        <div style="width:10%;height:100%;background:#f59e0b;border-radius:4px"></div>
+                    </div>
+                    <span style="white-space:nowrap;color:#f59e0b;font-size:13px">⏳ 积累中 2/20 天</span>
+                </div>
+            </td>
+            <td style="color:#94a3b8;font-size:12px">需继续积累 18 天</td>
+        </tr>
+        <tr>
+            <td><b>ETF</b></td>
+            <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                    <div style="flex:1;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
+                        <div style="width:10%;height:100%;background:#f59e0b;border-radius:4px"></div>
+                    </div>
+                    <span style="white-space:nowrap;color:#f59e0b;font-size:13px">⏳ 积累中 2/20 天</span>
+                </div>
+            </td>
+            <td style="color:#94a3b8;font-size:12px">需继续积累 18 天</td>
+        </tr>
+        <tr>
+            <td><b>期货</b></td>
+            <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                    <div style="flex:1;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
+                        <div style="width:10%;height:100%;background:#f59e0b;border-radius:4px"></div>
+                    </div>
+                    <span style="white-space:nowrap;color:#f59e0b;font-size:13px">⏳ 积累中 2/20 天</span>
+                </div>
+            </td>
+            <td style="color:#94a3b8;font-size:12px">需继续积累 18 天</td>
+        </tr>
+        <tr>
+            <td><b>美股</b></td>
+            <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                    <div style="flex:1;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
+                        <div style="width:0%;height:100%;background:#f59e0b;border-radius:4px"></div>
+                    </div>
+                    <span style="white-space:nowrap;color:#f59e0b;font-size:13px">⏳ 积累中 0/20 天</span>
+                </div>
+            </td>
+            <td style="color:#94a3b8;font-size:12px">需继续积累 20 天</td>
+        </tr></tbody>
+    </table>
+    </div>
+    
+            <div class="note" style="margin-top:12px">
+                <p>📦 参数仓库 <code>predictor_params_warehouse_v4.json</code>（更新于 2026-08-11T09:43）</p>
+                <p style="color:#f59e0b">⏳ 尚未生成候选参数：Not enough evaluable samples yet (need >=20 days & >=80 recs).</p>
+                <p style="color:#94a3b8">该文件仅供优化器输出，不会覆盖线上 <code>predictor_params.json</code>。</p>
+            </div>
 
     <div class="section-title">🎯 昨日 1 日方向验证（2026-08-10 预测）</div>
     <div class="stats-grid">
