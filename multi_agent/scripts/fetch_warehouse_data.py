@@ -26,8 +26,48 @@ def load_watchlist(path: Path) -> List[Dict[str, Any]]:
         return json.load(f)
 
 
+def _fetch_tencent_realtime_bar(ticker: str, trade_date: str) -> Optional[Dict[str, Any]]:
+    """腾讯实时行情回退：当 akshare 日线尚未发布当日数据时，用实时行情补当日 bar。
+
+    返回单日 bar dict（date/open/high/low/close/volume），失败返回 None。
+    仅当 trade_date 是工作日且实时行情时间戳匹配当日时使用。
+    """
+    import requests as _rq
+    try:
+        # 指数代码转腾讯格式
+        if ticker.startswith(('sh', 'sz')):
+            tq = ticker
+        elif ticker.startswith(('60', '68', '51', '58', '56', '50', '11', '13')):
+            tq = f"sh{ticker}"
+        else:
+            tq = f"sz{ticker}"
+        r = _rq.get(f"http://qt.gtimg.cn/q={tq}", timeout=10)
+        r.encoding = "gbk"
+        line = r.text.strip().split(";")[0]
+        parts = line.split("~")
+        if len(parts) < 36:
+            return None
+        ts = parts[30]
+        if not ts.startswith(trade_date.replace("-", "")):
+            return None  # 实时行情非当日，不采用
+        return {
+            "date": trade_date,
+            "ticker": ticker,
+            "open": float(parts[5]) if parts[5] else None,
+            "high": float(parts[33]) if parts[33] else None,
+            "low": float(parts[34]) if parts[34] else None,
+            "close": float(parts[3]) if parts[3] else None,
+            "volume": float(parts[6]) if parts[6] else None,  # 手（与 akshare/腾讯日K单位一致）
+            "turnover": None,
+            "adj_close": float(parts[3]) if parts[3] else None,
+            "source": "tencent_realtime",
+        }
+    except Exception:
+        return None
+
+
 def fetch_a_stock_history(ticker: str, start: str, end: str) -> List[Dict[str, Any]]:
-    """拉取 A 股/ETF 日线历史。"""
+    """拉取 A 股/ETF 日线历史。数据源滞后时用腾讯实时行情补当日 bar。"""
     try:
         fetched = fetch_market_data([ticker], start, end, use_cache=True)
         df = fetched.get(ticker)
@@ -52,6 +92,12 @@ def fetch_a_stock_history(ticker: str, start: str, end: str) -> List[Dict[str, A
                 "adj_close": float(row.get("close", 0)) if pd.notna(row.get("close")) else None,
                 "source": "registry",
             })
+        # 检查 end 日是否缺失（数据源滞后）：缺失且今天是工作日 -> 腾讯实时补当日
+        existing = {r["date"] for r in rows}
+        if end not in existing:
+            bar = _fetch_tencent_realtime_bar(ticker, end)
+            if bar:
+                rows.append(bar)
         return rows
     except Exception as e:
         print(f"  ❌ {ticker}: {e}")
