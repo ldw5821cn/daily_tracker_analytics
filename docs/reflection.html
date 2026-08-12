@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🧠 复盘 - 2026-08-10</title>
+<title>🧠 复盘 - 2026-08-11</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <style>
@@ -61,25 +61,25 @@ tr:hover { background: #334155; }
 
     <div class="header">
         <h1>🧠 复盘 </h1>
-        <div class="sub">2026-08-10 预测验证后反思 · 生成于 2026-08-11T17:08:36</div>
+        <div class="sub">2026-08-11 预测验证后反思 · 生成于 2026-08-12T16:20:39</div>
     </div>
 
     <div class="header">
         <h1>🧠 每日预测反思 </h1>
-        <div class="sub">2026-08-10 预测 · 验证准确率 41.01% (73/178) · 错误 105 个</div>
+        <div class="sub">2026-08-11 预测 · 验证准确率 52.25% (93/178) · 错误 85 个</div>
     </div>
 
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="num" style="color:#22c55e">41.01%</div>
+            <div class="num" style="color:#ef4444">52.25%</div>
             <div class="label">总体准确率</div>
         </div>
         <div class="stat-card">
-            <div class="num">73</div>
+            <div class="num">93</div>
             <div class="label">正确</div>
         </div>
         <div class="stat-card">
-            <div class="num">105</div>
+            <div class="num">85</div>
             <div class="label">错误</div>
         </div>
     </div>
@@ -89,9 +89,9 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>信号</th><th>总数</th><th>错误</th><th>错误率</th></tr></thead>
         <tbody>
-        <tr><td>中性</td><td>67</td><td>35</td><td>52.24%</td></tr>
-        <tr><td>看多</td><td>71</td><td>50</td><td>70.42%</td></tr>
-        <tr><td>观望</td><td>40</td><td>20</td><td>50.0%</td></tr></tbody>
+        <tr><td>中性</td><td>60</td><td>32</td><td>53.33%</td></tr>
+        <tr><td>看多</td><td>90</td><td>42</td><td>46.67%</td></tr>
+        <tr><td>观望</td><td>28</td><td>11</td><td>39.29%</td></tr></tbody>
     </table>
     </div>
 
@@ -100,8 +100,8 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>类别</th><th>总数</th><th>错误</th><th>错误率</th></tr></thead>
         <tbody>
-        <tr><td>ETF</td><td>23</td><td>12</td><td>52.17%</td></tr>
-        <tr><td>个股</td><td>106</td><td>73</td><td>68.87%</td></tr>
+        <tr><td>ETF</td><td>23</td><td>10</td><td>43.48%</td></tr>
+        <tr><td>个股</td><td>106</td><td>55</td><td>51.89%</td></tr>
         <tr><td>期货</td><td>49</td><td>20</td><td>40.82%</td></tr></tbody>
     </table>
     </div>
@@ -111,8 +111,8 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>特征</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>weighted_score</td><td>55.15</td><td>58.06</td></tr>
-        <tr><td>confidence</td><td>0.66</td><td>0.68</td></tr></tbody>
+        <tr><td>weighted_score</td><td>59.83</td><td>59.27</td></tr>
+        <tr><td>confidence</td><td>0.7</td><td>0.7</td></tr></tbody>
     </table>
     </div>
 
@@ -121,10 +121,10 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>分项</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>技术面</td><td>56.07</td><td>56.53</td></tr>
-        <tr><td>新闻情绪</td><td>58.62</td><td>60.75</td></tr>
-        <tr><td>基本面</td><td>60.55</td><td>67.54</td></tr>
-        <tr><td>多空辩论净得分</td><td>-0.15</td><td>-0.18</td></tr></tbody>
+        <tr><td>技术面</td><td>57.61</td><td>55.78</td></tr>
+        <tr><td>新闻情绪</td><td>54.47</td><td>55.04</td></tr>
+        <tr><td>基本面</td><td>63.9</td><td>64.94</td></tr>
+        <tr><td>多空辩论净得分</td><td>-0.36</td><td>-0.36</td></tr></tbody>
     </table>
     </div>
 
@@ -133,10 +133,10 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>背离指标</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>fundamental_technical_divergence</td><td>4.48</td><td>11.01</td></tr>
-        <tr><td style='padding-left:24px;color:#94a3b8'>└ 看多错误样本</td><td>14.32</td><td>n=50</td></tr>
-        <tr><td style='padding-left:24px;color:#94a3b8'>└ 中性错误样本</td><td>10.77</td><td>n=35</td></tr>
-        <tr><td style='padding-left:24px;color:#94a3b8'>└ 观望错误样本</td><td>3.17</td><td>n=20</td></tr></tbody>
+        <tr><td>fundamental_technical_divergence</td><td>6.29</td><td>9.16</td></tr>
+        <tr><td style='padding-left:24px;color:#94a3b8'>└ 看多错误样本</td><td>13.08</td><td>n=42</td></tr>
+        <tr><td style='padding-left:24px;color:#94a3b8'>└ 中性错误样本</td><td>9.25</td><td>n=32</td></tr>
+        <tr><td style='padding-left:24px;color:#94a3b8'>└ 观望错误样本</td><td>-6.02</td><td>n=11</td></tr></tbody>
     </table>
     </div>
 
@@ -149,7 +149,7 @@ tr:hover { background: #334155; }
     </div>
 
     <div class="section-title">🤖 LLM 深度反思</div>
-    <div class="note"><strong>量化策略深度复盘报告 — 2026-08-10<br><br><br>## 1. 一句话总结<br><br>当日准确率 41% 的本质原因：<strong>高置信度（0.66-0.68）与高收益方向系统性背离——基本面与技术面显著分裂（背离度 11.01 vs 正确 4.48），导致模型在高分歧区间犯方向性错误，本质是"因子矛盾时缺乏可证伪裁决机制"。</strong><br><br><br>## 2. 主要错误模式<br><br>### 模式一：基本面-技术面深度背离时，模型系统性压向"中性/观望"（占比最高、损失最大）<br><br>- <strong>量化证据</strong>：错误样本的 fundamental_technical_divergence 高达 11.01，正确样本仅 4.48，差异 2.46 倍。结合分项得分来看，错误样本基本面得分 67.54（正确 60.55），证明模型在"基本面强、技术面弱"或"基本面弱、技术面强"时产生了系统性误判。<br>- <strong>具体画像</strong>：Top 5 失败样本全部指向同一结构——技术面中性/偏弱（50-57 分）、基本面良好至优秀（58-76 分）、新闻情绪为正（+0.33~+0.46）、多空辩论看跌票数领先（1 vs 2），但市场随后给出了巨额正收益。模型将"利好基本面 + 正向情绪"解读为可忽略的信号，输出中性/观望，大幅踏空。<br>- <strong>A 股归因</strong>：上述标的多为钢铁/有色/新材料板块，具备强周期属性。当宏观偏空（44.8/100）时，A 股市场往往会提前 price in 政策预期（如供给侧限产、稳增长加码、设备更新政策），大宗商品价格与股票价格的领先滞后关系在宏观数据出台前发生反转。模型只看到了"当前宏观偏空"这一静态快照，忽略了周期股"基本面领先、宏观滞后"的 A 股特有节奏。<br>- <strong>Thesis Breaker</strong>：<strong>如果 model 的 thesis 是"宏观偏空 + 技术面中性 ⇒ 不上涨"，则该 thesis 的证伪条件为：在宏观偏空环境下，若板块出现政策性利好（如限产、收储、并购重组）或资金面异动（龙虎榜机构净买入、北向逆势增持，或对应期货品种背离式走强），应立即触发重估，将"宏观偏空"降权，改为以基本面兑现路径为核心驱动。</strong><br><br>### 模式二：高置信度≠高准确率——信心校准完全失效<br><br>- <strong>量化证据</strong>：错误样本 confidence 0.68 > 正确样本 0.66，weighted_score 同样偏高（错误 58.06 vs 正确 55.15）。模型在信号越强时反而越容易错——这不是随机噪声，而是系统性偏差。<br>- <strong>A 股归因</strong>：散户主导的市场中，高置信信号往往来自多个子 Agent 的"共振"。但在政策市/主题市中，这种共振常常是<strong>情绪钟摆的极值</strong>而非方向确认。模型没有跟踪涨跌停家数、连板高度、炸板率等散户行为指标，导致在情绪极值时给出高置信信号，实际却是反向拐点。<br>- <strong>Thesis Breaker</strong>：<strong>如果 thesis 是"高置信 = 高胜率"，证伪条件为：当 confidence ≥ 0.68 且同时满足连板高度 > 4 或市场换手率处于近 20 日极值时，该信号应被降级为低置信，直到加入情绪温度计因子后重新校准。需持续跟踪并统计"高置信区间"的实际胜率是否显著高于低置信区间，若连续 20 个验证日无显著差异，应放弃 confidence 作为信号权重参数。</strong><br><br>### 模式三：多空辩论引擎的"少数派否决"结构存在方向性偏差<br><br>- <strong>量化证据</strong>：错误样本多空辩论净得分 -0.18（看跌平均领先），且 Top 5 失败中 4 例出现"看涨 1 vs 看跌 2"的少数派结构。模型默认"看跌 2 票"比"看涨 1 票"更可信，但在这些案例中，那"1 票看涨"恰恰是对的。<br>- <strong>A 股归因</strong>：A 股市场（尤其是周期/题材板块）的上涨往往由<strong>边际变化驱动</strong>，而非存量证据驱动。公司处于基本面拐点时，看多的证据通常稀少（因为多数分析师/数据源仍沿用旧的盈利预期），此时"少数派看多"反而是领先信号。当前辩论引擎=计票器，而非"论证质量加权器"。<br>- <strong>Thesis Breaker</strong>：<strong>当 debate 结果为"2 比 1 看跌"但唯一看涨方基于基本面/政策类因子（而非单纯技术面）时，需启动冲突复查流程，检查该看涨论据是否有实际的基本面兑现路径（如产品涨价、产能释放、政策文件），而不应直接以多数票否定少数派。</strong><br><br><br>## 3. 成功信号特征<br><br>成功样本（Top 5）共性强且可操作：<br><br>1. <strong>方向明确，绝不含糊</strong>：山西焦煤、云铝股份、银泰黄金、河钢资源全部为<strong>看多信号</strong>，无一中性。在准确率仅 41% 的环境下，看多信号一旦正确，收益远高于中性/观望。这说明当前市场的 Alpha 主要来自<strong>做多方向的择股</strong>，而非规避风险。<br>2. <strong>基本面有力支撑</strong>：云铝股份基本面 73.9 分、寒锐钴业 61.6 分，均处于基本面强势区间。与错误样本（基本面平均 67.54 却给出中性/看空）形成鲜明对比——当模型<strong>顺基本面方向发出看多</strong>时，成功率显著更高。<br>3. <strong>置信度与之匹配</strong>：成功样本 confidence 区间 0.62-0.88，与错误样本相比并未显著偏低；这说明置信度高本身不是问题，问题在于<strong>高置信但方向错误</strong>。成功的高置信叠加基本面向上时具备正收益预测能力。<br>4. <strong>共同结构</strong>：成功样本中<strong>不存在"基本面/技术面背离"</strong>。即当各维度 Agent 形成共振（基本面向上 + 技术面确认 + 情绪配合）时，做多信号质量极高。<br><br>> 一句话：<strong>模型适合在因子共振时做方向性判断；在因子背离时切换为风险评估模式</strong>——这不是硬编码规则，而应作为一个可学习的"分歧度调制权重"因子交给优化器。<br><br><br>## 4. 数据驱动改进建议<br><br>以下建议全部以"增加数据维度、让 parameter_optimizer 自动学习权重"为导向，<strong>不涉及任何硬编码拦截规则或固定阈值</strong>：<br><br>### 建议一：构建并记录"背离特征时间序列"（最高优先级）<br><br>将 factor_snapshot 中记录的 fundamental_technical_divergence 从"单日截面值"扩展为<strong>滚动时间序列特征</strong>：<br><br>- 近 5 日 divergence 的变化趋势（扩大/收窄）<br>- 背离持续天数<br>- 背离发生的板块聚集度（如钢铁/有色是否同时出现高背离）<br><br><strong>Rationale</strong>：错误样本背离度 11.01 vs 正确 4.48。当前模型没有"背离后的演绎路径"数据，无法学习到背离收敛方向。增加该序列后，优化器可自行学习"背离扩大+基本面向上 → 后续大概率基本面回归"的映射。<br><br>### 建议二：引入政策事件因子（A 股特有）<br><br>将政策信息从"宏观 Agent 的静态打分"升级为事件驱动因子：<br><br>- 政策关键词命中（限产、收储、设备更新、以旧换新、专项债等）<br>- 政策事件与标的板块关联度<br>- 政策发布后 3/5/10 日的板块表现作为滚动统计特征<br><br><strong>Rationale</strong>：本次 Top 5 失败全部集中在钢铁/有色/新材料——这些板块对政策敏感度极高。模型只有宏观偏空（44.8）的静态快照，完全缺失"宏观偏空但政策预期在边际改善"这一关键信息维度。<br><br>### 建议三：新增"散户情绪温度计"因子组<br><br>- 涨停家数、连板高度、炸板率（每日）<br>- 龙虎榜净买入/净卖出（尤其机构席位与游资席位分开）<br>- 两融余额变化（分行业）<br>- 期权 PCR（50ETF/300ETF）<br>- 北向资金日度净流入（分行业）<br><br><strong>Rationale</strong>：A 股散户占比高，情绪羊群效应显著。模型当前完全没有跟踪涨跌停生态，无法判断"多空辩论中少数派看涨"是因为基本面拐点还是散户情绪先行。<br><br>### 建议四：记录"预测时点可获得的真实延迟收益"标签体系<br><br>为每个预测样本记录多窗口收益：<br><br>- 未来 1/3/5/10 日收益（考虑 T+1）<br>- 涨停次日溢价（</strong></div>
+    <div class="note"><strong>策略深度复盘报告 — 2026-08-11<br><br>## 1. 一句话总结<br><br>准确率 52.25% 本质原因：系统性"中性化"倾向——技术面评分 44-57 的标的被大量标记为观望/中性，错失宏观偏多环境下成长股的单边上涨；真正涨的标的系统不敢看多，看多的标的表现平庸。<br><br>---<br><br>## 2. 主要错误模式<br><br>### 模式一：假中性——"技术面没走强"不等于"不会涨"<br><br><strong>量化证据：</strong> 失败样本 Top 5 中 4 个为观望/中性信号，技术面评分全部处于 44-57 的中性区间。但这些标的的基本面/新闻情绪/宏观均已偏多：<br><br>| 标的 | 信号 | 涨幅 | 技术面 | 基本面 | 新闻情绪 | 宏观 |<br>|------|------|------|--------|--------|----------|------|<br>| 焦煤 JM0 | 观望 | +15.90% | 57/100 | bearish 50 | -0.08 | 偏多 57.2 |<br>| 欧莱新材 | 观望 | +9.67% | 52/100 | 良好 62 | +0.30 | 偏多 57.2 |<br>| 仕佳光子 | 中性 | +7.20% | 52/100 | 优秀 82 | +0.29 | 偏多 57.2 |<br>| 绿的谐波 | 中性 | +6.32% | 52/100 | 良好 70 | +0.18 | 偏多 57.2 |<br><br><strong>A 股归因：</strong> 当前市场由产业政策驱动（宏观偏多 57.2）+ 散户情绪主导，很多标的的上涨是从技术面"中性"位置直接启动的，等到技术面确认走强时已经错过第一波。在政策市里，技术面不是领先指标，资金共识才是。技术面的日线信号天然滞后于政策事件驱动行情 1-3 天。<br><br><strong>可证伪机制（假中性的 breaker）：</strong> 若某标的基本面得分 > 60、新闻情绪 > +0.15、宏观偏多，且信号为"中性/观望"——该信号在 3 日内被证伪的标准是：标的涨幅超过 5% 或出现涨停。一旦此类样本积累超过 20 个，optimizer 应自动上调该特征组合的预测分数，而非人工修改阈值。<br><br>---<br><br>### 模式二：多空辩论的"看跌理由"没有区分质量——情绪化看跌压过了基本面证据<br><br><strong>量化证据：</strong> 失败样本中多个标的多空辩论结构为"看涨 0.2 vs 看跌 1-2"，看跌计数完全压过看涨。但看跌来源主要是技术面中性偏弱，而非任何基本面负面证据。例如：<br><br>- 仕佳光子：基本面 82/100、新闻情绪 +0.29，但辩论结果为 看涨0.2 vs 看跌1<br>- 绿的谐波：基本面 70/100、新闻情绪 +0.18，辩论结果为 看涨0.2 vs 看跌2<br><br><strong>A 股归因：</strong> 这说明辩论引擎把"技术面平淡"等同于"看跌理由"——本质上仍是一个技术面硬门控的变体。在 A 股，真正的 bear case 应该是：行业政策收紧、大股东减持、解禁压力、业绩暴雷、龙虎榜资金出逃。技术面中性本身不是看跌理由。当前多空辩论输出的看跌计数缺乏象"政策风险""资金流向"这类真实 A 股利空信号的加权。<br><br><strong>可证伪机制（错误看空的 breaker）：</strong> 如果某标的因"技术面中性"被辩论判为看跌，但基本面 > 65 且新闻情绪 > +0.15 且宏观偏多，则该"看跌"判定在 3 </strong></div>
 
     <div class="footer">
         数据由 Hermes Agent + 多Agent LLM 预测系统自动生成 · 研究辅助非投资建议 ·
