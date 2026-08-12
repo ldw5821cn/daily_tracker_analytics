@@ -4,8 +4,8 @@
   "direction_threshold": 1.5,
   "overall": {
     "total": 178,
-    "correct": 93,
-    "accuracy": 52.25
+    "correct": 91,
+    "accuracy": 51.12
   },
   "by_category": {
     "ETF": {
@@ -15,13 +15,13 @@
     },
     "个股": {
       "total": 106,
-      "correct": 51,
-      "accuracy": 48.11
+      "correct": 50,
+      "accuracy": 47.17
     },
     "期货": {
       "total": 49,
-      "correct": 29,
-      "accuracy": 59.18
+      "correct": 28,
+      "accuracy": 57.14
     }
   },
   "by_signal": {
@@ -32,13 +32,13 @@
     },
     "看多": {
       "total": 90,
-      "correct": 48,
-      "accuracy": 53.33
+      "correct": 47,
+      "accuracy": 52.22
     },
     "观望": {
       "total": 28,
-      "correct": 17,
-      "accuracy": 60.71
+      "correct": 16,
+      "accuracy": 57.14
     }
   },
   "items": [
@@ -510,9 +510,9 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 3.66,
-      "today_price": 3.7,
-      "return_pct": 1.093,
-      "direction_correct": true,
+      "today_price": 12823.67,
+      "return_pct": 350273.497,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -543,8 +543,8 @@
       "category": "期货",
       "signal": "中性",
       "pred_price": 24165.0,
-      "today_price": 24250.0,
-      "return_pct": 0.352,
+      "today_price": 24285.0,
+      "return_pct": 0.497,
       "direction_correct": true,
       "note": "ok"
     },
@@ -554,8 +554,8 @@
       "category": "期货",
       "signal": "中性",
       "pred_price": 948.2,
-      "today_price": 949.94,
-      "return_pct": 0.184,
+      "today_price": 958.54,
+      "return_pct": 1.09,
       "direction_correct": true,
       "note": "ok"
     },
@@ -576,8 +576,8 @@
       "category": "期货",
       "signal": "中性",
       "pred_price": 2997.0,
-      "today_price": 3016.0,
-      "return_pct": 0.634,
+      "today_price": 3010.0,
+      "return_pct": 0.434,
       "direction_correct": true,
       "note": "ok"
     },
@@ -631,8 +631,8 @@
       "category": "期货",
       "signal": "中性",
       "pred_price": 966.0,
-      "today_price": 996.0,
-      "return_pct": 3.106,
+      "today_price": 987.0,
+      "return_pct": 2.174,
       "direction_correct": false,
       "note": "ok"
     },
@@ -642,8 +642,8 @@
       "category": "期货",
       "signal": "中性",
       "pred_price": 4787.0,
-      "today_price": 4905.0,
-      "return_pct": 2.465,
+      "today_price": 4908.0,
+      "return_pct": 2.528,
       "direction_correct": false,
       "note": "ok"
     },
@@ -675,8 +675,8 @@
       "category": "期货",
       "signal": "中性",
       "pred_price": 5236.0,
-      "today_price": 5436.0,
-      "return_pct": 3.82,
+      "today_price": 5417.0,
+      "return_pct": 3.457,
       "direction_correct": false,
       "note": "ok"
     },
@@ -697,8 +697,8 @@
       "category": "期货",
       "signal": "中性",
       "pred_price": 7666.0,
-      "today_price": 7852.0,
-      "return_pct": 2.426,
+      "today_price": 7809.0,
+      "return_pct": 1.865,
       "direction_correct": false,
       "note": "ok"
     },
@@ -730,9 +730,9 @@
       "category": "期货",
       "signal": "中性",
       "pred_price": 4642.0,
-      "today_price": 4572.0,
-      "return_pct": -1.508,
-      "direction_correct": false,
+      "today_price": 4646.0,
+      "return_pct": 0.086,
+      "direction_correct": true,
       "note": "ok"
     },
     {
@@ -1390,8 +1390,8 @@
       "category": "个股",
       "signal": "看多",
       "pred_price": 17.1,
-      "today_price": 17.21,
-      "return_pct": 0.643,
+      "today_price": 5695.74,
+      "return_pct": 33208.421,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1643,8 +1643,8 @@
       "category": "个股",
       "signal": "看多",
       "pred_price": 103.68,
-      "today_price": 106.32,
-      "return_pct": 2.546,
+      "today_price": 3926.49,
+      "return_pct": 3687.124,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1973,8 +1973,8 @@
       "category": "期货",
       "signal": "看多",
       "pred_price": 107850.0,
-      "today_price": 107950.0,
-      "return_pct": 0.093,
+      "today_price": 108390.0,
+      "return_pct": 0.501,
       "direction_correct": true,
       "note": "ok"
     },
@@ -2006,9 +2006,9 @@
       "category": "期货",
       "signal": "看多",
       "pred_price": 9710.0,
-      "today_price": 9744.0,
-      "return_pct": 0.35,
-      "direction_correct": true,
+      "today_price": 9691.0,
+      "return_pct": -0.196,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -2039,8 +2039,8 @@
       "category": "期货",
       "signal": "看多",
       "pred_price": 7736.0,
-      "today_price": 7754.0,
-      "return_pct": 0.233,
+      "today_price": 7819.0,
+      "return_pct": 1.073,
       "direction_correct": true,
       "note": "ok"
     },
@@ -2446,8 +2446,8 @@
       "category": "期货",
       "signal": "观望",
       "pred_price": 5672.0,
-      "today_price": 5760.0,
-      "return_pct": 1.551,
+      "today_price": 5764.0,
+      "return_pct": 1.622,
       "direction_correct": false,
       "note": "ok"
     },
@@ -2468,8 +2468,8 @@
       "category": "期货",
       "signal": "观望",
       "pred_price": 2266.0,
-      "today_price": 2267.0,
-      "return_pct": 0.044,
+      "today_price": 2263.0,
+      "return_pct": -0.132,
       "direction_correct": true,
       "note": "ok"
     },
@@ -2501,9 +2501,9 @@
       "category": "期货",
       "signal": "观望",
       "pred_price": 8115.0,
-      "today_price": 8298.0,
-      "return_pct": 2.255,
-      "direction_correct": false,
+      "today_price": 8208.0,
+      "return_pct": 1.146,
+      "direction_correct": true,
       "note": "ok"
     },
     {
@@ -2523,9 +2523,9 @@
       "category": "期货",
       "signal": "观望",
       "pred_price": 1721.0,
-      "today_price": 1700.0,
-      "return_pct": -1.22,
-      "direction_correct": true,
+      "today_price": 1683.0,
+      "return_pct": -2.208,
+      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -2534,8 +2534,8 @@
       "category": "期货",
       "signal": "观望",
       "pred_price": 8325.0,
-      "today_price": 8340.0,
-      "return_pct": 0.18,
+      "today_price": 8320.0,
+      "return_pct": -0.06,
       "direction_correct": true,
       "note": "ok"
     },
@@ -2578,9 +2578,9 @@
       "category": "期货",
       "signal": "观望",
       "pred_price": 146360.0,
-      "today_price": 145860.0,
-      "return_pct": -0.342,
-      "direction_correct": true,
+      "today_price": 149700.0,
+      "return_pct": 2.282,
+      "direction_correct": false,
       "note": "ok"
     }
   ]

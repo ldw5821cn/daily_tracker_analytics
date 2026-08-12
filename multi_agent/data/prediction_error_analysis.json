@@ -3,9 +3,9 @@
   "validation_date": null,
   "summary": {
     "total": 178,
-    "correct": 93,
-    "wrong": 85,
-    "accuracy": 52.25
+    "correct": 91,
+    "wrong": 87,
+    "accuracy": 51.12
   },
   "by_category": {
     "ETF": {
@@ -15,13 +15,13 @@
     },
     "个股": {
       "total": 106,
-      "wrong": 55,
-      "error_rate": 51.89
+      "wrong": 56,
+      "error_rate": 52.83
     },
     "期货": {
       "total": 49,
-      "wrong": 20,
-      "error_rate": 40.82
+      "wrong": 21,
+      "error_rate": 42.86
     }
   },
   "by_signal": {
@@ -32,19 +32,19 @@
     },
     "看多": {
       "total": 90,
-      "wrong": 42,
-      "error_rate": 46.67
+      "wrong": 43,
+      "error_rate": 47.78
     },
     "观望": {
       "total": 28,
-      "wrong": 11,
-      "error_rate": 39.29
+      "wrong": 12,
+      "error_rate": 42.86
     }
   },
   "feature_compare": {
     "weighted_score": {
-      "correct_avg": 59.83,
-      "wrong_avg": 59.27
+      "correct_avg": 59.74,
+      "wrong_avg": 59.38
     },
     "confidence": {
       "correct_avg": 0.7,
@@ -53,23 +53,35 @@
   },
   "component_compare": {
     "技术面": {
-      "correct_avg": 57.61,
-      "wrong_avg": 55.78
+      "correct_avg": 57.42,
+      "wrong_avg": 56.02
     },
     "新闻情绪": {
-      "correct_avg": 54.47,
+      "correct_avg": 54.45,
       "wrong_avg": 55.04
     },
     "基本面": {
-      "correct_avg": 63.9,
-      "wrong_avg": 64.94
+      "correct_avg": 63.79,
+      "wrong_avg": 65.03
     },
     "多空辩论净得分": {
-      "correct_avg": -0.36,
-      "wrong_avg": -0.36
+      "correct_avg": -0.39,
+      "wrong_avg": -0.33
     }
   },
   "wrong_top10": [
+    {
+      "ticker": "000932",
+      "name": "华菱钢铁",
+      "category": "个股",
+      "signal": "中性",
+      "return_pct": 350273.497,
+      "pred_price": 3.66,
+      "today_price": 12823.67,
+      "weighted_score": 52.7,
+      "confidence": 0.69,
+      "reasoning": "技术面中性(44/100) | 基本面良好(63/100) | 新闻情绪+0.51 | 多空辩论 看涨0 vs 看跌2 | 宏观偏多(57.2/100) | 市场上下文neutral(50.0/100)上限100%"
+    },
     {
       "ticker": "JM0",
       "name": "焦煤",
@@ -177,21 +189,31 @@
       "weighted_score": 45.4,
       "confidence": 0.71,
       "reasoning": "技术面中性(42/100) | 基本面bearish(50/100) | 新闻情绪-0.08 | 多空辩论 看涨1 vs 看跌3 | 宏观偏多(57.2/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "301269",
-      "name": "华大九天",
-      "category": "个股",
-      "signal": "中性",
-      "return_pct": 5.605,
-      "pred_price": 93.13,
-      "today_price": 98.35,
-      "weighted_score": 57.8,
-      "confidence": 0.71,
-      "reasoning": "技术面中性(54/100) | 基本面良好(66/100) | 新闻情绪+0.30 | 多空辩论 看涨0.4 vs 看跌2 | 宏观偏多(57.2/100) | 市场上下文neutral(50.0/100)上限100%"
     }
   ],
   "correct_top10": [
+    {
+      "ticker": "000969",
+      "name": "安泰科技",
+      "category": "个股",
+      "signal": "看多",
+      "return_pct": 33208.421,
+      "pred_price": 17.1,
+      "today_price": 5695.74,
+      "weighted_score": 60.3,
+      "confidence": 0.73
+    },
+    {
+      "ticker": "000988",
+      "name": "华工科技",
+      "category": "个股",
+      "signal": "看多",
+      "return_pct": 3687.124,
+      "pred_price": 103.68,
+      "today_price": 3926.49,
+      "weighted_score": 60.2,
+      "confidence": 0.75
+    },
     {
       "ticker": "300489",
       "name": "光智科技",
@@ -279,28 +301,6 @@
       "today_price": 40.11,
       "weighted_score": 75.2,
       "confidence": 0.79
-    },
-    {
-      "ticker": "CF0",
-      "name": "棉花",
-      "category": "期货",
-      "signal": "看多",
-      "return_pct": 3.381,
-      "pred_price": 16265.0,
-      "today_price": 16815.0,
-      "weighted_score": 67.7,
-      "confidence": 0.84
-    },
-    {
-      "ticker": "000657",
-      "name": "中钨高新",
-      "category": "个股",
-      "signal": "看多",
-      "return_pct": 3.346,
-      "pred_price": 68.15,
-      "today_price": 70.43,
-      "weighted_score": 64.0,
-      "confidence": 0.64
     }
   ],
   "suggestions": [
@@ -309,20 +309,20 @@
   ],
   "divergence_analysis": {
     "fundamental_technical_divergence": {
-      "correct_avg": 6.29,
-      "wrong_avg": 9.16,
+      "correct_avg": 6.38,
+      "wrong_avg": 9.01,
       "by_wrong_signal": {
         "看多": {
-          "avg": 13.08,
-          "n": 42
+          "avg": 12.31,
+          "n": 43
         },
         "中性": {
-          "avg": 9.25,
+          "avg": 9.89,
           "n": 32
         },
         "观望": {
-          "avg": -6.02,
-          "n": 11
+          "avg": -5.14,
+          "n": 12
         }
       }
     }

@@ -1,18 +1,19 @@
 {
-  "generated_at": "2026-07-23T13:13:32",
+  "generated_at": "2026-08-12T17:27:43",
   "pred_date_range": [
-    "2026-07-10",
-    "2026-07-16"
+    "2026-08-03",
+    "2026-08-05"
   ],
-  "n_days": 4,
-  "n_predictions": 508,
+  "n_days": 3,
+  "n_predictions": 441,
   "warehouse_max_dates": {
-    "个股": "2026-07-23",
-    "ETF": "2026-07-23",
-    "US": "2026-07-22",
-    "futures": "2026-07-22",
-    "index": "2026-07-22",
-    "期货": "2026-07-22"
+    "指数": "2026-08-12",
+    "个股": "2026-08-12",
+    "ETF": "2026-08-12",
+    "US": "2026-08-11",
+    "futures": "2026-08-12",
+    "index": "2026-08-11",
+    "期货": "2026-08-12"
   },
   "categories": {
     "个股": {
@@ -21,22 +22,22 @@
         {
           "name": "全部",
           "dates": [
-            "2026-07-10",
-            "2026-07-16"
+            "2026-08-03",
+            "2026-08-05"
           ],
-          "n": 262,
-          "n_evaluable": 262,
-          "coverage": 0.816793893129771,
-          "n_bull": 13,
-          "n_bear": 201,
-          "accuracy": 71.96261682242991,
-          "bull_mean": -10.57,
-          "bear_mean": -9.8
+          "n": 309,
+          "n_evaluable": 309,
+          "coverage": 0.4919093851132686,
+          "n_bull": 22,
+          "n_bear": 130,
+          "accuracy": 13.157894736842104,
+          "bull_mean": 1.39,
+          "bear_mean": 15.15
         }
       ],
-      "mean_accuracy": 72.0,
+      "mean_accuracy": 13.2,
       "accuracy_cv": 0.0,
-      "mean_coverage": 81.7,
+      "mean_coverage": 49.2,
       "coverage_cv": 0.0,
       "trainable": false,
       "note": "数据不足或跨窗口不稳定，暂不训练"
@@ -47,22 +48,22 @@
         {
           "name": "全部",
           "dates": [
-            "2026-07-10",
-            "2026-07-16"
+            "2026-08-03",
+            "2026-08-05"
           ],
-          "n": 79,
-          "n_evaluable": 79,
-          "coverage": 0.4810126582278481,
-          "n_bull": 5,
-          "n_bear": 33,
-          "accuracy": 94.73684210526315,
-          "bull_mean": -0.64,
-          "bear_mean": -10.47
+          "n": 69,
+          "n_evaluable": 69,
+          "coverage": 0.4492753623188406,
+          "n_bull": 0,
+          "n_bear": 31,
+          "accuracy": 12.903225806451612,
+          "bull_mean": null,
+          "bear_mean": 7.91
         }
       ],
-      "mean_accuracy": 94.7,
+      "mean_accuracy": 12.9,
       "accuracy_cv": 0.0,
-      "mean_coverage": 48.1,
+      "mean_coverage": 44.9,
       "coverage_cv": 0.0,
       "trainable": false,
       "note": "数据不足或跨窗口不稳定，暂不训练"
@@ -73,51 +74,28 @@
         {
           "name": "全部",
           "dates": [
-            "2026-07-10",
-            "2026-07-16"
+            "2026-08-03",
+            "2026-08-05"
           ],
           "n": 63,
           "n_evaluable": 63,
-          "coverage": 0.38095238095238093,
-          "n_bull": 9,
-          "n_bear": 15,
-          "accuracy": 41.66666666666667,
-          "bull_mean": -0.47,
-          "bear_mean": 0.78
+          "coverage": 0.6031746031746031,
+          "n_bull": 0,
+          "n_bear": 38,
+          "accuracy": 10.526315789473683,
+          "bull_mean": null,
+          "bear_mean": 2.9
         }
       ],
-      "mean_accuracy": 41.7,
+      "mean_accuracy": 10.5,
       "accuracy_cv": 0.0,
-      "mean_coverage": 38.1,
+      "mean_coverage": 60.3,
       "coverage_cv": 0.0,
       "trainable": false,
       "note": "数据不足或跨窗口不稳定，暂不训练"
     },
     "US": {
-      "status": "ok",
-      "windows": [
-        {
-          "name": "全部",
-          "dates": [
-            "2026-07-10",
-            "2026-07-16"
-          ],
-          "n": 104,
-          "n_evaluable": 104,
-          "coverage": 0.4807692307692308,
-          "n_bull": 27,
-          "n_bear": 23,
-          "accuracy": 46.0,
-          "bull_mean": -0.09,
-          "bear_mean": -1.4
-        }
-      ],
-      "mean_accuracy": 46.0,
-      "accuracy_cv": 0.0,
-      "mean_coverage": 48.1,
-      "coverage_cv": 0.0,
-      "trainable": false,
-      "note": "数据不足或跨窗口不稳定，暂不训练"
+      "status": "insufficient_data"
     }
   }
 }
