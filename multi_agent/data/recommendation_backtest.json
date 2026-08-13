@@ -1,31 +1,211 @@
 {
-  "generated_at": "2026-07-22 12:14:23",
+  "generated_at": "2026-08-13 11:25:23",
   "n_records": 9,
   "n_files": 1,
   "summary": {
     "1d": {
-      "total": 1,
-      "overall_mean_return": -1.269,
-      "overall_win_rate": 0.0,
+      "total": 9,
+      "overall_mean_return": -0.576,
+      "overall_win_rate": 33.33,
       "by_signal": {
+        "看多_long": {
+          "count": 5,
+          "mean_return": -2.476,
+          "median_return": -1.983,
+          "win_rate": 20.0,
+          "direction_accuracy": 20.0
+        },
         "看空_short/avoid": {
-          "count": 1,
-          "mean_return": -1.269,
-          "median_return": -1.269,
-          "win_rate": 0.0,
-          "direction_accuracy": 100.0
+          "count": 4,
+          "mean_return": 1.799,
+          "median_return": 1.744,
+          "win_rate": 50.0,
+          "direction_accuracy": 50.0
         }
       },
       "by_category": {
         "ETF": {
           "count": 1,
-          "mean_return": -1.269,
+          "mean_return": -2.239,
+          "win_rate": 0.0
+        },
+        "US": {
+          "count": 3,
+          "mean_return": -4.829,
+          "win_rate": 0.0
+        },
+        "个股": {
+          "count": 4,
+          "mean_return": 2.99,
+          "win_rate": 75.0
+        },
+        "期货": {
+          "count": 1,
+          "mean_return": -0.417,
+          "win_rate": 0.0
+        }
+      }
+    },
+    "3d": {
+      "total": 9,
+      "overall_mean_return": -1.706,
+      "overall_win_rate": 44.44,
+      "by_signal": {
+        "看多_long": {
+          "count": 5,
+          "mean_return": -2.721,
+          "median_return": -1.421,
+          "win_rate": 20.0,
+          "direction_accuracy": 20.0
+        },
+        "看空_short/avoid": {
+          "count": 4,
+          "mean_return": -0.438,
+          "median_return": 0.865,
+          "win_rate": 75.0,
+          "direction_accuracy": 25.0
+        }
+      },
+      "by_category": {
+        "ETF": {
+          "count": 1,
+          "mean_return": -6.642,
+          "win_rate": 0.0
+        },
+        "US": {
+          "count": 3,
+          "mean_return": -4.559,
+          "win_rate": 0.0
+        },
+        "个股": {
+          "count": 4,
+          "mean_return": 1.175,
+          "win_rate": 75.0
+        },
+        "期货": {
+          "count": 1,
+          "mean_return": 0.264,
+          "win_rate": 100.0
+        }
+      }
+    },
+    "5d": {
+      "total": 9,
+      "overall_mean_return": 0.282,
+      "overall_win_rate": 55.56,
+      "by_signal": {
+        "看多_long": {
+          "count": 5,
+          "mean_return": -0.064,
+          "median_return": 1.67,
+          "win_rate": 60.0,
+          "direction_accuracy": 60.0
+        },
+        "看空_short/avoid": {
+          "count": 4,
+          "mean_return": 0.714,
+          "median_return": 1.687,
+          "win_rate": 50.0,
+          "direction_accuracy": 50.0
+        }
+      },
+      "by_category": {
+        "ETF": {
+          "count": 1,
+          "mean_return": -5.0,
+          "win_rate": 0.0
+        },
+        "US": {
+          "count": 3,
+          "mean_return": -0.213,
+          "win_rate": 66.67
+        },
+        "个股": {
+          "count": 4,
+          "mean_return": 2.117,
+          "win_rate": 75.0
+        },
+        "期货": {
+          "count": 1,
+          "mean_return": -0.292,
+          "win_rate": 0.0
+        }
+      }
+    },
+    "10d": {
+      "total": 9,
+      "overall_mean_return": 3.787,
+      "overall_win_rate": 77.78,
+      "by_signal": {
+        "看多_long": {
+          "count": 5,
+          "mean_return": 2.957,
+          "median_return": 4.322,
+          "win_rate": 80.0,
+          "direction_accuracy": 80.0
+        },
+        "看空_short/avoid": {
+          "count": 4,
+          "mean_return": 4.824,
+          "median_return": 6.159,
+          "win_rate": 75.0,
+          "direction_accuracy": 25.0
+        }
+      },
+      "by_category": {
+        "ETF": {
+          "count": 1,
+          "mean_return": 2.836,
+          "win_rate": 100.0
+        },
+        "US": {
+          "count": 3,
+          "mean_return": 1.38,
+          "win_rate": 66.67
+        },
+        "个股": {
+          "count": 4,
+          "mean_return": 7.561,
+          "win_rate": 100.0
+        },
+        "期货": {
+          "count": 1,
+          "mean_return": -3.141,
           "win_rate": 0.0
         }
       }
     }
   },
-  "portfolio_summary": {},
+  "portfolio_summary": {
+    "1d": {
+      "mean_return": -2.476,
+      "median_return": -2.476,
+      "win_rate": 0.0,
+      "cumulative_return": -2.476,
+      "n_days": 1
+    },
+    "3d": {
+      "mean_return": -2.721,
+      "median_return": -2.721,
+      "win_rate": 0.0,
+      "cumulative_return": -2.721,
+      "n_days": 1
+    },
+    "5d": {
+      "mean_return": -0.064,
+      "median_return": -0.064,
+      "win_rate": 0.0,
+      "cumulative_return": -0.064,
+      "n_days": 1
+    },
+    "10d": {
+      "mean_return": 2.957,
+      "median_return": 2.957,
+      "win_rate": 100.0,
+      "cumulative_return": 2.957,
+      "n_days": 1
+    }
+  },
   "records": [
     {
       "pred_date": "2026-07-21",
@@ -35,10 +215,10 @@
       "signal": "看多",
       "side": "long",
       "entry_price": 10.73,
-      "forward_return_1d": null,
-      "forward_return_3d": null,
-      "forward_return_5d": null,
-      "forward_return_10d": null,
+      "forward_return_1d": -0.008387698042870442,
+      "forward_return_3d": -0.02982292637465054,
+      "forward_return_5d": -0.01863932898415667,
+      "forward_return_10d": 0.06057781919850888,
       "status": "ok"
     },
     {
@@ -49,10 +229,10 @@
       "signal": "看多",
       "side": "long",
       "entry_price": 9.16,
-      "forward_return_1d": null,
-      "forward_return_3d": null,
-      "forward_return_5d": null,
-      "forward_return_10d": null,
+      "forward_return_1d": 0.029475982532751046,
+      "forward_return_3d": 0.03056768558951958,
+      "forward_return_5d": 0.0218340611353711,
+      "forward_return_10d": 0.045851528384279465,
       "status": "ok"
     },
     {
@@ -63,10 +243,10 @@
       "signal": "看多",
       "side": "long",
       "entry_price": 360.57,
-      "forward_return_1d": null,
-      "forward_return_3d": null,
-      "forward_return_5d": null,
-      "forward_return_10d": null,
+      "forward_return_1d": -0.019829714063843297,
+      "forward_return_3d": -0.013395457192778057,
+      "forward_return_5d": 0.016695787225781352,
+      "forward_return_10d": 0.025015946972848497,
       "status": "ok"
     },
     {
@@ -77,10 +257,10 @@
       "signal": "看多",
       "side": "long",
       "entry_price": 547.44,
-      "forward_return_1d": null,
-      "forward_return_3d": null,
-      "forward_return_5d": null,
-      "forward_return_10d": null,
+      "forward_return_1d": -0.02824053777582938,
+      "forward_return_3d": -0.014211603098056564,
+      "forward_return_5d": 0.02796653514540396,
+      "forward_return_10d": 0.04321934823907637,
       "status": "ok"
     },
     {
@@ -91,10 +271,10 @@
       "signal": "看多",
       "side": "long",
       "entry_price": 134.2,
-      "forward_return_1d": null,
-      "forward_return_3d": null,
-      "forward_return_5d": null,
-      "forward_return_10d": null,
+      "forward_return_1d": -0.09679582712369594,
+      "forward_return_3d": -0.10916542473919517,
+      "forward_return_5d": -0.051043219076005925,
+      "forward_return_10d": -0.026825633383010392,
       "status": "ok"
     },
     {
@@ -105,10 +285,10 @@
       "signal": "看空",
       "side": "short/avoid",
       "entry_price": 143900.0,
-      "forward_return_1d": null,
-      "forward_return_3d": null,
-      "forward_return_5d": null,
-      "forward_return_10d": null,
+      "forward_return_1d": -0.004169562195969423,
+      "forward_return_3d": 0.002640722724113968,
+      "forward_return_5d": -0.0029186935371785963,
+      "forward_return_10d": -0.03141070187630299,
       "status": "ok"
     },
     {
@@ -119,10 +299,10 @@
       "signal": "看空",
       "side": "short/avoid",
       "entry_price": 37.65,
-      "forward_return_1d": null,
-      "forward_return_3d": null,
-      "forward_return_5d": null,
-      "forward_return_10d": null,
+      "forward_return_1d": 0.03904382470119519,
+      "forward_return_3d": 0.0316069057104915,
+      "forward_return_5d": 0.03665338645418333,
+      "forward_return_10d": 0.10119521912350604,
       "status": "ok"
     },
     {
@@ -133,10 +313,10 @@
       "signal": "看空",
       "side": "short/avoid",
       "entry_price": 1.34,
-      "forward_return_1d": -0.012686567164179197,
-      "forward_return_3d": null,
-      "forward_return_5d": null,
-      "forward_return_10d": null,
+      "forward_return_1d": -0.022388059701492557,
+      "forward_return_3d": -0.06641791044776134,
+      "forward_return_5d": -0.05000000000000013,
+      "forward_return_10d": 0.02835820895522374,
       "status": "ok"
     },
     {
@@ -147,10 +327,10 @@
       "signal": "看空",
       "side": "short/avoid",
       "entry_price": 11.6,
-      "forward_return_1d": null,
-      "forward_return_3d": null,
-      "forward_return_5d": null,
-      "forward_return_10d": null,
+      "forward_return_1d": 0.059482758620689614,
+      "forward_return_3d": 0.014655172413793098,
+      "forward_return_5d": 0.044827586206896516,
+      "forward_return_10d": 0.09482758620689652,
       "status": "ok"
     }
   ]

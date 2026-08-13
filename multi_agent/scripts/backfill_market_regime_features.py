@@ -137,20 +137,61 @@ def _get_industry_top5(date: str) -> Dict[str, Any]:
         return {'error': f'industry_flow:{type(e).__name__}'}
 
 
-def _get_concept_top5(date: str) -> Dict[str, Any]:
+def _get_limit_ladder_stats(date: str) -> Dict[str, Any]:
+    """连板梯队统计：按连板数分层计数，并计算封板资金与主导行业/概念。"""
+    d = date.replace('-', '')
+    try:
+        df = ak.stock_zt_pool_em(date=d)
+        if df is None or df.empty or '代码' not in df.columns or '连板数' not in df.columns:
+            return {}
+        # 封板资金转亿元
+        df['封板资金_亿元'] = pd.to_numeric(df.get('封板资金', 0), errors='coerce') / 1e8
+        # 分层统计
+        ladder_counts = df.groupby('连板数').size().to_dict()
+        # 合并 5 板及以上
+        ladder = {
+            'ladder_1b': int(ladder_counts.get(1, 0)),
+            'ladder_2b': int(ladder_counts.get(2, 0)),
+            'ladder_3b': int(ladder_counts.get(3, 0)),
+            'ladder_4b': int(ladder_counts.get(4, 0)),
+            'ladder_5b_plus': int(sum(c for lv, c in ladder_counts.items() if lv >= 5)),
+            'ladder_max_board': int(df['连板数'].max()) if not df['连板数'].empty else 0,
+            'ladder_total': len(df),
+            'ladder_avg_seal_capital_亿元': round(df['封板资金_亿元'].mean(), 3) if not df.empty else None,
+            'ladder_total_seal_capital_亿元': round(df['封板资金_亿元'].sum(), 3) if not df.empty else None,
+        }
+        # 连板股最多前 3 行业
+        if '所属行业' in df.columns and not df['所属行业'].dropna().empty:
+            top_sectors = df['所属行业'].value_counts().head(3).to_dict()
+            ladder['ladder_top3_sectors'] = {str(k): int(v) for k, v in top_sectors.items()}
+        return ladder
+    except Exception as e:
+        return {'error': f'limit_ladder:{type(e).__name__}'}
+
+
+def _get_concept_rps(date: str) -> Dict[str, Any]:
+    """概念 RPS 轮动：基于当日同花顺概念涨跌幅计算 Top/Bottom 与分化度。"""
     try:
         df = ak.stock_fund_flow_concept()
-        if df is None or df.empty or '行业' not in df.columns:
+        if df is None or df.empty or '行业-涨跌幅' not in df.columns or '行业' not in df.columns:
             return {}
-        df['净额_亿元'] = df['净额'].apply(lambda x: _parse_amount(str(x)) / 10000)
-        df = df.sort_values('净额_亿元', ascending=False)
-        top5 = df.head(5)[['行业', '净额_亿元']].to_dict('records')
+        df['ret_pct'] = pd.to_numeric(df['行业-涨跌幅'], errors='coerce')
+        df = df.dropna(subset=['ret_pct']).sort_values('ret_pct', ascending=False)
+        top5 = df.head(5)[['行业', 'ret_pct']].to_dict('records')
+        bot5 = df.tail(5)[['行业', 'ret_pct']].to_dict('records')
+        top10_avg = df.head(10)['ret_pct'].mean()
+        bot10_avg = df.tail(10)['ret_pct'].mean()
         return {
             'concept_top5': top5,
-            'concept_total_net': round(df['净额_亿元'].sum(), 2),
+            'concept_bottom5': bot5,
+            'concept_top5_avg_return': round(sum(r['ret_pct'] for r in top5) / len(top5), 2) if top5 else None,
+            'concept_bottom5_avg_return': round(sum(r['ret_pct'] for r in bot5) / len(bot5), 2) if bot5 else None,
+            'concept_rps_dispersion': round(top10_avg - bot10_avg, 2) if not pd.isna(top10_avg) and not pd.isna(bot10_avg) else None,
+            'concept_leader': top5[0]['行业'] if top5 else None,
+            'concept_leader_return': round(top5[0]['ret_pct'], 2) if top5 else None,
         }
     except Exception as e:
-        return {'error': f'concept_flow:{type(e).__name__}'}
+        return {'error': f'concept_rps:{type(e).__name__}'}
 
 
 def _get_index_returns(date: str) -> Dict[str, Any]:
@@ -202,8 +243,10 @@ def _build_regime(date: str) -> Optional[Dict[str, Any]]:
         'date': date,
         'breadth': _get_breadth_stats(date),
         'zt_stats': _get_zt_stats(date),
+        'limit_ladder': _get_limit_ladder_stats(date),
+        'concept_rps': _get_concept_rps(date),
         'industry_flow': _get_industry_top5(date),
-        'concept_flow': _get_concept_top5(date),
+        'concept_flow': {},  # 保留空槽位（资金流版概念Top5），已被 concept_rps 替代
         'index_returns': _get_index_returns(date),
         'macro_indicators': _load_macro_indicators(date),
         'lhb': _load_lhb_cache(date),
@@ -217,17 +260,29 @@ def _build_regime(date: str) -> Optional[Dict[str, Any]]:
         scalar['down_count'] = bd['down_count']
         scalar['breadth_ratio'] = bd.get('breadth_ratio', 0)
     zt = features.get('zt_stats') or {}
-    if 'limit_up' in zt:
+    if zt and 'limit_up' in zt:
         scalar['limit_up'] = zt['limit_up']
         scalar['limit_up_zhaban'] = zt.get('limit_up_zhaban', 0)
         scalar['limit_up_lianban'] = zt.get('limit_up_lianban', 0)
 
+    # 连板梯队标量
+    lad = features.get('limit_ladder') or {}
+    if lad and not lad.get('error'):
+        for k in ['ladder_1b', 'ladder_2b', 'ladder_3b', 'ladder_4b', 'ladder_5b_plus',
+                  'ladder_max_board', 'ladder_total', 'ladder_avg_seal_capital_亿元',
+                  'ladder_total_seal_capital_亿元']:
+            if k in lad:
+                scalar[k] = lad[k]
+
     ind = features.get('industry_flow') or {}
     if 'industry_total_net' in ind:
         scalar['industry_total_net'] = ind['industry_total_net']
-    con = features.get('concept_flow') or {}
-    if 'concept_total_net' in con:
-        scalar['concept_total_net'] = con['concept_total_net']
+    con = features.get('concept_rps') or {}
+    if con and not con.get('error'):
+        for k in ['concept_top5_avg_return', 'concept_bottom5_avg_return',
+                  'concept_rps_dispersion', 'concept_leader_return']:
+            if k in con and con[k] is not None:
+                scalar[k] = con[k]
 
     idx = features.get('index_returns') or {}
     if '沪深300' in idx and idx['沪深300'].get('ret_1d') is not None:

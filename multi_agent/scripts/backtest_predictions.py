@@ -51,15 +51,30 @@ def _load_warehouse_prices():
     return bars
 
 
-def _build_return_map(bars):
+def _build_return_map(bars, cost_by_category=None):
+    """构建 horizon forward return map，并扣除交易成本。
+
+    cost_by_category: 不同资产类别的双边交易成本（默认 A股0.20%、ETF0.13%、期货0.10%、US0.08%）。
+    """
+    if cost_by_category is None:
+        cost_by_category = {
+            "个股": 0.0020,
+            "ETF": 0.0013,
+            "期货": 0.0010,
+            "US": 0.0008,
+            "futures": 0.0010,
+        }
     ret_map = {}
     for tk, seq in bars.items():
         dates = [s[0] for s in seq]
         closes = [s[4] for s in seq]
+        cat = seq[0][5] if seq else "个股"
+        cost = cost_by_category.get(cat, cost_by_category.get("个股", 0.0020))
         for i, d in enumerate(dates):
             for h in [1, 3, 5, 10]:
                 if i + h < len(dates) and closes[i] and closes[i + h]:
-                    ret_map[(h, d, tk)] = (closes[i + h] - closes[i]) / closes[i]
+                    raw_ret = (closes[i + h] - closes[i]) / closes[i]
+                    ret_map[(h, d, tk)] = raw_ret - cost
     return ret_map
 
 
@@ -122,9 +137,19 @@ def _evaluate_targets(signal_en, entry_price, stop_loss, take_profit, forward_ba
     if entry_price is None or entry_price <= 0:
         return result
 
-    entry = forward_bars[0].get('open') or forward_bars[0].get('close') or entry_price
+    # A-share T+1: forward_bars[0] is the prediction-day bar, real entry is next open (bars[1]).
+    # We approximate by using forward_bars[1] open if available, otherwise close.
+    entry = forward_bars[1].get('open') if len(forward_bars) > 1 else None
+    if entry is None or entry <= 0:
+        entry = forward_bars[0].get('open') or forward_bars[0].get('close') or entry_price
     if entry is None or entry <= 0:
         entry = entry_price
+
+    # Apply bilateral trading cost depending on signal direction.
+    # cost covers commission + tax + slippage for round trip.
+    cost = 0.0020  # default A-share individual stock
+    # Note: simulated_return_pct currently does not know category; keep default.
+    # For bearish short, cost is symmetric.
 
     if signal_en == 'neutral':
         upper = entry * (1 + neutral_band_pct)
@@ -172,7 +197,8 @@ def _evaluate_targets(signal_en, entry_price, stop_loss, take_profit, forward_ba
                 result['first_hit_trading_days'] = len(forward_bars)
                 result['simulated_exit_price'] = last_close
         if result['simulated_exit_price'] is not None:
-            result['simulated_return_pct'] = (result['simulated_exit_price'] - entry) / entry * 100
+            raw = (result['simulated_exit_price'] - entry) / entry
+            result['simulated_return_pct'] = (raw - cost) * 100
         return result
 
     # bullish / bearish
@@ -232,7 +258,8 @@ def _evaluate_targets(signal_en, entry_price, stop_loss, take_profit, forward_ba
             result['simulated_exit_price'] = last_close
 
     if result['simulated_exit_price'] is not None:
-        result['simulated_return_pct'] = (result['simulated_exit_price'] - entry) / entry * 100
+        raw = (result['simulated_exit_price'] - entry) / entry
+        result['simulated_return_pct'] = (raw - cost) * 100
     return result
 
 

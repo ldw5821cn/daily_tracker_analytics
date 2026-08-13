@@ -30,7 +30,9 @@ def _fetch_tencent_realtime_bar(ticker: str, trade_date: str) -> Optional[Dict[s
     """腾讯实时行情回退：当 akshare 日线尚未发布当日数据时，用实时行情补当日 bar。
 
     返回单日 bar dict（date/open/high/low/close/volume），失败返回 None。
-    仅当 trade_date 是工作日且实时行情时间戳匹配当日时使用。
+    仅当 trade_date 是工作日且实时行情时间戳匹配当日、价格相对昨收在合理范围内时使用。
+    注意：实时行情接口字段与日 K 不同，high/low 不可靠，只采用当前价和成交量，
+    OHLC 用当前价/昨收近似。
     """
     import requests as _rq
     try:
@@ -48,22 +50,34 @@ def _fetch_tencent_realtime_bar(ticker: str, trade_date: str) -> Optional[Dict[s
         r = _rq.get(f"http://qt.gtimg.cn/q={tq}", timeout=10)
         r.encoding = "gbk"
         line = r.text.strip().split(";")[0]
+        if not line or "~" not in line:
+            return None
         parts = line.split("~")
         if len(parts) < 36:
             return None
         ts = parts[30]
         if not ts.startswith(trade_date.replace("-", "")):
             return None  # 实时行情非当日，不采用
+        close = float(parts[3]) if parts[3] else None
+        prev_close = float(parts[5]) if parts[5] else None
+        if close is None or close <= 0:
+            return None
+        # 价格合理性校验：当前价相对昨收偏离超过 20% 视为异常（防止指数/期货串号）
+        if prev_close and prev_close > 0 and abs(close - prev_close) / prev_close > 0.20:
+            return None
+        # 安全：open/high/low 用昨收近似，不直接使用实时盘口中的高低点（parts[33]/34 字段不稳定）
+        ref = prev_close if prev_close and prev_close > 0 else close
+        volume = float(parts[6]) if parts[6] else None
         return {
             "date": trade_date,
             "ticker": ticker,
-            "open": float(parts[5]) if parts[5] else None,
-            "high": float(parts[33]) if parts[33] else None,
-            "low": float(parts[34]) if parts[34] else None,
-            "close": float(parts[3]) if parts[3] else None,
-            "volume": float(parts[6]) if parts[6] else None,  # 手（与 akshare/腾讯日K单位一致）
+            "open": ref,
+            "high": max(ref, close),
+            "low": min(ref, close),
+            "close": close,
+            "volume": volume,  # 手（与 akshare/腾讯日K单位一致）
             "turnover": None,
-            "adj_close": float(parts[3]) if parts[3] else None,
+            "adj_close": close,
             "source": "tencent_realtime",
         }
     except Exception:

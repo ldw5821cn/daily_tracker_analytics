@@ -98,22 +98,40 @@ def sg(score, b, be):
     return "neutral"
 
 
-def load_backtest_returns_from_warehouse():
+def load_backtest_returns_from_warehouse(cost_by_category=None):
+    """从 warehouse.daily_bar 构建 5 日 realized forward return，并扣除交易成本。
+
+    cost_by_category: 不同资产类别的双边交易成本（默认 A股0.20%、ETF0.13%、期货0.10%、US0.08%）。
+    """
+    if cost_by_category is None:
+        cost_by_category = {
+            "个股": 0.0020,
+            "ETF": 0.0013,
+            "期货": 0.0010,
+            "US": 0.0008,
+            "futures": 0.0010,
+        }
     conn = sqlite3.connect(WH, timeout=10)
     conn.row_factory = sqlite3.Row
-    rows = conn.execute("SELECT date, ticker, close FROM daily_bar ORDER BY ticker, date").fetchall()
+    rows = conn.execute(
+        "SELECT date, ticker, close, category FROM daily_bar ORDER BY ticker, date"
+    ).fetchall()
     conn.close()
     bars = {}
     for r in rows:
-        bars.setdefault(r["ticker"], []).append((r["date"], r["close"]))
+        bars.setdefault(r["ticker"], []).append((r["date"], r["close"], r["category"]))
     # build next-trading-date index
     for tk, seq in bars.items():
         dates = [s[0] for s in seq]
         closes = [s[1] for s in seq]
+        # 用第一条的 category 代表该标的类别
+        cat = seq[0][2] if seq else "个股"
+        cost = cost_by_category.get(cat, cost_by_category.get("个股", 0.0020))
         for i, d in enumerate(dates):
             if i + 5 < len(dates):
                 if closes[i] and closes[i+5]:
-                    RET_MAP[(d, tk)] = (closes[i+5] - closes[i]) / closes[i]
+                    raw_ret = (closes[i+5] - closes[i]) / closes[i]
+                    RET_MAP[(d, tk)] = raw_ret - cost
     return RET_MAP
 
 
