@@ -28,7 +28,10 @@ echo "[$(date +'%Y-%m-%d %H:%M:%S')] 0/9 更新 warehouse 日线行情（最近 
 
 # 0.01 回填最近 5 个交易日 feature_snapshot（技术面快照，依赖 daily_bar）
 echo "[$(date +'%Y-%m-%d %H:%M:%S')] 0.01/9 回填技术面特征快照"
-"${PYTHON}" multi_agent/scripts/backfill_feature_snapshots.py --start $(date -d '5 days ago' +%Y-%m-%d) --end $(date +%Y-%m-%d) || echo "⚠️ backfill_feature_snapshots.py 失败，继续执行"
+if ! "${PYTHON}" multi_agent/scripts/backfill_feature_snapshots_polars.py --start $(date -d '5 days ago' +%Y-%m-%d) --end $(date +%Y-%m-%d); then
+    echo "⚠️ backfill_feature_snapshots_polars.py 失败，回退到 pandas 版"
+    "${PYTHON}" multi_agent/scripts/backfill_feature_snapshots.py --start $(date -d '5 days ago' +%Y-%m-%d) --end $(date +%Y-%m-%d) || echo "⚠️ backfill_feature_snapshots.py 也失败，继续执行"
+fi
 
 # 0.02 回填市场状态（横截面）特征
 echo "[$(date +'%Y-%m-%d %H:%M:%S')] 0.02/9 回填市场状态 regime 特征"

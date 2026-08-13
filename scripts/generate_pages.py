@@ -77,6 +77,7 @@ TABS = [
     ('prediction.html', '🏛️', '预测'),
     ('portfolio.html', '💼', '持仓组合'),
     ('xueqiu_returns.html', '💰', '雪球收益'),
+    ('recommendations.html', '🎯', '推荐回测'),
     ('backtest.html', '📈', '回测'),
     ('reflection.html', '🧠', '复盘'),
     ('data_health.html', '❤️', '数据健康'),
@@ -278,6 +279,14 @@ def _load_regime_features(date: Optional[str] = None) -> Optional[Dict]:
         con = data.get('concept_flow') or {}
         if isinstance(con, dict) and con.get('concept_top5'):
             out['top5_concept'] = con['concept_top5']
+        # 概念 RPS Top5（涨幅版）
+        crps = data.get('concept_rps') or {}
+        if isinstance(crps, dict) and crps.get('concept_top5'):
+            out['top5_concept_rps'] = crps['concept_top5']
+        # 连板梯队分层
+        lad = data.get('limit_ladder') or {}
+        if isinstance(lad, dict) and not lad.get('error'):
+            out['limit_ladder'] = lad
         return out
     except Exception as e:
         print(f"[_load_regime_features] error: {e}")
@@ -343,27 +352,51 @@ def _market_regime_html() -> str:
         _stat_card(f"{pcr:.2f}", "期权 PCR") if pcr else "",
     ])
 
+    # 概念 RPS 卡片
+    concept_rps = r.get('top5_concept_rps', []) or []
+    concept_leader = r.get('concept_leader')
+    concept_leader_ret = r.get('concept_leader_return')
+    concept_disp = r.get('concept_rps_dispersion')
+    concept_rps_cards = "".join([
+        _stat_card(f"{concept_leader or '-'} {concept_leader_ret:+.2f}%", "概念领涨") if concept_leader else "",
+        _stat_card(f"{concept_disp:.2f}%", "概念分化度") if concept_disp else "",
+    ])
+
+    # 连板梯队卡片
+    lad = r.get('limit_ladder') or {}
+    ladder_cards = ""
+    if lad and not lad.get('error'):
+        ladder_cards = "".join([
+            _stat_card(f"{lad.get('ladder_1b', 0)}", "1板"),
+            _stat_card(f"{lad.get('ladder_2b', 0)}", "2板"),
+            _stat_card(f"{lad.get('ladder_3b', 0)}", "3板"),
+            _stat_card(f"{lad.get('ladder_4b_plus', 0)}", "4板+", '#ef4444'),
+            _stat_card(f"{lad.get('ladder_max_board', 0)}板", "最高连板", '#ef4444'),
+            _stat_card(f"{lad.get('ladder_avg_seal_capital_亿元', 0):.2f}亿", "平均封单"),
+        ])
+
     def _top5_rows(items, label):
         if not items:
             return f'<p>暂无 {label} Top5 数据</p>'
         rows = []
         for it in items[:5]:
             name = it.get('行业', it.get('name', 'N/A'))
-            val = it.get('净额_亿元', it.get('net', it.get('net_amount', 0)))
+            val = it.get('净额_亿元', it.get('ret_pct', it.get('net', it.get('net_amount', 0))))
             try:
                 val = float(val)
             except (TypeError, ValueError):
                 val = 0.0
             color = '#ef4444' if val > 0 else '#22c55e'
-            # 亿 -> 万元显示（0.003亿 = 30万 更直观）
-            if abs(val) >= 1:
+            if label == '概念 RPS Top5':
+                disp = f"{val:+.2f}%"
+            elif abs(val) >= 1:
                 disp = f"{val:+.2f}亿"
             else:
                 disp = f"{val*10000:+,.0f}万"
             rows.append(f"<tr><td>{name}</td><td style='color:{color}'>{disp}</td></tr>")
         return f"""
         <table>
-            <thead><tr><th>{label}</th><th>净流入</th></tr></thead>
+            <thead><tr><th>{label}</th><th>{'涨幅' if label == '概念 RPS Top5' else '净流入'}</th></tr></thead>
             <tbody>{''.join(rows)}</tbody>
         </table>
         """
@@ -373,13 +406,22 @@ def _market_regime_html() -> str:
     <div class="stats-grid">
 {cards}
     </div>
-    <div class="section-title">💰 资金流向</div>
+    <div class="section-title">🏆 连板梯队</div>
     <div class="stats-grid">
-{flow_cards}
+{ladder_cards}
+    </div>
+    <div class="section-title">🌀 概念 RPS 轮动</div>
+    <div class="stats-grid">
+{concept_rps_cards}
     </div>
     <div class="table-responsive" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
         {_top5_rows(top5_industry, '行业 Top5')}
         {_top5_rows(top5_concept, '概念 Top5')}
+        {_top5_rows(concept_rps, '概念 RPS Top5')}
+    </div>
+    <div class="section-title">💰 资金流向</div>
+    <div class="stats-grid">
+{flow_cards}
     </div>
     <div class="section-title">🐉 龙虎榜机构动向</div>
     <div class="stats-grid">
@@ -390,7 +432,7 @@ def _market_regime_html() -> str:
 {capital_cards}
     </div>
     <div class="note">
-        <p>涨停/炸板/连板、行业/概念净流入 Top5、龙虎榜机构席位、融资融券与期权 PCR 均来自 akshare / 交易所公开数据，每日盘后自动缓存。</p>
+        <p>涨停/炸板/连板、行业/概念资金流向与 RPS 轮动、龙虎榜机构席位、融资融券与期权 PCR 均来自 akshare / 交易所公开数据，每日盘后自动缓存。</p>
     </div>
 """
 
@@ -1439,6 +1481,129 @@ def _contract_cn(contract: str) -> str:
     }.get(code, contract)
     return f"{cn}({contract})"
 
+
+def _recommendations_backtest_html() -> str:
+    """读取 recommendation_backtest.json 生成推荐回测 HTML 区块。"""
+    bt = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'recommendation_backtest.json'))
+    if not bt or 'summary' not in bt:
+        return ''
+    generated = bt.get('generated_at', '')[:19]
+    n_records = bt.get('n_records', 0)
+    n_files = bt.get('n_files', 0)
+    summary = bt.get('summary', {})
+    portfolio = bt.get('portfolio_summary', {})
+
+    # 汇总卡片：1d/3d/5d/10d 整体均值 + 胜率
+    cards = ""
+    for h in ['1d', '3d', '5d', '10d']:
+        s = summary.get(h, {})
+        p = portfolio.get(h, {})
+        if not s:
+            continue
+        mean_ret = s.get('overall_mean_return', 0)
+        win_rate = s.get('overall_win_rate', 0)
+        cards += "".join([
+            _stat_card(f"{mean_ret:+.2f}%", f"{h} 平均收益", '#ef4444' if mean_ret > 0 else '#22c55e'),
+            _stat_card(f"{win_rate:.1f}%", f"{h} 胜率", '#ef4444' if win_rate >= 50 else '#22c55e'),
+            _stat_card(f"{p.get('mean_return', 0):+.2f}%", f"{h} 组合平均", '#ef4444' if p.get('mean_return', 0) > 0 else '#22c55e'),
+        ])
+
+    # 按 horizon + 信号方向 明细表
+    signal_rows = ""
+    for h in ['1d', '3d', '5d', '10d']:
+        s = summary.get(h, {})
+        for sig, st in s.get('by_signal', {}).items():
+            mean_ret = st.get('mean_return', 0)
+            win_rate = st.get('win_rate', 0)
+            dir_acc = st.get('direction_accuracy', 0)
+            signal_rows += f"""<tr>
+                <td>{h}</td>
+                <td>{sig.replace('_', ' ')}</td>
+                <td>{st.get('count', 0)}</td>
+                <td style="color:{_color_for_return(mean_ret)}">{mean_ret:+.2f}%</td>
+                <td style="color:{'#ef4444' if win_rate >= 50 else '#22c55e'}">{win_rate:.1f}%</td>
+                <td>{dir_acc:.1f}%</td>
+            </tr>"""
+
+    # 按 horizon + 资产类别 明细表
+    cat_rows = ""
+    for h in ['1d', '3d', '5d', '10d']:
+        s = summary.get(h, {})
+        for cat, st in s.get('by_category', {}).items():
+            mean_ret = st.get('mean_return', 0)
+            win_rate = st.get('win_rate', 0)
+            dir_acc = st.get('direction_accuracy', 0)
+            cat_rows += f"""<tr>
+                <td>{h}</td>
+                <td>{cat}</td>
+                <td>{st.get('count', 0)}</td>
+                <td style="color:{_color_for_return(mean_ret)}">{mean_ret:+.2f}%</td>
+                <td style="color:{'#ef4444' if win_rate >= 50 else '#22c55e'}">{win_rate:.1f}%</td>
+                <td>{dir_acc:.1f}%</td>
+            </tr>"""
+
+    # 推荐明细表：每个 record 的 entry/forward returns
+    records = bt.get('records', [])
+    rec_rows = ""
+    for r in records:
+        sig = r.get('signal', '中性')
+        side = r.get('side', 'long')
+        sig_color = '#ef4444' if sig == '看多' else '#22c55e' if sig == '看空' else '#94a3b8'
+        fr1 = r.get('forward_return_1d')
+        fr3 = r.get('forward_return_3d')
+        fr5 = r.get('forward_return_5d')
+        fr10 = r.get('forward_return_10d')
+        def _fr_cell(v):
+            if v is None:
+                return '<td style="color:#64748b">-</td>'
+            v_pct = v * 100
+            return f'<td style="color:{_color_for_return(v_pct)}">{v_pct:+.2f}%</td>'
+        rec_rows += f"""<tr>
+            <td>{r.get('pred_date', '-')}</td>
+            <td><b>{r.get('ticker', '')}</b></td>
+            <td>{r.get('name', '')}</td>
+            <td>{r.get('category', '')}</td>
+            <td style="color:{sig_color}">{sig}</td>
+            <td>{r.get('entry_price', 0):.3f}</td>
+            {_fr_cell(fr1)}
+            {_fr_cell(fr3)}
+            {_fr_cell(fr5)}
+            {_fr_cell(fr10)}
+            <td>{r.get('status', '')}</td>
+        </tr>"""
+
+    return f"""
+    <div class="section-title">🎯 推荐回测（{n_files} 期 · {n_records} 条 · 生成于 {generated}）</div>
+    <div class="stats-grid">
+{cards}
+    </div>
+    <div class="section-title">📊 按信号方向</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>horizon</th><th>信号</th><th>样本数</th><th>均值</th><th>胜率</th><th>方向准确率</th></tr></thead>
+        <tbody>{signal_rows}</tbody>
+    </table>
+    </div>
+    <div class="section-title">📂 按资产类别</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>horizon</th><th>类别</th><th>样本数</th><th>均值</th><th>胜率</th><th>方向准确率</th></tr></thead>
+        <tbody>{cat_rows}</tbody>
+    </table>
+    </div>
+    <div class="section-title">📝 推荐明细</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>日期</th><th>代码</th><th>名称</th><th>类别</th><th>信号</th><th>入场价</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>状态</th></tr></thead>
+        <tbody>{rec_rows}</tbody>
+    </table>
+    </div>
+    <div class="note">
+        <p>基于 <code>recommendation_history/</code> 历史推荐文件回算真实 forward return。样本量仍偏少，结果仅供参考，随推荐历史累积逐渐稳定。</p>
+    </div>
+"""
+
+
 def _load_futures_positions():
     """通过 DAO 读取期货模拟盘持仓并生成 HTML 行。"""
     rows = _db_get_futures_positions(active_only=True)
@@ -1592,11 +1757,23 @@ def generate_backtest_page(dates=None):
 {_model_performance_html()}
 {_forward_return_html()}
 {_portfolio_backtest_html()}
+{_recommendations_backtest_html()}
 """
     title = "📈 回测验证"
     subtitle = "全历史预测 forward return 回测 · 按信号方向/资产类别拆解"
     html = _build_page_skeleton(title, body, 'backtest.html', subtitle, tag='📊 数据驱动回测', dates=dates)
     _write('backtest.html', html)
+
+
+def generate_recommendations_page(dates=None):
+    """生成推荐回测独立页面。"""
+    body = _recommendations_backtest_html()
+    if not body:
+        body = '<div class="empty">暂无推荐回测数据</div>'
+    title = "🎯 推荐回测"
+    subtitle = "历史推荐列表的 1d/3d/5d/10d 真实 forward return 回测"
+    html = _build_page_skeleton(title, body, 'recommendations.html', subtitle, tag='🎯 推荐可信吗', dates=dates)
+    _write('recommendations.html', html)
 
 
 def generate_data_health_page(dates=None):
@@ -1943,6 +2120,7 @@ if __name__ == '__main__':
     generate_prediction_page(stats, rows, dates=dates)
     generate_portfolio_page(dates=dates)
     generate_backtest_page(dates=dates)
+    generate_recommendations_page(dates=dates)
     generate_data_health_page(dates=dates)
     generate_reflection_page(dates=dates)
     generate_xueqiu_returns_page(dates=dates)

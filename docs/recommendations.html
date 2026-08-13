@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎯 推荐回测</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; }
+.container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+.header { background: linear-gradient(135deg, #1e293b, #334155); padding: 30px; border-radius: 16px; margin-bottom: 24px; }
+.header h1 { font-size: 24px; margin-bottom: 8px; }
+.header .sub { color: #94a3b8; font-size: 14px; }
+.stats-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-bottom: 24px; }
+@media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
+.stat-card { background: #1e293b; border-radius: 12px; padding: 16px 10px; text-align: center; }
+.stat-card .num { font-size: 28px; font-weight: bold; white-space: nowrap; }
+.stat-card .label { color: #94a3b8; font-size: 12px; margin-top: 4px; }
+.section-title { font-size: 18px; font-weight: 600; margin: 24px 0 12px; padding-left: 12px; border-left: 4px solid #6366f1; }
+.nav { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; align-items: center; gap: 10px; margin-bottom: 20px; }
+.nav a { display: inline-block; white-space: nowrap; color: #94a3b8; text-decoration: none; padding: 8px 18px; border-radius: 20px; background: #1e293b; border: 1px solid #334155; font-size: 13px; }
+.nav a:hover { background: #334155; color: #e2e8f0; }
+.nav a.active { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; border-color: transparent; }
+.footer { text-align: center; color: #475569; font-size: 12px; margin-top: 40px; padding: 20px; }
+.model-tag { display: inline-block; background: #6366f1; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 8px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.card { background: #1e293b; border-radius: 12px; padding: 16px; border-left: 4px solid #6366f1; }
+.card.bull { border-left-color: #22c55e; }
+.card.bear { border-left-color: #ef4444; }
+.card-title { font-weight: 600; margin-bottom: 6px; }
+.card-meta { color: #94a3b8; font-size: 12px; margin-bottom: 6px; }
+.card-price { color: #e2e8f0; font-size: 13px; margin-bottom: 6px; }
+.card-reason { color: #94a3b8; font-size: 12px; line-height: 1.5; }
+.table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 24px; border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; background: #1e293b; font-size: 13px; min-width: 800px; }
+th { background: #334155; padding: 10px 12px; text-align: left; font-size: 12px; color: #94a3b8; text-transform: uppercase; }
+td { padding: 8px 12px; border-bottom: 1px solid #1e293b; font-size: 13px; }
+tr:hover { background: #334155; }
+.note { background: #1e293b; padding: 16px; border-radius: 12px; color: #cbd5e1; line-height: 1.8; margin-bottom: 24px; }
+.empty { text-align: center; color: #64748b; padding: 40px; }
+</style>
+</head>
+<body>
+<div class="container">
+<div class="nav">
+<a href="index.html" class="">🏠 首页</a>
+<a href="stocks.html" class="">📈 个股</a>
+<a href="us_market.html" class="">🇺🇸 美股</a>
+<a href="etfs.html" class="">📊 ETF</a>
+<a href="futures.html" class="">📉 期货</a>
+<a href="prediction.html" class="">🏛️ 预测</a>
+<a href="portfolio.html" class="">💼 持仓组合</a>
+<a href="xueqiu_returns.html" class="">💰 雪球收益</a>
+<a href="recommendations.html" class="active">🎯 推荐回测</a>
+<a href="backtest.html" class="">📈 回测</a>
+<a href="reflection.html" class="">🧠 复盘</a>
+<a href="data_health.html" class="">❤️ 数据健康</a>
+<select onchange="location.href=this.value" style="background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:20px;padding:8px 14px;font-size:13px;outline:none;cursor:pointer"><option value="" disabled>📅 历史归档</option><option value="archive/2026-08-13.html" >2026-08-13</option><option value="archive/2026-08-12.html" >2026-08-12</option><option value="archive/2026-08-11.html" >2026-08-11</option><option value="archive/2026-08-10.html" >2026-08-10</option><option value="archive/2026-08-07.html" >2026-08-07</option><option value="archive/2026-08-06.html" >2026-08-06</option><option value="archive/2026-08-05.html" >2026-08-05</option></select>
+</div>
+
+    <div class="header">
+        <h1>🎯 推荐回测 <span class="model-tag">🎯 推荐可信吗</span></h1>
+        <div class="sub">历史推荐列表的 1d/3d/5d/10d 真实 forward return 回测</div>
+    </div>
+
+    <div class="section-title">🎯 推荐回测（1 期 · 9 条 · 生成于 2026-08-13 11:25:23）</div>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="num" style="color:#22c55e">-0.58%</div>
+            <div class="label">1d 平均收益</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" style="color:#22c55e">33.3%</div>
+            <div class="label">1d 胜率</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" style="color:#22c55e">-2.48%</div>
+            <div class="label">1d 组合平均</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" style="color:#22c55e">-1.71%</div>
+            <div class="label">3d 平均收益</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" style="color:#22c55e">44.4%</div>
+            <div class="label">3d 胜率</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" style="color:#22c55e">-2.72%</div>
+            <div class="label">3d 组合平均</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" style="color:#ef4444">+0.28%</div>
+            <div class="label">5d 平均收益</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" style="color:#ef4444">55.6%</div>
+            <div class="label">5d 胜率</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" style="color:#22c55e">-0.06%</div>
+            <div class="label">5d 组合平均</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" style="color:#ef4444">+3.79%</div>
+            <div class="label">10d 平均收益</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" style="color:#ef4444">77.8%</div>
+            <div class="label">10d 胜率</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" style="color:#ef4444">+2.96%</div>
+            <div class="label">10d 组合平均</div>
+        </div>
+
+    </div>
+    <div class="section-title">📊 按信号方向</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>horizon</th><th>信号</th><th>样本数</th><th>均值</th><th>胜率</th><th>方向准确率</th></tr></thead>
+        <tbody><tr>
+                <td>1d</td>
+                <td>看多 long</td>
+                <td>5</td>
+                <td style="color:#22c55e">-2.48%</td>
+                <td style="color:#22c55e">20.0%</td>
+                <td>20.0%</td>
+            </tr><tr>
+                <td>1d</td>
+                <td>看空 short/avoid</td>
+                <td>4</td>
+                <td style="color:#ef4444">+1.80%</td>
+                <td style="color:#ef4444">50.0%</td>
+                <td>50.0%</td>
+            </tr><tr>
+                <td>3d</td>
+                <td>看多 long</td>
+                <td>5</td>
+                <td style="color:#22c55e">-2.72%</td>
+                <td style="color:#22c55e">20.0%</td>
+                <td>20.0%</td>
+            </tr><tr>
+                <td>3d</td>
+                <td>看空 short/avoid</td>
+                <td>4</td>
+                <td style="color:#22c55e">-0.44%</td>
+                <td style="color:#ef4444">75.0%</td>
+                <td>25.0%</td>
+            </tr><tr>
+                <td>5d</td>
+                <td>看多 long</td>
+                <td>5</td>
+                <td style="color:#22c55e">-0.06%</td>
+                <td style="color:#ef4444">60.0%</td>
+                <td>60.0%</td>
+            </tr><tr>
+                <td>5d</td>
+                <td>看空 short/avoid</td>
+                <td>4</td>
+                <td style="color:#ef4444">+0.71%</td>
+                <td style="color:#ef4444">50.0%</td>
+                <td>50.0%</td>
+            </tr><tr>
+                <td>10d</td>
+                <td>看多 long</td>
+                <td>5</td>
+                <td style="color:#ef4444">+2.96%</td>
+                <td style="color:#ef4444">80.0%</td>
+                <td>80.0%</td>
+            </tr><tr>
+                <td>10d</td>
+                <td>看空 short/avoid</td>
+                <td>4</td>
+                <td style="color:#ef4444">+4.82%</td>
+                <td style="color:#ef4444">75.0%</td>
+                <td>25.0%</td>
+            </tr></tbody>
+    </table>
+    </div>
+    <div class="section-title">📂 按资产类别</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>horizon</th><th>类别</th><th>样本数</th><th>均值</th><th>胜率</th><th>方向准确率</th></tr></thead>
+        <tbody><tr>
+                <td>1d</td>
+                <td>ETF</td>
+                <td>1</td>
+                <td style="color:#22c55e">-2.24%</td>
+                <td style="color:#22c55e">0.0%</td>
+                <td>0.0%</td>
+            </tr><tr>
+                <td>1d</td>
+                <td>US</td>
+                <td>3</td>
+                <td style="color:#22c55e">-4.83%</td>
+                <td style="color:#22c55e">0.0%</td>
+                <td>0.0%</td>
+            </tr><tr>
+                <td>1d</td>
+                <td>个股</td>
+                <td>4</td>
+                <td style="color:#ef4444">+2.99%</td>
+                <td style="color:#ef4444">75.0%</td>
+                <td>0.0%</td>
+            </tr><tr>
+                <td>1d</td>
+                <td>期货</td>
+                <td>1</td>
+                <td style="color:#22c55e">-0.42%</td>
+                <td style="color:#22c55e">0.0%</td>
+                <td>0.0%</td>
+            </tr><tr>
+                <td>3d</td>
+                <td>ETF</td>
+                <td>1</td>
+                <td style="color:#22c55e">-6.64%</td>
+                <td style="color:#22c55e">0.0%</td>
+                <td>0.0%</td>
+            </tr><tr>
+                <td>3d</td>
+                <td>US</td>
+                <td>3</td>
+                <td style="color:#22c55e">-4.56%</td>
+                <td style="color:#22c55e">0.0%</td>
+                <td>0.0%</td>
+            </tr><tr>
+                <td>3d</td>
+                <td>个股</td>
+                <td>4</td>
+                <td style="color:#ef4444">+1.18%</td>
+                <td style="color:#ef4444">75.0%</td>
+                <td>0.0%</td>
+            </tr><tr>
+                <td>3d</td>
+                <td>期货</td>
+                <td>1</td>
+                <td style="color:#ef4444">+0.26%</td>
+                <td style="color:#ef4444">100.0%</td>
+                <td>0.0%</td>
+            </tr><tr>
+                <td>5d</td>
+                <td>ETF</td>
+                <td>1</td>
+                <td style="color:#22c55e">-5.00%</td>
+                <td style="color:#22c55e">0.0%</td>
+                <td>0.0%</td>
+            </tr><tr>
+                <td>5d</td>
+                <td>US</td>
+                <td>3</td>
+                <td style="color:#22c55e">-0.21%</td>
+                <td style="color:#ef4444">66.7%</td>
+                <td>0.0%</td>
+            </tr><tr>
+                <td>5d</td>
+                <td>个股</td>
+                <td>4</td>
+                <td style="color:#ef4444">+2.12%</td>
+                <td style="color:#ef4444">75.0%</td>
+                <td>0.0%</td>
+            </tr><tr>
+                <td>5d</td>
+                <td>期货</td>
+                <td>1</td>
+                <td style="color:#22c55e">-0.29%</td>
+                <td style="color:#22c55e">0.0%</td>
+                <td>0.0%</td>
+            </tr><tr>
+                <td>10d</td>
+                <td>ETF</td>
+                <td>1</td>
+                <td style="color:#ef4444">+2.84%</td>
+                <td style="color:#ef4444">100.0%</td>
+                <td>0.0%</td>
+            </tr><tr>
+                <td>10d</td>
+                <td>US</td>
+                <td>3</td>
+                <td style="color:#ef4444">+1.38%</td>
+                <td style="color:#ef4444">66.7%</td>
+                <td>0.0%</td>
+            </tr><tr>
+                <td>10d</td>
+                <td>个股</td>
+                <td>4</td>
+                <td style="color:#ef4444">+7.56%</td>
+                <td style="color:#ef4444">100.0%</td>
+                <td>0.0%</td>
+            </tr><tr>
+                <td>10d</td>
+                <td>期货</td>
+                <td>1</td>
+                <td style="color:#22c55e">-3.14%</td>
+                <td style="color:#22c55e">0.0%</td>
+                <td>0.0%</td>
+            </tr></tbody>
+    </table>
+    </div>
+    <div class="section-title">📝 推荐明细</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>日期</th><th>代码</th><th>名称</th><th>类别</th><th>信号</th><th>入场价</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>状态</th></tr></thead>
+        <tbody><tr>
+            <td>2026-07-21</td>
+            <td><b>000612</b></td>
+            <td>焦作万方</td>
+            <td>个股</td>
+            <td style="color:#ef4444">看多</td>
+            <td>10.730</td>
+            <td style="color:#22c55e">-0.84%</td>
+            <td style="color:#22c55e">-2.98%</td>
+            <td style="color:#22c55e">-1.86%</td>
+            <td style="color:#ef4444">+6.06%</td>
+            <td>ok</td>
+        </tr><tr>
+            <td>2026-07-21</td>
+            <td><b>601600</b></td>
+            <td>中国铝业</td>
+            <td>个股</td>
+            <td style="color:#ef4444">看多</td>
+            <td>9.160</td>
+            <td style="color:#ef4444">+2.95%</td>
+            <td style="color:#ef4444">+3.06%</td>
+            <td style="color:#ef4444">+2.18%</td>
+            <td style="color:#ef4444">+4.59%</td>
+            <td>ok</td>
+        </tr><tr>
+            <td>2026-07-21</td>
+            <td><b>V</b></td>
+            <td>Visa</td>
+            <td>US</td>
+            <td style="color:#ef4444">看多</td>
+            <td>360.570</td>
+            <td style="color:#22c55e">-1.98%</td>
+            <td style="color:#22c55e">-1.34%</td>
+            <td style="color:#ef4444">+1.67%</td>
+            <td style="color:#ef4444">+2.50%</td>
+            <td>ok</td>
+        </tr><tr>
+            <td>2026-07-21</td>
+            <td><b>MA</b></td>
+            <td>万事达</td>
+            <td>US</td>
+            <td style="color:#ef4444">看多</td>
+            <td>547.440</td>
+            <td style="color:#22c55e">-2.82%</td>
+            <td style="color:#22c55e">-1.42%</td>
+            <td style="color:#ef4444">+2.80%</td>
+            <td style="color:#ef4444">+4.32%</td>
+            <td>ok</td>
+        </tr><tr>
+            <td>2026-07-21</td>
+            <td><b>NTES</b></td>
+            <td>网易</td>
+            <td>US</td>
+            <td style="color:#ef4444">看多</td>
+            <td>134.200</td>
+            <td style="color:#22c55e">-9.68%</td>
+            <td style="color:#22c55e">-10.92%</td>
+            <td style="color:#22c55e">-5.10%</td>
+            <td style="color:#22c55e">-2.68%</td>
+            <td>ok</td>
+        </tr><tr>
+            <td>2026-07-21</td>
+            <td><b>LC0</b></td>
+            <td>碳酸锂</td>
+            <td>期货</td>
+            <td style="color:#22c55e">看空</td>
+            <td>143900.000</td>
+            <td style="color:#22c55e">-0.42%</td>
+            <td style="color:#ef4444">+0.26%</td>
+            <td style="color:#22c55e">-0.29%</td>
+            <td style="color:#22c55e">-3.14%</td>
+            <td>ok</td>
+        </tr><tr>
+            <td>2026-07-21</td>
+            <td><b>000733</b></td>
+            <td>振华科技</td>
+            <td>个股</td>
+            <td style="color:#22c55e">看空</td>
+            <td>37.650</td>
+            <td style="color:#ef4444">+3.90%</td>
+            <td style="color:#ef4444">+3.16%</td>
+            <td style="color:#ef4444">+3.67%</td>
+            <td style="color:#ef4444">+10.12%</td>
+            <td>ok</td>
+        </tr><tr>
+            <td>2026-07-21</td>
+            <td><b>159530</b></td>
+            <td>机器人ETF易方达</td>
+            <td>ETF</td>
+            <td style="color:#22c55e">看空</td>
+            <td>1.340</td>
+            <td style="color:#22c55e">-2.24%</td>
+            <td style="color:#22c55e">-6.64%</td>
+            <td style="color:#22c55e">-5.00%</td>
+            <td style="color:#ef4444">+2.84%</td>
+            <td>ok</td>
+        </tr><tr>
+            <td>2026-07-21</td>
+            <td><b>600703</b></td>
+            <td>三安光电</td>
+            <td>个股</td>
+            <td style="color:#22c55e">看空</td>
+            <td>11.600</td>
+            <td style="color:#ef4444">+5.95%</td>
+            <td style="color:#ef4444">+1.47%</td>
+            <td style="color:#ef4444">+4.48%</td>
+            <td style="color:#ef4444">+9.48%</td>
+            <td>ok</td>
+        </tr></tbody>
+    </table>
+    </div>
+    <div class="note">
+        <p>基于 <code>recommendation_history/</code> 历史推荐文件回算真实 forward return。样本量仍偏少，结果仅供参考，随推荐历史累积逐渐稳定。</p>
+    </div>
+
+    <div class="footer">
+        数据由 Hermes Agent + 多Agent LLM 预测系统自动生成 · 研究辅助非投资建议 ·
+        <a href="https://github.com/ldw5821cn/daily_tracker_analytics" style="color:#6366f1">GitHub</a>
+    </div>
+</div>
+</body>
+</html>
