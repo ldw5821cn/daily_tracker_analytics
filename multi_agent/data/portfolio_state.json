@@ -1,59 +1,59 @@
 {
- "scan_time": "2026-08-12 16:22",
- "top10": [
-  {
-   "ticker": "000612",
-   "name": "焦作万方",
-   "category": "个股",
-   "weighted_score": 77.1,
-   "current_price": 11.5
+  "scan_time": "2026-08-13 15:59",
+  "top10": [
+    {
+      "ticker": "000612",
+      "name": "焦作万方",
+      "category": "个股",
+      "weighted_score": 77.1,
+      "current_price": 11.5
+    },
+    {
+      "ticker": "600547",
+      "name": "山东黄金",
+      "category": "个股",
+      "weighted_score": 76.9,
+      "current_price": 28.78
+    },
+    {
+      "ticker": "603993",
+      "name": "洛阳钼业",
+      "category": "个股",
+      "weighted_score": 76.4,
+      "current_price": 20.52
+    },
+    {
+      "ticker": "000807",
+      "name": "云铝股份",
+      "category": "个股",
+      "weighted_score": 75.6,
+      "current_price": 26.7
+    },
+    {
+      "ticker": "300999",
+      "name": "金龙鱼",
+      "category": "个股",
+      "weighted_score": 75.1,
+      "current_price": 26.13
+    }
+  ],
+  "simulator": {
+    "total": 100000.0,
+    "cash": 10000.0,
+    "positions": 10
   },
-  {
-   "ticker": "600547",
-   "name": "山东黄金",
-   "category": "个股",
-   "weighted_score": 76.9,
-   "current_price": 28.78
-  },
-  {
-   "ticker": "603993",
-   "name": "洛阳钼业",
-   "category": "个股",
-   "weighted_score": 76.4,
-   "current_price": 20.52
-  },
-  {
-   "ticker": "000807",
-   "name": "云铝股份",
-   "category": "个股",
-   "weighted_score": 75.6,
-   "current_price": 26.7
-  },
-  {
-   "ticker": "300999",
-   "name": "金龙鱼",
-   "category": "个股",
-   "weighted_score": 75.1,
-   "current_price": 26.13
+  "xueqiu_r": {
+    "rebalanced": true,
+    "success_count": 5,
+    "error_count": 0,
+    "errors": [],
+    "weights": {
+      "SZ000807": 15.0,
+      "SH600989": 15.0,
+      "SZ002493": 15.0,
+      "SH601225": 15.0,
+      "SZ000975": 15.0
+    },
+    "note": "target weights synced from recommendations.json 2026-08-13 15:59:43"
   }
- ],
- "simulator": {
-  "total": 100000.0,
-  "cash": 10000.0,
-  "positions": 10
- },
- "xueqiu_r": {
-  "rebalanced": true,
-  "success_count": 5,
-  "error_count": 0,
-  "errors": [],
-  "weights": {
-   "SZ000807": 15.0,
-   "SH601899": 15.0,
-   "SZ000612": 15.0,
-   "SH600989": 15.0,
-   "SH603993": 15.0
-  },
-  "note": "target weights synced from recommendations.json 2026-08-12 16:22:05"
- }
 }

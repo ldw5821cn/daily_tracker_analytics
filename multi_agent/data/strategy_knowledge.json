@@ -4,7 +4,7 @@
   "total_trades": 0,
   "wins": 0,
   "losses": 0,
-  "consecutive_losses": 0,
+  "consecutive_losses": 1,
   "by_sector": {},
   "by_error_type": {},
   "by_market_condition": {},
@@ -20,5 +20,5 @@
   "patterns": [
     "连续上涨3天后追入胜率低于40%"
   ],
-  "last_updated": "2026-08-12T16:08:50.746459"
+  "last_updated": "2026-08-13T15:47:56.797412"
 }
