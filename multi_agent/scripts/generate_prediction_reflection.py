@@ -189,8 +189,75 @@ def generate_reflection():
     ], temperature=0.3, max_tokens=2000)
 
     if not llm_output:
-        print('⚠️ LLM 未返回内容，将保存基础结构。')
-        llm_output = 'LLM 调用失败，未生成反思内容。'
+        print('⚠️ LLM 未返回内容，将保存数据驱动的 fallback 反思。')
+        suggestions = error_analysis.get('suggestions', [])
+        by_signal = error_analysis.get('by_signal', {})
+        by_category = error_analysis.get('by_category', {})
+        worst_signal = ''
+        worst_rate = 0
+        for sig, d in by_signal.items():
+            rate = d.get('error_rate', 0) or 0
+            if rate > worst_rate:
+                worst_rate = rate
+                worst_signal = sig
+        worst_cat = ''
+        worst_cat_rate = 0
+        for cat, d in by_category.items():
+            rate = d.get('error_rate', 0) or 0
+            if rate > worst_cat_rate:
+                worst_cat_rate = rate
+                worst_cat = cat
+        fc = error_analysis.get('feature_compare', {})
+        comp = error_analysis.get('component_compare', {})
+        divergence = error_analysis.get('divergence_analysis', {})
+
+        def _gap(metric):
+            v = fc.get(metric) or comp.get(metric) or divergence.get(metric)
+            if isinstance(v, dict):
+                return v.get('wrong_avg', 0) - v.get('correct_avg', 0)
+            return 0
+
+        gaps = {
+            'weighted_score': _gap('weighted_score'),
+            'confidence': _gap('confidence'),
+            'technical': _gap('技术面') or _gap('technical'),
+            'sentiment': _gap('新闻情绪') or _gap('sentiment'),
+            'fundamental': _gap('基本面') or _gap('fundamental'),
+        }
+        sorted_gaps = sorted(gaps.items(), key=lambda x: abs(x[1]), reverse=True)
+        fallback_lines = [
+            f"# LLM 调用失败，fallback 数据驱动反思（{datetime.now().strftime('%Y-%m-%d %H:%M')}）",
+            f"",
+            f"## 一句话总结",
+            f"当日准确率 {summary.get('accuracy', 0)}%，核心短板是 {worst_signal or '未知信号'} 错误率 {worst_rate:.1f}%，",
+            f"{worst_cat or '某类别'} 错误率 {worst_cat_rate:.1f}%；样本特征分化最大在 {sorted_gaps[0][0]}（差距 {sorted_gaps[0][1]:.2f}）。",
+            f"",
+            f"## 数据驱动改进方向（禁止硬编码阈值）",
+            f"1. 将 {worst_signal or '错误率最高信号'} 的失败样本加入 optimizer 的真实收益标签，",
+            f"   让 parameter_optimizer_v4 自动学习该信号在何种 feature/regime 组合下应当被降级。",
+            f"2. 扩展 {worst_cat or '错误率最高类别'} 的历史数据覆盖（至少 20 个交易日可评估样本），",
+            f"   目前样本不足，硬改阈值会导致过拟合。",
+        ]
+        if sorted_gaps:
+            name, gap = sorted_gaps[0]
+            fallback_lines += [
+                f"3. 针对 '{name}' 正确/错误样本差距（{gap:+.2f}）设计可回测特征：",
+                f"   - 将该指标按市场状态（regime）分组，写入 market_regime_features；",
+                f"   - 用 5 日 forward return + 交易成本作为标签，让优化器学习该指标在不同 regime 下的权重。",
+            ]
+        if suggestions:
+            fallback_lines += [
+                f"4. 规则分析引擎已生成候选建议，但暂不落地为硬编码：{suggestions[:3]}。",
+                f"   这些建议将转化为 optimizer 搜索空间中的可选 feature/penalty，由数据验证后生效。",
+            ]
+        fallback_lines += [
+            f"",
+            f"## 下一步可证伪假设",
+            f"- 假设：{worst_signal or '错误信号'} 在 macro_score 偏{'低' if worst_signal == '看多' else '高'} 时更容易错。",
+            f"- 验证：将 macro_score × {worst_signal or '信号'} 交叉特征加入 feature_snapshot，",
+            f"  待 8/31 前后 optimizer 样本达标后自动评估该交叉项的预测力。",
+        ]
+        llm_output = '\n'.join(fallback_lines)
 
     summary = error_analysis.get('summary', {})
     reflection = {
