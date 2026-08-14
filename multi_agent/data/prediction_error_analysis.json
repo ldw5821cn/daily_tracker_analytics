@@ -1,329 +1,328 @@
 {
-  "pred_date": "2026-08-12",
+  "pred_date": "2026-08-13",
   "validation_date": null,
   "summary": {
     "total": 178,
-    "correct": 84,
-    "wrong": 94,
-    "accuracy": 47.19
+    "correct": 97,
+    "wrong": 81,
+    "accuracy": 54.49
   },
   "by_category": {
     "ETF": {
       "total": 23,
-      "wrong": 8,
-      "error_rate": 34.78
+      "wrong": 5,
+      "error_rate": 21.74
     },
     "个股": {
       "total": 106,
-      "wrong": 72,
-      "error_rate": 67.92
+      "wrong": 52,
+      "error_rate": 49.06
     },
     "期货": {
       "total": 49,
-      "wrong": 14,
-      "error_rate": 28.57
+      "wrong": 24,
+      "error_rate": 48.98
     }
   },
   "by_signal": {
     "中性": {
-      "total": 52,
-      "wrong": 17,
-      "error_rate": 32.69
+      "total": 66,
+      "wrong": 29,
+      "error_rate": 43.94
     },
     "看多": {
-      "total": 80,
-      "wrong": 61,
-      "error_rate": 76.25
+      "total": 83,
+      "wrong": 40,
+      "error_rate": 48.19
     },
     "观望": {
-      "total": 46,
-      "wrong": 16,
-      "error_rate": 34.78
+      "total": 29,
+      "wrong": 12,
+      "error_rate": 41.38
     }
   },
   "feature_compare": {
     "weighted_score": {
-      "correct_avg": 55.12,
-      "wrong_avg": 62.06
+      "correct_avg": 57.53,
+      "wrong_avg": 59.6
     },
     "confidence": {
-      "correct_avg": 0.66,
-      "wrong_avg": 0.7
+      "correct_avg": 0.67,
+      "wrong_avg": 0.69
     }
   },
   "component_compare": {
     "技术面": {
-      "correct_avg": 55.88,
-      "wrong_avg": 59.57
+      "correct_avg": 56.13,
+      "wrong_avg": 57.67
     },
     "新闻情绪": {
-      "correct_avg": 58.48,
-      "wrong_avg": 61.59
+      "correct_avg": 55.89,
+      "wrong_avg": 56.54
     },
     "基本面": {
-      "correct_avg": 59.78,
-      "wrong_avg": 70.57
+      "correct_avg": 63.64,
+      "wrong_avg": 65.16
     },
     "多空辩论净得分": {
-      "correct_avg": -0.42,
-      "wrong_avg": -0.09
+      "correct_avg": -0.65,
+      "wrong_avg": -0.3
     }
   },
   "wrong_top10": [
     {
-      "ticker": "000962",
-      "name": "东方钽业",
+      "ticker": "002138",
+      "name": "顺络电子",
       "category": "个股",
       "signal": "中性",
-      "return_pct": 6328.855,
-      "pred_price": 55.0,
-      "today_price": 3535.87,
-      "weighted_score": 53.4,
-      "confidence": 0.68,
-      "reasoning": "技术面中性(52/100) | 基本面一般(58/100) | 新闻情绪+0.33 | 多空辩论 看涨0.2 vs 看跌2 | 宏观中性(48.0/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "300394",
-      "name": "天孚通信",
-      "category": "个股",
-      "signal": "中性",
-      "return_pct": 7.128,
-      "pred_price": 240.05,
-      "today_price": 257.16,
-      "weighted_score": 56.6,
-      "confidence": 0.63,
-      "reasoning": "技术面中性(52/100) | 基本面优秀(78/100) | 新闻情绪+0.46 | 多空辩论 看涨0.2 vs 看跌1 | 宏观中性(48.0/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "601600",
-      "name": "中国铝业",
-      "category": "个股",
-      "signal": "看多",
-      "return_pct": -5.634,
-      "pred_price": 9.94,
-      "today_price": 9.38,
-      "weighted_score": 72.9,
-      "confidence": 0.87,
-      "reasoning": "技术面中性偏多(67/100) | 基本面优秀(91/100) | 新闻情绪+0.37 | 多空辩论 看涨1.7 vs 看跌0 | 宏观中性(48.0/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "000426",
-      "name": "兴业银锡",
-      "category": "个股",
-      "signal": "看多",
-      "return_pct": -5.56,
-      "pred_price": 40.11,
-      "today_price": 37.88,
-      "weighted_score": 73.0,
-      "confidence": 0.77,
-      "reasoning": "技术面中性偏多(65/100) | 基本面优秀(95/100) | 新闻情绪+0.25 | 多空辩论 看涨1.5 vs 看跌1 | 宏观中性(48.0/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "002428",
-      "name": "云南锗业",
-      "category": "个股",
-      "signal": "观望",
-      "return_pct": -5.444,
-      "pred_price": 105.98,
-      "today_price": 100.21,
-      "weighted_score": 58.9,
-      "confidence": 0.59,
-      "reasoning": "技术面中性(59/100) | 基本面一般(52/100) | 新闻情绪+0.34 | 多空辩论 看涨1 vs 看跌1 | 宏观中性(48.0/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "000657",
-      "name": "中钨高新",
-      "category": "个股",
-      "signal": "看多",
-      "return_pct": -5.296,
-      "pred_price": 70.43,
-      "today_price": 66.7,
-      "weighted_score": 61.7,
-      "confidence": 0.62,
-      "reasoning": "技术面中性(52/100) | 基本面优秀(78/100) | 新闻情绪+0.27 | 多空辩论 看涨1 vs 看跌1 | 宏观中性(48.0/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "688017",
-      "name": "绿的谐波",
-      "category": "个股",
-      "signal": "看多",
-      "return_pct": -5.205,
-      "pred_price": 365.0,
-      "today_price": 346.0,
-      "weighted_score": 66.5,
-      "confidence": 0.7,
-      "reasoning": "技术面中性偏多(65/100) | 基本面良好(70/100) | 新闻情绪+0.20 | 多空辩论 看涨1.5 vs 看跌1 | 宏观中性(48.0/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "600206",
-      "name": "有研新材",
-      "category": "个股",
-      "signal": "看多",
-      "return_pct": -5.175,
-      "pred_price": 52.95,
-      "today_price": 50.21,
-      "weighted_score": 63.0,
-      "confidence": 0.67,
-      "reasoning": "技术面中性偏多(65/100) | 基本面一般(51/100) | 新闻情绪+0.44 | 多空辩论 看涨1.5 vs 看跌1 | 宏观中性(48.0/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "600489",
-      "name": "中金黄金",
-      "category": "个股",
-      "signal": "看多",
-      "return_pct": -4.89,
-      "pred_price": 25.56,
-      "today_price": 24.31,
-      "weighted_score": 72.5,
-      "confidence": 0.77,
-      "reasoning": "技术面中性偏多(65/100) | 基本面优秀(90/100) | 新闻情绪+0.40 | 多空辩论 看涨1.5 vs 看跌1 | 宏观中性(48.0/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "000612",
-      "name": "焦作万方",
-      "category": "个股",
-      "signal": "看多",
-      "return_pct": -4.88,
-      "pred_price": 11.68,
-      "today_price": 11.11,
-      "weighted_score": 75.0,
-      "confidence": 0.89,
-      "reasoning": "技术面中性偏多(67/100) | 基本面优秀(98/100) | 新闻情绪+0.43 | 多空辩论 看涨1.7 vs 看跌0 | 宏观中性(48.0/100) | 市场上下文neutral(50.0/100)上限100%"
-    }
-  ],
-  "correct_top10": [
-    {
-      "ticker": "000959",
-      "name": "首钢股份",
-      "category": "个股",
-      "signal": "看多",
-      "return_pct": 212952.198,
-      "pred_price": 3.64,
-      "today_price": 7755.1,
-      "weighted_score": 60.4,
-      "confidence": 0.68
-    },
-    {
-      "ticker": "000983",
-      "name": "山西焦煤",
-      "category": "个股",
-      "signal": "看多",
-      "return_pct": 189154.29,
-      "pred_price": 6.76,
-      "today_price": 12793.59,
-      "weighted_score": 69.6,
-      "confidence": 0.83
-    },
-    {
-      "ticker": "000807",
-      "name": "云铝股份",
-      "category": "个股",
-      "signal": "看多",
-      "return_pct": 57541.91,
-      "pred_price": 27.44,
-      "today_price": 15816.94,
-      "weighted_score": 75.6,
-      "confidence": 0.89
-    },
-    {
-      "ticker": "000969",
-      "name": "安泰科技",
-      "category": "个股",
-      "signal": "看多",
-      "return_pct": 32826.38,
-      "pred_price": 17.21,
-      "today_price": 5666.63,
-      "weighted_score": 58.2,
-      "confidence": 0.71
-    },
-    {
-      "ticker": "000975",
-      "name": "银泰黄金",
-      "category": "个股",
-      "signal": "看多",
-      "return_pct": 5206.626,
-      "pred_price": 25.96,
-      "today_price": 1377.6,
-      "weighted_score": 72.0,
-      "confidence": 0.84
-    },
-    {
-      "ticker": "000923",
-      "name": "河钢资源",
-      "category": "个股",
-      "signal": "看多",
-      "return_pct": 1631.283,
-      "pred_price": 14.96,
-      "today_price": 259.0,
-      "weighted_score": 67.6,
-      "confidence": 0.81
+      "return_pct": 6.769,
+      "pred_price": 48.9,
+      "today_price": 52.21,
+      "weighted_score": 57.4,
+      "confidence": 0.65,
+      "reasoning": "技术面中性(52/100) | 基本面良好(70/100) | 新闻情绪+0.20 | 多空辩论 看涨1 vs 看跌2 | 宏观中性(50.6/100) | 市场上下文neutral(50.0/100)上限100%"
     },
     {
       "ticker": "601991",
       "name": "大唐发电",
       "category": "个股",
       "signal": "看多",
-      "return_pct": 10.016,
-      "pred_price": 6.29,
-      "today_price": 6.92,
-      "weighted_score": 61.0,
-      "confidence": 0.75
+      "return_pct": -6.358,
+      "pred_price": 6.92,
+      "today_price": 6.48,
+      "weighted_score": 59.7,
+      "confidence": 0.66,
+      "reasoning": "技术面中性(52/100) | 基本面优秀(86/100) | 新闻情绪+0.45 | 多空辩论 看涨0.2 vs 看跌1 | 宏观中性(50.6/100) | 市场上下文neutral(50.0/100)上限100%"
     },
     {
-      "ticker": "JM0",
-      "name": "焦煤",
-      "category": "期货",
+      "ticker": "600547",
+      "name": "山东黄金",
+      "category": "个股",
       "signal": "看多",
-      "return_pct": 9.453,
-      "pred_price": 1343.5,
-      "today_price": 1470.5,
-      "weighted_score": 64.9,
-      "confidence": 0.81
+      "return_pct": -5.416,
+      "pred_price": 31.02,
+      "today_price": 29.34,
+      "weighted_score": 70.9,
+      "confidence": 0.84,
+      "reasoning": "技术面中性偏多(67/100) | 基本面优秀(82/100) | 新闻情绪+0.40 | 多空辩论 看涨1.7 vs 看跌0 | 宏观中性(50.6/100) | 市场上下文neutral(50.0/100)上限100%"
     },
     {
-      "ticker": "AP0",
-      "name": "苹果",
+      "ticker": "301319",
+      "name": "唯特偶",
+      "category": "个股",
+      "signal": "中性",
+      "return_pct": 4.845,
+      "pred_price": 109.8,
+      "today_price": 115.12,
+      "weighted_score": 56.5,
+      "confidence": 0.64,
+      "reasoning": "技术面中性(52/100) | 基本面良好(62/100) | 新闻情绪+0.40 | 多空辩论 看涨1 vs 看跌2 | 宏观中性(50.6/100) | 市场上下文neutral(50.0/100)上限100%"
+    },
+    {
+      "ticker": "300618",
+      "name": "寒锐钴业",
+      "category": "个股",
+      "signal": "看多",
+      "return_pct": -4.68,
+      "pred_price": 37.39,
+      "today_price": 35.64,
+      "weighted_score": 65.7,
+      "confidence": 0.7,
+      "reasoning": "技术面中性偏多(65/100) | 基本面良好(63/100) | 新闻情绪+0.37 | 多空辩论 看涨1.5 vs 看跌1 | 宏观中性(50.6/100) | 市场上下文neutral(50.0/100)上限100%"
+    },
+    {
+      "ticker": "000962",
+      "name": "东方钽业",
+      "category": "个股",
+      "signal": "中性",
+      "return_pct": 4.551,
+      "pred_price": 52.96,
+      "today_price": 55.37,
+      "weighted_score": 53.5,
+      "confidence": 0.68,
+      "reasoning": "技术面中性(52/100) | 基本面一般(58/100) | 新闻情绪+0.34 | 多空辩论 看涨0.2 vs 看跌2 | 宏观中性(50.6/100) | 市场上下文neutral(50.0/100)上限100%"
+    },
+    {
+      "ticker": "300263",
+      "name": "隆华科技",
+      "category": "个股",
+      "signal": "中性",
+      "return_pct": 4.167,
+      "pred_price": 9.84,
+      "today_price": 10.25,
+      "weighted_score": 57.2,
+      "confidence": 0.72,
+      "reasoning": "技术面中性(52/100) | 基本面良好(74/100) | 新闻情绪+0.28 | 多空辩论 看涨0.2 vs 看跌2 | 宏观中性(50.6/100) | 市场上下文neutral(50.0/100)上限100%"
+    },
+    {
+      "ticker": "300999",
+      "name": "金龙鱼",
+      "category": "个股",
+      "signal": "看多",
+      "return_pct": -4.009,
+      "pred_price": 25.94,
+      "today_price": 24.9,
+      "weighted_score": 63.7,
+      "confidence": 0.72,
+      "reasoning": "技术面中性偏多(60/100) | 基本面优秀(75/100) | 新闻情绪+0.45 | 多空辩论 看涨1 vs 看跌2 | 宏观中性(50.6/100) | 市场上下文neutral(50.0/100)上限100%"
+    },
+    {
+      "ticker": "600459",
+      "name": "贵研铂业",
+      "category": "个股",
+      "signal": "观望",
+      "return_pct": -3.823,
+      "pred_price": 21.71,
+      "today_price": 20.88,
+      "weighted_score": 57.7,
+      "confidence": 0.58,
+      "reasoning": "技术面中性(52/100) | 基本面良好(63/100) | 新闻情绪+0.20 | 多空辩论 看涨1 vs 看跌1 | 宏观中性(50.6/100) | 市场上下文neutral(50.0/100)上限100%"
+    },
+    {
+      "ticker": "SA0",
+      "name": "纯碱",
+      "category": "期货",
+      "signal": "观望",
+      "return_pct": 3.749,
+      "pred_price": 987.0,
+      "today_price": 1024.0,
+      "weighted_score": 52.7,
+      "confidence": 0.55,
+      "reasoning": "技术面中性(57/100) | 基本面bearish(50/100) | 新闻情绪-0.08 | 多空辩论 看涨0.7 vs 看跌1 | 宏观中性(50.6/100) | 市场上下文neutral(50.0/100)上限100%"
+    }
+  ],
+  "correct_top10": [
+    {
+      "ticker": "600392",
+      "name": "盛和资源",
+      "category": "个股",
+      "signal": "看多",
+      "return_pct": 4.595,
+      "pred_price": 22.85,
+      "today_price": 23.9,
+      "weighted_score": 58.2,
+      "confidence": 0.73
+    },
+    {
+      "ticker": "002353",
+      "name": "杰瑞股份",
+      "category": "个股",
+      "signal": "看多",
+      "return_pct": 4.434,
+      "pred_price": 144.58,
+      "today_price": 150.99,
+      "weighted_score": 60.0,
+      "confidence": 0.6
+    },
+    {
+      "ticker": "300502",
+      "name": "新易盛",
+      "category": "个股",
+      "signal": "看多",
+      "return_pct": 4.229,
+      "pred_price": 429.9,
+      "today_price": 448.08,
+      "weighted_score": 59.6,
+      "confidence": 0.68
+    },
+    {
+      "ticker": "300394",
+      "name": "天孚通信",
+      "category": "个股",
+      "signal": "看多",
+      "return_pct": 4.103,
+      "pred_price": 257.16,
+      "today_price": 267.71,
+      "weighted_score": 62.6,
+      "confidence": 0.63
+    },
+    {
+      "ticker": "300489",
+      "name": "光智科技",
+      "category": "个股",
+      "signal": "看多",
+      "return_pct": 3.862,
+      "pred_price": 242.63,
+      "today_price": 252.0,
+      "weighted_score": 63.7,
+      "confidence": 0.68
+    },
+    {
+      "ticker": "300726",
+      "name": "宏达电子",
+      "category": "个股",
+      "signal": "看多",
+      "return_pct": 3.257,
+      "pred_price": 54.04,
+      "today_price": 55.8,
+      "weighted_score": 58.6,
+      "confidence": 0.73
+    },
+    {
+      "ticker": "OI0",
+      "name": "菜油",
       "category": "期货",
       "signal": "看多",
-      "return_pct": 1.535,
-      "pred_price": 7754.0,
-      "today_price": 7873.0,
-      "weighted_score": 64.1,
+      "return_pct": 3.256,
+      "pred_price": 10103.0,
+      "today_price": 10432.0,
+      "weighted_score": 63.5,
       "confidence": 0.72
     },
     {
-      "ticker": "159995",
-      "name": "芯片ETF华夏",
-      "category": "ETF",
-      "signal": "观望",
-      "return_pct": -1.488,
-      "pred_price": 1.21,
-      "today_price": 1.192,
-      "weighted_score": 47.4,
-      "confidence": 0.59
+      "ticker": "600188",
+      "name": "兖矿能源",
+      "category": "个股",
+      "signal": "看多",
+      "return_pct": 3.209,
+      "pred_price": 21.5,
+      "today_price": 22.19,
+      "weighted_score": 71.7,
+      "confidence": 0.76
+    },
+    {
+      "ticker": "600549",
+      "name": "厦门钨业",
+      "category": "个股",
+      "signal": "看多",
+      "return_pct": 3.162,
+      "pred_price": 54.71,
+      "today_price": 56.44,
+      "weighted_score": 60.7,
+      "confidence": 0.69
+    },
+    {
+      "ticker": "000983",
+      "name": "山西焦煤",
+      "category": "个股",
+      "signal": "看多",
+      "return_pct": 2.703,
+      "pred_price": 6.66,
+      "today_price": 6.84,
+      "weighted_score": 71.5,
+      "confidence": 0.79
     }
   ],
   "suggestions": [
-    "整体胜率不足 50%，当前处于学习期，应继续积累真实标签并扩展数据仓库，由 parameter_optimizer 自动学习权重/阈值映射",
     "建议增加日内 TickFlow 数据作为校验，减少滞后技术面影响",
     "建议继续扩展宏观/资金面 Agent 数据维度，让优化器自动判断各周期下的权重"
   ],
   "divergence_analysis": {
     "fundamental_technical_divergence": {
-      "correct_avg": 3.9,
-      "wrong_avg": 10.99,
+      "correct_avg": 7.5,
+      "wrong_avg": 7.5,
       "by_wrong_signal": {
         "看多": {
-          "avg": 12.45,
-          "n": 61
+          "avg": 10.33,
+          "n": 40
         },
         "中性": {
-          "avg": 16.11,
-          "n": 17
+          "avg": 8.07,
+          "n": 29
         },
         "观望": {
-          "avg": 0.03,
-          "n": 16
+          "avg": -3.34,
+          "n": 12
         }
       }
     }
