@@ -1,5 +1,5 @@
 {
-  "scan_time": "2026-08-14 15:45",
+  "scan_time": "2026-08-17 15:44",
   "top10": [
     {
       "ticker": "000612",
@@ -48,12 +48,12 @@
     "error_count": 0,
     "errors": [],
     "weights": {
+      "SZ000612": 15.0,
       "SZ000975": 15.0,
       "SZ002493": 15.0,
-      "SH601225": 15.0,
-      "SH600219": 15.0,
-      "SH600188": 15.0
+      "SZ000983": 15.0,
+      "SH601225": 15.0
     },
-    "note": "auto-sync from recommendations.json 2026-08-14 (macro neutral 49.4)"
+    "note": "synced from recommendations.json 2026-08-17"
   }
 }
