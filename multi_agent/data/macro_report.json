@@ -1,7 +1,7 @@
 {
   "analyst": "宏观市场分析师",
-  "macro_score": 57.9,
-  "macro_signal": "bullish",
+  "macro_score": 52.3,
+  "macro_signal": "neutral",
   "risk_on_off": {
     "state": "neutral",
     "label": "中性（风险/避险平衡）",
@@ -16,74 +16,74 @@
     {
       "ticker": "000001.SH",
       "name": "上证指数",
-      "score": 62,
-      "trend": "neutral",
-      "close": 3927.18,
-      "ma20": 3870.4,
-      "ma60": 3985.82,
-      "return_1d": 0.01,
-      "return_5d": -0.33,
-      "return_20d": 4.33,
-      "vol_20d": 14.05
+      "score": 69,
+      "trend": "bullish",
+      "close": 3982.65,
+      "ma20": 3879.71,
+      "ma60": 3983.65,
+      "return_1d": 1.41,
+      "return_5d": 0.4,
+      "return_20d": 4.91,
+      "vol_20d": 14.52
     },
     {
       "ticker": "000300.SH",
       "name": "沪深300",
-      "score": 62,
-      "trend": "neutral",
-      "close": 4665.88,
-      "ma20": 4648.83,
-      "ma60": 4785.35,
-      "return_1d": 0.04,
-      "return_5d": -0.61,
-      "return_20d": 3.02,
-      "vol_20d": 20.7
+      "score": 69,
+      "trend": "bullish",
+      "close": 4741.1,
+      "ma20": 4655.97,
+      "ma60": 4783.62,
+      "return_1d": 1.61,
+      "return_5d": 0.83,
+      "return_20d": 3.1,
+      "vol_20d": 20.78
     },
     {
       "ticker": "000905.SH",
       "name": "中证500",
-      "score": 64,
-      "trend": "neutral",
-      "close": 7990.33,
-      "ma20": 7718.3,
-      "ma60": 8216.43,
-      "return_1d": 0.28,
-      "return_5d": 0.13,
-      "return_20d": 6.34,
-      "vol_20d": 34.74
+      "score": 67,
+      "trend": "bullish",
+      "close": 8184.64,
+      "ma20": 7756.96,
+      "ma60": 8209.89,
+      "return_1d": 2.43,
+      "return_5d": 1.91,
+      "return_20d": 10.43,
+      "vol_20d": 34.9
     },
     {
       "ticker": "399006.SZ",
       "name": "创业板指",
-      "score": 67,
-      "trend": "bullish",
-      "close": 3740.16,
-      "ma20": 3512.02,
-      "ma60": 3837.55,
-      "return_1d": 3.14,
-      "return_5d": 5.74,
-      "return_20d": 8.63,
-      "vol_20d": 52.25
+      "score": 64,
+      "trend": "neutral",
+      "close": 3705.56,
+      "ma20": 3513.0,
+      "ma60": 3832.29,
+      "return_1d": -0.92,
+      "return_5d": 4.41,
+      "return_20d": 0.53,
+      "vol_20d": 46.24
     },
     {
       "ticker": "399673.SZ",
       "name": "创业板50",
-      "score": 67,
-      "trend": "bullish",
-      "close": 3929.29,
-      "ma20": 3705.67,
-      "ma60": 4094.95,
-      "return_1d": 3.19,
-      "return_5d": 6.46,
-      "return_20d": 7.1,
-      "vol_20d": 55.63
+      "score": 57,
+      "trend": "neutral",
+      "close": 3888.09,
+      "ma20": 3703.5,
+      "ma60": 4087.89,
+      "return_1d": -1.05,
+      "return_5d": 4.84,
+      "return_20d": -1.1,
+      "vol_20d": 49.72
     }
   ],
   "market_breadth": {
-    "advances": 5,
-    "declines": 0,
-    "score": 100.0,
-    "limit_up": 106,
+    "advances": 3,
+    "declines": 2,
+    "score": 60.0,
+    "limit_up": 79,
     "limit_down": 0
   },
   "us_macro": {
@@ -101,7 +101,7 @@
     "lpr_5y": 3.5,
     "rrr_large": 9.0,
     "rrr_small": 6.0,
-    "shibor_1w": 1.3854,
+    "shibor_1w": 1.38,
     "shibor_3m": 1.43,
     "m2_yoy": 7.7,
     "m1_yoy": 4.0,
@@ -111,7 +111,7 @@
     "gdp_yoy": 5.2,
     "lpr_date": "2026-07-20",
     "rrr_date": "2025年05月15日",
-    "shibor_date": "2026-08-17",
+    "shibor_date": "2026-08-18",
     "m2_date": "2026年07月份",
     "pmi_date": "2025-08-31",
     "china_cpi_date": "2025-08-09",
@@ -120,146 +120,146 @@
   },
   "china_macro_bias": 48.3,
   "macro_indicators": {
-    "date": "2026-08-14",
-    "fetched_at": "2026-08-14T17:06:13.517193",
+    "date": "2026-08-17",
+    "fetched_at": "2026-08-17T17:05:09.152760",
     "northbound": {
-      "date": "2026-08-13",
+      "date": "2026-08-14",
       "net_buy": null,
       "buy_amount": null,
       "sell_amount": null,
       "cumulative_net_buy": null,
-      "hs300": 3926.96
+      "hs300": 3927.18
     },
     "margin": {
-      "date": "2026-08-14",
-      "sh_balance": 13363.62631879,
-      "sz_balance": 12944.08,
-      "total_balance": 26307.70631879
+      "date": "2026-08-17",
+      "sh_balance": 13374.64968109,
+      "sz_balance": 12939.4,
+      "total_balance": 26314.04968109
     },
     "option_pcr": {
-      "date": "2026-08-14",
+      "date": "2026-08-17",
       "pcr_records": [
         {
           "market": "SSE",
           "underlying_code": "510050",
           "underlying_name": "上证50ETF华夏",
-          "trade_date": "2026-08-13",
-          "call_volume": 371856,
-          "put_volume": 260579,
-          "pcr_volume": 70.08,
-          "call_oi": 888114,
-          "put_oi": 557542,
-          "total_oi": 1445656
+          "trade_date": "2026-08-14",
+          "call_volume": 425517,
+          "put_volume": 267217,
+          "pcr_volume": 62.8,
+          "call_oi": 926846,
+          "put_oi": 587528,
+          "total_oi": 1514374
         },
         {
           "market": "SSE",
           "underlying_code": "510300",
           "underlying_name": "沪深300ETF华泰柏瑞",
-          "trade_date": "2026-08-13",
-          "call_volume": 382047,
-          "put_volume": 292566,
-          "pcr_volume": 76.58,
-          "call_oi": 672531,
-          "put_oi": 511496,
-          "total_oi": 1184027
+          "trade_date": "2026-08-14",
+          "call_volume": 413806,
+          "put_volume": 258111,
+          "pcr_volume": 62.37,
+          "call_oi": 677421,
+          "put_oi": 507909,
+          "total_oi": 1185330
         },
         {
           "market": "SSE",
           "underlying_code": "510500",
           "underlying_name": "中证500ETF南方",
-          "trade_date": "2026-08-13",
-          "call_volume": 866947,
-          "put_volume": 634457,
-          "pcr_volume": 73.18,
-          "call_oi": 748077,
-          "put_oi": 793117,
-          "total_oi": 1541194
+          "trade_date": "2026-08-14",
+          "call_volume": 638542,
+          "put_volume": 551665,
+          "pcr_volume": 86.39,
+          "call_oi": 753319,
+          "put_oi": 798489,
+          "total_oi": 1551808
         },
         {
           "market": "SSE",
           "underlying_code": "588000",
           "underlying_name": "科创50ETF华夏",
-          "trade_date": "2026-08-13",
-          "call_volume": 1348077,
-          "put_volume": 1816838,
-          "pcr_volume": 134.77,
-          "call_oi": 1468654,
-          "put_oi": 1389394,
-          "total_oi": 2858048
+          "trade_date": "2026-08-14",
+          "call_volume": 1080428,
+          "put_volume": 1201238,
+          "pcr_volume": 111.18,
+          "call_oi": 1510788,
+          "put_oi": 1388466,
+          "total_oi": 2899254
         },
         {
           "market": "SSE",
           "underlying_code": "588080",
           "underlying_name": "科创50ETF易方达",
-          "trade_date": "2026-08-13",
-          "call_volume": 144160,
-          "put_volume": 272042,
-          "pcr_volume": 188.71,
-          "call_oi": 305412,
-          "put_oi": 300948,
-          "total_oi": 606360
+          "trade_date": "2026-08-14",
+          "call_volume": 107643,
+          "put_volume": 140367,
+          "pcr_volume": 130.4,
+          "call_oi": 312058,
+          "put_oi": 302067,
+          "total_oi": 614125
         },
         {
           "market": "SZSE",
           "underlying_code": "159901",
           "underlying_name": "深证100ETF易方达",
-          "trade_date": "2026-08-13",
-          "call_volume": 45672,
-          "put_volume": 15828,
+          "trade_date": "2026-08-14",
+          "call_volume": 87562,
+          "put_volume": 11238,
           "pcr_volume": null,
-          "call_oi": 38042,
-          "put_oi": 24348,
-          "total_oi": 62390
+          "call_oi": 43817,
+          "put_oi": 24367,
+          "total_oi": 68184
         },
         {
           "market": "SZSE",
           "underlying_code": "159915",
           "underlying_name": "创业板ETF易方达",
-          "trade_date": "2026-08-13",
-          "call_volume": 1059603,
-          "put_volume": 835537,
+          "trade_date": "2026-08-14",
+          "call_volume": 861398,
+          "put_volume": 712776,
           "pcr_volume": null,
-          "call_oi": 989600,
-          "put_oi": 874679,
-          "total_oi": 1864279
+          "call_oi": 993511,
+          "put_oi": 889864,
+          "total_oi": 1883375
         },
         {
           "market": "SZSE",
           "underlying_code": "159919",
           "underlying_name": "沪深300ETF嘉实",
-          "trade_date": "2026-08-13",
-          "call_volume": 46946,
-          "put_volume": 39036,
+          "trade_date": "2026-08-14",
+          "call_volume": 49471,
+          "put_volume": 34204,
           "pcr_volume": null,
-          "call_oi": 154604,
-          "put_oi": 79666,
-          "total_oi": 234270
+          "call_oi": 156501,
+          "put_oi": 79137,
+          "total_oi": 235638
         },
         {
           "market": "SZSE",
           "underlying_code": "159922",
           "underlying_name": "中证500ETF嘉实",
-          "trade_date": "2026-08-13",
-          "call_volume": 103922,
-          "put_volume": 59777,
+          "trade_date": "2026-08-14",
+          "call_volume": 96426,
+          "put_volume": 49734,
           "pcr_volume": null,
-          "call_oi": 229508,
-          "put_oi": 138444,
-          "total_oi": 367952
+          "call_oi": 228739,
+          "put_oi": 139793,
+          "total_oi": 368532
         }
       ]
     }
   },
-  "capital_flow_score": 53.3,
+  "capital_flow_score": 53.9,
   "yield_curve": {
-    "china_10y": 1.6964,
+    "china_10y": 1.6924,
     "china_2y": 1.2295,
-    "us_10y_proxy": 4.68,
-    "spread": 0.47,
-    "date": "2026-08-14"
+    "us_10y_proxy": 4.72,
+    "spread": 0.46,
+    "date": "2026-08-17"
   },
   "vix_proxy": {
-    "vix_proxy": 20.7,
+    "vix_proxy": 20.78,
     "level": "normal"
   },
   "sector_rotation": {
@@ -267,49 +267,49 @@
       {
         "ticker": "512480",
         "name": "半导体ETF",
-        "ret_5d": 4.72,
-        "ret_20d": 8.85
+        "ret_5d": 5.79,
+        "ret_20d": -1.05
       },
       {
         "ticker": "512760",
         "name": "芯片ETF",
-        "ret_5d": 4.33,
-        "ret_20d": 6.64
+        "ret_5d": 5.44,
+        "ret_20d": -3.3
       },
       {
         "ticker": "515790",
         "name": "光伏ETF",
-        "ret_5d": 2.78,
-        "ret_20d": 12.87
-      },
-      {
-        "ticker": "515030",
-        "name": "新能源车ETF",
-        "ret_5d": 1.13,
-        "ret_20d": 12.0
+        "ret_5d": 2.53,
+        "ret_20d": 9.2
       },
       {
         "ticker": "512200",
         "name": "房地产ETF",
-        "ret_5d": 0.49,
-        "ret_20d": 7.59
+        "ret_5d": 1.07,
+        "ret_20d": 7.78
+      },
+      {
+        "ticker": "515030",
+        "name": "新能源车ETF",
+        "ret_5d": 1.02,
+        "ret_20d": 6.65
       },
       {
         "ticker": "510880",
         "name": "红利ETF",
-        "ret_5d": -0.45,
-        "ret_20d": 1.91
+        "ret_5d": 0.94,
+        "ret_20d": 4.21
       },
       {
         "ticker": "512800",
         "name": "银行ETF",
-        "ret_5d": -0.87,
-        "ret_20d": -1.49
+        "ret_5d": 0.25,
+        "ret_20d": 1.52
       },
       {
         "ticker": "512010",
         "name": "医药ETF",
-        "ret_5d": -0.99,
+        "ret_5d": -0.5,
         "ret_20d": 6.65
       }
     ],
@@ -337,7 +337,7 @@
     "composite_score": 50,
     "composite_signal": "neutral",
     "details": {},
-    "updated_at": "2026-08-17 15:35:50"
+    "updated_at": "2026-08-18 15:34:40"
   },
-  "summary": "# 宏观市场分析报告 (2026-08-17)\n\n综合宏观评分: 57.9/100 | 信号: bullish | 状态: 中性（风险/避险平衡）\n\n## 大盘指数\n- 上证指数(000001.SH): 评分62, 趋势neutral, 1日+0.01%, 5日-0.33%, 20日+4.33%\n- 沪深300(000300.SH): 评分62, 趋势neutral, 1日+0.04%, 5日-0.61%, 20日+3.02%\n- 中证500(000905.SH): 评分64, 趋势neutral, 1日+0.28%, 5日+0.13%, 20日+6.34%\n- 创业板指(399006.SZ): 评分67, 趋势bullish, 1日+3.14%, 5日+5.74%, 20日+8.63%\n- 创业板50(399673.SZ): 评分67, 趋势bullish, 1日+3.19%, 5日+6.46%, 20日+7.10%\n\n## 市场广度\n- 指数上涨: 5 / 下跌: 0\n- 广度得分: 100.0\n- 涨停家数: 106\n\n## 中国宏观（akshare）\n- LPR 1Y: 3.0%, 5Y: 3.5% (日期: 2026-07-20)\n- 存款准备金率: 大型9.0%, 中小6.0% (日期: 2025年05月15日)\n- Shibor 1W: 1.3854%, 3M: 1.43% (日期: 2026-08-17)\n- M2同比: 7.7%, M1同比: 4.0% (日期: 2026年07月份)\n- PMI: 49.4 (日期: 2025-08-31)\n- CPI同比: 0.0%, PPI同比: -3.6% (日期: 2025-08-09)\n- GDP同比: 5.2% (日期: 2025-07-15)\n\n## 美国宏观（akshare）\n- 联邦利率: 4.5% (日期: 2025-07-31)\n- CPI 同比: 3.4% (日期: 2026-08-12)\n- 失业率: 4.2% (日期: 2025-08-01)\n- 初请失业金: 23.7万 (日期: 2025-09-04)\n\n## 收益率曲线与波动率\n- 中国10Y: 1.6964%, 2Y: 1.2295%, 利差: 0.47\n- 美国10Y代理: 4.68%\n- VIX 代理(A股波动率): 20.7, 状态: normal\n\n## 资金面指标（akshare）\n- 北向资金净买入: None 亿元 (日期: 2026-08-13)\n- 融资融券余额: 沪市 13363.62631879 亿元, 深市 12944.08 亿元, 合计 26307.70631879 亿元\n- 期权 PCR（上交所）: 上证50ETF华夏(510050) PCR=70.08, 沪深300ETF华泰柏瑞(510300) PCR=76.58, 中证500ETF南方(510500) PCR=73.18, 科创50ETF华夏(588000) PCR=134.77, 科创50ETF易方达(588080) PCR=188.71\n- 资金面情绪分: 53.3\n\n## 全球半导体动量（美日韩）\n- 综合得分: 50 / 信号: neutral\n- 美股: 50 (5日 +0.00%, 20日 +0.00%)\n- 日本: 50 (5日 +0.00%, 20日 +0.00%)\n- 韩国: 50 (5日 +0.00%, 20日 +0.00%)\n\n## 板块轮动\n- 领涨板块: 半导体ETF\n  - 半导体ETF: 5日+4.72%, 20日+8.85%\n  - 芯片ETF: 5日+4.33%, 20日+6.64%\n  - 光伏ETF: 5日+2.78%, 20日+12.87%\n  - 新能源车ETF: 5日+1.13%, 20日+12.00%\n  - 房地产ETF: 5日+0.49%, 20日+7.59%"
+  "summary": "# 宏观市场分析报告 (2026-08-18)\n\n综合宏观评分: 52.3/100 | 信号: neutral | 状态: 中性（风险/避险平衡）\n\n## 大盘指数\n- 上证指数(000001.SH): 评分69, 趋势bullish, 1日+1.41%, 5日+0.40%, 20日+4.91%\n- 沪深300(000300.SH): 评分69, 趋势bullish, 1日+1.61%, 5日+0.83%, 20日+3.10%\n- 中证500(000905.SH): 评分67, 趋势bullish, 1日+2.43%, 5日+1.91%, 20日+10.43%\n- 创业板指(399006.SZ): 评分64, 趋势neutral, 1日-0.92%, 5日+4.41%, 20日+0.53%\n- 创业板50(399673.SZ): 评分57, 趋势neutral, 1日-1.05%, 5日+4.84%, 20日-1.10%\n\n## 市场广度\n- 指数上涨: 3 / 下跌: 2\n- 广度得分: 60.0\n- 涨停家数: 79\n\n## 中国宏观（akshare）\n- LPR 1Y: 3.0%, 5Y: 3.5% (日期: 2026-07-20)\n- 存款准备金率: 大型9.0%, 中小6.0% (日期: 2025年05月15日)\n- Shibor 1W: 1.38%, 3M: 1.43% (日期: 2026-08-18)\n- M2同比: 7.7%, M1同比: 4.0% (日期: 2026年07月份)\n- PMI: 49.4 (日期: 2025-08-31)\n- CPI同比: 0.0%, PPI同比: -3.6% (日期: 2025-08-09)\n- GDP同比: 5.2% (日期: 2025-07-15)\n\n## 美国宏观（akshare）\n- 联邦利率: 4.5% (日期: 2025-07-31)\n- CPI 同比: 3.4% (日期: 2026-08-12)\n- 失业率: 4.2% (日期: 2025-08-01)\n- 初请失业金: 23.7万 (日期: 2025-09-04)\n\n## 收益率曲线与波动率\n- 中国10Y: 1.6924%, 2Y: 1.2295%, 利差: 0.46\n- 美国10Y代理: 4.72%\n- VIX 代理(A股波动率): 20.78, 状态: normal\n\n## 资金面指标（akshare）\n- 北向资金净买入: None 亿元 (日期: 2026-08-14)\n- 融资融券余额: 沪市 13374.64968109 亿元, 深市 12939.4 亿元, 合计 26314.04968109 亿元\n- 期权 PCR（上交所）: 上证50ETF华夏(510050) PCR=62.8, 沪深300ETF华泰柏瑞(510300) PCR=62.37, 中证500ETF南方(510500) PCR=86.39, 科创50ETF华夏(588000) PCR=111.18, 科创50ETF易方达(588080) PCR=130.4\n- 资金面情绪分: 53.9\n\n## 全球半导体动量（美日韩）\n- 综合得分: 50 / 信号: neutral\n- 美股: 50 (5日 +0.00%, 20日 +0.00%)\n- 日本: 50 (5日 +0.00%, 20日 +0.00%)\n- 韩国: 50 (5日 +0.00%, 20日 +0.00%)\n\n## 板块轮动\n- 领涨板块: 半导体ETF\n  - 半导体ETF: 5日+5.79%, 20日-1.05%\n  - 芯片ETF: 5日+5.44%, 20日-3.30%\n  - 光伏ETF: 5日+2.53%, 20日+9.20%\n  - 房地产ETF: 5日+1.07%, 20日+7.78%\n  - 新能源车ETF: 5日+1.02%, 20日+6.65%"
 }

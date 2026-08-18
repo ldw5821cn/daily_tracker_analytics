@@ -80,6 +80,7 @@ TABS = [
     ('recommendations.html', '🎯', '推荐回测'),
     ('backtest.html', '📈', '回测'),
     ('reflection.html', '🧠', '复盘'),
+    ('cron_status.html', '⏰', '任务调度'),
     ('data_health.html', '❤️', '数据健康'),
 ]
 
@@ -126,6 +127,77 @@ def _load_json(path):
             return json.load(f)
     except Exception:
         return {}
+
+
+# ---------------------------------------------------------------------------
+# cron 状态页面
+# ---------------------------------------------------------------------------
+
+def _cron_state_badge(state, enabled, last_status):
+    """返回 cron 状态对应的彩色徽章 HTML。"""
+    if not enabled:
+        color, text = '#64748b', '已暂停'
+    elif state == 'paused':
+        color, text = '#f59e0b', '暂停'
+    elif last_status == 'ok':
+        color, text = '#22c55e', '正常'
+    elif last_status == 'error':
+        color, text = '#ef4444', '错误'
+    else:
+        color, text = '#94a3b8', state
+    return f'<span style="display:inline-block;padding:3px 10px;border-radius:12px;background:{color};color:#fff;font-size:12px;">{text}</span>'
+
+
+def _cron_status_html(cron_data: dict, today: str) -> str:
+    """根据 cron job 列表生成状态页面 body。"""
+    jobs = cron_data.get('jobs', [])
+    rows = []
+    for j in jobs:
+        state_badge = _cron_state_badge(j.get('state', ''), j.get('enabled', True), j.get('last_status', ''))
+        last_run = j.get('last_run_at', '-') or '-'
+        next_run = j.get('next_run_at', '-') or '-'
+        if len(str(last_run)) > 19:
+            last_run = str(last_run)[:19]
+        if len(str(next_run)) > 19:
+            next_run = str(next_run)[:19]
+        deliver = j.get('deliver', 'origin')
+        has_err = bool(j.get('last_delivery_error'))
+        err_cell = '❌ 发送失败' if has_err else '✅'
+        rows.append(
+            f"<tr>"
+            f"<td>{j.get('name', '未命名')}</td>"
+            f"<td><code>{j.get('schedule', '-')}</code></td>"
+            f"<td>{last_run}</td>"
+            f"<td>{next_run}</td>"
+            f"<td>{deliver}</td>"
+            f"<td>{state_badge}</td>"
+            f"<td>{err_cell}</td>"
+            f"</tr>"
+        )
+    return f"""
+    <div class="header">
+        <h1>⏰ 定时任务调度状态</h1>
+        <div class="sub">最后更新 {today} · 共 {len(jobs)} 个任务</div>
+    </div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>任务名称</th><th>调度</th><th>最近运行</th><th>下次运行</th><th>投递通道</th><th>状态</th><th>投递</th></tr></thead>
+        <tbody>{''.join(rows)}</tbody>
+    </table>
+    </div>
+    <div class="note">
+        <p>origin = 当前会话（微信）, feishu = 飞书。若微信发送失败但任务本身 ok，状态仍显示为正常，投递列会显示发送失败。</p>
+    </div>
+    """
+
+
+def generate_cron_status_page(dates=None):
+    today = datetime.now().strftime('%Y-%m-%d')
+    cron_data = _load_json(os.path.join(REPO_ROOT, 'multi_agent', 'data', 'cron_status.json'))
+    body = _cron_status_html(cron_data, today)
+    title = f"⏰ 任务调度 - {today}"
+    html = _build_page_skeleton(title, body, 'cron_status.html', '定时任务状态', dates=dates)
+    _write('cron_status.html', html)
 
 
 def _latest_us_etf_quality_path():
@@ -2124,6 +2196,7 @@ if __name__ == '__main__':
     generate_data_health_page(dates=dates)
     generate_reflection_page(dates=dates)
     generate_xueqiu_returns_page(dates=dates)
+    generate_cron_status_page(dates=dates)
     for d in dates:
         generate_archive_page(d, dates=dates)
 

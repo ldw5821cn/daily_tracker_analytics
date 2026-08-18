@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⏰ 任务调度 - 2026-08-18</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; }
+.container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+.header { background: linear-gradient(135deg, #1e293b, #334155); padding: 30px; border-radius: 16px; margin-bottom: 24px; }
+.header h1 { font-size: 24px; margin-bottom: 8px; }
+.header .sub { color: #94a3b8; font-size: 14px; }
+.stats-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-bottom: 24px; }
+@media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
+.stat-card { background: #1e293b; border-radius: 12px; padding: 16px 10px; text-align: center; }
+.stat-card .num { font-size: 28px; font-weight: bold; white-space: nowrap; }
+.stat-card .label { color: #94a3b8; font-size: 12px; margin-top: 4px; }
+.section-title { font-size: 18px; font-weight: 600; margin: 24px 0 12px; padding-left: 12px; border-left: 4px solid #6366f1; }
+.nav { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; align-items: center; gap: 10px; margin-bottom: 20px; }
+.nav a { display: inline-block; white-space: nowrap; color: #94a3b8; text-decoration: none; padding: 8px 18px; border-radius: 20px; background: #1e293b; border: 1px solid #334155; font-size: 13px; }
+.nav a:hover { background: #334155; color: #e2e8f0; }
+.nav a.active { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; border-color: transparent; }
+.footer { text-align: center; color: #475569; font-size: 12px; margin-top: 40px; padding: 20px; }
+.model-tag { display: inline-block; background: #6366f1; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 8px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.card { background: #1e293b; border-radius: 12px; padding: 16px; border-left: 4px solid #6366f1; }
+.card.bull { border-left-color: #22c55e; }
+.card.bear { border-left-color: #ef4444; }
+.card-title { font-weight: 600; margin-bottom: 6px; }
+.card-meta { color: #94a3b8; font-size: 12px; margin-bottom: 6px; }
+.card-price { color: #e2e8f0; font-size: 13px; margin-bottom: 6px; }
+.card-reason { color: #94a3b8; font-size: 12px; line-height: 1.5; }
+.table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 24px; border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; background: #1e293b; font-size: 13px; min-width: 800px; }
+th { background: #334155; padding: 10px 12px; text-align: left; font-size: 12px; color: #94a3b8; text-transform: uppercase; }
+td { padding: 8px 12px; border-bottom: 1px solid #1e293b; font-size: 13px; }
+tr:hover { background: #334155; }
+.note { background: #1e293b; padding: 16px; border-radius: 12px; color: #cbd5e1; line-height: 1.8; margin-bottom: 24px; }
+.empty { text-align: center; color: #64748b; padding: 40px; }
+</style>
+</head>
+<body>
+<div class="container">
+<div class="nav">
+<a href="index.html" class="">🏠 首页</a>
+<a href="stocks.html" class="">📈 个股</a>
+<a href="us_market.html" class="">🇺🇸 美股</a>
+<a href="etfs.html" class="">📊 ETF</a>
+<a href="futures.html" class="">📉 期货</a>
+<a href="prediction.html" class="">🏛️ 预测</a>
+<a href="portfolio.html" class="">💼 持仓组合</a>
+<a href="xueqiu_returns.html" class="">💰 雪球收益</a>
+<a href="recommendations.html" class="">🎯 推荐回测</a>
+<a href="backtest.html" class="">📈 回测</a>
+<a href="reflection.html" class="">🧠 复盘</a>
+<a href="cron_status.html" class="active">⏰ 任务调度</a>
+<a href="data_health.html" class="">❤️ 数据健康</a>
+<select onchange="location.href=this.value" style="background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:20px;padding:8px 14px;font-size:13px;outline:none;cursor:pointer"><option value="" disabled>📅 历史归档</option><option value="archive/2026-08-18.html" >2026-08-18</option><option value="archive/2026-08-17.html" >2026-08-17</option><option value="archive/2026-08-15.html" >2026-08-15</option><option value="archive/2026-08-14.html" >2026-08-14</option><option value="archive/2026-08-13.html" >2026-08-13</option><option value="archive/2026-08-12.html" >2026-08-12</option><option value="archive/2026-08-11.html" >2026-08-11</option></select>
+</div>
+
+    <div class="header">
+        <h1>⏰ 任务调度 </h1>
+        <div class="sub">定时任务状态</div>
+    </div>
+
+    <div class="header">
+        <h1>⏰ 定时任务调度状态</h1>
+        <div class="sub">最后更新 2026-08-18 · 共 17 个任务</div>
+    </div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>任务名称</th><th>调度</th><th>最近运行</th><th>下次运行</th><th>投递通道</th><th>状态</th><th>投递</th></tr></thead>
+        <tbody><tr><td>每日热点资讯推送</td><td><code>0 8 * * 1-5</code></td><td>2026-08-17T01:05:36</td><td>2026-08-18T08:00:00</td><td>origin,feishu</td><td><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#22c55e;color:#fff;font-size:12px;">正常</span></td><td>❌ 发送失败</td></tr><tr><td>期货盘前数据分析报告</td><td><code>30 8 * * 1-5</code></td><td>2026-08-17T00:35:47</td><td>2026-08-18T08:30:00</td><td>origin,feishu</td><td><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#22c55e;color:#fff;font-size:12px;">正常</span></td><td>❌ 发送失败</td></tr><tr><td>每日上证指数趋势分析</td><td><code>45 8 * * 1-5</code></td><td>2026-08-17T00:46:26</td><td>2026-08-18T08:45:00</td><td>origin,feishu</td><td><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#22c55e;color:#fff;font-size:12px;">正常</span></td><td>❌ 发送失败</td></tr><tr><td>多板块 ETF 每日投资分析</td><td><code>0 8 * * 1-5</code></td><td>2026-08-17T08:24:53</td><td>2026-08-18T08:00:00</td><td>origin</td><td><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#22c55e;color:#fff;font-size:12px;">正常</span></td><td>✅</td></tr><tr><td>多Agent量化日报</td><td><code>50 8 * * 1-5</code></td><td>2026-08-17T09:41:13</td><td>2026-08-18T08:50:00</td><td>origin</td><td><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#22c55e;color:#fff;font-size:12px;">正常</span></td><td>❌ 发送失败</td></tr><tr><td>盘中异动监控</td><td><code>*/30 9-15 * * 1-5</code></td><td>2026-08-07T14:01:23</td><td>2026-08-07T14:30:00</td><td>origin</td><td><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#64748b;color:#fff;font-size:12px;">已暂停</span></td><td>✅</td></tr><tr><td>盘后全链路-15:30</td><td><code>30 15 * * 1-5</code></td><td>2026-08-17T15:45:48</td><td>2026-08-18T15:30:00</td><td>origin</td><td><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#22c55e;color:#fff;font-size:12px;">正常</span></td><td>✅</td></tr><tr><td>每周全量扫描+雪球调仓</td><td><code>45 15 * * 1</code></td><td>2026-08-03T15:45:22</td><td>2026-08-10T15:45:00</td><td>origin</td><td><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#64748b;color:#fff;font-size:12px;">已暂停</span></td><td>✅</td></tr><tr><td>期货模拟盘每日更新</td><td><code>30 15 * * 1-5</code></td><td>2026-08-17T15:30:06</td><td>2026-08-18T15:30:00</td><td>local</td><td><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#ef4444;color:#fff;font-size:12px;">错误</span></td><td>❌ 发送失败</td></tr><tr><td>多Agent预测每日生成</td><td><code>30 15 * * 1-5</code></td><td>2026-08-17T16:34:56</td><td>2026-08-18T15:30:00</td><td>origin</td><td><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#22c55e;color:#fff;font-size:12px;">正常</span></td><td>✅</td></tr><tr><td>盘后全链路-evening</td><td><code>0 17 * * 1-5</code></td><td>2026-08-17T17:10:22</td><td>2026-08-18T17:00:00</td><td>origin</td><td><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#22c55e;color:#fff;font-size:12px;">正常</span></td><td>❌ 发送失败</td></tr><tr><td>每日资金流入库</td><td><code>35 15 * * 1-5</code></td><td>2026-08-17T16:35:38</td><td>2026-08-18T15:35:00</td><td>local</td><td><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#22c55e;color:#fff;font-size:12px;">正常</span></td><td>✅</td></tr><tr><td>每日情绪龙虎榜入库</td><td><code>40 15 * * 1-5</code></td><td>2026-08-17T16:37:42</td><td>2026-08-18T15:40:00</td><td>local</td><td><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#22c55e;color:#fff;font-size:12px;">正常</span></td><td>✅</td></tr><tr><td>每日模型表现日报</td><td><code>30 16 * * 1-5</code></td><td>2026-08-17T16:39:17</td><td>2026-08-18T16:30:00</td><td>origin</td><td><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#22c55e;color:#fff;font-size:12px;">正常</span></td><td>✅</td></tr><tr><td>db-health-guardian</td><td><code>every 120m</code></td><td>2026-08-17T16:38:25</td><td>2026-08-17T18:38:25</td><td>origin</td><td><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#22c55e;color:#fff;font-size:12px;">正常</span></td><td>✅</td></tr><tr><td>雪球组合收益每日更新</td><td><code>30 16 * * 1-5</code></td><td>2026-08-17T16:40:06</td><td>2026-08-18T16:30:00</td><td>origin</td><td><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#22c55e;color:#fff;font-size:12px;">正常</span></td><td>✅</td></tr><tr><td>美股预测独立生成（兜底）</td><td><code>30 8 * * 2-6</code></td><td>2026-08-15T08:59:47</td><td>2026-08-18T08:30:00</td><td>local</td><td><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#22c55e;color:#fff;font-size:12px;">正常</span></td><td>✅</td></tr></tbody>
+    </table>
+    </div>
+    <div class="note">
+        <p>origin = 当前会话（微信）, feishu = 飞书。若微信发送失败但任务本身 ok，状态仍显示为正常，投递列会显示发送失败。</p>
+    </div>
+    
+    <div class="footer">
+        数据由 Hermes Agent + 多Agent LLM 预测系统自动生成 · 研究辅助非投资建议 ·
+        <a href="https://github.com/ldw5821cn/daily_tracker_analytics" style="color:#6366f1">GitHub</a>
+    </div>
+</div>
+</body>
+</html>
