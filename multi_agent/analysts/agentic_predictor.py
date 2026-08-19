@@ -130,21 +130,23 @@ def _get_threshold(category: str = '', macro_report: Optional[Dict] = None) -> d
 
 
 def _get_debate_params(category: str = '') -> dict:
-    """返回 debate 相关参数，支持从参数文件学习。"""
+    """返回 debate 相关参数，优先从参数文件学习，避免硬编码默认值。"""
     if _PARAMS.get('_version') in (2, 4, 5):
         v = _PARAMS.get(category, _PARAMS.get('_default', {}))
-        return (v.get('debate_params') if isinstance(v, dict) else None) or {
-            'net_multiplier': 8.0,
-            'quality_min': 2.0,
-            'neutral_override_threshold': 2.0,
-            'neutral_override_weight': 0.6,
-            'low_confidence_threshold': 0.60,
-        }
+        if isinstance(v, dict) and v.get('debate_params'):
+            dp = v['debate_params']
+            return {
+                'net_multiplier': float(dp.get('net_multiplier', 8.0)),
+                'quality_min': float(dp.get('quality_min', 2.0)),
+                'neutral_override_threshold': float(dp.get('neutral_override_threshold', 4.0)),
+                'neutral_override_weight': float(dp.get('neutral_override_weight', 0.2)),
+                'low_confidence_threshold': float(dp.get('low_confidence_threshold', 0.60)),
+            }
     return {
         'net_multiplier': 8.0,
         'quality_min': 2.0,
-        'neutral_override_threshold': 2.0,
-        'neutral_override_weight': 0.6,
+        'neutral_override_threshold': 4.0,
+        'neutral_override_weight': 0.2,
         'low_confidence_threshold': 0.60,
     }
 
