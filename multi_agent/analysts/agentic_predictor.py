@@ -151,6 +151,41 @@ def _get_debate_params(category: str = '') -> dict:
     }
 
 
+def _use_ta_debate(category: str = '') -> bool:
+    """是否启用 TradingAgents 风格的 LLM 辩论。
+    优先级：环境变量 AGENTIC_PREDICTOR_DEBATE_ENGINE=ta/rule > 参数文件 use_ta_debate > 默认 False。
+    规则辩论仍作为 LLM 失败时的兜底 fallback。
+    """
+    env = os.environ.get('AGENTIC_PREDICTOR_DEBATE_ENGINE', '').lower()
+    if env == 'ta':
+        return True
+    if env == 'rule':
+        return False
+    if _PARAMS.get('_version') in (2, 4, 5):
+        v = _PARAMS.get(category, _PARAMS.get('_default', {}))
+        if isinstance(v, dict):
+            return bool(v.get('use_ta_debate', False))
+    return False
+
+
+def _run_debate(technical, fundamental, news, ticker='', name='', category=''):
+    """根据参数选择规则辩论或 TradingAgents 风格 LLM 辩论。"""
+    if _use_ta_debate(category):
+        try:
+            from core.debate_engine_ta import ta_style_debate
+            bull, bear, verdict = ta_style_debate(
+                technical, fundamental, news,
+                ticker=ticker, name=name, category=category,
+            )
+            return bull, bear
+        except Exception as e:
+            print(f"  ⚠️ TradingAgents 辩论失败，回退规则辩论: {e}")
+    from core.debate_engine import DebateEngine
+    bull = DebateEngine.bull_argument(technical, fundamental, news)
+    bear = DebateEngine.bear_argument(technical, fundamental, news)
+    return bull, bear
+
+
 def _get_fund_flow_strength(category: str = '') -> float:
     """返回类别特定资金流修正强度。"""
     if _PARAMS.get('_version') in (2, 4, 5):
@@ -986,8 +1021,7 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
                 fundamental = fundamentals_analyst.analyze(ticker, name)
                 news = news_analyst.analyze(ticker, name)
 
-        bull = DebateEngine.bull_argument(technical, fundamental, news)
-        bear = DebateEngine.bear_argument(technical, fundamental, news)
+        bull, bear = _run_debate(technical, fundamental, news, ticker=ticker, name=name, category=category)
 
         verdict = _manager_verdict(technical, fundamental, news, bull, bear, macro_report=macro_report, ticker=ticker, name=name, sector=sector, category=category, market_context=market_context)
 
