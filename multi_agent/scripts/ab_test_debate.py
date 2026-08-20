@@ -105,6 +105,7 @@ def run_ta(case: dict) -> dict:
         'points': len(bull.get('points', [])) + len(bear.get('points', [])),
         'time': round(time.time() - t0, 3),
         'llm_raw': bull.get('llm_raw', '')[:200],
+        'intent': verdict.get('intent_analysis', {}),
     }
 
 
@@ -197,10 +198,24 @@ pre {{ background: #f4f6f8; padding: 12px; border-radius: 8px; font-size: 12px; 
 """
     html += f"""<div class="card"><h2>规则辩论</h2><pre>{json.dumps(rule_sum['signals'], ensure_ascii=False, indent=2)}</pre></div>"""
     html += f"""<div class="card"><h2>TradingAgents LLM</h2><pre>{json.dumps(ta_sum['signals'], ensure_ascii=False, indent=2)}</pre></div>"""
-    html += """</div>
+    html += f"""</div>
+<h2>IntentGate 分析（LLM 真实意图判断）</h2>
+<table>
+<tr><th>标的</th><th>核心矛盾</th><th>主导维度</th><th>多空盲区</th></tr>
+"""
+    for row in rows:
+        intent = row.get('ta_intent', {})
+        html += f"""<tr>
+  <td>{row['name']}<br><span style="color:#7f8c8d">{row['ticker']}</span></td>
+  <td>{intent.get('core_conflict', '-')}</td>
+  <td>{intent.get('dominant_dimension', '-')}</td>
+  <td>{intent.get('blind_spot', '-')}</td>
+</tr>\n"""
+    html += """</table>
 <h2>说明</h2>
 <p class="desc">
 <b>为什么做 A/B：</b> 原规则辩论依赖硬编码阈值，容易出现单边信号压制；TradingAgents 风格让 LLM 在单次结构化调用里同时生成多空论据与净得分，期望信号分布更真实。<br><br>
+<b>IntentGate 借鉴：</b> 受 oh-my-openagent 的 IntentGate 启发，在 bull/bear 判断前强制 LLM 先输出 <code>intent_analysis</code>：核心矛盾、主导维度、多空盲区。这样裁决不是对字面数据的直接反应，而是先理解“这组报告到底在表达什么”。<br><br>
 <b>测试方法：</b> 用 7 组不同偏态的模拟报告输入，分别跑规则辩论与 LLM 辩论，对比 bull/bear 得分、净得分与信号分布。<br><br>
 <b>fallback 机制：</b> 当 LLM 输出无法解析或 API 失败时，自动回退到规则辩论，确保流水线不中断。<br><br>
 <b>注意：</b> 本页面仅用于引擎级 A/B 验证，未接入真实行情与未来收益标签，不构成投资建议。

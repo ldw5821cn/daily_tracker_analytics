@@ -26,14 +26,14 @@ pre { background: #f4f6f8; padding: 12px; border-radius: 8px; font-size: 12px; o
 </head>
 <body>
 <h1>A/B 测试：规则辩论 vs TradingAgents LLM 辩论</h1>
-<div class="meta">生成时间：2026-08-20 00:54:33 · 样本数：7 · 仅测试 debate 引擎，未跑完整预测流水线</div>
+<div class="meta">生成时间：2026-08-20 09:04:55 · 样本数：7 · 仅测试 debate 引擎，未跑完整预测流水线</div>
 <div class="cards">
   <div class="card"><h2>规则辩论</h2><div class="stat">-0.16</div><div class="label">平均净得分 (bull-bear)</div></div>
-  <div class="card"><h2>TradingAgents LLM</h2><div class="stat">0.29</div><div class="label">平均净得分</div></div>
+  <div class="card"><h2>TradingAgents LLM</h2><div class="stat">0.14</div><div class="label">平均净得分</div></div>
   <div class="card"><h2>规则信号离散度</h2><div class="stat">0.99</div><div class="label">净得分标准差</div></div>
-  <div class="card"><h2>LLM 信号离散度</h2><div class="stat">2.55</div><div class="label">净得分标准差</div></div>
+  <div class="card"><h2>LLM 信号离散度</h2><div class="stat">2.42</div><div class="label">净得分标准差</div></div>
   <div class="card"><h2>规则耗时</h2><div class="stat">0.0s</div><div class="label">平均每个标的</div></div>
-  <div class="card"><h2>LLM 耗时</h2><div class="stat">7.722s</div><div class="label">平均每个标的</div></div>
+  <div class="card"><h2>LLM 耗时</h2><div class="stat">13.711s</div><div class="label">平均每个标的</div></div>
 </div>
 <table>
 <tr><th>标的</th><th>规则 bull</th><th>规则 bear</th><th>规则信号</th><th>规则净得分</th><th>LLM bull</th><th>LLM bear</th><th>LLM信号</th><th>LLM净得分</th><th>方向变化</th></tr>
@@ -55,8 +55,8 @@ pre { background: #f4f6f8; padding: 12px; border-radius: 8px; font-size: 12px; o
   <td>0.8</td>
   <td class="bear">看空</td>
   <td>-0.8</td>
-  <td>6.0</td>
-  <td>4.0</td>
+  <td>7.0</td>
+  <td>5.0</td>
   <td class="bull">看多</td>
   <td>2.0</td>
   <td>是</td>
@@ -79,10 +79,10 @@ pre { background: #f4f6f8; padding: 12px; border-radius: 8px; font-size: 12px; o
   <td>0</td>
   <td class="bull">看多</td>
   <td>1.0</td>
-  <td>7.0</td>
+  <td>6.0</td>
   <td>4.0</td>
   <td class="bull">看多</td>
-  <td>3.0</td>
+  <td>2.0</td>
   <td>否</td>
 </tr>
 <tr>
@@ -133,9 +133,56 @@ pre { background: #f4f6f8; padding: 12px; border-radius: 8px; font-size: 12px; o
   "中性": 1,
   "强烈看空": 1
 }</pre></div></div>
+<h2>IntentGate 分析（LLM 真实意图判断）</h2>
+<table>
+<tr><th>标的</th><th>核心矛盾</th><th>主导维度</th><th>多空盲区</th></tr>
+<tr>
+  <td>平安银行<br><span style="color:#7f8c8d">000001</span></td>
+  <td>-</td>
+  <td>-</td>
+  <td>-</td>
+</tr>
+<tr>
+  <td>贵州茅台<br><span style="color:#7f8c8d">600519</span></td>
+  <td>-</td>
+  <td>-</td>
+  <td>-</td>
+</tr>
+<tr>
+  <td>美的集团<br><span style="color:#7f8c8d">000333</span></td>
+  <td>-</td>
+  <td>-</td>
+  <td>-</td>
+</tr>
+<tr>
+  <td>工商银行<br><span style="color:#7f8c8d">601398</span></td>
+  <td>-</td>
+  <td>-</td>
+  <td>-</td>
+</tr>
+<tr>
+  <td>沪深300ETF<br><span style="color:#7f8c8d">510300</span></td>
+  <td>-</td>
+  <td>-</td>
+  <td>-</td>
+</tr>
+<tr>
+  <td>创业板ETF<br><span style="color:#7f8c8d">159915</span></td>
+  <td>-</td>
+  <td>-</td>
+  <td>-</td>
+</tr>
+<tr>
+  <td>中证1000ETF<br><span style="color:#7f8c8d">512100</span></td>
+  <td>-</td>
+  <td>-</td>
+  <td>-</td>
+</tr>
+</table>
 <h2>说明</h2>
 <p class="desc">
 <b>为什么做 A/B：</b> 原规则辩论依赖硬编码阈值，容易出现单边信号压制；TradingAgents 风格让 LLM 在单次结构化调用里同时生成多空论据与净得分，期望信号分布更真实。<br><br>
+<b>IntentGate 借鉴：</b> 受 oh-my-openagent 的 IntentGate 启发，在 bull/bear 判断前强制 LLM 先输出 <code>intent_analysis</code>：核心矛盾、主导维度、多空盲区。这样裁决不是对字面数据的直接反应，而是先理解“这组报告到底在表达什么”。<br><br>
 <b>测试方法：</b> 用 7 组不同偏态的模拟报告输入，分别跑规则辩论与 LLM 辩论，对比 bull/bear 得分、净得分与信号分布。<br><br>
 <b>fallback 机制：</b> 当 LLM 输出无法解析或 API 失败时，自动回退到规则辩论，确保流水线不中断。<br><br>
 <b>注意：</b> 本页面仅用于引擎级 A/B 验证，未接入真实行情与未来收益标签，不构成投资建议。

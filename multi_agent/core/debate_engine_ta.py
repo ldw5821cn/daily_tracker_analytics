@@ -83,8 +83,7 @@ def ta_style_debate(
     news_json = _format_report('新闻情绪报告', news_report)
 
     prompt = f"""你是一位专业的 A 股投研研究经理（Research Manager），正在主持一场多空辩论。
-请基于以下三份分析师报告，分别模拟【看涨研究员 Bull】和【看跌研究员 Bear】的立场，
-最后由你作为研究经理给出裁决。
+请先对三份分析师报告的"真实意图"做一个判断，再分别模拟【看涨研究员 Bull】和【看跌研究员 Bear】的立场，最后由你给出裁决。
 
 标的：{name or ticker} ({ticker})，类别：{category or '个股'}
 
@@ -99,6 +98,11 @@ def ta_style_debate(
 
 请严格按以下 JSON 格式输出（不要输出任何其他内容）：
 {{
+  "intent_analysis": {{
+    "core_conflict": "技术面/基本面/新闻三者最核心的矛盾点是什么？30字以内",
+    "dominant_dimension": "当前哪一维度（技术面/基本面/新闻）最有说服力？为什么？",
+    "blind_spot": "看涨方最容易忽视的反向风险是什么？看跌方最容易忽视的看多依据是什么？"
+  }},
   "bull_score": 0-10 的整数,
   "bull_points": ["看涨论据1", "看涨论据2", ...],
   "bear_score": 0-10 的整数,
@@ -106,14 +110,15 @@ def ta_style_debate(
   "net_score": bull_score - bear_score,
   "rating": "强烈看多/看多/中性/看空/强烈看空" 之一,
   "recommendation": "BUY/Overweight/Hold/Underweight/SELL" 之一,
-  "reasoning": "用中文简洁说明裁决逻辑，100字以内"
+  "reasoning": "用中文简洁说明裁决逻辑，需引用 intent_analysis，100字以内"
 }}
 
 要求：
-1. 看涨/看跌论据必须具体引用报告中的数据或事实，不能泛泛而谈。
-2. 如果技术面和基本面背离明显，请明确指出哪一方更占上风及原因。
-3. 评分 0-10，5 表示中性，数字越大方向越强。
-4. 只输出 JSON，不要 Markdown、不要解释、不要代码块包裹。
+1. 必须先输出 intent_analysis；它是后续 bull/bear 判断的前提，而不是装饰性总结。
+2. 看涨/看跌论据必须具体引用报告中的数据或事实，不能泛泛而谈。
+3. 如果技术面和基本面背离明显，请在 intent_analysis 中明确指出哪一方更占上风及原因。
+4. 评分 0-10，5 表示中性，数字越大方向越强。
+5. 只输出 JSON，不要 Markdown、不要解释、不要代码块包裹。
 """
 
     messages = [
