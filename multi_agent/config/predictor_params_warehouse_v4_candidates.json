@@ -1,6 +1,6 @@
 {
   "_version": 5,
-  "updated_at": "2026-08-18T17:07:57.097511",
+  "updated_at": "2026-08-20T17:10:08.231889",
   "个股": {
     "weights": {
       "technical": 0.22,
@@ -21,6 +21,7 @@
     "market_flow_strength": 0.0,
     "global_semi_strength": 0.0,
     "social_overlay_weight": 0.15,
+    "use_ta_debate": true,
     "stats": "train=-11.71%/-12.05%/76.0% val=-5.71%/-7.10%/62.6% ff=0.0",
     "score": 40.9,
     "debate_params": {
@@ -51,6 +52,7 @@
     "market_flow_strength": 0.0,
     "global_semi_strength": 0.0,
     "social_overlay_weight": 0.15,
+    "use_ta_debate": false,
     "stats": "train=-2.63%/-13.99%/86.1% val=1.03%/-8.81%/95.7% ff=0.0",
     "score": 39.85,
     "debate_params": {
@@ -81,6 +83,7 @@
     "market_flow_strength": 0.0,
     "global_semi_strength": 0.0,
     "social_overlay_weight": 0.15,
+    "use_ta_debate": false,
     "stats": "train=-1.19%/0.62%/34.4% val=0.22%/0.31%/53.8% ff=0.0",
     "score": 23.36,
     "debate_params": {
@@ -111,6 +114,7 @@
     "market_flow_strength": 0.0,
     "global_semi_strength": 0.0,
     "social_overlay_weight": 0.15,
+    "use_ta_debate": false,
     "stats": "train=-5.97%/-11.39%/75.4% val=-0.71%/-6.25%/61.1% ff=0.0",
     "score": 36.85,
     "debate_params": {
@@ -143,6 +147,6 @@
   },
   "updated_by": "auto_tune_from_reflection",
   "updated_reason": "收窄 neutral 区间 | 提高 bullish/bearish 阈值门槛",
-  "trigger_accuracy": 57.87,
-  "trigger_pred_date": "2026-08-17"
+  "trigger_accuracy": 55.62,
+  "trigger_pred_date": "2026-08-19"
 }

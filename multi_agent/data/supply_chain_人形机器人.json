@@ -1,0 +1,873 @@
+{
+  "theme": "人形机器人",
+  "value_chain": {
+    "theme": "人形机器人",
+    "demand_story": "人口老龄化与劳动力短缺催生通用人形机器人，特斯拉Optimization等量产在即，预计2030年全球需求超百万台。",
+    "value_chain": [
+      {
+        "layer": "下游/终端",
+        "segments": [
+          "工业制造",
+          "仓储物流",
+          "商业服务",
+          "家庭服务",
+          "医疗护理"
+        ],
+        "key_players_global": [
+          "特斯拉",
+          "波士顿动力",
+          "优必选",
+          "小米",
+          "OpenAI投资企业"
+        ]
+      },
+      {
+        "layer": "系统集成/整机",
+        "segments": [
+          "人形机器人整机",
+          "关节模组",
+          "运动控制方案",
+          "AI大脑集成"
+        ],
+        "key_players_global": [
+          "特斯拉",
+          "Figure AI",
+          "优必选",
+          "宇树科技",
+          "智元机器人"
+        ]
+      },
+      {
+        "layer": "核心零部件",
+        "segments": [
+          "谐波减速器",
+          "RV减速器",
+          "行星滚柱丝杠",
+          "无框力矩电机",
+          "空心杯电机",
+          "六维力传感器",
+          "编码器",
+          "灵巧手"
+        ],
+        "key_players_global": [
+          "哈默纳科",
+          "纳博特斯克",
+          "THK",
+          "科尔摩根",
+          "Maxon",
+          "ATI"
+        ]
+      },
+      {
+        "layer": "芯片/器件",
+        "segments": [
+          "AI计算芯片",
+          "运动控制芯片",
+          "传感器芯片",
+          "功率器件",
+          "通信模块"
+        ],
+        "key_players_global": [
+          "英伟达",
+          "高通",
+          "德州仪器",
+          "英飞凌",
+          "意法半导体"
+        ]
+      },
+      {
+        "layer": "设备",
+        "segments": [
+          "减速器加工设备",
+          "丝杠磨床",
+          "电机绕线设备",
+          "传感器测试设备",
+          "机器人装配线"
+        ],
+        "key_players_global": [
+          "发那科",
+          "马扎克",
+          "三菱重工",
+          "西门子"
+        ]
+      },
+      {
+        "layer": "材料",
+        "segments": [
+          "高性能永磁材料",
+          "轻量化合金",
+          "工程塑料",
+          "碳纤维",
+          "电子皮肤材料"
+        ],
+        "key_players_global": [
+          "信越化学",
+          "TDK",
+          "杜邦",
+          "东丽",
+          "巴斯夫"
+        ]
+      }
+    ],
+    "bottlenecks": [
+      {
+        "segment": "行星滚柱丝杠",
+        "severity": 5,
+        "reason": "高精度磨削工艺复杂，设备依赖进口，国内厂商尚处验证期，扩产周期长",
+        "global_cr3": "全球前三为GSA、Schaeffler、Rollvis，约占80%",
+        "china_share": "国产化率不足10%"
+      },
+      {
+        "segment": "谐波减速器",
+        "severity": 5,
+        "reason": "齿形设计、材料热处理和精密加工壁垒极高，日本哈默纳科垄断中高端市场",
+        "global_cr3": "哈默纳科全球市占率超60%，前三合计超80%",
+        "china_share": "国产化率约20%，但高端产品国产化率低于10%"
+      },
+      {
+        "segment": "六维力传感器",
+        "severity": 4,
+        "reason": "需要高精度应变片贴片工艺和标定能力，军工级产品禁运，民用产品价格高昂",
+        "global_cr3": "全球前三为ATI、AMTI、西门子，合计约60%",
+        "china_share": "国产化率约15%，高端产品依赖进口"
+      },
+      {
+        "segment": "无框力矩电机",
+        "severity": 4,
+        "reason": "高扭矩密度设计依赖高性能磁性材料和精密绕线工艺，国内企业起步较晚",
+        "global_cr3": "科尔摩根、Maxon、Allied Motion，全球前三约50%",
+        "china_share": "国产化率约20%，但高端机器人级别电机仍以进口为主"
+      },
+      {
+        "segment": "AI计算芯片",
+        "severity": 5,
+        "reason": "人形机器人需要高算力低功耗边缘AI芯片，英伟达处于垄断地位，先进制程受出口管制",
+        "global_cr3": "英伟达、华为昇腾、高通合计占90%以上",
+        "china_share": "国产AI芯片整体市占率不足10%，机器人专用SoC几乎空白"
+      }
+    ],
+    "kill_switches": [
+      "需求不及预期：人形机器人量产节奏推迟，实际落地规模低于市场预期",
+      "技术路线重大变化：灵巧手、驱动方案等从电驱切换到液压/气动，现有产业链被重构",
+      "商业化落地困难：场景磨合慢，成本下降幅度不足以支撑经济性，资本开支延迟"
+    ],
+    "_llm_raw": "{\n  \"theme\": \"人形机器人\",\n  \"demand_story\": \"人口老龄化与劳动力短缺催生通用人形机器人，特斯拉Optimization等量产在即，预计2030年全球需求超百万台。\",\n  \"value_chain\": [\n    {\n      \"layer\": \"下游/终端\",\n      \"segments\": [\"工业制造\", \"仓储物流\", \"商业服务\", \"家庭服务\", \"医疗护理\"],\n      \"key_players_global\": [\"特斯拉\", \"波士顿动力\", \"优必选\", \"小米\", \"OpenAI投资企业\"]\n    },\n    {\n      \"layer\": \"系统集成/整机\",\n      \"segments\": [\"人形机器人整机\", \"关节模组\", \"运动控制方案\", \"AI大脑集成\"],\n      \"key_players_global\": [\"特斯拉\", \"Figure AI\", \"优必选\", \"宇树科技\", \"智元机器人\"]\n    },\n    {\n      \"layer\": \"核心零部件\",\n      \"segments\": [\"谐波减速器\", \"RV减速器\", \"行星滚柱丝杠\", \"无框力矩电机\", \"空心杯电机\", \"六维力传感器\", \"编码器\", \"灵巧手\"],\n      \"key_players_global\": [\"哈默纳科\", \"纳博特斯克\", \"THK\", \"科尔摩根\", \"Maxon\", \"ATI\"]\n    },\n    {\n      \"layer\": \"芯片/器件\",\n      \"segments\": [\"AI计算芯片\", \"运动控制芯片\", \"传感器芯片\", \"功率器件\", \"通信模块\"],\n      \"key_players_global\": [\"英伟达\", \"高通\", \"德州仪器\", \"英飞凌\", \"意法半导体\"]\n    },\n    {\n      \"layer\": \"设备\",\n      \"segments\": [\"减速器加工设备\", \"丝杠磨床\", \"电机绕线设备\", \"传感器测试设备\", \"机器人装配线\"],\n      \"key_players_global\": [\"发那科\", \"马扎克\", \"三菱重工\", \"西门子\"]\n    },\n    {\n      \"layer\": \"材料\",\n      \"segments\": [\"高性能永磁材料\", \"轻量化合金\", \"工程塑料\", \"碳纤维\", \"电子皮肤材料\"],\n      \"key_players_global\": [\"信越化学\", \"TDK\", \"杜邦\", \"东丽\", \"巴斯夫\"]\n    }\n  ],\n  \"bottlenecks\": [\n    {\n      \"segment\": \"行星滚柱丝杠\",\n      \"severity\": 5,\n      \"reason\": \"高精度磨削工艺复杂，设备依赖进口，国内厂商尚处验证期，扩产周期长\",\n      \"global_cr3\": \"全球前三为GSA、Schaeffler、Rollvis，约占80%\",\n      \"china_share\": \"国产化率不足10%\"\n    },\n    {\n      \"segment\": \"谐波减速器\",\n      \"severity\": 5,\n      \"reason\": \"齿形设计、材料热处理和精密加工壁垒极高，日本哈默纳科垄断中高端市场\",\n      \"global_cr3\": \"哈默纳科全球市占率超60%，前三合计超80%\",\n      \"china_share\": \"国产化率约20%，但高端产品国产化率低于10%\"\n    },\n    {\n      \"segment\": \"六维力传感器\",\n      \"severity\": 4,\n      \"reason\": \"需要高精度应变片贴片工艺和标定能力，军工级产品禁运，民用产品价格高昂\",\n      \"global_cr3\": \"全球前三为ATI、AMTI、西门子，合计约60%\",\n      \"china_share\": \"国产化率约15%，高端产品依赖进口\"\n    },\n    {\n      \"segment\": \"无框力矩电机\",\n      \"severity\": 4,\n      \"reason\": \"高扭矩密度设计依赖高性能磁性材料和精密绕线工艺，国内企业起步较晚\",\n      \"global_cr3\": \"科尔摩根、Maxon、Allied Motion，全球前三约50%\",\n      \"china_share\": \"国产化率约20%，但高端机器人级别电机仍以进口为主\"\n    },\n    {\n      \"segment\": \"AI计算芯片\",\n      \"severity\": 5,\n      \"reason\": \"人形机器人需要高算力低功耗边缘AI芯片，英伟达处于垄断地位，先进制程受出口管制\",\n      \"global_cr3\": \"英伟达、华为昇腾、高通合计占90%以上\",\n      \"china_share\": \"国产AI芯片整体市占率不足10%，机器人专用SoC几乎空白\"\n    }\n  ],\n  \"kill_switches\": [\"需求不及预期：人形机器人量产节奏推迟，实际落地规模低于市场预期\", \"技术路线重大变化：灵巧手、驱动方案等从电驱切换到液压/气动，现有产业链被重构\", \"商业化落地困难：场景磨合慢，成本下降幅度不足以支撑经济性，资本开支延迟\"]\n}"
+  },
+  "top_candidates": [
+    {
+      "ticker": "603662",
+      "company": "柯力传感",
+      "market": "A-share",
+      "raw_factor_points": 67.4,
+      "penalty_points": 24.0,
+      "final_score": 43.4,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "architecture_coupling": {
+          "rating": 4.0,
+          "weight": 10,
+          "points": 8.0
+        },
+        "chokepoint_severity": {
+          "rating": 4.0,
+          "weight": 15,
+          "points": 12.0
+        },
+        "supplier_concentration": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "expansion_difficulty": {
+          "rating": 4.0,
+          "weight": 12,
+          "points": 9.6
+        },
+        "evidence_quality": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "valuation_disconnect": {
+          "rating": 3.0,
+          "weight": 11,
+          "points": 6.6
+        },
+        "catalyst_timing": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "governance": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "geopolitics": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "liquidity": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "hype_risk": {
+          "rating": 4.0,
+          "points": 8.0
+        },
+        "accounting_quality": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "cyclicality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "alternative_design_risk": {
+          "rating": 1.0,
+          "points": 2.0
+        }
+      },
+      "kill_switches": [
+        "六维力传感器目前仅处于送样/验证阶段，未形成规模化订单，收入贡献极小，实际量产进度可能大幅低于预期",
+        "人形机器人整体量产时间表延后，导致六维力传感器需求拐点推后",
+        "机器人关节设计方案可能转向扭矩传感器+电机一体化方案，削弱独立六维力传感器的需求",
+        "人形机器人概念炒作情绪退潮，高估值压制股价，与短期基本面脱节"
+      ],
+      "evidence": [
+        {
+          "claim": "公司已开发六维力传感器并送样机器人客户，表明产品进入客户验证阶段",
+          "source": "公司公告/投资者关系记录",
+          "strength": "primary"
+        },
+        {
+          "claim": "六维力传感器被广泛认为是人形机器人关节/手腕力控的核心瓶颈部件，技术壁垒高",
+          "source": "行业研究报告",
+          "strength": "analysis"
+        },
+        {
+          "claim": "国内六维力传感器市场长期由海外厂商主导，国产替代空间大，柯力作为力学传感器龙头有先发优势",
+          "source": "公开行业分析",
+          "strength": "media"
+        }
+      ],
+      "segment": "六维力传感器",
+      "selection_reason": "力学传感器龙头，已开发六维力传感器并送样机器人客户",
+      "revenue_exposure": "中"
+    },
+    {
+      "ticker": "688017",
+      "company": "绿的谐波",
+      "market": "A-share",
+      "raw_factor_points": 74.8,
+      "penalty_points": 34.0,
+      "final_score": 40.8,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 4.0,
+          "weight": 15,
+          "points": 12.0
+        },
+        "architecture_coupling": {
+          "rating": 4.0,
+          "weight": 10,
+          "points": 8.0
+        },
+        "chokepoint_severity": {
+          "rating": 4.0,
+          "weight": 15,
+          "points": 12.0
+        },
+        "supplier_concentration": {
+          "rating": 4.0,
+          "weight": 12,
+          "points": 9.6
+        },
+        "expansion_difficulty": {
+          "rating": 4.0,
+          "weight": 12,
+          "points": 9.6
+        },
+        "evidence_quality": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "valuation_disconnect": {
+          "rating": 3.0,
+          "weight": 11,
+          "points": 6.6
+        },
+        "catalyst_timing": {
+          "rating": 4.0,
+          "weight": 10,
+          "points": 8.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "governance": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "geopolitics": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "liquidity": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "hype_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "alternative_design_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        }
+      },
+      "kill_switches": [
+        "人形机器人量产进度不及预期，需求爆发延迟",
+        "竞争对手（如双环传动、来福谐波）技术突破，市场份额被侵蚀",
+        "谐波减速器被其他技术路线（如行星滚柱丝杠、RV减速器）替代",
+        "估值过高，市场情绪回落导致股价大幅回调"
+      ],
+      "evidence": [
+        {
+          "claim": "国内谐波减速器龙头，市占率领先，技术对标哈默纳科，已批量供货机器人客户",
+          "source": "公司年报、行业研究",
+          "strength": "primary"
+        },
+        {
+          "claim": "人形机器人量产预期带动谐波减速器需求爆发，特斯拉Optimus等采用谐波方案",
+          "source": "公开信息、行业分析",
+          "strength": "media"
+        },
+        {
+          "claim": "谐波减速器工艺壁垒高，扩产周期长，绿的谐波具备先发优势",
+          "source": "行业研究",
+          "strength": "analysis"
+        }
+      ],
+      "segment": "谐波减速器",
+      "selection_reason": "国内谐波减速器龙头，对标哈默纳科，批量供货机器人",
+      "revenue_exposure": "高"
+    },
+    {
+      "ticker": "603728",
+      "company": "鸣志电器",
+      "market": "A-share",
+      "raw_factor_points": 67.0,
+      "penalty_points": 36.0,
+      "final_score": 31.0,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 4.0,
+          "weight": 15,
+          "points": 12.0
+        },
+        "architecture_coupling": {
+          "rating": 4.0,
+          "weight": 10,
+          "points": 8.0
+        },
+        "chokepoint_severity": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "supplier_concentration": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "expansion_difficulty": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "evidence_quality": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "valuation_disconnect": {
+          "rating": 3.0,
+          "weight": 11,
+          "points": 6.6
+        },
+        "catalyst_timing": {
+          "rating": 4.0,
+          "weight": 10,
+          "points": 8.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "liquidity": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "hype_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "alternative_design_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        }
+      },
+      "kill_switches": [
+        "人形机器人量产进度不及预期，导致无框力矩电机需求释放延迟",
+        "技术路线变化，如采用其他电机方案（如直驱、液压）替代无框力矩电机",
+        "竞争加剧，其他电机厂商（如步科、昊志）抢占份额，导致公司市占率不及预期"
+      ],
+      "evidence": [
+        {
+          "claim": "鸣志电器是全球控制电机龙头，无框力矩电机技术积累深厚，已进入人形机器人关节模组供应链",
+          "source": "公司公告、行业研究",
+          "strength": "primary"
+        },
+        {
+          "claim": "人形机器人量产预期升温，无框力矩电机作为关节核心部件需求有望爆发",
+          "source": "行业研究、券商报告",
+          "strength": "analysis"
+        },
+        {
+          "claim": "公司空心杯电机技术领先，与无框力矩电机形成协同，可提供关节模组整体解决方案",
+          "source": "公司年报、投资者关系记录",
+          "strength": "primary"
+        }
+      ],
+      "segment": "无框力矩电机",
+      "selection_reason": "控制电机龙头，无框力矩电机可用于机器人关节模组",
+      "revenue_exposure": "中"
+    },
+    {
+      "ticker": "688041",
+      "company": "海光信息",
+      "market": "A-share",
+      "raw_factor_points": 70.8,
+      "penalty_points": 42.0,
+      "final_score": 28.8,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 4.0,
+          "weight": 15,
+          "points": 12.0
+        },
+        "architecture_coupling": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        },
+        "chokepoint_severity": {
+          "rating": 4.0,
+          "weight": 15,
+          "points": 12.0
+        },
+        "supplier_concentration": {
+          "rating": 4.0,
+          "weight": 12,
+          "points": 9.6
+        },
+        "expansion_difficulty": {
+          "rating": 4.0,
+          "weight": 12,
+          "points": 9.6
+        },
+        "evidence_quality": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "valuation_disconnect": {
+          "rating": 3.0,
+          "weight": 11,
+          "points": 6.6
+        },
+        "catalyst_timing": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 5.0,
+          "points": 10.0
+        },
+        "liquidity": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "hype_risk": {
+          "rating": 4.0,
+          "points": 8.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "alternative_design_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        }
+      },
+      "kill_switches": [
+        "若美国进一步收紧制裁，导致先进制程代工、IP授权或上游设备供应中断，将严重制约产品迭代和产能扩张",
+        "若人形机器人转向专用低功耗边缘AI芯片（如ASIC），而非通用CPU/DCU，则海光在该场景的渗透率可能远低于预期"
+      ],
+      "evidence": [
+        {
+          "claim": "海光DCU兼容CUDA生态，是国内稀缺的AI训练算力自主替代方案，受益于国产算力需求爆发",
+          "source": "公司财报/公开技术文档",
+          "strength": "primary"
+        },
+        {
+          "claim": "人形机器人本体及云端训练算力需求持续增长，叠加国产替代政策推动，CPU/DCU订单能见度高",
+          "source": "行业研究/券商分析",
+          "strength": "analysis"
+        }
+      ],
+      "segment": "AI计算芯片",
+      "selection_reason": "国产CPU/DCU，可提供机器人AI训练与推理算力",
+      "revenue_exposure": "中"
+    },
+    {
+      "ticker": "688256",
+      "company": "寒武纪",
+      "market": "A-share",
+      "raw_factor_points": 69.2,
+      "penalty_points": 56.0,
+      "final_score": 13.2,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "architecture_coupling": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        },
+        "chokepoint_severity": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "supplier_concentration": {
+          "rating": 4.0,
+          "weight": 12,
+          "points": 9.6
+        },
+        "expansion_difficulty": {
+          "rating": 4.0,
+          "weight": 12,
+          "points": 9.6
+        },
+        "evidence_quality": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "valuation_disconnect": {
+          "rating": 5.0,
+          "weight": 11,
+          "points": 11.0
+        },
+        "catalyst_timing": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 5.0,
+          "points": 10.0
+        },
+        "liquidity": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "hype_risk": {
+          "rating": 5.0,
+          "points": 10.0
+        },
+        "accounting_quality": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "cyclicality": {
+          "rating": 4.0,
+          "points": 8.0
+        },
+        "alternative_design_risk": {
+          "rating": 4.0,
+          "points": 8.0
+        }
+      },
+      "kill_switches": [
+        "机器人用AI芯片放量不及预期，边缘推理需求持续低迷",
+        "英伟达、华为昇腾等竞品挤压市场份额，产品竞争力不足",
+        "高估值缺乏业绩支撑，一旦情绪退潮估值体系大幅下修",
+        "供应链受限（先进制程、HBM）导致产能及算力交付受阻",
+        "地缘政治进一步升级，丧失代工或IP授权等关键资源"
+      ],
+      "evidence": [
+        {
+          "claim": "寒武纪是国内少数具备AI训练/推理芯片自研能力的企业，思元系列已覆盖边缘推理场景，与机器人端侧计算需求匹配",
+          "source": "公司公告/官网产品信息",
+          "strength": "primary"
+        },
+        {
+          "claim": "国产AI芯片受政策强推，信创和自主可控需求拉动预期，机器人作为新兴应用场景提供远期想象空间",
+          "source": "行业研究/政策文件",
+          "strength": "media"
+        },
+        {
+          "claim": "市场对寒武纪寄予极高预期，估值远超当前收入体量，隐含乐观的国产替代和机器人放量预期",
+          "source": "公开市场数据/券商分析",
+          "strength": "analysis"
+        }
+      ],
+      "segment": "AI计算芯片",
+      "selection_reason": "国产AI芯片龙头，边缘推理芯片适配机器人场景",
+      "revenue_exposure": "高"
+    },
+    {
+      "ticker": "601100",
+      "company": "恒立液压",
+      "market": "A-share",
+      "raw_factor_points": 0.0,
+      "penalty_points": 0.0,
+      "final_score": 0.0,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 0.0,
+          "weight": 15,
+          "points": 0.0
+        },
+        "architecture_coupling": {
+          "rating": 0.0,
+          "weight": 10,
+          "points": 0.0
+        },
+        "chokepoint_severity": {
+          "rating": 0.0,
+          "weight": 15,
+          "points": 0.0
+        },
+        "supplier_concentration": {
+          "rating": 0.0,
+          "weight": 12,
+          "points": 0.0
+        },
+        "expansion_difficulty": {
+          "rating": 0.0,
+          "weight": 12,
+          "points": 0.0
+        },
+        "evidence_quality": {
+          "rating": 0.0,
+          "weight": 15,
+          "points": 0.0
+        },
+        "valuation_disconnect": {
+          "rating": 0.0,
+          "weight": 11,
+          "points": 0.0
+        },
+        "catalyst_timing": {
+          "rating": 0.0,
+          "weight": 10,
+          "points": 0.0
+        }
+      },
+      "penalty_details": {},
+      "kill_switches": [],
+      "evidence": [],
+      "segment": "行星滚柱丝杠",
+      "selection_reason": "布局行星滚柱丝杠，切入机器人执行器，样品验证中",
+      "revenue_exposure": "低"
+    },
+    {
+      "ticker": "300474",
+      "company": "景嘉微",
+      "market": "A-share",
+      "raw_factor_points": 43.6,
+      "penalty_points": 46.0,
+      "final_score": 0.0,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "architecture_coupling": {
+          "rating": 1.0,
+          "weight": 10,
+          "points": 2.0
+        },
+        "chokepoint_severity": {
+          "rating": 1.0,
+          "weight": 15,
+          "points": 3.0
+        },
+        "supplier_concentration": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "expansion_difficulty": {
+          "rating": 4.0,
+          "weight": 12,
+          "points": 9.6
+        },
+        "evidence_quality": {
+          "rating": 1.0,
+          "weight": 15,
+          "points": 3.0
+        },
+        "valuation_disconnect": {
+          "rating": 4.0,
+          "weight": 11,
+          "points": 8.8
+        },
+        "catalyst_timing": {
+          "rating": 2.0,
+          "weight": 10,
+          "points": 4.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 4.0,
+          "points": 8.0
+        },
+        "liquidity": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "hype_risk": {
+          "rating": 4.0,
+          "points": 8.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "alternative_design_risk": {
+          "rating": 4.0,
+          "points": 8.0
+        }
+      },
+      "kill_switches": [
+        "人形机器人订单落地不及预期，GPU在机器人主控环节渗透率低，公司难以获得实际定点",
+        "软件生态及工具链远弱于英伟达与华为昇腾，下游客户可能转向更成熟的AI计算方案",
+        "当前估值已包含大量国产替代与机器人概念预期，业绩兑现不足易导致估值大幅回撤"
+      ],
+      "evidence": [
+        {
+          "claim": "国产GPU稀缺标的，军用图形显控领域具备领先地位，正切入AI计算与边缘计算赛道",
+          "source": "公司财报/公开信息",
+          "strength": "primary"
+        },
+        {
+          "claim": "JM9系列GPU已发布，宣称兼容主流计算框架，可支撑AI推理等应用，为机器人算力国产化提供潜在选项",
+          "source": "公司公告",
+          "strength": "primary"
+        },
+        {
+          "claim": "人形机器人产业链国产化需求强烈，政策推动核心芯片自主可控，公司作为国产GPU厂商存在配套预期",
+          "source": "行业研究",
+          "strength": "analysis"
+        }
+      ],
+      "segment": "AI计算芯片",
+      "selection_reason": "国产GPU厂商，布局AI计算芯片，用于边缘计算",
+      "revenue_exposure": "低"
+    }
+  ]
+}
