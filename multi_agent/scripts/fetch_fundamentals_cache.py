@@ -122,18 +122,29 @@ def _fetch_spot_map_em() -> Dict[str, dict]:
 def _fetch_spot_map_tx(codes: Optional[List[str]] = None) -> Dict[str, dict]:
     """腾讯行情接口（qt.gtimg.cn）批量获取估值数据。
 
-    字段索引：1名称 3现价 38换手率 39市盈率TTM 44流通市值(亿) 45总市值(亿) 46市净率 52市盈率(动)
+    字段索引：1名称 2代码 3现价 39市盈率TTM 44流通市值(亿) 45总市值(亿) 46市净率 52市盈率(动)
     单请求上限约 60 个代码，分批拉取。
     """
     import requests
     out: Dict[str, dict] = {}
-    all_codes = codes or []
-    if not all_codes:
+    # 如果未指定代码，默认拉取全 A 股
+    if codes is None or not codes:
+        try:
+            import pandas as pd
+            sz_path = os.path.join(MULTI_AGENT, 'data', 'a_share_universe_sz.csv')
+            if os.path.exists(sz_path):
+                df = pd.read_csv(sz_path)
+                codes = [str(c).strip().zfill(6) for c in df['A股代码'].astype(str).tolist() if str(c).strip().isdigit()]
+            else:
+                codes = []
+        except Exception:
+            codes = []
+    if not codes:
         return out
     prefix = lambda c: ('sh' if c.startswith(('6', '9', '5')) else 'sz') + c
     batch_size = 50
-    for i in range(0, len(all_codes), batch_size):
-        batch = all_codes[i:i + batch_size]
+    for i in range(0, len(codes), batch_size):
+        batch = codes[i:i + batch_size]
         q = ','.join(prefix(c) for c in batch)
         try:
             r = requests.get(f'http://qt.gtimg.cn/q={q}', timeout=15)
@@ -145,7 +156,7 @@ def _fetch_spot_map_tx(codes: Optional[List[str]] = None) -> Dict[str, dict]:
                     fields = line.split('="')[1].rstrip('"').split('~')
                     if len(fields) < 53:
                         continue
-                    code6 = fields[2].strip()
+                    code6 = fields[2].strip().zfill(6)
                     name = fields[1].strip()
                     close = _safe_float(fields[3])
                     float_mcap = _safe_float(fields[44])
@@ -222,10 +233,18 @@ def fetch_and_cache(codes: Optional[List[str]] = None) -> Dict:
     os.makedirs(CACHE_DIR, exist_ok=True)
     today = datetime.now().strftime('%Y-%m-%d')
 
-    wl = codes or sorted(set(_load_watchlist_codes()) | set(_load_prediction_codes()))
+    # 目标池：watchlist + 预测库个股 + 本次指定的额外 codes
+    wl = sorted(set(_load_watchlist_codes()) | set(_load_prediction_codes()))
+    if codes:
+        wl = sorted(set(wl) | set(codes))
     print(f'[fundamentals] 目标标的 {len(wl)} 个')
 
-    spot_map = _fetch_spot_map(wl)
+    # 优先东财全市场快照（含全 A 股），失败再回退腾讯批量接口
+    # 腾讯接口优先用全 A 股列表，不把 wl 作为限制
+    spot_map = _fetch_spot_map_em()
+    if not spot_map:
+        print('[fundamentals] spot_em 失败，回退腾讯行情接口...')
+        spot_map = _fetch_spot_map_tx(None)
     print(f'[fundamentals] spot 快照 {len(spot_map)} 条')
 
     result = {'date': today, 'fundamentals': {}}
@@ -238,6 +257,11 @@ def fetch_and_cache(codes: Optional[List[str]] = None) -> Dict:
         result['fundamentals'][code6] = _normalize_financial(fin, spot)
         if (i + 1) % 20 == 0:
             print(f'[fundamentals] 已处理 {i+1}/{len(wl)}')
+
+    # 补充 spot_map 中有但 wl 中没有的全 A 股数据（至少市值/PE/PB）
+    for code6, spot in spot_map.items():
+        if code6 not in result['fundamentals']:
+            result['fundamentals'][code6] = _normalize_financial({}, spot)
 
     out = os.path.join(CACHE_DIR, f'{today}.json')
     with open(out, 'w', encoding='utf-8') as f:

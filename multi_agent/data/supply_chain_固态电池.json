@@ -1,0 +1,1106 @@
+{
+  "theme": "固态电池",
+  "value_chain": {
+    "theme": "固态电池",
+    "demand_story": "能量密度翻倍且安全性高，是下一代动力电池核心，驱动高端电动车、eVTOL与储能爆发。",
+    "value_chain": [],
+    "_llm_raw": "{\n  \"theme\": \"固态电池\",\n  \"demand_story\": \"能量密度翻倍且安全性高，是下一代动力电池核心，驱动高端电动车、eVTOL与储能爆发。\",\n  \"value_chain\": [\n"
+  },
+  "top_candidates": [
+    {
+      "ticker": "300035",
+      "company": "中科电气",
+      "market": "A-share",
+      "raw_factor_points": 64.4,
+      "penalty_points": 36.0,
+      "final_score": 28.4,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "architecture_coupling": {
+          "rating": 4.0,
+          "weight": 10,
+          "points": 8.0
+        },
+        "chokepoint_severity": {
+          "rating": 4.0,
+          "weight": 15,
+          "points": 12.0
+        },
+        "supplier_concentration": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "expansion_difficulty": {
+          "rating": 4.0,
+          "weight": 12,
+          "points": 9.6
+        },
+        "evidence_quality": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "valuation_disconnect": {
+          "rating": 3.0,
+          "weight": 11,
+          "points": 6.6
+        },
+        "catalyst_timing": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "liquidity": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "hype_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "alternative_design_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        }
+      },
+      "kill_switches": [
+        "固态电池产业化进度不及预期，硅碳负极需求爆发时点延迟",
+        "现有石墨负极业务竞争激烈，盈利改善有限，硅碳负极收入占比持续偏低",
+        "技术路线变化，如硅氧或锂金属负极替代硅碳方案"
+      ],
+      "evidence": [
+        {
+          "claim": "公司有硅基负极材料技术储备，但尚未形成大规模收入",
+          "source": "公开信息/公司财报",
+          "strength": "media"
+        },
+        {
+          "claim": "固态电池产业化推进中，硅碳负极被视为关键瓶颈之一",
+          "source": "行业研究",
+          "strength": "analysis"
+        },
+        {
+          "claim": "当前PE约36.8倍，PB约1.96倍，估值隐含一定成长预期",
+          "source": "公开行情数据",
+          "strength": "primary"
+        }
+      ],
+      "segment": "硅碳负极材料",
+      "selection_reason": "硅基负极材料有技术储备",
+      "revenue_exposure": "低",
+      "fundamentals": {
+        "market_cap_yi": 95.27,
+        "pe_ratio": 36.84,
+        "pb_ratio": 1.96,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
+      }
+    },
+    {
+      "ticker": "300450",
+      "company": "先导智能",
+      "market": "A-share",
+      "raw_factor_points": 59.2,
+      "penalty_points": 32.0,
+      "final_score": 27.2,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "architecture_coupling": {
+          "rating": 4.0,
+          "weight": 10,
+          "points": 8.0
+        },
+        "chokepoint_severity": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "supplier_concentration": {
+          "rating": 4.0,
+          "weight": 12,
+          "points": 9.6
+        },
+        "expansion_difficulty": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "evidence_quality": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "valuation_disconnect": {
+          "rating": 2.0,
+          "weight": 11,
+          "points": 4.4
+        },
+        "catalyst_timing": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "governance": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "geopolitics": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "liquidity": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "hype_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "alternative_design_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        }
+      },
+      "kill_switches": [
+        "固态电池技术路线尚未定型，若半固态/全固态路线变化导致设备需求不及预期",
+        "设备订单落地时间可能晚于市场预期，导致业绩兑现延迟",
+        "行业竞争加剧，其他设备厂商切入固态电池领域，削弱先导智能的份额"
+      ],
+      "evidence": [
+        {
+          "claim": "先导智能为锂电设备龙头，已布局固态电池整线设备，具备先发优势",
+          "source": "公司公告及行业研究",
+          "strength": "media"
+        },
+        {
+          "claim": "固态电池产业化预期升温，设备需求有望在2025-2026年放量",
+          "source": "行业研究",
+          "strength": "analysis"
+        },
+        {
+          "claim": "公司PE(TTM)约35倍，PB约3.3倍，估值处于合理区间，未明显泡沫化",
+          "source": "公开行情数据",
+          "strength": "primary"
+        }
+      ],
+      "segment": "固态电池专用设备",
+      "selection_reason": "锂电设备龙头，布局固态电池产线",
+      "revenue_exposure": "中",
+      "fundamentals": {
+        "market_cap_yi": 570.41,
+        "pe_ratio": 35.18,
+        "pb_ratio": 3.27,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
+      }
+    },
+    {
+      "ticker": "002460",
+      "company": "赣锋锂业",
+      "market": "A-share",
+      "raw_factor_points": 60.0,
+      "penalty_points": 34.0,
+      "final_score": 26.0,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "architecture_coupling": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        },
+        "chokepoint_severity": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "supplier_concentration": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "expansion_difficulty": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "evidence_quality": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "valuation_disconnect": {
+          "rating": 3.0,
+          "weight": 11,
+          "points": 6.6
+        },
+        "catalyst_timing": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "liquidity": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "hype_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "alternative_design_risk": {
+          "rating": 2.0,
+          "points": 4.0
+        }
+      },
+      "kill_switches": [],
+      "evidence": [],
+      "segment": "硫化物固态电解质",
+      "selection_reason": "固态电池硫化物电解质专利布局",
+      "revenue_exposure": "低",
+      "fundamentals": {
+        "market_cap_yi": 1129.07,
+        "pe_ratio": 15.36,
+        "pb_ratio": 2.45,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
+      }
+    },
+    {
+      "ticker": "600884",
+      "company": "杉杉股份",
+      "market": "A-share",
+      "raw_factor_points": 60.0,
+      "penalty_points": 34.0,
+      "final_score": 26.0,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "architecture_coupling": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        },
+        "chokepoint_severity": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "supplier_concentration": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "expansion_difficulty": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "evidence_quality": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "valuation_disconnect": {
+          "rating": 3.0,
+          "weight": 11,
+          "points": 6.6
+        },
+        "catalyst_timing": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "liquidity": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "hype_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "alternative_design_risk": {
+          "rating": 2.0,
+          "points": 4.0
+        }
+      },
+      "kill_switches": [],
+      "evidence": [],
+      "segment": "氧化物固态电解质",
+      "selection_reason": "固态电解质材料有技术储备",
+      "revenue_exposure": "低",
+      "fundamentals": {
+        "market_cap_yi": null,
+        "pe_ratio": null,
+        "pb_ratio": null,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
+      }
+    },
+    {
+      "ticker": "300073",
+      "company": "当升科技",
+      "market": "A-share",
+      "raw_factor_points": 60.0,
+      "penalty_points": 34.0,
+      "final_score": 26.0,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "architecture_coupling": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        },
+        "chokepoint_severity": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "supplier_concentration": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "expansion_difficulty": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "evidence_quality": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "valuation_disconnect": {
+          "rating": 3.0,
+          "weight": 11,
+          "points": 6.6
+        },
+        "catalyst_timing": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "liquidity": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "hype_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "alternative_design_risk": {
+          "rating": 2.0,
+          "points": 4.0
+        }
+      },
+      "kill_switches": [],
+      "evidence": [],
+      "segment": "高镍正极材料",
+      "selection_reason": "高镍正极材料龙头，适配固态",
+      "revenue_exposure": "高",
+      "fundamentals": {
+        "market_cap_yi": 225.77,
+        "pe_ratio": 20.39,
+        "pb_ratio": 1.52,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
+      }
+    },
+    {
+      "ticker": "002340",
+      "company": "格林美",
+      "market": "A-share",
+      "raw_factor_points": 60.0,
+      "penalty_points": 34.0,
+      "final_score": 26.0,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "architecture_coupling": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        },
+        "chokepoint_severity": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "supplier_concentration": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "expansion_difficulty": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "evidence_quality": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "valuation_disconnect": {
+          "rating": 3.0,
+          "weight": 11,
+          "points": 6.6
+        },
+        "catalyst_timing": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "liquidity": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "hype_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "alternative_design_risk": {
+          "rating": 2.0,
+          "points": 4.0
+        }
+      },
+      "kill_switches": [],
+      "evidence": [],
+      "segment": "高镍正极材料",
+      "selection_reason": "高镍前驱体及正极材料量产",
+      "revenue_exposure": "中",
+      "fundamentals": {
+        "market_cap_yi": 332.16,
+        "pe_ratio": 15.89,
+        "pb_ratio": 1.56,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
+      }
+    },
+    {
+      "ticker": "002466",
+      "company": "天齐锂业",
+      "market": "A-share",
+      "raw_factor_points": 60.0,
+      "penalty_points": 34.0,
+      "final_score": 26.0,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "architecture_coupling": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        },
+        "chokepoint_severity": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "supplier_concentration": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "expansion_difficulty": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "evidence_quality": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "valuation_disconnect": {
+          "rating": 3.0,
+          "weight": 11,
+          "points": 6.6
+        },
+        "catalyst_timing": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "liquidity": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "hype_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "alternative_design_risk": {
+          "rating": 2.0,
+          "points": 4.0
+        }
+      },
+      "kill_switches": [],
+      "evidence": [],
+      "segment": "硫化锂原料",
+      "selection_reason": "锂盐龙头，供应硫化锂原料",
+      "revenue_exposure": "低",
+      "fundamentals": {
+        "market_cap_yi": 824.17,
+        "pe_ratio": 10.98,
+        "pb_ratio": 1.78,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
+      }
+    },
+    {
+      "ticker": "300014",
+      "company": "亿纬锂能",
+      "market": "A-share",
+      "raw_factor_points": 47.4,
+      "penalty_points": 26.0,
+      "final_score": 21.4,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "architecture_coupling": {
+          "rating": 2.0,
+          "weight": 10,
+          "points": 4.0
+        },
+        "chokepoint_severity": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "supplier_concentration": {
+          "rating": 2.0,
+          "weight": 12,
+          "points": 4.8
+        },
+        "expansion_difficulty": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "evidence_quality": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "valuation_disconnect": {
+          "rating": 2.0,
+          "weight": 11,
+          "points": 4.4
+        },
+        "catalyst_timing": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "governance": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "geopolitics": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "liquidity": {
+          "rating": 0.0,
+          "points": 0.0
+        },
+        "hype_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "accounting_quality": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "cyclicality": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "alternative_design_risk": {
+          "rating": 2.0,
+          "points": 4.0
+        }
+      },
+      "kill_switches": [
+        "固态电池产业化进度不及预期，中试到量产周期拉长",
+        "公司在固态电池整线制造环节并未形成独特卡位，更多是产能使用者而非设备/技术核心供应方",
+        "技术路线切换风险，若半固态/凝聚态路线更早成熟，全固态布局的相对优势可能被削弱"
+      ],
+      "evidence": [
+        {
+          "claim": "亿纬锂能在固态电池技术领域有明确布局，有望受益于固态电池产业化带来的整线制造与工艺升级需求",
+          "source": "公开信息/公司财报",
+          "strength": "media"
+        }
+      ],
+      "segment": "固态电池整线制造",
+      "selection_reason": "固态电池技术有布局",
+      "revenue_exposure": "低",
+      "fundamentals": {
+        "market_cap_yi": 1215.09,
+        "pe_ratio": 18.4,
+        "pb_ratio": 2.42,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
+      }
+    },
+    {
+      "ticker": "002056",
+      "company": "横店东磁",
+      "market": "A-share",
+      "raw_factor_points": 44.6,
+      "penalty_points": 34.0,
+      "final_score": 10.6,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "architecture_coupling": {
+          "rating": 2.0,
+          "weight": 10,
+          "points": 4.0
+        },
+        "chokepoint_severity": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "supplier_concentration": {
+          "rating": 2.0,
+          "weight": 12,
+          "points": 4.8
+        },
+        "expansion_difficulty": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "evidence_quality": {
+          "rating": 1.0,
+          "weight": 15,
+          "points": 3.0
+        },
+        "valuation_disconnect": {
+          "rating": 3.0,
+          "weight": 11,
+          "points": 6.6
+        },
+        "catalyst_timing": {
+          "rating": 2.0,
+          "weight": 10,
+          "points": 4.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "liquidity": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "hype_risk": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "alternative_design_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        }
+      },
+      "kill_switches": [
+        "硫化物电解质技术路线可能被其他固态电解质路线替代",
+        "公司研发进度不及预期，量产时间延后",
+        "固态电池商业化需求拐点晚于市场预期"
+      ],
+      "evidence": [
+        {
+          "claim": "布局硫化物固态电解质材料研发",
+          "source": "公司公告/公开调研",
+          "strength": "primary"
+        },
+        {
+          "claim": "现有磁性材料业务与电池材料有工艺协同潜力",
+          "source": "行业分析",
+          "strength": "analysis"
+        }
+      ],
+      "segment": "硫化物固态电解质",
+      "selection_reason": "布局固态电池电解质材料研发",
+      "revenue_exposure": "低",
+      "fundamentals": {
+        "market_cap_yi": 350.07,
+        "pe_ratio": 18.46,
+        "pb_ratio": 3.3,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
+      }
+    },
+    {
+      "ticker": "300207",
+      "company": "欣旺达",
+      "market": "A-share",
+      "raw_factor_points": 54.2,
+      "penalty_points": 44.0,
+      "final_score": 10.2,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "architecture_coupling": {
+          "rating": 2.0,
+          "weight": 10,
+          "points": 4.0
+        },
+        "chokepoint_severity": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "supplier_concentration": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "expansion_difficulty": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "evidence_quality": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "valuation_disconnect": {
+          "rating": 4.0,
+          "weight": 11,
+          "points": 8.8
+        },
+        "catalyst_timing": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "liquidity": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "hype_risk": {
+          "rating": 4.0,
+          "points": 8.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "alternative_design_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        }
+      },
+      "kill_switches": [
+        "若欣旺达固态电池中试线获得头部客户大额订单并实现整线设备自供，将显著提升瓶颈环节实质性",
+        "若固态电池技术路线转向半固态或氧化物/硫化物路线不确定性降低，公司已有产线改造潜力可能被重估",
+        "若公司通过资本运作或并购整合获得整线制造核心工艺，则估值溢价逻辑将有所支撑"
+      ],
+      "evidence": [
+        {
+          "claim": "欣旺达已建成固态电池中试线，但尚未形成大规模量产能力，整线制造环节的收入暴露有限",
+          "source": "公司公告/公开行业报道",
+          "strength": "media"
+        },
+        {
+          "claim": "当前市盈率73.12倍，市净率1.36倍，总市值333.47亿元，估值相对于传统电池制造业务偏高，隐含固态电池高预期",
+          "source": "公开行情数据",
+          "strength": "primary"
+        },
+        {
+          "claim": "公司主业为消费电池及动力电池，固态电池整线制造集成能力缺乏独立披露的订单/收入证据",
+          "source": "公司财报/公开信息",
+          "strength": "primary"
+        }
+      ],
+      "segment": "固态电池整线制造",
+      "selection_reason": "固态电池研发中，有中试线",
+      "revenue_exposure": "低",
+      "fundamentals": {
+        "market_cap_yi": 333.47,
+        "pe_ratio": 73.12,
+        "pb_ratio": 1.36,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
+      }
+    }
+  ]
+}

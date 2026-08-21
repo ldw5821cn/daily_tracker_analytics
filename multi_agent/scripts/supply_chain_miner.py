@@ -39,20 +39,44 @@ def _slugify(s: str) -> str:
 
 
 def load_a_share_universe(db_path: str) -> List[Dict]:
-    """从预测数据库读取 A 股股票池。"""
-    conn = sqlite3.connect(db_path)
-    conn.row_factory = sqlite3.Row
-    cur = conn.cursor()
-    cur.execute(
-        """
-        SELECT DISTINCT ticker, name, sector
-        FROM agentic_predictions
-        WHERE category = '个股' AND name IS NOT NULL AND name != ''
-        ORDER BY ticker
-        """
-    )
-    rows = [dict(r) for r in cur.fetchall()]
-    conn.close()
+    """从本地 CSV 读取深交所全 A 股列表，并合并预测数据库中的历史标的。"""
+    universe = {}
+    # 1. 深交所全 A 股（含行业）
+    sz_path = f"{ROOT}/multi_agent/data/a_share_universe_sz.csv"
+    if os.path.exists(sz_path):
+        import csv
+        with open(sz_path, "r", encoding="utf-8-sig") as f:
+            for row in csv.DictReader(f):
+                code = row.get("A股代码", "").strip()
+                name = row.get("A股简称", "").strip()
+                sector = row.get("所属行业", "").strip()
+                if code and name:
+                    universe[code] = {"ticker": code, "name": name, "sector": sector}
+    # 2. 预测数据库中的历史标的（补充 sector 信息）
+    if os.path.exists(db_path):
+        conn = sqlite3.connect(db_path)
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute(
+            """
+            SELECT DISTINCT ticker, name, sector
+            FROM agentic_predictions
+            WHERE category = '个股' AND name IS NOT NULL AND name != ''
+            ORDER BY ticker
+            """
+        )
+        for r in cur.fetchall():
+            d = dict(r)
+            code = d["ticker"]
+            if code in universe:
+                # 用更细分的 sector 覆盖较粗的申万行业
+                if d.get("sector") and len(str(d["sector"])) > len(str(universe[code].get("sector", ""))):
+                    universe[code]["sector"] = d["sector"]
+            else:
+                universe[code] = d
+        conn.close()
+    rows = list(universe.values())
+    rows.sort(key=lambda x: x["ticker"])
     return rows
 
 
@@ -126,8 +150,18 @@ def build_value_chain(theme: str) -> Dict:
         {"role": "system", "content": "你是资深产业链研究专家，擅长构建投资级产业链地图。"},
         {"role": "user", "content": prompt},
     ]
-    raw = chat(messages, temperature=0.3, max_tokens=1600)
+    raw = chat(messages, temperature=0.3, max_tokens=2400)
+    # 尝试直接解析，若失败可能是 JSON 被截断：找从第一个 { 到最后一个 } 的完整段
     parsed = _extract_json(raw) if raw else None
+    if parsed is None:
+        # 模型可能输出不完整 JSON（max_tokens 截断），尝试补全尾部缺失的括号
+        text = raw.strip() if raw else ""
+        # 统计未闭合的 { 和 [，补全
+        open_brace = text.count('{') - text.count('}')
+        open_bracket = text.count('[') - text.count(']')
+        if open_brace > 0 or open_bracket > 0:
+            text += ']' * open_bracket + '}' * open_brace
+            parsed = _extract_json(text)
     if parsed is None:
         raise RuntimeError(f"产业链 LLM 解析失败:\n{raw[:500]}")
     parsed['_llm_raw'] = raw
@@ -143,7 +177,7 @@ def map_candidates(theme: str, value_chain: Dict, universe: List[Dict]) -> List[
     )
     universe_text = '\n'.join(
         f"{s['ticker']} {s['name']}（sector: {s['sector']}）"
-        for s in universe[:200]
+        for s in universe[:600]
     )
     prompt = f"""主题：{theme}
 
@@ -191,18 +225,96 @@ def map_candidates(theme: str, value_chain: Dict, universe: List[Dict]) -> List[
     return []
 
 
+def load_fundamentals() -> Dict[str, dict]:
+    """加载最新的 fundamentals_cache，key 为 6 位代码。"""
+    cache_dir = f"{ROOT}/multi_agent/data/fundamentals_cache"
+    if not os.path.exists(cache_dir):
+        return {}
+    files = sorted([f for f in os.listdir(cache_dir) if f.endswith('.json')], reverse=True)
+    if not files:
+        return {}
+    try:
+        with open(os.path.join(cache_dir, files[0]), 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return {str(k).zfill(6): v for k, v in data.get('fundamentals', {}).items() if v}
+    except Exception:
+        return {}
+
+
+DEFAULT_FACTORS = {
+    "demand_inflection": 3,
+    "architecture_coupling": 3,
+    "chokepoint_severity": 3,
+    "supplier_concentration": 3,
+    "expansion_difficulty": 3,
+    "evidence_quality": 3,
+    "valuation_disconnect": 3,
+    "catalyst_timing": 3,
+}
+DEFAULT_PENALTIES = {
+    "dilution_financing": 2,
+    "governance": 2,
+    "geopolitics": 2,
+    "liquidity": 2,
+    "hype_risk": 3,
+    "accounting_quality": 2,
+    "cyclicality": 2,
+    "alternative_design_risk": 2,
+}
+
+
+def enrich_with_fundamentals(candidates: List[Dict], fund_map: Dict[str, dict]) -> List[Dict]:
+    """把 PE/PB/市值/ROE 等真实财务数据附加到候选上，用于页面展示。"""
+    for c in candidates:
+        code = str(c.get('ticker', '')).zfill(6)
+        f = fund_map.get(code, {})
+        c['fundamentals'] = {
+            'market_cap_yi': round(f['market_cap'] / 1e8, 2) if f.get('market_cap') else None,
+            'pe_ratio': f.get('pe_ratio'),
+            'pb_ratio': f.get('pb_ratio'),
+            'roe': f.get('roe'),
+            'gross_margin': f.get('gross_margin'),
+            'revenue_yoy': f.get('revenue_yoy'),
+            'profit_yoy': f.get('profit_yoy'),
+            'debt_ratio': f.get('debt_ratio'),
+            'report_date': f.get('report_date', ''),
+        }
+    return candidates
+
+
 def score_candidates(candidates: List[Dict], theme: str) -> List[Dict]:
     """对每个候选标的调用 Serenity 评分卡；跳过无 name/ticker 的候选。"""
+    fund_map = load_fundamentals()
     results = []
     for c in candidates:
         if not c.get('name') or not c.get('ticker'):
             print(f"   跳过无效候选: {c}")
             continue
-        # 让 LLM 为每个候选生成 Serenity factor 评分
+        code = str(c['ticker']).zfill(6)
+        fund = fund_map.get(code, {})
+        fund_str = ""
+        if fund.get('pe_ratio'):
+            fund_str += f" 市盈率(TTM/动态): {fund['pe_ratio']:.2f};"
+        if fund.get('pb_ratio'):
+            fund_str += f" 市净率: {fund['pb_ratio']:.2f};"
+        if fund.get('market_cap'):
+            fund_str += f" 总市值(亿元): {fund['market_cap']/1e8:.2f};"
+        if fund.get('roe') is not None:
+            fund_str += f" ROE: {fund['roe']:.2f}%;"
+        if fund.get('gross_margin') is not None:
+            fund_str += f" 毛利率: {fund['gross_margin']:.2f}%;"
+        if fund.get('revenue_yoy') is not None:
+            fund_str += f" 营收同比: {fund['revenue_yoy']:.2f}%;"
+        if fund.get('profit_yoy') is not None:
+            fund_str += f" 净利润同比: {fund['profit_yoy']:.2f}%;"
+        if fund.get('debt_ratio') is not None:
+            fund_str += f" 资产负债率: {fund['debt_ratio']:.2f}%;"
+
         prompt = f"""主题：{theme}
 瓶颈环节：{c['segment']}
 候选标的：{c['name']}（{c['ticker']}）
 入选理由：{c['reason']}
+已知财务/估值数据（来自公开行情/财报，可能不全）：{fund_str if fund_str else '暂无'}
 
 请按 Serenity 供应链瓶颈评分框架，为该标的各因子打分（0-5）。
 
@@ -234,10 +346,13 @@ def score_candidates(candidates: List[Dict], theme: str) -> List[Dict]:
   "what_could_weaken_view": ["证伪风险1", "证伪风险2"]
 }}
 
-只输出 JSON，不要解释。
+要求：
+1. 只输出 JSON，不要解释。
+2. 当财务数据显示高估值（如 PE>100 或 PB>10）且收入暴露为"低"时，valuation_disconnect 和 hype_risk 应反映风险。
+3. 财务数据缺失时不要臆造，按公开信息审慎评分。
 """
         messages = [
-            {"role": "system", "content": "你是量化基本面分析师，按 Serenity 框架评估标的。"},
+            {"role": "system", "content": "你是量化基本面分析师，按 Serenity 框架评估标的，严禁编造数据。"},
             {"role": "user", "content": prompt},
         ]
         raw = chat(messages, temperature=0.3, max_tokens=1600)
@@ -246,12 +361,19 @@ def score_candidates(candidates: List[Dict], theme: str) -> List[Dict]:
             parsed = {}
         else:
             parsed = _extract_json(raw) or {}
+        # 缺省值兜底，避免 score 报错
+        factors = parsed.get('factors', {}) or {}
+        penalties = parsed.get('penalties', {}) or {}
+        for k, v in DEFAULT_FACTORS.items():
+            factors.setdefault(k, v)
+        for k, v in DEFAULT_PENALTIES.items():
+            penalties.setdefault(k, v)
         scorecard_input = {
             "ticker": c['ticker'],
             "company": c['name'],
             "market": "A-share",
-            "factors": parsed.get('factors', {}),
-            "penalties": parsed.get('penalties', {}),
+            "factors": factors,
+            "penalties": penalties,
             "evidence": parsed.get('evidence', []),
             "what_could_weaken_view": parsed.get('what_could_weaken_view', []),
         }
@@ -265,6 +387,7 @@ def score_candidates(candidates: List[Dict], theme: str) -> List[Dict]:
             "revenue_exposure": c.get('revenue_exposure', '中'),
         })
         results.append(result)
+    results = enrich_with_fundamentals(results, fund_map)
     results.sort(key=lambda x: x.get('final_score', 0), reverse=True)
     return results
 
@@ -298,11 +421,12 @@ tr:hover {{ background: #f8fafc; }}
 .layer-title {{ font-weight: 600; color: #1e3a5f; margin-bottom: 6px; }}
 .layer-seg {{ color: #475569; font-size: 13px; }}
 .desc {{ font-size: 13px; color: #555; line-height: 1.7; }}
+.fund {{ color: #64748b; font-size: 12px; margin-top: 4px; }}
 </style>
 </head>
 <body>
 <h1>🧭 {theme} 产业链挖掘</h1>
-<div class="meta">生成时间：{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} · 标的池来自历史 A 股预测数据库</div>
+<div class="meta">生成时间：{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} · 标的池来自深交所全 A 股 + 历史预测覆盖</div>
 """
     html += f"""
 <div class="cards">
@@ -344,11 +468,22 @@ tr:hover {{ background: #f8fafc; }}
 
 <h2>Top 候选标的</h2>
 <table>
-<tr><th>排序</th><th>标的</th><th>瓶颈环节</th><th>入选理由</th><th>收入暴露</th><th>瓶颈评分</th><th>评级</th></tr>
+<tr><th>排序</th><th>标的</th><th>瓶颈环节</th><th>入选理由</th><th>收入暴露</th><th>估值/财务</th><th>瓶颈评分</th><th>评级</th></tr>
 """
     for i, c in enumerate(candidates, 1):
         score = c.get('final_score', 0)
         score_class = 'score-high' if score >= 70 else ('score-mid' if score >= 55 else 'score-low')
+        f = c.get('fundamentals', {})
+        fund_parts = []
+        if f.get('market_cap_yi'):
+            fund_parts.append(f"市值 {f['market_cap_yi']}亿")
+        if f.get('pe_ratio'):
+            fund_parts.append(f"PE {f['pe_ratio']:.1f}")
+        if f.get('pb_ratio'):
+            fund_parts.append(f"PB {f['pb_ratio']:.1f}")
+        if f.get('roe') is not None:
+            fund_parts.append(f"ROE {f['roe']:.1f}%")
+        fund_str = ' · '.join(fund_parts) if fund_parts else '暂无'
         html += f"""
 <tr>
   <td>{i}</td>
@@ -356,6 +491,7 @@ tr:hover {{ background: #f8fafc; }}
   <td>{c.get('segment', '')}</td>
   <td>{c.get('selection_reason', '')}</td>
   <td>{c.get('revenue_exposure', '')}</td>
+  <td class="fund">{fund_str}</td>
   <td class="{score_class}">{score}</td>
   <td>{c.get('verdict', '')}</td>
 </tr>\n"""
@@ -373,7 +509,7 @@ tr:hover {{ background: #f8fafc; }}
 <h2>说明</h2>
 <p class="desc">
 <b>方法论：</b>Serenity 供应链瓶颈研究 — 先找产业链稀缺环节，再映射 A 股标的，最后用 8 因子瓶颈评分卡排序。<br><br>
-<b>数据来源：</b>产业链结构由 LLM 基于公开知识生成；候选标的来自本地历史预测数据库中的 A 股股票池，尚未实时核对接入该产业链的真实性。<br><br>
+<b>数据来源：</b>产业链结构由 LLM 基于公开知识生成；候选标的来自深交所全 A 股 + 历史预测覆盖；估值/财务数据来自 fundamentals_cache（东财快照 + 同花顺财报摘要）。<br><br>
 <b>用途：</b>本页面仅用于研究线索挖掘与 watchlist 扩展，不构成投资建议。任何标的纳入组合前需人工复核其真实业务占比与财务数据。
 </p>
 </body>

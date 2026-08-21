@@ -78,11 +78,14 @@ def chat(messages: List[Dict[str, str]],
         return None
 
     _model = model or os.getenv('OPENAI_MODEL') or os.getenv('LLM_MODEL') or 'gpt-4o-mini'
-    fallback_models = ['deepseek-chat']
+    fallback_models = ['deepseek-chat', 'deepseek-reasoner']
     if _model == 'deepseek-chat':
         fallback_models = ['deepseek-reasoner']
+    elif _model == 'deepseek-reasoner':
+        fallback_models = ['deepseek-chat']
 
     attempts = [_model] + fallback_models
+    last_error = None
     for attempt_model in attempts:
         for attempt in range(retries):
             try:
@@ -98,11 +101,14 @@ def chat(messages: List[Dict[str, str]],
                         print(f"[llm_client] 模型 {_model} 返回空，已 fallback 到 {attempt_model}", file=sys.stderr)
                     return content
             except Exception as e:
+                last_error = e
                 is_last = (attempt == retries - 1)
                 print(f"[llm_client] 模型 {attempt_model} 调用失败({attempt+1}/{retries}): {e}", file=sys.stderr)
                 if not is_last:
                     time.sleep(retry_delay * (attempt + 1))  # 指数退避：5s, 10s, 15s
                 continue
+    if last_error:
+        print(f"[llm_client] 所有模型均失败，最后错误: {last_error}", file=sys.stderr)
     return None
 
 

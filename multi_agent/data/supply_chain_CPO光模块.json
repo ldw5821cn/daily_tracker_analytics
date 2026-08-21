@@ -1,0 +1,882 @@
+{
+  "theme": "CPO光模块",
+  "value_chain": {
+    "theme": "CPO光模块",
+    "demand_story": "AI算力爆发拉动高速光互连需求，CPO通过共封装光学降低功耗和延迟，成为下一代数据中心关键技术。",
+    "value_chain": [
+      {
+        "layer": "下游/终端",
+        "segments": [
+          "云厂商数据中心",
+          "AI算力集群",
+          "电信运营商网络",
+          "企业级数据中心"
+        ],
+        "key_players_global": [
+          "Google",
+          "Microsoft",
+          "Meta",
+          "Amazon",
+          "NVIDIA"
+        ]
+      },
+      {
+        "layer": "系统集成/整机",
+        "segments": [
+          "CPO交换机",
+          "光模块整机",
+          "光引擎子系统"
+        ],
+        "key_players_global": [
+          "Broadcom",
+          "Cisco",
+          "NVIDIA",
+          "Marvell",
+          "Lumentum"
+        ]
+      },
+      {
+        "layer": "核心零部件",
+        "segments": [
+          "光引擎",
+          "硅光芯片封装（Co-Packaged Optics）",
+          "高速连接器",
+          "光纤阵列（FAU）",
+          "TEC温控器件"
+        ],
+        "key_players_global": [
+          "Broadcom",
+          "Intel",
+          "TSMC",
+          "Sumitomo",
+          "TE Connectivity"
+        ]
+      },
+      {
+        "layer": "芯片/器件",
+        "segments": [
+          "硅光芯片",
+          "激光器芯片（EML/DFB）",
+          "探测器芯片（PD/APD）",
+          "调制器",
+          "驱动芯片/DSP/TIA",
+          "CW激光器"
+        ],
+        "key_players_global": [
+          "Intel",
+          "Broadcom",
+          "Lumentum",
+          "II-VI (Coherent)",
+          "Marvell"
+        ]
+      },
+      {
+        "layer": "设备",
+        "segments": [
+          "光刻机",
+          "刻蚀设备",
+          "薄膜沉积设备",
+          "晶圆键合设备",
+          "耦合封装设备",
+          "测试设备"
+        ],
+        "key_players_global": [
+          "ASML",
+          "Lam Research",
+          "Applied Materials",
+          "Besi",
+          "KLA"
+        ]
+      },
+      {
+        "layer": "材料",
+        "segments": [
+          "磷化铟（InP）衬底",
+          "砷化镓（GaAs）衬底",
+          "二氧化硅波导材料",
+          "有机封装基板",
+          "光学胶水",
+          "特种气体"
+        ],
+        "key_players_global": [
+          "Sumitomo Electric",
+          "II-VI (Coherent)",
+          "Dow",
+          "Shin-Etsu",
+          "Air Products"
+        ]
+      }
+    ],
+    "bottlenecks": [
+      {
+        "segment": "激光器芯片（EML/DFB）",
+        "severity": 5,
+        "reason": "高速光模块核心，高端芯片以InP等化合物半导体为主，国外大厂垄断，国内替代率低，扩产周期长，认证难度大。",
+        "global_cr3": "Lumentum、Coherent（II-VI）、Sumitomo合计超60%",
+        "china_share": "国产高端EML/DFB芯片份额不足10%，主要依赖进口"
+      },
+      {
+        "segment": "硅光芯片及封装（CPO核心）",
+        "severity": 5,
+        "reason": "CPO关键环节，涉及硅基光电子集成、晶圆级封装等高壁垒工艺，全球仅少数厂商掌握，良率与散热问题还未完全解决。",
+        "global_cr3": "Intel、Broadcom、TSMC占硅光代工主导地位，CR3超70%",
+        "china_share": "国内硅光技术起步晚，成熟量产能力有限，份额低于15%"
+      },
+      {
+        "segment": "DSP/驱动芯片（电芯片）",
+        "severity": 4,
+        "reason": "高速信号处理的核心，随速率提升功耗和复杂度剧增，海外模拟/数字IC巨头垄断，国内自给率极低。",
+        "global_cr3": "Broadcom、Marvell、Inphi（现Marvell）合计超过80%",
+        "china_share": "国产高速DSP几乎空白，少数厂商仅能提供低端TIA/Driver，份额不足5%"
+      },
+      {
+        "segment": "CW激光器（外部光源）",
+        "severity": 4,
+        "reason": "CPO多采用外置连续波激光器，对波长稳定性、功率、可靠性要求极高，供应链高度集中于日本和美国厂商。",
+        "global_cr3": "Lumentum、Coherent、Sumitomo合计接近70%",
+        "china_share": "国产可批量供货的CW激光器极少，处于样品验证阶段，份额低于10%"
+      },
+      {
+        "segment": "高精度耦合封装设备",
+        "severity": 4,
+        "reason": "CPO光引擎对光纤/芯片亚微米级耦合要求极高，高端主动对准设备由美日厂商垄断，国产设备精度和自动化仍有差距。",
+        "global_cr3": "Besi、ASMPT、Palomar合计占高端市场60%以上",
+        "china_share": "国产设备在中低端光模块封装可用，高端CPO封装渗透率极低，不足10%"
+      }
+    ],
+    "kill_switches": [
+      "AI算力需求不及预期，或光模块速率迭代放缓，导致CPO渗透率提升慢于预期",
+      "硅光、共封装技术路线被其他方案（如LPO/线性驱动、传统可插拔光模块）替代",
+      "国际大厂供应链限制、出口管制加剧，导致获取海外高端芯片/设备受阻，但国产突破不及预期",
+      "CPO封装良率、散热和可靠性问题长期未能解决，导致客户验证延迟或批量部署推迟"
+    ],
+    "_llm_raw": "{\n  \"theme\": \"CPO光模块\",\n  \"demand_story\": \"AI算力爆发拉动高速光互连需求，CPO通过共封装光学降低功耗和延迟，成为下一代数据中心关键技术。\",\n  \"value_chain\": [\n    {\n      \"layer\": \"下游/终端\",\n      \"segments\": [\"云厂商数据中心\", \"AI算力集群\", \"电信运营商网络\", \"企业级数据中心\"],\n      \"key_players_global\": [\"Google\", \"Microsoft\", \"Meta\", \"Amazon\", \"NVIDIA\"]\n    },\n    {\n      \"layer\": \"系统集成/整机\",\n      \"segments\": [\"CPO交换机\", \"光模块整机\", \"光引擎子系统\"],\n      \"key_players_global\": [\"Broadcom\", \"Cisco\", \"NVIDIA\", \"Marvell\", \"Lumentum\"]\n    },\n    {\n      \"layer\": \"核心零部件\",\n      \"segments\": [\"光引擎\", \"硅光芯片封装（Co-Packaged Optics）\", \"高速连接器\", \"光纤阵列（FAU）\", \"TEC温控器件\"],\n      \"key_players_global\": [\"Broadcom\", \"Intel\", \"TSMC\", \"Sumitomo\", \"TE Connectivity\"]\n    },\n    {\n      \"layer\": \"芯片/器件\",\n      \"segments\": [\"硅光芯片\", \"激光器芯片（EML/DFB）\", \"探测器芯片（PD/APD）\", \"调制器\", \"驱动芯片/DSP/TIA\", \"CW激光器\"],\n      \"key_players_global\": [\"Intel\", \"Broadcom\", \"Lumentum\", \"II-VI (Coherent)\", \"Marvell\"]\n    },\n    {\n      \"layer\": \"设备\",\n      \"segments\": [\"光刻机\", \"刻蚀设备\", \"薄膜沉积设备\", \"晶圆键合设备\", \"耦合封装设备\", \"测试设备\"],\n      \"key_players_global\": [\"ASML\", \"Lam Research\", \"Applied Materials\", \"Besi\", \"KLA\"]\n    },\n    {\n      \"layer\": \"材料\",\n      \"segments\": [\"磷化铟（InP）衬底\", \"砷化镓（GaAs）衬底\", \"二氧化硅波导材料\", \"有机封装基板\", \"光学胶水\", \"特种气体\"],\n      \"key_players_global\": [\"Sumitomo Electric\", \"II-VI (Coherent)\", \"Dow\", \"Shin-Etsu\", \"Air Products\"]\n    }\n  ],\n  \"bottlenecks\": [\n    {\n      \"segment\": \"激光器芯片（EML/DFB）\",\n      \"severity\": 5,\n      \"reason\": \"高速光模块核心，高端芯片以InP等化合物半导体为主，国外大厂垄断，国内替代率低，扩产周期长，认证难度大。\",\n      \"global_cr3\": \"Lumentum、Coherent（II-VI）、Sumitomo合计超60%\",\n      \"china_share\": \"国产高端EML/DFB芯片份额不足10%，主要依赖进口\"\n    },\n    {\n      \"segment\": \"硅光芯片及封装（CPO核心）\",\n      \"severity\": 5,\n      \"reason\": \"CPO关键环节，涉及硅基光电子集成、晶圆级封装等高壁垒工艺，全球仅少数厂商掌握，良率与散热问题还未完全解决。\",\n      \"global_cr3\": \"Intel、Broadcom、TSMC占硅光代工主导地位，CR3超70%\",\n      \"china_share\": \"国内硅光技术起步晚，成熟量产能力有限，份额低于15%\"\n    },\n    {\n      \"segment\": \"DSP/驱动芯片（电芯片）\",\n      \"severity\": 4,\n      \"reason\": \"高速信号处理的核心，随速率提升功耗和复杂度剧增，海外模拟/数字IC巨头垄断，国内自给率极低。\",\n      \"global_cr3\": \"Broadcom、Marvell、Inphi（现Marvell）合计超过80%\",\n      \"china_share\": \"国产高速DSP几乎空白，少数厂商仅能提供低端TIA/Driver，份额不足5%\"\n    },\n    {\n      \"segment\": \"CW激光器（外部光源）\",\n      \"severity\": 4,\n      \"reason\": \"CPO多采用外置连续波激光器，对波长稳定性、功率、可靠性要求极高，供应链高度集中于日本和美国厂商。\",\n      \"global_cr3\": \"Lumentum、Coherent、Sumitomo合计接近70%\",\n      \"china_share\": \"国产可批量供货的CW激光器极少，处于样品验证阶段，份额低于10%\"\n    },\n    {\n      \"segment\": \"高精度耦合封装设备\",\n      \"severity\": 4,\n      \"reason\": \"CPO光引擎对光纤/芯片亚微米级耦合要求极高，高端主动对准设备由美日厂商垄断，国产设备精度和自动化仍有差距。\",\n      \"global_cr3\": \"Besi、ASMPT、Palomar合计占高端市场60%以上\",\n      \"china_share\": \"国产设备在中低端光模块封装可用，高端CPO封装渗透率极低，不足10%\"\n    }\n  ],\n  \"kill_switches\": [\n    \"AI算力需求不及预期，或光模块速率迭代放缓，导致CPO渗透率提升慢于预期\",\n    \"硅光、共封装技术路线被其他方案（如LPO/线性驱动、传统可插拔光模块）替代\",\n    \"国际大厂供应链限制、出口管制加剧，导致获取海外高端芯片/设备受阻，但国产突破不及预期\",\n    \"CPO封装良率、散热和可靠性问题长期未能解决，导致客户验证延迟或批量部署推迟\"\n  ]\n}"
+  },
+  "top_candidates": [
+    {
+      "ticker": "000988",
+      "company": "华工科技",
+      "market": "A-share",
+      "raw_factor_points": 67.0,
+      "penalty_points": 34.0,
+      "final_score": 33.0,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 4.0,
+          "weight": 15,
+          "points": 12.0
+        },
+        "architecture_coupling": {
+          "rating": 4.0,
+          "weight": 10,
+          "points": 8.0
+        },
+        "chokepoint_severity": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "supplier_concentration": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "expansion_difficulty": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "evidence_quality": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "valuation_disconnect": {
+          "rating": 3.0,
+          "weight": 11,
+          "points": 6.6
+        },
+        "catalyst_timing": {
+          "rating": 4.0,
+          "weight": 10,
+          "points": 8.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "liquidity": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "hype_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "alternative_design_risk": {
+          "rating": 2.0,
+          "points": 4.0
+        }
+      },
+      "kill_switches": [
+        "CPO技术路线若被其他封装方案替代，公司硅光封装产线价值可能下降",
+        "硅光芯片及封装环节竞争加剧，导致公司市场份额或毛利率不及预期",
+        "高估值若未来业绩增速放缓，股价面临回调风险"
+      ],
+      "evidence": [
+        {
+          "claim": "公司具备硅光模块研发能力，并布局CPO技术，拥有硅光封装产线，直接受益于CPO光模块需求增长",
+          "source": "公开信息/公司公告",
+          "strength": "primary"
+        },
+        {
+          "claim": "营收同比增长27.13%，净利润同比增长55.76%，显示高增长趋势，反映下游需求强劲",
+          "source": "公开财报",
+          "strength": "primary"
+        },
+        {
+          "claim": "市盈率(TTM)41.91，市净率9.36，估值处于较高水平，但净利润高增长部分支撑估值",
+          "source": "公开行情数据",
+          "strength": "media"
+        }
+      ],
+      "segment": "硅光芯片及封装（CPO核心）",
+      "selection_reason": "具备硅光模块研发能力，布局CPO技术，有硅光封装产线",
+      "revenue_exposure": "中",
+      "fundamentals": {
+        "market_cap_yi": 1070.36,
+        "pe_ratio": 41.91,
+        "pb_ratio": 9.36,
+        "roe": 5.61,
+        "gross_margin": 19.81,
+        "revenue_yoy": 27.13,
+        "profit_yoy": 55.76,
+        "debt_ratio": 48.75,
+        "report_date": "2026-03-31"
+      }
+    },
+    {
+      "ticker": "000988",
+      "company": "华工科技",
+      "market": "A-share",
+      "raw_factor_points": 70.4,
+      "penalty_points": 38.0,
+      "final_score": 32.4,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 4.0,
+          "weight": 15,
+          "points": 12.0
+        },
+        "architecture_coupling": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        },
+        "chokepoint_severity": {
+          "rating": 4.0,
+          "weight": 15,
+          "points": 12.0
+        },
+        "supplier_concentration": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "expansion_difficulty": {
+          "rating": 4.0,
+          "weight": 12,
+          "points": 9.6
+        },
+        "evidence_quality": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "valuation_disconnect": {
+          "rating": 3.0,
+          "weight": 11,
+          "points": 6.6
+        },
+        "catalyst_timing": {
+          "rating": 4.0,
+          "weight": 10,
+          "points": 8.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "liquidity": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "hype_risk": {
+          "rating": 4.0,
+          "points": 8.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "alternative_design_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        }
+      },
+      "kill_switches": [
+        "激光器芯片国产替代进度不及预期，云岭光电技术良率或客户认证受阻",
+        "CPO需求增长放缓或技术路线变化，导致EML/DFB需求不及预期",
+        "高估值（PE 41.91，PB 9.36）若业绩增速放缓，股价面临回调风险"
+      ],
+      "evidence": [
+        {
+          "claim": "子公司云岭光电布局EML/DFB激光器芯片，已实现部分国产替代",
+          "source": "公开信息/公司公告",
+          "strength": "primary"
+        },
+        {
+          "claim": "营收同比增长27.13%，净利润同比增长55.76%，显示高增长",
+          "source": "公开财报",
+          "strength": "primary"
+        },
+        {
+          "claim": "毛利率19.81%，ROE 5.61%，盈利能力一般",
+          "source": "公开财报",
+          "strength": "primary"
+        }
+      ],
+      "segment": "激光器芯片（EML/DFB）",
+      "selection_reason": "子公司云岭光电布局EML/DFB激光器芯片，已实现部分国产替代",
+      "revenue_exposure": "中",
+      "fundamentals": {
+        "market_cap_yi": 1070.36,
+        "pe_ratio": 41.91,
+        "pb_ratio": 9.36,
+        "roe": 5.61,
+        "gross_margin": 19.81,
+        "revenue_yoy": 27.13,
+        "profit_yoy": 55.76,
+        "debt_ratio": 48.75,
+        "report_date": "2026-03-31"
+      }
+    },
+    {
+      "ticker": "000988",
+      "company": "华工科技",
+      "market": "A-share",
+      "raw_factor_points": 65.0,
+      "penalty_points": 38.0,
+      "final_score": 27.0,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 4.0,
+          "weight": 15,
+          "points": 12.0
+        },
+        "architecture_coupling": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        },
+        "chokepoint_severity": {
+          "rating": 4.0,
+          "weight": 15,
+          "points": 12.0
+        },
+        "supplier_concentration": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "expansion_difficulty": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "evidence_quality": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "valuation_disconnect": {
+          "rating": 3.0,
+          "weight": 11,
+          "points": 6.6
+        },
+        "catalyst_timing": {
+          "rating": 4.0,
+          "weight": 10,
+          "points": 8.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "liquidity": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "hype_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "alternative_design_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        }
+      },
+      "kill_switches": [
+        "公司CW激光器产品尚未大规模量产或获得主要客户认证，实际收入贡献可能不及预期",
+        "CPO技术路线可能转向其他光源方案（如硅光集成光源），降低CW激光器需求",
+        "高估值（PE 41.91，PB 9.36）已反映部分预期，若业绩不及预期，股价回调风险大"
+      ],
+      "evidence": [
+        {
+          "claim": "子公司具备激光器芯片研发能力，可延伸至CW光源，有望受益于CPO对CW激光器的需求增长",
+          "source": "公开信息/公司公告",
+          "strength": "media"
+        },
+        {
+          "claim": "公司营收同比增长27.13%，净利润同比增长55.76%，显示业务增长强劲",
+          "source": "公司财报",
+          "strength": "primary"
+        },
+        {
+          "claim": "CW激光器是CPO光模块的关键瓶颈环节，华工科技作为潜在供应商具有稀缺性",
+          "source": "行业研究",
+          "strength": "analysis"
+        }
+      ],
+      "segment": "CW激光器（外部光源）",
+      "selection_reason": "子公司具备激光器芯片研发能力，可延伸至CW光源",
+      "revenue_exposure": "低",
+      "fundamentals": {
+        "market_cap_yi": 1070.36,
+        "pe_ratio": 41.91,
+        "pb_ratio": 9.36,
+        "roe": 5.61,
+        "gross_margin": 19.81,
+        "revenue_yoy": 27.13,
+        "profit_yoy": 55.76,
+        "debt_ratio": 48.75,
+        "report_date": "2026-03-31"
+      }
+    },
+    {
+      "ticker": "002008",
+      "company": "大族激光",
+      "market": "A-share",
+      "raw_factor_points": 34.2,
+      "penalty_points": 26.0,
+      "final_score": 8.2,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "architecture_coupling": {
+          "rating": 2.0,
+          "weight": 10,
+          "points": 4.0
+        },
+        "chokepoint_severity": {
+          "rating": 1.0,
+          "weight": 15,
+          "points": 3.0
+        },
+        "supplier_concentration": {
+          "rating": 2.0,
+          "weight": 12,
+          "points": 4.8
+        },
+        "expansion_difficulty": {
+          "rating": 2.0,
+          "weight": 12,
+          "points": 4.8
+        },
+        "evidence_quality": {
+          "rating": 1.0,
+          "weight": 15,
+          "points": 3.0
+        },
+        "valuation_disconnect": {
+          "rating": 3.0,
+          "weight": 11,
+          "points": 6.6
+        },
+        "catalyst_timing": {
+          "rating": 1.0,
+          "weight": 10,
+          "points": 2.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "liquidity": {
+          "rating": 0.0,
+          "points": 0.0
+        },
+        "hype_risk": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "accounting_quality": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "cyclicality": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "alternative_design_risk": {
+          "rating": 2.0,
+          "points": 4.0
+        }
+      },
+      "kill_switches": [
+        "若大族激光在CPO耦合设备领域尚未获得头部光模块厂商的批量订单，则主题相关性存疑",
+        "CPO技术路径可能推延或转向，导致相关设备需求高峰晚于市场预期",
+        "公司主业受制造业资本开支周期影响较大，若下游景气下滑，估值承压"
+      ],
+      "evidence": [
+        {
+          "claim": "入选理由：激光加工设备龙头，具备光模块耦合封装设备研发能力",
+          "source": "用户提供的标的入选理由",
+          "strength": "analysis"
+        },
+        {
+          "claim": "公司主业为激光加工设备，CPO耦合封装设备仍处于研发/早期布局阶段，未披露相关订单或收入",
+          "source": "公司财报及公开信息推断",
+          "strength": "analysis"
+        },
+        {
+          "claim": "CPO光模块高精度耦合封装设备目前市场份额集中在少数海外厂商，国产替代尚需验证",
+          "source": "行业常识及公开研究",
+          "strength": "analysis"
+        }
+      ],
+      "segment": "高精度耦合封装设备",
+      "selection_reason": "激光加工设备龙头，具备光模块耦合封装设备研发能力",
+      "revenue_exposure": "低",
+      "fundamentals": {
+        "market_cap_yi": 938.17,
+        "pe_ratio": 36.42,
+        "pb_ratio": 4.37,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
+      }
+    },
+    {
+      "ticker": "000021",
+      "company": "深科技",
+      "market": "A-share",
+      "raw_factor_points": 47.6,
+      "penalty_points": 40.0,
+      "final_score": 7.6,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "architecture_coupling": {
+          "rating": 2.0,
+          "weight": 10,
+          "points": 4.0
+        },
+        "chokepoint_severity": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "supplier_concentration": {
+          "rating": 2.0,
+          "weight": 12,
+          "points": 4.8
+        },
+        "expansion_difficulty": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "evidence_quality": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "valuation_disconnect": {
+          "rating": 3.0,
+          "weight": 11,
+          "points": 6.6
+        },
+        "catalyst_timing": {
+          "rating": 2.0,
+          "weight": 10,
+          "points": 4.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "liquidity": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "hype_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "alternative_design_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        }
+      },
+      "kill_switches": [
+        "深科技光模块代工收入占比及具体客户验证情况不透明，若实际收入暴露远低于预期，估值支撑不足",
+        "CPO渗透率提升不及预期，传统可插拔光模块仍占主导，硅光封装瓶颈环节价值量未能兑现",
+        "公司主业包含存储、电子制造服务等，CPO/光模块业务对整体业绩贡献有限，存在主题炒作后回落风险"
+      ],
+      "evidence": [
+        {
+          "claim": "深科技具备光模块封装测试能力，为国际大厂提供代工服务",
+          "source": "公开信息/公司财报",
+          "strength": "primary"
+        },
+        {
+          "claim": "CPO技术趋势带动硅光芯片及封装环节需求预期上升",
+          "source": "行业研究",
+          "strength": "analysis"
+        },
+        {
+          "claim": "公司市盈率TTM约61倍，市净率约4.55倍，估值已隐含较高成长预期",
+          "source": "公开行情数据",
+          "strength": "primary"
+        }
+      ],
+      "segment": "硅光芯片及封装（CPO核心）",
+      "selection_reason": "具备光模块封装测试能力，为国际大厂提供代工服务",
+      "revenue_exposure": "中",
+      "fundamentals": {
+        "market_cap_yi": 592.12,
+        "pe_ratio": 61.12,
+        "pb_ratio": 4.55,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
+      }
+    },
+    {
+      "ticker": "002049",
+      "company": "紫光国微",
+      "market": "A-share",
+      "raw_factor_points": 27.6,
+      "penalty_points": 34.0,
+      "final_score": 0.0,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "architecture_coupling": {
+          "rating": 1.0,
+          "weight": 10,
+          "points": 2.0
+        },
+        "chokepoint_severity": {
+          "rating": 1.0,
+          "weight": 15,
+          "points": 3.0
+        },
+        "supplier_concentration": {
+          "rating": 1.0,
+          "weight": 12,
+          "points": 2.4
+        },
+        "expansion_difficulty": {
+          "rating": 2.0,
+          "weight": 12,
+          "points": 4.8
+        },
+        "evidence_quality": {
+          "rating": 1.0,
+          "weight": 15,
+          "points": 3.0
+        },
+        "valuation_disconnect": {
+          "rating": 2.0,
+          "weight": 11,
+          "points": 4.4
+        },
+        "catalyst_timing": {
+          "rating": 1.0,
+          "weight": 10,
+          "points": 2.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "liquidity": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "hype_risk": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "alternative_design_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        }
+      },
+      "kill_switches": [
+        "若公司快速获得DSP/高速接口芯片大客户认证并形成订单，则当前低暴露假设被证伪",
+        "若CPO需求证伪或技术路线转向其他方案，公司相关布局价值将进一步下降"
+      ],
+      "evidence": [
+        {
+          "claim": "公司主营特种IC、智能安全芯片等，高速接口芯片有布局但DSP领域尚弱，核心受益逻辑为国产替代预期，直接暴露有限",
+          "source": "公司财报/公开信息",
+          "strength": "primary"
+        },
+        {
+          "claim": "CPO光模块瓶颈在DSP/驱动芯片，但该环节由Marvell、Broadcom等海外厂商主导，公司尚未有量产同级别产品",
+          "source": "行业研究",
+          "strength": "analysis"
+        },
+        {
+          "claim": "公司估值PE(TTM)约33倍，PB约3.9倍，相对低业务暴露仍偏贵，反映部分概念溢价",
+          "source": "公开行情数据",
+          "strength": "media"
+        }
+      ],
+      "segment": "DSP/驱动芯片（电芯片）",
+      "selection_reason": "国内特种IC龙头，布局高速接口芯片，但DSP领域尚弱",
+      "revenue_exposure": "低",
+      "fundamentals": {
+        "market_cap_yi": 528.29,
+        "pe_ratio": 33.11,
+        "pb_ratio": 3.9,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
+      }
+    }
+  ]
+}
