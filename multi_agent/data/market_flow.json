@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-08-20T17:05:31",
-  "today": "2026-08-20",
+  "generated_at": "2026-08-21T17:05:53",
+  "today": "2026-08-21",
   "records": [
     {
       "date": "2024-08-16",
@@ -15,21 +15,6 @@
         "inflow": -53.2235000000001
       },
       "source": "akshare_northbound"
-    },
-    {
-      "date": "2026-07-21",
-      "ticker": "",
-      "metric": "margin_sse_total_balance",
-      "value": 1376799741052.0,
-      "detail": {
-        "date": "2026-07-21",
-        "fin_balance": 1363597390293.0,
-        "fin_buy": 136569306205.0,
-        "sec_balance": 13202350759.0,
-        "sec_sell": 86318033.0,
-        "total_balance": 1376799741052.0
-      },
-      "source": "akshare_margin_sse"
     },
     {
       "date": "2026-07-22",
@@ -347,6 +332,21 @@
       "source": "akshare_margin_sse"
     },
     {
+      "date": "2026-08-20",
+      "ticker": "",
+      "metric": "margin_sse_total_balance",
+      "value": 1369510753023.0,
+      "detail": {
+        "date": "2026-08-20",
+        "fin_balance": 1352435512838.0,
+        "fin_buy": 104349775344.0,
+        "sec_balance": 17075240185.0,
+        "sec_sell": 70965312.0,
+        "total_balance": 1369510753023.0
+      },
+      "source": "akshare_margin_sse"
+    },
+    {
       "date": "2026-08-11",
       "ticker": "50ETF",
       "metric": "option_vix_close",
@@ -485,14 +485,14 @@
       "date": "2026-08-22",
       "ticker": "50ETF",
       "metric": "option_vix_close",
-      "value": null,
+      "value": 16.53,
       "detail": {
         "date": "2026-08-22",
         "symbol": "50ETF",
-        "vix_open": null,
-        "vix_high": null,
-        "vix_low": null,
-        "vix_close": null
+        "vix_open": 17.3,
+        "vix_high": 17.46,
+        "vix_low": 16.48,
+        "vix_close": 16.53
       },
       "source": "akshare_option_vix"
     },
@@ -635,14 +635,14 @@
       "date": "2026-08-22",
       "ticker": "300ETF",
       "metric": "option_vix_close",
-      "value": null,
+      "value": 18.73,
       "detail": {
         "date": "2026-08-22",
         "symbol": "300ETF",
-        "vix_open": null,
-        "vix_high": null,
-        "vix_low": null,
-        "vix_close": null
+        "vix_open": 19.34,
+        "vix_high": 19.66,
+        "vix_low": 18.42,
+        "vix_close": 18.73
       },
       "source": "akshare_option_vix"
     },
@@ -785,16 +785,91 @@
       "date": "2026-08-22",
       "ticker": "500ETF",
       "metric": "option_vix_close",
-      "value": null,
+      "value": 28.26,
       "detail": {
         "date": "2026-08-22",
         "symbol": "500ETF",
-        "vix_open": null,
-        "vix_high": null,
-        "vix_low": null,
-        "vix_close": null
+        "vix_open": 30.19,
+        "vix_high": 31.55,
+        "vix_low": 27.56,
+        "vix_close": 28.26
       },
       "source": "akshare_option_vix"
+    },
+    {
+      "date": "2026-08-20",
+      "ticker": "sse_510050",
+      "metric": "option_pcr",
+      "value": 58.99,
+      "detail": {
+        "date": "2026-08-20",
+        "symbol": "sse_510050",
+        "pcr": 58.99,
+        "call_volume": 493309.0,
+        "put_volume": 291010.0,
+        "total_open_interest": 1670762.0
+      },
+      "source": "akshare_option_stats"
+    },
+    {
+      "date": "2026-08-20",
+      "ticker": "sse_510300",
+      "metric": "option_pcr",
+      "value": 76.61,
+      "detail": {
+        "date": "2026-08-20",
+        "symbol": "sse_510300",
+        "pcr": 76.61,
+        "call_volume": 460878.0,
+        "put_volume": 353061.0,
+        "total_open_interest": 1247473.0
+      },
+      "source": "akshare_option_stats"
+    },
+    {
+      "date": "2026-08-20",
+      "ticker": "sse_510500",
+      "metric": "option_pcr",
+      "value": 91.83,
+      "detail": {
+        "date": "2026-08-20",
+        "symbol": "sse_510500",
+        "pcr": 91.83,
+        "call_volume": 888010.0,
+        "put_volume": 815423.0,
+        "total_open_interest": 1597048.0
+      },
+      "source": "akshare_option_stats"
+    },
+    {
+      "date": "2026-08-20",
+      "ticker": "sse_588000",
+      "metric": "option_pcr",
+      "value": 103.82,
+      "detail": {
+        "date": "2026-08-20",
+        "symbol": "sse_588000",
+        "pcr": 103.82,
+        "call_volume": 1313623.0,
+        "put_volume": 1363831.0,
+        "total_open_interest": 3002725.0
+      },
+      "source": "akshare_option_stats"
+    },
+    {
+      "date": "2026-08-20",
+      "ticker": "sse_588080",
+      "metric": "option_pcr",
+      "value": 254.82,
+      "detail": {
+        "date": "2026-08-20",
+        "symbol": "sse_588080",
+        "pcr": 254.82,
+        "call_volume": 186687.0,
+        "put_volume": 475714.0,
+        "total_open_interest": 665950.0
+      },
+      "source": "akshare_option_stats"
     },
     {
       "date": "2026-08-19",
@@ -1472,77 +1547,62 @@
       "source": "akshare_option_stats"
     },
     {
-      "date": "2026-08-06",
-      "ticker": "sse_510050",
+      "date": "2026-08-20",
+      "ticker": "szse_159901",
       "metric": "option_pcr",
-      "value": 61.59,
+      "value": 69.61,
       "detail": {
-        "date": "2026-08-06",
-        "symbol": "sse_510050",
-        "pcr": 61.59,
-        "call_volume": 231282.0,
-        "put_volume": 142456.0,
-        "total_open_interest": 1460470.0
+        "date": "2026-08-20",
+        "symbol": "szse_159901",
+        "pcr": 69.61,
+        "call_volume": 23031.0,
+        "put_volume": 31664.0,
+        "total_open_interest": 68275.0
       },
       "source": "akshare_option_stats"
     },
     {
-      "date": "2026-08-06",
-      "ticker": "sse_510300",
+      "date": "2026-08-20",
+      "ticker": "szse_159915",
       "metric": "option_pcr",
-      "value": 78.48,
+      "value": 81.63,
       "detail": {
-        "date": "2026-08-06",
-        "symbol": "sse_510300",
-        "pcr": 78.48,
-        "call_volume": 303037.0,
-        "put_volume": 237838.0,
-        "total_open_interest": 1174715.0
+        "date": "2026-08-20",
+        "symbol": "szse_159915",
+        "pcr": 81.63,
+        "call_volume": 1075516.0,
+        "put_volume": 918253.0,
+        "total_open_interest": 1943608.0
       },
       "source": "akshare_option_stats"
     },
     {
-      "date": "2026-08-06",
-      "ticker": "sse_510500",
+      "date": "2026-08-20",
+      "ticker": "szse_159919",
       "metric": "option_pcr",
-      "value": 82.85,
+      "value": 52.32,
       "detail": {
-        "date": "2026-08-06",
-        "symbol": "sse_510500",
-        "pcr": 82.85,
-        "call_volume": 723380.0,
-        "put_volume": 599291.0,
-        "total_open_interest": 1477774.0
+        "date": "2026-08-20",
+        "symbol": "szse_159919",
+        "pcr": 52.32,
+        "call_volume": 52320.0,
+        "put_volume": 38412.0,
+        "total_open_interest": 242797.0
       },
       "source": "akshare_option_stats"
     },
     {
-      "date": "2026-08-06",
-      "ticker": "sse_588000",
+      "date": "2026-08-20",
+      "ticker": "szse_159922",
       "metric": "option_pcr",
-      "value": 91.37,
+      "value": 56.3,
       "detail": {
-        "date": "2026-08-06",
-        "symbol": "sse_588000",
-        "pcr": 91.37,
-        "call_volume": 1100497.0,
-        "put_volume": 1005574.0,
-        "total_open_interest": 2728524.0
-      },
-      "source": "akshare_option_stats"
-    },
-    {
-      "date": "2026-08-06",
-      "ticker": "sse_588080",
-      "metric": "option_pcr",
-      "value": 107.19,
-      "detail": {
-        "date": "2026-08-06",
-        "symbol": "sse_588080",
-        "pcr": 107.19,
-        "call_volume": 129770.0,
-        "put_volume": 139100.0,
-        "total_open_interest": 550819.0
+        "date": "2026-08-20",
+        "symbol": "szse_159922",
+        "pcr": 56.3,
+        "call_volume": 135947.0,
+        "put_volume": 71061.0,
+        "total_open_interest": 371953.0
       },
       "source": "akshare_option_stats"
     },
@@ -2083,66 +2143,6 @@
         "call_volume": 145720.0,
         "put_volume": 51919.0,
         "total_open_interest": 351960.0
-      },
-      "source": "akshare_option_stats"
-    },
-    {
-      "date": "2026-08-06",
-      "ticker": "szse_159901",
-      "metric": "option_pcr",
-      "value": 66.44,
-      "detail": {
-        "date": "2026-08-06",
-        "symbol": "szse_159901",
-        "pcr": 66.44,
-        "call_volume": 60539.0,
-        "put_volume": 11353.0,
-        "total_open_interest": 54131.0
-      },
-      "source": "akshare_option_stats"
-    },
-    {
-      "date": "2026-08-06",
-      "ticker": "szse_159915",
-      "metric": "option_pcr",
-      "value": 79.1,
-      "detail": {
-        "date": "2026-08-06",
-        "symbol": "szse_159915",
-        "pcr": 79.1,
-        "call_volume": 984759.0,
-        "put_volume": 829905.0,
-        "total_open_interest": 1816631.0
-      },
-      "source": "akshare_option_stats"
-    },
-    {
-      "date": "2026-08-06",
-      "ticker": "szse_159919",
-      "metric": "option_pcr",
-      "value": 50.49,
-      "detail": {
-        "date": "2026-08-06",
-        "symbol": "szse_159919",
-        "pcr": 50.49,
-        "call_volume": 41443.0,
-        "put_volume": 26325.0,
-        "total_open_interest": 235010.0
-      },
-      "source": "akshare_option_stats"
-    },
-    {
-      "date": "2026-08-06",
-      "ticker": "szse_159922",
-      "metric": "option_pcr",
-      "value": 50.66,
-      "detail": {
-        "date": "2026-08-06",
-        "symbol": "szse_159922",
-        "pcr": 50.66,
-        "call_volume": 112384.0,
-        "put_volume": 50595.0,
-        "total_open_interest": 357722.0
       },
       "source": "akshare_option_stats"
     }
