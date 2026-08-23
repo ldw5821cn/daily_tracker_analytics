@@ -2,7 +2,7 @@
 import json
 import os
 
-DEFAULT_FILE = os.path.expanduser('~/daily_tracker_analytics/etf_tracker/multi_agent/watchlist.json')
+DEFAULT_FILE = '/home/liudawei/github/daily_tracker_analytics/multi_agent/watchlist.json'
 
 DEFAULT_STOCKS = [
     {"ticker": "601991", "name": "大唐发电", "category": "个股"},
@@ -125,12 +125,18 @@ def save_list(stocks, filepath=None):
     return True
 
 
-def add_stock(ticker, name, category="个股", filepath=None):
+def add_stock(ticker, name, category="个股", theme="", sector="", filepath=None):
     """添加关注标的"""
     stocks = load_list(filepath)
     # 去重
     existing = [s for s in stocks if s['ticker'] != ticker]
-    existing.append({"ticker": ticker, "name": name, "category": category})
+    existing.append({
+        "ticker": ticker,
+        "name": name,
+        "category": category,
+        "theme": theme,
+        "sector": sector,
+    })
     save_list(existing, filepath)
     return existing
 
@@ -170,6 +176,8 @@ if __name__ == "__main__":
     p_add.add_argument('ticker', help='股票代码')
     p_add.add_argument('--name', '-n', required=True, help='股票名称')
     p_add.add_argument('--category', '-c', default='个股', help='分类')
+    p_add.add_argument('--theme', '-t', default='', help='主题标签')
+    p_add.add_argument('--sector', '-s', default='', help='行业板块')
     
     p_rm = sub.add_parser('remove', help='移除标的')
     p_rm.add_argument('ticker', help='股票代码')
@@ -177,7 +185,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     if args.cmd == 'add':
-        add_stock(args.ticker, args.name, args.category)
+        add_stock(args.ticker, args.name, args.category, args.theme, args.sector)
         print(f"✅ 已添加 {args.name}({args.ticker})")
     elif args.cmd == 'remove':
         remove_stock(args.ticker)

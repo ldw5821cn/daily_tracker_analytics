@@ -212,9 +212,17 @@ def map_candidates(theme: str, value_chain: Dict, universe: List[Dict]) -> List[
         {"role": "system", "content": "你是 A 股产业链选股专家，擅长把产业链节点映射到具体上市公司。"},
         {"role": "user", "content": prompt},
     ]
-    raw = chat(messages, temperature=0.3, max_tokens=3000)
+    raw = chat(messages, temperature=0.3, max_tokens=4000)
     if raw:
         parsed = _extract_json(raw)
+        if parsed is None:
+            # 截断补全再试
+            text = raw.strip()
+            open_brace = text.count('{') - text.count('}')
+            open_bracket = text.count('[') - text.count(']')
+            if open_brace > 0 or open_bracket > 0:
+                text += ']' * open_bracket + '}' * open_brace
+                parsed = _extract_json(text)
         if parsed is None:
             # 调试：保存失败响应
             debug_path = f"/tmp/sc_map_fail_{_slugify(theme)}.txt"

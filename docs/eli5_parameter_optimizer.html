@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ELI5: 量化参数优化器</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --green: #22c55e;
+      --red: #ef4444;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    h1 { font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 800; letter-spacing: -0.03em; }
+    h2 { font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 700; margin-bottom: 24px; }
+    p.lead { font-size: clamp(1.1rem, 3vw, 1.5rem); color: var(--muted); max-width: 700px; margin: 20px auto 0; }
+    .big { font-size: clamp(1.3rem, 4vw, 2rem); max-width: 800px; }
+    .card {
+      background: var(--card);
+      border-radius: 24px;
+      padding: 40px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.4);
+      margin: 20px auto;
+    }
+    .visual {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 24px;
+      margin: 40px 0;
+    }
+    .box {
+      background: rgba(56, 189, 248, 0.1);
+      border: 2px solid var(--accent);
+      border-radius: 20px;
+      padding: 30px;
+      min-width: 160px;
+      flex: 1;
+      max-width: 260px;
+    }
+    .box .emoji { font-size: 3rem; display: block; margin-bottom: 12px; }
+    .box strong { font-size: 1.2rem; display: block; margin-bottom: 8px; }
+    .box span { color: var(--muted); font-size: 0.95rem; }
+    .arrow { font-size: 2.5rem; color: var(--accent); align-self: center; }
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 900px; width: 100%; }
+    @media (min-width: 700px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+    .metric { font-size: 4rem; font-weight: 800; }
+    .metric-label { color: var(--muted); font-size: 1.1rem; }
+    .formula {
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 24px 32px;
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      margin: 30px auto;
+      display: inline-block;
+    }
+    .good { color: var(--green); }
+    .bad { color: var(--red); }
+    footer { padding: 60px 20px; text-align: center; color: var(--muted); }
+    a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<section>
+  <h1>参数优化器</h1>
+  <p class="lead">用大白话讲清楚：为什么量化系统里要有个"自动调参数"的东西</p>
+</section>
+
+<section>
+  <div class="card">
+    <h2>先想一个日常例子</h2>
+    <p class="big">炒股票就像开车去北京。<br>参数就是导航里的设置：<br>走高速？躲拥堵？省油？</p>
+    <div class="visual">
+      <div class="box"><span class="emoji">🚗</span><strong>目的地</strong><span>赚钱（跑赢市场）</span></div>
+      <div class="arrow">→</div>
+      <div class="box"><span class="emoji">🛣️</span><strong>路线</strong><span>选股+择时策略</span></div>
+      <div class="arrow">→</div>
+      <div class="box"><span class="emoji">⚙️</span><strong>导航设置</strong><span>参数（权重、阈值）</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="card">
+    <h2>问题来了：哪个设置最好？</h2>
+    <p class="big">你不能只靠"感觉"。<br>要看回历史数据，哪种设置以前最赚钱。</p>
+    <div class="formula">历史回测 = 用过去的数据"彩排"未来</div>
+    <p class="lead">参数优化器就是一台自动试各种设置的机器。</p>
+  </div>
+</section>
+
+<section>
+  <div class="card">
+    <h2>它怎么试？</h2>
+    <div class="visual">
+      <div class="box"><span class="emoji">1️⃣</span><strong>生成候选</strong><span>比如 A=激进 / B=保守 / C=平衡</span></div>
+      <div class="box"><span class="emoji">2️⃣</span><strong>回测打分</strong><span>每个候选都放到历史数据上跑一遍</span></div>
+      <div class="box"><span class="emoji">3️⃣</span><strong>选最高分</strong><span>谁的收益高、波动小，就用谁</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="card">
+    <h2>打什么分？</h2>
+    <p class="big">不是只看"赚多少"。<br>还要看信号分得开不开、方向准不准、覆盖多不多。</p>
+    <div class="grid-2" style="margin-top:30px">
+      <div>
+        <div class="metric good">50%</div>
+        <div class="metric-label">信号分离度</div>
+        <p style="color:var(--muted);margin-top:8px">看多/看空/中性三类得分拉得越开越好</p>
+      </div>
+      <div>
+        <div class="metric good">30%</div>
+        <div class="metric-label">方向准确率</div>
+        <p style="color:var(--muted);margin-top:8px">预测方向和未来实际走势一致的比例</p>
+      </div>
+      <div>
+        <div class="metric good">20%</div>
+        <div class="metric-label">覆盖率</div>
+        <p style="color:var(--muted);margin-top:8px">每天有足够多的标的被评估到</p>
+      </div>
+      <div>
+        <div class="metric bad">-成本</div>
+        <div class="metric-label">交易成本</div>
+        <p style="color:var(--muted);margin-top:8px">手续费、滑点要从收益里扣掉</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="card">
+    <h2>最怕什么？</h2>
+    <p class="big" style="margin-bottom:30px">最怕"死记硬背"。</p>
+    <div class="visual">
+      <div class="box" style="border-color:var(--red)"><span class="emoji">😵</span><strong>过拟合</strong><span>只记住了历史，换个时间就懵了</span></div>
+      <div class="box" style="border-color:var(--green)"><span class="emoji">🧪</span><strong>样本外验证</strong><span>用没见过的数据再考一次</span></div>
+    </div>
+    <p class="lead" style="margin-top:24px">好优化器不只拼历史分数，还要能经得起新数据的考验。</p>
+  </div>
+</section>
+
+<section>
+  <div class="card">
+    <h2>一句话总结</h2>
+    <p class="big">参数优化器 = <strong style="color:var(--accent)">自动驾驶模式下的导航</strong><br>根据历史路况，自动挑选最合适的驾驶策略。</p>
+  </div>
+</section>
+
+<footer>
+  <p>ELI5 演示页 · 由 Hermes Agent 生成</p>
+  <p style="margin-top:8px"><a href="index.html">← 返回系统首页</a></p>
+</footer>
+
+</body>
+</html>
