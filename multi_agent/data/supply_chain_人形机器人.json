@@ -2,40 +2,49 @@
   "theme": "人形机器人",
   "value_chain": {
     "theme": "人形机器人",
-    "demand_story": "人口老龄化与制造业用工短缺催生通用型机器人需求，AI大模型赋能具身智能，人形机器人商业化加速",
+    "demand_story": "特斯拉Optimus量产预期带动，AI大模型赋能具身智能，全球科技巨头及车企竞相布局，开启百万台级量产周期。",
     "value_chain": [
       {
         "layer": "下游/终端",
         "segments": [
           "工业制造",
-          "商用服务",
+          "物流仓储",
+          "商业服务",
           "家庭服务",
-          "特种应用"
+          "特种作业",
+          "医疗护理"
         ],
         "key_players_global": [
-          "特斯拉",
-          "波士顿动力",
+          "Tesla",
+          "Boston Dynamics",
           "Figure AI",
-          "小米",
+          "1X Technologies",
+          "Agility Robotics",
           "优必选",
-          "小鹏"
+          "小米",
+          "小鹏",
+          "傅利叶智能"
         ]
       },
       {
         "layer": "系统集成/整机",
         "segments": [
-          "人形机器人整机",
+          "人形机器人整机设计",
+          "运动控制与AI算法集成",
           "关节模组集成",
-          "运动控制方案",
-          "AI算法平台"
+          "平台型本体制造"
         ],
         "key_players_global": [
-          "特斯拉Optimus",
-          "波士顿动力Atlas",
-          "Figure 01",
-          "优必选Walker",
-          "小米CyberOne",
-          "小鹏PX5"
+          "Tesla",
+          "波士顿动力",
+          "本田",
+          "丰田",
+          "优必选",
+          "小米",
+          "开普勒机器人",
+          "智元机器人",
+          "宇树科技",
+          "达闼机器人"
         ]
       },
       {
@@ -43,73 +52,109 @@
         "segments": [
           "行星滚柱丝杠",
           "谐波减速器",
+          "RV减速器",
           "无框力矩电机",
           "空心杯电机",
           "六维力传感器",
           "触觉传感器",
+          "编码器",
+          "关节轴承",
           "灵巧手"
         ],
         "key_players_global": [
           "THK",
+          "SKF",
+          "博世力士乐",
           "哈默纳科",
           "绿的谐波",
-          "Maxon Motor",
-          "Faulhaber",
+          "双环传动",
+          "汇川技术",
+          "步科股份",
+          "鸣志电器",
           "柯力传感",
-          "帕西尼感知"
+          "坤维科技",
+          "奥迪威"
         ]
       },
       {
         "layer": "芯片/器件",
         "segments": [
           "AI算力芯片",
-          "SoC主控",
+          "SoC主控芯片",
           "MCU",
-          "功率半导体",
-          "传感器芯片",
-          "通信芯片"
+          "电源管理芯片",
+          "电机驱动芯片",
+          "传感器信号处理芯片",
+          "通信模组",
+          "MEMS惯性器件"
         ],
         "key_players_global": [
           "英伟达",
           "高通",
-          "英特尔",
+          "地平线",
+          "黑芝麻智能",
+          "瑞萨",
+          "意法半导体",
           "德州仪器",
-          "英飞凌",
-          "意法半导体"
+          "兆易创新",
+          "峰岹科技",
+          "纳芯微",
+          "博世",
+          "ST"
         ]
       },
       {
         "layer": "设备",
         "segments": [
-          "丝杠磨床",
-          "减速器加工设备",
-          "电机绕线设备",
-          "精密装配设备",
+          "丝杠加工设备",
+          "磨床",
+          "滚齿机",
+          "热处理设备",
+          "激光焊接设备",
+          "精密注塑设备",
+          "3D打印设备",
           "检测设备"
         ],
         "key_players_global": [
-          "日本三井精机",
-          "德国Kapp",
-          "瑞士Mikron",
+          "马扎克",
+          "西门子",
           "发那科",
-          "ABB"
+          "秦川机床",
+          "日发精机",
+          "华辰装备",
+          "宇环数控",
+          "海天精工",
+          "大族激光",
+          "铂力特",
+          "蔡司",
+          "基恩士"
         ]
       },
       {
         "layer": "材料",
         "segments": [
           "稀土永磁材料",
-          "碳纤维复合材料",
           "铝合金/镁合金",
+          "碳纤维复合材料",
+          "工程塑料",
           "电子皮肤材料",
-          "特种工程塑料"
+          "磁性材料",
+          "铜合金",
+          "特种钢"
         ],
         "key_players_global": [
           "信越化学",
-          "东丽",
-          "巴斯夫",
-          "杜邦",
-          "科思创"
+          "日立金属",
+          "中科三环",
+          "金力永磁",
+          "正海磁材",
+          "宝武镁业",
+          "光威复材",
+          "中简科技",
+          "沃特股份",
+          "阿科玛",
+          "陶氏",
+          "巴斯夫"
         ]
       }
     ],
@@ -117,181 +162,60 @@
       {
         "segment": "行星滚柱丝杠",
         "severity": 5,
-        "reason": "加工难度极高，高精度螺纹磨床依赖进口，国内产能扩张受限，认证周期长",
-        "global_cr3": "GSA、Rollvis、Schaeffler等国际巨头占据全球约70-80%市场",
-        "china_share": "国产化率不足10%，处于小批量试制阶段"
-      },
-      {
-        "segment": "谐波减速器",
-        "severity": 4,
-        "reason": "精密齿形设计与加工壁垒高，日本企业长期垄断高端市场，国产替代仍需突破寿命与精度一致性",
-        "global_cr3": "哈默纳科全球市占率约60%，与住友、绿的谐波合计占约90%",
-        "china_share": "绿的谐波等国产份额提升至约20-30%，但高端应用依存进口"
-      },
-      {
-        "segment": "空心杯电机",
-        "severity": 4,
-        "reason": "绕线工艺要求极高，高端产品依赖瑞士、德国厂家，国内产品在功率密度和寿命上差距明显",
-        "global_cr3": "Maxon、Faulhaber、Portescap三家合计占全球约70%",
-        "china_share": "国内厂商如鸣志电器等占中低端市场，高端国产化率约10%"
+        "reason": "高精度磨削工艺复杂，设备定制化，国外垄断，国内量产能力不足，认证周期长，扩产受限于高端磨床及工艺人才。",
+        "global_cr3": "GSA、Rollvis、Ewellix合计占全球约70%以上",
+        "china_share": "国产化率不足10%，主要处于样品验证和小批量阶段"
       },
       {
         "segment": "六维力传感器",
         "severity": 5,
-        "reason": "标定算法与应变片制造工艺复杂，量产一致性问题突出，供应商集中且产能有限",
-        "global_cr3": "ATI、AMTI、Kistler三家占据全球约80%高端市场",
-        "china_share": "国内如柯力传感、宇立仪器等处于追赶期，国产化率不足20%"
+        "reason": "需多轴力解耦标定，技术壁垒高，可靠性要求严格，国内企业规模小，高端产品深度依赖进口。",
+        "global_cr3": "ATI、AMTI、Kistler合计占全球约60%-70%",
+        "china_share": "国产份额约20%，但高端机器人用产品国产化率不足10%"
+      },
+      {
+        "segment": "谐波减速器",
+        "severity": 4,
+        "reason": "齿形设计、柔轮材料与热处理工艺积累不足，高精度寿命验证周期长，全球核心专利被日本企业垄断。",
+        "global_cr3": "哈默纳科、绿的谐波、住友占全球约80%",
+        "china_share": "绿的谐波等国产厂家已突破，国产份额约30%-40%，但高端仍有差距"
       },
       {
         "segment": "灵巧手",
+        "severity": 4,
+        "reason": "微型伺服驱动、腱绳传动、触觉传感、多自由度控制高度复杂，产品方案未收敛，可靠性及成本难以兼顾。",
+        "global_cr3": "尚无明确三强，因技术路线分散，国际以Shadow Robot、Tesla、因时机器人为代表",
+        "china_share": "国产处于研发和小批量阶段，暂无标准工业级产品"
+      },
+      {
+        "segment": "丝杠加工设备（磨床）",
         "severity": 5,
-        "reason": "集成微型驱动、传动与触觉感知，结构极度紧凑，可靠性要求高，目前尚无成熟量产方案",
-        "global_cr3": "尚无绝对龙头，Shadow Robot、Tesla、因时机器人等处于研发/小批量阶段",
-        "china_share": "国内外均未大规模量产，国产厂商与海外差距较小但都未突破"
+        "reason": "高精度螺纹磨床被瑞士、德国、日本企业垄断，设备交付周期长，受出口管制，制约国内丝杠产能扩张。",
+        "global_cr3": "Mikrosa、Studer、Kapp Niles合计占全球约70%以上",
+        "china_share": "国产高精度磨床替代率极低，不足10%"
       }
     ],
     "kill_switches": [
-      "人形机器人量产进度不及预期，商业化场景难以落地",
-      "AI大模型技术迭代减慢，具身智能泛化能力受限",
-      "降本速度不及预期，整机售价过高导致需求低迷"
+      "特斯拉Optimus等标杆产品量产进度不及预期，或技术路线发生重大变更，导致零部件价值量重构",
+      "制造成本下降速度慢于预期，下游应用场景商业化落地受阻，需求爆发时点滞后",
+      "核心零部件去中国化供应链风险，海外客户迫使国内厂商降价或客户自研替代，削弱A股环节议价力"
     ],
-    "_llm_raw": "{\n  \"theme\": \"人形机器人\",\n  \"demand_story\": \"人口老龄化与制造业用工短缺催生通用型机器人需求，AI大模型赋能具身智能，人形机器人商业化加速\",\n  \"value_chain\": [\n    {\n      \"layer\": \"下游/终端\",\n      \"segments\": [\"工业制造\", \"商用服务\", \"家庭服务\", \"特种应用\"],\n      \"key_players_global\": [\"特斯拉\", \"波士顿动力\", \"Figure AI\", \"小米\", \"优必选\", \"小鹏\"]\n    },\n    {\n      \"layer\": \"系统集成/整机\",\n      \"segments\": [\"人形机器人整机\", \"关节模组集成\", \"运动控制方案\", \"AI算法平台\"],\n      \"key_players_global\": [\"特斯拉Optimus\", \"波士顿动力Atlas\", \"Figure 01\", \"优必选Walker\", \"小米CyberOne\", \"小鹏PX5\"]\n    },\n    {\n      \"layer\": \"核心零部件\",\n      \"segments\": [\"行星滚柱丝杠\", \"谐波减速器\", \"无框力矩电机\", \"空心杯电机\", \"六维力传感器\", \"触觉传感器\", \"灵巧手\"],\n      \"key_players_global\": [\"THK\", \"哈默纳科\", \"绿的谐波\", \"Maxon Motor\", \"Faulhaber\", \"柯力传感\", \"帕西尼感知\"]\n    },\n    {\n      \"layer\": \"芯片/器件\",\n      \"segments\": [\"AI算力芯片\", \"SoC主控\", \"MCU\", \"功率半导体\", \"传感器芯片\", \"通信芯片\"],\n      \"key_players_global\": [\"英伟达\", \"高通\", \"英特尔\", \"德州仪器\", \"英飞凌\", \"意法半导体\"]\n    },\n    {\n      \"layer\": \"设备\",\n      \"segments\": [\"丝杠磨床\", \"减速器加工设备\", \"电机绕线设备\", \"精密装配设备\", \"检测设备\"],\n      \"key_players_global\": [\"日本三井精机\", \"德国Kapp\", \"瑞士Mikron\", \"发那科\", \"ABB\"]\n    },\n    {\n      \"layer\": \"材料\",\n      \"segments\": [\"稀土永磁材料\", \"碳纤维复合材料\", \"铝合金/镁合金\", \"电子皮肤材料\", \"特种工程塑料\"],\n      \"key_players_global\": [\"信越化学\", \"东丽\", \"巴斯夫\", \"杜邦\", \"科思创\"]\n    }\n  ],\n  \"bottlenecks\": [\n    {\n      \"segment\": \"行星滚柱丝杠\",\n      \"severity\": 5,\n      \"reason\": \"加工难度极高，高精度螺纹磨床依赖进口，国内产能扩张受限，认证周期长\",\n      \"global_cr3\": \"GSA、Rollvis、Schaeffler等国际巨头占据全球约70-80%市场\",\n      \"china_share\": \"国产化率不足10%，处于小批量试制阶段\"\n    },\n    {\n      \"segment\": \"谐波减速器\",\n      \"severity\": 4,\n      \"reason\": \"精密齿形设计与加工壁垒高，日本企业长期垄断高端市场，国产替代仍需突破寿命与精度一致性\",\n      \"global_cr3\": \"哈默纳科全球市占率约60%，与住友、绿的谐波合计占约90%\",\n      \"china_share\": \"绿的谐波等国产份额提升至约20-30%，但高端应用依存进口\"\n    },\n    {\n      \"segment\": \"空心杯电机\",\n      \"severity\": 4,\n      \"reason\": \"绕线工艺要求极高，高端产品依赖瑞士、德国厂家，国内产品在功率密度和寿命上差距明显\",\n      \"global_cr3\": \"Maxon、Faulhaber、Portescap三家合计占全球约70%\",\n      \"china_share\": \"国内厂商如鸣志电器等占中低端市场，高端国产化率约10%\"\n    },\n    {\n      \"segment\": \"六维力传感器\",\n      \"severity\": 5,\n      \"reason\": \"标定算法与应变片制造工艺复杂，量产一致性问题突出，供应商集中且产能有限\",\n      \"global_cr3\": \"ATI、AMTI、Kistler三家占据全球约80%高端市场\",\n      \"china_share\": \"国内如柯力传感、宇立仪器等处于追赶期，国产化率不足20%\"\n    },\n    {\n      \"segment\": \"灵巧手\",\n      \"severity\": 5,\n      \"reason\": \"集成微型驱动、传动与触觉感知，结构极度紧凑，可靠性要求高，目前尚无成熟量产方案\",\n      \"global_cr3\": \"尚无绝对龙头，Shadow Robot、Tesla、因时机器人等处于研发/小批量阶段\",\n      \"china_share\": \"国内外均未大规模量产，国产厂商与海外差距较小但都未突破\"\n    }\n  ],\n  \"kill_switches\": [\"人形机器人量产进度不及预期，商业化场景难以落地\", \"AI大模型技术迭代减慢，具身智能泛化能力受限\", \"降本速度不及预期，整机售价过高导致需求低迷\"]\n}"
+    "_llm_raw": "{\n  \"theme\": \"人形机器人\",\n  \"demand_story\": \"特斯拉Optimus量产预期带动，AI大模型赋能具身智能，全球科技巨头及车企竞相布局，开启百万台级量产周期。\",\n  \"value_chain\": [\n    {\n      \"layer\": \"下游/终端\",\n      \"segments\": [\"工业制造\", \"物流仓储\", \"商业服务\", \"家庭服务\", \"特种作业\", \"医疗护理\"],\n      \"key_players_global\": [\"Tesla\", \"Boston Dynamics\", \"Figure AI\", \"1X Technologies\", \"Agility Robotics\", \"优必选\", \"小米\", \"小鹏\", \"傅利叶智能\"]\n    },\n    {\n      \"layer\": \"系统集成/整机\",\n      \"segments\": [\"人形机器人整机设计\", \"运动控制与AI算法集成\", \"关节模组集成\", \"平台型本体制造\"],\n      \"key_players_global\": [\"Tesla\", \"波士顿动力\", \"本田\", \"丰田\", \"优必选\", \"小米\", \"开普勒机器人\", \"智元机器人\", \"宇树科技\", \"达闼机器人\"]\n    },\n    {\n      \"layer\": \"核心零部件\",\n      \"segments\": [\"行星滚柱丝杠\", \"谐波减速器\", \"RV减速器\", \"无框力矩电机\", \"空心杯电机\", \"六维力传感器\", \"触觉传感器\", \"编码器\", \"关节轴承\", \"灵巧手\"],\n      \"key_players_global\": [\"THK\", \"SKF\", \"博世力士乐\", \"哈默纳科\", \"绿的谐波\", \"双环传动\", \"汇川技术\", \"步科股份\", \"鸣志电器\", \"柯力传感\", \"坤维科技\", \"奥迪威\"]\n    },\n    {\n      \"layer\": \"芯片/器件\",\n      \"segments\": [\"AI算力芯片\", \"SoC主控芯片\", \"MCU\", \"电源管理芯片\", \"电机驱动芯片\", \"传感器信号处理芯片\", \"通信模组\", \"MEMS惯性器件\"],\n      \"key_players_global\": [\"英伟达\", \"高通\", \"地平线\", \"黑芝麻智能\", \"瑞萨\", \"意法半导体\", \"德州仪器\", \"兆易创新\", \"峰岹科技\", \"纳芯微\", \"博世\", \"ST\"]\n    },\n    {\n      \"layer\": \"设备\",\n      \"segments\": [\"丝杠加工设备\", \"磨床\", \"滚齿机\", \"热处理设备\", \"激光焊接设备\", \"精密注塑设备\", \"3D打印设备\", \"检测设备\"],\n      \"key_players_global\": [\"马扎克\", \"西门子\", \"发那科\", \"秦川机床\", \"日发精机\", \"华辰装备\", \"宇环数控\", \"海天精工\", \"大族激光\", \"铂力特\", \"蔡司\", \"基恩士\"]\n    },\n    {\n      \"layer\": \"材料\",\n      \"segments\": [\"稀土永磁材料\", \"铝合金/镁合金\", \"碳纤维复合材料\", \"工程塑料\", \"电子皮肤材料\", \"磁性材料\", \"铜合金\", \"特种钢\"],\n      \"key_players_global\": [\"信越化学\", \"日立金属\", \"中科三环\", \"金力永磁\", \"正海磁材\", \"宝武镁业\", \"光威复材\", \"中简科技\", \"沃特股份\", \"阿科玛\", \"陶氏\", \"巴斯夫\"]\n    }\n  ],\n  \"bottlenecks\": [\n    {\n      \"segment\": \"行星滚柱丝杠\",\n      \"severity\": 5,\n      \"reason\": \"高精度磨削工艺复杂，设备定制化，国外垄断，国内量产能力不足，认证周期长，扩产受限于高端磨床及工艺人才。\",\n      \"global_cr3\": \"GSA、Rollvis、Ewellix合计占全球约70%以上\",\n      \"china_share\": \"国产化率不足10%，主要处于样品验证和小批量阶段\"\n    },\n    {\n      \"segment\": \"六维力传感器\",\n      \"severity\": 5,\n      \"reason\": \"需多轴力解耦标定，技术壁垒高，可靠性要求严格，国内企业规模小，高端产品深度依赖进口。\",\n      \"global_cr3\": \"ATI、AMTI、Kistler合计占全球约60%-70%\",\n      \"china_share\": \"国产份额约20%，但高端机器人用产品国产化率不足10%\"\n    },\n    {\n      \"segment\": \"谐波减速器\",\n      \"severity\": 4,\n      \"reason\": \"齿形设计、柔轮材料与热处理工艺积累不足，高精度寿命验证周期长，全球核心专利被日本企业垄断。\",\n      \"global_cr3\": \"哈默纳科、绿的谐波、住友占全球约80%\",\n      \"china_share\": \"绿的谐波等国产厂家已突破，国产份额约30%-40%，但高端仍有差距\"\n    },\n    {\n      \"segment\": \"灵巧手\",\n      \"severity\": 4,\n      \"reason\": \"微型伺服驱动、腱绳传动、触觉传感、多自由度控制高度复杂，产品方案未收敛，可靠性及成本难以兼顾。\",\n      \"global_cr3\": \"尚无明确三强，因技术路线分散，国际以Shadow Robot、Tesla、因时机器人为代表\",\n      \"china_share\": \"国产处于研发和小批量阶段，暂无标准工业级产品\"\n    },\n    {\n      \"segment\": \"丝杠加工设备（磨床）\",\n      \"severity\": 5,\n      \"reason\": \"高精度螺纹磨床被瑞士、德国、日本企业垄断，设备交付周期长，受出口管制，制约国内丝杠产能扩张。\",\n      \"global_cr3\": \"Mikrosa、Studer、Kapp Niles合计占全球约70%以上\",\n      \"china_share\": \"国产高精度磨床替代率极低，不足10%\"\n    }\n  ],\n  \"kill_switches\": [\n    \"特斯拉Optimus等标杆产品量产进度不及预期，或技术路线发生重大变更，导致零部件价值量重构\",\n    \"制造成本下降速度慢于预期，下游应用场景商业化落地受阻，需求爆发时点滞后\",\n    \"核心零部件去中国化供应链风险，海外客户迫使国内厂商降价或客户自研替代，削弱A股环节议价力\"\n  ]\n}"
   },
   "top_candidates": [
-    {
-      "ticker": "002031",
-      "company": "巨轮智能",
-      "market": "A-share",
-      "raw_factor_points": 61.0,
-      "penalty_points": 22.0,
-      "final_score": 39.0,
-      "verdict": "Early lead or low priority",
-      "factor_details": {
-        "demand_inflection": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "architecture_coupling": {
-          "rating": 4.0,
-          "weight": 10,
-          "points": 8.0
-        },
-        "chokepoint_severity": {
-          "rating": 4.0,
-          "weight": 15,
-          "points": 12.0
-        },
-        "supplier_concentration": {
-          "rating": 4.0,
-          "weight": 12,
-          "points": 9.6
-        },
-        "expansion_difficulty": {
-          "rating": 4.0,
-          "weight": 12,
-          "points": 9.6
-        },
-        "evidence_quality": {
-          "rating": 1.0,
-          "weight": 15,
-          "points": 3.0
-        },
-        "valuation_disconnect": {
-          "rating": 4.0,
-          "weight": 11,
-          "points": 8.8
-        },
-        "catalyst_timing": {
-          "rating": 2.0,
-          "weight": 10,
-          "points": 4.0
-        }
-      },
-      "penalty_details": {
-        "dilution_financing": {
-          "rating": 0.0,
-          "points": 0.0
-        },
-        "governance": {
-          "rating": 0.0,
-          "points": 0.0
-        },
-        "geopolitics": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "liquidity": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "hype_risk": {
-          "rating": 4.0,
-          "points": 8.0
-        },
-        "accounting_quality": {
-          "rating": 0.0,
-          "points": 0.0
-        },
-        "cyclicality": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "alternative_design_risk": {
-          "rating": 3.0,
-          "points": 6.0
-        }
-      },
-      "kill_switches": [
-        "谐波减速器产品仅停留在样品阶段，未通过客户验证或未获得批量订单，导致概念兑现不及预期",
-        "人形机器人关节可能转向行星减速器、滚柱丝杠或直驱电机等替代技术路线，削弱谐波减速器瓶颈逻辑",
-        "传统主业（轮胎模具、智能装备）景气度下滑，拖累公司现金流，导致谐波减速器研发与产业化进展缓慢"
-      ],
-      "evidence": [
-        {
-          "claim": "公司披露谐波减速器有样品，但未证实已批量销售或进入主流客户供应链",
-          "source": "公司公告/公开互动信息",
-          "strength": "primary"
-        },
-        {
-          "claim": "行业研究普遍认为谐波减速器是人形机器人关节高价值量核心部件，技术壁垒高，市场长期由日本企业主导",
-          "source": "行业研究",
-          "strength": "analysis"
-        },
-        {
-          "claim": "公开行情显示当前市盈率TTM约78.85倍，市净率约5.82倍，估值相对传统主业明显偏高",
-          "source": "公开行情数据",
-          "strength": "media"
-        }
-      ],
-      "segment": "谐波减速器",
-      "selection_reason": "机器人减速器布局，谐波减速器有样品",
-      "revenue_exposure": "低",
-      "fundamentals": {
-        "market_cap_yi": 113.05,
-        "pe_ratio": 78.85,
-        "pb_ratio": 5.82,
-        "roe": null,
-        "gross_margin": null,
-        "revenue_yoy": null,
-        "profit_yoy": null,
-        "debt_ratio": null,
-        "report_date": ""
-      }
-    },
     {
       "ticker": "000837",
       "company": "秦川机床",
       "market": "A-share",
-      "raw_factor_points": 66.0,
-      "penalty_points": 34.0,
-      "final_score": 32.0,
+      "raw_factor_points": 64.2,
+      "penalty_points": 32.0,
+      "final_score": 32.2,
       "verdict": "Early lead or low priority",
       "factor_details": {
         "demand_inflection": {
-          "rating": 2.0,
+          "rating": 3.0,
           "weight": 15,
-          "points": 6.0
+          "points": 9.0
         },
         "architecture_coupling": {
           "rating": 4.0,
@@ -304,9 +228,9 @@
           "points": 12.0
         },
         "supplier_concentration": {
-          "rating": 4.0,
+          "rating": 2.0,
           "weight": 12,
-          "points": 9.6
+          "points": 4.8
         },
         "expansion_difficulty": {
           "rating": 4.0,
@@ -331,8 +255,8 @@
       },
       "penalty_details": {
         "dilution_financing": {
-          "rating": 2.0,
-          "points": 4.0
+          "rating": 1.0,
+          "points": 2.0
         },
         "governance": {
           "rating": 2.0,
@@ -364,35 +288,27 @@
         }
       },
       "kill_switches": [
-        "人形机器人出货量不及预期，导致丝杠需求延后",
-        "行星滚柱丝杠技术路线被其他传动方案（如直线电机、齿轮齿条）替代",
-        "公司丝杠业务实际收入占比低，短期无法兑现高估值",
-        "行业竞争加剧，高端磨床及丝杠产品价格下行",
-        "产能爬坡缓慢或良率不达标，盈利改善低于预期"
+        "丝杠磨床业务在收入中占比低，业绩兑现节奏与股价估值不匹配",
+        "国际高端磨床厂商及国内同行竞争加剧，导致订单不及预期"
       ],
       "evidence": [
         {
-          "claim": "国内丝杠磨床领先，具备行星滚柱丝杠加工设备自研能力",
-          "source": "公司公告/行业研究",
-          "strength": "primary"
-        },
-        {
-          "claim": "布局行星滚柱丝杠产品，切入人形机器人传动环节",
-          "source": "公开信息/投资者互动",
+          "claim": "公司是国内精密螺纹磨床主要制造商，是丝杠加工设备核心供应商",
+          "source": "公开信息/行业研究",
           "strength": "media"
         },
         {
-          "claim": "人形机器人量产预期带动行星滚柱丝杠需求，公司具备潜在弹性",
-          "source": "券商研报",
+          "claim": "人形机器人产业化将拉动行星滚柱丝杠需求，进而带动磨床设备订单",
+          "source": "行业研究/公开信息",
           "strength": "analysis"
         }
       ],
-      "segment": "行星滚柱丝杠",
-      "selection_reason": "国内丝杠磨床领先者，布局行星滚柱丝杠",
-      "revenue_exposure": "中",
+      "segment": "丝杠加工设备（磨床）",
+      "selection_reason": "生产精密螺纹磨床，国内丝杠磨床主要制造商",
+      "revenue_exposure": "低",
       "fundamentals": {
-        "market_cap_yi": 102.93,
-        "pe_ratio": 106.04,
+        "market_cap_yi": 102.83,
+        "pe_ratio": 105.93,
         "pb_ratio": 2.09,
         "roe": null,
         "gross_margin": null,
@@ -400,133 +316,16 @@
         "profit_yoy": null,
         "debt_ratio": null,
         "report_date": ""
+      },
+      "revenue_composition": {
+        "机床类": 50.48,
+        "零部件类": 35.99,
+        "工具类": 9.05
       }
     },
     {
-      "ticker": "002050",
-      "company": "三花智控",
-      "market": "A-share",
-      "raw_factor_points": 60.0,
-      "penalty_points": 32.0,
-      "final_score": 28.0,
-      "verdict": "Early lead or low priority",
-      "factor_details": {
-        "demand_inflection": {
-          "rating": 4.0,
-          "weight": 15,
-          "points": 12.0
-        },
-        "architecture_coupling": {
-          "rating": 3.0,
-          "weight": 10,
-          "points": 6.0
-        },
-        "chokepoint_severity": {
-          "rating": 3.0,
-          "weight": 15,
-          "points": 9.0
-        },
-        "supplier_concentration": {
-          "rating": 2.0,
-          "weight": 12,
-          "points": 4.8
-        },
-        "expansion_difficulty": {
-          "rating": 4.0,
-          "weight": 12,
-          "points": 9.6
-        },
-        "evidence_quality": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "valuation_disconnect": {
-          "rating": 3.0,
-          "weight": 11,
-          "points": 6.6
-        },
-        "catalyst_timing": {
-          "rating": 3.0,
-          "weight": 10,
-          "points": 6.0
-        }
-      },
-      "penalty_details": {
-        "dilution_financing": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "governance": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "geopolitics": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "liquidity": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "hype_risk": {
-          "rating": 3.0,
-          "points": 6.0
-        },
-        "accounting_quality": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "cyclicality": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "alternative_design_risk": {
-          "rating": 3.0,
-          "points": 6.0
-        }
-      },
-      "kill_switches": [
-        "空心杯电机业务尚未形成规模化收入，实际订单和客户验证不及预期；",
-        "人形机器人量产时间表推迟，导致需求拐点延后；",
-        "其他技术路线（如无框力矩电机、直线执行器）替代空心杯方案，削弱公司卡位价值；",
-        "当前估值对传统业务已较充分，若机器人业务进展不及预期，股价存在回调风险。"
-      ],
-      "evidence": [
-        {
-          "claim": "三花智控在微特电机领域有技术积累，并切入空心杯电机环节",
-          "source": "公开信息/公司公告",
-          "strength": "media"
-        },
-        {
-          "claim": "人形机器人产业处于早期放量阶段，空心杯电机作为执行器核心部件需求有望快速增长",
-          "source": "行业研究",
-          "strength": "analysis"
-        },
-        {
-          "claim": "公司当前市盈率TTM约41倍，市净率约4.9倍，总市值超1500亿元，估值已包含一定机器人业务预期",
-          "source": "公开行情数据",
-          "strength": "primary"
-        }
-      ],
-      "segment": "空心杯电机",
-      "selection_reason": "微特电机技术积累，切入空心杯电机",
-      "revenue_exposure": "低",
-      "fundamentals": {
-        "market_cap_yi": 1528.35,
-        "pe_ratio": 41.19,
-        "pb_ratio": 4.86,
-        "roe": null,
-        "gross_margin": null,
-        "revenue_yoy": null,
-        "profit_yoy": null,
-        "debt_ratio": null,
-        "report_date": ""
-      }
-    },
-    {
-      "ticker": "002008",
-      "company": "大族激光",
+      "ticker": "000837",
+      "company": "秦川机床",
       "market": "A-share",
       "raw_factor_points": 60.0,
       "penalty_points": 34.0,
@@ -610,497 +409,139 @@
       },
       "kill_switches": [],
       "evidence": [],
-      "segment": "六维力传感器",
-      "selection_reason": "精密制造能力，参股力传感器企业",
-      "revenue_exposure": "低",
-      "fundamentals": {
-        "market_cap_yi": 938.17,
-        "pe_ratio": 36.42,
-        "pb_ratio": 4.37,
-        "roe": null,
-        "gross_margin": null,
-        "revenue_yoy": null,
-        "profit_yoy": null,
-        "debt_ratio": null,
-        "report_date": ""
-      }
-    },
-    {
-      "ticker": "002050",
-      "company": "三花智控",
-      "market": "A-share",
-      "raw_factor_points": 60.0,
-      "penalty_points": 34.0,
-      "final_score": 26.0,
-      "verdict": "Early lead or low priority",
-      "factor_details": {
-        "demand_inflection": {
-          "rating": 3.0,
-          "weight": 15,
-          "points": 9.0
-        },
-        "architecture_coupling": {
-          "rating": 3.0,
-          "weight": 10,
-          "points": 6.0
-        },
-        "chokepoint_severity": {
-          "rating": 3.0,
-          "weight": 15,
-          "points": 9.0
-        },
-        "supplier_concentration": {
-          "rating": 3.0,
-          "weight": 12,
-          "points": 7.2
-        },
-        "expansion_difficulty": {
-          "rating": 3.0,
-          "weight": 12,
-          "points": 7.2
-        },
-        "evidence_quality": {
-          "rating": 3.0,
-          "weight": 15,
-          "points": 9.0
-        },
-        "valuation_disconnect": {
-          "rating": 3.0,
-          "weight": 11,
-          "points": 6.6
-        },
-        "catalyst_timing": {
-          "rating": 3.0,
-          "weight": 10,
-          "points": 6.0
-        }
-      },
-      "penalty_details": {
-        "dilution_financing": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "governance": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "geopolitics": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "liquidity": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "hype_risk": {
-          "rating": 3.0,
-          "points": 6.0
-        },
-        "accounting_quality": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "cyclicality": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "alternative_design_risk": {
-          "rating": 2.0,
-          "points": 4.0
-        }
-      },
-      "kill_switches": [],
-      "evidence": [],
-      "segment": "灵巧手",
-      "selection_reason": "微型执行器技术，可延伸灵巧手驱动",
-      "revenue_exposure": "低",
-      "fundamentals": {
-        "market_cap_yi": 1528.35,
-        "pe_ratio": 41.19,
-        "pb_ratio": 4.86,
-        "roe": null,
-        "gross_margin": null,
-        "revenue_yoy": null,
-        "profit_yoy": null,
-        "debt_ratio": null,
-        "report_date": ""
-      }
-    },
-    {
-      "ticker": "000988",
-      "company": "华工科技",
-      "market": "A-share",
-      "raw_factor_points": 44.6,
-      "penalty_points": 28.0,
-      "final_score": 16.6,
-      "verdict": "Early lead or low priority",
-      "factor_details": {
-        "demand_inflection": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "architecture_coupling": {
-          "rating": 2.0,
-          "weight": 10,
-          "points": 4.0
-        },
-        "chokepoint_severity": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "supplier_concentration": {
-          "rating": 2.0,
-          "weight": 12,
-          "points": 4.8
-        },
-        "expansion_difficulty": {
-          "rating": 3.0,
-          "weight": 12,
-          "points": 7.2
-        },
-        "evidence_quality": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "valuation_disconnect": {
-          "rating": 3.0,
-          "weight": 11,
-          "points": 6.6
-        },
-        "catalyst_timing": {
-          "rating": 2.0,
-          "weight": 10,
-          "points": 4.0
-        }
-      },
-      "penalty_details": {
-        "dilution_financing": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "governance": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "geopolitics": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "liquidity": {
-          "rating": 0.0,
-          "points": 0.0
-        },
-        "hype_risk": {
-          "rating": 4.0,
-          "points": 8.0
-        },
-        "accounting_quality": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "cyclicality": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "alternative_design_risk": {
-          "rating": 3.0,
-          "points": 6.0
-        }
-      },
-      "kill_switches": [
-        "六维力传感器在公司收入中占比极小，人形机器人产业化不及预期将导致估值回落",
-        "柯力传感、昊志机电等专用传感器厂商竞争激烈，公司技术量产进度可能落后",
-        "六维力传感技术路线存在被关节力矩传感器替代或融合的风险"
-      ],
-      "evidence": [
-        {
-          "claim": "公司具备传感器技术平台，布局多维力传感器，可切入人形机器人六维力赛道",
-          "source": "公司公开战略/行业研究报告",
-          "strength": "media"
-        },
-        {
-          "claim": "2024年营收同比增长27.13%，净利润同比增长55.76%，显示公司整体成长性",
-          "source": "公司财报",
-          "strength": "primary"
-        },
-        {
-          "claim": "公司总市值1070亿元，在激光装备和光通信领域具有龙头地位，传感器业务有望协同",
-          "source": "公开市场数据",
-          "strength": "media"
-        }
-      ],
-      "segment": "六维力传感器",
-      "selection_reason": "传感器技术平台，布局多维力传感器",
-      "revenue_exposure": "低",
-      "fundamentals": {
-        "market_cap_yi": 1070.36,
-        "pe_ratio": 41.91,
-        "pb_ratio": 9.36,
-        "roe": 5.61,
-        "gross_margin": 19.81,
-        "revenue_yoy": 27.13,
-        "profit_yoy": 55.76,
-        "debt_ratio": 48.75,
-        "report_date": "2026-03-31"
-      }
-    },
-    {
-      "ticker": "002046",
-      "company": "国机精工",
-      "market": "A-share",
-      "raw_factor_points": 52.8,
-      "penalty_points": 38.0,
-      "final_score": 14.8,
-      "verdict": "Early lead or low priority",
-      "factor_details": {
-        "demand_inflection": {
-          "rating": 3.0,
-          "weight": 15,
-          "points": 9.0
-        },
-        "architecture_coupling": {
-          "rating": 2.0,
-          "weight": 10,
-          "points": 4.0
-        },
-        "chokepoint_severity": {
-          "rating": 3.0,
-          "weight": 15,
-          "points": 9.0
-        },
-        "supplier_concentration": {
-          "rating": 2.0,
-          "weight": 12,
-          "points": 4.8
-        },
-        "expansion_difficulty": {
-          "rating": 3.0,
-          "weight": 12,
-          "points": 7.2
-        },
-        "evidence_quality": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "valuation_disconnect": {
-          "rating": 4.0,
-          "weight": 11,
-          "points": 8.8
-        },
-        "catalyst_timing": {
-          "rating": 2.0,
-          "weight": 10,
-          "points": 4.0
-        }
-      },
-      "penalty_details": {
-        "dilution_financing": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "governance": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "geopolitics": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "liquidity": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "hype_risk": {
-          "rating": 4.0,
-          "points": 8.0
-        },
-        "accounting_quality": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "cyclicality": {
-          "rating": 3.0,
-          "points": 6.0
-        },
-        "alternative_design_risk": {
-          "rating": 3.0,
-          "points": 6.0
-        }
-      },
-      "kill_switches": [
-        "谐波减速器研发进展不及预期，无法实现量产或客户认证失败。",
-        "人形机器人商业化进程慢于预期，导致谐波减速器需求释放延迟。",
-        "公司主营业务（轴承等）周期性下滑，拖累整体业绩，高估值难以维持。"
-      ],
-      "evidence": [
-        {
-          "claim": "公司具备精密轴承技术，延伸至谐波减速器研发，但谐波减速器业务尚未形成显著收入，仍处于研发或小批量阶段。",
-          "source": "公司公告及行业研究",
-          "strength": "media"
-        },
-        {
-          "claim": "人形机器人产业化预期升温，谐波减速器作为核心零部件需求有望增长，但当前需求仍以工业机器人为主要支撑。",
-          "source": "行业研究",
-          "strength": "analysis"
-        },
-        {
-          "claim": "公司市盈率(TTM)高达717倍，市净率6.12倍，估值已隐含较高成长预期，而当前盈利水平较低。",
-          "source": "公开行情数据",
-          "strength": "primary"
-        }
-      ],
       "segment": "谐波减速器",
-      "selection_reason": "精密轴承技术，延伸谐波减速器研发",
-      "revenue_exposure": "中",
-      "fundamentals": {
-        "market_cap_yi": 260.59,
-        "pe_ratio": 717.42,
-        "pb_ratio": 6.12,
-        "roe": null,
-        "gross_margin": null,
-        "revenue_yoy": null,
-        "profit_yoy": null,
-        "debt_ratio": null,
-        "report_date": ""
-      }
-    },
-    {
-      "ticker": "002008",
-      "company": "大族激光",
-      "market": "A-share",
-      "raw_factor_points": 47.6,
-      "penalty_points": 36.0,
-      "final_score": 11.6,
-      "verdict": "Early lead or low priority",
-      "factor_details": {
-        "demand_inflection": {
-          "rating": 3.0,
-          "weight": 15,
-          "points": 9.0
-        },
-        "architecture_coupling": {
-          "rating": 2.0,
-          "weight": 10,
-          "points": 4.0
-        },
-        "chokepoint_severity": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "supplier_concentration": {
-          "rating": 3.0,
-          "weight": 12,
-          "points": 7.2
-        },
-        "expansion_difficulty": {
-          "rating": 2.0,
-          "weight": 12,
-          "points": 4.8
-        },
-        "evidence_quality": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "valuation_disconnect": {
-          "rating": 3.0,
-          "weight": 11,
-          "points": 6.6
-        },
-        "catalyst_timing": {
-          "rating": 2.0,
-          "weight": 10,
-          "points": 4.0
-        }
-      },
-      "penalty_details": {
-        "dilution_financing": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "governance": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "geopolitics": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "liquidity": {
-          "rating": 0.0,
-          "points": 0.0
-        },
-        "hype_risk": {
-          "rating": 4.0,
-          "points": 8.0
-        },
-        "accounting_quality": {
-          "rating": 3.0,
-          "points": 6.0
-        },
-        "cyclicality": {
-          "rating": 4.0,
-          "points": 8.0
-        },
-        "alternative_design_risk": {
-          "rating": 3.0,
-          "points": 6.0
-        }
-      },
-      "kill_switches": [
-        "灵巧手产品仅停留在研发意向与概念阶段，无实质合同或收入订单公告，若后续披露显示未进入客户供应链，则商业逻辑不成立",
-        "主业内卷加剧、新能源及消费电子设备需求持续下滑，若2025年业绩连续负增长，高估值无法由传统业务支撑，估值与基本面之间将出现剧烈回归",
-        "若钛合金、PEEK等新工艺路线下，灵巧手的核心价值迁移至上游材料与传感器，而大族激光仅能提供传统金属加工附加值，则其切入价值大幅缩水"
-      ],
-      "evidence": [
-        {
-          "claim": "公司在激光加工与精密制造领域具备深厚积累，可通过母机/工艺优势切入灵巧手结构件及微传动部件加工，具备从金属粉末、精密注塑到模组集成的横向拓展能力。",
-          "source": "公司年报及官网产品线（激光切割、焊接、PCB、新能源装备）",
-          "strength": "primary"
-        },
-        {
-          "claim": "2024年公司已在调研纪要中提及关注人形机器人核心零部件机会，并利用现有技术平台向机器人关节执行器、灵巧手指关节齿轮箱及力传感器安装部件等方向延伸。",
-          "source": "投资者关系活动记录（深交所互动易）",
-          "strength": "primary"
-        },
-        {
-          "claim": "公司具备大客户定制化量产与跨国交付经验，尤其在消费电子和新能源行业积累了精密零部件的规模化制造能力，具备承接人形机器人零部件研发样品到小批量试制的条件。",
-          "source": "行业研究/卖方深度报告（中金公司、华创证券等）",
-          "strength": "analysis"
-        },
-        {
-          "claim": "当前市值约938亿元、市盈率（TTM）36.42倍，高于传统激光设备制造商的15-25倍区间，隐含市场对AI及机器人业务的乐观预期，但该业务尚未形成成规模的收入。",
-          "source": "公开行情数据（截至最近一个交易日）及同行业估值对比",
-          "strength": "media"
-        }
-      ],
-      "segment": "灵巧手",
-      "selection_reason": "精密加工与集成能力，布局机器人手",
+      "selection_reason": "RV减速器龙头，同时开发谐波减速器产品",
       "revenue_exposure": "低",
       "fundamentals": {
-        "market_cap_yi": 938.17,
-        "pe_ratio": 36.42,
-        "pb_ratio": 4.37,
+        "market_cap_yi": 102.83,
+        "pe_ratio": 105.93,
+        "pb_ratio": 2.09,
         "roe": null,
         "gross_margin": null,
         "revenue_yoy": null,
         "profit_yoy": null,
         "debt_ratio": null,
         "report_date": ""
+      },
+      "revenue_composition": {
+        "机床类": 50.48,
+        "零部件类": 35.99,
+        "工具类": 9.05
       }
     },
     {
       "ticker": "000410",
       "company": "沈阳机床",
       "market": "A-share",
-      "raw_factor_points": 41.8,
-      "penalty_points": 36.0,
-      "final_score": 5.8,
+      "raw_factor_points": 60.0,
+      "penalty_points": 34.0,
+      "final_score": 26.0,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "architecture_coupling": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        },
+        "chokepoint_severity": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "supplier_concentration": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "expansion_difficulty": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "evidence_quality": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "valuation_disconnect": {
+          "rating": 3.0,
+          "weight": 11,
+          "points": 6.6
+        },
+        "catalyst_timing": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "liquidity": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "hype_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "alternative_design_risk": {
+          "rating": 2.0,
+          "points": 4.0
+        }
+      },
+      "kill_switches": [],
+      "evidence": [],
+      "segment": "丝杠加工设备（磨床）",
+      "selection_reason": "机床企业，具备磨床产品线但高端螺纹磨床较弱",
+      "revenue_exposure": "低",
+      "fundamentals": {
+        "market_cap_yi": 134.57,
+        "pe_ratio": 99.43,
+        "pb_ratio": 3.22,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
+      },
+      "revenue_composition": {
+        "金属切削机床": 60.33,
+        "金属成形机床": 24.68,
+        "其他": 14.99
+      }
+    },
+    {
+      "ticker": "001306",
+      "company": "夏厦精密",
+      "market": "A-share",
+      "raw_factor_points": 44.4,
+      "penalty_points": 24.0,
+      "final_score": 20.4,
       "verdict": "Early lead or low priority",
       "factor_details": {
         "demand_inflection": {
@@ -1109,9 +550,9 @@
           "points": 6.0
         },
         "architecture_coupling": {
-          "rating": 1.0,
+          "rating": 3.0,
           "weight": 10,
-          "points": 2.0
+          "points": 6.0
         },
         "chokepoint_severity": {
           "rating": 2.0,
@@ -1129,9 +570,135 @@
           "points": 7.2
         },
         "evidence_quality": {
-          "rating": 1.0,
+          "rating": 2.0,
           "weight": 15,
-          "points": 3.0
+          "points": 6.0
+        },
+        "valuation_disconnect": {
+          "rating": 2.0,
+          "weight": 11,
+          "points": 4.4
+        },
+        "catalyst_timing": {
+          "rating": 2.0,
+          "weight": 10,
+          "points": 4.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "governance": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "geopolitics": {
+          "rating": 0.0,
+          "points": 0.0
+        },
+        "liquidity": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "hype_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "accounting_quality": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "cyclicality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "alternative_design_risk": {
+          "rating": 2.0,
+          "points": 4.0
+        }
+      },
+      "kill_switches": [
+        "人形机器人量产进度不及预期，谐波减速器需求释放延迟",
+        "公司产品未进入主流谐波减速器厂商核心供应链，实际收入贡献微小",
+        "谐波减速器技术路线被替代（如行星减速器、直驱电机等），齿轮需求萎缩"
+      ],
+      "evidence": [
+        {
+          "claim": "公司主营业务为小模数齿轮，具备精密加工能力，可用于谐波减速器齿轮部件",
+          "source": "公司财报/公开信息",
+          "strength": "primary"
+        },
+        {
+          "claim": "人形机器人产业链预期升温，谐波减速器被视为核心瓶颈环节，公司作为潜在供应商受益",
+          "source": "行业研究/公开信息",
+          "strength": "media"
+        },
+        {
+          "claim": "当前市值33.7亿元，市盈率38.21倍，估值隐含一定成长预期但未过度极端",
+          "source": "公开行情数据",
+          "strength": "primary"
+        }
+      ],
+      "segment": "谐波减速器",
+      "selection_reason": "小模数齿轮供应商，可用于谐波减速器齿轮部件",
+      "revenue_exposure": "低",
+      "fundamentals": {
+        "market_cap_yi": 33.7,
+        "pe_ratio": 38.21,
+        "pb_ratio": 2.62,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
+      },
+      "revenue_composition": {
+        "汽车齿轮": 58.06,
+        "减速机及其他": 20.97,
+        "电动工具齿轮": 15.06
+      }
+    },
+    {
+      "ticker": "000837",
+      "company": "秦川机床",
+      "market": "A-share",
+      "raw_factor_points": 54.8,
+      "penalty_points": 36.0,
+      "final_score": 18.8,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "architecture_coupling": {
+          "rating": 2.0,
+          "weight": 10,
+          "points": 4.0
+        },
+        "chokepoint_severity": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "supplier_concentration": {
+          "rating": 2.0,
+          "weight": 12,
+          "points": 4.8
+        },
+        "expansion_difficulty": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "evidence_quality": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
         },
         "valuation_disconnect": {
           "rating": 4.0,
@@ -1139,9 +706,9 @@
           "points": 8.8
         },
         "catalyst_timing": {
-          "rating": 2.0,
+          "rating": 3.0,
           "weight": 10,
-          "points": 4.0
+          "points": 6.0
         }
       },
       "penalty_details": {
@@ -1158,16 +725,16 @@
           "points": 2.0
         },
         "liquidity": {
-          "rating": 1.0,
-          "points": 2.0
+          "rating": 2.0,
+          "points": 4.0
         },
         "hype_risk": {
           "rating": 4.0,
           "points": 8.0
         },
         "accounting_quality": {
-          "rating": 3.0,
-          "points": 6.0
+          "rating": 2.0,
+          "points": 4.0
         },
         "cyclicality": {
           "rating": 3.0,
@@ -1179,35 +746,46 @@
         }
       },
       "kill_switches": [
-        "公司未披露丝杠订单或收入，实际业务落地可能不及预期",
-        "人形机器人产业化进程不及预期，丝杠需求推迟或降级",
-        "公司历史财务问题及周期性特征导致业绩弹性有限"
+        "行星滚柱丝杠尚未形成规模化收入，后续订单或送样验证不及预期",
+        "机器人执行器技术路线变化，行星滚柱丝杠被替代或用量缩减",
+        "公司仅提供磨床设备而非丝杠产品，无法直接受益于丝杠需求爆发",
+        "传统机床主业景气下行，高估值缺乏业绩支撑，估值回落风险大"
       ],
       "evidence": [
         {
-          "claim": "具备高端机床加工能力，可切入行星滚柱丝杠生产",
-          "source": "公司公告/行业研究",
+          "claim": "子公司汉江机床具备丝杠磨床及滚珠丝杠研发制造能力，并布局行星滚柱丝杠",
+          "source": "上市公司公开披露/互动平台",
           "strength": "media"
         },
         {
-          "claim": "行星滚柱丝杠是人形机器人执行器的关键瓶颈环节",
-          "source": "行业研究",
+          "claim": "行星滚柱丝杠是人形机器人线性执行器核心精密传动部件，国内量产环节存在瓶颈",
+          "source": "行业研究报告/公开技术资料",
           "strength": "analysis"
+        },
+        {
+          "claim": "当前市盈率TTM 105.93倍，市净率2.09倍，股价远超当前传统机床主业盈利支撑",
+          "source": "公开行情数据",
+          "strength": "primary"
         }
       ],
       "segment": "行星滚柱丝杠",
-      "selection_reason": "高端机床龙头，具备丝杠加工能力",
+      "selection_reason": "子公司汉江机床产丝杠磨床及滚珠丝杠，布局行星滚柱丝杠",
       "revenue_exposure": "低",
       "fundamentals": {
-        "market_cap_yi": 134.04,
-        "pe_ratio": 99.04,
-        "pb_ratio": 3.21,
+        "market_cap_yi": 102.83,
+        "pe_ratio": 105.93,
+        "pb_ratio": 2.09,
         "roe": null,
         "gross_margin": null,
         "revenue_yoy": null,
         "profit_yoy": null,
         "debt_ratio": null,
         "report_date": ""
+      },
+      "revenue_composition": {
+        "机床类": 50.48,
+        "零部件类": 35.99,
+        "工具类": 9.05
       }
     }
   ]

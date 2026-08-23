@@ -1272,5 +1272,61 @@
     "category": "US",
     "theme": "科技宽基",
     "sector": "纳斯达克100"
+  },
+  {
+    "ticker": "002031",
+    "name": "巨轮智能",
+    "category": "个股",
+    "theme": "人形机器人",
+    "sector": "谐波减速器"
+  },
+  {
+    "ticker": "000837",
+    "name": "秦川机床",
+    "category": "个股",
+    "theme": "人形机器人",
+    "sector": "行星滚柱丝杠"
+  },
+  {
+    "ticker": "002050",
+    "name": "三花智控",
+    "category": "个股",
+    "theme": "人形机器人",
+    "sector": "空心杯电机"
+  },
+  {
+    "ticker": "300035",
+    "name": "中科电气",
+    "category": "个股",
+    "theme": "固态电池",
+    "sector": "硅碳负极材料"
+  },
+  {
+    "ticker": "300450",
+    "name": "先导智能",
+    "category": "个股",
+    "theme": "固态电池",
+    "sector": "固态电池专用设备"
+  },
+  {
+    "ticker": "002460",
+    "name": "赣锋锂业",
+    "category": "个股",
+    "theme": "固态电池",
+    "sector": "硫化物固态电解质"
+  },
+  {
+    "ticker": "000420",
+    "name": "吉林化纤",
+    "category": "个股",
+    "theme": "低空经济",
+    "sector": "碳纤维预浸料及航空级复合材料"
+  },
+  {
+    "ticker": "001696",
+    "name": "宗申动力",
+    "category": "个股",
+    "theme": "低空经济",
+    "sector": "高功率密度电机及其控制器"
   }
 ]

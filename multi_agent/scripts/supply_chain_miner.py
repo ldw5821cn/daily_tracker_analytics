@@ -150,7 +150,7 @@ def build_value_chain(theme: str) -> Dict:
         {"role": "system", "content": "你是资深产业链研究专家，擅长构建投资级产业链地图。"},
         {"role": "user", "content": prompt},
     ]
-    raw = chat(messages, temperature=0.3, max_tokens=2400)
+    raw = chat(messages, temperature=0.3, max_tokens=3200)
     # 尝试直接解析，若失败可能是 JSON 被截断：找从第一个 { 到最后一个 } 的完整段
     parsed = _extract_json(raw) if raw else None
     if parsed is None:
@@ -163,7 +163,11 @@ def build_value_chain(theme: str) -> Dict:
             text += ']' * open_bracket + '}' * open_brace
             parsed = _extract_json(text)
     if parsed is None:
-        raise RuntimeError(f"产业链 LLM 解析失败:\n{raw[:500]}")
+        # 保存调试文件
+        debug_path = f"/tmp/sc_map_fail_{theme}.txt"
+        with open(debug_path, 'w', encoding='utf-8') as f:
+            f.write(raw or '')
+        raise RuntimeError(f"产业链 LLM 解析失败，已保存到 {debug_path}\n前500字:\n{raw[:500]}")
     parsed['_llm_raw'] = raw
     return parsed
 
@@ -213,38 +217,53 @@ def map_candidates(theme: str, value_chain: Dict, universe: List[Dict]) -> List[
         {"role": "user", "content": prompt},
     ]
     raw = chat(messages, temperature=0.3, max_tokens=4000)
-    if raw:
-        parsed = _extract_json(raw)
-        if parsed is None:
-            # 截断补全再试
-            text = raw.strip()
-            open_brace = text.count('{') - text.count('}')
-            open_bracket = text.count('[') - text.count(']')
-            if open_brace > 0 or open_bracket > 0:
-                text += ']' * open_bracket + '}' * open_brace
-                parsed = _extract_json(text)
-        if parsed is None:
-            # 调试：保存失败响应
-            debug_path = f"/tmp/sc_map_fail_{_slugify(theme)}.txt"
-            with open(debug_path, 'w', encoding='utf-8') as f:
-                f.write(raw)
-            raise RuntimeError(f"候选映射 LLM 解析失败，已保存到 {debug_path}\n前500字:\n{raw[:500]}")
-        return parsed.get('candidates', [])
-    return []
-
+    parsed = _extract_json(raw) if raw else None
+    if parsed is None:
+        text = raw.strip() if raw else ""
+        last_brace = text.rfind('}')
+        if last_brace > 0:
+            text = text[:last_brace+1]
+        open_brace = text.count('{') - text.count('}')
+        open_bracket = text.count('[') - text.count(']')
+        if open_brace > 0 or open_bracket > 0:
+            text += ']' * open_bracket + '}' * open_brace
+            parsed = _extract_json(text)
+    if parsed is None:
+        debug_path = f"/tmp/sc_map_fail_{_slugify(theme)}.txt"
+        with open(debug_path, 'w', encoding='utf-8') as f:
+            f.write(raw)
+        raise RuntimeError(f"候选映射 LLM 解析失败，已保存到 {debug_path}\n前500字:\n{raw[:500]}")
+    return parsed.get('candidates', [])
 
 def load_fundamentals() -> Dict[str, dict]:
     """加载最新的 fundamentals_cache，key 为 6 位代码。"""
     cache_dir = f"{ROOT}/multi_agent/data/fundamentals_cache"
     if not os.path.exists(cache_dir):
         return {}
-    files = sorted([f for f in os.listdir(cache_dir) if f.endswith('.json')], reverse=True)
+    # 优先找非 _revenue 后缀的 fundamentals 文件
+    files = sorted([f for f in os.listdir(cache_dir) if f.endswith('.json') and not f.endswith('_revenue.json')], reverse=True)
     if not files:
         return {}
     try:
         with open(os.path.join(cache_dir, files[0]), 'r', encoding='utf-8') as f:
             data = json.load(f)
         return {str(k).zfill(6): v for k, v in data.get('fundamentals', {}).items() if v}
+    except Exception:
+        return {}
+
+
+def load_revenue_composition() -> Dict[str, dict]:
+    """加载最新的主营构成缓存，key 为 6 位代码。"""
+    cache_dir = f"{ROOT}/multi_agent/data/fundamentals_cache"
+    if not os.path.exists(cache_dir):
+        return {}
+    files = sorted([f for f in os.listdir(cache_dir) if f.endswith('_revenue.json')], reverse=True)
+    if not files:
+        return {}
+    try:
+        with open(os.path.join(cache_dir, files[0]), 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return {str(k).zfill(6): v for k, v in data.get('data', {}).items() if v}
     except Exception:
         return {}
 
@@ -271,8 +290,8 @@ DEFAULT_PENALTIES = {
 }
 
 
-def enrich_with_fundamentals(candidates: List[Dict], fund_map: Dict[str, dict]) -> List[Dict]:
-    """把 PE/PB/市值/ROE 等真实财务数据附加到候选上，用于页面展示。"""
+def enrich_with_fundamentals(candidates: List[Dict], fund_map: Dict[str, dict], revenue_map: Dict[str, dict]) -> List[Dict]:
+    """把 PE/PB/市值/ROE 等真实财务数据与主营构成附加到候选上，用于页面展示。"""
     for c in candidates:
         code = str(c.get('ticker', '')).zfill(6)
         f = fund_map.get(code, {})
@@ -287,6 +306,10 @@ def enrich_with_fundamentals(candidates: List[Dict], fund_map: Dict[str, dict]) 
             'debt_ratio': f.get('debt_ratio'),
             'report_date': f.get('report_date', ''),
         }
+        # 主营构成：取前三大产品
+        rev = revenue_map.get(code, {})
+        top_products = sorted(rev.items(), key=lambda x: x[1], reverse=True)[:3]
+        c['revenue_composition'] = {k: round(v * 100, 2) for k, v in top_products}
     return candidates
 
 
@@ -395,7 +418,7 @@ def score_candidates(candidates: List[Dict], theme: str) -> List[Dict]:
             "revenue_exposure": c.get('revenue_exposure', '中'),
         })
         results.append(result)
-    results = enrich_with_fundamentals(results, fund_map)
+    results = enrich_with_fundamentals(results, fund_map, load_revenue_composition())
     results.sort(key=lambda x: x.get('final_score', 0), reverse=True)
     return results
 
@@ -492,13 +515,15 @@ tr:hover {{ background: #f8fafc; }}
         if f.get('roe') is not None:
             fund_parts.append(f"ROE {f['roe']:.1f}%")
         fund_str = ' · '.join(fund_parts) if fund_parts else '暂无'
+        rev = c.get('revenue_composition', {})
+        rev_str = ' · '.join([f"{k} {v}%" for k, v in rev.items()]) if rev else '暂无'
         html += f"""
 <tr>
   <td>{i}</td>
   <td>{c.get('company', '')}<br><span style="color:#7f8c8d">{c.get('ticker', '')}</span></td>
   <td>{c.get('segment', '')}</td>
   <td>{c.get('selection_reason', '')}</td>
-  <td>{c.get('revenue_exposure', '')}</td>
+  <td>{c.get('revenue_exposure', '')}<br><span style="color:#7f8c8d;font-size:0.85em">{rev_str}</span></td>
   <td class="fund">{fund_str}</td>
   <td class="{score_class}">{score}</td>
   <td>{c.get('verdict', '')}</td>

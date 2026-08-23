@@ -25,3 +25,6 @@ multi_agent/data/db_snapshots/
 multi_agent/config/xueqiu_config.json
 *.duckdb
 *.duckdb-*
+docs/morning_briefs/_raw/
+/tmp/last30days-skill-cn
+/tmp/ai_quant_trade
