@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>📉 期货 - 2026-08-25 15:38</title>
+<title>📉 期货 - 2026-08-25 16:32</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <style>
@@ -63,7 +63,7 @@ tr:hover { background: #334155; }
 
     <div class="header">
         <h1>📉 期货 </h1>
-        <div class="sub">2026-08-25 15:38 · 最新预测 49 只 (价格日期: 2026-08-24)</div>
+        <div class="sub">2026-08-25 16:32 · 最新预测 49 只 (价格日期: 2026-08-24, 2026-08-25)</div>
     </div>
 
 <div class="stats-grid">
@@ -89,11 +89,39 @@ tr:hover { background: #334155; }
 <div class="cards">
 
             <div class="card bull">
+                <div class="card-title">🔥 焦炭 (J0)</div>
+                <div class="card-meta">评分 58.1 | 60日收益 <span style="color:#ef4444">+8.0%</span> | 回撤 -16.2%</div>
+                <div class="card-meta">推荐策略：每日多空（无成本） | 收益 <span style="color:#ef4444">+15.0%</span> | 回撤 -6.3%</div>
+                <div class="card-price">2026/08/24 现价 2152.5 | 目标 2323.575 | 止损 2109.45</div>
+                <div class="card-reason">技术面中性偏多(64/100) | 基本面bullish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨2 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%</div>
+                
+                <div id="chart_J0" style="width:100%;height:180px;margin-top:10px;border-radius:8px;background:#0f172a;"></div>
+                <script>
+                (function(){
+                    const chart = LightweightCharts.createChart(document.getElementById('chart_J0'), {
+                        layout: { background: { color: '#0f172a' }, textColor: '#94a3b8' },
+                        grid: { vertLines: { color: '#1e293b' }, horzLines: { color: '#1e293b' } },
+                        crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+                        rightPriceScale: { borderColor: '#1e293b' },
+                        timeScale: { borderColor: '#1e293b', timeVisible: false },
+                    });
+                    const series = chart.addCandlestickSeries({
+                        upColor: '#ef4444', downColor: '#22c55e',
+                        borderUpColor: '#ef4444', borderDownColor: '#22c55e',
+                        wickUpColor: '#ef4444', wickDownColor: '#22c55e'
+                    });
+                    series.setData([{"time": "2026-05-27", "open": 1858.0, "high": 1880.0, "low": 1842.0, "close": 1877.5, "volume": 18559.0}, {"time": "2026-05-28", "open": 1879.0, "high": 1913.0, "low": 1879.0, "close": 1899.5, "volume": 19577.0}, {"time": "2026-05-29", "open": 1898.0, "high": 1914.5, "low": 1888.5, "close": 1903.0, "volume": 13415.0}, {"time": "2026-06-01", "open": 1900.0, "high": 2026.5, "low": 1900.0, "close": 1993.0, "volume": 36202.0}, {"time": "2026-06-02", "open": 1993.0, "high": 1998.5, "low": 1972.0, "close": 1979.0, "volume": 15665.0}, {"time": "2026-06-03", "open": 1995.5, "high": 2021.0, "low": 1978.5, "close": 2000.0, "volume": 20145.0}, {"time": "2026-06-04", "open": 2000.0, "high": 2060.5, "low": 2000.0, "close": 2043.0, "volume": 26751.0}, {"time": "2026-06-05", "open": 2041.0, "high": 2078.0, "low": 2029.0, "close": 2041.5, "volume": 23274.0}, {"time": "2026-06-08", "open": 2043.0, "high": 2069.5, "low": 2014.0, "close": 2022.0, "volume": 25913.0}, {"time": "2026-06-09", "open": 2028.0, "high": 2040.0, "low": 1929.0, "close": 1961.0, "volume": 42467.0}, {"time": "2026-06-10", "open": 1956.5, "high": 1987.0, "low": 1935.5, "close": 1983.0, "volume": 25032.0}, {"time": "2026-06-11", "open": 2000.0, "high": 2032.0, "low": 1979.0, "close": 2011.0, "volume": 33634.0}, {"time": "2026-06-12", "open": 2014.0, "high": 2126.0, "low": 1996.0, "close": 2078.0, "volume": 100202.0}, {"time": "2026-06-15", "open": 2085.0, "high": 2130.5, "low": 2057.0, "close": 2093.0, "volume": 128636.0}, {"time": "2026-06-16", "open": 2093.0, "high": 2127.0, "low": 2069.0, "close": 2083.5, "volume": 99040.0}, {"time": "2026-06-17", "open": 2080.0, "high": 2102.0, "low": 2066.0, "close": 2073.0, "volume": 78868.0}, {"time": "2026-06-18", "open": 2073.0, "high": 2079.5, "low": 1980.5, "close": 2019.5, "volume": 132851.0}, {"time": "2026-06-22", "open": 2028.0, "high": 2029.0, "low": 1985.0, "close": 2015.5, "volume": 51670.0}, {"time": "2026-06-23", "open": 2005.0, "high": 2015.0, "low": 1915.0, "close": 1925.0, "volume": 97347.0}, {"time": "2026-06-24", "open": 1925.0, "high": 1968.0, "low": 1915.0, "close": 1947.5, "volume": 78033.0}, {"time": "2026-06-25", "open": 1946.0, "high": 1972.0, "low": 1923.5, "close": 1932.0, "volume": 77494.0}, {"time": "2026-06-26", "open": 1938.5, "high": 1961.0, "low": 1912.0, "close": 1946.0, "volume": 75826.0}, {"time": "2026-06-29", "open": 1946.5, "high": 1989.0, "low": 1936.0, "close": 1982.5, "volume": 66849.0}, {"time": "2026-06-30", "open": 1982.5, "high": 1982.5, "low": 1938.0, "close": 1958.5, "volume": 53204.0}, {"time": "2026-07-01", "open": 1955.0, "high": 1958.5, "low": 1894.0, "close": 1909.0, "volume": 67011.0}, {"time": "2026-07-02", "open": 1910.0, "high": 1922.5, "low": 1887.5, "close": 1905.0, "volume": 52589.0}, {"time": "2026-07-03", "open": 1910.0, "high": 1955.0, "low": 1907.0, "close": 1938.0, "volume": 51275.0}, {"time": "2026-07-06", "open": 1935.0, "high": 1972.0, "low": 1926.0, "close": 1951.0, "volume": 49403.0}, {"time": "2026-07-07", "open": 1960.0, "high": 1963.0, "low": 1935.0, "close": 1936.0, "volume": 29702.0}, {"time": "2026-07-08", "open": 1935.0, "high": 1968.5, "low": 1925.0, "close": 1956.5, "volume": 38896.0}, {"time": "2026-07-09", "open": 1956.0, "high": 1960.0, "low": 1939.5, "close": 1945.0, "volume": 33636.0}, {"time": "2026-07-10", "open": 1945.0, "high": 1946.0, "low": 1884.0, "close": 1913.0, "volume": 60104.0}, {"time": "2026-07-13", "open": 1912.0, "high": 1915.5, "low": 1857.5, "close": 1865.0, "volume": 50244.0}, {"time": "2026-07-14", "open": 1865.0, "high": 1881.5, "low": 1854.5, "close": 1868.0, "volume": 34066.0}, {"time": "2026-07-15", "open": 1875.0, "high": 1894.5, "low": 1864.5, "close": 1879.5, "volume": 32823.0}, {"time": "2026-07-16", "open": 1879.0, "high": 1884.5, "low": 1855.0, "close": 1864.5, "volume": 28159.0}, {"time": "2026-07-17", "open": 1863.0, "high": 1879.0, "low": 1857.0, "close": 1864.0, "volume": 28517.0}, {"time": "2026-07-20", "open": 1862.0, "high": 1894.0, "low": 1830.0, "close": 1840.0, "volume": 52295.0}, {"time": "2026-07-21", "open": 1840.0, "high": 1843.0, "low": 1808.5, "close": 1837.0, "volume": 42874.0}, {"time": "2026-07-22", "open": 1835.0, "high": 1843.5, "low": 1815.5, "close": 1824.5, "volume": 27365.0}, {"time": "2026-07-23", "open": 1833.5, "high": 1860.0, "low": 1820.5, "close": 1847.0, "volume": 32007.0}, {"time": "2026-07-24", "open": 1850.0, "high": 1850.0, "low": 1831.0, "close": 1840.5, "volume": 20216.0}, {"time": "2026-07-27", "open": 1848.0, "high": 1863.0, "low": 1834.0, "close": 1853.5, "volume": 33507.0}, {"time": "2026-07-28", "open": 1853.5, "high": 1855.0, "low": 1815.5, "close": 1825.0, "volume": 30239.0}, {"time": "2026-07-29", "open": 1825.0, "high": 1862.5, "low": 1817.0, "close": 1845.0, "volume": 32060.0}, {"time": "2026-07-30", "open": 1845.0, "high": 1845.0, "low": 1812.5, "close": 1821.0, "volume": 30473.0}, {"time": "2026-07-31", "open": 1818.0, "high": 1818.0, "low": 1753.5, "close": 1767.0, "volume": 44580.0}, {"time": "2026-08-03", "open": 1767.0, "high": 1771.0, "low": 1750.0, "close": 1753.0, "volume": 27884.0}, {"time": "2026-08-04", "open": 1754.0, "high": 1777.0, "low": 1744.0, "close": 1760.0, "volume": 26169.0}, {"time": "2026-08-05", "open": 1760.0, "high": 1807.0, "low": 1752.5, "close": 1793.0, "volume": 33864.0}, {"time": "2026-08-06", "open": 1793.0, "high": 1853.5, "low": 1788.0, "close": 1832.5, "volume": 42394.0}, {"time": "2026-08-07", "open": 1848.5, "high": 1882.5, "low": 1837.0, "close": 1868.5, "volume": 46684.0}, {"time": "2026-08-10", "open": 1868.5, "high": 1885.0, "low": 1864.0, "close": 1865.0, "volume": 26789.0}, {"time": "2026-08-11", "open": 1865.0, "high": 1915.0, "low": 1859.0, "close": 1910.0, "volume": 37425.0}, {"time": "2026-08-12", "open": 1909.0, "high": 1920.5, "low": 1896.5, "close": 1906.0, "volume": 23355.0}, {"time": "2026-08-13", "open": 1899.0, "high": 1907.0, "low": 1882.5, "close": 1890.5, "volume": 21400.0}, {"time": "2026-08-14", "open": 1898.0, "high": 1928.0, "low": 1881.5, "close": 1911.5, "volume": 34271.0}, {"time": "2026-08-17", "open": 1920.0, "high": 1949.0, "low": 1897.5, "close": 1910.0, "volume": 37221.0}, {"time": "2026-08-18", "open": 1985.0, "high": 2020.0, "low": 1985.0, "close": 2010.0, "volume": 18862.0}, {"time": "2026-08-19", "open": 2024.5, "high": 2070.0, "low": 2015.0, "close": 2058.0, "volume": 29456.0}, {"time": "2026-08-20", "open": 2058.0, "high": 2096.0, "low": 2052.0, "close": 2072.5, "volume": 45302.0}, {"time": "2026-08-21", "open": 2085.0, "high": 2122.5, "low": 2059.0, "close": 2119.5, "volume": 57264.0}, {"time": "2026-08-24", "open": 2120.0, "high": 2185.0, "low": 2115.0, "close": 2152.5, "volume": 74651.0}]);
+                    chart.timeScale().fitContent();
+                })();
+                </script>
+                
+            </div>
+            <div class="card bull">
                 <div class="card-title">🔥 低硫燃油 (LU0)</div>
-                <div class="card-meta">评分 59.3 | 60日收益 <span style="color:#ef4444">+6.4%</span> | 回撤 -24.4%</div>
+                <div class="card-meta">评分 59.6 | 60日收益 <span style="color:#ef4444">+6.4%</span> | 回撤 -24.4%</div>
                 <div class="card-meta">推荐策略：每日多空（无成本） | 收益 <span style="color:#ef4444">+33.9%</span> | 回撤 -8.5%</div>
                 <div class="card-price">2026/08/24 现价 5027.0 | 目标 5186.984 | 止损 4926.46</div>
-                <div class="card-reason">技术面中性偏多(67/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨2 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%</div>
+                <div class="card-reason">技术面中性偏多(67/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨2 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%</div>
                 
                 <div id="chart_LU0" style="width:100%;height:180px;margin-top:10px;border-radius:8px;background:#0f172a;"></div>
                 <script>
@@ -118,10 +146,10 @@ tr:hover { background: #334155; }
             </div>
             <div class="card bull">
                 <div class="card-title">🔥 菜油 (OI0)</div>
-                <div class="card-meta">评分 58.7 | 60日收益 <span style="color:#ef4444">+4.8%</span> | 回撤 -7.8%</div>
-                <div class="card-meta">推荐策略：每日多空（无成本） | 收益 <span style="color:#ef4444">+2.0%</span> | 回撤 -4.2%</div>
-                <div class="card-price">2026/08/24 现价 10412.0 | 目标 10456.615 | 止损 10203.76</div>
-                <div class="card-reason">技术面中性偏多(70/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨2.0 vs 看跌1 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%</div>
+                <div class="card-meta">评分 59.0 | 60日收益 <span style="color:#ef4444">+2.9%</span> | 回撤 -7.8%</div>
+                <div class="card-meta">推荐策略：每日多空（无成本） | 收益 <span style="color:#ef4444">+0.8%</span> | 回撤 -4.2%</div>
+                <div class="card-price">2026/08/25 现价 10281.0 | 目标 10264.987 | 止损 10075.38</div>
+                <div class="card-reason">技术面中性偏多(70/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨2.0 vs 看跌1 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%</div>
                 
                 <div id="chart_OI0" style="width:100%;height:180px;margin-top:10px;border-radius:8px;background:#0f172a;"></div>
                 <script>
@@ -146,10 +174,10 @@ tr:hover { background: #334155; }
             </div>
             <div class="card bull">
                 <div class="card-title">🔥 纸浆 (SP0)</div>
-                <div class="card-meta">评分 60.7 | 60日收益 <span style="color:#22c55e">-0.4%</span> | 回撤 -7.5%</div>
+                <div class="card-meta">评分 61.0 | 60日收益 <span style="color:#22c55e">-0.4%</span> | 回撤 -7.5%</div>
                 <div class="card-meta">推荐策略：每日多空（无成本） | 收益 <span style="color:#22c55e">-0.7%</span> | 回撤 -4.2%</div>
                 <div class="card-price">2026/08/24 现价 4866.0 | 目标 4944.221 | 止损 4768.68</div>
-                <div class="card-reason">技术面中性偏多(70/100) | 基本面bearish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨2.0 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%</div>
+                <div class="card-reason">技术面中性偏多(70/100) | 基本面bearish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨2.0 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%</div>
                 
                 <div id="chart_SP0" style="width:100%;height:180px;margin-top:10px;border-radius:8px;background:#0f172a;"></div>
                 <script>
@@ -173,39 +201,11 @@ tr:hover { background: #334155; }
                 
             </div>
             <div class="card bull">
-                <div class="card-title">🔥 短纤 (PF0)</div>
-                <div class="card-meta">评分 60.7 | 60日收益 <span style="color:#22c55e">-1.3%</span> | 回撤 -14.6%</div>
-                <div class="card-meta">推荐策略：每日多空（无成本） | 收益 <span style="color:#ef4444">+0.5%</span> | 回撤 -5.9%</div>
-                <div class="card-price">2026/08/24 现价 7664.0 | 目标 7760.835 | 止损 7510.72</div>
-                <div class="card-reason">技术面中性偏多(70/100) | 基本面bullish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨2.0 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%</div>
-                
-                <div id="chart_PF0" style="width:100%;height:180px;margin-top:10px;border-radius:8px;background:#0f172a;"></div>
-                <script>
-                (function(){
-                    const chart = LightweightCharts.createChart(document.getElementById('chart_PF0'), {
-                        layout: { background: { color: '#0f172a' }, textColor: '#94a3b8' },
-                        grid: { vertLines: { color: '#1e293b' }, horzLines: { color: '#1e293b' } },
-                        crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
-                        rightPriceScale: { borderColor: '#1e293b' },
-                        timeScale: { borderColor: '#1e293b', timeVisible: false },
-                    });
-                    const series = chart.addCandlestickSeries({
-                        upColor: '#ef4444', downColor: '#22c55e',
-                        borderUpColor: '#ef4444', borderDownColor: '#22c55e',
-                        wickUpColor: '#ef4444', wickDownColor: '#22c55e'
-                    });
-                    series.setData([{"time": "2026-05-27", "open": 7578.0, "high": 7636.0, "low": 7552.0, "close": 7624.0, "volume": 154325.0}, {"time": "2026-05-28", "open": 7550.0, "high": 7800.0, "low": 7526.0, "close": 7770.0, "volume": 201764.0}, {"time": "2026-05-29", "open": 7754.0, "high": 7788.0, "low": 7642.0, "close": 7674.0, "volume": 178799.0}, {"time": "2026-06-01", "open": 7654.0, "high": 7796.0, "low": 7618.0, "close": 7762.0, "volume": 96178.0}, {"time": "2026-06-02", "open": 7658.0, "high": 7786.0, "low": 7632.0, "close": 7716.0, "volume": 128101.0}, {"time": "2026-06-03", "open": 7726.0, "high": 7830.0, "low": 7704.0, "close": 7802.0, "volume": 146296.0}, {"time": "2026-06-04", "open": 7804.0, "high": 7806.0, "low": 7658.0, "close": 7682.0, "volume": 186576.0}, {"time": "2026-06-05", "open": 7630.0, "high": 7808.0, "low": 7608.0, "close": 7748.0, "volume": 163428.0}, {"time": "2026-06-08", "open": 7780.0, "high": 7958.0, "low": 7708.0, "close": 7956.0, "volume": 257201.0}, {"time": "2026-06-09", "open": 7882.0, "high": 7900.0, "low": 7636.0, "close": 7676.0, "volume": 261237.0}, {"time": "2026-06-10", "open": 7682.0, "high": 7914.0, "low": 7646.0, "close": 7740.0, "volume": 265311.0}, {"time": "2026-06-11", "open": 7760.0, "high": 7898.0, "low": 7742.0, "close": 7806.0, "volume": 222172.0}, {"time": "2026-06-12", "open": 7788.0, "high": 7876.0, "low": 7680.0, "close": 7848.0, "volume": 243098.0}, {"time": "2026-06-15", "open": 7808.0, "high": 7828.0, "low": 7362.0, "close": 7402.0, "volume": 320690.0}, {"time": "2026-06-16", "open": 7430.0, "high": 7434.0, "low": 7274.0, "close": 7330.0, "volume": 194016.0}, {"time": "2026-06-17", "open": 7250.0, "high": 7326.0, "low": 7186.0, "close": 7268.0, "volume": 170764.0}, {"time": "2026-06-18", "open": 7290.0, "high": 7364.0, "low": 7264.0, "close": 7348.0, "volume": 210261.0}, {"time": "2026-06-22", "open": 7406.0, "high": 7414.0, "low": 7252.0, "close": 7260.0, "volume": 163442.0}, {"time": "2026-06-23", "open": 7244.0, "high": 7392.0, "low": 7236.0, "close": 7274.0, "volume": 192330.0}, {"time": "2026-06-24", "open": 7278.0, "high": 7292.0, "low": 7152.0, "close": 7160.0, "volume": 207691.0}, {"time": "2026-06-25", "open": 7124.0, "high": 7142.0, "low": 6932.0, "close": 7008.0, "volume": 250484.0}, {"time": "2026-06-26", "open": 7020.0, "high": 7028.0, "low": 6860.0, "close": 6920.0, "volume": 221983.0}, {"time": "2026-06-29", "open": 6900.0, "high": 7040.0, "low": 6882.0, "close": 7028.0, "volume": 164315.0}, {"time": "2026-06-30", "open": 7018.0, "high": 7048.0, "low": 6944.0, "close": 6986.0, "volume": 140640.0}, {"time": "2026-07-01", "open": 7018.0, "high": 7034.0, "low": 6862.0, "close": 6882.0, "volume": 83824.0}, {"time": "2026-07-02", "open": 6862.0, "high": 6942.0, "low": 6754.0, "close": 6796.0, "volume": 122245.0}, {"time": "2026-07-03", "open": 6738.0, "high": 6854.0, "low": 6698.0, "close": 6810.0, "volume": 167935.0}, {"time": "2026-07-06", "open": 6810.0, "high": 6908.0, "low": 6770.0, "close": 6858.0, "volume": 168817.0}, {"time": "2026-07-07", "open": 6840.0, "high": 6984.0, "low": 6828.0, "close": 6944.0, "volume": 162914.0}, {"time": "2026-07-08", "open": 6998.0, "high": 7096.0, "low": 6942.0, "close": 7026.0, "volume": 213509.0}, {"time": "2026-07-09", "open": 7070.0, "high": 7140.0, "low": 7032.0, "close": 7052.0, "volume": 141034.0}, {"time": "2026-07-10", "open": 7074.0, "high": 7100.0, "low": 6976.0, "close": 7014.0, "volume": 144692.0}, {"time": "2026-07-13", "open": 7002.0, "high": 7206.0, "low": 6990.0, "close": 7110.0, "volume": 177910.0}, {"time": "2026-07-14", "open": 7108.0, "high": 7390.0, "low": 7018.0, "close": 7370.0, "volume": 207666.0}, {"time": "2026-07-15", "open": 7396.0, "high": 7428.0, "low": 7334.0, "close": 7352.0, "volume": 164180.0}, {"time": "2026-07-16", "open": 7336.0, "high": 7348.0, "low": 7234.0, "close": 7316.0, "volume": 190274.0}, {"time": "2026-07-17", "open": 7342.0, "high": 7366.0, "low": 7232.0, "close": 7272.0, "volume": 140629.0}, {"time": "2026-07-20", "open": 7286.0, "high": 7574.0, "low": 7284.0, "close": 7478.0, "volume": 224805.0}, {"time": "2026-07-21", "open": 7418.0, "high": 7432.0, "low": 7296.0, "close": 7364.0, "volume": 175328.0}, {"time": "2026-07-22", "open": 7402.0, "high": 7496.0, "low": 7400.0, "close": 7478.0, "volume": 156816.0}, {"time": "2026-07-23", "open": 7504.0, "high": 7562.0, "low": 7454.0, "close": 7552.0, "volume": 135390.0}]);
-                    chart.timeScale().fitContent();
-                })();
-                </script>
-                
-            </div>
-            <div class="card bull">
                 <div class="card-title">🔥 苯乙烯 (EB0)</div>
-                <div class="card-meta">评分 60.7 | 60日收益 <span style="color:#ef4444">+0.0%</span> | 回撤 -19.8%</div>
+                <div class="card-meta">评分 61.0 | 60日收益 <span style="color:#ef4444">+0.0%</span> | 回撤 -19.8%</div>
                 <div class="card-meta">推荐策略：每日多空（无成本） | 收益 <span style="color:#ef4444">+19.1%</span> | 回撤 -9.8%</div>
                 <div class="card-price">2026/08/24 现价 8760.0 | 目标 8910.957 | 止损 8584.8</div>
-                <div class="card-reason">技术面中性偏多(70/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨2.0 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%</div>
+                <div class="card-reason">技术面中性偏多(70/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨2.0 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%</div>
                 
                 <div id="chart_EB0" style="width:100%;height:180px;margin-top:10px;border-radius:8px;background:#0f172a;"></div>
                 <script>
@@ -233,10 +233,10 @@ tr:hover { background: #334155; }
 
             <div class="card bear">
                 <div class="card-title">❄️ 螺纹钢 (RB0)</div>
-                <div class="card-meta">评分 39.9 | 60日收益 <span style="color:#22c55e">-3.5%</span> | 回撤 -6.6%</div>
+                <div class="card-meta">评分 40.3 | 60日收益 <span style="color:#22c55e">-3.5%</span> | 回撤 -6.6%</div>
                 <div class="card-meta">推荐策略：每日多空（无成本） | 收益 <span style="color:#ef4444">+1.3%</span> | 回撤 -1.8%</div>
                 <div class="card-price">2026/08/24 现价 3066.0 | 目标 3088.75 | 止损 3004.68</div>
-                <div class="card-reason">技术面中性(51/100) | 基本面bearish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨0.1 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%</div>
+                <div class="card-reason">技术面中性(51/100) | 基本面bearish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨0.1 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%</div>
                 
                 <div id="chart_RB0" style="width:100%;height:180px;margin-top:10px;border-radius:8px;background:#0f172a;"></div>
                 <script>
@@ -261,10 +261,10 @@ tr:hover { background: #334155; }
             </div>
             <div class="card bear">
                 <div class="card-title">❄️ 纯碱 (SA0)</div>
-                <div class="card-meta">评分 39.7 | 60日收益 <span style="color:#22c55e">-13.7%</span> | 回撤 -24.7%</div>
+                <div class="card-meta">评分 40.1 | 60日收益 <span style="color:#22c55e">-13.7%</span> | 回撤 -24.7%</div>
                 <div class="card-meta">推荐策略：每日多空（无成本） | 收益 <span style="color:#ef4444">+21.9%</span> | 回撤 -7.0%</div>
                 <div class="card-price">2026/08/24 现价 1054.0 | 目标 1072.585 | 止损 1032.92</div>
-                <div class="card-reason">技术面中性(48/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨0 vs 看跌0.2 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%</div>
+                <div class="card-reason">技术面中性(48/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨0 vs 看跌0.2 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%</div>
                 
                 <div id="chart_SA0" style="width:100%;height:180px;margin-top:10px;border-radius:8px;background:#0f172a;"></div>
                 <script>
@@ -299,7 +299,7 @@ tr:hover { background: #334155; }
             <td>纸浆 </td>
             <td>工业品</td>
             <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>60.7</td>
+            <td>61.0</td>
             <td>77%</td>
             <td>震荡</td>
             <td>偏多</td>
@@ -315,37 +315,14 @@ tr:hover { background: #334155; }
             <td>4944.221</td>
             <td>4768.68</td>
             <td>19%</td>
-            <td title="技术面中性偏多(70/100) | 基本面bearish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨2.0 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">70</td>
-        </tr>
-        <tr>
-            <td><b>PF0</b></td>
-            <td>短纤 </td>
-            <td>化工</td>
-            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>60.7</td>
-            <td>77%</td>
-            <td>震荡</td>
-            <td>偏多</td>
-            <td>偏多</td>
-            <td>看涨</td>
-            <td style="color:#22c55e">-1.3%</td>
-            <td>-14.6%</td>
-            <td>-0.16</td>
-            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#ef4444">+0.5%</td>
-            <td>-5.9%</td>
-            <td>2026/08/24 现价 7664.0</td>
-            <td>7760.835</td>
-            <td>7510.72</td>
-            <td>19%</td>
-            <td title="技术面中性偏多(70/100) | 基本面bullish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨2.0 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">70</td>
+            <td title="技术面中性偏多(70/100) | 基本面bearish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨2.0 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">70</td>
         </tr>
         <tr>
             <td><b>EB0</b></td>
             <td>苯乙烯 </td>
             <td>化工</td>
             <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>60.7</td>
+            <td>61.0</td>
             <td>77%</td>
             <td>震荡</td>
             <td>偏多</td>
@@ -361,15 +338,15 @@ tr:hover { background: #334155; }
             <td>8910.957</td>
             <td>8584.8</td>
             <td>19%</td>
-            <td title="技术面中性偏多(70/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨2.0 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">70</td>
+            <td title="技术面中性偏多(70/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨2.0 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">70</td>
         </tr>
         <tr>
             <td><b>LU0</b></td>
             <td>低硫燃油 </td>
             <td>能源</td>
             <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>59.3</td>
-            <td>75%</td>
+            <td>59.6</td>
+            <td>76%</td>
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
@@ -384,37 +361,37 @@ tr:hover { background: #334155; }
             <td>5186.984</td>
             <td>4926.46</td>
             <td>19%</td>
-            <td title="技术面中性偏多(67/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨2 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">67</td>
+            <td title="技术面中性偏多(67/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨2 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">67</td>
         </tr>
         <tr>
             <td><b>OI0</b></td>
             <td>菜油 </td>
             <td>农产品</td>
             <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>58.7</td>
+            <td>59.0</td>
             <td>67%</td>
             <td>震荡</td>
             <td>震荡</td>
             <td>震荡</td>
-            <td>偏多</td>
-            <td style="color:#ef4444">+4.8%</td>
+            <td>震荡</td>
+            <td style="color:#ef4444">+2.9%</td>
             <td>-7.8%</td>
-            <td>1.08</td>
+            <td>0.64</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#ef4444">+2.0%</td>
+            <td style="color:#ef4444">+0.8%</td>
             <td>-4.2%</td>
-            <td>2026/08/24 现价 10412.0</td>
-            <td>10456.615</td>
-            <td>10203.76</td>
+            <td>2026/08/25 现价 10281.0</td>
+            <td>10264.987</td>
+            <td>10075.38</td>
             <td>17%</td>
-            <td title="技术面中性偏多(70/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨2.0 vs 看跌1 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">70</td>
+            <td title="技术面中性偏多(70/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨2.0 vs 看跌1 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">70</td>
         </tr>
         <tr>
             <td><b>V0</b></td>
             <td>PVC </td>
             <td>能化</td>
             <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>58.7</td>
+            <td>59.0</td>
             <td>67%</td>
             <td>震荡</td>
             <td>偏多</td>
@@ -430,14 +407,37 @@ tr:hover { background: #334155; }
             <td>4687.549</td>
             <td>4551.12</td>
             <td>17%</td>
-            <td title="技术面中性偏多(70/100) | 基本面bearish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨2.0 vs 看跌1 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">70</td>
+            <td title="技术面中性偏多(70/100) | 基本面bearish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨2.0 vs 看跌1 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">70</td>
+        </tr>
+        <tr>
+            <td><b>J0</b></td>
+            <td>焦炭 </td>
+            <td>黑色</td>
+            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
+            <td>58.1</td>
+            <td>74%</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td style="color:#ef4444">+8.0%</td>
+            <td>-16.2%</td>
+            <td>1.28</td>
+            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
+            <td style="color:#ef4444">+15.0%</td>
+            <td>-6.3%</td>
+            <td>2026/08/24 现价 2152.5</td>
+            <td>2323.575</td>
+            <td>2109.45</td>
+            <td>18%</td>
+            <td title="技术面中性偏多(64/100) | 基本面bullish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨2 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
         </tr>
         <tr>
             <td><b>RB0</b></td>
             <td>螺纹钢 </td>
             <td>黑色</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
-            <td>39.9</td>
+            <td>40.3</td>
             <td>61%</td>
             <td>震荡</td>
             <td>震荡</td>
@@ -453,15 +453,15 @@ tr:hover { background: #334155; }
             <td>3088.75</td>
             <td>3004.68</td>
             <td>9%</td>
-            <td title="技术面中性(51/100) | 基本面bearish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨0.1 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">51</td>
+            <td title="技术面中性(51/100) | 基本面bearish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨0.1 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">51</td>
         </tr>
         <tr>
             <td><b>SA0</b></td>
             <td>纯碱 </td>
             <td>化工</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
-            <td>39.7</td>
-            <td>62%</td>
+            <td>40.1</td>
+            <td>61%</td>
             <td>震荡</td>
             <td>偏多</td>
             <td>看涨</td>
@@ -476,60 +476,14 @@ tr:hover { background: #334155; }
             <td>1072.585</td>
             <td>1032.92</td>
             <td>9%</td>
-            <td title="技术面中性(48/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨0 vs 看跌0.2 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">48</td>
-        </tr>
-        <tr>
-            <td><b>J0</b></td>
-            <td>焦炭 </td>
-            <td>黑色</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>57.9</td>
-            <td>74%</td>
-            <td>看涨</td>
-            <td>看涨</td>
-            <td>看涨</td>
-            <td>看涨</td>
-            <td style="color:#ef4444">+8.0%</td>
-            <td>-16.2%</td>
-            <td>1.28</td>
-            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#ef4444">+15.0%</td>
-            <td>-6.3%</td>
-            <td>2026/08/24 现价 2152.5</td>
-            <td>2323.575</td>
-            <td>2109.45</td>
-            <td>0%</td>
-            <td title="技术面中性偏多(64/100) | 基本面bullish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨2 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
-        </tr>
-        <tr>
-            <td><b>SC0</b></td>
-            <td>原油 </td>
-            <td>能化</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>57.8</td>
-            <td>71%</td>
-            <td>偏多</td>
-            <td>看涨</td>
-            <td>看涨</td>
-            <td>看涨</td>
-            <td style="color:#22c55e">-1.4%</td>
-            <td>-29.1%</td>
-            <td>0.10</td>
-            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#ef4444">+33.3%</td>
-            <td>-19.9%</td>
-            <td>2026/08/24 现价 587.8</td>
-            <td>606.723</td>
-            <td>576.044</td>
-            <td>0%</td>
-            <td title="技术面中性偏多(67/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.7 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">67</td>
+            <td title="技术面中性(48/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨0 vs 看跌0.2 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">48</td>
         </tr>
         <tr>
             <td><b>SI0</b></td>
             <td>工业硅 </td>
             <td>新能源</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>56.8</td>
+            <td>57.1</td>
             <td>60%</td>
             <td>震荡</td>
             <td>震荡</td>
@@ -545,15 +499,15 @@ tr:hover { background: #334155; }
             <td>8793.227</td>
             <td>8555.4</td>
             <td>0%</td>
-            <td title="技术面中性偏多(64/100) | 基本面bearish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.4 vs 看跌1 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
+            <td title="技术面中性偏多(64/100) | 基本面bearish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.4 vs 看跌1 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
         </tr>
         <tr>
             <td><b>LH0</b></td>
             <td>生猪 </td>
             <td>农产品</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>56.7</td>
-            <td>62%</td>
+            <td>57.0</td>
+            <td>63%</td>
             <td>震荡</td>
             <td>震荡</td>
             <td>偏空</td>
@@ -568,15 +522,15 @@ tr:hover { background: #334155; }
             <td>11969.008</td>
             <td>11789.4</td>
             <td>0%</td>
-            <td title="技术面中性偏多(67/100) | 基本面bearish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.7 vs 看跌1 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">67</td>
+            <td title="技术面中性偏多(67/100) | 基本面bearish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.7 vs 看跌1 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">67</td>
         </tr>
         <tr>
             <td><b>FU0</b></td>
             <td>燃油 </td>
             <td>能源</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>56.7</td>
-            <td>62%</td>
+            <td>57.0</td>
+            <td>63%</td>
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
@@ -591,38 +545,61 @@ tr:hover { background: #334155; }
             <td>3970.864</td>
             <td>3752.42</td>
             <td>0%</td>
-            <td title="技术面中性偏多(67/100) | 基本面bearish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.7 vs 看跌1 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">67</td>
+            <td title="技术面中性偏多(67/100) | 基本面bearish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.7 vs 看跌1 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">67</td>
         </tr>
         <tr>
             <td><b>EG0</b></td>
             <td>乙二醇 </td>
             <td>化工</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>56.5</td>
-            <td>72%</td>
+            <td>56.7</td>
+            <td>73%</td>
+            <td>震荡</td>
+            <td>偏多</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td style="color:#ef4444">+19.0%</td>
+            <td>-16.5%</td>
+            <td>2.16</td>
+            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
+            <td style="color:#ef4444">+3.5%</td>
+            <td>-10.0%</td>
+            <td>2026/08/25 现价 5364.0</td>
+            <td>5479.42</td>
+            <td>5256.72</td>
+            <td>0%</td>
+            <td title="技术面中性偏多(61/100) | 基本面bullish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨2 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">61</td>
+        </tr>
+        <tr>
+            <td><b>SC0</b></td>
+            <td>原油 </td>
+            <td>能化</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>55.9</td>
+            <td>70%</td>
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td style="color:#ef4444">+19.7%</td>
-            <td>-16.5%</td>
-            <td>2.23</td>
+            <td style="color:#22c55e">-1.4%</td>
+            <td>-29.1%</td>
+            <td>0.10</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#ef4444">+6.6%</td>
-            <td>-10.0%</td>
-            <td>2026/08/24 现价 5404.0</td>
-            <td>5603.381</td>
-            <td>5295.92</td>
+            <td style="color:#ef4444">+33.3%</td>
+            <td>-19.9%</td>
+            <td>2026/08/24 现价 587.8</td>
+            <td>606.723</td>
+            <td>576.044</td>
             <td>0%</td>
-            <td title="技术面中性偏多(61/100) | 基本面bullish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨2 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">61</td>
+            <td title="技术面中性偏多(67/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.7 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">67</td>
         </tr>
         <tr>
             <td><b>P0</b></td>
             <td>棕榈油 </td>
             <td>农产品</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>53.1</td>
-            <td>64%</td>
+            <td>53.5</td>
+            <td>65%</td>
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
@@ -637,15 +614,15 @@ tr:hover { background: #334155; }
             <td>10393.654</td>
             <td>9942.1</td>
             <td>0%</td>
-            <td title="技术面中性偏多(64/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
+            <td title="技术面中性偏多(64/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
         </tr>
         <tr>
             <td><b>CF0</b></td>
             <td>棉花 </td>
             <td>农产品</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>53.1</td>
-            <td>64%</td>
+            <td>53.5</td>
+            <td>65%</td>
             <td>震荡</td>
             <td>偏多</td>
             <td>看涨</td>
@@ -660,15 +637,15 @@ tr:hover { background: #334155; }
             <td>17323.232</td>
             <td>16694.3</td>
             <td>0%</td>
-            <td title="技术面中性偏多(64/100) | 基本面bearish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
+            <td title="技术面中性偏多(64/100) | 基本面bearish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
         </tr>
         <tr>
             <td><b>AU0</b></td>
             <td>黄金 </td>
             <td>有色</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>53.1</td>
-            <td>64%</td>
+            <td>53.5</td>
+            <td>65%</td>
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
@@ -683,15 +660,15 @@ tr:hover { background: #334155; }
             <td>1047.231</td>
             <td>986.684</td>
             <td>0%</td>
-            <td title="技术面中性偏多(64/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
+            <td title="技术面中性偏多(64/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
         </tr>
         <tr>
             <td><b>BU0</b></td>
             <td>沥青 </td>
             <td>建材</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>53.1</td>
-            <td>64%</td>
+            <td>53.5</td>
+            <td>65%</td>
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
@@ -706,15 +683,15 @@ tr:hover { background: #334155; }
             <td>4755.739</td>
             <td>4453.12</td>
             <td>0%</td>
-            <td title="技术面中性偏多(64/100) | 基本面bullish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
+            <td title="技术面中性偏多(64/100) | 基本面bullish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
         </tr>
         <tr>
             <td><b>RU0</b></td>
             <td>橡胶 </td>
             <td>工业品</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>53.1</td>
-            <td>64%</td>
+            <td>53.5</td>
+            <td>65%</td>
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
@@ -729,15 +706,15 @@ tr:hover { background: #334155; }
             <td>19138.617</td>
             <td>18237.8</td>
             <td>0%</td>
-            <td title="技术面中性偏多(64/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
+            <td title="技术面中性偏多(64/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
         </tr>
         <tr>
             <td><b>CY0</b></td>
             <td>棉纱 </td>
             <td>农产品</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>53.1</td>
-            <td>64%</td>
+            <td>53.5</td>
+            <td>65%</td>
             <td>震荡</td>
             <td>偏多</td>
             <td>偏多</td>
@@ -752,15 +729,15 @@ tr:hover { background: #334155; }
             <td>23299.489</td>
             <td>22608.6</td>
             <td>0%</td>
-            <td title="技术面中性偏多(64/100) | 基本面bearish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
+            <td title="技术面中性偏多(64/100) | 基本面bearish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
         </tr>
         <tr>
             <td><b>MA0</b></td>
             <td>甲醇 </td>
             <td>能化</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>53.1</td>
-            <td>64%</td>
+            <td>53.5</td>
+            <td>65%</td>
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
@@ -775,15 +752,15 @@ tr:hover { background: #334155; }
             <td>3044.839</td>
             <td>2855.72</td>
             <td>0%</td>
-            <td title="技术面中性偏多(64/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
+            <td title="技术面中性偏多(64/100) | 基本面bearish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
         </tr>
         <tr>
             <td><b>NR0</b></td>
             <td>20号胶 </td>
             <td>工业品</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>53.1</td>
-            <td>64%</td>
+            <td>53.5</td>
+            <td>65%</td>
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
@@ -798,15 +775,38 @@ tr:hover { background: #334155; }
             <td>16130.755</td>
             <td>15341.9</td>
             <td>0%</td>
-            <td title="技术面中性偏多(64/100) | 基本面bullish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
+            <td title="技术面中性偏多(64/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
+        </tr>
+        <tr>
+            <td><b>PF0</b></td>
+            <td>短纤 </td>
+            <td>化工</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>53.5</td>
+            <td>65%</td>
+            <td>震荡</td>
+            <td>偏多</td>
+            <td>偏多</td>
+            <td>看涨</td>
+            <td style="color:#ef4444">+0.3%</td>
+            <td>-14.6%</td>
+            <td>0.09</td>
+            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
+            <td style="color:#ef4444">+1.7%</td>
+            <td>-5.9%</td>
+            <td>2026/08/25 现价 7736.0</td>
+            <td>7823.262</td>
+            <td>7581.28</td>
+            <td>0%</td>
+            <td title="技术面中性偏多(64/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
         </tr>
         <tr>
             <td><b>SR0</b></td>
             <td>白糖 </td>
             <td>农产品</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>53.1</td>
-            <td>64%</td>
+            <td>53.5</td>
+            <td>65%</td>
             <td>震荡</td>
             <td>偏多</td>
             <td>偏多</td>
@@ -821,15 +821,15 @@ tr:hover { background: #334155; }
             <td>5430.86</td>
             <td>5267.5</td>
             <td>0%</td>
-            <td title="技术面中性偏多(64/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
+            <td title="技术面中性偏多(64/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
         </tr>
         <tr>
             <td><b>HC0</b></td>
             <td>热卷 </td>
             <td>黑色</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>53.1</td>
-            <td>64%</td>
+            <td>53.5</td>
+            <td>65%</td>
             <td>震荡</td>
             <td>偏多</td>
             <td>偏多</td>
@@ -844,38 +844,38 @@ tr:hover { background: #334155; }
             <td>3379.028</td>
             <td>3273.2</td>
             <td>0%</td>
-            <td title="技术面中性偏多(64/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
+            <td title="技术面中性偏多(64/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
         </tr>
         <tr>
             <td><b>SM0</b></td>
             <td>硅锰 </td>
             <td>黑色</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>53.1</td>
-            <td>64%</td>
+            <td>53.5</td>
+            <td>65%</td>
             <td>震荡</td>
             <td>偏多</td>
-            <td>看涨</td>
+            <td>偏多</td>
             <td>看涨</td>
             <td style="color:#22c55e">-1.3%</td>
             <td>-7.8%</td>
-            <td>-0.71</td>
+            <td>-0.70</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#22c55e">-0.4%</td>
+            <td style="color:#22c55e">-0.2%</td>
             <td>-3.9%</td>
-            <td>2026/08/24 现价 5962.0</td>
-            <td>6050.789</td>
-            <td>5842.76</td>
+            <td>2026/08/25 现价 5968.0</td>
+            <td>6035.826</td>
+            <td>5848.64</td>
             <td>0%</td>
-            <td title="技术面中性偏多(64/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
+            <td title="技术面中性偏多(64/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
         </tr>
         <tr>
             <td><b>PB0</b></td>
             <td>沪铅 </td>
             <td>有色</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>53.1</td>
-            <td>64%</td>
+            <td>53.5</td>
+            <td>65%</td>
             <td>震荡</td>
             <td>偏多</td>
             <td>偏多</td>
@@ -890,15 +890,15 @@ tr:hover { background: #334155; }
             <td>16333.722</td>
             <td>15841.7</td>
             <td>0%</td>
-            <td title="技术面中性偏多(64/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
+            <td title="技术面中性偏多(64/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
         </tr>
         <tr>
             <td><b>UR0</b></td>
             <td>尿素 </td>
             <td>化工</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>53.1</td>
-            <td>64%</td>
+            <td>53.5</td>
+            <td>65%</td>
             <td>震荡</td>
             <td>偏多</td>
             <td>看涨</td>
@@ -913,14 +913,14 @@ tr:hover { background: #334155; }
             <td>1802.491</td>
             <td>1741.46</td>
             <td>0%</td>
-            <td title="技术面中性偏多(64/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
+            <td title="技术面中性偏多(64/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.4 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
         </tr>
         <tr>
             <td><b>AL0</b></td>
             <td>沪铝 </td>
             <td>有色</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>52.1</td>
+            <td>52.4</td>
             <td>60%</td>
             <td>震荡</td>
             <td>震荡</td>
@@ -936,14 +936,14 @@ tr:hover { background: #334155; }
             <td>23707.905</td>
             <td>23289.7</td>
             <td>0%</td>
-            <td title="技术面中性偏多(60/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.0 vs 看跌2 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">60</td>
+            <td title="技术面中性偏多(60/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.0 vs 看跌2 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">60</td>
         </tr>
         <tr>
             <td><b>L0</b></td>
             <td>塑料 </td>
             <td>化工</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>52.1</td>
+            <td>52.4</td>
             <td>60%</td>
             <td>震荡</td>
             <td>偏空</td>
@@ -959,15 +959,15 @@ tr:hover { background: #334155; }
             <td>7700.64</td>
             <td>7653.8</td>
             <td>0%</td>
-            <td title="技术面中性偏多(60/100) | 基本面bearish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.0 vs 看跌2 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">60</td>
+            <td title="技术面中性偏多(60/100) | 基本面bearish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.0 vs 看跌2 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">60</td>
         </tr>
         <tr>
             <td><b>PP0</b></td>
             <td>聚丙烯 </td>
             <td>化工</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>50.1</td>
-            <td>60%</td>
+            <td>50.4</td>
+            <td>61%</td>
             <td>震荡</td>
             <td>偏空</td>
             <td>看跌</td>
@@ -982,14 +982,14 @@ tr:hover { background: #334155; }
             <td>7949.789</td>
             <td>7976.22</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面bearish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨0.7 vs 看跌2 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
+            <td title="技术面中性(57/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨0.7 vs 看跌2 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
         </tr>
         <tr>
             <td><b>JM0</b></td>
             <td>焦煤 </td>
             <td>黑色</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>48.9</td>
+            <td>49.2</td>
             <td>60%</td>
             <td>偏多</td>
             <td>看涨</td>
@@ -1005,14 +1005,14 @@ tr:hover { background: #334155; }
             <td>1661.046</td>
             <td>1552.32</td>
             <td>0%</td>
-            <td title="技术面中性偏多(61/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.1 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">61</td>
+            <td title="技术面中性偏多(61/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.1 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">61</td>
         </tr>
         <tr>
             <td><b>PG0</b></td>
             <td>LPG </td>
             <td>能源</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>48.9</td>
+            <td>49.2</td>
             <td>60%</td>
             <td>偏多</td>
             <td>看涨</td>
@@ -1028,14 +1028,14 @@ tr:hover { background: #334155; }
             <td>6149.813</td>
             <td>5760.44</td>
             <td>0%</td>
-            <td title="技术面中性偏多(61/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.1 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">61</td>
+            <td title="技术面中性偏多(61/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.1 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">61</td>
         </tr>
         <tr>
             <td><b>AG0</b></td>
             <td>白银 </td>
             <td>有色</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>48.9</td>
+            <td>49.2</td>
             <td>60%</td>
             <td>偏多</td>
             <td>看涨</td>
@@ -1051,14 +1051,14 @@ tr:hover { background: #334155; }
             <td>17504.256</td>
             <td>16506.14</td>
             <td>0%</td>
-            <td title="技术面中性偏多(61/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.1 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">61</td>
+            <td title="技术面中性偏多(61/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.1 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">61</td>
         </tr>
         <tr>
             <td><b>LC0</b></td>
             <td>碳酸锂 </td>
             <td>新能源</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>48.9</td>
+            <td>49.2</td>
             <td>60%</td>
             <td>偏多</td>
             <td>看涨</td>
@@ -1074,15 +1074,15 @@ tr:hover { background: #334155; }
             <td>162985.991</td>
             <td>155682.8</td>
             <td>0%</td>
-            <td title="技术面中性偏多(61/100) | 基本面bearish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.1 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">61</td>
+            <td title="技术面中性偏多(61/100) | 基本面bearish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.1 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">61</td>
         </tr>
         <tr>
             <td><b>AP0</b></td>
             <td>苹果 </td>
             <td>农产品</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>44.5</td>
-            <td>72%</td>
+            <td>44.8</td>
+            <td>71%</td>
             <td>偏空</td>
             <td>看跌</td>
             <td>看跌</td>
@@ -1097,14 +1097,14 @@ tr:hover { background: #334155; }
             <td>7283.034</td>
             <td>7339.22</td>
             <td>0%</td>
-            <td title="技术面中性(48/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨0 vs 看跌2 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">48</td>
+            <td title="技术面中性(48/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨0 vs 看跌2 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">48</td>
         </tr>
         <tr>
             <td><b>SS0</b></td>
             <td>不锈钢 </td>
             <td>黑色</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>44.0</td>
+            <td>44.3</td>
             <td>72%</td>
             <td>震荡</td>
             <td>震荡</td>
@@ -1120,14 +1120,14 @@ tr:hover { background: #334155; }
             <td>14132.091</td>
             <td>13930.7</td>
             <td>0%</td>
-            <td title="技术面中性(47/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨0 vs 看跌2 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">47</td>
+            <td title="技术面中性(47/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨0 vs 看跌2 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">47</td>
         </tr>
         <tr>
             <td><b>TA0</b></td>
             <td>PTA </td>
             <td>能化</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>44.0</td>
+            <td>44.3</td>
             <td>72%</td>
             <td>震荡</td>
             <td>偏空</td>
@@ -1143,15 +1143,15 @@ tr:hover { background: #334155; }
             <td>5583.769</td>
             <td>5560.52</td>
             <td>0%</td>
-            <td title="技术面中性(47/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨0 vs 看跌2 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">47</td>
+            <td title="技术面中性(47/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨0 vs 看跌2 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">47</td>
         </tr>
         <tr>
             <td><b>C0</b></td>
             <td>玉米 </td>
             <td>农产品</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>43.9</td>
-            <td>62%</td>
+            <td>44.2</td>
+            <td>61%</td>
             <td>震荡</td>
             <td>偏多</td>
             <td>看涨</td>
@@ -1166,15 +1166,15 @@ tr:hover { background: #334155; }
             <td>2320.852</td>
             <td>2234.4</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨0.7 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
+            <td title="技术面中性(57/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨0.7 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
         </tr>
         <tr>
             <td><b>NI0</b></td>
             <td>沪镍 </td>
             <td>有色</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>43.9</td>
-            <td>62%</td>
+            <td>44.2</td>
+            <td>61%</td>
             <td>震荡</td>
             <td>震荡</td>
             <td>震荡</td>
@@ -1189,15 +1189,15 @@ tr:hover { background: #334155; }
             <td>130061.932</td>
             <td>127262.8</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面bearish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨0.7 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
+            <td title="技术面中性(57/100) | 基本面bearish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨0.7 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
         </tr>
         <tr>
             <td><b>I0</b></td>
             <td>铁矿石 </td>
             <td>黑色</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>43.9</td>
-            <td>62%</td>
+            <td>44.2</td>
+            <td>61%</td>
             <td>震荡</td>
             <td>震荡</td>
             <td>震荡</td>
@@ -1212,14 +1212,14 @@ tr:hover { background: #334155; }
             <td>717.693</td>
             <td>701.68</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨0.7 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
+            <td title="技术面中性(57/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨0.7 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
         </tr>
         <tr>
             <td><b>CJ0</b></td>
             <td>红枣 </td>
             <td>农产品</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>43.5</td>
+            <td>43.9</td>
             <td>64%</td>
             <td>震荡</td>
             <td>震荡</td>
@@ -1235,14 +1235,14 @@ tr:hover { background: #334155; }
             <td>8253.224</td>
             <td>8080.1</td>
             <td>0%</td>
-            <td title="技术面中性(48/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨0 vs 看跌1 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">48</td>
+            <td title="技术面中性(48/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨0 vs 看跌1 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">48</td>
         </tr>
         <tr>
             <td><b>FG0</b></td>
             <td>玻璃 </td>
             <td>建材</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>42.7</td>
+            <td>43.1</td>
             <td>60%</td>
             <td>震荡</td>
             <td>震荡</td>
@@ -1258,14 +1258,14 @@ tr:hover { background: #334155; }
             <td>924.19</td>
             <td>903.56</td>
             <td>0%</td>
-            <td title="技术面中性(54/100) | 基本面bullish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨0.4 vs 看跌0 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">54</td>
+            <td title="技术面中性(54/100) | 基本面bullish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨0.4 vs 看跌0 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">54</td>
         </tr>
         <tr>
             <td><b>ZN0</b></td>
             <td>沪锌 </td>
             <td>有色</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
-            <td>54.1</td>
+            <td>54.4</td>
             <td>54%</td>
             <td>震荡</td>
             <td>震荡</td>
@@ -1281,14 +1281,14 @@ tr:hover { background: #334155; }
             <td>26049.485</td>
             <td>25386.9</td>
             <td>0%</td>
-            <td title="技术面中性偏多(60/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.0 vs 看跌1 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">60</td>
+            <td title="技术面中性偏多(60/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.0 vs 看跌1 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">60</td>
         </tr>
         <tr>
             <td><b>BC0</b></td>
             <td>国际铜 </td>
             <td>有色</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
-            <td>54.1</td>
+            <td>54.4</td>
             <td>54%</td>
             <td>震荡</td>
             <td>震荡</td>
@@ -1304,14 +1304,14 @@ tr:hover { background: #334155; }
             <td>96325.678</td>
             <td>94638.6</td>
             <td>0%</td>
-            <td title="技术面中性偏多(60/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.0 vs 看跌1 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">60</td>
+            <td title="技术面中性偏多(60/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.0 vs 看跌1 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">60</td>
         </tr>
         <tr>
             <td><b>CU0</b></td>
             <td>沪铜 </td>
             <td>有色</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
-            <td>54.1</td>
+            <td>54.4</td>
             <td>54%</td>
             <td>震荡</td>
             <td>震荡</td>
@@ -1327,14 +1327,14 @@ tr:hover { background: #334155; }
             <td>107494.816</td>
             <td>105751.8</td>
             <td>0%</td>
-            <td title="技术面中性偏多(60/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.0 vs 看跌1 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">60</td>
+            <td title="技术面中性偏多(60/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.0 vs 看跌1 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">60</td>
         </tr>
         <tr>
             <td><b>SN0</b></td>
             <td>沪锡 </td>
             <td>有色</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
-            <td>54.1</td>
+            <td>54.4</td>
             <td>54%</td>
             <td>震荡</td>
             <td>震荡</td>
@@ -1350,15 +1350,15 @@ tr:hover { background: #334155; }
             <td>426229.195</td>
             <td>419038.2</td>
             <td>0%</td>
-            <td title="技术面中性偏多(60/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.0 vs 看跌1 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">60</td>
+            <td title="技术面中性偏多(60/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨1.0 vs 看跌1 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">60</td>
         </tr>
         <tr>
             <td><b>RM0</b></td>
             <td>菜粕 </td>
             <td>农产品</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
-            <td>50.1</td>
-            <td>52%</td>
+            <td>50.4</td>
+            <td>53%</td>
             <td>震荡</td>
             <td>震荡</td>
             <td>震荡</td>
@@ -1373,15 +1373,15 @@ tr:hover { background: #334155; }
             <td>2236.989</td>
             <td>2190.3</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面bearish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨0.7 vs 看跌1 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
+            <td title="技术面中性(57/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨0.7 vs 看跌1 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
         </tr>
         <tr>
             <td><b>AO0</b></td>
             <td>氧化铝 </td>
             <td>有色</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
-            <td>50.1</td>
-            <td>52%</td>
+            <td>50.4</td>
+            <td>53%</td>
             <td>震荡</td>
             <td>震荡</td>
             <td>震荡</td>
@@ -1396,15 +1396,15 @@ tr:hover { background: #334155; }
             <td>2687.028</td>
             <td>2636.2</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨0.7 vs 看跌1 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
+            <td title="技术面中性(57/100) | 基本面neutral(50/100) | 新闻情绪-0.05 | 多空辩论 看涨0.7 vs 看跌1 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
         </tr>
         <tr>
             <td><b>JD0</b></td>
             <td>鸡蛋 </td>
             <td>农产品</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
-            <td>50.1</td>
-            <td>52%</td>
+            <td>50.4</td>
+            <td>53%</td>
             <td>偏空</td>
             <td>看跌</td>
             <td>看跌</td>
@@ -1419,7 +1419,7 @@ tr:hover { background: #334155; }
             <td>3689.276</td>
             <td>3711.26</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面bearish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨0.7 vs 看跌1 | 宏观偏空(37.0/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
+            <td title="技术面中性(57/100) | 基本面bearish(50/100) | 新闻情绪-0.05 | 多空辩论 看涨0.7 vs 看跌1 | 宏观偏空(36.5/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
         </tr></tbody>
     </table>
     </div>
