@@ -148,8 +148,8 @@ tr:hover { background: #334155; }
     <div class="section-title">🎯 昨日 1 日方向验证（2026-08-24 预测）</div>
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="num" style="color:#22c55e">47.3%</div>
-            <div class="label">总体准确率 (88/186)</div>
+            <div class="num" style="color:#22c55e">47.9%</div>
+            <div class="label">总体准确率 (89/186)</div>
         </div>
         
             <div class="stat-card">
@@ -157,8 +157,8 @@ tr:hover { background: #334155; }
                 <div class="label">ETF (15/23)</div>
             </div>
             <div class="stat-card">
-                <div class="num" style="color:#22c55e">30.7%</div>
-                <div class="label">个股 (35/114)</div>
+                <div class="num" style="color:#22c55e">31.6%</div>
+                <div class="label">个股 (36/114)</div>
             </div>
             <div class="stat-card">
                 <div class="num" style="color:#ef4444">77.5%</div>
@@ -169,14 +169,14 @@ tr:hover { background: #334155; }
 
     <div class="section-title">🏭 Warehouse 真实 5d 收益模型表现</div>
     <div class="note">
-        <p><b>基于仓库实际收盘价的 5 日 forward return 回测。</b>当前样本来自 2026-08-25 前所有历史预测，共 107448 条价格-收益记录。生成于 2026-08-25T16:31:41。</p>
+        <p><b>基于仓库实际收盘价的 5 日 forward return 回测。</b>当前样本来自 2026-08-25 前所有历史预测，共 107601 条价格-收益记录。生成于 2026-08-25T17:11:10。</p>
         <p><b>说明：</b>看多信号偏多表示模型偏乐观；看多信号均值为负表示当前参数在 bull 阈值附近表现不佳。数据仍偏少，结果仅供参考，不用于直接调整参数。</p>
         <p style="color:#f59e0b">⏳ 每类预测需等待 5 个交易日后才能用真实收盘价评估；当前最新预测 2026-08-25，预计 2026-08-25 +5 交易日后可评估。</p>
     </div>
     <div class="table-responsive">
     <table>
         <thead><tr><th>类别</th><th>样本</th><th>看多</th><th>看空</th><th>看多平均</th><th>看空平均</th><th>方向准确率</th><th>覆盖率</th></tr></thead>
-        <tbody><tr><td><b>个股</b></td><td>1814</td><td>169</td><td>154</td><td style="color:#ef4444">1476.24</td><td style="color:#ef4444">13.13</td><td>26.3%</td><td>27.9%</td></tr><tr><td><b>ETF</b></td><td>391</td><td>0</td><td>64</td><td style="color:#ef4444">-</td><td style="color:#ef4444">3.63</td><td>35.9%</td><td>25.3%</td></tr><tr><td><b>期货</b></td><td>833</td><td>0</td><td>90</td><td style="color:#ef4444">-</td><td style="color:#ef4444">2.79</td><td>14.4%</td><td>39.0%</td></tr><tr><td><b>US</b></td><td>840</td><td colspan="5" style="color:#f59e0b">⏳ 暂无 5 日收益数据（840 条待评估，需等待收盘价）</td><td>0.0%</td></tr></tbody>
+        <tbody><tr><td><b>个股</b></td><td>1814</td><td>188</td><td>154</td><td style="color:#ef4444">1329.32</td><td style="color:#ef4444">13.13</td><td>28.1%</td><td>27.1%</td></tr><tr><td><b>ETF</b></td><td>391</td><td>0</td><td>70</td><td style="color:#ef4444">-</td><td style="color:#ef4444">2.81</td><td>41.4%</td><td>25.4%</td></tr><tr><td><b>期货</b></td><td>833</td><td>0</td><td>92</td><td style="color:#ef4444">-</td><td style="color:#ef4444">2.75</td><td>15.2%</td><td>36.5%</td></tr><tr><td><b>US</b></td><td>840</td><td colspan="5" style="color:#f59e0b">⏳ 暂无 5 日收益数据（840 条待评估，需等待收盘价）</td><td>0.0%</td></tr></tbody>
     </table>
     </div>
 
@@ -190,27 +190,27 @@ tr:hover { background: #334155; }
 
     <div class="section-title">📈 全历史预测 Forward Return 回测</div>
     <div class="note">
-        <p><b>样本范围：</b>2026-08-03 ~ 2026-08-24 · 共 3639 条预测 · 14556 条记录 · 生成于 2026-08-24 17:10:46</p>
+        <p><b>样本范围：</b>2026-08-03 ~ 2026-08-25 · 共 3878 条预测 · 15512 条记录 · 生成于 2026-08-25 17:11:09</p>
         <p>Forward Return = 以预测日收盘价为基准，未来 N 个交易日的实际收益率。推荐组合统计只取看多信号做等权持有。</p>
     </div>
     <div class="table-responsive">
     <table>
         <thead><tr><th>horizon</th><th>整体均值</th><th>整体中位</th><th>整体胜率</th><th>方向准确率</th><th>样本数</th><th>组合日均</th><th>组合累计</th><th>组合胜率</th></tr></thead>
-        <tbody><tr><td><b>1d</b></td><td>+380.58%</td><td>+0.18%</td><td>54.2%</td><td>49.1%</td><td>2243</td><td>+188.26%</td><td>+2823.94%</td><td>73.3%</td></tr><tr><td><b>3d</b></td><td>+447.40%</td><td>+0.40%</td><td>55.1%</td><td>38.8%</td><td>1943</td><td>+322.42%</td><td>+4191.44%</td><td>53.9%</td></tr><tr><td><b>5d</b></td><td>+523.23%</td><td>+0.47%</td><td>55.0%</td><td>34.4%</td><td>1643</td><td>+240.40%</td><td>+2644.37%</td><td>63.6%</td></tr><tr><td><b>10d</b></td><td>+937.58%</td><td>+1.00%</td><td>57.6%</td><td>27.1%</td><td>893</td><td>+640.52%</td><td>+3843.15%</td><td>66.7%</td></tr></tbody>
+        <tbody><tr><td><b>1d</b></td><td>+352.04%</td><td>+0.12%</td><td>52.9%</td><td>48.9%</td><td>2395</td><td>+209.75%</td><td>+3356.03%</td><td>68.8%</td></tr><tr><td><b>3d</b></td><td>+414.25%</td><td>+0.28%</td><td>53.6%</td><td>39.0%</td><td>2088</td><td>+234.50%</td><td>+3282.95%</td><td>57.1%</td></tr><tr><td><b>5d</b></td><td>+481.98%</td><td>+0.24%</td><td>52.5%</td><td>33.7%</td><td>1788</td><td>+271.89%</td><td>+3262.64%</td><td>58.3%</td></tr><tr><td><b>10d</b></td><td>+816.70%</td><td>+0.67%</td><td>54.0%</td><td>27.3%</td><td>1038</td><td>+910.18%</td><td>+6371.28%</td><td>57.1%</td></tr></tbody>
     </table>
     </div>
     <div class="section-title">📊 按信号方向</div>
     <div class="table-responsive">
     <table>
         <thead><tr><th>horizon</th><th>信号</th><th>样本数</th><th>均值</th><th>中位</th><th>胜率</th><th>方向准确率</th></tr></thead>
-        <tbody><tr><td>1d</td><td>bearish</td><td>290</td><td>+778.64%</td><td>+1.83%</td><td>76.9%</td><td>23.1%</td></tr><tr><td>1d</td><td>bullish</td><td>1018</td><td>+238.61%</td><td>+0.03%</td><td>50.6%</td><td>50.6%</td></tr><tr><td>1d</td><td>neutral</td><td>935</td><td>+411.69%</td><td>+0.04%</td><td>51.1%</td><td>55.5%</td></tr><tr><td>3d</td><td>bearish</td><td>288</td><td>+7.37%</td><td>+4.14%</td><td>83.0%</td><td>17.0%</td></tr><tr><td>3d</td><td>bullish</td><td>851</td><td>+295.32%</td><td>-0.20%</td><td>48.4%</td><td>48.4%</td></tr><tr><td>3d</td><td>neutral</td><td>804</td><td>+766.00%</td><td>+0.14%</td><td>52.2%</td><td>36.4%</td></tr><tr><td>5d</td><td>bearish</td><td>288</td><td>+9.19%</td><td>+5.42%</td><td>83.7%</td><td>16.3%</td></tr><tr><td>5d</td><td>bullish</td><td>704</td><td>+356.45%</td><td>-0.48%</td><td>45.6%</td><td>45.6%</td></tr><tr><td>5d</td><td>neutral</td><td>651</td><td>+931.00%</td><td>+0.20%</td><td>52.4%</td><td>30.3%</td></tr><tr><td>10d</td><td>bearish</td><td>288</td><td>+11.40%</td><td>+6.11%</td><td>80.9%</td><td>19.1%</td></tr><tr><td>10d</td><td>bullish</td><td>304</td><td>+821.60%</td><td>-0.74%</td><td>45.4%</td><td>45.4%</td></tr><tr><td>10d</td><td>neutral</td><td>301</td><td>+1940.88%</td><td>-0.56%</td><td>47.5%</td><td>16.3%</td></tr></tbody>
+        <tbody><tr><td>1d</td><td>bearish</td><td>294</td><td>+2.83%</td><td>+1.76%</td><td>76.5%</td><td>23.5%</td></tr><tr><td>1d</td><td>bullish</td><td>1102</td><td>+246.71%</td><td>-0.04%</td><td>48.7%</td><td>48.7%</td></tr><tr><td>1d</td><td>neutral</td><td>999</td><td>+571.00%</td><td>+0.02%</td><td>50.6%</td><td>56.7%</td></tr><tr><td>3d</td><td>bearish</td><td>288</td><td>+7.37%</td><td>+4.14%</td><td>83.0%</td><td>17.0%</td></tr><tr><td>3d</td><td>bullish</td><td>927</td><td>+268.94%</td><td>-0.29%</td><td>47.2%</td><td>47.2%</td></tr><tr><td>3d</td><td>neutral</td><td>873</td><td>+702.79%</td><td>+0.04%</td><td>50.6%</td><td>37.5%</td></tr><tr><td>5d</td><td>bearish</td><td>288</td><td>+9.19%</td><td>+5.42%</td><td>83.7%</td><td>16.3%</td></tr><tr><td>5d</td><td>bullish</td><td>784</td><td>+320.13%</td><td>-0.84%</td><td>43.8%</td><td>43.8%</td></tr><tr><td>5d</td><td>neutral</td><td>716</td><td>+849.37%</td><td>-0.04%</td><td>49.6%</td><td>29.6%</td></tr><tr><td>10d</td><td>bearish</td><td>288</td><td>+11.40%</td><td>+6.11%</td><td>80.9%</td><td>19.1%</td></tr><tr><td>10d</td><td>bullish</td><td>384</td><td>+1294.06%</td><td>-1.22%</td><td>44.0%</td><td>44.0%</td></tr><tr><td>10d</td><td>neutral</td><td>366</td><td>+949.55%</td><td>-1.32%</td><td>43.4%</td><td>16.1%</td></tr></tbody>
     </table>
     </div>
     <div class="section-title">📂 按资产类别</div>
     <div class="table-responsive">
     <table>
         <thead><tr><th>horizon</th><th>类别</th><th>样本数</th><th>均值</th><th>胜率</th><th>方向准确率</th></tr></thead>
-        <tbody><tr><td>1d</td><td>ETF</td><td>345</td><td>+0.06%</td><td>51.6%</td><td>56.2%</td></tr><tr><td>1d</td><td>个股</td><td>1583</td><td>+539.16%</td><td>53.6%</td><td>44.3%</td></tr><tr><td>1d</td><td>期货</td><td>315</td><td>+0.39%</td><td>60.0%</td><td>65.4%</td></tr><tr><td>3d</td><td>ETF</td><td>299</td><td>+0.24%</td><td>46.1%</td><td>40.8%</td></tr><tr><td>3d</td><td>个股</td><td>1371</td><td>+633.73%</td><td>53.3%</td><td>35.5%</td></tr><tr><td>3d</td><td>期货</td><td>273</td><td>+1.44%</td><td>74.0%</td><td>53.5%</td></tr><tr><td>5d</td><td>ETF</td><td>253</td><td>+0.36%</td><td>45.9%</td><td>34.4%</td></tr><tr><td>5d</td><td>个股</td><td>1159</td><td>+741.15%</td><td>52.0%</td><td>32.8%</td></tr><tr><td>5d</td><td>期货</td><td>231</td><td>+2.54%</td><td>79.7%</td><td>42.4%</td></tr><tr><td>10d</td><td>ETF</td><td>138</td><td>+0.98%</td><td>42.0%</td><td>27.5%</td></tr><tr><td>10d</td><td>个股</td><td>629</td><td>+1329.81%</td><td>55.5%</td><td>27.8%</td></tr><tr><td>10d</td><td>期货</td><td>126</td><td>+5.33%</td><td>84.9%</td><td>23.0%</td></tr></tbody>
+        <tbody><tr><td>1d</td><td>ETF</td><td>368</td><td>+0.05%</td><td>50.3%</td><td>56.8%</td></tr><tr><td>1d</td><td>个股</td><td>1691</td><td>+498.52%</td><td>52.5%</td><td>43.9%</td></tr><tr><td>1d</td><td>期货</td><td>336</td><td>+0.34%</td><td>58.0%</td><td>65.8%</td></tr><tr><td>3d</td><td>ETF</td><td>322</td><td>+0.11%</td><td>45.0%</td><td>41.6%</td></tr><tr><td>3d</td><td>个股</td><td>1472</td><td>+587.31%</td><td>51.6%</td><td>35.3%</td></tr><tr><td>3d</td><td>期货</td><td>294</td><td>+1.36%</td><td>73.1%</td><td>54.8%</td></tr><tr><td>5d</td><td>ETF</td><td>276</td><td>-0.09%</td><td>43.5%</td><td>33.0%</td></tr><tr><td>5d</td><td>个股</td><td>1260</td><td>+683.48%</td><td>49.4%</td><td>31.9%</td></tr><tr><td>5d</td><td>期货</td><td>252</td><td>+2.41%</td><td>78.2%</td><td>43.2%</td></tr><tr><td>10d</td><td>ETF</td><td>161</td><td>+0.36%</td><td>39.1%</td><td>25.5%</td></tr><tr><td>10d</td><td>个股</td><td>730</td><td>+1160.18%</td><td>51.2%</td><td>27.9%</td></tr><tr><td>10d</td><td>期货</td><td>147</td><td>+5.08%</td><td>84.3%</td><td>25.9%</td></tr></tbody>
     </table>
     </div>
 
@@ -757,7 +757,7 @@ tr:hover { background: #334155; }
         <tbody>
         <tr>
             <td><b>601225</b></td>
-            <td>陕西煤业 🛡️稳健型</td>
+            <td>陕西煤业 ⚖️均衡型</td>
             <td>煤炭</td>
             <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
             <td>55.2</td>
@@ -780,7 +780,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>600489</b></td>
-            <td>中金黄金 🛡️稳健型</td>
+            <td>中金黄金 ⚖️均衡型</td>
             <td>黄金</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>46.5</td>
@@ -803,7 +803,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>000878</b></td>
-            <td>云南铜业 ⚖️均衡型</td>
+            <td>云南铜业 🛡️稳健型</td>
             <td>铜</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>46.5</td>
@@ -826,7 +826,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>601991</b></td>
-            <td>大唐发电 🛡️稳健型</td>
+            <td>大唐发电 ⚖️均衡型</td>
             <td>电力</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>46.3</td>
@@ -941,7 +941,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>601857</b></td>
-            <td>中国石油 🛡️稳健型</td>
+            <td>中国石油 ⚖️均衡型</td>
             <td>石油</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>45.9</td>
@@ -987,7 +987,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>000301</b></td>
-            <td>东方盛虹 ⚖️均衡型</td>
+            <td>东方盛虹 🛡️稳健型</td>
             <td>石化/PTA</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>45.9</td>
@@ -1010,7 +1010,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>300618</b></td>
-            <td>寒锐钴业 ⚖️均衡型</td>
+            <td>寒锐钴业 🛡️稳健型</td>
             <td>钴</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>45.7</td>
@@ -1033,7 +1033,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>000612</b></td>
-            <td>焦作万方 ⚖️均衡型</td>
+            <td>焦作万方 🛡️稳健型</td>
             <td>铝/镓</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>45.4</td>
@@ -1102,7 +1102,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>000807</b></td>
-            <td>云铝股份 ⚖️均衡型</td>
+            <td>云铝股份 🛡️稳健型</td>
             <td>铝</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>44.9</td>
@@ -1194,7 +1194,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>600301</b></td>
-            <td>华锡有色 ⚖️均衡型</td>
+            <td>华锡有色 🛡️稳健型</td>
             <td>锡/锑</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>44.7</td>
@@ -1217,7 +1217,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>600206</b></td>
-            <td>有研新材 📈成长型</td>
+            <td>有研新材 ⚖️均衡型</td>
             <td>半导体材料</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>44.5</td>
@@ -1332,7 +1332,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>600219</b></td>
-            <td>南山铝业 🛡️稳健型</td>
+            <td>南山铝业 ⚖️均衡型</td>
             <td>铝</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>44.0</td>
@@ -1355,7 +1355,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>600346</b></td>
-            <td>恒力石化 🛡️稳健型</td>
+            <td>恒力石化 ⚖️均衡型</td>
             <td>石化/PTA</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>43.8</td>
@@ -1378,7 +1378,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>001309</b></td>
-            <td>德明利 ⚖️均衡型</td>
+            <td>德明利 🛡️稳健型</td>
             <td>半导体</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>43.8</td>
@@ -1470,7 +1470,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>688047</b></td>
-            <td>龙芯中科 📈成长型</td>
+            <td>龙芯中科 ⚖️均衡型</td>
             <td>CPU</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>42.6</td>
@@ -1493,7 +1493,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>002203</b></td>
-            <td>海亮股份 ⚖️均衡型</td>
+            <td>海亮股份 🛡️稳健型</td>
             <td>铜管</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>42.4</td>
@@ -1516,7 +1516,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>688525</b></td>
-            <td>佰维存储 🛡️稳健型</td>
+            <td>佰维存储 ⚖️均衡型</td>
             <td>半导体</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>42.3</td>
@@ -1539,7 +1539,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>600362</b></td>
-            <td>江西铜业 🛡️稳健型</td>
+            <td>江西铜业 ⚖️均衡型</td>
             <td>铜</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>42.2</td>
@@ -1562,7 +1562,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>301319</b></td>
-            <td>唯特偶 📈成长型</td>
+            <td>唯特偶 ⚖️均衡型</td>
             <td>锡膏</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>42.1</td>
@@ -1654,7 +1654,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>300782</b></td>
-            <td>卓胜微 📈成长型</td>
+            <td>卓胜微 🛡️稳健型</td>
             <td>射频芯片</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>41.7</td>
@@ -1723,7 +1723,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>002385</b></td>
-            <td>大北农 📈成长型</td>
+            <td>大北农 🛡️稳健型</td>
             <td>饲料/豆粕</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>41.3</td>
@@ -1746,7 +1746,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>688012</b></td>
-            <td>中微公司 ⚖️均衡型</td>
+            <td>中微公司 🛡️稳健型</td>
             <td>半导体设备</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>41.2</td>
@@ -1769,7 +1769,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>600426</b></td>
-            <td>华鲁恒升 🛡️稳健型</td>
+            <td>华鲁恒升 ⚖️均衡型</td>
             <td>化工</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>41.2</td>
@@ -1815,7 +1815,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>000733</b></td>
-            <td>振华科技 ⚖️均衡型</td>
+            <td>振华科技 🛡️稳健型</td>
             <td>钽电容/军工</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>41.0</td>
@@ -1838,7 +1838,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>000969</b></td>
-            <td>安泰科技 ⚖️均衡型</td>
+            <td>安泰科技 🛡️稳健型</td>
             <td>金属材料</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>41.0</td>
@@ -1861,7 +1861,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>688017</b></td>
-            <td>绿的谐波 📈成长型</td>
+            <td>绿的谐波 ⚖️均衡型</td>
             <td>机器人</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>40.8</td>
@@ -1953,7 +1953,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>002378</b></td>
-            <td>章源钨业 ⚖️均衡型</td>
+            <td>章源钨业 🛡️稳健型</td>
             <td>钨</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>40.5</td>
@@ -1999,7 +1999,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>300223</b></td>
-            <td>北京君正 ⚖️均衡型</td>
+            <td>北京君正 🛡️稳健型</td>
             <td>半导体</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>40.3</td>
@@ -2091,7 +2091,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>600188</b></td>
-            <td>兖矿能源 🛡️稳健型</td>
+            <td>兖矿能源 ⚖️均衡型</td>
             <td>煤炭</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>39.6</td>
@@ -2137,7 +2137,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>300489</b></td>
-            <td>光智科技 📈成长型</td>
+            <td>光智科技 ⚖️均衡型</td>
             <td>红外/锗</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>39.5</td>
@@ -2160,7 +2160,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>300394</b></td>
-            <td>天孚通信 ⚖️均衡型</td>
+            <td>天孚通信 🛡️稳健型</td>
             <td>光器件</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>39.3</td>
@@ -2183,7 +2183,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>600961</b></td>
-            <td>株冶集团 ⚖️均衡型</td>
+            <td>株冶集团 🛡️稳健型</td>
             <td>铟/锌</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>38.9</td>
@@ -2229,7 +2229,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>300706</b></td>
-            <td>阿石创 📈成长型</td>
+            <td>阿石创 ⚖️均衡型</td>
             <td>靶材</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>38.9</td>
@@ -2275,7 +2275,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>300474</b></td>
-            <td>景嘉微 📈成长型</td>
+            <td>景嘉微 🛡️稳健型</td>
             <td>GPU</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>38.8</td>
@@ -2298,7 +2298,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>603728</b></td>
-            <td>鸣志电器 📈成长型</td>
+            <td>鸣志电器 ⚖️均衡型</td>
             <td>机器人</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>38.8</td>
@@ -2344,7 +2344,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>301269</b></td>
-            <td>华大九天 📈成长型</td>
+            <td>华大九天 ⚖️均衡型</td>
             <td>半导体</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>38.6</td>
@@ -2390,7 +2390,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>688313</b></td>
-            <td>仕佳光子 ⚖️均衡型</td>
+            <td>仕佳光子 🛡️稳健型</td>
             <td>光芯片</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>38.6</td>
@@ -2459,7 +2459,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>300726</b></td>
-            <td>宏达电子 ⚖️均衡型</td>
+            <td>宏达电子 🛡️稳健型</td>
             <td>钽电容</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>38.3</td>
@@ -2482,7 +2482,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>600549</b></td>
-            <td>厦门钨业 🛡️稳健型</td>
+            <td>厦门钨业 ⚖️均衡型</td>
             <td>钨/稀土</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>38.2</td>
@@ -2574,7 +2574,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>688220</b></td>
-            <td>翱捷科技 📈成长型</td>
+            <td>翱捷科技 ⚖️均衡型</td>
             <td>半导体</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>37.8</td>
@@ -2597,7 +2597,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>002472</b></td>
-            <td>双环传动 ⚖️均衡型</td>
+            <td>双环传动 🛡️稳健型</td>
             <td>机器人</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>36.9</td>
@@ -2643,7 +2643,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>300263</b></td>
-            <td>隆华科技 ⚖️均衡型</td>
+            <td>隆华科技 🛡️稳健型</td>
             <td>钼靶材</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>35.7</td>
@@ -2712,7 +2712,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>600497</b></td>
-            <td>驰宏锌锗 🛡️稳健型</td>
+            <td>驰宏锌锗 ⚖️均衡型</td>
             <td>锗/锌</td>
             <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
             <td>34.3</td>
@@ -2735,7 +2735,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>601088</b></td>
-            <td>中国神华 🛡️稳健型</td>
+            <td>中国神华 ⚖️均衡型</td>
             <td>煤炭</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
             <td>52.9</td>
@@ -2827,7 +2827,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>600028</b></td>
-            <td>中国石化 🛡️稳健型</td>
+            <td>中国石化 ⚖️均衡型</td>
             <td>石化</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
             <td>50.9</td>
@@ -2850,7 +2850,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>000898</b></td>
-            <td>鞍钢股份 📈成长型</td>
+            <td>鞍钢股份 🛡️稳健型</td>
             <td>钢铁</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
             <td>49.4</td>
@@ -2896,7 +2896,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>000932</b></td>
-            <td>华菱钢铁 ⚖️均衡型</td>
+            <td>华菱钢铁 🛡️稳健型</td>
             <td>钢铁</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
             <td>49.1</td>
@@ -2919,7 +2919,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>601808</b></td>
-            <td>中海油服 🛡️稳健型</td>
+            <td>中海油服 ⚖️均衡型</td>
             <td>油服</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
             <td>49.1</td>
@@ -2942,7 +2942,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>600019</b></td>
-            <td>宝钢股份 🛡️稳健型</td>
+            <td>宝钢股份 ⚖️均衡型</td>
             <td>钢铁</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
             <td>48.8</td>
@@ -2965,7 +2965,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>000923</b></td>
-            <td>河钢资源 ⚖️均衡型</td>
+            <td>河钢资源 🛡️稳健型</td>
             <td>铁矿石</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
             <td>48.6</td>
@@ -2988,7 +2988,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>000876</b></td>
-            <td>新希望 📈成长型</td>
+            <td>新希望 🛡️稳健型</td>
             <td>饲料/养殖</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
             <td>48.5</td>
@@ -3034,7 +3034,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>601898</b></td>
-            <td>中煤能源 🛡️稳健型</td>
+            <td>中煤能源 ⚖️均衡型</td>
             <td>煤炭</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
             <td>47.6</td>
@@ -3057,7 +3057,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>000959</b></td>
-            <td>首钢股份 ⚖️均衡型</td>
+            <td>首钢股份 🛡️稳健型</td>
             <td>钢铁</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
             <td>46.5</td>
@@ -3080,7 +3080,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>000983</b></td>
-            <td>山西焦煤 ⚖️均衡型</td>
+            <td>山西焦煤 🛡️稳健型</td>
             <td>焦煤</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
             <td>46.0</td>
@@ -3126,7 +3126,7 @@ tr:hover { background: #334155; }
         </tr>
         <tr>
             <td><b>600309</b></td>
-            <td>万华化学 🛡️稳健型</td>
+            <td>万华化学 ⚖️均衡型</td>
             <td>化工</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
             <td>42.0</td>
