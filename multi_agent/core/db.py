@@ -231,12 +231,15 @@ def save_predictions(predictions: List[Dict[str, Any]], pred_date: Optional[str]
             deduped.append(p)
         valid = deduped
 
-        # 2. 按 pred_date + category 删除旧记录，避免多批次按品类跑时互相覆盖
+        # 2. 按 pred_date + category + 本批 ticker 删除旧记录（仅覆盖本批标的），
+        #    避免整日整类删除导致断点续跑时把先前已保存的其他标的清空（历史事故：2026-08-25）
         categories = sorted({p.get('category', '个股') for p in valid})
-        placeholders = ','.join('?' * len(categories))
+        cat_placeholders = ','.join('?' * len(categories))
+        tickers = [p['ticker'] for p in valid]
+        tick_placeholders = ','.join('?' * len(tickers))
         conn.execute(
-            f"DELETE FROM agentic_predictions WHERE pred_date=? AND category IN ({placeholders})",
-            (today, *categories)
+            f"DELETE FROM agentic_predictions WHERE pred_date=? AND category IN ({cat_placeholders}) AND ticker IN ({tick_placeholders})",
+            (today, *categories, *tickers)
         )
 
         # 3. 批量插入
