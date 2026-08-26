@@ -103,10 +103,23 @@ def build_dashboard() -> Path:
         """)
 
     dt_count = dt.get('stock_count', 0)
+    dt_stocks = dt.get('stock_items', [])[:15]
+    dt_stock_rows = []
+    for s in dt_stocks:
+        code = _thscode_to_code(s.get('thscode', ''))
+        change = s.get('change', 0) * 100
+        net = s.get('net_value', 0)
+        net_str = f'{net/1e8:.2f}亿' if abs(net) >= 1e8 else f'{net/1e4:.2f}万'
+        color = '#ef4444' if net >= 0 else '#22c55e'
+        dt_stock_rows.append(f"<tr><td>{code}</td><td>{s.get('name', '')}</td><td>{change:.2f}%</td><td style='color:{color}'>{net_str}</td></tr>")
+
     dt_hot = dt.get('hot_money_items', [])[:10]
     dt_hot_rows = []
     for hm in dt_hot:
-        dt_hot_rows.append(f"<tr><td>{hm.get('name', '')}</td><td>{hm.get('net_buy_amount', '')}</td></tr>")
+        net = hm.get('net_buy_amount', 0)
+        net_str = f'{net/1e8:.2f}亿' if abs(net) >= 1e8 else f'{net/1e4:.2f}万'
+        color = '#ef4444' if net >= 0 else '#22c55e'
+        dt_hot_rows.append(f"<tr><td>{hm.get('name', '')}</td><td style='color:{color}'>{net_str}</td></tr>")
 
     html = f"""<!DOCTYPE html>
 <html lang="zh-CN">
@@ -174,8 +187,11 @@ tr:hover {{ background: #334155; }}
 <h2 class="section-title">🪜 连板天梯 ({ladder_date})</h2>
 {''.join(ladder_sections)}
 
-<h2 class="section-title">🐉 龙虎榜游资动向 Top10</h2>
-<div class="table-responsive"><table><thead><tr><th>游资/机构</th><th>净买入额</th></tr></thead><tbody>{''.join(dt_hot_rows)}</tbody></table></div>
+<h2 class="section-title">🐉 龙虎榜个股 Top15</h2>
+<div class="table-responsive"><table><thead><tr><th>代码</th><th>名称</th><th>涨跌幅</th><th>净买入</th></tr></thead><tbody>{''.join(dt_stock_rows)}</tbody></table></div>
+
+<h2 class="section-title">💰 龙虎榜游资动向 Top10</h2>
+<div class="table-responsive"><table><thead><tr><th>游资/机构</th><th>净买入</th></tr></thead><tbody>{''.join(dt_hot_rows)}</tbody></table></div>
 
 <div class="footer">生成时间 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} · daily_tracker_analytics</div>
 </div>
