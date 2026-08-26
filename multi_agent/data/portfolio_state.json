@@ -1,5 +1,5 @@
 {
-  "scan_time": "2026-08-25 15:35:00",
+  "scan_time": "2026-08-26 15:36:57",
   "top10": [
     {
       "ticker": "000612",
@@ -48,14 +48,14 @@
     "error_count": 0,
     "errors": [],
     "weights": {
-      "SZ000975": 15.0,
-      "SH600489": 15.0,
-      "SZ000426": 15.0,
-      "SZ000807": 15.0,
-      "SH601899": 15.0
+      "SH600028": 15.0,
+      "SH601808": 15.0,
+      "SZ000898": 15.0,
+      "SZ002493": 15.0,
+      "SH600346": 15.0
     },
-    "note": "synced from recommendations.json 2026-08-17",
-    "scan_time": "2026-08-25",
+    "note": "synced from recommendations.json 2026-08-26",
+    "scan_time": "2026-08-26 15:36:57",
     "updated": "2026-08-21"
   }
 }
