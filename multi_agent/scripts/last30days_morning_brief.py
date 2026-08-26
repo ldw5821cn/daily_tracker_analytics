@@ -22,6 +22,8 @@ from typing import List
 ROOT = '/home/liudawei/github/daily_tracker_analytics'
 LAST30DAYS_SCRIPT = '/tmp/last30days-skill-cn/skills/last30days/scripts/last30days.py'
 DEFAULT_TOPICS = ["A股", "人形机器人", "低空经济", "固态电池", "AI半导体", "CPO光模块"]
+HITHINK_CACHE = os.path.join(ROOT, 'multi_agent', 'data', 'hithink_cache')
+FUNDAMENTALS_CACHE = os.path.join(ROOT, 'multi_agent', 'data', 'fundamentals_cache')
 
 
 def _slugify(text: str) -> str:
@@ -80,7 +82,91 @@ def run_last30days(topic: str, output_dir: str, sources: str = "weibo,baidu") ->
         return {"topic": topic, "error": str(e)}
 
 
-def render_html(items: List[dict], output_path: str):
+def _load_json(path):
+    if not os.path.exists(path):
+        return {}
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+def _thscode_to_code(thscode: str) -> str:
+    return thscode.split('.')[0]
+
+
+def format_amount(value):
+    if value is None:
+        return '-'
+    try:
+        v = float(value)
+    except (TypeError, ValueError):
+        return '-'
+    if abs(v) >= 1e8:
+        return f'{v/1e8:.2f}亿'
+    if abs(v) >= 1e4:
+        return f'{v/1e4:.2f}万'
+    return f'{v:.2f}'
+
+
+def hithink_market_summary() -> dict:
+    """读取同花顺特色数据，生成市场情绪和概念分布摘要。"""
+    date_str = datetime.now().strftime('%Y-%m-%d')
+    limit_up = _load_json(os.path.join(HITHINK_CACHE, f'limit_up_pool_{date_str}.json')).get('item', [])
+    limit_break = _load_json(os.path.join(HITHINK_CACHE, f'limit_break_pool_{date_str}.json')).get('item', [])
+    hot = _load_json(os.path.join(HITHINK_CACHE, f'hot_stock_list_{date_str}.json')).get('item', [])
+    dt = _load_json(os.path.join(HITHINK_CACHE, f'dragon_tiger_list_{date_str}.json'))
+    fundamentals = _load_json(os.path.join(FUNDAMENTALS_CACHE, f'{date_str}.json')).get('fundamentals', {})
+
+    # 涨停池概念分布
+    concept_counts = {}
+    for item in limit_up:
+        for c in item.get('concept_list', []) or []:
+            name = c.get('name', '')
+            if name:
+                concept_counts[name] = concept_counts.get(name, 0) + 1
+    top_concepts = sorted(concept_counts.items(), key=lambda x: x[1], reverse=True)[:10]
+
+    # 热股榜 Top10 带估值
+    hot_rows = []
+    for item in hot[:10]:
+        code = _thscode_to_code(item.get('thscode', ''))
+        f = fundamentals.get(code, {})
+        hot_rows.append({
+            'code': code,
+            'name': item.get('name', ''),
+            'heat': item.get('heat', ''),
+            'close': f.get('close', '-'),
+            'pe_ratio': f.get('pe_ratio', '-'),
+            'pb_ratio': f.get('pb_ratio', '-'),
+        })
+
+    # 龙虎榜净买入 Top10 个股
+    dt_stocks = dt.get('stock_items', [])[:10]
+    dt_rows = []
+    for s in dt_stocks:
+        net = s.get('net_value', 0)
+        dt_rows.append({
+            'code': _thscode_to_code(s.get('thscode', '')),
+            'name': s.get('name', ''),
+            'change': s.get('change', 0) * 100,
+            'net_buy': net,
+            'net_buy_str': format_amount(net),
+        })
+
+    return {
+        'limit_up_count': len(limit_up),
+        'limit_break_count': len(limit_break),
+        'hot_count': len(hot),
+        'dt_count': dt.get('stock_count', 0),
+        'top_concepts': top_concepts,
+        'hot_rows': hot_rows,
+        'dt_rows': dt_rows,
+    }
+
+
+def render_html(items: List[dict], output_path: str, hithink_summary: dict = None):
     """渲染盘前简报 HTML。"""
     date_str = datetime.now().strftime('%Y-%m-%d')
     rows = []
@@ -115,6 +201,44 @@ def render_html(items: List[dict], output_path: str):
             f'<div class="topic"><h3>{topic}</h3><ul>{"".join(entry_html)}</ul></div>'
         )
 
+    # 同花顺市场情绪模块
+    hithink_html = ''
+    if hithink_summary:
+        stats = hithink_summary
+        concept_rows = ''.join(
+            f'<tr><td>{name}</td><td style="color:#ef4444">{cnt}</td></tr>'
+            for name, cnt in stats.get('top_concepts', [])
+        )
+        hot_rows = ''.join(
+            f'<tr><td>{r["code"]}</td><td>{r["name"]}</td><td>{r["heat"]}</td><td>{r["close"]}</td><td>{r["pe_ratio"]}</td><td>{r["pb_ratio"]}</td></tr>'
+            for r in stats.get('hot_rows', [])
+        )
+        dt_rows = ''.join(
+            f'<tr><td>{r["code"]}</td><td>{r["name"]}</td><td style="color:#ef4444">{r["change"]:.2f}%</td><td style="color:#ef4444">{r["net_buy_str"]}</td></tr>'
+            for r in stats.get('dt_rows', [])
+        )
+        hithink_html = f'''
+        <div class="topic" style="border:1px solid #475569;">
+        <h3>🔥 同花顺市场情绪（{date_str}）</h3>
+        <p class="muted">涨停 {stats.get("limit_up_count", 0)} 只 · 炸板 {stats.get("limit_break_count", 0)} 只 · 热股榜 {stats.get("hot_count", 0)} 只 · 龙虎榜 {stats.get("dt_count", 0)} 只</p>
+        <h4 style="margin:16px 0 8px;color:#38bdf8;">涨停概念 Top10</h4>
+        <table style="width:100%;border-collapse:collapse;background:#0f172a;border-radius:8px;overflow:hidden;">
+        <thead><tr style="background:#334155"><th style="text-align:left;padding:8px">概念</th><th style="text-align:left;padding:8px">涨停家数</th></tr></thead>
+        <tbody>{concept_rows}</tbody>
+        </table>
+        <h4 style="margin:16px 0 8px;color:#38bdf8;">热股榜 Top10（带估值）</h4>
+        <table style="width:100%;border-collapse:collapse;background:#0f172a;border-radius:8px;overflow:hidden;">
+        <thead><tr style="background:#334155"><th style="text-align:left;padding:8px">代码</th><th style="text-align:left;padding:8px">名称</th><th style="text-align:left;padding:8px">热度</th><th style="text-align:left;padding:8px">现价</th><th style="text-align:left;padding:8px">PE_TTM</th><th style="text-align:left;padding:8px">PB</th></tr></thead>
+        <tbody>{hot_rows}</tbody>
+        </table>
+        <h4 style="margin:16px 0 8px;color:#38bdf8;">龙虎榜净买入 Top10</h4>
+        <table style="width:100%;border-collapse:collapse;background:#0f172a;border-radius:8px;overflow:hidden;">
+        <thead><tr style="background:#334155"><th style="text-align:left;padding:8px">代码</th><th style="text-align:left;padding:8px">名称</th><th style="text-align:left;padding:8px">涨跌幅</th><th style="text-align:left;padding:8px">净买入</th></tr></thead>
+        <tbody>{dt_rows}</tbody>
+        </table>
+        </div>
+        '''
+
     html = f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -145,9 +269,10 @@ def render_html(items: List[dict], output_path: str):
 <body>
   <div class="container">
     <h1>盘前主题简报</h1>
-    <p class="date">{date_str} · 数据来源：微博/百度</p>
+    <p class="date">{date_str} · 数据来源：微博/百度/同花顺</p>
+    {hithink_html}
     {''.join(rows)}
-    <footer>由 last30days-cn 自动生成 · 仅供研究参考</footer>
+    <footer>由 last30days-cn + 同花顺 Financial-API 自动生成 · 仅供研究参考</footer>
   </div>
 </body>
 </html>"""
@@ -176,9 +301,10 @@ def main():
         res['topic'] = topic
         results.append(res)
 
+    hithink_summary = hithink_market_summary()
     date_str = datetime.now().strftime('%Y-%m-%d')
     html_path = os.path.join(args.output_dir, f'{date_str}.html')
-    render_html(results, html_path)
+    render_html(results, html_path, hithink_summary)
     print(f'已生成: {html_path}')
 
 
