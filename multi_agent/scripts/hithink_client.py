@@ -46,25 +46,25 @@ def run_fuyao(args: list) -> dict:
 
 
 def search_ticker(q: str, limit: int = 5) -> list:
-    return run_fuyao(['tickers-search', '--q', q, '--limit', str(limit), '--format', 'json'])
+    return run_fuyao(['tickers-search', '--q', q, '--limit', str(limit)])
 
 
 def prices_snapshot(thscodes: list) -> dict:
     codes = ','.join(thscodes)
-    return run_fuyao(['prices-snapshot', '--thscodes', codes, '--format', 'json'])
+    return run_fuyao(['prices-snapshot', '--thscodes', codes])
 
 
 def valuations_snapshot(thscodes: list) -> dict:
     codes = ','.join(thscodes)
-    return run_fuyao(['valuations-snapshot', '--thscodes', codes, '--format', 'json'])
+    return run_fuyao(['valuations-snapshot', '--thscodes', codes])
 
 
 def limit_up_ladder() -> list:
-    return run_fuyao(['special-data-limit-up-ladder', '--format', 'json'])
+    return run_fuyao(['limit-up-ladder'])
 
 
 def hot_stock_list() -> list:
-    return run_fuyao(['special-data-hot-stock-list', '--format', 'json'])
+    return run_fuyao(['hot-stock-list'])
 
 
 def main():
