@@ -442,15 +442,7 @@ def format_daily_market_context_prompt_section(
     ctx: DailyMarketContext,
     compact: bool = True,
 ) -> str:
-    """把市场上下文渲染成 prompt 段落。
-
-    Args:
-        ctx: DailyMarketContext 实例。
-        compact: True 时输出精简版（用于个股预测），False 时输出完整版。
-
-    Returns:
-        prompt 字符串，包含 UNTRUSTED 护栏。
-    """
+    """把市场上下文渲染成 prompt 段落。新增同花顺资金面/情绪面注入。"""
     risk_tags = ", ".join(ctx.risk_tags.to_list()) or "无"
     lines = [
         "<!-- BEGIN_UNTRUSTED_MARKET_SUMMARY -->",
@@ -479,6 +471,18 @@ def format_daily_market_context_prompt_section(
             f"- 全球半导体动量: {ctx.global_semi.get('composite_signal', 'neutral')} "
             f"(得分{ctx.global_semi.get('composite_score', 50)})"
         )
+
+    # 同花顺资金面/情绪面
+    try:
+        from pathlib import Path
+        hithink_path = Path(PROJECT_ROOT) / 'multi_agent' / 'data' / 'market_context_cache' / 'hithink_context.txt'
+        if hithink_path.exists():
+            hithink_text = hithink_path.read_text(encoding='utf-8').strip()
+            if hithink_text:
+                lines.append("")
+                lines.append(hithink_text)
+    except Exception:
+        pass
 
     lines.append("<!-- END_UNTRUSTED_MARKET_SUMMARY -->")
     return "\n".join(lines)
