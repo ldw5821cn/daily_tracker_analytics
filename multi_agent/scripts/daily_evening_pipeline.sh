@@ -44,6 +44,7 @@ echo "[$(date +'%Y-%m-%d %H:%M:%S')] 0.05/9 更新市场资金/情绪指标"
 "${PYTHON}" multi_agent/scripts/save_daily_fund_flow.py || echo "⚠️ save_daily_fund_flow.py 失败，继续执行"
 "${PYTHON}" multi_agent/scripts/fetch_lhb_cache.py --start $(date -d '5 days ago' +%Y-%m-%d) --end $(date +%Y-%m-%d) || echo "⚠️ fetch_lhb_cache.py 失败，继续执行"
 "${PYTHON}" multi_agent/scripts/fetch_macro_indicators.py --score || echo "⚠️ fetch_macro_indicators.py 失败，继续执行"
+"${PYTHON}" multi_agent/scripts/hithink_fundamentals_cache.py || echo "⚠️ hithink_fundamentals_cache.py 失败，继续执行"
 "${PYTHON}" multi_agent/scripts/fetch_fundamentals_cache.py || echo "⚠️ fetch_fundamentals_cache.py 失败，继续执行"
 
 # 0.1 更新美股缺失标的（如新增标的）
