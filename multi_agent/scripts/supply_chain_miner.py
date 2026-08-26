@@ -290,8 +290,65 @@ DEFAULT_PENALTIES = {
 }
 
 
-def enrich_with_fundamentals(candidates: List[Dict], fund_map: Dict[str, dict], revenue_map: Dict[str, dict]) -> List[Dict]:
-    """把 PE/PB/市值/ROE 等真实财务数据与主营构成附加到候选上，用于页面展示。"""
+def load_hithink_hot_and_dt(date_str: str = None) -> Dict[str, Dict]:
+    """读取同花顺热股榜和龙虎榜，按代码索引。"""
+    today = date_str or datetime.now().strftime('%Y-%m-%d')
+    cache_dir = f"{ROOT}/multi_agent/data/hithink_cache"
+    hot = _load_json(f"{cache_dir}/hot_stock_list_{today}.json").get('item', [])
+    dt = _load_json(f"{cache_dir}/dragon_tiger_list_{today}.json")
+
+    hot_map = {}
+    for item in hot:
+        code = str(_thscode_to_code(item.get('thscode', ''))).zfill(6)
+        hot_map[code] = {
+            'rank': item.get('rank'),
+            'heat': item.get('heat'),
+        }
+
+    dt_map = {}
+    for s in dt.get('stock_items', []):
+        code = str(_thscode_to_code(s.get('thscode', ''))).zfill(6)
+        net = s.get('net_value', 0)
+        dt_map[code] = {
+            'net_buy': net,
+            'net_buy_str': _format_amount(net),
+            'change_pct': s.get('change', 0) * 100,
+        }
+    return {'hot': hot_map, 'dt': dt_map}
+
+
+def _thscode_to_code(thscode: str) -> str:
+    return thscode.split('.')[0]
+
+
+def _format_amount(value):
+    if value is None:
+        return '-'
+    try:
+        v = float(value)
+    except (TypeError, ValueError):
+        return '-'
+    if abs(v) >= 1e8:
+        return f'{v/1e8:.2f}亿'
+    if abs(v) >= 1e4:
+        return f'{v/1e4:.2f}万'
+    return f'{v:.2f}'
+
+
+def _load_json(path: str):
+    if not os.path.exists(path):
+        return {}
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+def enrich_with_fundamentals(candidates: List[Dict], fund_map: Dict[str, dict], revenue_map: Dict[str, dict], hithink_map: Dict[str, Dict]) -> List[Dict]:
+    """把 PE/PB/市值/ROE 等真实财务数据、主营构成、同花顺热股/龙虎榜附加到候选上。"""
+    hot_map = hithink_map.get('hot', {})
+    dt_map = hithink_map.get('dt', {})
     for c in candidates:
         code = str(c.get('ticker', '')).zfill(6)
         f = fund_map.get(code, {})
@@ -310,12 +367,20 @@ def enrich_with_fundamentals(candidates: List[Dict], fund_map: Dict[str, dict], 
         rev = revenue_map.get(code, {})
         top_products = sorted(rev.items(), key=lambda x: x[1], reverse=True)[:3]
         c['revenue_composition'] = {k: round(v * 100, 2) for k, v in top_products}
+        # 同花顺热股榜 / 龙虎榜
+        if code in hot_map:
+            c['hithink_hot'] = hot_map[code]
+        if code in dt_map:
+            c['hithink_dt'] = dt_map[code]
     return candidates
 
 
 def score_candidates(candidates: List[Dict], theme: str) -> List[Dict]:
-    """对每个候选标的调用 Serenity 评分卡；跳过无 name/ticker 的候选。"""
+    """对每个候选标的调用 Serenity 评分卡；注入同花顺热股/龙虎榜作为额外上下文。"""
     fund_map = load_fundamentals()
+    hithink_map = load_hithink_hot_and_dt()
+    hot_map = hithink_map.get('hot', {})
+    dt_map = hithink_map.get('dt', {})
     results = []
     for c in candidates:
         if not c.get('name') or not c.get('ticker'):
@@ -341,11 +406,20 @@ def score_candidates(candidates: List[Dict], theme: str) -> List[Dict]:
         if fund.get('debt_ratio') is not None:
             fund_str += f" 资产负债率: {fund['debt_ratio']:.2f}%;"
 
+        hithink_str = ""
+        if code in hot_map:
+            h = hot_map[code]
+            hithink_str += f" 同花顺热股榜排名: {h.get('rank')} (热度 {h.get('heat')});"
+        if code in dt_map:
+            d = dt_map[code]
+            hithink_str += f" 龙虎榜净买入: {d.get('net_buy_str')} (涨跌幅 {d.get('change_pct'):.2f}%);"
+
         prompt = f"""主题：{theme}
 瓶颈环节：{c['segment']}
 候选标的：{c['name']}（{c['ticker']}）
 入选理由：{c['reason']}
 已知财务/估值数据（来自公开行情/财报，可能不全）：{fund_str if fund_str else '暂无'}
+同花顺资金面/情绪面数据（T-1日收盘后，仅作参考）：{hithink_str if hithink_str else '暂无'}
 
 请按 Serenity 供应链瓶颈评分框架，为该标的各因子打分（0-5）。
 
@@ -380,7 +454,8 @@ def score_candidates(candidates: List[Dict], theme: str) -> List[Dict]:
 要求：
 1. 只输出 JSON，不要解释。
 2. 当财务数据显示高估值（如 PE>100 或 PB>10）且收入暴露为"低"时，valuation_disconnect 和 hype_risk 应反映风险。
-3. 财务数据缺失时不要臆造，按公开信息审慎评分。
+3. 如果该标的出现在同花顺热股榜或龙虎榜净买入前列，可适当提高 evidence_quality 和 catalyst_timing，但 hype_risk 也要同步评估。
+4. 财务数据缺失时不要臆造，按公开信息审慎评分。
 """
         messages = [
             {"role": "system", "content": "你是量化基本面分析师，按 Serenity 框架评估标的，严禁编造数据。"},
@@ -418,7 +493,7 @@ def score_candidates(candidates: List[Dict], theme: str) -> List[Dict]:
             "revenue_exposure": c.get('revenue_exposure', '中'),
         })
         results.append(result)
-    results = enrich_with_fundamentals(results, fund_map, load_revenue_composition())
+    results = enrich_with_fundamentals(results, fund_map, load_revenue_composition(), hithink_map)
     results.sort(key=lambda x: x.get('final_score', 0), reverse=True)
     return results
 
@@ -448,6 +523,8 @@ tr:hover {{ background: #f8fafc; }}
 .score-high {{ color: {up_color}; font-weight: 600; }}
 .score-mid {{ color: #f59e0b; font-weight: 600; }}
 .score-low {{ color: {down_color}; }}
+.tag-hot {{ display:inline-block;background:#ef4444;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;margin-left:6px; }}
+.tag-dt {{ display:inline-block;background:#f59e0b;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;margin-left:6px; }}
 .layer {{ background: #fff; border-radius: 8px; padding: 12px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }}
 .layer-title {{ font-weight: 600; color: #1e3a5f; margin-bottom: 6px; }}
 .layer-seg {{ color: #475569; font-size: 13px; }}
@@ -517,10 +594,15 @@ tr:hover {{ background: #f8fafc; }}
         fund_str = ' · '.join(fund_parts) if fund_parts else '暂无'
         rev = c.get('revenue_composition', {})
         rev_str = ' · '.join([f"{k} {v}%" for k, v in rev.items()]) if rev else '暂无'
+        name_cell = c.get('company', '')
+        if c.get('hithink_hot'):
+            name_cell += f"<span class='tag-hot'>热股{c['hithink_hot']['rank']}</span>"
+        if c.get('hithink_dt'):
+            name_cell += f"<span class='tag-dt'>龙虎榜净买入 {c['hithink_dt']['net_buy_str']}</span>"
         html += f"""
 <tr>
   <td>{i}</td>
-  <td>{c.get('company', '')}<br><span style="color:#7f8c8d">{c.get('ticker', '')}</span></td>
+  <td>{name_cell}<br><span style="color:#7f8c8d">{c.get('ticker', '')}</span></td>
   <td>{c.get('segment', '')}</td>
   <td>{c.get('selection_reason', '')}</td>
   <td>{c.get('revenue_exposure', '')}<br><span style="color:#7f8c8d;font-size:0.85em">{rev_str}</span></td>

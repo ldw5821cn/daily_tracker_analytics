@@ -20,6 +20,8 @@ tr:hover { background: #f8fafc; }
 .score-high { color: #e74c3c; font-weight: 600; }
 .score-mid { color: #f59e0b; font-weight: 600; }
 .score-low { color: #2ecc71; }
+.tag-hot { display:inline-block;background:#ef4444;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;margin-left:6px; }
+.tag-dt { display:inline-block;background:#f59e0b;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;margin-left:6px; }
 .layer { background: #fff; border-radius: 8px; padding: 12px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
 .layer-title { font-weight: 600; color: #1e3a5f; margin-bottom: 6px; }
 .layer-seg { color: #475569; font-size: 13px; }
@@ -29,22 +31,98 @@ tr:hover { background: #f8fafc; }
 </head>
 <body>
 <h1>🧭 固态电池 产业链挖掘</h1>
-<div class="meta">生成时间：2026-08-21 11:59:31 · 标的池来自深交所全 A 股 + 历史预测覆盖</div>
+<div class="meta">生成时间：2026-08-26 20:53:57 · 标的池来自深交所全 A 股 + 历史预测覆盖</div>
 
 <div class="cards">
-  <div class="card"><h2>候选标的数</h2><div class="stat">16</div></div>
-  <div class="card"><h2>平均瓶颈评分</h2><div class="stat">16.2</div></div>
-  <div class="card"><h2>瓶颈环节数</h2><div class="stat">0</div></div>
+  <div class="card"><h2>候选标的数</h2><div class="stat">6</div></div>
+  <div class="card"><h2>平均瓶颈评分</h2><div class="stat">11.9</div></div>
+  <div class="card"><h2>瓶颈环节数</h2><div class="stat">5</div></div>
 </div>
 
 <h2>需求故事</h2>
-<div class="layer"><div class="layer-seg">能量密度翻倍且安全性高，是下一代动力电池核心，驱动高端电动车、eVTOL与储能爆发。</div></div>
+<div class="layer"><div class="layer-seg">电动汽车续航与安全需求跃升，半固态/全固态电池量产装车开启，带动电解质、设备及材料体系全面升级。</div></div>
 
 <h2>产业链地图</h2>
+
+<div class="layer">
+  <div class="layer-title">下游/终端</div>
+  <div class="layer-seg">环节：电动汽车、eVTOL/低空经济、消费电子、储能</div>
+  <div class="layer-seg" style="margin-top:4px;color:#64748b">全球龙头：丰田、大众、特斯拉、宁德时代</div>
+</div>
+
+<div class="layer">
+  <div class="layer-title">系统集成/整机</div>
+  <div class="layer-seg">环节：固态电池电芯、固态电池PACK、BMS系统</div>
+  <div class="layer-seg" style="margin-top:4px;color:#64748b">全球龙头：QuantumScape、Solid Power、丰田、宁德时代、比亚迪</div>
+</div>
+
+<div class="layer">
+  <div class="layer-title">核心零部件</div>
+  <div class="layer-seg">环节：极片、隔膜(固态电解质膜)、集流体、密封件</div>
+  <div class="layer-seg" style="margin-top:4px;color:#64748b">全球龙头：旭化成、东丽、索尔维、恩捷股份</div>
+</div>
+
+<div class="layer">
+  <div class="layer-title">芯片/器件</div>
+  <div class="layer-seg">环节：电池管理芯片AFE、压力/温度传感器、高压连接器</div>
+  <div class="layer-seg" style="margin-top:4px;color:#64748b">全球龙头：ADI、TI、英飞凌、泰科电子</div>
+</div>
+
+<div class="layer">
+  <div class="layer-title">设备</div>
+  <div class="layer-seg">环节：等静压设备、干法电极设备、固态电解质涂布机、叠片/卷绕设备</div>
+  <div class="layer-seg" style="margin-top:4px;color:#64748b">全球龙头：Kojima、Yamato、日本碍子、先导智能</div>
+</div>
+
+<div class="layer">
+  <div class="layer-title">材料</div>
+  <div class="layer-seg">环节：硫化物电解质、氧化物电解质、聚合物电解质、高镍正极、硅碳负极、锂金属负极</div>
+  <div class="layer-seg" style="margin-top:4px;color:#64748b">全球龙头：出光兴产、三井金属、LG化学、巴斯夫、Albemarle</div>
+</div>
 
 <h2>核心瓶颈</h2>
 <table>
 <tr><th>环节</th><th>严重度</th><th>原因</th><th>全球 CR3</th><th>国产份额</th></tr>
+
+<tr>
+  <td>硫化物电解质</td>
+  <td>5/5</td>
+  <td>离子电导率最优但空气稳定性极差，合成与加工环境要求苛刻，供应商极少且核心技术封锁，规模化量产困难。</td>
+  <td>出光兴产、三井金属、LG化学合计占全球绝大部分份额</td>
+  <td>国产化率极低，尚处中试阶段，关键原料硫化锂依赖进口</td>
+</tr>
+
+<tr>
+  <td>等静压设备</td>
+  <td>5/5</td>
+  <td>固态电池极片高压致密化必备，设备精度与大型化能力决定良率，全球高端产能被日企垄断，进口交期长且禁运风险高。</td>
+  <td>Kobe Steel、日本碍子、Kojma占据全球约80%+市场</td>
+  <td>国产化率不足20%，川西机器等初步突破但仍依赖进口核心部件</td>
+</tr>
+
+<tr>
+  <td>锂金属负极</td>
+  <td>4/5</td>
+  <td>全固态电池理想负极，但锂枝晶抑制与界面接触难题未解，超薄锂箔制备工艺难度极高，产业化成熟度低。</td>
+  <td>Albemarle、Livent、SQM主导锂资源，锂箔加工以美国FMC、日本田中贵金属领先</td>
+  <td>国内赣锋锂业有布局，但超薄锂箔稳定供应能力弱</td>
+</tr>
+
+<tr>
+  <td>干法电极设备</td>
+  <td>4/5</td>
+  <td>固态电池避免溶剂需采用干法工艺，但纤维化、辊压均匀性控制难度大，设备集成度要求高，长期被国外专利封锁。</td>
+  <td>特斯拉旗下设备团队、德国Brückner、日本CKD占据先发优势</td>
+  <td>国内先导智能、纳科诺尔在追赶，但核心成膜工艺仍落后</td>
+</tr>
+
+<tr>
+  <td>硫化物原料硫化锂</td>
+  <td>5/5</td>
+  <td>硫化物电解质核心前驱体，合成工艺成本高、纯度要求极高，全球产能极小且集中于少数日企，供应严重受限。</td>
+  <td>日本出光兴产、韩国LG化学、美国Materion合计占全球90%以上</td>
+  <td>国内仅有少数企业小批量生产，产品一致性与成本差距大</td>
+</tr>
 
 </table>
 
@@ -54,176 +132,66 @@ tr:hover { background: #f8fafc; }
 
 <tr>
   <td>1</td>
-  <td>中科电气<br><span style="color:#7f8c8d">300035</span></td>
-  <td>硅碳负极材料</td>
-  <td>硅基负极材料有技术储备</td>
-  <td>低</td>
-  <td class="fund">市值 95.27亿 · PE 36.8 · PB 2.0</td>
-  <td class="score-low">28.4</td>
+  <td>赣锋锂业<br><span style="color:#7f8c8d">002460</span></td>
+  <td>锂金属负极</td>
+  <td>锂金属负极材料研发领先</td>
+  <td>低<br><span style="color:#7f8c8d;font-size:0.85em">锂系列产品 55.79% · 锂电池系列产品 35.67% · 其他 8.54%</span></td>
+  <td class="fund">PE 29.5 · PB 2.4 · ROE 4.0%</td>
+  <td class="score-low">26.0</td>
   <td>Early lead or low priority</td>
 </tr>
 
 <tr>
   <td>2</td>
-  <td>先导智能<br><span style="color:#7f8c8d">300450</span></td>
-  <td>固态电池专用设备</td>
-  <td>锂电设备龙头，布局固态电池产线</td>
-  <td>中</td>
-  <td class="fund">市值 570.41亿 · PE 35.2 · PB 3.3</td>
-  <td class="score-low">27.2</td>
+  <td>精工科技<br><span style="color:#7f8c8d">002006</span></td>
+  <td>干法电极设备</td>
+  <td>高端装备制造，有干法电极设备布局</td>
+  <td>低<br><span style="color:#7f8c8d;font-size:0.85em">碳纤维装备 63.75% · 建筑建材专用设备 14.53% · 轻纺专用设备 12.37%</span></td>
+  <td class="fund">PE 35.1 · PB 2.8</td>
+  <td class="score-low">23.8</td>
   <td>Early lead or low priority</td>
 </tr>
 
 <tr>
   <td>3</td>
   <td>赣锋锂业<br><span style="color:#7f8c8d">002460</span></td>
-  <td>硫化物固态电解质</td>
-  <td>固态电池硫化物电解质专利布局</td>
-  <td>低</td>
-  <td class="fund">市值 1129.07亿 · PE 15.4 · PB 2.5</td>
-  <td class="score-low">26.0</td>
+  <td>硫化物电解质</td>
+  <td>锂业龙头，布局硫化物电解质研发</td>
+  <td>低<br><span style="color:#7f8c8d;font-size:0.85em">锂系列产品 55.79% · 锂电池系列产品 35.67% · 其他 8.54%</span></td>
+  <td class="fund">PE 29.5 · PB 2.4 · ROE 4.0%</td>
+  <td class="score-low">13.4</td>
   <td>Early lead or low priority</td>
 </tr>
 
 <tr>
   <td>4</td>
-  <td>杉杉股份<br><span style="color:#7f8c8d">600884</span></td>
-  <td>氧化物固态电解质</td>
-  <td>固态电解质材料有技术储备</td>
-  <td>低</td>
-  <td class="fund">暂无</td>
-  <td class="score-low">26.0</td>
+  <td>天齐锂业<br><span style="color:#7f8c8d">002466</span></td>
+  <td>硫化物电解质</td>
+  <td>锂资源龙头，涉足固态电池材料</td>
+  <td>低<br><span style="color:#7f8c8d;font-size:0.85em">锂化合物及衍生品 55.06% · 锂矿 44.74% · 其他 0.2%</span></td>
+  <td class="fund">PE 36.5 · PB 1.8</td>
+  <td class="score-low">4.4</td>
   <td>Early lead or low priority</td>
 </tr>
 
 <tr>
   <td>5</td>
-  <td>当升科技<br><span style="color:#7f8c8d">300073</span></td>
-  <td>高镍正极材料</td>
-  <td>高镍正极材料龙头，适配固态</td>
-  <td>高</td>
-  <td class="fund">市值 225.77亿 · PE 20.4 · PB 1.5</td>
-  <td class="score-low">26.0</td>
+  <td>天奇股份<br><span style="color:#7f8c8d">002009</span></td>
+  <td>等静压设备</td>
+  <td>装备制造企业，具备等静压设备技术</td>
+  <td>低<br><span style="color:#7f8c8d;font-size:0.85em">汽车智能装备 57.4% · 锂电池循环事业部 17.11% · 重工机械事业部 13.58%</span></td>
+  <td class="fund">PE 151.0 · PB 3.2</td>
+  <td class="score-low">3.6</td>
   <td>Early lead or low priority</td>
 </tr>
 
 <tr>
   <td>6</td>
-  <td>格林美<br><span style="color:#7f8c8d">002340</span></td>
-  <td>高镍正极材料</td>
-  <td>高镍前驱体及正极材料量产</td>
-  <td>中</td>
-  <td class="fund">市值 332.16亿 · PE 15.9 · PB 1.6</td>
-  <td class="score-low">26.0</td>
-  <td>Early lead or low priority</td>
-</tr>
-
-<tr>
-  <td>7</td>
   <td>天齐锂业<br><span style="color:#7f8c8d">002466</span></td>
-  <td>硫化锂原料</td>
-  <td>锂盐龙头，供应硫化锂原料</td>
-  <td>低</td>
-  <td class="fund">市值 824.17亿 · PE 11.0 · PB 1.8</td>
-  <td class="score-low">26.0</td>
-  <td>Early lead or low priority</td>
-</tr>
-
-<tr>
-  <td>8</td>
-  <td>亿纬锂能<br><span style="color:#7f8c8d">300014</span></td>
-  <td>固态电池整线制造</td>
-  <td>固态电池技术有布局</td>
-  <td>低</td>
-  <td class="fund">市值 1215.09亿 · PE 18.4 · PB 2.4</td>
-  <td class="score-low">21.4</td>
-  <td>Early lead or low priority</td>
-</tr>
-
-<tr>
-  <td>9</td>
-  <td>横店东磁<br><span style="color:#7f8c8d">002056</span></td>
-  <td>硫化物固态电解质</td>
-  <td>布局固态电池电解质材料研发</td>
-  <td>低</td>
-  <td class="fund">市值 350.07亿 · PE 18.5 · PB 3.3</td>
-  <td class="score-low">10.6</td>
-  <td>Early lead or low priority</td>
-</tr>
-
-<tr>
-  <td>10</td>
-  <td>欣旺达<br><span style="color:#7f8c8d">300207</span></td>
-  <td>固态电池整线制造</td>
-  <td>固态电池研发中，有中试线</td>
-  <td>低</td>
-  <td class="fund">市值 333.47亿 · PE 73.1 · PB 1.4</td>
-  <td class="score-low">10.2</td>
-  <td>Early lead or low priority</td>
-</tr>
-
-<tr>
-  <td>11</td>
-  <td>国轩高科<br><span style="color:#7f8c8d">002074</span></td>
-  <td>固态电池整线制造</td>
-  <td>半固态电池已装车，布局全固态</td>
-  <td>中</td>
-  <td class="fund">市值 488.16亿 · PE 578.6 · PB 1.7</td>
-  <td class="score-low">9.8</td>
-  <td>Early lead or low priority</td>
-</tr>
-
-<tr>
-  <td>12</td>
-  <td>星源材质<br><span style="color:#7f8c8d">300568</span></td>
-  <td>固态电池专用隔膜</td>
-  <td>固态电池隔膜材料研发中</td>
-  <td>低</td>
-  <td class="fund">市值 217.11亿 · PE 185.4 · PB 2.2</td>
-  <td class="score-low">6.8</td>
-  <td>Early lead or low priority</td>
-</tr>
-
-<tr>
-  <td>13</td>
-  <td>恩捷股份<br><span style="color:#7f8c8d">002812</span></td>
-  <td>氧化物固态电解质</td>
-  <td>固态电解质膜材料研发中</td>
-  <td>低</td>
-  <td class="fund">市值 558.57亿 · PE 53.6 · PB 2.2</td>
-  <td class="score-low">5.4</td>
-  <td>Early lead or low priority</td>
-</tr>
-
-<tr>
-  <td>14</td>
-  <td>杉杉股份<br><span style="color:#7f8c8d">600884</span></td>
-  <td>锂金属负极</td>
-  <td>锂金属负极材料有研发布局</td>
-  <td>低</td>
-  <td class="fund">暂无</td>
-  <td class="score-low">5.2</td>
-  <td>Early lead or low priority</td>
-</tr>
-
-<tr>
-  <td>15</td>
-  <td>星源材质<br><span style="color:#7f8c8d">300568</span></td>
-  <td>聚合物固态电解质</td>
-  <td>聚合物固态电解质膜技术布局</td>
-  <td>低</td>
-  <td class="fund">市值 217.11亿 · PE 185.4 · PB 2.2</td>
-  <td class="score-low">5.0</td>
-  <td>Early lead or low priority</td>
-</tr>
-
-<tr>
-  <td>16</td>
-  <td>丰元股份<br><span style="color:#7f8c8d">002805</span></td>
-  <td>硅碳负极材料</td>
-  <td>硅碳负极材料研发中</td>
-  <td>低</td>
-  <td class="fund">市值 54.44亿 · PE 17.7 · PB 5.8</td>
+  <td>硫化物原料硫化锂</td>
+  <td>锂盐龙头，具备硫化锂合成潜力</td>
+  <td>低<br><span style="color:#7f8c8d;font-size:0.85em">锂化合物及衍生品 55.06% · 锂矿 44.74% · 其他 0.2%</span></td>
+  <td class="fund">PE 36.5 · PB 1.8</td>
   <td class="score-low">0.0</td>
   <td>Early lead or low priority</td>
 </tr>
@@ -232,6 +200,10 @@ tr:hover { background: #f8fafc; }
 
 <h2>证伪风险</h2>
 <ul class="desc">
+<li>半固态/固态电池装车进度不及预期，液态锂电性能持续提升挤压替代需求</li>
+<li>硫化物电解质产业化难度超预期，成本下降曲线过于缓慢，无法实现规模经济</li>
+<li>界面接触、锂枝晶等科学难题无法量产级解决，全固态电池长期停留在实验室</li>
+<li>eVTOL等新兴应用场景法规认证延迟，高端需求释放不及预期</li>
 
 </ul>
 
