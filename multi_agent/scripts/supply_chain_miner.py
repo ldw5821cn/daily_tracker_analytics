@@ -39,17 +39,21 @@ def _slugify(s: str) -> str:
 
 
 def load_a_share_universe(db_path: str) -> List[Dict]:
-    """从本地 CSV 读取深交所全 A 股列表，并合并预测数据库中的历史标的。"""
+    """从本地 CSV 读取全 A 股列表（上交所+深交所），并合并预测数据库中的历史标的。"""
     universe = {}
-    # 1. 深交所全 A 股（含行业）
+    # 1. 全 A 股（上交所 + 深交所）
+    all_path = f"{ROOT}/multi_agent/data/a_share_universe_all.csv"
     sz_path = f"{ROOT}/multi_agent/data/a_share_universe_sz.csv"
-    if os.path.exists(sz_path):
+    paths = [all_path] if os.path.exists(all_path) else [sz_path]
+    for p in paths:
+        if not os.path.exists(p):
+            continue
         import csv
-        with open(sz_path, "r", encoding="utf-8-sig") as f:
+        with open(p, "r", encoding="utf-8-sig") as f:
             for row in csv.DictReader(f):
-                code = row.get("A股代码", "").strip()
-                name = row.get("A股简称", "").strip()
-                sector = row.get("所属行业", "").strip()
+                code = row.get("code", row.get("A股代码", "")).strip()
+                name = row.get("name", row.get("A股简称", "")).strip()
+                sector = row.get("sector", row.get("所属行业", "")).strip()
                 if code and name:
                     universe[code] = {"ticker": code, "name": name, "sector": sector}
     # 2. 预测数据库中的历史标的（补充 sector 信息）
@@ -172,23 +176,49 @@ def build_value_chain(theme: str) -> Dict:
     return parsed
 
 
-def map_candidates(theme: str, value_chain: Dict, universe: List[Dict]) -> List[Dict]:
-    """用 LLM 把产业链环节映射到 A 股候选标的。"""
+def map_candidates(theme: str, value_chain: Dict, universe: List[Dict], hithink_map: Dict[str, Dict]) -> List[Dict]:
+    """用 LLM 把产业链环节映射到 A 股候选标的；优先在 prompt 中展示同花顺热股/涨停相关标的。"""
     # 限制股票池长度，避免 token 爆炸；同时限制瓶颈数量
     bottleneck_text = '\n'.join(
         f"- {b['segment']}（严重度{b['severity']}/5）：{b['reason']}"
         for b in value_chain.get('bottlenecks', [])[:5]
     )
-    universe_text = '\n'.join(
-        f"{s['ticker']} {s['name']}（sector: {s['sector']}）"
-        for s in universe[:600]
-    )
+
+    # 把 hithink 特色数据中的代码提到 universe 前面，并让 LLM 看到其标签
+    priority_codes = set(hithink_map.keys())
+    priority_universe = [s for s in universe if s['ticker'] in priority_codes]
+    rest_universe = [s for s in universe if s['ticker'] not in priority_codes]
+    # 优先标最多 150 只，避免 prompt 过长
+    priority_universe = priority_universe[:150]
+    # 剩余池子也限制长度
+    rest_budget = max(0, 600 - len(priority_universe))
+    rest_universe = rest_universe[:rest_budget]
+    display_universe = priority_universe + rest_universe
+
+    # 为优先标附加标签注释
+    def _tag(s: Dict) -> str:
+        code = s['ticker']
+        h = hithink_map.get(code, {})
+        tags = []
+        if h.get('rank') is not None:
+            tags.append(f"热股榜第{h['rank']}名")
+        if h.get('limit_up_reason'):
+            tags.append(f"{h.get('continue_day_text', '涨停')}:{h['limit_up_reason']}")
+        if h.get('board_num'):
+            tags.append(f"{h['board_num']}连板")
+        if h.get('net_buy_str'):
+            tags.append(f"龙虎榜净买入{h['net_buy_str']}")
+        tag_str = f" [特色数据]{' '.join(tags)}" if tags else ""
+        return f"{s['ticker']} {s['name']}（sector: {s['sector']}）{tag_str}"
+
+    universe_text = '\n'.join(_tag(s) for s in display_universe)
+
     prompt = f"""主题：{theme}
 
 已识别的核心瓶颈环节：
 {bottleneck_text}
 
-当前 A 股候选股票池（仅部分）：
+当前 A 股候选股票池（带【特色数据】标签的标的当日出现在同花顺热股榜、涨停池或连板天梯中，可作为情绪/资金面参考，但不代表其基本面更优）：
 {universe_text}
 
 请从股票池中为每个瓶颈环节挑选最相关的 1-3 家 A 股公司。如果某环节没有直接相关标的，可输出空数组。
@@ -210,7 +240,8 @@ def map_candidates(theme: str, value_chain: Dict, universe: List[Dict]) -> List[
 要求：
 1. ticker 必须来自上述股票池。
 2. 每个瓶颈环节 1-3 个候选。
-3. 只输出 JSON。
+3. 特色数据标签只是辅助参考，评选核心仍以产业链环节匹配度和收入暴露为准。
+4. 只输出 JSON。
 """
     messages = [
         {"role": "system", "content": "你是 A 股产业链选股专家，擅长把产业链节点映射到具体上市公司。"},
@@ -290,31 +321,82 @@ DEFAULT_PENALTIES = {
 }
 
 
-def load_hithink_hot_and_dt(date_str: str = None) -> Dict[str, Dict]:
-    """读取同花顺热股榜和龙虎榜，按代码索引。"""
+def load_hithink_special(date_str: str = None) -> Dict[str, Dict]:
+    """读取同花顺特色数据：涨停池、连板天梯、热股榜、龙虎榜，按代码索引。"""
     today = date_str or datetime.now().strftime('%Y-%m-%d')
     cache_dir = f"{ROOT}/multi_agent/data/hithink_cache"
+
     hot = _load_json(f"{cache_dir}/hot_stock_list_{today}.json").get('item', [])
     dt = _load_json(f"{cache_dir}/dragon_tiger_list_{today}.json")
+    limit_up = _load_json(f"{cache_dir}/limit_up_pool_{today}.json").get('item', [])
+    ladder = _load_json(f"{cache_dir}/limit_up_ladder_{today}.json").get('item', [])
 
     hot_map = {}
     for item in hot:
-        code = str(_thscode_to_code(item.get('thscode', ''))).zfill(6)
-        hot_map[code] = {
-            'rank': item.get('rank'),
-            'heat': item.get('heat'),
-        }
+        code = str(item.get('ticker', '')).zfill(6)
+        if code:
+            hot_map[code] = {
+                'rank': item.get('rank'),
+                'heat': item.get('heat'),
+                'source': 'hot_stock',
+            }
 
     dt_map = {}
     for s in dt.get('stock_items', []):
-        code = str(_thscode_to_code(s.get('thscode', ''))).zfill(6)
-        net = s.get('net_value', 0)
-        dt_map[code] = {
-            'net_buy': net,
-            'net_buy_str': _format_amount(net),
-            'change_pct': s.get('change', 0) * 100,
-        }
-    return {'hot': hot_map, 'dt': dt_map}
+        code = str(s.get('ticker', '')).zfill(6)
+        if code:
+            net = s.get('net_value', 0)
+            dt_map[code] = {
+                'net_buy': net,
+                'net_buy_str': _format_amount(net),
+                'change_pct': s.get('change', 0) * 100,
+                'source': 'dragon_tiger',
+            }
+
+    # 涨停池：按代码索引，记录涨停原因、连板数、封单金额
+    limit_up_map = {}
+    for item in limit_up:
+        code = str(item.get('ticker', '')).zfill(6)
+        if code:
+            limit_up_map[code] = {
+                'limit_up_reason': item.get('limit_up_reason', ''),
+                'continue_day_text': item.get('continue_day_text', ''),
+                'continue_day_cnt': item.get('continue_day_cnt', 0),
+                'seal_money': item.get('seal_money', 0),
+                'price_change_pct': item.get('price_change_ratio_pct', 0) * 100,
+                'source': 'limit_up_pool',
+            }
+
+    # 连板天梯：按代码索引，记录最高板数
+    ladder_map = {}
+    for day in ladder:
+        boards = day.get('boards', {}) if isinstance(day, dict) else {}
+        for board_name, stocks in boards.items():
+            for s in stocks:
+                code = str(s.get('ticker', '')).zfill(6)
+                if code:
+                    board_num = s.get('board_num', 0)
+                    if code not in ladder_map or board_num > ladder_map[code].get('board_num', 0):
+                        ladder_map[code] = {
+                            'board_num': board_num,
+                            'board_name': board_name,
+                            'source': 'limit_up_ladder',
+                        }
+
+    # 合并：一个代码可能同时出现在多个池中
+    all_codes = set(hot_map) | set(dt_map) | set(limit_up_map) | set(ladder_map)
+    merged = {}
+    for code in all_codes:
+        merged[code] = {}
+        if code in hot_map:
+            merged[code].update(hot_map[code])
+        if code in dt_map:
+            merged[code].update(dt_map[code])
+        if code in limit_up_map:
+            merged[code].update(limit_up_map[code])
+        if code in ladder_map:
+            merged[code].update(ladder_map[code])
+    return merged
 
 
 def _thscode_to_code(thscode: str) -> str:
@@ -346,9 +428,7 @@ def _load_json(path: str):
 
 
 def enrich_with_fundamentals(candidates: List[Dict], fund_map: Dict[str, dict], revenue_map: Dict[str, dict], hithink_map: Dict[str, Dict]) -> List[Dict]:
-    """把 PE/PB/市值/ROE 等真实财务数据、主营构成、同花顺热股/龙虎榜附加到候选上。"""
-    hot_map = hithink_map.get('hot', {})
-    dt_map = hithink_map.get('dt', {})
+    """把 PE/PB/市值/ROE 等真实财务数据、主营构成、同花顺特色数据附加到候选上。"""
     for c in candidates:
         code = str(c.get('ticker', '')).zfill(6)
         f = fund_map.get(code, {})
@@ -367,20 +447,16 @@ def enrich_with_fundamentals(candidates: List[Dict], fund_map: Dict[str, dict], 
         rev = revenue_map.get(code, {})
         top_products = sorted(rev.items(), key=lambda x: x[1], reverse=True)[:3]
         c['revenue_composition'] = {k: round(v * 100, 2) for k, v in top_products}
-        # 同花顺热股榜 / 龙虎榜
-        if code in hot_map:
-            c['hithink_hot'] = hot_map[code]
-        if code in dt_map:
-            c['hithink_dt'] = dt_map[code]
+        # 同花顺特色数据
+        if code in hithink_map:
+            c['hithink'] = hithink_map[code]
     return candidates
 
 
 def score_candidates(candidates: List[Dict], theme: str) -> List[Dict]:
-    """对每个候选标的调用 Serenity 评分卡；注入同花顺热股/龙虎榜 + 主题舆情作为额外上下文。"""
+    """对每个候选标的调用 Serenity 评分卡；注入同花顺特色数据 + 主题舆情作为额外上下文。"""
     fund_map = load_fundamentals()
-    hithink_map = load_hithink_hot_and_dt()
-    hot_map = hithink_map.get('hot', {})
-    dt_map = hithink_map.get('dt', {})
+    hithink_map = load_hithink_special()
     # 读取主题舆情摘要
     news_context_path = f"{ROOT}/multi_agent/data/market_context_cache/{_slugify(theme)}_news_context.txt"
     news_context = ""
@@ -415,13 +491,16 @@ def score_candidates(candidates: List[Dict], theme: str) -> List[Dict]:
         if fund.get('debt_ratio') is not None:
             fund_str += f" 资产负债率: {fund['debt_ratio']:.2f}%;"
 
+        h = hithink_map.get(code, {})
         hithink_str = ""
-        if code in hot_map:
-            h = hot_map[code]
+        if h.get('rank') is not None:
             hithink_str += f" 同花顺热股榜排名: {h.get('rank')} (热度 {h.get('heat')});"
-        if code in dt_map:
-            d = dt_map[code]
-            hithink_str += f" 龙虎榜净买入: {d.get('net_buy_str')} (涨跌幅 {d.get('change_pct'):.2f}%);"
+        if h.get('net_buy_str'):
+            hithink_str += f" 龙虎榜净买入: {h.get('net_buy_str')} (涨跌幅 {h.get('change_pct', 0):.2f}%);"
+        if h.get('limit_up_reason'):
+            hithink_str += f" 涨停池: {h.get('continue_day_text')}，涨停原因: {h.get('limit_up_reason')}，封单金额 {_format_amount(h.get('seal_money', 0))};"
+        if h.get('board_num'):
+            hithink_str += f" 连板天梯: 最高 {h.get('board_num')} 连板;"
 
         news_str = news_context if news_context else "暂无主题舆情摘要。"
 
@@ -467,8 +546,8 @@ def score_candidates(candidates: List[Dict], theme: str) -> List[Dict]:
 要求：
 1. 只输出 JSON，不要解释。
 2. 当财务数据显示高估值（如 PE>100 或 PB>10）且收入暴露为"低"时，valuation_disconnect 和 hype_risk 应反映风险。
-3. 如果该标的出现在同花顺热股榜、龙虎榜净买入前列，或主题舆情明确提及该公司为受益/领涨标的，可适当提高 evidence_quality 和 catalyst_timing，但 hype_risk 也要同步评估。
-4. 如果主题舆情整体偏空（score < -0.2）且该标的不在热股/龙虎榜中，应更审慎打分，尤其是 demand_inflection 和 catalyst_timing。
+3. 如果该标的出现在同花顺热股榜、龙虎榜净买入前列、涨停池或连板天梯中，或主题舆情明确提及该公司为受益/领涨标的，可适当提高 evidence_quality 和 catalyst_timing，但 hype_risk 也要同步评估。
+4. 如果主题舆情整体偏空（score < -0.2）且该标的不在热股/龙虎榜/涨停池中，应更审慎打分，尤其是 demand_inflection 和 catalyst_timing。
 5. 财务数据缺失时不要臆造，按公开信息审慎评分。
 """
         messages = [
@@ -539,6 +618,8 @@ tr:hover {{ background: #f8fafc; }}
 .score-low {{ color: {down_color}; }}
 .tag-hot {{ display:inline-block;background:#ef4444;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;margin-left:6px; }}
 .tag-dt {{ display:inline-block;background:#f59e0b;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;margin-left:6px; }}
+.tag-limit-up {{ display:inline-block;background:#7c3aed;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;margin-left:6px; }}
+.tag-ladder {{ display:inline-block;background:#0ea5e9;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;margin-left:6px; }}
 .layer {{ background: #fff; border-radius: 8px; padding: 12px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }}
 .layer-title {{ font-weight: 600; color: #1e3a5f; margin-bottom: 6px; }}
 .layer-seg {{ color: #475569; font-size: 13px; }}
@@ -609,10 +690,15 @@ tr:hover {{ background: #f8fafc; }}
         rev = c.get('revenue_composition', {})
         rev_str = ' · '.join([f"{k} {v}%" for k, v in rev.items()]) if rev else '暂无'
         name_cell = c.get('company', '')
-        if c.get('hithink_hot'):
-            name_cell += f"<span class='tag-hot'>热股{c['hithink_hot']['rank']}</span>"
-        if c.get('hithink_dt'):
-            name_cell += f"<span class='tag-dt'>龙虎榜净买入 {c['hithink_dt']['net_buy_str']}</span>"
+        h = c.get('hithink', {})
+        if h.get('rank') is not None:
+            name_cell += f"<span class='tag-hot'>热股{h['rank']}</span>"
+        if h.get('net_buy_str'):
+            name_cell += f"<span class='tag-dt'>龙虎榜净买入 {h['net_buy_str']}</span>"
+        if h.get('limit_up_reason'):
+            name_cell += f"<span class='tag-limit-up'>{h.get('continue_day_text', '涨停')} | {h['limit_up_reason']}</span>"
+        if h.get('board_num'):
+            name_cell += f"<span class='tag-ladder'>{h['board_num']}连板</span>"
         html += f"""
 <tr>
   <td>{i}</td>
@@ -663,7 +749,8 @@ def main():
     value_chain = build_value_chain(args.theme)
 
     print("3) 映射候选标的...")
-    candidates = map_candidates(args.theme, value_chain, universe)
+    hithink_map = load_hithink_special()
+    candidates = map_candidates(args.theme, value_chain, universe, hithink_map)
     print(f"   候选 {len(candidates)} 只")
 
     print("4) Serenity 瓶颈评分...")
