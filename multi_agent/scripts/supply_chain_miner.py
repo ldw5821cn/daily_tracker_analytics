@@ -376,11 +376,20 @@ def enrich_with_fundamentals(candidates: List[Dict], fund_map: Dict[str, dict], 
 
 
 def score_candidates(candidates: List[Dict], theme: str) -> List[Dict]:
-    """对每个候选标的调用 Serenity 评分卡；注入同花顺热股/龙虎榜作为额外上下文。"""
+    """对每个候选标的调用 Serenity 评分卡；注入同花顺热股/龙虎榜 + 主题舆情作为额外上下文。"""
     fund_map = load_fundamentals()
     hithink_map = load_hithink_hot_and_dt()
     hot_map = hithink_map.get('hot', {})
     dt_map = hithink_map.get('dt', {})
+    # 读取主题舆情摘要
+    news_context_path = f"{ROOT}/multi_agent/data/market_context_cache/{_slugify(theme)}_news_context.txt"
+    news_context = ""
+    if os.path.exists(news_context_path):
+        try:
+            with open(news_context_path, 'r', encoding='utf-8') as f:
+                news_context = f.read().strip()
+        except Exception:
+            pass
     results = []
     for c in candidates:
         if not c.get('name') or not c.get('ticker'):
@@ -414,12 +423,16 @@ def score_candidates(candidates: List[Dict], theme: str) -> List[Dict]:
             d = dt_map[code]
             hithink_str += f" 龙虎榜净买入: {d.get('net_buy_str')} (涨跌幅 {d.get('change_pct'):.2f}%);"
 
+        news_str = news_context if news_context else "暂无主题舆情摘要。"
+
         prompt = f"""主题：{theme}
 瓶颈环节：{c['segment']}
 候选标的：{c['name']}（{c['ticker']}）
 入选理由：{c['reason']}
 已知财务/估值数据（来自公开行情/财报，可能不全）：{fund_str if fund_str else '暂无'}
 同花顺资金面/情绪面数据（T-1日收盘后，仅作参考）：{hithink_str if hithink_str else '暂无'}
+主题舆情摘要（来自东方财富主题搜索，T日）：
+{news_str}
 
 请按 Serenity 供应链瓶颈评分框架，为该标的各因子打分（0-5）。
 
@@ -454,8 +467,9 @@ def score_candidates(candidates: List[Dict], theme: str) -> List[Dict]:
 要求：
 1. 只输出 JSON，不要解释。
 2. 当财务数据显示高估值（如 PE>100 或 PB>10）且收入暴露为"低"时，valuation_disconnect 和 hype_risk 应反映风险。
-3. 如果该标的出现在同花顺热股榜或龙虎榜净买入前列，可适当提高 evidence_quality 和 catalyst_timing，但 hype_risk 也要同步评估。
-4. 财务数据缺失时不要臆造，按公开信息审慎评分。
+3. 如果该标的出现在同花顺热股榜、龙虎榜净买入前列，或主题舆情明确提及该公司为受益/领涨标的，可适当提高 evidence_quality 和 catalyst_timing，但 hype_risk 也要同步评估。
+4. 如果主题舆情整体偏空（score < -0.2）且该标的不在热股/龙虎榜中，应更审慎打分，尤其是 demand_inflection 和 catalyst_timing。
+5. 财务数据缺失时不要臆造，按公开信息审慎评分。
 """
         messages = [
             {"role": "system", "content": "你是量化基本面分析师，按 Serenity 框架评估标的，严禁编造数据。"},

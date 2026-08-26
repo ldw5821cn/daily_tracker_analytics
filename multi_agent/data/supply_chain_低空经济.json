@@ -2,165 +2,164 @@
   "theme": "低空经济",
   "value_chain": {
     "theme": "低空经济",
-    "demand_story": "低空经济作为新质生产力，政策密集出台，空域开放与基础设施建设加速，eVTOL商业化运营在即，万亿级市场爆发。",
+    "demand_story": "低空经济获国家政策力推，适航审定加速，空中出行与物流场景开启，万亿级市场爆发。",
     "value_chain": [
       {
         "layer": "下游/终端",
         "segments": [
-          "低空物流配送",
-          "城市空中交通",
-          "低空旅游",
+          "载人出行",
+          "物流配送",
           "应急救援",
-          "农业植保",
-          "电力巡检"
+          "城市管理",
+          "低空旅游"
         ],
         "key_players_global": [
-          "Amazon Prime Air",
-          "Zipline",
-          "Wing",
           "Joby Aviation",
           "Lilium",
-          "Volocopter"
+          "大疆",
+          "顺丰丰翼",
+          "亿航智能"
         ]
       },
       {
         "layer": "系统集成/整机",
         "segments": [
           "eVTOL整机",
-          "无人机整机",
-          "通航飞机"
+          "工业无人机",
+          "通航飞机",
+          "飞行汽车"
         ],
         "key_players_global": [
-          "Joby Aviation",
-          "Archer Aviation",
           "亿航智能",
           "小鹏汇天",
           "峰飞航空",
-          "大疆创新"
+          "沃飞长空",
+          "中航通飞"
         ]
       },
       {
         "layer": "核心零部件",
         "segments": [
-          "动力系统（电机/电控）",
-          "电池系统",
+          "动力系统",
           "飞控系统",
-          "导航系统",
-          "通信系统"
+          "航电系统",
+          "旋翼/涵道",
+          "降落伞"
         ],
         "key_players_global": [
-          "Siemens",
-          "Bosch",
-          "宁德时代",
-          "亿纬锂能",
+          "赛峰",
+          "罗尔斯·罗伊斯",
           "霍尼韦尔",
-          "Garmin"
+          "Garmin",
+          "恒宇信通"
         ]
       },
       {
         "layer": "芯片/器件",
         "segments": [
-          "主控芯片",
-          "传感器（激光雷达/毫米波）",
-          "功率器件（IGBT/SiC）",
-          "通信芯片"
+          "飞行控制芯片",
+          "MEMS传感器",
+          "激光雷达",
+          "通信模块",
+          "功率器件"
         ],
         "key_players_global": [
-          "NVIDIA",
-          "Intel",
-          "TI",
           "英飞凌",
-          "意法半导体",
-          "速腾聚创"
+          "STMicroelectronics",
+          "Velodyne",
+          "华为",
+          "德州仪器"
         ]
       },
       {
         "layer": "设备",
         "segments": [
-          "地面基础设施（起降场/充电桩）",
+          "地面通信导航设备",
           "空管系统",
-          "检测设备",
-          "维修保障设备"
+          "起降坪/机场",
+          "充电/换电设施",
+          "维修检测设备"
         ],
         "key_players_global": [
-          "Thales",
-          "Indra",
-          "L3Harris",
+          "泰雷兹",
+          "Indra Sistemas",
           "中国电科",
-          "川大智胜",
-          "威海广泰"
+          "民航数据通信",
+          "亿嘉和"
         ]
       },
       {
         "layer": "材料",
         "segments": [
           "碳纤维复合材料",
-          "铝合金/钛合金",
-          "工程塑料",
-          "特种橡胶"
+          "铝合金",
+          "钛合金",
+          "特种橡胶",
+          "电池材料"
         ],
         "key_players_global": [
-          "Toray",
-          "Hexcel",
-          "SGL Carbon",
-          "光威复材",
-          "中复神鹰",
-          "宝钛股份"
+          "赫氏",
+          "东丽",
+          "美国铝业",
+          "微创医疗",
+          "宁德时代"
         ]
       }
     ],
     "bottlenecks": [
       {
-        "segment": "飞控系统",
+        "segment": "适航审定及空管系统",
         "severity": 5,
-        "reason": "飞控系统是低空飞行器的核心大脑，技术壁垒极高，适航认证周期长，全球市场高度集中，国内企业起步晚，国产化率极低。",
-        "global_cr3": "霍尼韦尔、泰雷兹、罗克韦尔柯林斯合计占全球约70%",
-        "china_share": "国产化率不足10%，主要依赖进口"
+        "reason": "适航审定周期长、法规标准尚未健全，空管系统涉及国家安全，准入门槛极高，国产化率低。",
+        "global_cr3": "泰雷兹、Indra、霍尼韦尔合计占全球空管系统约70%份额",
+        "china_share": "国产空管系统市占率不足30%，高端空管系统高度依赖进口"
       },
       {
-        "segment": "高能量密度电池",
+        "segment": "高能量密度动力电池",
         "severity": 5,
-        "reason": "eVTOL对电池能量密度、倍率性能、安全性要求远超电动汽车，目前尚无专用电池量产，技术突破难度大，供应商极少。",
-        "global_cr3": "宁德时代、LG新能源、松下合计占全球动力电池约60%",
-        "china_share": "宁德时代、亿纬锂能等领先，但航空级电池仍处研发阶段"
+        "reason": "eVTOL对电池能量密度要求超400Wh/kg，循环寿命和安全标准远高于车规，目前量产产品难以满足，扩产周期长。",
+        "global_cr3": "宁德时代、LG新能源、松下合计占高端航空电池领域约65%",
+        "china_share": "国产航空级电池仍处验证阶段，实际装机应用比例低于10%"
       },
       {
-        "segment": "适航认证",
+        "segment": "飞控计算机与飞行控制软件",
+        "severity": 5,
+        "reason": "飞控系统直接关系飞行安全，需高可靠性和独立冗余设计，认证周期长达5年以上，全球供应商高度集中。",
+        "global_cr3": "霍尼韦尔、赛峰、UAVOS合计占全球eVTOL飞控市场约80%",
+        "china_share": "国产飞控系统在无人机领域有突破，但载人级认证几乎空白"
+      },
+      {
+        "segment": "高精度导航与传感器",
         "severity": 4,
-        "reason": "适航认证是低空飞行器商业化的必经门槛，周期长（3-5年）、标准严苛，全球认证机构资源稀缺，成为行业放量的关键瓶颈。",
-        "global_cr3": "FAA、EASA、CAAC三大机构主导全球适航认证",
-        "china_share": "中国CAAC认证体系尚在完善，国内企业认证经验不足"
+        "reason": "低空飞行需要厘米级定位和多源融合导航，惯性导航核心器件如光纤陀螺仪、MEMS加速度计国内产品精度不足，依赖进口。",
+        "global_cr3": "霍尼韦尔、罗克韦尔·柯林斯、诺格合计占航空惯导市场约75%",
+        "china_share": "国产高性能惯性传感器市占率不足20%，高精度器件受出口管制"
       },
       {
-        "segment": "空管系统",
+        "segment": "适航级复合材料",
         "severity": 4,
-        "reason": "低空飞行需要全新的空管体系，涉及通信、导航、监视、气象等，技术复杂，且需与现有民航系统融合，全球供应商高度集中。",
-        "global_cr3": "泰雷兹、Indra、L3Harris合计占全球空管系统约60%",
-        "china_share": "国内以中国电科、川大智胜为主，但高端产品仍依赖进口"
-      },
-      {
-        "segment": "碳纤维复合材料",
-        "severity": 3,
-        "reason": "低空飞行器对轻量化要求极高，碳纤维复合材料是主要结构材料，但高端航空级碳纤维技术壁垒高，国内产能和性能仍有差距。",
-        "global_cr3": "东丽、赫氏、SGL合计占全球航空碳纤维约70%",
-        "china_share": "光威复材、中复神鹰等已突破，但航空级产品占比仍低"
+        "reason": "航空级碳纤维预浸料、蜂窝夹层材料认证壁垒高，国内供应商批产能力和良率与国际巨头存在差距，关键原料原丝仍部分依赖进口。",
+        "global_cr3": "赫氏、东丽、索尔维合计占航空级碳纤维市场约85%",
+        "china_share": "国产航空级碳纤维良率约70%，高端预浸料国产化率不足30%"
       }
     ],
     "kill_switches": [
-      "空域开放政策不及预期，低空飞行审批严格，商业化场景落地缓慢",
-      "电池能量密度等技术瓶颈长期无法突破，eVTOL续航和载重能力不足",
-      "安全事故频发导致公众信任危机，监管收紧，行业需求萎缩"
+      "适航审定进度超预期延长，商业化运营时间推迟",
+      "电池能量密度迟迟无法突破400Wh/kg，导致eVTOL航程无法覆盖主流场景",
+      "空域开放政策不及预期，低空航线审批严格，应用场景无法规模化",
+      "安全事故频发，引发严格的监管限制，公众接受度下降",
+      "基础设施投资严重滞后，起降点、通信导航网络建设进度慢于行业预期"
     ],
-    "_llm_raw": "{\n  \"theme\": \"低空经济\",\n  \"demand_story\": \"低空经济作为新质生产力，政策密集出台，空域开放与基础设施建设加速，eVTOL商业化运营在即，万亿级市场爆发。\",\n  \"value_chain\": [\n    {\n      \"layer\": \"下游/终端\",\n      \"segments\": [\"低空物流配送\", \"城市空中交通\", \"低空旅游\", \"应急救援\", \"农业植保\", \"电力巡检\"],\n      \"key_players_global\": [\"Amazon Prime Air\", \"Zipline\", \"Wing\", \"Joby Aviation\", \"Lilium\", \"Volocopter\"]\n    },\n    {\n      \"layer\": \"系统集成/整机\",\n      \"segments\": [\"eVTOL整机\", \"无人机整机\", \"通航飞机\"],\n      \"key_players_global\": [\"Joby Aviation\", \"Archer Aviation\", \"亿航智能\", \"小鹏汇天\", \"峰飞航空\", \"大疆创新\"]\n    },\n    {\n      \"layer\": \"核心零部件\",\n      \"segments\": [\"动力系统（电机/电控）\", \"电池系统\", \"飞控系统\", \"导航系统\", \"通信系统\"],\n      \"key_players_global\": [\"Siemens\", \"Bosch\", \"宁德时代\", \"亿纬锂能\", \"霍尼韦尔\", \"Garmin\"]\n    },\n    {\n      \"layer\": \"芯片/器件\",\n      \"segments\": [\"主控芯片\", \"传感器（激光雷达/毫米波）\", \"功率器件（IGBT/SiC）\", \"通信芯片\"],\n      \"key_players_global\": [\"NVIDIA\", \"Intel\", \"TI\", \"英飞凌\", \"意法半导体\", \"速腾聚创\"]\n    },\n    {\n      \"layer\": \"设备\",\n      \"segments\": [\"地面基础设施（起降场/充电桩）\", \"空管系统\", \"检测设备\", \"维修保障设备\"],\n      \"key_players_global\": [\"Thales\", \"Indra\", \"L3Harris\", \"中国电科\", \"川大智胜\", \"威海广泰\"]\n    },\n    {\n      \"layer\": \"材料\",\n      \"segments\": [\"碳纤维复合材料\", \"铝合金/钛合金\", \"工程塑料\", \"特种橡胶\"],\n      \"key_players_global\": [\"Toray\", \"Hexcel\", \"SGL Carbon\", \"光威复材\", \"中复神鹰\", \"宝钛股份\"]\n    }\n  ],\n  \"bottlenecks\": [\n    {\n      \"segment\": \"飞控系统\",\n      \"severity\": 5,\n      \"reason\": \"飞控系统是低空飞行器的核心大脑，技术壁垒极高，适航认证周期长，全球市场高度集中，国内企业起步晚，国产化率极低。\",\n      \"global_cr3\": \"霍尼韦尔、泰雷兹、罗克韦尔柯林斯合计占全球约70%\",\n      \"china_share\": \"国产化率不足10%，主要依赖进口\"\n    },\n    {\n      \"segment\": \"高能量密度电池\",\n      \"severity\": 5,\n      \"reason\": \"eVTOL对电池能量密度、倍率性能、安全性要求远超电动汽车，目前尚无专用电池量产，技术突破难度大，供应商极少。\",\n      \"global_cr3\": \"宁德时代、LG新能源、松下合计占全球动力电池约60%\",\n      \"china_share\": \"宁德时代、亿纬锂能等领先，但航空级电池仍处研发阶段\"\n    },\n    {\n      \"segment\": \"适航认证\",\n      \"severity\": 4,\n      \"reason\": \"适航认证是低空飞行器商业化的必经门槛，周期长（3-5年）、标准严苛，全球认证机构资源稀缺，成为行业放量的关键瓶颈。\",\n      \"global_cr3\": \"FAA、EASA、CAAC三大机构主导全球适航认证\",\n      \"china_share\": \"中国CAAC认证体系尚在完善，国内企业认证经验不足\"\n    },\n    {\n      \"segment\": \"空管系统\",\n      \"severity\": 4,\n      \"reason\": \"低空飞行需要全新的空管体系，涉及通信、导航、监视、气象等，技术复杂，且需与现有民航系统融合，全球供应商高度集中。\",\n      \"global_cr3\": \"泰雷兹、Indra、L3Harris合计占全球空管系统约60%\",\n      \"china_share\": \"国内以中国电科、川大智胜为主，但高端产品仍依赖进口\"\n    },\n    {\n      \"segment\": \"碳纤维复合材料\",\n      \"severity\": 3,\n      \"reason\": \"低空飞行器对轻量化要求极高，碳纤维复合材料是主要结构材料，但高端航空级碳纤维技术壁垒高，国内产能和性能仍有差距。\",\n      \"global_cr3\": \"东丽、赫氏、SGL合计占全球航空碳纤维约70%\",\n      \"china_share\": \"光威复材、中复神鹰等已突破，但航空级产品占比仍低\"\n    }\n  ],\n  \"kill_switches\": [\n    \"空域开放政策不及预期，低空飞行审批严格，商业化场景落地缓慢\",\n    \"电池能量密度等技术瓶颈长期无法突破，eVTOL续航和载重能力不足\",\n    \"安全事故频发导致公众信任危机，监管收紧，行业需求萎缩\"\n  ]\n}"
+    "_llm_raw": "{\n  \"theme\": \"低空经济\",\n  \"demand_story\": \"低空经济获国家政策力推，适航审定加速，空中出行与物流场景开启，万亿级市场爆发。\",\n  \"value_chain\": [\n    {\n      \"layer\": \"下游/终端\",\n      \"segments\": [\"载人出行\", \"物流配送\", \"应急救援\", \"城市管理\", \"低空旅游\"],\n      \"key_players_global\": [\"Joby Aviation\", \"Lilium\", \"大疆\", \"顺丰丰翼\", \"亿航智能\"]\n    },\n    {\n      \"layer\": \"系统集成/整机\",\n      \"segments\": [\"eVTOL整机\", \"工业无人机\", \"通航飞机\", \"飞行汽车\"],\n      \"key_players_global\": [\"亿航智能\", \"小鹏汇天\", \"峰飞航空\", \"沃飞长空\", \"中航通飞\"]\n    },\n    {\n      \"layer\": \"核心零部件\",\n      \"segments\": [\"动力系统\", \"飞控系统\", \"航电系统\", \"旋翼/涵道\", \"降落伞\"],\n      \"key_players_global\": [\"赛峰\", \"罗尔斯·罗伊斯\", \"霍尼韦尔\", \"Garmin\", \"恒宇信通\"]\n    },\n    {\n      \"layer\": \"芯片/器件\",\n      \"segments\": [\"飞行控制芯片\", \"MEMS传感器\", \"激光雷达\", \"通信模块\", \"功率器件\"],\n      \"key_players_global\": [\"英飞凌\", \"STMicroelectronics\", \"Velodyne\", \"华为\", \"德州仪器\"]\n    },\n    {\n      \"layer\": \"设备\",\n      \"segments\": [\"地面通信导航设备\", \"空管系统\", \"起降坪/机场\", \"充电/换电设施\", \"维修检测设备\"],\n      \"key_players_global\": [\"泰雷兹\", \"Indra Sistemas\", \"中国电科\", \"民航数据通信\", \"亿嘉和\"]\n    },\n    {\n      \"layer\": \"材料\",\n      \"segments\": [\"碳纤维复合材料\", \"铝合金\", \"钛合金\", \"特种橡胶\", \"电池材料\"],\n      \"key_players_global\": [\"赫氏\", \"东丽\", \"美国铝业\", \"微创医疗\", \"宁德时代\"]\n    }\n  ],\n  \"bottlenecks\": [\n    {\n      \"segment\": \"适航审定及空管系统\",\n      \"severity\": 5,\n      \"reason\": \"适航审定周期长、法规标准尚未健全，空管系统涉及国家安全，准入门槛极高，国产化率低。\",\n      \"global_cr3\": \"泰雷兹、Indra、霍尼韦尔合计占全球空管系统约70%份额\",\n      \"china_share\": \"国产空管系统市占率不足30%，高端空管系统高度依赖进口\"\n    },\n    {\n      \"segment\": \"高能量密度动力电池\",\n      \"severity\": 5,\n      \"reason\": \"eVTOL对电池能量密度要求超400Wh/kg，循环寿命和安全标准远高于车规，目前量产产品难以满足，扩产周期长。\",\n      \"global_cr3\": \"宁德时代、LG新能源、松下合计占高端航空电池领域约65%\",\n      \"china_share\": \"国产航空级电池仍处验证阶段，实际装机应用比例低于10%\"\n    },\n    {\n      \"segment\": \"飞控计算机与飞行控制软件\",\n      \"severity\": 5,\n      \"reason\": \"飞控系统直接关系飞行安全，需高可靠性和独立冗余设计，认证周期长达5年以上，全球供应商高度集中。\",\n      \"global_cr3\": \"霍尼韦尔、赛峰、UAVOS合计占全球eVTOL飞控市场约80%\",\n      \"china_share\": \"国产飞控系统在无人机领域有突破，但载人级认证几乎空白\"\n    },\n    {\n      \"segment\": \"高精度导航与传感器\",\n      \"severity\": 4,\n      \"reason\": \"低空飞行需要厘米级定位和多源融合导航，惯性导航核心器件如光纤陀螺仪、MEMS加速度计国内产品精度不足，依赖进口。\",\n      \"global_cr3\": \"霍尼韦尔、罗克韦尔·柯林斯、诺格合计占航空惯导市场约75%\",\n      \"china_share\": \"国产高性能惯性传感器市占率不足20%，高精度器件受出口管制\"\n    },\n    {\n      \"segment\": \"适航级复合材料\",\n      \"severity\": 4,\n      \"reason\": \"航空级碳纤维预浸料、蜂窝夹层材料认证壁垒高，国内供应商批产能力和良率与国际巨头存在差距，关键原料原丝仍部分依赖进口。\",\n      \"global_cr3\": \"赫氏、东丽、索尔维合计占航空级碳纤维市场约85%\",\n      \"china_share\": \"国产航空级碳纤维良率约70%，高端预浸料国产化率不足30%\"\n    }\n  ],\n  \"kill_switches\": [\"适航审定进度超预期延长，商业化运营时间推迟\", \"电池能量密度迟迟无法突破400Wh/kg，导致eVTOL航程无法覆盖主流场景\", \"空域开放政策不及预期，低空航线审批严格，应用场景无法规模化\", \"安全事故频发，引发严格的监管限制，公众接受度下降\", \"基础设施投资严重滞后，起降点、通信导航网络建设进度慢于行业预期\"]\n}"
   },
   "top_candidates": [
     {
       "ticker": "000801",
       "company": "四川九洲",
       "market": "A-share",
-      "raw_factor_points": 66.8,
-      "penalty_points": 28.0,
-      "final_score": 38.8,
+      "raw_factor_points": 69.0,
+      "penalty_points": 22.0,
+      "final_score": 47.0,
       "verdict": "Early lead or low priority",
       "factor_details": {
         "demand_inflection": {
@@ -194,9 +193,9 @@
           "points": 6.0
         },
         "valuation_disconnect": {
-          "rating": 3.0,
+          "rating": 4.0,
           "weight": 11,
-          "points": 6.6
+          "points": 8.8
         },
         "catalyst_timing": {
           "rating": 3.0,
@@ -210,8 +209,8 @@
           "points": 2.0
         },
         "governance": {
-          "rating": 2.0,
-          "points": 4.0
+          "rating": 1.0,
+          "points": 2.0
         },
         "geopolitics": {
           "rating": 1.0,
@@ -222,12 +221,12 @@
           "points": 2.0
         },
         "hype_risk": {
-          "rating": 4.0,
-          "points": 8.0
+          "rating": 3.0,
+          "points": 6.0
         },
         "accounting_quality": {
-          "rating": 2.0,
-          "points": 4.0
+          "rating": 1.0,
+          "points": 2.0
         },
         "cyclicality": {
           "rating": 2.0,
@@ -239,262 +238,29 @@
         }
       },
       "kill_switches": [
-        "低空经济政策落地及订单兑现不及预期",
-        "空管业务在公司收入中占比偏低，业绩弹性有限",
-        "行业竞争加剧导致公司市场份额下降",
-        "当前估值已过度反映未来增长预期"
+        "低空经济相关收入占比有限，若公司财报显示低空业务订单及业绩兑现不及预期，估值将面临下修压力。",
+        "适航审定及空管系统行业竞争格局变化，若新进入者或技术路线发生重大改变，公司市场份额可能受到冲击。",
+        "低空经济主题炒作情绪退潮，资金面撤离可能导致股价阶段性调整，与基本面改善节奏脱钩。"
       ],
       "evidence": [
         {
-          "claim": "四川九洲为空管系统核心供应商，直接受益于低空经济基础设施建设",
-          "source": "公开信息/行业研究",
+          "claim": "四川九洲是国内空管系统核心供应商，产品可用于低空管理领域。",
+          "source": "公司公开资料/行业研究",
+          "strength": "primary"
+        },
+        {
+          "claim": "低空经济政策与产业应用加速推进，多地示范场景落地，整体情绪偏乐观。",
+          "source": "东方财富主题舆情摘要",
           "strength": "media"
         },
         {
-          "claim": "低空经济政策持续推动，空管系统作为瓶颈环节需求有望释放",
-          "source": "行业研究/政策文件",
-          "strength": "analysis"
-        }
-      ],
-      "segment": "空管系统",
-      "selection_reason": "空管系统核心供应商，低空经济直接受益",
-      "revenue_exposure": "高",
-      "fundamentals": {
-        "market_cap_yi": null,
-        "pe_ratio": 67.61183,
-        "pb_ratio": 3.735584,
-        "roe": null,
-        "gross_margin": null,
-        "revenue_yoy": null,
-        "profit_yoy": null,
-        "debt_ratio": null,
-        "report_date": ""
-      },
-      "revenue_composition": {
-        "智能终端产品": 60.0,
-        "空管产品": 28.12,
-        "微波射频": 9.01
-      }
-    },
-    {
-      "ticker": "001283",
-      "company": "豪鹏科技",
-      "market": "A-share",
-      "raw_factor_points": 48.8,
-      "penalty_points": 16.0,
-      "final_score": 32.8,
-      "verdict": "Early lead or low priority",
-      "factor_details": {
-        "demand_inflection": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "architecture_coupling": {
-          "rating": 4.0,
-          "weight": 10,
-          "points": 8.0
-        },
-        "chokepoint_severity": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "supplier_concentration": {
-          "rating": 2.0,
-          "weight": 12,
-          "points": 4.8
-        },
-        "expansion_difficulty": {
-          "rating": 4.0,
-          "weight": 12,
-          "points": 9.6
-        },
-        "evidence_quality": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "valuation_disconnect": {
-          "rating": 2.0,
-          "weight": 11,
-          "points": 4.4
-        },
-        "catalyst_timing": {
-          "rating": 2.0,
-          "weight": 10,
-          "points": 4.0
-        }
-      },
-      "penalty_details": {
-        "dilution_financing": {
-          "rating": 0.0,
-          "points": 0.0
-        },
-        "governance": {
-          "rating": 0.0,
-          "points": 0.0
-        },
-        "geopolitics": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "liquidity": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "hype_risk": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "accounting_quality": {
-          "rating": 0.0,
-          "points": 0.0
-        },
-        "cyclicality": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "alternative_design_risk": {
-          "rating": 2.0,
-          "points": 4.0
-        }
-      },
-      "kill_switches": [
-        "低空经济相关电池业务尚未形成实际收入，订单落地与量产时间存在不确定性",
-        "高能量密度电池技术路线（如固态电池）若发生变革，公司现有锂电技术优势可能被削弱",
-        "消费电池主业增速放缓或行业竞争加剧，拖累整体现金流与研发投入"
-      ],
-      "evidence": [
-        {
-          "claim": "公司主营消费类电池，同时布局动力电池与高能量密度电池研发，具备切入低空经济电池的潜在能力",
-          "source": "公司财报及公开披露",
-          "strength": "primary"
-        },
-        {
-          "claim": "低空经济是国家重点培育的战略性新兴产业，高能量密度电池被广泛视为核心瓶颈环节，政策催化密集",
-          "source": "行业研究报告及公开政策文件",
-          "strength": "analysis"
-        }
-      ],
-      "segment": "高能量密度电池",
-      "selection_reason": "高能量密度电池研发，消费及动力电池",
-      "revenue_exposure": "低",
-      "fundamentals": {
-        "market_cap_yi": null,
-        "pe_ratio": 25.285912,
-        "pb_ratio": 1.597667,
-        "roe": null,
-        "gross_margin": null,
-        "revenue_yoy": null,
-        "profit_yoy": null,
-        "debt_ratio": null,
-        "report_date": ""
-      },
-      "revenue_composition": {
-        "消费类应用场景新能源解决方案产品": 86.32,
-        "储能类应用场景新能源解决方案产品": 11.09,
-        "其他(补充)": 2.59
-      }
-    },
-    {
-      "ticker": "000801",
-      "company": "四川九洲",
-      "market": "A-share",
-      "raw_factor_points": 62.0,
-      "penalty_points": 36.0,
-      "final_score": 26.0,
-      "verdict": "Early lead or low priority",
-      "factor_details": {
-        "demand_inflection": {
-          "rating": 4.0,
-          "weight": 15,
-          "points": 12.0
-        },
-        "architecture_coupling": {
-          "rating": 4.0,
-          "weight": 10,
-          "points": 8.0
-        },
-        "chokepoint_severity": {
-          "rating": 3.0,
-          "weight": 15,
-          "points": 9.0
-        },
-        "supplier_concentration": {
-          "rating": 3.0,
-          "weight": 12,
-          "points": 7.2
-        },
-        "expansion_difficulty": {
-          "rating": 3.0,
-          "weight": 12,
-          "points": 7.2
-        },
-        "evidence_quality": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "valuation_disconnect": {
-          "rating": 3.0,
-          "weight": 11,
-          "points": 6.6
-        },
-        "catalyst_timing": {
-          "rating": 3.0,
-          "weight": 10,
-          "points": 6.0
-        }
-      },
-      "penalty_details": {
-        "dilution_financing": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "governance": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "geopolitics": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "liquidity": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "hype_risk": {
-          "rating": 4.0,
-          "points": 8.0
-        },
-        "accounting_quality": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "cyclicality": {
-          "rating": 3.0,
-          "points": 6.0
-        },
-        "alternative_design_risk": {
-          "rating": 3.0,
-          "points": 6.0
-        }
-      },
-      "kill_switches": [
-        "飞控系统业务在四川九洲整体营收中占比可能较低，低空经济带来的业绩弹性有限",
-        "低空经济政策落地节奏及订单兑现不及预期",
-        "飞控系统领域竞争对手增多，公司技术壁垒或被削弱"
-      ],
-      "evidence": [
-        {
-          "claim": "公司在空管系统及飞控相关领域有技术积累，且具备军工背景",
-          "source": "公开资料/公司公告",
+          "claim": "公司市盈率(TTM)67.61倍，市净率3.74倍，估值隐含较高成长预期，但低空业务实际贡献尚未验证。",
+          "source": "公开行情数据",
           "strength": "primary"
         }
       ],
-      "segment": "飞控系统",
-      "selection_reason": "空管系统及飞控相关技术积累，军工背景",
+      "segment": "适航审定及空管系统",
+      "selection_reason": "国内空管系统核心供应商，产品用于低空管理",
       "revenue_exposure": "中",
       "fundamentals": {
         "market_cap_yi": null,
@@ -514,8 +280,506 @@
       }
     },
     {
-      "ticker": "000901",
-      "company": "航天科技",
+      "ticker": "002023",
+      "company": "海特高新",
+      "market": "A-share",
+      "raw_factor_points": 66.6,
+      "penalty_points": 34.0,
+      "final_score": 32.6,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "architecture_coupling": {
+          "rating": 4.0,
+          "weight": 10,
+          "points": 8.0
+        },
+        "chokepoint_severity": {
+          "rating": 4.0,
+          "weight": 15,
+          "points": 12.0
+        },
+        "supplier_concentration": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "expansion_difficulty": {
+          "rating": 4.0,
+          "weight": 12,
+          "points": 9.6
+        },
+        "evidence_quality": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "valuation_disconnect": {
+          "rating": 4.0,
+          "weight": 11,
+          "points": 8.8
+        },
+        "catalyst_timing": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "liquidity": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "hype_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "alternative_design_risk": {
+          "rating": 2.0,
+          "points": 4.0
+        }
+      },
+      "kill_switches": [
+        "低空经济仍处早期培育阶段，商业模式成熟度有待观察，公司相关业务收入占比可能有限",
+        "公司当前市盈率为负，若亏损持续或扩大，将削弱其作为瓶颈环节受益标的的逻辑",
+        "适航审定及空管系统环节可能面临政策调整或技术路线变化，导致公司竞争优势减弱"
+      ],
+      "evidence": [
+        {
+          "claim": "公司提供航空维修、适航审定技术服务和飞行仿真，直接受益于低空经济适航审定瓶颈环节",
+          "source": "公开信息/公司业务描述",
+          "strength": "primary"
+        },
+        {
+          "claim": "低空经济政策与产业应用加速推进，多地示范场景落地，相关公司业绩与订单改善",
+          "source": "东方财富主题舆情摘要",
+          "strength": "media"
+        },
+        {
+          "claim": "公司市盈率为负，反映当前盈利能力较弱，但市净率1.96相对合理，估值与基本面存在脱节",
+          "source": "公开行情数据",
+          "strength": "primary"
+        }
+      ],
+      "segment": "适航审定及空管系统",
+      "selection_reason": "提供航空维修、适航审定技术服务和飞行仿真",
+      "revenue_exposure": "中",
+      "fundamentals": {
+        "market_cap_yi": null,
+        "pe_ratio": -13.436451,
+        "pb_ratio": 1.962159,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
+      },
+      "revenue_composition": {
+        "航空工程技术与服务": 66.49,
+        "高端核心装备研制与保障": 29.25,
+        "其他(补充)": 4.26
+      }
+    },
+    {
+      "ticker": "000099",
+      "company": "中信海直",
+      "market": "A-share",
+      "raw_factor_points": 61.6,
+      "penalty_points": 30.0,
+      "final_score": 31.6,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "architecture_coupling": {
+          "rating": 4.0,
+          "weight": 10,
+          "points": 8.0
+        },
+        "chokepoint_severity": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "supplier_concentration": {
+          "rating": 4.0,
+          "weight": 12,
+          "points": 9.6
+        },
+        "expansion_difficulty": {
+          "rating": 4.0,
+          "weight": 12,
+          "points": 9.6
+        },
+        "evidence_quality": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "valuation_disconnect": {
+          "rating": 2.0,
+          "weight": 11,
+          "points": 4.4
+        },
+        "catalyst_timing": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "governance": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "geopolitics": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "liquidity": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "hype_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "alternative_design_risk": {
+          "rating": 3.0,
+          "points": 6.0
+        }
+      },
+      "kill_switches": [
+        "低空经济仍处早期培育阶段，商业模式成熟度不足，中信海直相关业务收入占比可能有限。",
+        "直升机运营受制于空域管理、飞行审批和机场资源，实际扩张速度可能低于主题预期。",
+        "eVTOL等新型航空器技术成熟后可能对传统直升机运营形成替代，弱化公司长期壁垒。"
+      ],
+      "evidence": [
+        {
+          "claim": "中信海直为通航直升机运营龙头，直接参与低空空管应用与适航审定实践，在低空经济瓶颈环节具有场景卡位优势。",
+          "source": "公司入选理由及公开信息",
+          "strength": "media"
+        },
+        {
+          "claim": "低空经济政策与产业应用加速推进，多地示范场景落地，行业整体情绪偏乐观。",
+          "source": "东方财富主题舆情摘要（2026-08-26）",
+          "strength": "media"
+        },
+        {
+          "claim": "市盈率（TTM）37.88，市净率1.92，估值处于中性偏高区间，尚未反映业绩爆发预期。",
+          "source": "公开行情数据",
+          "strength": "primary"
+        }
+      ],
+      "segment": "适航审定及空管系统",
+      "selection_reason": "通航直升机运营，参与低空空管应用与审定实践",
+      "revenue_exposure": "低",
+      "fundamentals": {
+        "market_cap_yi": null,
+        "pe_ratio": 37.878843,
+        "pb_ratio": 1.917214,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
+      },
+      "revenue_composition": {
+        "通用航空运输服务深圳": 73.65,
+        "通用航空运输服务浙江/上海": 13.36,
+        "通用航空运输服务湛江": 12.69
+      }
+    },
+    {
+      "ticker": "002023",
+      "company": "海特高新",
+      "market": "A-share",
+      "raw_factor_points": 43.6,
+      "penalty_points": 12.0,
+      "final_score": 31.6,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "architecture_coupling": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        },
+        "chokepoint_severity": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "supplier_concentration": {
+          "rating": 2.0,
+          "weight": 12,
+          "points": 4.8
+        },
+        "expansion_difficulty": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "evidence_quality": {
+          "rating": 1.0,
+          "weight": 15,
+          "points": 3.0
+        },
+        "valuation_disconnect": {
+          "rating": 3.0,
+          "weight": 11,
+          "points": 6.6
+        },
+        "catalyst_timing": {
+          "rating": 2.0,
+          "weight": 10,
+          "points": 4.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "governance": {
+          "rating": 0.0,
+          "points": 0.0
+        },
+        "geopolitics": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "liquidity": {
+          "rating": 0.0,
+          "points": 0.0
+        },
+        "hype_risk": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "accounting_quality": {
+          "rating": 0.0,
+          "points": 0.0
+        },
+        "cyclicality": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "alternative_design_risk": {
+          "rating": 1.0,
+          "points": 2.0
+        }
+      },
+      "kill_switches": [
+        "低空经济仍处早期，海特高新相关业务收入占比和订单兑现度不明，若业绩持续亏损则主题溢价难以支撑",
+        "公司未出现在舆情热股或龙虎榜，市场主线未聚焦该股，缺乏直接催化"
+      ],
+      "evidence": [
+        {
+          "claim": "公司为飞行仿真与飞控测试系统供应商，支撑飞控研发，处于低空经济飞控瓶颈环节",
+          "source": "公开信息/公司财报",
+          "strength": "primary"
+        },
+        {
+          "claim": "低空经济政策与产业应用加速推进，整体市场情绪偏乐观，但未明确提及海特高新为直接受益标的",
+          "source": "东方财富主题舆情",
+          "strength": "media"
+        }
+      ],
+      "segment": "飞控计算机与飞行控制软件",
+      "selection_reason": "飞行仿真与飞控测试系统，支撑飞控研发",
+      "revenue_exposure": "低",
+      "fundamentals": {
+        "market_cap_yi": null,
+        "pe_ratio": -13.436451,
+        "pb_ratio": 1.962159,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
+      },
+      "revenue_composition": {
+        "航空工程技术与服务": 66.49,
+        "高端核心装备研制与保障": 29.25,
+        "其他(补充)": 4.26
+      }
+    },
+    {
+      "ticker": "000420",
+      "company": "吉林化纤",
+      "market": "A-share",
+      "raw_factor_points": 66.6,
+      "penalty_points": 38.0,
+      "final_score": 28.6,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "architecture_coupling": {
+          "rating": 4.0,
+          "weight": 10,
+          "points": 8.0
+        },
+        "chokepoint_severity": {
+          "rating": 4.0,
+          "weight": 15,
+          "points": 12.0
+        },
+        "supplier_concentration": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "expansion_difficulty": {
+          "rating": 4.0,
+          "weight": 12,
+          "points": 9.6
+        },
+        "evidence_quality": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "valuation_disconnect": {
+          "rating": 4.0,
+          "weight": 11,
+          "points": 8.8
+        },
+        "catalyst_timing": {
+          "rating": 3.0,
+          "weight": 10,
+          "points": 6.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "liquidity": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "hype_risk": {
+          "rating": 4.0,
+          "points": 8.0
+        },
+        "accounting_quality": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "cyclicality": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "alternative_design_risk": {
+          "rating": 2.0,
+          "points": 4.0
+        }
+      },
+      "kill_switches": [
+        "低空经济仍处早期培育阶段，商业模式成熟度有待观察，实际订单落地可能不及预期",
+        "公司当前ROE仅0.62%，盈利能力薄弱，高估值下业绩兑现压力大",
+        "资产负债率64.89%，财务杠杆较高，若业务拓展不顺可能面临偿债风险"
+      ],
+      "evidence": [
+        {
+          "claim": "公司为碳纤维预浸料及航空级复合材料供应商，直接受益于低空经济对适航级复合材料的需求",
+          "source": "入选理由（公开信息）",
+          "strength": "primary"
+        },
+        {
+          "claim": "低空经济政策与产业应用加速推进，多地示范场景落地，相关公司业绩与订单改善",
+          "source": "东方财富主题舆情摘要（2026-08-26）",
+          "strength": "media"
+        },
+        {
+          "claim": "公司营收同比增长7.36%，净利润同比增长229.51%，显示业绩改善",
+          "source": "公开财务数据",
+          "strength": "primary"
+        }
+      ],
+      "segment": "适航级复合材料",
+      "selection_reason": "碳纤维预浸料及航空级复合材料供应商",
+      "revenue_exposure": "中",
+      "fundamentals": {
+        "market_cap_yi": null,
+        "pe_ratio": 282.653295,
+        "pb_ratio": 2.079835,
+        "roe": 0.62,
+        "gross_margin": 12.7,
+        "revenue_yoy": 7.36,
+        "profit_yoy": 229.51,
+        "debt_ratio": 64.89,
+        "report_date": "2026-03-31"
+      },
+      "revenue_composition": {
+        "粘胶长丝": 57.0,
+        "粘胶短纤": 23.83,
+        "碳纤维产品": 16.43
+      }
+    },
+    {
+      "ticker": "000049",
+      "company": "德赛电池",
       "market": "A-share",
       "raw_factor_points": 60.0,
       "penalty_points": 34.0,
@@ -599,8 +863,124 @@
       },
       "kill_switches": [],
       "evidence": [],
-      "segment": "飞控系统",
-      "selection_reason": "航天电子及飞控系统研发能力",
+      "segment": "高能量密度动力电池",
+      "selection_reason": "电池PACK龙头，布局高能量密度航空电池",
+      "revenue_exposure": "中",
+      "fundamentals": {
+        "market_cap_yi": null,
+        "pe_ratio": 22.674323,
+        "pb_ratio": 1.327716,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
+      },
+      "revenue_composition": {
+        "智能手机类": 27.75,
+        "储能产品类": 18.96,
+        "电动工具、智能家居和出行类": 18.39
+      }
+    },
+    {
+      "ticker": "000901",
+      "company": "航天科技",
+      "market": "A-share",
+      "raw_factor_points": 58.6,
+      "penalty_points": 34.0,
+      "final_score": 24.6,
+      "verdict": "Early lead or low priority",
+      "factor_details": {
+        "demand_inflection": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "architecture_coupling": {
+          "rating": 4.0,
+          "weight": 10,
+          "points": 8.0
+        },
+        "chokepoint_severity": {
+          "rating": 3.0,
+          "weight": 15,
+          "points": 9.0
+        },
+        "supplier_concentration": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "expansion_difficulty": {
+          "rating": 4.0,
+          "weight": 12,
+          "points": 9.6
+        },
+        "evidence_quality": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "valuation_disconnect": {
+          "rating": 4.0,
+          "weight": 11,
+          "points": 8.8
+        },
+        "catalyst_timing": {
+          "rating": 2.0,
+          "weight": 10,
+          "points": 4.0
+        }
+      },
+      "penalty_details": {
+        "dilution_financing": {
+          "rating": 0.0,
+          "points": 0.0
+        },
+        "governance": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "geopolitics": {
+          "rating": 3.0,
+          "points": 6.0
+        },
+        "liquidity": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "hype_risk": {
+          "rating": 4.0,
+          "points": 8.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "cyclicality": {
+          "rating": 2.0,
+          "points": 4.0
+        },
+        "alternative_design_risk": {
+          "rating": 2.0,
+          "points": 4.0
+        }
+      },
+      "kill_switches": [
+        "低空经济业务收入占比低，业绩兑现不及预期",
+        "高市盈率隐含乐观预期，若市场情绪转弱估值承压",
+        "惯性导航在低空经济中面临卫星导航/视觉导航等替代技术竞争"
+      ],
+      "evidence": [
+        {
+          "claim": "公司具备惯性导航与航天传感器技术积累，有望受益于低空经济高精度导航需求",
+          "source": "公开信息/公司技术背景",
+          "strength": "analysis"
+        }
+      ],
+      "segment": "高精度导航与传感器",
+      "selection_reason": "惯性导航与航天传感器技术积累",
       "revenue_exposure": "中",
       "fundamentals": {
         "market_cap_yi": null,
@@ -620,23 +1000,23 @@
       }
     },
     {
-      "ticker": "000420",
-      "company": "吉林化纤",
+      "ticker": "000901",
+      "company": "航天科技",
       "market": "A-share",
-      "raw_factor_points": 60.4,
+      "raw_factor_points": 57.2,
       "penalty_points": 36.0,
-      "final_score": 24.4,
+      "final_score": 21.2,
       "verdict": "Early lead or low priority",
       "factor_details": {
         "demand_inflection": {
-          "rating": 2.0,
+          "rating": 3.0,
           "weight": 15,
-          "points": 6.0
+          "points": 9.0
         },
         "architecture_coupling": {
-          "rating": 4.0,
+          "rating": 3.0,
           "weight": 10,
-          "points": 8.0
+          "points": 6.0
         },
         "chokepoint_severity": {
           "rating": 3.0,
@@ -659,14 +1039,14 @@
           "points": 6.0
         },
         "valuation_disconnect": {
-          "rating": 5.0,
+          "rating": 4.0,
           "weight": 11,
-          "points": 11.0
+          "points": 8.8
         },
         "catalyst_timing": {
-          "rating": 3.0,
+          "rating": 2.0,
           "weight": 10,
-          "points": 6.0
+          "points": 4.0
         }
       },
       "penalty_details": {
@@ -679,20 +1059,20 @@
           "points": 4.0
         },
         "geopolitics": {
-          "rating": 1.0,
-          "points": 2.0
+          "rating": 2.0,
+          "points": 4.0
         },
         "liquidity": {
-          "rating": 1.0,
-          "points": 2.0
+          "rating": 2.0,
+          "points": 4.0
         },
         "hype_risk": {
-          "rating": 4.0,
-          "points": 8.0
-        },
-        "accounting_quality": {
           "rating": 3.0,
           "points": 6.0
+        },
+        "accounting_quality": {
+          "rating": 2.0,
+          "points": 4.0
         },
         "cyclicality": {
           "rating": 3.0,
@@ -704,90 +1084,85 @@
         }
       },
       "kill_switches": [
-        "低空经济碳纤维需求释放不及预期，营收增速持续低迷",
-        "盈利能力难以提升，ROE长期偏低，高估值无法消化",
-        "航空航天级碳纤维认证周期长，公司实际订单落地存在不确定性"
+        "公司低空经济相关业务收入占比极低，订单落地不及预期，业绩无法支撑高估值",
+        "飞控计算机/软件竞争加剧，航天科技在民用低空市场市占率不达预期",
+        "政策落地节奏放缓，或低空经济商业化进程低于市场预期，导致主题热度回落"
       ],
       "evidence": [
         {
-          "claim": "公司为国内碳纤维原丝及复合材料主要供应商，具备航空级产品布局",
-          "source": "公司财报/行业研究",
+          "claim": "航天科技具备航天电子与飞控软件技术积累，属于低空经济飞控核心环节潜在标的",
+          "source": "公司公告/公开信息",
           "strength": "primary"
         },
         {
-          "claim": "低空经济政策密集出台，碳纤维作为飞行器关键结构材料需求预期上升",
-          "source": "公开政策新闻",
+          "claim": "低空经济政策与产业应用加速推进，多地示范场景落地，整体舆情偏正面",
+          "source": "东方财富主题舆情摘要",
           "strength": "media"
         },
         {
-          "claim": "财务数据显示净利润同比大增229.51%，但营收仅增7.36%，盈利质量存疑",
-          "source": "同花顺财报数据",
-          "strength": "primary"
-        },
-        {
-          "claim": "市盈率高达282.65倍，显著高于行业均值，估值已透支未来业绩",
+          "claim": "当前市盈率TTM 122.44倍，估值水平远超业绩兑现速度，存在估值与基本面缺口",
           "source": "公开行情数据",
           "strength": "primary"
         }
       ],
-      "segment": "碳纤维复合材料",
-      "selection_reason": "碳纤维原丝及复合材料生产，航空级",
-      "revenue_exposure": "高",
+      "segment": "飞控计算机与飞行控制软件",
+      "selection_reason": "航天电子与飞行控制软件技术积累深厚",
+      "revenue_exposure": "低",
       "fundamentals": {
         "market_cap_yi": null,
-        "pe_ratio": 282.653295,
-        "pb_ratio": 2.079835,
-        "roe": 0.62,
-        "gross_margin": 12.7,
-        "revenue_yoy": 7.36,
-        "profit_yoy": 229.51,
-        "debt_ratio": 64.89,
-        "report_date": "2026-03-31"
+        "pe_ratio": 122.435032,
+        "pb_ratio": 2.56325,
+        "roe": null,
+        "gross_margin": null,
+        "revenue_yoy": null,
+        "profit_yoy": null,
+        "debt_ratio": null,
+        "report_date": ""
       },
       "revenue_composition": {
-        "粘胶长丝": 57.0,
-        "粘胶短纤": 23.83,
-        "碳纤维产品": 16.43
+        "汽车电子产品": 77.32,
+        "航天应用产品": 15.98,
+        "其他产品(平台软件及感知设备)": 6.79
       }
     },
     {
-      "ticker": "000697",
-      "company": "炼石航空",
+      "ticker": "002036",
+      "company": "联创电子",
       "market": "A-share",
-      "raw_factor_points": 54.8,
-      "penalty_points": 38.0,
-      "final_score": 16.8,
+      "raw_factor_points": 39.0,
+      "penalty_points": 20.0,
+      "final_score": 19.0,
       "verdict": "Early lead or low priority",
       "factor_details": {
         "demand_inflection": {
-          "rating": 3.0,
+          "rating": 2.0,
           "weight": 15,
-          "points": 9.0
-        },
-        "architecture_coupling": {
-          "rating": 3.0,
-          "weight": 10,
           "points": 6.0
         },
+        "architecture_coupling": {
+          "rating": 2.0,
+          "weight": 10,
+          "points": 4.0
+        },
         "chokepoint_severity": {
-          "rating": 3.0,
+          "rating": 2.0,
           "weight": 15,
-          "points": 9.0
+          "points": 6.0
         },
         "supplier_concentration": {
+          "rating": 1.0,
+          "weight": 12,
+          "points": 2.4
+        },
+        "expansion_difficulty": {
           "rating": 2.0,
           "weight": 12,
           "points": 4.8
         },
-        "expansion_difficulty": {
-          "rating": 3.0,
-          "weight": 12,
-          "points": 7.2
-        },
         "evidence_quality": {
-          "rating": 2.0,
+          "rating": 1.0,
           "weight": 15,
-          "points": 6.0
+          "points": 3.0
         },
         "valuation_disconnect": {
           "rating": 4.0,
@@ -802,158 +1177,32 @@
       },
       "penalty_details": {
         "dilution_financing": {
-          "rating": 3.0,
-          "points": 6.0
+          "rating": 2.0,
+          "points": 4.0
         },
         "governance": {
-          "rating": 2.0,
-          "points": 4.0
+          "rating": 1.0,
+          "points": 2.0
         },
         "geopolitics": {
-          "rating": 2.0,
-          "points": 4.0
+          "rating": 0.0,
+          "points": 0.0
         },
         "liquidity": {
-          "rating": 2.0,
-          "points": 4.0
+          "rating": 0.0,
+          "points": 0.0
         },
         "hype_risk": {
-          "rating": 3.0,
-          "points": 6.0
-        },
-        "accounting_quality": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "cyclicality": {
-          "rating": 3.0,
-          "points": 6.0
-        },
-        "alternative_design_risk": {
-          "rating": 2.0,
-          "points": 4.0
-        }
-      },
-      "kill_switches": [
-        "低空经济商业化进度不及预期，导致碳纤维需求释放缓慢",
-        "公司持续亏损，若无法改善盈利，估值支撑不足",
-        "碳纤维复合材料领域竞争激烈，公司市场份额可能被侵蚀"
-      ],
-      "evidence": [
-        {
-          "claim": "公司具备航空零部件及复合材料技术，受益于低空经济对碳纤维复合材料的需求增长",
-          "source": "公开信息/公司公告",
-          "strength": "media"
-        },
-        {
-          "claim": "市盈率为负（-24.76），显示当前盈利能力不佳，估值与基本面存在较大偏离",
-          "source": "公开行情数据",
-          "strength": "primary"
-        },
-        {
-          "claim": "市净率3.56，相对净资产溢价较高，反映市场对其未来成长性有一定预期",
-          "source": "公开行情数据",
-          "strength": "primary"
-        }
-      ],
-      "segment": "碳纤维复合材料",
-      "selection_reason": "航空零部件及复合材料技术",
-      "revenue_exposure": "中",
-      "fundamentals": {
-        "market_cap_yi": null,
-        "pe_ratio": -24.758809,
-        "pb_ratio": 3.562047,
-        "roe": null,
-        "gross_margin": null,
-        "revenue_yoy": null,
-        "profit_yoy": null,
-        "debt_ratio": null,
-        "report_date": ""
-      },
-      "revenue_composition": {
-        "商用航空部件": 81.94,
-        "其他航空部件": 17.96,
-        "其他(补充)": 0.1
-      }
-    },
-    {
-      "ticker": "002023",
-      "company": "海特高新",
-      "market": "A-share",
-      "raw_factor_points": 54.4,
-      "penalty_points": 38.0,
-      "final_score": 16.4,
-      "verdict": "Early lead or low priority",
-      "factor_details": {
-        "demand_inflection": {
-          "rating": 3.0,
-          "weight": 15,
-          "points": 9.0
-        },
-        "architecture_coupling": {
           "rating": 4.0,
-          "weight": 10,
           "points": 8.0
         },
-        "chokepoint_severity": {
-          "rating": 3.0,
-          "weight": 15,
-          "points": 9.0
-        },
-        "supplier_concentration": {
-          "rating": 2.0,
-          "weight": 12,
-          "points": 4.8
-        },
-        "expansion_difficulty": {
-          "rating": 3.0,
-          "weight": 12,
-          "points": 7.2
-        },
-        "evidence_quality": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "valuation_disconnect": {
-          "rating": 2.0,
-          "weight": 11,
-          "points": 4.4
-        },
-        "catalyst_timing": {
-          "rating": 3.0,
-          "weight": 10,
-          "points": 6.0
-        }
-      },
-      "penalty_details": {
-        "dilution_financing": {
-          "rating": 3.0,
-          "points": 6.0
-        },
-        "governance": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "geopolitics": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "liquidity": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "hype_risk": {
-          "rating": 3.0,
-          "points": 6.0
-        },
         "accounting_quality": {
-          "rating": 2.0,
-          "points": 4.0
+          "rating": 0.0,
+          "points": 0.0
         },
         "cyclicality": {
-          "rating": 3.0,
-          "points": 6.0
+          "rating": 1.0,
+          "points": 2.0
         },
         "alternative_design_risk": {
           "rating": 2.0,
@@ -961,157 +1210,34 @@
         }
       },
       "kill_switches": [
-        "适航认证业务订单落地不及预期，收入贡献有限",
-        "低空经济政策执行节奏慢于市场预期，需求释放延迟",
-        "现有航空维修主业周期性下滑，拖累整体业绩",
-        "公司治理或财务质量存在隐藏风险"
+        "公司低空经济相关收入占比极低或尚未形成实质订单，主题预期无法支撑当前估值",
+        "光学镜头行业竞争激烈，公司难以在该瓶颈环节构建护城河，议价能力有限",
+        "持续亏损叠加高市净率，若基本面无法改善，估值存在大幅回调风险"
       ],
       "evidence": [
         {
-          "claim": "海特高新具备航空维修及适航技术服务经验，可承接低空飞行器适航认证相关业务",
-          "source": "公开信息/公司财报",
+          "claim": "市盈率(TTM)为负，显示公司当前处于亏损状态；市净率10.68，估值处于极高水平",
+          "source": "公开行情数据",
+          "strength": "primary"
+        },
+        {
+          "claim": "低空经济主题舆情整体偏正面，但新闻热股未提及联创电子，公司未被市场明确视为该主题核心标的",
+          "source": "东方财富主题舆情摘要",
           "strength": "media"
         },
         {
-          "claim": "公司当前市盈率为负，业绩亏损，低空经济业务尚未形成实质性盈利贡献",
-          "source": "公开行情数据",
-          "strength": "primary"
-        }
-      ],
-      "segment": "适航认证",
-      "selection_reason": "航空维修及适航技术服务经验",
-      "revenue_exposure": "中",
-      "fundamentals": {
-        "market_cap_yi": null,
-        "pe_ratio": -13.436451,
-        "pb_ratio": 1.962159,
-        "roe": null,
-        "gross_margin": null,
-        "revenue_yoy": null,
-        "profit_yoy": null,
-        "debt_ratio": null,
-        "report_date": ""
-      },
-      "revenue_composition": {
-        "航空工程技术与服务": 66.49,
-        "高端核心装备研制与保障": 29.25,
-        "其他(补充)": 4.26
-      }
-    },
-    {
-      "ticker": "000049",
-      "company": "德赛电池",
-      "market": "A-share",
-      "raw_factor_points": 44.4,
-      "penalty_points": 30.0,
-      "final_score": 14.4,
-      "verdict": "Early lead or low priority",
-      "factor_details": {
-        "demand_inflection": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "architecture_coupling": {
-          "rating": 3.0,
-          "weight": 10,
-          "points": 6.0
-        },
-        "chokepoint_severity": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "supplier_concentration": {
-          "rating": 2.0,
-          "weight": 12,
-          "points": 4.8
-        },
-        "expansion_difficulty": {
-          "rating": 3.0,
-          "weight": 12,
-          "points": 7.2
-        },
-        "evidence_quality": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "valuation_disconnect": {
-          "rating": 2.0,
-          "weight": 11,
-          "points": 4.4
-        },
-        "catalyst_timing": {
-          "rating": 2.0,
-          "weight": 10,
-          "points": 4.0
-        }
-      },
-      "penalty_details": {
-        "dilution_financing": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "governance": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "geopolitics": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "liquidity": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "hype_risk": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "accounting_quality": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "cyclicality": {
-          "rating": 3.0,
-          "points": 6.0
-        },
-        "alternative_design_risk": {
-          "rating": 3.0,
-          "points": 6.0
-        }
-      },
-      "kill_switches": [
-        "低空经济商业化进展不及预期，电池需求长期维持在百亿元以下",
-        "德赛电池无法进入航空级电池核心供应链，仅停留在消费类封装层面",
-        "固态电池等下一代技术迅速成熟，导致现有PACK/BMS技术路线被替代",
-        "消费电子需求下行冲击传统主业，盈利能力下滑超出预期"
-      ],
-      "evidence": [
-        {
-          "claim": "低空经济对高能量密度电池需求尚未放量，公司目前收入仍以消费电子为主",
-          "source": "公开财报行业常识",
+          "claim": "公司主营光学镜头及传感器件，理论上可用于低空导航成像领域，但具体业务占比与订单情况未在已知信息中体现",
+          "source": "公开公司业务信息/行业研究",
           "strength": "analysis"
-        },
-        {
-          "claim": "公司为锂电池PACK及BMS供应商，具备向航空电池延伸的技术基础，但非电芯核心环节",
-          "source": "公司公告/公开信息",
-          "strength": "primary"
-        },
-        {
-          "claim": "当前市盈率约22.67倍、市净率1.33倍，未高估，但低空经济业务贡献极小",
-          "source": "公开行情数据",
-          "strength": "media"
         }
       ],
-      "segment": "高能量密度电池",
-      "selection_reason": "锂电池封装及BMS技术，可延伸至航空",
+      "segment": "高精度导航与传感器",
+      "selection_reason": "光学镜头及传感器件，可用于导航成像",
       "revenue_exposure": "低",
       "fundamentals": {
         "market_cap_yi": null,
-        "pe_ratio": 22.674323,
-        "pb_ratio": 1.327716,
+        "pe_ratio": -5.153698,
+        "pb_ratio": 10.675817,
         "roe": null,
         "gross_margin": null,
         "revenue_yoy": null,
@@ -1120,24 +1246,24 @@
         "report_date": ""
       },
       "revenue_composition": {
-        "智能手机类": 27.75,
-        "储能产品类": 18.96,
-        "电动工具、智能家居和出行类": 18.39
+        "车载光学": 41.12,
+        "应用终端": 40.62,
+        "非车载光学": 15.53
       }
     },
     {
-      "ticker": "000063",
-      "company": "中兴通讯",
+      "ticker": "001283",
+      "company": "豪鹏科技",
       "market": "A-share",
-      "raw_factor_points": 44.6,
-      "penalty_points": 38.0,
-      "final_score": 6.6,
+      "raw_factor_points": 39.4,
+      "penalty_points": 26.0,
+      "final_score": 13.4,
       "verdict": "Early lead or low priority",
       "factor_details": {
         "demand_inflection": {
-          "rating": 3.0,
+          "rating": 2.0,
           "weight": 15,
-          "points": 9.0
+          "points": 6.0
         },
         "architecture_coupling": {
           "rating": 2.0,
@@ -1145,29 +1271,29 @@
           "points": 4.0
         },
         "chokepoint_severity": {
+          "rating": 2.0,
+          "weight": 15,
+          "points": 6.0
+        },
+        "supplier_concentration": {
+          "rating": 2.0,
+          "weight": 12,
+          "points": 4.8
+        },
+        "expansion_difficulty": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "evidence_quality": {
           "rating": 1.0,
           "weight": 15,
           "points": 3.0
         },
-        "supplier_concentration": {
-          "rating": 3.0,
-          "weight": 12,
-          "points": 7.2
-        },
-        "expansion_difficulty": {
-          "rating": 2.0,
-          "weight": 12,
-          "points": 4.8
-        },
-        "evidence_quality": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
         "valuation_disconnect": {
-          "rating": 3.0,
+          "rating": 2.0,
           "weight": 11,
-          "points": 6.6
+          "points": 4.4
         },
         "catalyst_timing": {
           "rating": 2.0,
@@ -1177,32 +1303,32 @@
       },
       "penalty_details": {
         "dilution_financing": {
-          "rating": 2.0,
-          "points": 4.0
+          "rating": 1.0,
+          "points": 2.0
         },
         "governance": {
           "rating": 1.0,
           "points": 2.0
         },
         "geopolitics": {
-          "rating": 3.0,
-          "points": 6.0
+          "rating": 1.0,
+          "points": 2.0
         },
         "liquidity": {
           "rating": 1.0,
           "points": 2.0
         },
         "hype_risk": {
-          "rating": 4.0,
-          "points": 8.0
-        },
-        "accounting_quality": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "cyclicality": {
           "rating": 3.0,
           "points": 6.0
+        },
+        "accounting_quality": {
+          "rating": 1.0,
+          "points": 2.0
+        },
+        "cyclicality": {
+          "rating": 2.0,
+          "points": 4.0
         },
         "alternative_design_risk": {
           "rating": 3.0,
@@ -1210,39 +1336,29 @@
         }
       },
       "kill_switches": [
-        "低空通信只是公司众多业务线之一，实际收入贡献可能极低，主题催化难以显著改善整体业绩",
-        "空管系统核心环节可能由民航专业厂商主导，通信设备商未必能获得关键份额",
-        "若低空经济政策落地不及预期，或运营商资本开支转向，相关需求可能推迟或缩减"
+        "公司在低空经济电池领域尚无明确订单或收入披露，实际业务占比可能极低",
+        "高能量密度电池竞争激烈，公司技术与产能未必达到飞行器适航要求",
+        "主题情绪过热，但公司未出现在新闻热股中，市场关注度或由概念炒作驱动"
       ],
       "evidence": [
         {
-          "claim": "中兴通讯在通信设备领域有深厚积累，可提供低空通信所需基站、无线网络等基础设施",
-          "source": "公司年报/公开业务介绍",
+          "claim": "公司为锂电池研发制造企业，具备向高能量密度动力电池方向拓展的基础",
+          "source": "公开公司简介及入选理由",
           "strength": "primary"
         },
         {
-          "claim": "低空经济被多地政府列为重点产业，空管通信网络建设需求预期上升",
-          "source": "行业研究报告/政策文件",
-          "strength": "analysis"
-        },
-        {
-          "claim": "公司在5G-A、通感一体化等技术上已有布局，可支持低空飞行器通信与感知",
-          "source": "公司技术发布/行业媒体",
+          "claim": "低空经济政策与产业应用加速推进，对高能量密度电池需求预期上升",
+          "source": "东方财富主题舆情摘要",
           "strength": "media"
-        },
-        {
-          "claim": "当前市盈率TTM约48倍，市净率2.13倍，估值隐含较高增长预期",
-          "source": "公开行情数据",
-          "strength": "primary"
         }
       ],
-      "segment": "空管系统",
-      "selection_reason": "通信技术可支撑低空通信网络建设",
+      "segment": "高能量密度动力电池",
+      "selection_reason": "锂电池研发制造，向高能量密度方向拓展",
       "revenue_exposure": "低",
       "fundamentals": {
         "market_cap_yi": null,
-        "pe_ratio": 48.427349,
-        "pb_ratio": 2.129294,
+        "pe_ratio": 25.285912,
+        "pb_ratio": 1.597667,
         "roe": null,
         "gross_margin": null,
         "revenue_yoy": null,
@@ -1251,9 +1367,9 @@
         "report_date": ""
       },
       "revenue_composition": {
-        "运营商网络": 40.71,
-        "政企业务": 35.41,
-        "消费者业务": 23.88
+        "消费类应用场景新能源解决方案产品": 86.32,
+        "储能类应用场景新能源解决方案产品": 11.09,
+        "其他(补充)": 2.59
       }
     }
   ]

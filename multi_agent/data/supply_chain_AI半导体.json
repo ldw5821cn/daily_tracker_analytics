@@ -2,178 +2,180 @@
   "theme": "AI半导体",
   "value_chain": {
     "theme": "AI半导体",
-    "demand_story": "大模型训练与推理算力需求爆发，AI芯片供不应求，驱动全产业链升级扩产。",
+    "demand_story": "生成式AI与大模型训练推动算力需求爆发，GPU/HBM/先进封装及配套产业链量价齐升，全球资本开支高速增长。",
     "value_chain": [
       {
         "layer": "下游/终端",
         "segments": [
-          "云计算厂商",
-          "互联网大厂",
-          "AI应用",
-          "自动驾驶",
-          "智能终端"
+          "AI云服务",
+          "大模型应用",
+          "智能驾驶",
+          "AIOT终端"
         ],
         "key_players_global": [
-          "微软",
-          "谷歌",
-          "亚马逊",
+          "Microsoft",
+          "Google",
+          "Amazon",
           "Meta",
-          "特斯拉",
-          "字节跳动"
+          "Tesla",
+          "OpenAI"
         ]
       },
       {
         "layer": "系统集成/整机",
         "segments": [
           "AI服务器",
-          "加速计算整机",
-          "网络存储设备",
+          "交换机",
+          "存储系统",
           "液冷整机柜"
         ],
         "key_players_global": [
-          "英伟达",
-          "戴尔",
+          "Dell",
           "HPE",
-          "超微",
-          "浪潮信息",
-          "联想集团"
+          "Supermicro",
+          "Cisco",
+          "Arista",
+          "浪潮信息"
         ]
       },
       {
         "layer": "核心零部件",
         "segments": [
-          "AI加速芯片",
-          "HBM高带宽存储",
-          "先进封装",
-          "PCB/载板",
-          "电源管理",
-          "液冷组件"
+          "高层次PCB",
+          "电源模块",
+          "连接器",
+          "散热组件",
+          "存储接口"
         ],
         "key_players_global": [
-          "英伟达",
-          "AMD",
-          "英特尔",
-          "SK海力士",
-          "三星",
-          "台积电",
-          "日月光"
+          "TTM",
+          "Vicor",
+          "Amphenol",
+          "Vertiv",
+          "TE Connectivity"
         ]
       },
       {
         "layer": "芯片/器件",
         "segments": [
-          "逻辑芯片",
-          "存储芯片",
-          "模拟芯片",
-          "功率半导体",
-          "光芯片",
-          "接口芯片"
+          "AI加速芯片(GPU/ASIC)",
+          "HBM存储",
+          "先进制程主控",
+          "光模块/光芯片",
+          "电源管理芯片"
         ],
         "key_players_global": [
-          "英伟达",
-          "英特尔",
-          "美光",
-          "博通",
-          "德州仪器",
-          "安森美"
+          "NVIDIA",
+          "AMD",
+          "Intel",
+          "SK Hynix",
+          "Samsung",
+          "Broadcom",
+          "TSMC"
         ]
       },
       {
         "layer": "设备",
         "segments": [
-          "光刻设备",
+          "光刻机",
           "刻蚀设备",
-          "薄膜沉积",
-          "量测检测",
-          "封装设备",
-          "清洗设备"
+          "薄膜沉积设备",
+          "先进封装设备",
+          "测试设备"
         ],
         "key_players_global": [
           "ASML",
-          "应用材料",
-          "泛林半导体",
-          "东京电子",
-          "科磊",
-          "爱德万"
+          "Lam Research",
+          "Applied Materials",
+          "Tokyo Electron",
+          "KLA"
         ]
       },
       {
         "layer": "材料",
         "segments": [
-          "硅片",
+          "大硅片",
           "光刻胶",
-          "电子气体",
+          "掩膜版",
+          "电子特气",
           "靶材",
-          "CMP抛光材料",
-          "湿电子化学品"
+          "ABF载板"
         ],
         "key_players_global": [
-          "信越化学",
-          "SUMCO",
+          "Shin-Etsu",
           "JSR",
-          "林德",
-          "霍尼韦尔",
-          "陶氏"
+          "ASML(掩膜)",
+          "Linde",
+          "JX Metals",
+          "Ibiden"
         ]
       }
     ],
     "bottlenecks": [
       {
-        "segment": "AI加速芯片",
-        "severity": 5,
-        "reason": "全球仅英伟达、AMD等少数玩家，设计门槛极高，产能受台积电先进制程约束，国产替代率极低",
-        "global_cr3": "英伟达、AMD、英特尔合计占超80%",
-        "china_share": "国产份额不足5%，华为昇腾、寒武纪处于追赶阶段"
-      },
-      {
         "segment": "HBM高带宽存储",
         "severity": 5,
-        "reason": "技术壁垒极高，与AI芯片深度绑定，扩产周期长，供给高度集中",
-        "global_cr3": "SK海力士、三星、美光合计占近100%",
-        "china_share": "国产份额几乎为零，合肥长鑫尚未量产HBM"
+        "reason": "AI芯片标配，技术壁垒极高，SK海力士/三星/美光垄断，产能被锁定，国产厂商尚未实现量产，扩产周期超2年。",
+        "global_cr3": "SK海力士、三星、美光合计市占率超95%",
+        "china_share": "国产化率接近于0，长鑫存储尚在研发阶段"
       },
       {
-        "segment": "先进封装（CoWoS）",
-        "severity": 4,
-        "reason": "台积电一家独大，产能扩张速度远追不上AI芯片需求，认证周期长，大陆封装厂技术差距明显",
-        "global_cr3": "台积电、日月光、安靠合计占约70%",
-        "china_share": "长电科技、通富微电、甬矽电子合计占不到10%"
-      },
-      {
-        "segment": "高端光刻设备",
+        "segment": "先进制程代工（5nm及以下）",
         "severity": 5,
-        "reason": "EUV光刻机完全垄断，ASML独家供应，先进制程扩产受制于设备，国产光刻机尚未突破EUV",
-        "global_cr3": "ASML、尼康、佳能合计占95%以上",
-        "china_share": "上海微电子仅能提供90nm以上光刻机，EUV为零"
+        "reason": "AI芯片需极先进制程，台积电独占主要产能，先进封装也依赖台积电CoWoS，国内代工受限，短期无替代。",
+        "global_cr3": "台积电、三星、Intel合计市占率超90%，台积电一家超60%",
+        "china_share": "中芯国际先进制程量产受限，N+2尚无法满足顶级AI芯片要求"
+      },
+      {
+        "segment": "高端半导体设备（光刻机）",
+        "severity": 5,
+        "reason": "EUV光刻机全球仅ASML可供应，先进制程刚需，出口管制严格，国产光刻机尚处DUV阶段，技术代差大。",
+        "global_cr3": "ASML垄断EUV市场，CR3中ASML、Nikon、Canon覆盖全部",
+        "china_share": "国产EUV空白，上海微电子DUV仅可覆盖部分成熟制程"
+      },
+      {
+        "segment": "ABF载板",
+        "severity": 4,
+        "reason": "CPU/GPU/FPGA等高密度封装核心基板，日本和台湾厂商主导，技术认证周期长，AI芯片需求暴增导致缺货。",
+        "global_cr3": "Ibiden、Shinko、欣兴电子合计市占率超70%",
+        "china_share": "国产化率5%以下，深南电路、兴森科技刚获认证"
+      },
+      {
+        "segment": "EDA/IP核心工具",
+        "severity": 4,
+        "reason": "芯片设计必需，三大EDA巨头垄断先进制程工具，AI芯片设计复杂度高依赖其验证平台，国产EDA目前仅支持成熟制程。",
+        "global_cr3": "Synopsys、Cadence、Siemens EDA合计市占率近80%",
+        "china_share": "国产EDA渗透率约10%，华大九天、概伦电子主打点工具"
       }
     ],
     "kill_switches": [
-      "全球AI资本开支不及预期，大模型商业化收入低于投入",
-      "AI芯片技术路线变化（如量子计算、类脑计算等颠覆性替代）",
-      "美国放松对华出口管制，国产替代逻辑被削弱",
-      "AI算力泡沫破裂，云厂商缩减订单导致产业链库存积压"
+      "全球AI资本开支不及预期，云厂商缩减AI服务器采购",
+      "大模型训练效率大幅提升或算法收敛，算力需求增速放缓",
+      "非英伟达兼容生态成熟，如Cerebras/Graphcore等专用芯片爆发",
+      "先进封装或HBM技术路线被颠覆，如光互连、存内计算等",
+      "中美科技摩擦升级，出口管制进一步扩大，导致供应链断供"
     ],
-    "_llm_raw": "{\n  \"theme\": \"AI半导体\",\n  \"demand_story\": \"大模型训练与推理算力需求爆发，AI芯片供不应求，驱动全产业链升级扩产。\",\n  \"value_chain\": [\n    {\n      \"layer\": \"下游/终端\",\n      \"segments\": [\"云计算厂商\", \"互联网大厂\", \"AI应用\", \"自动驾驶\", \"智能终端\"],\n      \"key_players_global\": [\"微软\", \"谷歌\", \"亚马逊\", \"Meta\", \"特斯拉\", \"字节跳动\"]\n    },\n    {\n      \"layer\": \"系统集成/整机\",\n      \"segments\": [\"AI服务器\", \"加速计算整机\", \"网络存储设备\", \"液冷整机柜\"],\n      \"key_players_global\": [\"英伟达\", \"戴尔\", \"HPE\", \"超微\", \"浪潮信息\", \"联想集团\"]\n    },\n    {\n      \"layer\": \"核心零部件\",\n      \"segments\": [\"AI加速芯片\", \"HBM高带宽存储\", \"先进封装\", \"PCB/载板\", \"电源管理\", \"液冷组件\"],\n      \"key_players_global\": [\"英伟达\", \"AMD\", \"英特尔\", \"SK海力士\", \"三星\", \"台积电\", \"日月光\"]\n    },\n    {\n      \"layer\": \"芯片/器件\",\n      \"segments\": [\"逻辑芯片\", \"存储芯片\", \"模拟芯片\", \"功率半导体\", \"光芯片\", \"接口芯片\"],\n      \"key_players_global\": [\"英伟达\", \"英特尔\", \"美光\", \"博通\", \"德州仪器\", \"安森美\"]\n    },\n    {\n      \"layer\": \"设备\",\n      \"segments\": [\"光刻设备\", \"刻蚀设备\", \"薄膜沉积\", \"量测检测\", \"封装设备\", \"清洗设备\"],\n      \"key_players_global\": [\"ASML\", \"应用材料\", \"泛林半导体\", \"东京电子\", \"科磊\", \"爱德万\"]\n    },\n    {\n      \"layer\": \"材料\",\n      \"segments\": [\"硅片\", \"光刻胶\", \"电子气体\", \"靶材\", \"CMP抛光材料\", \"湿电子化学品\"],\n      \"key_players_global\": [\"信越化学\", \"SUMCO\", \"JSR\", \"林德\", \"霍尼韦尔\", \"陶氏\"]\n    }\n  ],\n  \"bottlenecks\": [\n    {\n      \"segment\": \"AI加速芯片\",\n      \"severity\": 5,\n      \"reason\": \"全球仅英伟达、AMD等少数玩家，设计门槛极高，产能受台积电先进制程约束，国产替代率极低\",\n      \"global_cr3\": \"英伟达、AMD、英特尔合计占超80%\",\n      \"china_share\": \"国产份额不足5%，华为昇腾、寒武纪处于追赶阶段\"\n    },\n    {\n      \"segment\": \"HBM高带宽存储\",\n      \"severity\": 5,\n      \"reason\": \"技术壁垒极高，与AI芯片深度绑定，扩产周期长，供给高度集中\",\n      \"global_cr3\": \"SK海力士、三星、美光合计占近100%\",\n      \"china_share\": \"国产份额几乎为零，合肥长鑫尚未量产HBM\"\n    },\n    {\n      \"segment\": \"先进封装（CoWoS）\",\n      \"severity\": 4,\n      \"reason\": \"台积电一家独大，产能扩张速度远追不上AI芯片需求，认证周期长，大陆封装厂技术差距明显\",\n      \"global_cr3\": \"台积电、日月光、安靠合计占约70%\",\n      \"china_share\": \"长电科技、通富微电、甬矽电子合计占不到10%\"\n    },\n    {\n      \"segment\": \"高端光刻设备\",\n      \"severity\": 5,\n      \"reason\": \"EUV光刻机完全垄断，ASML独家供应，先进制程扩产受制于设备，国产光刻机尚未突破EUV\",\n      \"global_cr3\": \"ASML、尼康、佳能合计占95%以上\",\n      \"china_share\": \"上海微电子仅能提供90nm以上光刻机，EUV为零\"\n    }\n  ],\n  \"kill_switches\": [\n    \"全球AI资本开支不及预期，大模型商业化收入低于投入\",\n    \"AI芯片技术路线变化（如量子计算、类脑计算等颠覆性替代）\",\n    \"美国放松对华出口管制，国产替代逻辑被削弱\",\n    \"AI算力泡沫破裂，云厂商缩减订单导致产业链库存积压\"\n  ]\n}"
+    "_llm_raw": "{\n  \"theme\": \"AI半导体\",\n  \"demand_story\": \"生成式AI与大模型训练推动算力需求爆发，GPU/HBM/先进封装及配套产业链量价齐升，全球资本开支高速增长。\",\n  \"value_chain\": [\n    {\n      \"layer\": \"下游/终端\",\n      \"segments\": [\"AI云服务\", \"大模型应用\", \"智能驾驶\", \"AIOT终端\"],\n      \"key_players_global\": [\"Microsoft\", \"Google\", \"Amazon\", \"Meta\", \"Tesla\", \"OpenAI\"]\n    },\n    {\n      \"layer\": \"系统集成/整机\",\n      \"segments\": [\"AI服务器\", \"交换机\", \"存储系统\", \"液冷整机柜\"],\n      \"key_players_global\": [\"Dell\", \"HPE\", \"Supermicro\", \"Cisco\", \"Arista\", \"浪潮信息\"]\n    },\n    {\n      \"layer\": \"核心零部件\",\n      \"segments\": [\"高层次PCB\", \"电源模块\", \"连接器\", \"散热组件\", \"存储接口\"],\n      \"key_players_global\": [\"TTM\", \"Vicor\", \"Amphenol\", \"Vertiv\", \"TE Connectivity\"]\n    },\n    {\n      \"layer\": \"芯片/器件\",\n      \"segments\": [\"AI加速芯片(GPU/ASIC)\", \"HBM存储\", \"先进制程主控\", \"光模块/光芯片\", \"电源管理芯片\"],\n      \"key_players_global\": [\"NVIDIA\", \"AMD\", \"Intel\", \"SK Hynix\", \"Samsung\", \"Broadcom\", \"TSMC\"]\n    },\n    {\n      \"layer\": \"设备\",\n      \"segments\": [\"光刻机\", \"刻蚀设备\", \"薄膜沉积设备\", \"先进封装设备\", \"测试设备\"],\n      \"key_players_global\": [\"ASML\", \"Lam Research\", \"Applied Materials\", \"Tokyo Electron\", \"KLA\"]\n    },\n    {\n      \"layer\": \"材料\",\n      \"segments\": [\"大硅片\", \"光刻胶\", \"掩膜版\", \"电子特气\", \"靶材\", \"ABF载板\"],\n      \"key_players_global\": [\"Shin-Etsu\", \"JSR\", \"ASML(掩膜)\", \"Linde\", \"JX Metals\", \"Ibiden\"]\n    }\n  ],\n  \"bottlenecks\": [\n    {\n      \"segment\": \"HBM高带宽存储\",\n      \"severity\": 5,\n      \"reason\": \"AI芯片标配，技术壁垒极高，SK海力士/三星/美光垄断，产能被锁定，国产厂商尚未实现量产，扩产周期超2年。\",\n      \"global_cr3\": \"SK海力士、三星、美光合计市占率超95%\",\n      \"china_share\": \"国产化率接近于0，长鑫存储尚在研发阶段\"\n    },\n    {\n      \"segment\": \"先进制程代工（5nm及以下）\",\n      \"severity\": 5,\n      \"reason\": \"AI芯片需极先进制程，台积电独占主要产能，先进封装也依赖台积电CoWoS，国内代工受限，短期无替代。\",\n      \"global_cr3\": \"台积电、三星、Intel合计市占率超90%，台积电一家超60%\",\n      \"china_share\": \"中芯国际先进制程量产受限，N+2尚无法满足顶级AI芯片要求\"\n    },\n    {\n      \"segment\": \"高端半导体设备（光刻机）\",\n      \"severity\": 5,\n      \"reason\": \"EUV光刻机全球仅ASML可供应，先进制程刚需，出口管制严格，国产光刻机尚处DUV阶段，技术代差大。\",\n      \"global_cr3\": \"ASML垄断EUV市场，CR3中ASML、Nikon、Canon覆盖全部\",\n      \"china_share\": \"国产EUV空白，上海微电子DUV仅可覆盖部分成熟制程\"\n    },\n    {\n      \"segment\": \"ABF载板\",\n      \"severity\": 4,\n      \"reason\": \"CPU/GPU/FPGA等高密度封装核心基板，日本和台湾厂商主导，技术认证周期长，AI芯片需求暴增导致缺货。\",\n      \"global_cr3\": \"Ibiden、Shinko、欣兴电子合计市占率超70%\",\n      \"china_share\": \"国产化率5%以下，深南电路、兴森科技刚获认证\"\n    },\n    {\n      \"segment\": \"EDA/IP核心工具\",\n      \"severity\": 4,\n      \"reason\": \"芯片设计必需，三大EDA巨头垄断先进制程工具，AI芯片设计复杂度高依赖其验证平台，国产EDA目前仅支持成熟制程。\",\n      \"global_cr3\": \"Synopsys、Cadence、Siemens EDA合计市占率近80%\",\n      \"china_share\": \"国产EDA渗透率约10%，华大九天、概伦电子主打点工具\"\n    }\n  ],\n  \"kill_switches\": [\n    \"全球AI资本开支不及预期，云厂商缩减AI服务器采购\",\n    \"大模型训练效率大幅提升或算法收敛，算力需求增速放缓\",\n    \"非英伟达兼容生态成熟，如Cerebras/Graphcore等专用芯片爆发\",\n    \"先进封装或HBM技术路线被颠覆，如光互连、存内计算等\",\n    \"中美科技摩擦升级，出口管制进一步扩大，导致供应链断供\"\n  ]\n}"
   },
   "top_candidates": [
     {
-      "ticker": "002049",
-      "company": "紫光国微",
+      "ticker": "000021",
+      "company": "深科技",
       "market": "A-share",
-      "raw_factor_points": 55.2,
-      "penalty_points": 42.0,
-      "final_score": 13.2,
+      "raw_factor_points": 64.4,
+      "penalty_points": 38.0,
+      "final_score": 26.4,
       "verdict": "Early lead or low priority",
       "factor_details": {
         "demand_inflection": {
-          "rating": 3.0,
+          "rating": 4.0,
           "weight": 15,
-          "points": 9.0
+          "points": 12.0
         },
         "architecture_coupling": {
-          "rating": 3.0,
+          "rating": 4.0,
           "weight": 10,
-          "points": 6.0
+          "points": 8.0
         },
         "chokepoint_severity": {
           "rating": 3.0,
@@ -181,377 +183,14 @@
           "points": 9.0
         },
         "supplier_concentration": {
+          "rating": 3.0,
+          "weight": 12,
+          "points": 7.2
+        },
+        "expansion_difficulty": {
           "rating": 4.0,
           "weight": 12,
           "points": 9.6
-        },
-        "expansion_difficulty": {
-          "rating": 3.0,
-          "weight": 12,
-          "points": 7.2
-        },
-        "evidence_quality": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "valuation_disconnect": {
-          "rating": 2.0,
-          "weight": 11,
-          "points": 4.4
-        },
-        "catalyst_timing": {
-          "rating": 2.0,
-          "weight": 10,
-          "points": 4.0
-        }
-      },
-      "penalty_details": {
-        "dilution_financing": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "governance": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "geopolitics": {
-          "rating": 4.0,
-          "points": 8.0
-        },
-        "liquidity": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "hype_risk": {
-          "rating": 3.0,
-          "points": 6.0
-        },
-        "accounting_quality": {
-          "rating": 3.0,
-          "points": 6.0
-        },
-        "cyclicality": {
-          "rating": 3.0,
-          "points": 6.0
-        },
-        "alternative_design_risk": {
-          "rating": 3.0,
-          "points": 6.0
-        }
-      },
-      "kill_switches": [
-        "AI加速芯片收入贡献尚不明确，若实际出货/订单不及预期则核心逻辑被削弱",
-        "高端FPGA/ASIC制程受外部代工限制，产能扩张或先进工艺获取可能受阻",
-        "军工特种业务占比较高，业绩释放节奏与AI业务协同性存疑，可能拖累成长预期"
-      ],
-      "evidence": [
-        {
-          "claim": "国产FPGA/ASIC设计龙头，具备AI加速芯片国产化技术承接能力",
-          "source": "公开行业信息/公司定位",
-          "strength": "media"
-        },
-        {
-          "claim": "市盈率(TTM)约33.66倍，市净率3.67倍，估值处于科技股中等水平",
-          "source": "公开行情数据",
-          "strength": "primary"
-        }
-      ],
-      "segment": "AI加速芯片",
-      "selection_reason": "国产FPGA/ASIC设计龙头，承接AI加速芯片国产化",
-      "revenue_exposure": "中",
-      "fundamentals": {
-        "market_cap_yi": null,
-        "pe_ratio": 33.660535,
-        "pb_ratio": 3.668237,
-        "roe": null,
-        "gross_margin": null,
-        "revenue_yoy": null,
-        "profit_yoy": null,
-        "debt_ratio": null,
-        "report_date": ""
-      },
-      "revenue_composition": {
-        "特种集成电路": 52.55,
-        "智能安全芯片": 40.9,
-        "石英晶体频率器件": 5.61
-      }
-    },
-    {
-      "ticker": "000021",
-      "company": "深科技",
-      "market": "A-share",
-      "raw_factor_points": 44.4,
-      "penalty_points": 40.0,
-      "final_score": 4.4,
-      "verdict": "Early lead or low priority",
-      "factor_details": {
-        "demand_inflection": {
-          "rating": 3.0,
-          "weight": 15,
-          "points": 9.0
-        },
-        "architecture_coupling": {
-          "rating": 2.0,
-          "weight": 10,
-          "points": 4.0
-        },
-        "chokepoint_severity": {
-          "rating": 1.0,
-          "weight": 15,
-          "points": 3.0
-        },
-        "supplier_concentration": {
-          "rating": 2.0,
-          "weight": 12,
-          "points": 4.8
-        },
-        "expansion_difficulty": {
-          "rating": 2.0,
-          "weight": 12,
-          "points": 4.8
-        },
-        "evidence_quality": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "valuation_disconnect": {
-          "rating": 4.0,
-          "weight": 11,
-          "points": 8.8
-        },
-        "catalyst_timing": {
-          "rating": 2.0,
-          "weight": 10,
-          "points": 4.0
-        }
-      },
-      "penalty_details": {
-        "dilution_financing": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "governance": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "geopolitics": {
-          "rating": 3.0,
-          "points": 6.0
-        },
-        "liquidity": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "hype_risk": {
-          "rating": 4.0,
-          "points": 8.0
-        },
-        "accounting_quality": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "cyclicality": {
-          "rating": 4.0,
-          "points": 8.0
-        },
-        "alternative_design_risk": {
-          "rating": 2.0,
-          "points": 4.0
-        }
-      },
-      "kill_switches": [
-        "公司未实际进入HBM核心TSV/先进封装供应链，相关业务收入占比极低，概念多于实质",
-        "存储行业周期性下滑，叠加封测产能过剩，毛利率和稼动率可能承压",
-        "HBM封装技术路线变化可能导致公司既有布局价值下降，或客户自建产能削弱外协需求"
-      ],
-      "evidence": [
-        {
-          "claim": "公司具备存储芯片封测业务，并布局先进封装技术，有参与HBM相关封装的预期",
-          "source": "公司年报/公开新闻",
-          "strength": "media"
-        },
-        {
-          "claim": "HBM需求受AI算力增长带动，产业链景气度提升",
-          "source": "行业研究机构",
-          "strength": "analysis"
-        },
-        {
-          "claim": "市盈率(TTM)约46.78倍，市净率约4.31倍，估值高于传统封测行业均值",
-          "source": "公开行情数据",
-          "strength": "primary"
-        }
-      ],
-      "segment": "HBM高带宽存储",
-      "selection_reason": "存储芯片封测领域核心标的，具备HBM相关封装技术布局",
-      "revenue_exposure": "中",
-      "fundamentals": {
-        "market_cap_yi": null,
-        "pe_ratio": 46.782872,
-        "pb_ratio": 4.31113,
-        "roe": null,
-        "gross_margin": null,
-        "revenue_yoy": null,
-        "profit_yoy": null,
-        "debt_ratio": null,
-        "report_date": ""
-      },
-      "revenue_composition": {
-        "高端制造": 54.2,
-        "存储半导体": 25.98,
-        "计量智能终端": 19.18
-      }
-    },
-    {
-      "ticker": "000066",
-      "company": "中国长城",
-      "market": "A-share",
-      "raw_factor_points": 39.2,
-      "penalty_points": 36.0,
-      "final_score": 3.2,
-      "verdict": "Early lead or low priority",
-      "factor_details": {
-        "demand_inflection": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "architecture_coupling": {
-          "rating": 1.0,
-          "weight": 10,
-          "points": 2.0
-        },
-        "chokepoint_severity": {
-          "rating": 1.0,
-          "weight": 15,
-          "points": 3.0
-        },
-        "supplier_concentration": {
-          "rating": 3.0,
-          "weight": 12,
-          "points": 7.2
-        },
-        "expansion_difficulty": {
-          "rating": 3.0,
-          "weight": 12,
-          "points": 7.2
-        },
-        "evidence_quality": {
-          "rating": 1.0,
-          "weight": 15,
-          "points": 3.0
-        },
-        "valuation_disconnect": {
-          "rating": 4.0,
-          "weight": 11,
-          "points": 8.8
-        },
-        "catalyst_timing": {
-          "rating": 1.0,
-          "weight": 10,
-          "points": 2.0
-        }
-      },
-      "penalty_details": {
-        "dilution_financing": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "governance": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "geopolitics": {
-          "rating": 3.0,
-          "points": 6.0
-        },
-        "liquidity": {
-          "rating": 1.0,
-          "points": 2.0
-        },
-        "hype_risk": {
-          "rating": 4.0,
-          "points": 8.0
-        },
-        "accounting_quality": {
-          "rating": 2.0,
-          "points": 4.0
-        },
-        "cyclicality": {
-          "rating": 3.0,
-          "points": 6.0
-        },
-        "alternative_design_risk": {
-          "rating": 2.0,
-          "points": 4.0
-        }
-      },
-      "kill_switches": [
-        "AI加速芯片由GPU/ASIC主导，CPU架构耦合度低，飞腾并非核心瓶颈",
-        "市盈率高达2252倍，估值与基本面严重脱钩，业绩无法支撑预期",
-        "缺少具体订单及财务数据验证，催化剂不明朗"
-      ],
-      "evidence": [
-        {
-          "claim": "飞腾CPU在国产算力体系中具备配套作用，受益于信创和国产替代需求",
-          "source": "公开信息/公司公告",
-          "strength": "media"
-        }
-      ],
-      "segment": "AI加速芯片",
-      "selection_reason": "旗下飞腾CPU布局国产算力，可配套AI加速",
-      "revenue_exposure": "低",
-      "fundamentals": {
-        "market_cap_yi": null,
-        "pe_ratio": 2252.989693,
-        "pb_ratio": 4.157653,
-        "roe": null,
-        "gross_margin": null,
-        "revenue_yoy": null,
-        "profit_yoy": null,
-        "debt_ratio": null,
-        "report_date": ""
-      },
-      "revenue_composition": {
-        "计算产业": 75.31,
-        "系统装备": 19.53,
-        "其他(补充)": 5.16
-      }
-    },
-    {
-      "ticker": "000021",
-      "company": "深科技",
-      "market": "A-share",
-      "raw_factor_points": 37.2,
-      "penalty_points": 36.0,
-      "final_score": 1.2,
-      "verdict": "Early lead or low priority",
-      "factor_details": {
-        "demand_inflection": {
-          "rating": 2.0,
-          "weight": 15,
-          "points": 6.0
-        },
-        "architecture_coupling": {
-          "rating": 1.0,
-          "weight": 10,
-          "points": 2.0
-        },
-        "chokepoint_severity": {
-          "rating": 1.0,
-          "weight": 15,
-          "points": 3.0
-        },
-        "supplier_concentration": {
-          "rating": 2.0,
-          "weight": 12,
-          "points": 4.8
-        },
-        "expansion_difficulty": {
-          "rating": 2.0,
-          "weight": 12,
-          "points": 4.8
         },
         "evidence_quality": {
           "rating": 2.0,
@@ -564,9 +203,9 @@
           "points": 6.6
         },
         "catalyst_timing": {
-          "rating": 2.0,
+          "rating": 3.0,
           "weight": 10,
-          "points": 4.0
+          "points": 6.0
         }
       },
       "penalty_details": {
@@ -583,8 +222,8 @@
           "points": 6.0
         },
         "liquidity": {
-          "rating": 1.0,
-          "points": 2.0
+          "rating": 2.0,
+          "points": 4.0
         },
         "hype_risk": {
           "rating": 3.0,
@@ -595,33 +234,38 @@
           "points": 4.0
         },
         "cyclicality": {
-          "rating": 4.0,
-          "points": 8.0
+          "rating": 3.0,
+          "points": 6.0
         },
         "alternative_design_risk": {
-          "rating": 1.0,
-          "points": 2.0
+          "rating": 2.0,
+          "points": 4.0
         }
       },
       "kill_switches": [
-        "未能进入台积电CoWoS供应链，先进封装收入占比极低",
-        "AI存储需求波动导致封测订单不及预期",
-        "公司扩张先进封装产能进度缓慢，技术竞争力有限"
+        "HBM实际量产进度不及预期，公司仅具备封测能力但未进入核心HBM供应链",
+        "AI半导体景气度若因政策或资本退潮而回落，公司业绩可能承压",
+        "公司财务数据披露有限，无法验证HBM相关收入占比，存在预期透支风险"
       ],
       "evidence": [
         {
-          "claim": "存储芯片封测业务受益于AI服务器带来的存储需求增长",
-          "source": "公开信息/公司年报",
+          "claim": "国内存储芯片封测龙头，具备DRAM封装测试能力并布局HBM，直接受益于AI驱动的高带宽存储需求增长",
+          "source": "公司公开信息及行业研究",
           "strength": "analysis"
         },
         {
-          "claim": "公司向高密度封装（包括先进封装）延伸，具备一定的技术积累",
-          "source": "公司公告/媒体",
+          "claim": "AI半导体主题舆情整体偏正面（score +0.82），行业景气上行，资金流入设备及集成电路ETF，但未明确提及深科技为领涨标的",
+          "source": "东方财富主题舆情",
           "strength": "media"
+        },
+        {
+          "claim": "公司市盈率46.78倍，市净率4.31倍，估值处于相对高位，但未达到极端泡沫水平",
+          "source": "公开行情数据",
+          "strength": "primary"
         }
       ],
-      "segment": "先进封装（CoWoS）",
-      "selection_reason": "存储及先进封装封测业务，向高密度封装延伸",
+      "segment": "HBM高带宽存储",
+      "selection_reason": "国内存储芯片封测龙头，具备DRAM封装测试能力并布局HBM",
       "revenue_exposure": "中",
       "fundamentals": {
         "market_cap_yi": null,
