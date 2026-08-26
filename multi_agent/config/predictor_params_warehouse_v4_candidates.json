@@ -1,6 +1,6 @@
 {
   "_version": 5,
-  "updated_at": "2026-08-24T17:10:38.060448",
+  "updated_at": "2026-08-25T17:11:00.397847",
   "个股": {
     "weights": {
       "technical": 0.22,
@@ -135,8 +135,8 @@
   "threshold": {
     "strong_bull": 65,
     "bull": 59,
-    "neutral_high": 54,
-    "neutral_low": 46,
+    "neutral_high": 55,
+    "neutral_low": 45,
     "bear": 41,
     "strong_bear": 35
   },
@@ -146,7 +146,7 @@
     "macro_bearish_score_threshold": 50
   },
   "updated_by": "auto_tune_from_reflection",
-  "updated_reason": "收窄 neutral 区间 | 提高 bullish/bearish 阈值门槛",
-  "trigger_accuracy": 43.26,
-  "trigger_pred_date": "2026-08-21"
+  "updated_reason": "提高 bullish/bearish 阈值门槛",
+  "trigger_accuracy": 47.85,
+  "trigger_pred_date": "2026-08-24"
 }

@@ -26,7 +26,8 @@ import sqlite3
 import warnings
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed, wait, FIRST_COMPLETED
+import time
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 MULTI_AGENT = os.path.join(PROJECT_ROOT, 'multi_agent')
@@ -1126,21 +1127,41 @@ def generate_for_watchlist(watchlist_path: str = None, categories: List[str] = N
         mctx = _get_market_context(region=region, allow_generate=False)
         return predict_one(item['ticker'], item['name'], item.get('sector', item.get('theme', '')), item.get('category', '个股'), fast=fast, ultra=ultra, macro_report=macro_report, market_context=mctx)
 
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+    executor = ThreadPoolExecutor(max_workers=max_workers)
+    try:
         future_to_item = {executor.submit(_predict, item): item for item in items}
-        for future in as_completed(future_to_item):
-            item = future_to_item[future]
-            try:
-                result = future.result(timeout=120)
-                if 'error' in result:
-                    print(f"  ❌ {item['ticker']}: {result['error']}")
+        pending = set(future_to_item)
+        submitted_at = {f: time.time() for f in future_to_item}
+        while pending:
+            done, _ = wait(pending, timeout=10, return_when=FIRST_COMPLETED)
+            for future in done:
+                pending.discard(future)
+                item = future_to_item[future]
+                try:
+                    result = future.result(timeout=120)
+                    if 'error' in result:
+                        print(f"  ❌ {item['ticker']}: {result['error']}")
+                        errors += 1
+                    else:
+                        predictions.append(result)
+                        print(f"  ✅ {item['ticker']} {result['signal']} 置信度{result['confidence']} 评分{result['weighted_score']}")
+                except Exception as e:
+                    print(f"  ❌ {item['ticker']}: {e}")
                     errors += 1
-                else:
-                    predictions.append(result)
-                    print(f"  ✅ {item['ticker']} {result['signal']} 置信度{result['confidence']} 评分{result['weighted_score']}")
-            except Exception as e:
-                print(f"  ❌ {item['ticker']}: {e}")
+            # 超时兜底：只对已开始运行(running)的 future 计硬超时（默认 300s，可用 AGENTIC_ITEM_TIMEOUT 覆盖）；
+            # 排队未开始的给 1800s 上限，避免数据源/LLM 抖动时排队标的被批量误杀（2026-08-26 实测 181 标的因排队>120s 全被取消）
+            now = time.time()
+            item_timeout = float(os.environ.get('AGENTIC_ITEM_TIMEOUT', '300'))
+            stalled = [f for f in pending if now - submitted_at[f] > (item_timeout if f.running() else 1800)]
+            for f in stalled:
+                pending.discard(f)
+                item = future_to_item[f]
+                f.cancel()
+                print(f"  ❌ {item['ticker']}: 分析超时(>{item_timeout:.0f}s)，跳过该标的")
                 errors += 1
+    finally:
+        # wait=False：避免卡死的 worker 线程阻塞主流程（Python 3.9+ worker 为 daemon 线程，进程退出自动回收）
+        executor.shutdown(wait=False)
 
     stats = save_predictions(predictions)
     stats['errors'] += errors

@@ -58,6 +58,10 @@ def _get_client():
         kwargs['base_url'] = base_url
     if default_model:
         os.environ.setdefault('LLM_MODEL', default_model)
+    # timeout=30 + max_retries=0：openai 默认 600s 超时会拖垮批量任务（2026-08-26 实测 LLM API 降级时
+    # 单次调用挂 10 分钟，整批 186 标的连环超时）。重试交给 chat() 的显式 retries 循环。
+    kwargs['timeout'] = float(os.environ.get('LLM_TIMEOUT', '30'))
+    kwargs['max_retries'] = 0
     return openai.OpenAI(**kwargs)
 
 
