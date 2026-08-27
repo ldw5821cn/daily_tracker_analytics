@@ -1,0 +1,16 @@
+[
+  {
+    "code": "513530",
+    "name": "港股通红利ETF华泰柏瑞",
+    "thscode": "513530.SH",
+    "exchange": "SH",
+    "alert_type": "跌破年线",
+    "condition": "close < ma250",
+    "triggered": false,
+    "last_checked": "2026-08-27",
+    "notes": "用户要求：513530持续跟踪，跌破年线时通知买入",
+    "last_close": 1.621,
+    "last_ma250": 1.582268,
+    "last_date": "2026-08-26"
+  }
+]
