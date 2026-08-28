@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>预测系统优化 #1：同花顺特色情绪注入</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --up: #ef4444; --down: #22c55e; }
+    .bg-up { background-color: var(--up); }
+    .bg-down { background-color: var(--down); }
+    .text-up { color: var(--up); }
+    .text-down { color: var(--down); }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <nav class="mb-6 text-sm text-slate-400">
+      <a href="index.html" class="hover:text-white">首页</a>
+      <span class="mx-2">/</span>
+      <span>优化记录</span>
+    </nav>
+
+    <h1 class="text-3xl font-bold mb-2">预测系统优化 #1</h1>
+    <h2 class="text-xl text-slate-300 mb-6">同花顺特色情绪数据注入个股评分</h2>
+
+    <div class="text-slate-400 text-sm mb-8">
+      <p>更新日期：2026-08-28</p>
+      <p>针对问题：8/27 反思显示中性/观望信号错误率高，系统在宏观平淡时容易给出"无观点"信号</p>
+    </div>
+
+    <section class="mb-8">
+      <h3 class="text-lg font-semibold mb-3 border-b border-slate-700 pb-2">背景</h3>
+      <p class="text-slate-300 leading-relaxed">
+        8/27 反思报告指出：中性信号错误率 34.78%，观望信号错误率 61.11%。
+        这些错误样本多为评分处于 55-60 区间的标的，基本面/新闻面已出现正面信号，
+        但系统因技术面偏弱或辩论保守而给出中性/观望。同花顺热股榜、涨停池、龙虎榜等
+        特色数据是 A 股资金情绪的领先指标，应作为情绪评分的重要输入。
+      </p>
+    </section>
+
+    <section class="mb-8">
+      <h3 class="text-lg font-semibold mb-3 border-b border-slate-700 pb-2">本次改动</h3>
+      <ul class="list-disc list-inside text-slate-300 space-y-2">
+        <li>情绪分析师接入同花顺特色数据：涨停池、炸板池、跌停池、连板天梯、热股榜、龙虎榜</li>
+        <li>预测裁决器增加"同花顺情绪修正"：情绪分 0-100 映射为 [-10, +10] 的评分修正</li>
+        <li>仅对个股启用，ETF/期货保持原有逻辑</li>
+        <li>修正值与原因写入推理链，便于复盘</li>
+      </ul>
+    </section>
+
+    <section class="mb-8">
+      <h3 class="text-lg font-semibold mb-3 border-b border-slate-700 pb-2">验证结果</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm border border-slate-700">
+          <thead class="bg-slate-800">
+            <tr>
+              <th class="text-left p-3">标的</th>
+              <th class="text-left p-3">同花顺标签</th>
+              <th class="text-left p-3">情绪分</th>
+              <th class="text-left p-3">情绪修正</th>
+              <th class="text-left p-3">最终信号</th>
+              <th class="text-left p-3">加权评分</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-t border-slate-700">
+              <td class="p-3">中国石化</td>
+              <td class="p-3 text-slate-400">无</td>
+              <td class="p-3">53.3</td>
+              <td class="p-3">0.0</td>
+              <td class="p-3 text-up font-medium">看多</td>
+              <td class="p-3">69.8</td>
+            </tr>
+            <tr class="border-t border-slate-700">
+              <td class="p-3">亨通光电</td>
+              <td class="p-3">热股榜第 1 名</td>
+              <td class="p-3">66.7</td>
+              <td class="p-3 text-up">+0.66</td>
+              <td class="p-3 text-up font-medium">看多</td>
+              <td class="p-3">69.6</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mb-8">
+      <h3 class="text-lg font-semibold mb-3 border-b border-slate-700 pb-2">下一步</h3>
+      <ol class="list-decimal list-inside text-slate-300 space-y-2">
+        <li><strong>低信息量信号标记</strong>：当各分项背离度 &lt; 5 且信号为中性/观望时，自动降级为"观望"并提示</li>
+        <li><strong>修复看空信号生成</strong>：识别"新闻情绪为正但技术面 &lt; 50 且股价不涨"的潜在出货场景</li>
+        <li><strong>优化器学习权重</strong>：8/31 前后样本达标后，让 parameter_optimizer 自动学习情绪/资金面权重</li>
+      </ol>
+    </section>
+
+    <section class="mb-8">
+      <h3 class="text-lg font-semibold mb-3 border-b border-slate-700 pb-2">相关页面</h3>
+      <div class="flex flex-wrap gap-3">
+        <a href="reflection.html" class="px-4 py-2 bg-slate-800 rounded hover:bg-slate-700">反思页面</a>
+        <a href="hithink_market_dashboard.html" class="px-4 py-2 bg-slate-800 rounded hover:bg-slate-700">同花顺市场看板</a>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
