@@ -6,7 +6,8 @@
   2. 龙虎榜 → 机构净买额评分（归一化到[-20,+20]）
   3. 市场总体涨停占比 → 广度情绪偏置（对所有品种微调）
   4. 海外社媒/搜索 → 对美股/ETF 做 overlay（30% 权重）
-  5. 默认值为 50（中性）
+  5. 同花顺特色数据 → 热股榜/涨停池/连板天梯/龙虎榜叠加（当 akshare 不可用时 fallback）
+  6. 默认值为 50（中性）
 
 用法：
   from analysts.sentiment_analyst import compute_sentiment_score
@@ -14,6 +15,7 @@
 """
 import json, os, sys
 from datetime import datetime
+from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 import akshare as ak
@@ -24,8 +26,16 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
+MULTI_AGENT = Path(PROJECT_ROOT) / 'multi_agent'
+HITHINK_CACHE = MULTI_AGENT / 'data' / 'hithink_cache'
+
 # ─── 缓存（避免同一交易日多次调用 API）────────────────────────
 _CACHE: Dict[str, dict] = {}
+
+
+def _today() -> str:
+    return datetime.now().strftime('%Y-%m-%d')
+
 
 def _get_zt_pool(date_str: str) -> pd.DataFrame:
     """获取涨停股池（带缓存）。"""
@@ -47,6 +57,53 @@ def _get_lhb(date_str: str) -> pd.DataFrame:
         except Exception:
             _CACHE[key] = pd.DataFrame()
     return _CACHE[key]
+
+
+def _load_hithink_special(date_str: str) -> Dict[str, Dict]:
+    """加载同花顺特色数据并按 6 位代码索引。"""
+    # date_str 是 20260827 格式；文件名为 2026-08-27
+    date_file = f"{date_str[:4]}-{date_str[4:6]}-{date_str[6:8]}"
+    code_map: Dict[str, Dict] = {}
+    if not HITHINK_CACHE.exists():
+        return code_map
+
+    files = {
+        'limit_up': HITHINK_CACHE / f'limit_up_pool_{date_file}.json',
+        'limit_break': HITHINK_CACHE / f'limit_break_pool_{date_file}.json',
+        'limit_down': HITHINK_CACHE / f'limit_down_pool_{date_file}.json',
+        'limit_ladder': HITHINK_CACHE / f'limit_up_ladder_{date_file}.json',
+        'hot_stock': HITHINK_CACHE / f'hot_stock_list_{date_file}.json',
+        'dragon_tiger': HITHINK_CACHE / f'dragon_tiger_list_{date_file}.json',
+    }
+
+    def _add(code: str, tag: str, payload: Dict):
+        code = code or ''
+        code = code.replace('.SH', '').replace('.SZ', '').replace('.BJ', '').zfill(6)[:6]
+        if not code.isdigit() or len(code) != 6:
+            return
+        if code not in code_map:
+            code_map[code] = {}
+        code_map[code][tag] = payload
+
+    for tag, path in files.items():
+        if not path.exists():
+            continue
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            items = data.get('item', [])
+            if not isinstance(items, list):
+                continue
+            for it in items:
+                ticker = str(it.get('ticker', ''))
+                if tag == 'limit_ladder':
+                    ticker = str(it.get('code', ''))
+                if not ticker:
+                    continue
+                _add(ticker, tag, dict(it))
+        except Exception:
+            continue
+    return code_map
 
 
 def _ticker_to_code(ticker: str) -> str:
@@ -80,12 +137,91 @@ def _fetch_social_overlay(ticker: str, name: Optional[str], category: str) -> Tu
     return res.get('social_score', 50.0), res
 
 
+def _hithink_sentiment(code: str, date_str: str) -> Tuple[float, Dict]:
+    """基于同花顺特色数据计算情绪分增量与细节。"""
+    hmap = _load_hithink_special(date_str)
+    info = hmap.get(code, {})
+    if not info:
+        return 0.0, {}
+
+    delta = 0.0
+    detail: Dict[str, any] = {}
+
+    # 热股榜
+    hot = info.get('hot_stock')
+    if hot:
+        rank = hot.get('rank') or hot.get('serial_number') or 999
+        try:
+            rank = int(rank)
+        except Exception:
+            rank = 999
+        # Top10 +15, Top20 +10, Top30 +5
+        if rank <= 10:
+            delta += 15
+        elif rank <= 20:
+            delta += 10
+        elif rank <= 30:
+            delta += 5
+        detail['hot_stock_rank'] = rank
+
+    # 涨停池
+    lu = info.get('limit_up')
+    if lu:
+        delta += 20
+        lianban = lu.get('limit_up_days') or lu.get('limit_up_day') or 1
+        try:
+            lianban = int(lianban)
+        except Exception:
+            lianban = 1
+        delta += min(lianban * 5, 15)
+        detail['limit_up_days'] = lianban
+
+    # 连板天梯
+    ladder = info.get('limit_ladder')
+    if ladder:
+        delta += 20
+        days = ladder.get('limit_up_days') or ladder.get('limit_up_day') or 1
+        try:
+            days = int(days)
+        except Exception:
+            days = 1
+        delta += min(days * 5, 20)
+        detail['ladder_days'] = days
+
+    # 炸板池
+    lb = info.get('limit_break')
+    if lb:
+        delta -= 12
+        detail['limit_break'] = True
+
+    # 跌停池
+    ld = info.get('limit_down')
+    if ld:
+        delta -= 25
+        detail['limit_down'] = True
+
+    # 龙虎榜：按净买入额加分/减分
+    dt = info.get('dragon_tiger')
+    if dt:
+        net_buy = dt.get('net_buy') or dt.get('net_buy_amount') or 0
+        try:
+            net_buy = float(net_buy)
+        except Exception:
+            net_buy = 0.0
+        # 1亿 = ±5分，上限 ±20
+        delta += max(-20, min(20, net_buy / 1e8 * 5))
+        detail['dragon_tiger_net_buy'] = net_buy
+
+    return delta, detail
+
+
 def compute_sentiment_score(
     ticker: str,
     date: Optional[str] = None,
     category: Optional[str] = None,
     name: Optional[str] = None,
     social_overlay_weight: float = 0.30,
+    use_hithink: bool = True,
 ) -> Tuple[float, Dict]:
     """计算个股情绪评分 0-100。
 
@@ -95,6 +231,7 @@ def compute_sentiment_score(
       category: 类别，用于判断是否使用海外社媒 overlay
       name: 中文/英文名称，用于社媒查询
       social_overlay_weight: 海外社媒情绪 overlay 权重
+      use_hithink: 是否使用同花顺特色数据增强 A 股情绪
     返回：
       (0-100 的评分, detail dict)
     """
@@ -153,9 +290,20 @@ def compute_sentiment_score(
     except Exception:
         pass
 
+    # ── 因子4：同花顺特色数据增强（A股）──
+    hithink_delta = 0.0
+    hithink_detail = {}
+    if a_share and use_hithink:
+        try:
+            hithink_delta, hithink_detail = _hithink_sentiment(code, date_str)
+            local_score += hithink_delta
+            detail['local']['hithink'] = hithink_detail
+        except Exception:
+            pass
+
     local_score = max(0, min(100, round(local_score, 1)))
 
-    # ── 因子4：海外社媒/搜索 overlay（仅非 A股/港股，可选）──
+    # ── 因子5：海外社媒/搜索 overlay（仅非 A股/港股，可选）──
     social_score = 50.0
     social_detail = {'note': 'skipped_for_a_share' if a_share else 'not_called'}
     if not a_share:
@@ -201,7 +349,7 @@ if __name__ == '__main__':
         ('NVDA', 'US', 'NVIDIA'),
         ('SMH', 'ETF', 'VanEck Semiconductor ETF'),
     ]
-    print(f'=== 情绪评分测试 (2026-07-15) ===')
+    print(f'=== 情绪评分测试 ({_today()}) ===')
     for t, cat, name in tests:
-        s, d = compute_sentiment_score(t, '2026-07-15', category=cat, name=name)
+        s, d = compute_sentiment_score(t, _today(), category=cat, name=name)
         print(f'  {t} ({cat}): {s:.1f}/100  detail={json.dumps(d, ensure_ascii=False)}')

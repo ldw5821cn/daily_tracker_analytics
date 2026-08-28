@@ -473,6 +473,24 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         w_fund = _W['fundamental']
         w_news = _W['sentiment']
 
+    # 同花顺特色情绪修正（个股）
+    hithink_sentiment_override = 0.0
+    hithink_sentiment_note = ""
+    hithink_sentiment_strength = _PARAMS.get(category, _PARAMS.get('_default', {})).get('hithink_sentiment_strength', 0.0) if isinstance(_PARAMS, dict) else 0.0
+    if not is_futures(ticker) and not is_us_ticker(ticker) and abs(hithink_sentiment_strength) > 1e-6:
+        try:
+            from analysts.sentiment_analyst import compute_sentiment_score as _get_sent
+            _ct = ticker.replace('.SH','').replace('.SZ','').replace('/US','')
+            _sent_extra, _sent_detail = _get_sent(_ct, category=category, name=name)
+            # 把 0-100 的情绪分映射到 [-10, +10] 的加权修正
+            raw_override = (_sent_extra - 50) / 5.0 * hithink_sentiment_strength
+            hithink_sentiment_override = max(-10, min(10, raw_override))
+            if abs(hithink_sentiment_override) >= 0.5:
+                weighted = max(0, min(100, weighted + hithink_sentiment_override))
+                hithink_sentiment_note = f"同花顺情绪{_sent_extra:.0f}"
+        except Exception:
+            pass
+
     # debate 参数化：可学习 net_multiplier / quality_min / neutral_override
     _D = _get_debate_params(category)
     debate_net_multiplier = _D.get('net_multiplier', 8.0)
@@ -614,6 +632,8 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         reasons.append(macro_note)
     if market_ctx_note:
         reasons.append(market_ctx_note)
+    if hithink_sentiment_note:
+        reasons.append(hithink_sentiment_note)
     if fund_flow_note:
         reasons.append(fund_flow_note)
     if market_flow_note:
@@ -644,6 +664,7 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
             'fund_flow_override': fund_flow_override,
             'market_flow_override': market_flow_override,
             'global_semi_override': global_semi_override,
+            'hithink_sentiment_override': hithink_sentiment_override,
         },
     }
 

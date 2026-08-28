@@ -30,7 +30,8 @@
       "neutral_override_threshold": 4.0,
       "neutral_override_weight": 0.2,
       "low_confidence_threshold": 0.6
-    }
+    },
+    "hithink_sentiment_strength": 1.0
   },
   "ETF": {
     "weights": {
@@ -61,7 +62,8 @@
       "neutral_override_threshold": 4.0,
       "neutral_override_weight": 0.2,
       "low_confidence_threshold": 0.6
-    }
+    },
+    "hithink_sentiment_strength": 0.0
   },
   "期货": {
     "weights": {
@@ -92,7 +94,8 @@
       "neutral_override_threshold": 4.0,
       "neutral_override_weight": 0.2,
       "low_confidence_threshold": 0.6
-    }
+    },
+    "hithink_sentiment_strength": 0.0
   },
   "_default": {
     "weights": {
@@ -123,7 +126,8 @@
       "neutral_override_threshold": 4.0,
       "neutral_override_weight": 0.2,
       "low_confidence_threshold": 0.6
-    }
+    },
+    "hithink_sentiment_strength": 0.0
   },
   "weights": {
     "technical": 0.22,
