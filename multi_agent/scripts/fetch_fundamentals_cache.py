@@ -127,16 +127,19 @@ def _fetch_spot_map_tx(codes: Optional[List[str]] = None) -> Dict[str, dict]:
     """
     import requests
     out: Dict[str, dict] = {}
-    # 如果未指定代码，默认拉取全 A 股
+    # 如果未指定代码，默认拉取全 A 股（优先上交所+深交所合并表）
     if codes is None or not codes:
         try:
             import pandas as pd
+            all_path = os.path.join(MULTI_AGENT, 'data', 'a_share_universe_all.csv')
             sz_path = os.path.join(MULTI_AGENT, 'data', 'a_share_universe_sz.csv')
-            if os.path.exists(sz_path):
+            codes = []
+            if os.path.exists(all_path):
+                df = pd.read_csv(all_path)
+                codes = [str(c).strip().zfill(6) for c in df['code'].astype(str).tolist() if str(c).strip().isdigit()]
+            elif os.path.exists(sz_path):
                 df = pd.read_csv(sz_path)
                 codes = [str(c).strip().zfill(6) for c in df['A股代码'].astype(str).tolist() if str(c).strip().isdigit()]
-            else:
-                codes = []
         except Exception:
             codes = []
     if not codes:
@@ -202,7 +205,37 @@ def _fetch_ths_abstract(code: str) -> dict:
         return {'_error': str(e)[:100]}
 
 
-def _normalize_financial(fin: dict, spot: dict) -> dict:
+def _fetch_revenue_composition(code: str) -> dict:
+    """东方财富个股主营构成（按产品/行业/地区）。取最新一期的按产品分类。"""
+    try:
+        prefix = 'SH' if code.startswith('6') else 'SZ'
+        df = ak.stock_zygc_em(symbol=f'{prefix}{code}')
+        if df is None or df.empty:
+            return {}
+        # 取最新报告期
+        latest_date = df['报告日期'].max()
+        df_latest = df[df['报告日期'] == latest_date]
+        # 优先按产品分类，其次按行业
+        product_df = df_latest[df_latest['分类类型'] == '按产品分类']
+        if product_df.empty:
+            product_df = df_latest[df_latest['分类类型'] == '按行业分类']
+        items = []
+        for _, r in product_df.iterrows():
+            items.append({
+                'name': str(r.get('主营构成', '')).strip(),
+                'revenue_ratio': _safe_float(r.get('收入比例')),
+                'gross_margin': _safe_float(r.get('毛利率')),
+            })
+        return {
+            'report_date': str(latest_date),
+            'classification': '按产品分类' if '按产品分类' in df_latest['分类类型'].values else '按行业分类',
+            'items': items,
+        }
+    except Exception as e:
+        return {'_error': str(e)[:100]}
+
+
+def _normalize_financial(fin: dict, spot: dict, rev_comp: dict = None) -> dict:
     """把同花顺摘要字段映射为统一键，优先 spot（估值）再财务摘要。"""
     def g(*keys, default=None):
         for k in keys:
@@ -210,7 +243,7 @@ def _normalize_financial(fin: dict, spot: dict) -> dict:
                 return fin[k]
         return default
 
-    return {
+    out = {
         'name': spot.get('name', ''),
         'market_cap': spot.get('market_cap') or _safe_float(g('总市值'), 0),
         'float_market_cap': spot.get('float_market_cap'),
@@ -227,6 +260,9 @@ def _normalize_financial(fin: dict, spot: dict) -> dict:
         'eps': _safe_float(g('基本每股收益', '每股收益')),
         'report_date': g('报告期', '公告日期', default=''),
     }
+    if rev_comp and not rev_comp.get('_error'):
+        out['revenue_composition'] = rev_comp
+    return out
 
 
 def fetch_and_cache(codes: Optional[List[str]] = None) -> Dict:
@@ -254,7 +290,8 @@ def fetch_and_cache(codes: Optional[List[str]] = None) -> Dict:
             continue
         spot = spot_map.get(code6, {})
         fin = _fetch_ths_abstract(code6)
-        result['fundamentals'][code6] = _normalize_financial(fin, spot)
+        rev_comp = _fetch_revenue_composition(code6)
+        result['fundamentals'][code6] = _normalize_financial(fin, spot, rev_comp)
         if (i + 1) % 20 == 0:
             print(f'[fundamentals] 已处理 {i+1}/{len(wl)}')
 
