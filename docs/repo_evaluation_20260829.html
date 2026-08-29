@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>外部仓库评估：last30days-skill-cn & ai_quant_trade</title>
+  <style>
+    :root { --bg:#0f172a; --card:#1e293b; --text:#e2e8f0; --muted:#94a3b8; --up:#ef4444; --down:#22c55e; --accent:#38bdf8; }
+    body { font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); margin:0; padding:24px; line-height:1.6; }
+    .container { max-width:900px; margin:0 auto; }
+    h1 { font-size:1.6rem; margin-bottom:8px; }
+    .date { color:var(--muted); font-size:0.9rem; margin-bottom:24px; }
+    h2 { font-size:1.2rem; margin-top:28px; border-left:4px solid var(--accent); padding-left:10px; }
+    .card { background:var(--card); border-radius:12px; padding:16px 20px; margin:16px 0; }
+    .tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:0.75rem; margin-right:6px; background:#334155; color:#cbd5e1; }
+    .tag.rec { background:var(--up); color:#fff; }
+    .tag.hold { background:#f59e0b; color:#000; }
+    .tag.skip { background:var(--down); color:#fff; }
+    table { width:100%; border-collapse:collapse; margin-top:12px; font-size:0.9rem; }
+    th, td { text-align:left; padding:10px 8px; border-bottom:1px solid #334155; }
+    th { color:var(--muted); font-weight:600; }
+    a { color:var(--accent); text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    .summary { background:#1e3a5f; border-left:4px solid var(--accent); padding:14px 18px; border-radius:8px; margin:20px 0; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    @media (max-width:700px){ .grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>外部仓库评估：last30days-skill-cn & ai_quant_trade</h1>
+    <div class="date">评估日期：2026-08-29 · 按「可自动化 / 免费 / 与现有 LLM-native 流水线兼容」原则打分</div>
+
+    <div class="summary">
+      <strong>结论摘要</strong><br>
+      <span class="tag rec">建议接入</span> <strong>last30days-skill-cn</strong>：已有可运行的舆情/事件挖掘 CLI，适合作为盘前「主题热度」数据源，与现有产业链挖掘和盘前简报互补。<br>
+      <span class="tag hold">谨慎借鉴</span> <strong>ai_quant_trade</strong>：仓库较庞杂，整体以传统 ML/LSTM/强化学习为主，与当前 LLM-native 方法论冲突；仅热点报告生成、数据 IO 封装、基本面过滤信号引擎三个模块可参考。r>
+    </div>
+
+    <h2>1. last30days-skill-cn</h2>
+    <div class="card">
+      <p><strong>仓库：</strong><a href="https://github.com/Jesseovo/last30days-skill-cn" target="_blank">Jesseovo/last30days-skill-cn</a></p>
+      <p><strong>定位：</strong>用 LLM 抓取近 30 天微博/百度/头条/bilibili 等平台信息，生成主题事件脉络与舆情摘要。</p>
+      <p><strong>实测结果：</strong></p>
+      <ul>
+        <li><code>last30days.py --diagnose</code> 通过，依赖可用。</li>
+        <li>「人形机器人产业链」「低空经济」两个主题均能在 10–30 秒内返回 compact 摘要。</li>
+        <li>输出为 Markdown 文本，可直接注入盘前简报 prompt。</li>
+      </ul>
+      <table>
+        <tr><th>维度</th><th>评分</th><th>说明</th></tr>
+        <tr><td>可自动化</td><td>高</td><td>CLI 化，可 cron 调用</td></tr>
+        <tr><td>免费入口</td><td>高</td><td>无需 API key，依赖公开搜索</td></tr>
+        <tr><td>数据质量</td><td>中</td><td>社交媒体噪音大，需 LLM 二次过滤</td></tr>
+        <tr><td>与现有流水线兼容</td><td>高</td><td>输出文本可直接注入 supply_chain_news_context / morning brief</td></tr>
+      </table>
+      <p><strong>建议：</strong>作为盘前「主题热度/事件」补充源，接入 <code>last30days_morning_brief.py</code>；不替代同花顺特色数据，只做舆情侧交叉验证。</p>
+    </div>
+
+    <h2>2. ai_quant_trade</h2>
+    <div class="card">
+      <p><strong>仓库：</strong><a href="https://github.com/charliedream1/ai_quant_trade" target="_blank">charliedream1/ai_quant_trade</a></p>
+      <p><strong>定位：</strong>AI + 量化交易资源集合，包含 LLM 示例、传统 ML、强化学习、回测框架、因子挖掘等。</p>
+      <p><strong>实测结果：</strong></p>
+      <ul>
+        <li>仓库结构松散，部分子项目无 requirements/安装说明。</li>
+        <li>大量子目录依赖 LSTM/XGBoost/LightGBM/强化学习，与当前「LLM-native、拒绝硬编码阈值、优化器数据驱动」原则冲突。</li>
+        <li>以下三个模块可局部借鉴：</li>
+      </ul>
+      <table>
+        <tr><th>可借鉴模块</th><th>用途</th><th>接入成本</th></tr>
+        <tr><td><code>egs_llm/b01_app/a01_hot_topic_report</code></td><td>热点主题报告生成 pipeline</td><td>中</td></tr>
+        <tr><td><code>quant_brain/data_io/api_stock_data.py</code></td><td>数据接口封装思路</td><td>低</td></tr>
+        <tr><td><code>vibe_trading_skills/fundamental-filter/example_signal_engine.py</code></td><td>基本面过滤信号引擎</td><td>中</td></tr>
+      </table>
+      <table>
+        <tr><th>维度</th><th>评分</th><th>说明</th></tr>
+        <tr><td>可自动化</td><td>低</td><td>缺少统一入口，需拆分适配</td></tr>
+        <tr><td>免费入口</td><td>高</td><td>开源仓库</td></tr>
+        <tr><td>数据质量</td><td>中低</td><td>依赖示例数据，生产需重写</td></tr>
+        <tr><td>与现有流水线兼容</td><td>低</td><td>传统 ML/RL 路径冲突</td></tr>
+      </table>
+      <p><strong>建议：</strong>不整体接入。仅提取热点报告生成思路，复用到 <code>supply_chain_news_context.py</code> 的「主题舆情日报」；基本面过滤引擎思想可用来升级 <code>fetch_fundamentals_cache.py</code> 的评分字段。</p>
+    </div>
+
+    <h2>3. 优先级与下一步</h2>
+    <div class="card">
+      <ol>
+        <li><strong>高：</strong>把 last30days 接入盘前简报，每天早上对当日产业链主题做一次热度扫描。</li>
+        <li><strong>中：</strong>参考 ai_quant_trade 的热点报告模板，升级现有 <code>supply_chain_*_news.html</code> 页面结构。</li>
+        <li><strong>低：</strong>ai_quant_trade 的 RL/LSTM 部分不引入。</li>
+      </ol>
+    </div>
+  </div>
+</body>
+</html>
