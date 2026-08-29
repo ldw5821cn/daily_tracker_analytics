@@ -1328,5 +1328,40 @@
     "category": "个股",
     "theme": "低空经济",
     "sector": "高功率密度电机及其控制器"
+  },
+  {
+    "ticker": "000009",
+    "name": "中国宝安",
+    "category": "个股",
+    "theme": "固态电池",
+    "sector": "锂金属负极"
+  },
+  {
+    "ticker": "000063",
+    "name": "中兴通讯",
+    "category": "个股",
+    "theme": "CPO光模块",
+    "sector": "硅光芯片设计/制造"
+  },
+  {
+    "ticker": "000901",
+    "name": "航天科技",
+    "category": "个股",
+    "theme": "低空经济",
+    "sector": "适航认证与空管系统"
+  },
+  {
+    "ticker": "000099",
+    "name": "中信海直",
+    "category": "个股",
+    "theme": "低空经济",
+    "sector": "适航认证与空管系统"
+  },
+  {
+    "ticker": "000801",
+    "name": "四川九洲",
+    "category": "个股",
+    "theme": "低空经济",
+    "sector": "适航认证与空管系统"
   }
 ]
