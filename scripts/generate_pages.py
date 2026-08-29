@@ -609,10 +609,11 @@ def _build_nav(active, dates=None):
     for href, icon, label in TABS:
         cls = 'active' if href == active else ''
         items.append(f'<a href="{href}" class="{cls}">{icon} {label}</a>')
-    # 最近 7 日归档下拉选择器
+    # 最近 7 日归档下拉选择器：默认选中当前 reflection 的 pred_date
     if dates:
+        selected_date = active.replace('archive/', '').replace('.html', '')
         options = ''.join(
-            f'<option value="archive/{d}.html" {"selected" if f"archive/{d}.html" == active else ""}>{d}</option>'
+            f'<option value="archive/{d}.html" {"selected" if d == selected_date else ""}>{d}</option>'
             for d in dates[:7]
         )
         items.append(
@@ -2101,6 +2102,13 @@ def generate_reflection_page(dates=None):
     title = f"🧠 复盘 - {pred_date}"
     subtitle = f"{pred_date} 预测验证后反思 · 生成于 {refl.get('generated_at', '')[:19]}"
     html = _build_page_skeleton(title, body, 'reflection.html', subtitle, dates=dates)
+    # reflection 页面默认应选中对应的 pred_date，而不是今天
+    # 先把所有 archive option 的 selected 清空，再只给 pred_date 加上 selected
+    html = re.sub(r'(<option value="archive/\d{4}-\d{2}-\d{2}\.html")(?:\s+selected)?>', r'\1>', html)
+    html = html.replace(
+        f'<option value="archive/{pred_date}.html">',
+        f'<option value="archive/{pred_date}.html" selected>'
+    )
     _write('reflection.html', html)
 
 
