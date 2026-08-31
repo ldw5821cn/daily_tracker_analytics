@@ -1,6 +1,6 @@
 {
   "_version": 5,
-  "updated_at": "2026-08-27T17:09:16.293662",
+  "updated_at": "2026-08-28T17:10:17.128296",
   "个股": {
     "weights": {
       "technical": 0.22,
@@ -30,7 +30,8 @@
       "neutral_override_threshold": 4.0,
       "neutral_override_weight": 0.2,
       "low_confidence_threshold": 0.6
-    }
+    },
+    "hithink_sentiment_strength": 1.0
   },
   "ETF": {
     "weights": {
@@ -61,7 +62,8 @@
       "neutral_override_threshold": 4.0,
       "neutral_override_weight": 0.2,
       "low_confidence_threshold": 0.6
-    }
+    },
+    "hithink_sentiment_strength": 0.0
   },
   "期货": {
     "weights": {
@@ -92,7 +94,8 @@
       "neutral_override_threshold": 4.0,
       "neutral_override_weight": 0.2,
       "low_confidence_threshold": 0.6
-    }
+    },
+    "hithink_sentiment_strength": 0.0
   },
   "_default": {
     "weights": {
@@ -123,7 +126,8 @@
       "neutral_override_threshold": 4.0,
       "neutral_override_weight": 0.2,
       "low_confidence_threshold": 0.6
-    }
+    },
+    "hithink_sentiment_strength": 0.0
   },
   "weights": {
     "technical": 0.21,
@@ -134,10 +138,10 @@
   },
   "threshold": {
     "strong_bull": 65,
-    "bull": 59,
+    "bull": 58,
     "neutral_high": 54,
     "neutral_low": 46,
-    "bear": 41,
+    "bear": 42,
     "strong_bear": 35
   },
   "hard_rules": {
@@ -146,7 +150,7 @@
     "macro_bearish_score_threshold": 50
   },
   "updated_by": "auto_tune_from_reflection",
-  "updated_reason": "收窄 neutral 区间 | 提高 bullish/bearish 阈值门槛",
-  "trigger_accuracy": 44.62,
-  "trigger_pred_date": "2026-08-26"
+  "updated_reason": "收窄 neutral 区间",
+  "trigger_accuracy": 69.5,
+  "trigger_pred_date": "2026-08-27"
 }
