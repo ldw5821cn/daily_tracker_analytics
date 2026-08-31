@@ -1,12 +1,92 @@
 [
-  {"code": "600531", "name": "豫光金铅", "composite_score": 90, "changepercent": 1.58, "price": 14.17, "amount_yi": 10.4, "reason": "板块分散精选 Round1/2/3"},
-  {"code": "000737", "name": "北方铜业", "composite_score": 86, "changepercent": 0.39, "price": 15.37, "amount_yi": 16.0, "reason": "板块分散精选 Round1/2/3"},
-  {"code": "600508", "name": "上海能源", "composite_score": 86, "changepercent": 3.06, "price": 12.12, "amount_yi": 11.3, "reason": "板块分散精选 Round1/2/3"},
-  {"code": "300511", "name": "雪榕生物", "composite_score": 84, "changepercent": 2.14, "price": 5.72, "amount_yi": 3.1, "reason": "板块分散精选 Round1/2/3"},
-  {"code": "600727", "name": "鲁北化工", "composite_score": 84, "changepercent": 3.02, "price": 7.84, "amount_yi": 2.1, "reason": "板块分散精选 Round1/2/3"},
-  {"code": "001248", "name": "华润新能源", "composite_score": 84, "changepercent": 0.32, "price": 12.38, "amount_yi": 6.8, "reason": "板块分散精选 Round1/2/3"},
-  {"code": "300590", "name": "移为通信", "composite_score": 82, "changepercent": 0.98, "price": 11.28, "amount_yi": 2.1, "reason": "板块分散精选 Round1/2/3"},
-  {"code": "300973", "name": "立高食品", "composite_score": 81, "changepercent": 3.43, "price": 25.91, "amount_yi": 1.1, "reason": "板块分散精选 Round1/2/3"},
-  {"code": "301179", "name": "泽宇智能", "composite_score": 79, "changepercent": 4.71, "price": 20.66, "amount_yi": 2.6, "reason": "板块分散精选 Round1/2/3"},
-  {"code": "603279", "name": "景津装备", "composite_score": 78, "changepercent": 1.14, "price": 11.53, "amount_yi": 1.7, "reason": "板块分散精选 Round1/2/3"}
+  {
+    "code": "002440",
+    "name": "闰土股份",
+    "composite_score": 90,
+    "changepercent": 0.86,
+    "price": 14.01,
+    "amount_yi": 10.1,
+    "reason": "板块分散精选 Round1/2/3"
+  },
+  {
+    "code": "002270",
+    "name": "华明装备",
+    "composite_score": 86,
+    "changepercent": 4.73,
+    "price": 19.91,
+    "amount_yi": 5.3,
+    "reason": "板块分散精选 Round1/2/3"
+  },
+  {
+    "code": "600256",
+    "name": "广汇能源",
+    "composite_score": 86,
+    "changepercent": 3.36,
+    "price": 6.76,
+    "amount_yi": 12.6,
+    "reason": "板块分散精选 Round1/2/3"
+  },
+  {
+    "code": "603998",
+    "name": "方盛制药",
+    "composite_score": 86,
+    "changepercent": 4.38,
+    "price": 10.96,
+    "amount_yi": 4.2,
+    "reason": "板块分散精选 Round1/2/3"
+  },
+  {
+    "code": "000703",
+    "name": "恒逸石化",
+    "composite_score": 85,
+    "changepercent": 0.15,
+    "price": 19.52,
+    "amount_yi": 25.9,
+    "reason": "板块分散精选 Round1/2/3"
+  },
+  {
+    "code": "601555",
+    "name": "东吴证券",
+    "composite_score": 82,
+    "changepercent": 4.17,
+    "price": 8.5,
+    "amount_yi": 9.6,
+    "reason": "板块分散精选 Round1/2/3"
+  },
+  {
+    "code": "300398",
+    "name": "飞凯材料",
+    "composite_score": 79,
+    "changepercent": 2.51,
+    "price": 36.41,
+    "amount_yi": 11.7,
+    "reason": "板块分散精选 Round1/2/3"
+  },
+  {
+    "code": "002115",
+    "name": "三维通信",
+    "composite_score": 78,
+    "changepercent": 4.04,
+    "price": 11.06,
+    "amount_yi": 7.0,
+    "reason": "板块分散精选 Round1/2/3"
+  },
+  {
+    "code": "300349",
+    "name": "金卡智能",
+    "composite_score": 78,
+    "changepercent": 0.97,
+    "price": 10.38,
+    "amount_yi": 0.5,
+    "reason": "板块分散精选 Round1/2/3"
+  },
+  {
+    "code": "600335",
+    "name": "国机汽车",
+    "composite_score": 78,
+    "changepercent": 0.57,
+    "price": 5.27,
+    "amount_yi": 1.1,
+    "reason": "板块分散精选 Round1/2/3"
+  }
 ]
