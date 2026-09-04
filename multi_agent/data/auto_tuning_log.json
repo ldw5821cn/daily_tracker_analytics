@@ -3745,5 +3745,170 @@
       "trigger_accuracy": 46.6,
       "trigger_pred_date": "2026-08-31"
     }
+  },
+  {
+    "date": "2026-09-04T17:10:54.558670",
+    "pred_date": "2026-08-31",
+    "accuracy": 46.6,
+    "changes": [
+      "收窄 neutral 区间",
+      "提高 bullish/bearish 阈值门槛"
+    ],
+    "new_params": {
+      "_version": 5,
+      "updated_at": "2026-09-04T17:10:54.557051",
+      "个股": {
+        "weights": {
+          "technical": 0.22,
+          "fundamental": 0.25,
+          "sentiment": 0.15,
+          "macro": 0.18,
+          "debate": 0.25
+        },
+        "threshold": {
+          "strong_bull": 65,
+          "bull": 58,
+          "neutral_high": 55,
+          "neutral_low": 45,
+          "bear": 42,
+          "strong_bear": 35
+        },
+        "fund_flow_strength": 0.0,
+        "market_flow_strength": 0.0,
+        "global_semi_strength": 0.0,
+        "social_overlay_weight": 0.15,
+        "use_ta_debate": true,
+        "stats": "train=-11.71%/-12.05%/76.0% val=-5.71%/-7.10%/62.6% ff=0.0",
+        "score": 40.9,
+        "debate_params": {
+          "net_multiplier": 8.0,
+          "quality_min": 2.0,
+          "neutral_override_threshold": 4.0,
+          "neutral_override_weight": 0.2,
+          "low_confidence_threshold": 0.6
+        },
+        "hithink_sentiment_strength": 1.0
+      },
+      "ETF": {
+        "weights": {
+          "technical": 0.22,
+          "fundamental": 0.25,
+          "sentiment": 0.15,
+          "macro": 0.18,
+          "debate": 0.25
+        },
+        "threshold": {
+          "strong_bull": 65,
+          "bull": 58,
+          "neutral_high": 55,
+          "neutral_low": 45,
+          "bear": 42,
+          "strong_bear": 35
+        },
+        "fund_flow_strength": 0.0,
+        "market_flow_strength": 0.0,
+        "global_semi_strength": 0.0,
+        "social_overlay_weight": 0.15,
+        "use_ta_debate": false,
+        "stats": "train=-2.63%/-13.99%/86.1% val=1.03%/-8.81%/95.7% ff=0.0",
+        "score": 39.85,
+        "debate_params": {
+          "net_multiplier": 8.0,
+          "quality_min": 2.0,
+          "neutral_override_threshold": 4.0,
+          "neutral_override_weight": 0.2,
+          "low_confidence_threshold": 0.6
+        },
+        "hithink_sentiment_strength": 0.0
+      },
+      "期货": {
+        "weights": {
+          "technical": 0.22,
+          "fundamental": 0.25,
+          "sentiment": 0.15,
+          "macro": 0.18,
+          "debate": 0.25
+        },
+        "threshold": {
+          "strong_bull": 65,
+          "bull": 58,
+          "neutral_high": 55,
+          "neutral_low": 45,
+          "bear": 42,
+          "strong_bear": 35
+        },
+        "fund_flow_strength": 0.0,
+        "market_flow_strength": 0.0,
+        "global_semi_strength": 0.0,
+        "social_overlay_weight": 0.15,
+        "use_ta_debate": false,
+        "stats": "train=-1.19%/0.62%/34.4% val=0.22%/0.31%/53.8% ff=0.0",
+        "score": 23.36,
+        "debate_params": {
+          "net_multiplier": 8.0,
+          "quality_min": 2.0,
+          "neutral_override_threshold": 4.0,
+          "neutral_override_weight": 0.2,
+          "low_confidence_threshold": 0.6
+        },
+        "hithink_sentiment_strength": 0.0
+      },
+      "_default": {
+        "weights": {
+          "technical": 0.22,
+          "fundamental": 0.25,
+          "sentiment": 0.15,
+          "macro": 0.18,
+          "debate": 0.25
+        },
+        "threshold": {
+          "strong_bull": 65,
+          "bull": 58,
+          "neutral_high": 55,
+          "neutral_low": 45,
+          "bear": 42,
+          "strong_bear": 35
+        },
+        "fund_flow_strength": 0.0,
+        "market_flow_strength": 0.0,
+        "global_semi_strength": 0.0,
+        "social_overlay_weight": 0.15,
+        "use_ta_debate": false,
+        "stats": "train=-5.97%/-11.39%/75.4% val=-0.71%/-6.25%/61.1% ff=0.0",
+        "score": 36.85,
+        "debate_params": {
+          "net_multiplier": 8.0,
+          "quality_min": 2.0,
+          "neutral_override_threshold": 4.0,
+          "neutral_override_weight": 0.2,
+          "low_confidence_threshold": 0.6
+        },
+        "hithink_sentiment_strength": 0.0
+      },
+      "weights": {
+        "technical": 0.21,
+        "fundamental": 0.238,
+        "sentiment": 0.143,
+        "macro": 0.171,
+        "debate": 0.238
+      },
+      "threshold": {
+        "strong_bull": 65,
+        "bull": 59,
+        "neutral_high": 54,
+        "neutral_low": 46,
+        "bear": 41,
+        "strong_bear": 35
+      },
+      "hard_rules": {
+        "macro_bearish_block_bullish": true,
+        "macro_bearish_force_bearish_if_tech_below": 55,
+        "macro_bearish_score_threshold": 50
+      },
+      "updated_by": "auto_tune_from_reflection",
+      "updated_reason": "收窄 neutral 区间 | 提高 bullish/bearish 阈值门槛",
+      "trigger_accuracy": 46.6,
+      "trigger_pred_date": "2026-08-31"
+    }
   }
 ]

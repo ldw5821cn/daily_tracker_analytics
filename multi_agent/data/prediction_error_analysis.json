@@ -3,9 +3,9 @@
   "validation_date": null,
   "summary": {
     "total": 244,
-    "correct": 59,
-    "wrong": 185,
-    "accuracy": 24.18
+    "correct": 56,
+    "wrong": 188,
+    "accuracy": 22.95
   },
   "by_category": {
     "US": {
@@ -25,15 +25,15 @@
     },
     "期货": {
       "total": 49,
-      "wrong": 31,
-      "error_rate": 63.27
+      "wrong": 34,
+      "error_rate": 69.39
     }
   },
   "by_signal": {
     "中性": {
       "total": 97,
-      "wrong": 65,
-      "error_rate": 67.01
+      "wrong": 66,
+      "error_rate": 68.04
     },
     "看多": {
       "total": 117,
@@ -42,14 +42,14 @@
     },
     "观望": {
       "total": 30,
-      "wrong": 17,
-      "error_rate": 56.67
+      "wrong": 19,
+      "error_rate": 63.33
     }
   },
   "feature_compare": {
     "weighted_score": {
-      "correct_avg": 55.28,
-      "wrong_avg": 60.9
+      "correct_avg": 55.25,
+      "wrong_avg": 60.82
     },
     "confidence": {
       "correct_avg": 0.67,
@@ -58,16 +58,16 @@
   },
   "component_compare": {
     "技术面": {
-      "correct_avg": 56.68,
-      "wrong_avg": 56.86
+      "correct_avg": 56.66,
+      "wrong_avg": 56.87
     },
     "新闻情绪": {
-      "correct_avg": 52.25,
-      "wrong_avg": 57.09
+      "correct_avg": 52.64,
+      "wrong_avg": 56.9
     },
     "基本面": {
-      "correct_avg": 54.58,
-      "wrong_avg": 68.3
+      "correct_avg": 55.34,
+      "wrong_avg": 67.85
     },
     "多空辩论净得分": {
       "correct_avg": -0.41,
@@ -75,6 +75,18 @@
     }
   },
   "wrong_top10": [
+    {
+      "ticker": "LC0",
+      "name": "碳酸锂",
+      "category": "期货",
+      "signal": "看多",
+      "return_pct": -11.839,
+      "pred_price": 161000.0,
+      "today_price": 141940.0,
+      "weighted_score": 62.4,
+      "confidence": 0.76,
+      "reasoning": "技术面中性偏多(67/100) | 基本面bearish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.7 vs 看跌0 | 宏观偏多(56.6/100) | 市场上下文neutral(50.0/100)上限100%"
+    },
     {
       "ticker": "SC0",
       "name": "原油",
@@ -148,18 +160,6 @@
       "reasoning": "技术面中性(52/100) | 基本面优秀(82/100) | 新闻情绪+0.40 | 多空辩论 看涨1 vs 看跌2 | 宏观偏多(56.6/100) | 市场上下文neutral(50.0/100)上限100%"
     },
     {
-      "ticker": "LC0",
-      "name": "碳酸锂",
-      "category": "期货",
-      "signal": "看多",
-      "return_pct": -6.907,
-      "pred_price": 161000.0,
-      "today_price": 149880.0,
-      "weighted_score": 62.4,
-      "confidence": 0.76,
-      "reasoning": "技术面中性偏多(67/100) | 基本面bearish(50/100) | 新闻情绪-0.10 | 多空辩论 看涨1.7 vs 看跌0 | 宏观偏多(56.6/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
       "ticker": "688146",
       "name": "中船特气",
       "category": "个股",
@@ -202,9 +202,9 @@
       "name": "乙二醇",
       "category": "期货",
       "signal": "看多",
-      "return_pct": 7.259,
+      "return_pct": 10.636,
       "pred_price": 5331.0,
-      "today_price": 5718.0,
+      "today_price": 5898.0,
       "weighted_score": 59.3,
       "confidence": 0.67
     },
@@ -218,6 +218,28 @@
       "today_price": 16.2,
       "weighted_score": 60.2,
       "confidence": 0.65
+    },
+    {
+      "ticker": "FG0",
+      "name": "玻璃",
+      "category": "期货",
+      "signal": "看多",
+      "return_pct": 3.932,
+      "pred_price": 941.0,
+      "today_price": 978.0,
+      "weighted_score": 62.4,
+      "confidence": 0.76
+    },
+    {
+      "ticker": "SA0",
+      "name": "纯碱",
+      "category": "期货",
+      "signal": "看多",
+      "return_pct": 3.016,
+      "pred_price": 1061.0,
+      "today_price": 1093.0,
+      "weighted_score": 62.4,
+      "confidence": 0.76
     },
     {
       "ticker": "MRK",
@@ -253,17 +275,6 @@
       "confidence": 0.83
     },
     {
-      "ticker": "FG0",
-      "name": "玻璃",
-      "category": "期货",
-      "signal": "看多",
-      "return_pct": 2.232,
-      "pred_price": 941.0,
-      "today_price": 962.0,
-      "weighted_score": 62.4,
-      "confidence": 0.76
-    },
-    {
       "ticker": "NFLX",
       "name": "奈飞",
       "category": "US",
@@ -275,24 +286,13 @@
       "confidence": 0.68
     },
     {
-      "ticker": "BU0",
-      "name": "沥青",
-      "category": "期货",
-      "signal": "看多",
-      "return_pct": 1.794,
-      "pred_price": 4850.0,
-      "today_price": 4937.0,
-      "weighted_score": 64.6,
-      "confidence": 0.81
-    },
-    {
       "ticker": "PF0",
       "name": "短纤",
       "category": "期货",
       "signal": "看多",
-      "return_pct": 1.569,
+      "return_pct": 2.006,
       "pred_price": 7778.0,
-      "today_price": 7900.0,
+      "today_price": 7934.0,
       "weighted_score": 67.4,
       "confidence": 0.83
     },
@@ -315,20 +315,20 @@
   ],
   "divergence_analysis": {
     "fundamental_technical_divergence": {
-      "correct_avg": -2.1,
-      "wrong_avg": 11.43,
+      "correct_avg": -1.32,
+      "wrong_avg": 10.99,
       "by_wrong_signal": {
         "看多": {
-          "avg": 13.36,
+          "avg": 13.35,
           "n": 103
         },
         "中性": {
-          "avg": 11.87,
-          "n": 65
+          "avg": 11.42,
+          "n": 66
         },
         "观望": {
-          "avg": -1.88,
-          "n": 17
+          "avg": -3.32,
+          "n": 19
         }
       }
     }
