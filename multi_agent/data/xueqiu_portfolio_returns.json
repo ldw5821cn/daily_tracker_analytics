@@ -1,6 +1,6 @@
 {
   "_description": "雪球组合每日收益跟踪，由 xueqiu_nav_updater.py 自动更新",
-  "last_updated": "2026-09-08 15:38:35",
+  "last_updated": "2026-09-08 16:33:06",
   "portfolios": {
     "ZH3650487": {
       "name": "郑希框架模拟盘",
@@ -111,7 +111,7 @@
         }
       ],
       "last_error": "400 Client Error: Bad Request for url: https://xueqiu.com/cubes/nav_daily/all.json?cube_symbol=ZH3650487",
-      "last_error_time": "2026-09-08 15:38:35"
+      "last_error_time": "2026-09-08 16:33:06"
     },
     "ZH3650823": {
       "name": "高股息",
@@ -222,7 +222,7 @@
         }
       ],
       "last_error": "400 Client Error: Bad Request for url: https://xueqiu.com/cubes/nav_daily/all.json?cube_symbol=ZH3650823",
-      "last_error_time": "2026-09-08 15:38:35"
+      "last_error_time": "2026-09-08 16:33:06"
     }
   }
 }
