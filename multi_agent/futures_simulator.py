@@ -712,6 +712,9 @@ def update_daily(force_update: bool = False) -> Dict:
             portfolio = _build_risk_portfolio(conn, marks={})
             engine.update_equity(portfolio)
 
+        # 先提交价格更新，释放写锁（否则下面 risk_check/close_position 的新连接写库会报 database is locked）
+        conn.commit()
+
         # 止损检查
         risk_check = daily_risk_check(stop_loss_pct=5.0, max_positions=8)
 

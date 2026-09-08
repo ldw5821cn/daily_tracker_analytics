@@ -1,6 +1,6 @@
 {
   "pred_date": "2026-09-01",
-  "validate_date": "2026-09-07",
+  "validate_date": "2026-09-08",
   "direction_threshold": 1.5,
   "overall": {
     "total": 244,
@@ -2297,8 +2297,8 @@
       "category": "期货",
       "signal": "看多",
       "pred_price": 18965.0,
-      "today_price": 19180.0,
-      "return_pct": 1.134,
+      "today_price": 19635.0,
+      "return_pct": 3.533,
       "direction_correct": true,
       "note": "ok"
     },
@@ -2308,8 +2308,8 @@
       "category": "期货",
       "signal": "看多",
       "pred_price": 22920.0,
-      "today_price": 22770.0,
-      "return_pct": -0.654,
+      "today_price": 22915.0,
+      "return_pct": -0.022,
       "direction_correct": false,
       "note": "ok"
     },
@@ -2649,8 +2649,8 @@
       "category": "期货",
       "signal": "观望",
       "pred_price": 4748.0,
-      "today_price": 4844.0,
-      "return_pct": 2.022,
+      "today_price": 4876.0,
+      "return_pct": 2.696,
       "direction_correct": false,
       "note": "ok"
     },
