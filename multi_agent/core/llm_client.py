@@ -21,13 +21,73 @@ def _load_hermes_provider(name: str = 'deepseek') -> dict:
         try:
             with open(path, 'r', encoding='utf-8') as f:
                 cfg = yaml.safe_load(f) or {}
-            for cp in cfg.get('custom_providers', []):
-                if cp.get('name') == name and cp.get('api_key'):
-                    return cp
+            
+            # 如果明确指定了 name，先精确匹配 custom_providers
+            if name:
+                for cp in cfg.get('custom_providers', []):
+                    if cp.get('name') == name and cp.get('api_key'):
+                        return cp
+                # 匹配 model.provider
+                model_cfg = cfg.get('model', {})
+                provider_name = model_cfg.get('provider')
+                if provider_name == name:
+                    for cp in cfg.get('custom_providers', []):
+                        if cp.get('name') == provider_name and cp.get('api_key'):
+                            return cp
+            
+            # 然后尝试 auxiliary.vision（仅当没指定 name 或 name 匹配 vision provider）
+            aux = cfg.get('auxiliary', {})
+            vision = aux.get('vision', {})
+            if vision.get('api_key') and vision.get('provider'):
+                provider = vision['provider']
+                if not name or provider == name or name in provider.lower():
+                    base_url = vision.get('base_url', '')
+                    if not base_url:
+                        if 'kimi' in provider.lower() or 'moonshot' in provider.lower():
+                            base_url = 'https://api.moonshot.cn/v1'
+                        elif 'deepseek' in provider.lower():
+                            base_url = 'https://api.deepseek.com'
+                    return {
+                        'name': provider,
+                        'api_key': vision['api_key'],
+                        'base_url': base_url,
+                        'model': vision.get('model', 'kimi-for-coding')
+                    }
+            
             # 如果 name 是默认 provider，fallback 到第一个带 api_key 的自定义 provider
-            for cp in cfg.get('custom_providers', []):
-                if cp.get('api_key') and cp.get('base_url'):
-                    return cp
+            if name:
+                for cp in cfg.get('custom_providers', []):
+                    if cp.get('api_key') and cp.get('base_url'):
+                        return cp
+        except Exception:
+            continue
+    return {}
+
+
+def _load_hermes_kimi_coding():
+    """从 Hermes config 的 model.providers.kimi-coding 加载 kimi-coding 配置。
+    用户要求：项目内 LLM（含反思）走 kimi-coding，不再走 deepseek。"""
+    cfg_paths = [
+        os.path.expanduser('~/.hermes/config.yaml'),
+        os.path.expanduser('~/.hermes/config.yml'),
+    ]
+    for path in cfg_paths:
+        if not os.path.exists(path):
+            continue
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                cfg = yaml.safe_load(f)
+            if not cfg:
+                continue
+            providers = cfg.get('model', {}).get('providers', {})
+            kimi = providers.get('kimi-coding', {})
+            if kimi.get('api_key'):
+                return {
+                    'name': 'kimi-coding',
+                    'api_key': kimi['api_key'],
+                    'base_url': kimi.get('base_url', 'https://api.moonshot.cn/v1'),
+                    'model': kimi.get('model', 'kimi-for-coding'),
+                }
         except Exception:
             continue
     return {}
@@ -39,6 +99,7 @@ def _get_client():
     except ImportError:
         return None
 
+    # 优先从 Hermes config 加载 deepseek（已充值，恢复使用）
     hermes = _load_hermes_provider('deepseek')
     if hermes:
         api_key = hermes['api_key']
@@ -46,9 +107,17 @@ def _get_client():
         default_model = hermes.get('model', 'deepseek-chat')
         os.environ.setdefault('LLM_MODEL', default_model)
     else:
-        api_key = os.getenv('OPENAI_API_KEY') or os.getenv('OPENROUTER_API_KEY') or os.getenv('LLM_API_KEY')
-        base_url = os.getenv('OPENAI_BASE_URL') or os.getenv('OPENROUTER_BASE_URL') or os.getenv('LLM_BASE_URL')
-        default_model = None
+        # fallback: 尝试加载 kimi-coding
+        hermes = _load_hermes_kimi_coding()
+        if hermes:
+            api_key = hermes['api_key']
+            base_url = hermes.get('base_url', 'https://api.moonshot.cn/v1')
+            default_model = hermes.get('model', 'kimi-for-coding')
+            os.environ.setdefault('LLM_MODEL', default_model)
+        else:
+            api_key = os.getenv('OPENAI_API_KEY') or os.getenv('OPENROUTER_API_KEY') or os.getenv('LLM_API_KEY')
+            base_url = os.getenv('OPENAI_BASE_URL') or os.getenv('OPENROUTER_BASE_URL') or os.getenv('LLM_BASE_URL')
+            default_model = None
 
     if not api_key:
         return None
@@ -82,11 +151,21 @@ def chat(messages: List[Dict[str, str]],
         return None
 
     _model = model or os.getenv('OPENAI_MODEL') or os.getenv('LLM_MODEL') or 'gpt-4o-mini'
-    fallback_models = ['deepseek-chat', 'deepseek-reasoner']
+    # 根据当前模型决定 fallback 策略
+    fallback_models = []
+    if 'deepseek' in _model.lower():
+        # deepseek 系列：fallback 到 deepseek 其他模型
+        fallback_models = ['deepseek-v4-flash', 'deepseek-v4-pro', 'deepseek-chat']
+    elif 'kimi' in _model.lower():
+        # kimi 系列：fallback 到 kimi 其他模型
+        fallback_models = ['kimi-k2-5-or-latest', 'kimi-for-coding']
+    else:
+        # 其他模型：fallback 到常见模型
+        fallback_models = ['deepseek-v4-flash', 'deepseek-chat']
     if _model == 'deepseek-chat':
-        fallback_models = ['deepseek-reasoner']
+        fallback_models = ['deepseek-v4-flash', 'deepseek-v4-pro']
     elif _model == 'deepseek-reasoner':
-        fallback_models = ['deepseek-chat']
+        fallback_models = ['deepseek-chat', 'kimi-for-coding']
 
     attempts = [_model] + fallback_models
     last_error = None

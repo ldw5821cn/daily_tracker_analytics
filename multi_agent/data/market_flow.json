@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-07T17:05:19",
+  "generated_at": "2026-09-07T21:59:44",
   "today": "2026-09-07",
   "records": [
     {
@@ -767,6 +767,81 @@
       "source": "akshare_option_vix"
     },
     {
+      "date": "2026-09-07",
+      "ticker": "sse_510050",
+      "metric": "option_pcr",
+      "value": 80.74,
+      "detail": {
+        "date": "2026-09-07",
+        "symbol": "sse_510050",
+        "pcr": 80.74,
+        "call_volume": 348302.0,
+        "put_volume": 281228.0,
+        "total_open_interest": 1243033.0
+      },
+      "source": "akshare_option_stats"
+    },
+    {
+      "date": "2026-09-07",
+      "ticker": "sse_510300",
+      "metric": "option_pcr",
+      "value": 79.28,
+      "detail": {
+        "date": "2026-09-07",
+        "symbol": "sse_510300",
+        "pcr": 79.28,
+        "call_volume": 292514.0,
+        "put_volume": 231909.0,
+        "total_open_interest": 1133709.0
+      },
+      "source": "akshare_option_stats"
+    },
+    {
+      "date": "2026-09-07",
+      "ticker": "sse_510500",
+      "metric": "option_pcr",
+      "value": 87.31,
+      "detail": {
+        "date": "2026-09-07",
+        "symbol": "sse_510500",
+        "pcr": 87.31,
+        "call_volume": 716233.0,
+        "put_volume": 625338.0,
+        "total_open_interest": 1406951.0
+      },
+      "source": "akshare_option_stats"
+    },
+    {
+      "date": "2026-09-07",
+      "ticker": "sse_588000",
+      "metric": "option_pcr",
+      "value": 81.3,
+      "detail": {
+        "date": "2026-09-07",
+        "symbol": "sse_588000",
+        "pcr": 81.3,
+        "call_volume": 986455.0,
+        "put_volume": 802025.0,
+        "total_open_interest": 2556376.0
+      },
+      "source": "akshare_option_stats"
+    },
+    {
+      "date": "2026-09-07",
+      "ticker": "sse_588080",
+      "metric": "option_pcr",
+      "value": 76.6,
+      "detail": {
+        "date": "2026-09-07",
+        "symbol": "sse_588080",
+        "pcr": 76.6,
+        "call_volume": 134864.0,
+        "put_volume": 103310.0,
+        "total_open_interest": 523875.0
+      },
+      "source": "akshare_option_stats"
+    },
+    {
       "date": "2026-09-04",
       "ticker": "sse_510050",
       "metric": "option_pcr",
@@ -1517,6 +1592,66 @@
       "source": "akshare_option_stats"
     },
     {
+      "date": "2026-09-07",
+      "ticker": "szse_159901",
+      "metric": "option_pcr",
+      "value": 51.28,
+      "detail": {
+        "date": "2026-09-07",
+        "symbol": "szse_159901",
+        "pcr": 51.28,
+        "call_volume": 33092.0,
+        "put_volume": 20755.0,
+        "total_open_interest": 62716.0
+      },
+      "source": "akshare_option_stats"
+    },
+    {
+      "date": "2026-09-07",
+      "ticker": "szse_159915",
+      "metric": "option_pcr",
+      "value": 87.67,
+      "detail": {
+        "date": "2026-09-07",
+        "symbol": "szse_159915",
+        "pcr": 87.67,
+        "call_volume": 907042.0,
+        "put_volume": 718150.0,
+        "total_open_interest": 1574635.0
+      },
+      "source": "akshare_option_stats"
+    },
+    {
+      "date": "2026-09-07",
+      "ticker": "szse_159919",
+      "metric": "option_pcr",
+      "value": 48.81,
+      "detail": {
+        "date": "2026-09-07",
+        "symbol": "szse_159919",
+        "pcr": 48.81,
+        "call_volume": 36236.0,
+        "put_volume": 15214.0,
+        "total_open_interest": 192291.0
+      },
+      "source": "akshare_option_stats"
+    },
+    {
+      "date": "2026-09-07",
+      "ticker": "szse_159922",
+      "metric": "option_pcr",
+      "value": 56.64,
+      "detail": {
+        "date": "2026-09-07",
+        "symbol": "szse_159922",
+        "pcr": 56.64,
+        "call_volume": 108705.0,
+        "put_volume": 55807.0,
+        "total_open_interest": 343855.0
+      },
+      "source": "akshare_option_stats"
+    },
+    {
       "date": "2026-09-04",
       "ticker": "szse_159901",
       "metric": "option_pcr",
@@ -2118,7 +2253,7 @@
     }
   ],
   "stats": {
-    "saved": 141,
+    "saved": 150,
     "errors": 0
   }
 }

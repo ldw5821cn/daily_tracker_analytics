@@ -238,25 +238,6 @@ def generate_reflection():
             f"2. 扩展 {worst_cat or '错误率最高类别'} 的历史数据覆盖（至少 20 个交易日可评估样本），",
             f"   目前样本不足，硬改阈值会导致过拟合。",
         ]
-        if sorted_gaps:
-            name, gap = sorted_gaps[0]
-            fallback_lines += [
-                f"3. 针对 '{name}' 正确/错误样本差距（{gap:+.2f}）设计可回测特征：",
-                f"   - 将该指标按市场状态（regime）分组，写入 market_regime_features；",
-                f"   - 用 5 日 forward return + 交易成本作为标签，让优化器学习该指标在不同 regime 下的权重。",
-            ]
-        if suggestions:
-            fallback_lines += [
-                f"4. 规则分析引擎已生成候选建议，但暂不落地为硬编码：{suggestions[:3]}。",
-                f"   这些建议将转化为 optimizer 搜索空间中的可选 feature/penalty，由数据验证后生效。",
-            ]
-        fallback_lines += [
-            f"",
-            f"## 下一步可证伪假设",
-            f"- 假设：{worst_signal or '错误信号'} 在 macro_score 偏{'低' if worst_signal == '看多' else '高'} 时更容易错。",
-            f"- 验证：将 macro_score × {worst_signal or '信号'} 交叉特征加入 feature_snapshot，",
-            f"  待 8/31 前后 optimizer 样本达标后自动评估该交叉项的预测力。",
-        ]
         llm_output = '\n'.join(fallback_lines)
 
     summary = error_analysis.get('summary', {})
