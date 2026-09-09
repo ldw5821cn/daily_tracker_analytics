@@ -1,12 +1,96 @@
-[
-  {"code": "002011", "name": "盾安环境", "composite_score": 90, "changepercent": 0.08, "price": 11.95, "amount_yi": 10.1, "reason": "制冷配件/家电"},
-  {"code": "002258", "name": "利尔化学", "composite_score": 86, "changepercent": 3.94, "price": 15.55, "amount_yi": 8.2, "reason": "农药"},
-  {"code": "002788", "name": "鹭燕医药", "composite_score": 86, "changepercent": 3.12, "price": 11.90, "amount_yi": 2.9, "reason": "医药商业"},
-  {"code": "000630", "name": "铜陵有色", "composite_score": 85, "changepercent": 2.51, "price": 6.54, "amount_yi": 25.8, "reason": "铜冶炼"},
-  {"code": "600345", "name": "长江通信", "composite_score": 84, "changepercent": 2.24, "price": 52.40, "amount_yi": 10.7, "reason": "通信设备"},
-  {"code": "603063", "name": "禾望电气", "composite_score": 83, "changepercent": 0.32, "price": 31.80, "amount_yi": 6.8, "reason": "风电变流器"},
-  {"code": "000690", "name": "宝新能源", "composite_score": 82, "changepercent": 2.81, "price": 5.12, "amount_yi": 3.9, "reason": "火电"},
-  {"code": "000425", "name": "徐工机械", "composite_score": 81, "changepercent": 0.24, "price": 8.33, "amount_yi": 11.7, "reason": "工程机械"},
-  {"code": "000957", "name": "中通客车", "composite_score": 78, "changepercent": 1.77, "price": 10.36, "amount_yi": 1.8, "reason": "客车"},
-  {"code": "002216", "name": "三全食品", "composite_score": 78, "changepercent": 0.83, "price": 12.12, "amount_yi": 0.9, "reason": "速冻食品"}
-]
+{
+ "date": "2026-09-09",
+ "generated_by": "after_market_pipeline",
+ "top10": [
+  {
+   "code": "002011",
+   "name": "盾安环境",
+   "composite_score": 92,
+   "changepercent": 4.18,
+   "price": 12.45,
+   "amount_yi": 12.3,
+   "reason": "板块分散版Top10"
+  },
+  {
+   "code": "002258",
+   "name": "利尔化学",
+   "composite_score": 88,
+   "changepercent": 0.96,
+   "price": 15.7,
+   "amount_yi": 11.3,
+   "reason": "板块分散版Top10"
+  },
+  {
+   "code": "000737",
+   "name": "北方铜业",
+   "composite_score": 87,
+   "changepercent": 4.84,
+   "price": 16.47,
+   "amount_yi": 43.9,
+   "reason": "板块分散版Top10"
+  },
+  {
+   "code": "600776",
+   "name": "东方通信",
+   "composite_score": 86,
+   "changepercent": 5.25,
+   "price": 14.03,
+   "amount_yi": 10.2,
+   "reason": "板块分散版Top10"
+  },
+  {
+   "code": "000690",
+   "name": "宝新能源",
+   "composite_score": 84,
+   "changepercent": 5.66,
+   "price": 5.41,
+   "amount_yi": 9.3,
+   "reason": "板块分散版Top10"
+  },
+  {
+   "code": "600508",
+   "name": "上海能源",
+   "composite_score": 84,
+   "changepercent": 1.13,
+   "price": 11.62,
+   "amount_yi": 5.7,
+   "reason": "板块分散版Top10"
+  },
+  {
+   "code": "603127",
+   "name": "昭衍新药",
+   "composite_score": 83,
+   "changepercent": 0.28,
+   "price": 43.74,
+   "amount_yi": 12.7,
+   "reason": "板块分散版Top10"
+  },
+  {
+   "code": "000957",
+   "name": "中通客车",
+   "composite_score": 80,
+   "changepercent": 1.64,
+   "price": 10.53,
+   "amount_yi": 2.0,
+   "reason": "板块分散版Top10"
+  },
+  {
+   "code": "600754",
+   "name": "锦江酒店",
+   "composite_score": 80,
+   "changepercent": 0.05,
+   "price": 19.6,
+   "amount_yi": 2.7,
+   "reason": "板块分散版Top10"
+  },
+  {
+   "code": "600909",
+   "name": "华安证券",
+   "composite_score": 80,
+   "changepercent": 0.62,
+   "price": 8.07,
+   "amount_yi": 6.2,
+   "reason": "板块分散版Top10"
+  }
+ ]
+}
