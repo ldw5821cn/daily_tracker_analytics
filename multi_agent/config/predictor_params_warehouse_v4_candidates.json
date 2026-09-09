@@ -1,6 +1,6 @@
 {
   "_version": 5,
-  "updated_at": "2026-09-07T17:10:15.917314",
+  "updated_at": "2026-09-08T17:13:28.744864",
   "个股": {
     "weights": {
       "technical": 0.22,
@@ -151,6 +151,6 @@
   },
   "updated_by": "auto_tune_from_reflection",
   "updated_reason": "收窄 neutral 区间 | 提高 bullish/bearish 阈值门槛",
-  "trigger_accuracy": 46.6,
-  "trigger_pred_date": "2026-08-31"
+  "trigger_accuracy": 50.0,
+  "trigger_pred_date": "2026-09-02"
 }
