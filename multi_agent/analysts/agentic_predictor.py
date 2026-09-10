@@ -455,7 +455,7 @@ def _get_sector_momentum(sector: str) -> Dict:
         return {}
 
 
-MAX_WORKERS = 4  # 线程池大小，避免数据源被封
+MAX_WORKERS = 6  # 线程池大小，避免数据源被封（多 LLM 辩论时适当增加并发）
 
 
 def _get_conn() -> sqlite3.Connection:
@@ -1318,10 +1318,10 @@ def generate_for_watchlist(watchlist_path: str = None, categories: List[str] = N
                 except Exception as e:
                     print(f"  ❌ {item['ticker']}: {e}")
                     errors += 1
-            # 超时兜底：只对已开始运行(running)的 future 计硬超时（默认 300s，可用 AGENTIC_ITEM_TIMEOUT 覆盖）；
+            # 超时兜底：只对已开始运行(running)的 future 计硬超时（默认 600s，可用 AGENTIC_ITEM_TIMEOUT 覆盖）；
             # 排队未开始的给 1800s 上限，避免数据源/LLM 抖动时排队标的被批量误杀（2026-08-26 实测 181 标的因排队>120s 全被取消）
             now = time.time()
-            item_timeout = float(os.environ.get('AGENTIC_ITEM_TIMEOUT', '300'))
+            item_timeout = float(os.environ.get('AGENTIC_ITEM_TIMEOUT', '600'))
             stalled = [f for f in pending if now - submitted_at[f] > (item_timeout if f.running() else 1800)]
             for f in stalled:
                 pending.discard(f)

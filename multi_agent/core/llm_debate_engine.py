@@ -35,24 +35,22 @@ def _safe_json(obj) -> str:
 def _build_context(ticker: str, name: str, sector: str, category: str,
                    technical: Optional[Dict], fundamental: Optional[Dict],
                    news: Optional[Dict], macro_report: Optional[Dict]) -> str:
-    """构建所有 Agent 共享的上下文。"""
-    ctx = f"""标的: {name}({ticker})
-类别: {category}
-板块: {sector or '未知'}
-
-===== 技术面报告 =====
-{_safe_json(technical)}
-
-===== 基本面报告 =====
-{_safe_json(fundamental)}
-
-===== 新闻情绪报告 =====
-{_safe_json(news)}
-
-===== 宏观报告 =====
-{_safe_json(macro_report)}
+    """构建所有 Agent 共享的轻量上下文（避免过长 prompt 拖慢推理）。"""
+    ts = technical.get('tech_snapshot', {}) if technical else {}
+    tech_summary = f"""当前价{ts.get('current_price', 'N/A')}, MA20={ts.get('ma20', 'N/A')}, RSI14={ts.get('rsi_14', 'N/A')}, MACD柱={ts.get('macd_hist', 'N/A')}, 布林带={ts.get('boll_down', 'N/A')}/{ts.get('boll_mid', 'N/A')}/{ts.get('boll_up', 'N/A')}"""
+    
+    fs = fundamental.get('fundamentals', {}) if fundamental else {}
+    fund_summary = f"PE={fs.get('pe_ratio', 'N/A')}, 营收增长={fs.get('revenue_growth', 'N/A')}%, 净利率={fs.get('profit_margins', 'N/A')}%, 负债权益比={fs.get('debt_to_equity', 'N/A')}%, Z-score={fs.get('altman_z_score', 'N/A')}"
+    
+    news_summary = f"情绪={news.get('sentiment_score', 'N/A')}, 关键词={news.get('keywords', [])[:5]}" if news else "无"
+    macro_summary = f"宏观信号={macro_report.get('macro_signal', 'N/A')}, 分数={macro_report.get('macro_score', 'N/A')}" if macro_report else "无"
+    
+    return f"""标的: {name}({ticker}) 类别: {category} 板块: {sector or '未知'}
+技术: {tech_summary}
+基本面: {fund_summary}
+新闻: {news_summary}
+宏观: {macro_summary}
 """
-    return ctx
 
 
 def bull_agent(ticker: str, name: str, sector: str, category: str,
@@ -86,7 +84,7 @@ def bull_agent(ticker: str, name: str, sector: str, category: str,
     response = chat([
         {'role': 'system', 'content': '你是顶级买方分析师，擅长发现被低估的投资机会。你只输出 JSON，不输出任何解释性文字。'},
         {'role': 'user', 'content': prompt},
-    ], temperature=temperature, max_tokens=1500)
+    ], temperature=temperature, max_tokens=800, retries=1, retry_delay=2.0)
     return _parse_agent_response(response, 'bull')
 
 
@@ -121,7 +119,7 @@ def bear_agent(ticker: str, name: str, sector: str, category: str,
     response = chat([
         {'role': 'system', 'content': '你是顶级风险分析师，擅长发现投资标的的下行风险。你只输出 JSON，不输出任何解释性文字。'},
         {'role': 'user', 'content': prompt},
-    ], temperature=temperature, max_tokens=1500)
+    ], temperature=temperature, max_tokens=800, retries=1, retry_delay=2.0)
     return _parse_agent_response(response, 'bear')
 
 
@@ -173,7 +171,7 @@ def judge_agent(ticker: str, name: str, sector: str, category: str,
     response = chat([
         {'role': 'system', 'content': '你是首席投资官，擅长在多空冲突中做出明确决策。你只输出 JSON，不输出任何解释性文字。'},
         {'role': 'user', 'content': prompt},
-    ], temperature=temperature, max_tokens=1500)
+    ], temperature=temperature, max_tokens=800, retries=1, retry_delay=2.0)
     return _parse_agent_response(response, 'judge')
 
 
@@ -299,11 +297,23 @@ def run_llm_debate(ticker: str, name: str = '', sector: str = '', category: str 
         bear_future = executor.submit(
             bear_agent, ticker, name, sector, category, technical, fundamental, news, macro_report
         )
-        bull = bull_future.result(timeout=60)
-        bear = bear_future.result(timeout=60)
+        try:
+            bull = bull_future.result(timeout=25)
+        except Exception as e:
+            print(f"  ⚠️ Bull Agent 超时/失败: {e}")
+            bull = _default_response('bull')
+        try:
+            bear = bear_future.result(timeout=25)
+        except Exception as e:
+            print(f"  ⚠️ Bear Agent 超时/失败: {e}")
+            bear = _default_response('bear')
     
     print(f"  [LLM辩论] {name}({ticker}): Judge Agent...")
-    judge = judge_agent(ticker, name, sector, category, bull, bear, technical, fundamental, news, macro_report)
+    try:
+        judge = judge_agent(ticker, name, sector, category, bull, bear, technical, fundamental, news, macro_report)
+    except Exception as e:
+        print(f"  ⚠️ Judge Agent 超时/失败: {e}")
+        judge = _default_response('judge')
     
     return {
         'bull_report': bull,
