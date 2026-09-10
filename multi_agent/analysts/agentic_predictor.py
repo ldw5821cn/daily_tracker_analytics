@@ -1091,7 +1091,8 @@ def _futures_technical_analysis(ticker: str, name: str = "", macro_report: Optio
 def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '个股',
                 fast: bool = False, ultra: bool = False,
                 macro_report: Optional[Dict] = None,
-                market_context: Optional[DailyMarketContext] = None) -> Optional[Dict]:
+                market_context: Optional[DailyMarketContext] = None,
+                prediction_date: Optional[str] = None) -> Optional[Dict]:
     """对单个标的进行统一多 Agent 预测。fast=True 跳过基本面和新闻情绪，仅技术面+多空辩论。ultra=True 使用轻量技术面分析，速度最快。macro_report 为全局宏观分析，影响经理裁决。"""
     try:
         # === KHunter 借鉴：自动过滤高风险标的 ===
@@ -1294,15 +1295,16 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
         return {'error': str(e), 'ticker': ticker, 'name': name}
 
 
-def save_predictions(predictions: List[Dict]) -> Dict:
+def save_predictions(predictions: List[Dict], pred_date: Optional[str] = None) -> Dict:
     """向后兼容：使用 DAO 保存预测。"""
-    return _db_save_predictions(predictions)
+    return _db_save_predictions(predictions, pred_date=pred_date)
 
 
 def generate_for_watchlist(watchlist_path: str = None, categories: List[str] = None,
                            max_workers: int = MAX_WORKERS, fast: bool = False, ultra: bool = False,
-                           macro_report: Optional[Dict] = None) -> Dict:
-    """多线程批量生成预测。fast=True 跳过基本面/新闻，ultra=True 额外使用轻量技术面分析。macro_report 传入全局宏观分析。"""
+                           macro_report: Optional[Dict] = None,
+                           prediction_date: Optional[str] = None) -> Dict:
+    """多线程批量生成预测。fast=True 跳过基本面/新闻，ultra=True 额外使用轻量技术面分析。macro_report 传入全局宏观分析。prediction_date 指定预测日期，默认当天。"""
     if watchlist_path is None:
         watchlist_path = os.path.join(MULTI_AGENT, 'watchlist.json')
 
@@ -1321,7 +1323,7 @@ def generate_for_watchlist(watchlist_path: str = None, categories: List[str] = N
     def _predict(item):
         region = region_from_ticker(item['ticker'], item.get('category', '个股'))
         mctx = _get_market_context(region=region, allow_generate=False)
-        return predict_one(item['ticker'], item['name'], item.get('sector', item.get('theme', '')), item.get('category', '个股'), fast=fast, ultra=ultra, macro_report=macro_report, market_context=mctx)
+        return predict_one(item['ticker'], item['name'], item.get('sector', item.get('theme', '')), item.get('category', '个股'), fast=fast, ultra=ultra, macro_report=macro_report, market_context=mctx, prediction_date=prediction_date)
 
     executor = ThreadPoolExecutor(max_workers=max_workers)
     try:
@@ -1359,12 +1361,12 @@ def generate_for_watchlist(watchlist_path: str = None, categories: List[str] = N
         # wait=False：避免卡死的 worker 线程阻塞主流程（Python 3.9+ worker 为 daemon 线程，进程退出自动回收）
         executor.shutdown(wait=False)
 
-    stats = save_predictions(predictions)
+    stats = save_predictions(predictions, pred_date=prediction_date)
     stats['errors'] += errors
 
     # 同步保存 LLM 特征快照到 warehouse（用于长期参数优化与回测）
     try:
-        pred_date = datetime.now().strftime('%Y-%m-%d')
+        pred_date = prediction_date or datetime.now().strftime('%Y-%m-%d')
         snapshots = []
         for pr in predictions:
             snapshots.append({
@@ -1406,7 +1408,7 @@ def generate_for_watchlist(watchlist_path: str = None, categories: List[str] = N
 
     # 通知：汇总每日预测结果（失败不阻塞）
     try:
-        notify_summary(predictions, date=datetime.now().strftime('%Y-%m-%d'))
+        notify_summary(predictions, date=prediction_date or datetime.now().strftime('%Y-%m-%d'))
     except Exception as e:
         print(f'[notify] 通知发送失败（非阻断）: {e}')
 

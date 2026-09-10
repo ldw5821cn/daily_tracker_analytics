@@ -44,6 +44,7 @@ def main():
         fast=args.fast,
         ultra=args.ultra,
         macro_report=macro_report,
+        prediction_date=args.date,
     )
     print(f"[daily_agentic_predictor] A 股完成: {result['stats']}")
     if not args.skip_us:
