@@ -1509,9 +1509,14 @@ if __name__ == '__main__':
     parser.add_argument('--output', type=str, help='输出 JSON 文件（可选）')
     parser.add_argument('--validate', action='store_true', help='[已弃用] 旧方向验证不再使用，统一使用回测指标')
     parser.add_argument('--workers', type=int, default=MAX_WORKERS, help='并发线程数')
+    parser.add_argument('--item_timeout', type=int, default=120, help='单个标的硬超时秒数（环境变量 AGENTIC_ITEM_TIMEOUT 优先级更高）')
     parser.add_argument('--fast', action='store_true', help='跳过基本面和新闻，仅技术面+多空辩论')
     parser.add_argument('--ultra', action='store_true', help='使用轻量技术面分析，速度最快')
     args = parser.parse_args()
+
+    # 命令行传入则立即生效
+    if args.item_timeout != 120 or not os.environ.get('AGENTIC_ITEM_TIMEOUT'):
+        os.environ['AGENTIC_ITEM_TIMEOUT'] = str(args.item_timeout)
 
     if args.validate:
         print(json.dumps({
