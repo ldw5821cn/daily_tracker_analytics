@@ -736,8 +736,25 @@ def get_stock_data(ticker, period="2y", calibrate=True) -> tuple[pd.DataFrame, d
     df = None
     source = None
     info = {}
+    # 1) 期货：直接走新浪期货，不经过 registry 避免富途单连接排队
+    if is_futures(ticker):
+        df = _get_sina_futures_data(ticker)
+        if df is not None:
+            source = "sina_futures"
+            print(f"  📡 数据源: 新浪期货 {len(df)}天")
+            return df, info
 
-    # 1) 优先尝试统一 registry 数据源（富途 fallback 链）
+    # 2) A股/ETF 优先走新浪日线，避开 registry 富途单连接并发排队
+    if is_etf(ticker) or (not is_futures(ticker)):
+        df = _get_sina_data(ticker)
+        if df is not None and len(df) >= 20:
+            source = "sina"
+            print(f"  📡 数据源: 新浪财经 {len(df)}天")
+            if calibrate:
+                _verify_data(ticker, df, source)
+            return df, info
+
+    # 3) 新浪失败后，尝试统一 registry 数据源（富途 fallback 链）
     df = _get_registry_data(ticker, period=period)
     if df is not None:
         source = "registry:futu"
@@ -751,7 +768,8 @@ def get_stock_data(ticker, period="2y", calibrate=True) -> tuple[pd.DataFrame, d
         if df is not None:
             source = "sina_futures"
             print(f"  📡 数据源: 新浪期货 {len(df)}天")
-    elif is_etf(ticker):
+
+    if is_etf(ticker):
         df = _get_akshare_etf_data(ticker)
         if df is not None:
             source = "akshare_etf"
