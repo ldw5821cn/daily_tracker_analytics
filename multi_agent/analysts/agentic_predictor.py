@@ -1127,10 +1127,8 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
                 'fundamentals': {'note': 'fast 模式跳过基本面'},
                 'error': 'skipped',
             }
-            from analysts.sentiment_analyst import compute_sentiment_score as _get_sent
-            _clean_ticker = ticker.replace('.SH','').replace('.SZ','').replace('/US','')
-            _senti, _ = _get_sent(_clean_ticker, category=category, name=name)
-            news = {'sentiment_score': _senti / 50 - 1, 'sentiment': '中性', 'keywords': []}
+            # 2026-09-10: fast 模式跳过同花顺情绪抓取，避免外部 I/O 阻塞
+            news = {'sentiment_score': 0.0, 'sentiment': '中性', 'keywords': []}
         elif is_fut:
             ff = futures_fundamental_analyst.analyze(ticker, name)
             fundamental = {
@@ -1151,11 +1149,15 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
             news = {'sentiment_score': _senti / 50 - 1, 'sentiment': '中性', 'keywords': []}
         elif fast:
             fundamental = {'score': 50, 'rating': 'N/A', 'fundamentals': {}, 'error': 'skipped'}
+            # 2026-09-10: fast 模式跳过同花顺情绪抓取，避免外部 I/O 阻塞
+            news = {'sentiment_score': 0.0, 'sentiment': '中性', 'keywords': []}
+        # ultra 模式：跳过复杂技术面（用轻量版），但新闻情绪正常获取（已优化至3-7s/个）
+        elif ultra:
+            fundamental = {'score': 50, 'rating': 'N/A', 'fundamentals': {}, 'error': 'skipped'}
             from analysts.sentiment_analyst import compute_sentiment_score as _get_sent
             _clean_ticker = ticker.replace('.SH','').replace('.SZ','').replace('/US','')
             _senti, _ = _get_sent(_clean_ticker, category=category, name=name)
             news = {'sentiment_score': _senti / 50 - 1, 'sentiment': '中性', 'keywords': []}
-        # ultra 模式：跳过复杂技术面（用轻量版），但新闻情绪正常获取（已优化至3-7s/个）
         else:
             if category == 'US':
                 # 美股使用轻量基本面因子模型
