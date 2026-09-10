@@ -21,6 +21,8 @@ def main():
     parser.add_argument('--us_workers', type=int, default=4, help='美股并发线程数')
     parser.add_argument('--skip_us', action='store_true', help='跳过美股预测')
     parser.add_argument('--categories', type=str, default='ETF,个股,期货', help='逗号分隔的A股类别')
+    parser.add_argument('--fast', action='store_true', help='跳过基本面和新闻，仅技术面+多空辩论')
+    parser.add_argument('--ultra', action='store_true', help='启用 ultra 模式（默认 False，快模式）')
     args = parser.parse_args()
 
     os.environ['AGENTIC_ITEM_TIMEOUT'] = str(args.item_timeout)
@@ -39,14 +41,14 @@ def main():
         watchlist_path=os.path.join(MULTI_AGENT, 'watchlist.json'),
         categories=cats,
         max_workers=args.workers,
-        fast=False,
-        ultra=True,
+        fast=args.fast,
+        ultra=args.ultra,
         macro_report=macro_report,
     )
     print(f"[daily_agentic_predictor] A 股完成: {result['stats']}")
     if not args.skip_us:
         print('[daily_agentic_predictor] 生成美股预测（并行 4 workers）...')
-        us_result = run_us_predictions(ultra=True, macro_report=macro_report, max_workers=args.us_workers)
+        us_result = run_us_predictions(ultra=args.ultra, macro_report=macro_report, max_workers=args.us_workers)
         print(f"[daily_agentic_predictor] 美股完成: {us_result}")
     close_cached_loaders()
 
