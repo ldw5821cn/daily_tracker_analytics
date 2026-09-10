@@ -123,6 +123,7 @@ def main():
                 category=category,
                 fast=False,
                 ultra=False,
+                prediction_date=pred_date,
             )
             if 'error' in new_result:
                 print(f"    ❌ {ticker}: {new_result['error']}")
