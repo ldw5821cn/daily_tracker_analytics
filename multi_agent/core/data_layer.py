@@ -476,7 +476,29 @@ def _get_sina_futures_data(ticker, datalen=500):
 
 
 def _get_akshare_etf_data(ticker, start_date='20190101', end_date=None):
-    """用 akshare 获取 ETF 前复权历史日线"""
+    """用 akshare/腾讯获取 ETF 前复权历史日线；akshare 东财接口不可用时回退腾讯。"""
+    # 2026-09-10: akshare fund_etf_hist_em 当前走东财接口且连接被重置，优先用 tencent
+    try:
+        from multi_agent.core.data_loader_registry import fetch_market_data
+        end = end_date if end_date else datetime.now().strftime('%Y%m%d')
+        # 标准化为 YYYY-MM-DD
+        end_fmt = pd.Timestamp(end).strftime('%Y-%m-%d')
+        start_fmt = pd.Timestamp(start_date).strftime('%Y-%m-%d')
+        result = fetch_market_data([ticker], start_fmt, end_fmt, market='a_share', source='tencent', use_cache=False)
+        df = result.get(ticker)
+        if df is not None and len(df) >= 20:
+            df = df.rename(columns={
+                'open': 'open', 'close': 'close', 'high': 'high',
+                'low': 'low', 'volume': 'volume',
+            })
+            df.index.name = 'date'
+            df = df[['open', 'high', 'low', 'close', 'volume']].astype(float)
+            df.sort_index(inplace=True)
+            return df
+    except Exception:
+        pass
+
+    # fallback: 原 akshare 东财接口
     try:
         import akshare as ak
         if end_date is None:

@@ -1149,17 +1149,18 @@ class LocalLoader:
 # ---------------------------------------------------------------------------
 # 按 IP 封禁风险排序：公开、低频、免登录的接口在前；爬虫密集/限速源在后。
 FALLBACK_CHAINS = {
-    # A 股：富途（需 OpenD）-> TickFlow（付费稳定） -> 腾讯公开接口 -> 东方财富 -> mootdx -> akshare -> 本地缓存
-    'a_share': ['futu', 'tickflow', 'tencent', 'eastmoney', 'mootdx', 'akshare', 'local'],
-    # 指数：富途 -> TickFlow -> 东方财富 -> akshare -> 本地
-    'index': ['futu', 'tickflow', 'eastmoney', 'akshare', 'local'],
+    # A 股：富途（需 OpenD）-> TickFlow（付费稳定） -> 腾讯公开接口 -> mootdx -> akshare -> 本地缓存
+    # 2026-09-10: eastmoney 历史 K 线接口当前不可用（Connection aborted），临时移除避免阻塞
+    'a_share': ['futu', 'tickflow', 'tencent', 'mootdx', 'akshare', 'local'],
+    # 指数：富途 -> TickFlow -> akshare -> 本地
+    'index': ['futu', 'tickflow', 'akshare', 'local'],
     # 期货：富途（需 OpenD+权限）-> 新浪期货 -> akshare -> 本地
     'futures': ['futu', 'sina_futures', 'akshare_futures', 'local'],
     # 美股/港股：富途 -> TickFlow -> yfinance -> 本地
     'us_equity': ['futu', 'tickflow', 'yfinance', 'local'],
     'hk_equity': ['futu', 'tickflow', 'yfinance', 'local'],
-    # 基金：akshare 基金历史接口优先，东方财富次之，mootdx 兜底
-    'fund': ['akshare', 'eastmoney', 'mootdx', 'local'],
+    # 基金：akshare 基金历史接口优先，mootdx 兜底
+    'fund': ['akshare', 'mootdx', 'local'],
     # 宏观：akshare 宏观数据优先
     'macro': ['akshare', 'local'],
 }
