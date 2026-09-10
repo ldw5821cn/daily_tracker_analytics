@@ -1331,6 +1331,7 @@ def fetch_market_data(codes: List[str], start_date: str, end_date: str, *,
                 if not cls:
                     continue
                 t1 = time.monotonic()
+                last_error = None
                 try:
                     loader = _get_cached_loader(name)
                     if loader is None:
@@ -1338,28 +1339,48 @@ def fetch_market_data(codes: List[str], start_date: str, end_date: str, *,
                     available = _is_cached_loader_available(name)
                     if not available:
                         continue
-                    fetched = loader.fetch([symbol], start_date, end_date, interval=interval, fields=fields)
-                    df = fetched.get(symbol)
-                    if df is not None and not df.empty:
-                        latency_ms = int((time.monotonic() - t1) * 1000)
-                        _save_cache(df, name, symbol, interval, start_date, end_date, fields=fields)
-                        result[symbol] = df
-                        _record(
-                            name, symbol, m, start_date, end_date, interval,
-                            'success', rows=len(df), latency_ms=latency_ms,
-                        )
-                        success = True
-                        break
+                    # 2026-09-10: 单个 loader fetch 加 8s 硬超时，避免某个 loader 卡住阻塞整个 fallback 链
+                    import threading
+                    fetch_result = [None]
+                    fetch_error = [None]
+                    def _fetch_with_loader():
+                        try:
+                            fetch_result[0] = loader.fetch([symbol], start_date, end_date, interval=interval, fields=fields)
+                        except Exception as e:
+                            fetch_error[0] = e
+                    ft = threading.Thread(target=_fetch_with_loader)
+                    ft.daemon = True
+                    ft.start()
+                    ft.join(timeout=8)
+                    if ft.is_alive():
+                        last_error = f'{name}: fetch timeout (>8s)'
+                        logger.debug('loader %s fetch timeout for %s', name, symbol)
+                    elif fetch_error[0]:
+                        raise fetch_error[0]
                     else:
-                        last_error = f'{name}: empty'
+                        fetched = fetch_result[0]
+                        df = fetched.get(symbol) if fetched else None
+                        if df is not None and not df.empty:
+                            latency_ms = int((time.monotonic() - t1) * 1000)
+                            _save_cache(df, name, symbol, interval, start_date, end_date, fields=fields)
+                            result[symbol] = df
+                            _record(
+                                name, symbol, m, start_date, end_date, interval,
+                                'success', rows=len(df), latency_ms=latency_ms,
+                            )
+                            success = True
+                            break
+                        else:
+                            last_error = f'{name}: empty'
                 except Exception as e:
                     last_error = f'{name}: {e}'
                     logger.debug('loader %s failed for %s: %s', name, symbol, e)
-                latency_ms = int((time.monotonic() - t1) * 1000)
-                _record(
-                    name, symbol, m, start_date, end_date, interval,
-                    'failure', latency_ms=latency_ms, error_msg=last_error,
-                )
+                if not success:
+                    latency_ms = int((time.monotonic() - t1) * 1000)
+                    _record(
+                        name, symbol, m, start_date, end_date, interval,
+                        'failure', latency_ms=latency_ms, error_msg=last_error,
+                    )
             if not success and last_error:
                 # 最终 fallback 到本地缓存，记录兜底状态
                 df = _load_cache('local', symbol, interval, start_date, end_date, fields=fields)

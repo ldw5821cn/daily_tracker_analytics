@@ -479,7 +479,7 @@ def _get_akshare_etf_data(ticker, start_date='20190101', end_date=None):
     """用 akshare/腾讯获取 ETF 前复权历史日线；akshare 东财接口不可用时回退腾讯。"""
     # 2026-09-10: akshare fund_etf_hist_em 当前走东财接口且连接被重置，优先用 tencent
     try:
-        from multi_agent.core.data_loader_registry import fetch_market_data
+        from core.data_loader_registry import fetch_market_data
         end = end_date if end_date else datetime.now().strftime('%Y%m%d')
         # 标准化为 YYYY-MM-DD
         end_fmt = pd.Timestamp(end).strftime('%Y-%m-%d')
@@ -678,12 +678,12 @@ def _get_realtime_price_legacy(ticker):
 
 
 def get_realtime_price(ticker):
-    """统一实时价格入口：优先走 registry，失败回退到腾讯证券。"""
+    # 实时行情：优先 registry
     try:
-        from multi_agent.core.data_loader_registry import get_realtime_price as registry_realtime
-        prices = registry_realtime([ticker])
-        if prices and ticker in prices:
-            return {'price': float(prices[ticker])}
+        from core.data_loader_registry import get_realtime_price as registry_realtime
+        rt = registry_realtime([ticker])
+        if ticker in rt and rt[ticker]:
+            return float(rt[ticker])
     except Exception:
         pass
     return _get_realtime_price_legacy(ticker)
@@ -715,7 +715,7 @@ def _period_to_days(period: str) -> int:
 def _get_registry_data(ticker: str, period: str = "2y", interval: str = "1D"):
     """通过统一 data_loader_registry 取数据（富途优先），返回 DataFrame 或 None。"""
     try:
-        from multi_agent.core.data_loader_registry import fetch_market_data
+        from core.data_loader_registry import fetch_market_data
         end = datetime.now().strftime('%Y-%m-%d')
         start = (datetime.now() - timedelta(days=_period_to_days(period))).strftime('%Y-%m-%d')
         result = fetch_market_data([ticker], start, end, interval=interval, use_cache=False)
@@ -998,7 +998,7 @@ _USE_V2 = os.environ.get('USE_DATA_LOADER_REGISTRY_V2', '1') == '1'
 
 def get_stock_data_v2(ticker, period="2y", calibrate=True, source=None) -> tuple[pd.DataFrame, dict]:
     """基于 data_loader_registry 的智能数据获取（V2 实验版）。"""
-    from multi_agent.core.data_loader_registry import fetch_market_data
+    from core.data_loader_registry import fetch_market_data
 
     # period 转起止日期
     if isinstance(period, str) and period.endswith('y'):
