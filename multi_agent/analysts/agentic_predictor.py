@@ -509,7 +509,8 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
                      bull_arg: Dict, bear_arg: Dict,
                      macro_report: Optional[Dict] = None, ticker: str = '', name: str = '',
                      sector: str = '', category: str = '',
-                     market_context: Optional[DailyMarketContext] = None) -> Dict:
+                     market_context: Optional[DailyMarketContext] = None,
+                     fast: bool = False) -> Dict:
     tech_score = technical_report.get('score', 50)
     tech_rating = technical_report.get('rating', '中性')
     tech_snapshot = technical_report.get('tech_snapshot', {})
@@ -518,15 +519,17 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     news_score = (news_report.get('sentiment_score', 0) + 1) * 50
     social_detail = {}
     # 叠加涨停/龙虎榜情绪信号 + 海外社媒/搜索 overlay（对已被 news_analyst 覆盖的品种也生效）
-    try:
-        from analysts.sentiment_analyst import compute_sentiment_score as _get_sent
-        _ct = ticker.replace('.SH','').replace('.SZ','').replace('/US','')
-        _sent_extra, _sent_detail = _get_sent(_ct, category=category, name=name)
-        social_detail = _sent_detail.get('social', {})
-        # blended: 70% 原新闻情绪 + 30% 涨停/龙虎榜/社媒情绪
-        news_score = news_score * 0.7 + _sent_extra * 0.3
-    except Exception:
-        pass
+    # 2026-09-10: fast 模式跳过同花顺情绪抓取，避免外部 I/O 阻塞并发
+    if not fast:
+        try:
+            from analysts.sentiment_analyst import compute_sentiment_score as _get_sent
+            _ct = ticker.replace('.SH','').replace('.SZ','').replace('/US','')
+            _sent_extra, _sent_detail = _get_sent(_ct, category=category, name=name)
+            social_detail = _sent_detail.get('social', {})
+            # blended: 70% 原新闻情绪 + 30% 涨停/龙虎榜/社媒情绪
+            news_score = news_score * 0.7 + _sent_extra * 0.3
+        except Exception:
+            pass
     macro_score = macro_report.get('macro_score', 50) if macro_report else 50
 
     bull_score = bull_arg.get('score', 0)
@@ -571,7 +574,8 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     hithink_sentiment_override = 0.0
     hithink_sentiment_note = ""
     hithink_sentiment_strength = _PARAMS.get(category, _PARAMS.get('_default', {})).get('hithink_sentiment_strength', 0.0) if isinstance(_PARAMS, dict) else 0.0
-    if not is_futures(ticker) and not is_us_ticker(ticker) and abs(hithink_sentiment_strength) > 1e-6:
+    # 2026-09-10: fast 模式跳过同花顺情绪抓取
+    if not fast and not is_futures(ticker) and not is_us_ticker(ticker) and abs(hithink_sentiment_strength) > 1e-6:
         try:
             from analysts.sentiment_analyst import compute_sentiment_score as _get_sent
             _ct = ticker.replace('.SH','').replace('.SZ','').replace('/US','')
@@ -639,7 +643,8 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     fund_flow_override = 0
     fund_flow_note = ""
     fund_flow_strength = _get_fund_flow_strength(category)
-    if not is_futures(ticker) and not is_us_ticker(ticker) and abs(fund_flow_strength) > 1e-6:
+    # 2026-09-10: fast 模式跳过资金流分析的外部 I/O
+    if not fast and not is_futures(ticker) and not is_us_ticker(ticker) and abs(fund_flow_strength) > 1e-6:
         try:
             from analysts.fund_flow_analyst import analyze as _ff_analyze, analyze_etf as _ff_analyze_etf
             # ETF 没有个股资金流，用行业/概念资金流替代
@@ -680,7 +685,8 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     sector_strength_override = 0.0
     sector_strength_note = ""
     sector_strength_param = _PARAMS.get('sector_strength', 0.0) if isinstance(_PARAMS, dict) else 0.0
-    if not is_futures(ticker) and not is_us_ticker(ticker) and abs(sector_strength_param) > 1e-6 and sector:
+    # 2026-09-10: fast 模式跳过板块强度外部 I/O
+    if not fast and not is_futures(ticker) and not is_us_ticker(ticker) and abs(sector_strength_param) > 1e-6 and sector:
         try:
             from analysts.fund_flow_analyst import get_sector_score, get_concept_score
             sec_score = get_sector_score(sector)
@@ -1212,7 +1218,7 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
 
         bull, bear = _run_debate(technical, fundamental, news, ticker=ticker, name=name, category=category, sector=sector, macro_report=macro_report)
 
-        verdict = _manager_verdict(technical, fundamental, news, bull, bear, macro_report=macro_report, ticker=ticker, name=name, sector=sector, category=category, market_context=market_context)
+        verdict = _manager_verdict(technical, fundamental, news, bull, bear, macro_report=macro_report, ticker=ticker, name=name, sector=sector, category=category, market_context=market_context, fast=fast)
 
         current_price = technical.get('current_price', 0)
         price_date = technical.get('price_date') or technical.get('tech_snapshot', {}).get('price_date', '')
