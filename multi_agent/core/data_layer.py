@@ -476,24 +476,11 @@ def _get_sina_futures_data(ticker, datalen=500):
 
 
 def _get_akshare_etf_data(ticker, start_date='20190101', end_date=None):
-    """用 akshare/腾讯获取 ETF 前复权历史日线；akshare 东财接口不可用时回退腾讯。"""
-    # 2026-09-10: akshare fund_etf_hist_em 当前走东财接口且连接被重置，优先用 tencent
+    """用 新浪 获取 ETF 前复权历史日线；新浪不可用再回退 akshare 东财接口。"""
+    # 2026-09-10: tencent 对 ETF 返回 501；akshare 东财接口被风控重置；新浪 ETF 当前可用
     try:
-        from core.data_loader_registry import fetch_market_data
-        end = end_date if end_date else datetime.now().strftime('%Y%m%d')
-        # 标准化为 YYYY-MM-DD
-        end_fmt = pd.Timestamp(end).strftime('%Y-%m-%d')
-        start_fmt = pd.Timestamp(start_date).strftime('%Y-%m-%d')
-        result = fetch_market_data([ticker], start_fmt, end_fmt, market='a_share', source='tencent', use_cache=False)
-        df = result.get(ticker)
+        df = _get_sina_data(ticker)
         if df is not None and len(df) >= 20:
-            df = df.rename(columns={
-                'open': 'open', 'close': 'close', 'high': 'high',
-                'low': 'low', 'volume': 'volume',
-            })
-            df.index.name = 'date'
-            df = df[['open', 'high', 'low', 'close', 'volume']].astype(float)
-            df.sort_index(inplace=True)
             return df
     except Exception:
         pass
