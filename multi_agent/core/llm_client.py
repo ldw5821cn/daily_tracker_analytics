@@ -155,7 +155,11 @@ def chat(messages: List[Dict[str, str]],
     fallback_models = []
     if 'deepseek' in _model.lower():
         # deepseek 系列：fallback 到 deepseek 其他模型
-        fallback_models = ['deepseek-v4-flash', 'deepseek-v4-pro', 'deepseek-chat']
+        # ⚠️ 2026-09-10：deepseek-chat 放最前——deepseek-v4-flash/v4-pro 是推理模型，
+        # 长 prompt 下推理会吃掉全部 max_tokens 导致 content 为空（静默浪费 3 次重试），
+        # 而 deepseek-chat 非推理、稳定返回内容。同时 config.yaml 里的模型名可能过期
+        # （如 deepseek-v4.1-flash → HTTP 400），第一个模型失败后应尽快落到可用模型。
+        fallback_models = ['deepseek-chat', 'deepseek-v4-pro', 'deepseek-v4-flash']
     elif 'kimi' in _model.lower():
         # kimi 系列：fallback 到 kimi 其他模型
         fallback_models = ['kimi-k2-5-or-latest', 'kimi-for-coding']
@@ -181,10 +185,15 @@ def chat(messages: List[Dict[str, str]],
                 content = resp.choices[0].message.content
                 if content:
                     if attempt_model != _model:
-                        print(f"[llm_client] 模型 {_model} 返回空，已 fallback 到 {attempt_model}", file=sys.stderr)
+                        print(f"[llm_client] 模型 {_model} 无有效返回，已 fallback 到 {attempt_model}", file=sys.stderr)
                     return content
             except Exception as e:
                 last_error = e
+                # ⚠️ 2026-09-10：400 invalid_request_error（模型名不存在/请求非法）不可重试——
+                # 立即跳出该模型的重试循环，避免 5s+10s+15s 白等（曾导致整批 LLM 调用超时）。
+                if '400' in str(e) or 'invalid_request_error' in str(e):
+                    print(f"[llm_client] 模型 {attempt_model} 请求非法(400)，跳过重试: {str(e)[:160]}", file=sys.stderr)
+                    break
                 is_last = (attempt == retries - 1)
                 print(f"[llm_client] 模型 {attempt_model} 调用失败({attempt+1}/{retries}): {e}", file=sys.stderr)
                 if not is_last:
