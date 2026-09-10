@@ -37,7 +37,7 @@ warnings.filterwarnings('ignore')
 
 from analysts import fundamentals_analyst, news_analyst, fundamental_factor_analyst, technical_analyst, futures_fundamental_analyst
 from core.debate_engine import DebateEngine
-from core.data_layer import get_realtime_price, is_futures, get_stock_data, calc_technical_indicators, multi_period_backtest, tf_quotes
+from core.data_layer import get_realtime_price, is_futures, get_stock_data, calc_technical_indicators, multi_period_backtest, tf_quotes, _get_sina_futures_data
 from core.us_data import get_us_stock_data, is_us_ticker
 from core.scenario_backtests import scenario_backtests, recommend_scenario, SCENARIO_NAME_CN, SCENARIO_DESC
 from core.db import get_predictions_conn, save_predictions as _db_save_predictions
