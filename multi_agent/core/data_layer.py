@@ -998,7 +998,7 @@ def get_dividend_info(ticker, name=""):
 # V2 数据源统一注册表（借鉴 Vibe-Trading loader registry 思路）
 # 与 get_stock_data 共存，逐步替换；默认启用 V2，失败时回退旧版
 # ═══════════════════════════════════════════════════════════════════════════
-_USE_V2 = os.environ.get('USE_DATA_LOADER_REGISTRY_V2', '1') == '1'
+_USE_V2 = os.environ.get('USE_DATA_LOADER_REGISTRY_V2', '0') == '1'
 
 
 def get_stock_data_v2(ticker, period="2y", calibrate=True, source=None) -> tuple[pd.DataFrame, dict]:
