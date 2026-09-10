@@ -834,7 +834,19 @@ def _fast_technical_analysis(ticker: str, name: str = "", macro_report: Optional
     tf_turnover = 0.0
     if tickflow_available:
         try:
-            tf_data = tf_quotes([ticker]).get(ticker, {})
+            # 2026-09-10: TickFlow 并发时可能排队，fast 模式用 3s 硬超时避免阻塞
+            import threading
+            tf_result = [{}]
+            def _fetch_tf():
+                try:
+                    tf_result[0] = tf_quotes([ticker])
+                except Exception:
+                    pass
+            t = threading.Thread(target=_fetch_tf)
+            t.daemon = True
+            t.start()
+            t.join(timeout=3)
+            tf_data = tf_result[0].get(ticker, {}) if tf_result[0] else {}
             tf_price = tf_data.get('price')
             tf_change_pct = tf_data.get('change_pct', 0.0) or 0.0
             tf_turnover = tf_data.get('turnover_rate', 0.0) or 0.0
