@@ -201,8 +201,50 @@ def _use_ta_debate(category: str = '') -> bool:
     return False
 
 
-def _run_debate(technical, fundamental, news, ticker='', name='', category=''):
-    """根据参数选择规则辩论或 TradingAgents 风格 LLM 辩论。"""
+def _run_debate(technical, fundamental, news, ticker='', name='', category='', sector='', macro_report=None):
+    """根据参数选择规则辩论、TradingAgents 风格 LLM 辩论，或真正的多 LLM 独立 Agent 辩论。"""
+    # Vibe-Trading 借鉴：真正的多 LLM 独立 Agent 辩论
+    # 优先级：环境变量 AGENTIC_USE_LLM_DEBATE=true > 参数文件 use_llm_debate > 默认 False
+    use_llm_debate = os.getenv('AGENTIC_USE_LLM_DEBATE', '').lower() == 'true'
+    if not use_llm_debate and _PARAMS.get('_version') in (2, 4, 5):
+        v = _PARAMS.get(category, _PARAMS.get('_default', {}))
+        if isinstance(v, dict):
+            use_llm_debate = bool(v.get('use_llm_debate', False))
+    
+    if use_llm_debate:
+        try:
+            from core.llm_debate_engine import run_llm_debate
+            result = run_llm_debate(
+                ticker=ticker, name=name, sector=sector, category=category,
+                technical=technical, fundamental=fundamental, news=news,
+                macro_report=macro_report,
+            )
+            # 构造与旧接口兼容的 bull/bear 结构
+            bull = {
+                'side': '看涨(Bull)',
+                'score': result['bull_score'],
+                'points': result['bull_report'].get('core_arguments', []),
+                'target_price': result['bull_report'].get('target_price', 0),
+                'thesis_breakers': result['bull_report'].get('thesis_breakers', []),
+                'confidence': result['bull_report'].get('confidence', 50),
+                'text': result['bull_report'].get('summary', ''),
+            }
+            bear = {
+                'side': '看跌(Bear)',
+                'score': result['bear_score'],
+                'points': result['bear_report'].get('core_arguments', []),
+                'target_price': result['bear_report'].get('target_price', 0),
+                'thesis_breakers': result['bear_report'].get('thesis_breakers', []),
+                'confidence': result['bear_report'].get('confidence', 50),
+                'text': result['bear_report'].get('summary', ''),
+            }
+            # 同时返回 judge 结果供上层使用
+            bull['_llm_debate_judge'] = result
+            bear['_llm_debate_judge'] = result
+            return bull, bear
+        except Exception as e:
+            print(f"  ⚠️ 多 LLM 辩论失败，回退规则辩论: {e}")
+    
     if _use_ta_debate(category):
         try:
             from core.debate_engine_ta import ta_style_debate
@@ -491,6 +533,26 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
     bear_score = bear_arg.get('score', 0)
     net_debate = bull_score - bear_score
 
+    # Vibe-Trading 借鉴：如果使用了真正的多 LLM 辩论，提取 Judge 结果作为强先验
+    llm_judge = bull_arg.get('_llm_debate_judge') or bear_arg.get('_llm_debate_judge')
+    use_judge_signal = False
+    judge_weighted_score = 50
+    judge_confidence = 0
+    if llm_judge:
+        judge_weighted_score = llm_judge.get('weighted_score', 50)
+        judge_confidence = llm_judge.get('confidence', 50) / 100.0
+        use_judge_signal = judge_confidence >= 0.6  # Judge 置信度足够高时才采用
+        if use_judge_signal:
+            # Judge 结果与现有加权得分混合：Judge 占 30%，原有规则占 70%
+            # 未来可通过 optimizer 学习这个权重
+            tech_score = tech_score * 0.7 + judge_weighted_score * 0.3
+            # 记录 Judge 观点供后续输出
+            llm_judge_note = f"LLM裁决{llm_judge.get('signal', '中性')}({judge_weighted_score:.0f})"
+        else:
+            llm_judge_note = ""
+    else:
+        llm_judge_note = ""
+
     # 动态权重：期货基本面信号极端时提高其权重
     ticker = ticker or technical_report.get('ticker', '')
     if is_futures(ticker) and abs(fund_score - 50) >= 5:
@@ -613,6 +675,27 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         except Exception:
             pass
 
+    # === KHunter 借鉴：板块强度独立修正（P1-1）===
+    # 个股/ETF 若所在行业/概念当日资金极强/极弱，给予额外方向修正
+    sector_strength_override = 0.0
+    sector_strength_note = ""
+    sector_strength_param = _PARAMS.get('sector_strength', 0.0) if isinstance(_PARAMS, dict) else 0.0
+    if not is_futures(ticker) and not is_us_ticker(ticker) and abs(sector_strength_param) > 1e-6 and sector:
+        try:
+            from analysts.fund_flow_analyst import get_sector_score, get_concept_score
+            sec_score = get_sector_score(sector)
+            concept_score = get_concept_score(sector)
+            # 取行业/概念中较强的资金流信号
+            best_score = max(abs(sec_score - 50), abs(concept_score - 50))
+            best_source = sec_score if abs(sec_score - 50) >= abs(concept_score - 50) else concept_score
+            raw_sector_override = (best_source - 50) / 5.0  # 每偏离 50 分 5 分 = 1 分
+            sector_strength_override = max(-12, min(12, raw_sector_override * sector_strength_param))
+            if abs(sector_strength_override) >= 1:
+                weighted = max(0, min(100, weighted + sector_strength_override))
+                sector_strength_note = f"板块强度{sec_score:.0f}/概念{concept_score:.0f}修正{sector_strength_override:+.1f}"
+        except Exception:
+            pass
+
     # 信号判定（中性区间已自动收窄由 threshold 控制）
     if weighted >= _T['strong_bull']:
         signal = '看多'
@@ -670,11 +753,36 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         reasons.append(fund_flow_note)
     if market_flow_note:
         reasons.append(market_flow_note)
+    if sector_strength_note:
+        reasons.append(sector_strength_note)
+    if llm_judge_note:
+        reasons.append(llm_judge_note)
     if market_context is not None:
         cap = getattr(market_context, 'position_cap', 1.0)
         if cap < 1.0:
             position_pct = round(min(position_pct, cap), 3)
             reasons.append(f"市场仓位上限{cap:.0%}")
+
+    # 保存 LLM 辩论详细结果供后续分析和展示
+    llm_debate_detail = None
+    if llm_judge:
+        llm_debate_detail = {
+            'bull_report': llm_judge.get('bull_report', {}),
+            'bear_report': llm_judge.get('bear_report', {}),
+            'judge_report': {
+                'signal': llm_judge.get('signal', '中性'),
+                'weighted_score': llm_judge.get('weighted_score', 50),
+                'confidence': llm_judge.get('confidence', 50),
+                'target_price': llm_judge.get('target_price', 0),
+                'stop_loss': llm_judge.get('stop_loss', 0),
+                'support': llm_judge.get('support', 0),
+                'resistance': llm_judge.get('resistance', 0),
+                'reasoning': llm_judge.get('reasoning', ''),
+                'risk_note': llm_judge.get('risk_note', ''),
+                'winner': llm_judge.get('winner', 'neutral'),
+                'winner_reason': llm_judge.get('winner_reason', ''),
+            },
+        }
 
     return {
         'signal': signal,
@@ -686,6 +794,7 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         'reasoning': " | ".join(reasons),
         'bull_points': bull_arg.get('points', []),
         'bear_points': bear_arg.get('points', []),
+        'llm_debate_detail': llm_debate_detail,
         'component_scores': {
             'technical': tech_score,
             'fundamental': fund_score,
@@ -697,6 +806,7 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
             'market_flow_override': market_flow_override,
             'global_semi_override': global_semi_override,
             'hithink_sentiment_override': hithink_sentiment_override,
+            'sector_strength_override': sector_strength_override if 'sector_strength_override' in locals() else 0,
         },
     }
 
@@ -1082,7 +1192,7 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
                 fundamental = fundamentals_analyst.analyze(ticker, name)
                 news = news_analyst.analyze(ticker, name)
 
-        bull, bear = _run_debate(technical, fundamental, news, ticker=ticker, name=name, category=category)
+        bull, bear = _run_debate(technical, fundamental, news, ticker=ticker, name=name, category=category, sector=sector, macro_report=macro_report)
 
         verdict = _manager_verdict(technical, fundamental, news, bull, bear, macro_report=macro_report, ticker=ticker, name=name, sector=sector, category=category, market_context=market_context)
 

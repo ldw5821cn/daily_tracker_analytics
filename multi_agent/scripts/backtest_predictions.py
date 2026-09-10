@@ -54,16 +54,22 @@ def _load_warehouse_prices():
 def _build_return_map(bars, cost_by_category=None):
     """构建 horizon forward return map，并扣除交易成本。
 
-    cost_by_category: 不同资产类别的双边交易成本（默认 A股0.20%、ETF0.13%、期货0.10%、US0.08%）。
+    cost_by_category: 不同资产类别的双边交易成本，默认从 config/trading_costs.json 读取。
     """
     if cost_by_category is None:
-        cost_by_category = {
-            "个股": 0.0020,
-            "ETF": 0.0013,
-            "期货": 0.0010,
-            "US": 0.0008,
-            "futures": 0.0010,
-        }
+        cost_path = os.path.join(MULTI_AGENT, 'config', 'trading_costs.json')
+        try:
+            with open(cost_path, 'r', encoding='utf-8') as f:
+                cost_by_category = json.load(f)
+            cost_by_category = {k: v for k, v in cost_by_category.items() if isinstance(v, (int, float))}
+        except Exception:
+            cost_by_category = {
+                '个股': 0.0020,
+                'ETF': 0.0013,
+                '期货': 0.0010,
+                'US': 0.0008,
+                'futures': 0.0010,
+            }
     ret_map = {}
     for tk, seq in bars.items():
         dates = [s[0] for s in seq]
@@ -115,13 +121,15 @@ def _direction_correct(signal, ret):
     return abs(ret) <= 0.015
 
 
-def _evaluate_targets(signal_en, entry_price, stop_loss, take_profit, forward_bars, neutral_band_pct=0.015):
+def _evaluate_targets(signal_en, entry_price, stop_loss, take_profit, forward_bars, category='个股', neutral_band_pct=0.015):
     """基于 forward K 线评估止盈止损首触结果与模拟收益。
 
     支持 bullish/bearish/neutral 三种信号：
     - bullish: 低点<=stop 止损，高点>=target 止盈；否则持有到最后一根 K 线。
     - bearish: 反向做空，高点>=stop 止损，低点<=target 止盈。
     - neutral: 用 entry*(1±band) 作为上下边界，超出即视为"打破区间"。
+    
+    交易成本按 category 区分（A股0.20%、ETF0.13%、期货0.10%、US0.08% 双边）。
     """
     result = {
         'hit_stop_loss': None,
@@ -137,6 +145,22 @@ def _evaluate_targets(signal_en, entry_price, stop_loss, take_profit, forward_ba
     if entry_price is None or entry_price <= 0:
         return result
 
+    # 分市场双边交易成本
+    cost_path = os.path.join(MULTI_AGENT, 'config', 'trading_costs.json')
+    try:
+        with open(cost_path, 'r', encoding='utf-8') as f:
+            cost_by_category = json.load(f)
+        cost_by_category = {k: v for k, v in cost_by_category.items() if isinstance(v, (int, float))}
+    except Exception:
+        cost_by_category = {
+            '个股': 0.0020,
+            'ETF': 0.0013,
+            '期货': 0.0010,
+            'US': 0.0008,
+            'futures': 0.0010,
+        }
+    cost = cost_by_category.get(category, cost_by_category.get('个股', 0.0020))
+
     # A-share T+1: forward_bars[0] is the prediction-day bar, real entry is next open (bars[1]).
     # We approximate by using forward_bars[1] open if available, otherwise close.
     entry = forward_bars[1].get('open') if len(forward_bars) > 1 else None
@@ -144,12 +168,6 @@ def _evaluate_targets(signal_en, entry_price, stop_loss, take_profit, forward_ba
         entry = forward_bars[0].get('open') or forward_bars[0].get('close') or entry_price
     if entry is None or entry <= 0:
         entry = entry_price
-
-    # Apply bilateral trading cost depending on signal direction.
-    # cost covers commission + tax + slippage for round trip.
-    cost = 0.0020  # default A-share individual stock
-    # Note: simulated_return_pct currently does not know category; keep default.
-    # For bearish short, cost is symmetric.
 
     if signal_en == 'neutral':
         upper = entry * (1 + neutral_band_pct)
@@ -297,7 +315,8 @@ def backtest():
         max_h = 10
         fb = _forward_bars(bar_map, ticker, pred_date, max_h)
         target_eval = _evaluate_targets(
-            signal_en, row['current_price'], row['stop_loss'], row['target_price'], fb
+            signal_en, row['current_price'], row['stop_loss'], row['target_price'], fb,
+            category=row['category']
         )
         for h in [1, 3, 5, 10]:
             ret = ret_map.get((h, pred_date, ticker))

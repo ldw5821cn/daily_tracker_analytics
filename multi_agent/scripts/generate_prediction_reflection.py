@@ -171,6 +171,107 @@ def _build_prompt(validation: dict, error_analysis: dict, history: list, ab_test
     return prompt
 
 
+def _build_debate_prompts(validation: dict, error_analysis: dict, history: list, ab_test: dict) -> Dict[str, str]:
+    """Vibe-Trading 借鉴：多 Agent 辩论反思。
+    
+    三个观点 Agent 分别从数据、市场、模型角度诊断；
+    一个裁判 Agent 综合三方观点。
+    """
+    base = _build_prompt(validation, error_analysis, history, ab_test)
+    
+    # Agent A: 数据/因子问题诊断
+    agent_a = f"""你是量化系统的数据科学家 Agent。你的任务是从【数据和因子】角度诊断预测错误。
+
+{base}
+
+请只从数据/因子角度输出：
+1. 哪些因子在当前市场失效？为什么？
+2. 需要增加哪些数据源或因子特征？
+3. 哪些因子权重可能需要让 optimizer 重新学习？
+
+禁止讨论市场情绪和宏观叙事。只输出数据驱动的因子诊断。"""
+
+    # Agent B: 市场 regime / 情绪诊断
+    agent_b = f"""你是宏观/市场情绪分析师 Agent。你的任务是从【市场状态和资金行为】角度诊断预测错误。
+
+{base}
+
+请只从市场/情绪角度输出：
+1. 当前市场处于什么 regime（趋势/震荡/恐慌/轮动）？
+2. 哪些资金行为信号（龙虎榜、涨停/炸板、北向、两融、PCR）能解释错误？
+3. 这种 regime 下，模型的哪些假设不成立？
+
+禁止讨论具体因子权重。"""
+
+    # Agent C: 模型/优化器诊断
+    agent_c = f"""你是机器学习工程师 Agent。你的任务是从【模型和优化器】角度诊断预测错误。
+
+{base}
+
+请只从模型/优化器角度输出：
+1. parameter_optimizer 是否过拟合到最近的市场状态？
+2. 是否需要调整样本权重（如给近期错误样本更高权重）？
+3. 是否需要调整阈值或置信度机制？
+
+禁止建议硬编码规则。只讨论让 optimizer 自动学习的方法。"""
+
+    return {
+        'data_factor_agent': agent_a,
+        'market_regime_agent': agent_b,
+        'model_optimizer_agent': agent_c,
+    }
+
+
+def _generate_debate_reflection(validation: dict, error_analysis: dict, history: list, ab_test: dict) -> tuple:
+    """运行多 Agent 辩论反思，返回 (综合反思, 各 Agent 观点)。"""
+    debate_prompts = _build_debate_prompts(validation, error_analysis, history, ab_test)
+    
+    views = {}
+    for agent_name, prompt in debate_prompts.items():
+        print(f'[reflection] 正在调用 {agent_name}...')
+        view = chat([
+            {'role': 'system', 'content': '你是顶级量化策略师，擅长从特定角度诊断预测错误。'},
+            {'role': 'user', 'content': prompt},
+        ], temperature=0.3, max_tokens=1200)
+        views[agent_name] = view or f"{agent_name} 未返回观点。"
+    
+    # 裁判 Agent 综合
+    judge_prompt = f"""你是首席策略官 Agent。请综合以下三位分析师的观点，输出最终复盘报告。
+
+===== 数据/因子分析师观点 =====
+{views['data_factor_agent']}
+
+===== 市场/情绪分析师观点 =====
+{views['market_regime_agent']}
+
+===== 模型/优化器分析师观点 =====
+{views['model_optimizer_agent']}
+
+===== 输出要求 =====
+请用中文输出，格式如下：
+
+1. 一句话总结：当日预测准确率的本质原因（50字以内）
+2. 主要错误模式：列出2-3个导致错误的核心模式
+3. 成功信号特征：总结正确样本的共性
+4. 数据驱动改进建议：建议扩展哪些历史数据、增加哪些因子或特征，让 parameter_optimizer 自动学习权重/阈值；禁止建议任何硬编码拦截规则、固定阈值或方向否决门。
+5. 策略回测建议：基于当前市场状态，哪种策略更值得采用
+6. 今日操作建议：对明日预测给出1-2条具体建议
+7. 需要新增/改进的数据源或因子
+
+重要约束：
+- 拒绝硬编码规则，坚持数据驱动。
+- 每个看多/看空错误信号都要写出可证伪的 thesis breakers。
+- 结合 A 股特色（政策市、散户情绪、涨跌停、T+1、北向/两融/PCR）。"""
+    
+    print('[reflection] 正在调用裁判 Agent 综合观点...')
+    final = chat([
+        {'role': 'system', 'content': '你是首席量化策略官，擅长综合多方观点给出可执行的投资建议。'},
+        {'role': 'user', 'content': judge_prompt},
+    ], temperature=0.3, max_tokens=2000)
+    
+    return final or views['data_factor_agent'], views
+
+
 def generate_reflection():
     validation = _load_json(VALIDATION_PATH)
     error_analysis = _load_json(ERROR_ANALYSIS_PATH)
@@ -180,13 +281,10 @@ def generate_reflection():
         sys.exit(1)
 
     history = _load_history()
-    prompt = _build_prompt(validation, error_analysis, history, ab_test)
-
-    print('[reflection] 正在调用 LLM 生成反思...')
-    llm_output = chat([
-        {'role': 'system', 'content': '你是顶级量化策略师，擅长从预测错误中提炼可执行的策略改进。'},
-        {'role': 'user', 'content': prompt},
-    ], temperature=0.3, max_tokens=2000)
+    
+    # Vibe-Trading 借鉴：使用多 Agent 辩论生成反思
+    print('[reflection] 启动多 Agent 辩论反思...')
+    llm_output, agent_views = _generate_debate_reflection(validation, error_analysis, history, ab_test)
 
     if not llm_output:
         print('⚠️ LLM 未返回内容，将保存数据驱动的 fallback 反思。')
@@ -254,6 +352,7 @@ def generate_reflection():
         'component_compare': error_analysis.get('component_compare', {}),
         'divergence_analysis': error_analysis.get('divergence_analysis', {}),
         'llm_reflection': llm_output,
+        'agent_views': agent_views,
         'key_suggestions': error_analysis.get('suggestions', []),
         'generated_at': datetime.now().isoformat(),
     }

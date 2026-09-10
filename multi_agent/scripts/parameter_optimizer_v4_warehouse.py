@@ -101,16 +101,23 @@ def sg(score, b, be):
 def load_backtest_returns_from_warehouse(cost_by_category=None):
     """从 warehouse.daily_bar 构建 5 日 realized forward return，并扣除交易成本。
 
-    cost_by_category: 不同资产类别的双边交易成本（默认 A股0.20%、ETF0.13%、期货0.10%、US0.08%）。
+    cost_by_category: 不同资产类别的双边交易成本，默认从 config/trading_costs.json 读取。
     """
     if cost_by_category is None:
-        cost_by_category = {
-            "个股": 0.0020,
-            "ETF": 0.0013,
-            "期货": 0.0010,
-            "US": 0.0008,
-            "futures": 0.0010,
-        }
+        cost_path = os.path.join(PR, "multi_agent", "config", "trading_costs.json")
+        try:
+            with open(cost_path, 'r', encoding='utf-8') as f:
+                cost_by_category = json.load(f)
+            # 移除非数字的元数据字段
+            cost_by_category = {k: v for k, v in cost_by_category.items() if isinstance(v, (int, float))}
+        except Exception:
+            cost_by_category = {
+                "个股": 0.0020,
+                "ETF": 0.0013,
+                "期货": 0.0010,
+                "US": 0.0008,
+                "futures": 0.0010,
+            }
     conn = sqlite3.connect(WH, timeout=10)
     conn.row_factory = sqlite3.Row
     rows = conn.execute(
