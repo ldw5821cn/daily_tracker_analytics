@@ -860,6 +860,32 @@ def calc_technical_indicators(df):
     ], axis=1).max(axis=1)
     df['atr_14'] = tr.rolling(14).mean()
     df['annual_vol_20d'] = df['close'].pct_change().rolling(20).std() * np.sqrt(252) * 100
+    
+    # === KHunter 借鉴：资金流向因子 ===
+    # 1. 主力资金流向指标（用大单/小单估算）
+    df['money_flow_strength'] = 0.0  # 初始化
+    
+    # 用收盘价位置和成交量变化估算资金流强度
+    # 价涨量增 = 资金流入，价跌量增 = 资金流出，价涨量缩 = 资金谨慎流入
+    price_change = df['close'].pct_change()
+    volume_change = df['volume'].pct_change()
+    
+    # 资金流强度：价格动量 × 成交量确认
+    df['money_flow_strength'] = (
+        price_change * np.sign(volume_change) * 
+        (df['volume'] / df['vol_ma20'].replace(0, np.nan))
+    ).rolling(5).mean()
+    
+    # 2. 量价背离（上涨但缩量 = 弱势，下跌但缩量 = 可能企稳）
+    df['price_volume_divergence'] = (
+        price_change.rolling(5).mean() - 
+        volume_change.rolling(5).mean()
+    )
+    
+    # 3. 相对强弱 vs 市场（如果有指数数据，后续接入）
+    # 暂用 20 日动量作为代理
+    df['relative_momentum_20d'] = df['momentum_20d'] / (df['annual_vol_20d'] + 1e-6)
+    
     return df
 
 

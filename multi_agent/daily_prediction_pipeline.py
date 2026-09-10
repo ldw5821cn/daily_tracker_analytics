@@ -38,19 +38,65 @@ from core.prediction_data import PredictionDataStore
 from core.data_layer import get_stock_data, calc_technical_indicators
 
 
+def _should_filter_stock(ticker: str, name: str, df: pd.DataFrame = None) -> tuple:
+    """KHunter 借鉴：自动过滤高风险标的。
+    
+    返回: (是否过滤, 过滤原因)
+    """
+    # 1. 排除 ST/退市/风险警示
+    if any(x in name for x in ['ST', '退', '风险', '*ST']):
+        return True, 'ST/退市/风险警示'
+    
+    # 2. 排除低流动性（20日平均成交额 < 5000万）
+    if df is not None and not df.empty and len(df) >= 20:
+        avg_turnover = (df['close'] * df['volume']).tail(20).mean()
+        if avg_turnover < 5e7:  # 5000万
+            return True, f'流动性过低(20日均成交额{avg_turnover/1e6:.0f}M)'
+        
+        # 3. 排除近期涨幅过高（20日涨幅 > 50%）
+        ret_20d = df['close'].iloc[-1] / df['close'].iloc[-20] - 1
+        if ret_20d > 0.5:
+            return True, f'20日涨幅过高({ret_20d*100:.1f}%)'
+        
+        # 4. 排除连续跌停（近5日跌幅>25%）
+        ret_5d = df['close'].iloc[-1] / df['close'].iloc[-5] - 1
+        if ret_5d < -0.25:
+            return True, f'近期暴跌({ret_5d*100:.1f}%)'
+    
+    return False, ''
+
+
 def get_watchlist() -> List[Tuple[str, str]]:
-    """获取关注标的"""
+    """获取关注标的（已过滤高风险）"""
     try:
         from core.watchlist import get_stocks_as_tuples
-        return get_stocks_as_tuples()
+        all_stocks = get_stocks_as_tuples()
     except Exception:
-        return [
+        all_stocks = [
             ('516150', '稀土ETF'),
             ('515880', '通信ETF'),
             ('159611', '电力ETF'),
             ('512480', '半导体ETF'),
             ('588200', '科创芯片ETF'),
         ]
+    
+    # 过滤
+    filtered = []
+    skipped = []
+    for ticker, name in all_stocks:
+        # 名称级别过滤（ST/退市）
+        should_filter, reason = _should_filter_stock(ticker, name)
+        if should_filter:
+            skipped.append(f"{name}({ticker}): {reason}")
+            continue
+        filtered.append((ticker, name))
+    
+    if skipped:
+        print(f"⚠️ 已过滤 {len(skipped)} 个高风险标的:")
+        for s in skipped[:10]:  # 最多打印10条
+            print(f"   - {s}")
+    
+    return filtered
 
 
 def _prefetch_ticker_data(ticker_name: Tuple[str, str]) -> Tuple[str, str, Optional[str]]:
@@ -61,6 +107,13 @@ def _prefetch_ticker_data(ticker_name: Tuple[str, str]) -> Tuple[str, str, Optio
         if df is None or df.empty:
             return ticker, name, None
         df = calc_technical_indicators(df)
+        
+        # KHunter 借鉴：数据级别过滤
+        should_filter, reason = _should_filter_stock(ticker, name, df)
+        if should_filter:
+            print(f"  🚫 {name}({ticker}) 过滤: {reason}")
+            return ticker, name, None
+        
         # 保存到仓库
         ds = PredictionDataStore()
         ds.save_market_data(ticker, df, source='sina')

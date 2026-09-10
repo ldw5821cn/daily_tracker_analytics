@@ -97,6 +97,38 @@ POSITION_MAP = {
     '中性': 0.0,
 }
 
+
+# ============================================================
+# KHunter 借鉴：自动过滤高风险标的
+# ============================================================
+def _should_filter_stock(ticker: str, name: str, df: pd.DataFrame = None) -> tuple:
+    """自动过滤高风险标的。
+    
+    返回: (是否过滤, 过滤原因)
+    """
+    # 1. 排除 ST/退市/风险警示
+    if any(x in name for x in ['ST', '退', '风险', '*ST']):
+        return True, 'ST/退市/风险警示'
+    
+    # 2. 数据级别过滤（如果有数据）
+    if df is not None and not df.empty and len(df) >= 20:
+        # 排除低流动性（20日平均成交额 < 5000万）
+        avg_turnover = (df['close'] * df['volume']).tail(20).mean()
+        if avg_turnover < 5e7:  # 5000万
+            return True, f'流动性过低(20日均成交额{avg_turnover/1e6:.0f}M)'
+        
+        # 排除近期涨幅过高（20日涨幅 > 50%）
+        ret_20d = df['close'].iloc[-1] / df['close'].iloc[-20] - 1
+        if ret_20d > 0.5:
+            return True, f'20日涨幅过高({ret_20d*100:.1f}%)'
+        
+        # 排除连续暴跌（近5日跌幅>25%）
+        ret_5d = df['close'].iloc[-1] / df['close'].iloc[-5] - 1
+        if ret_5d < -0.25:
+            return True, f'近期暴跌({ret_5d*100:.1f}%)'
+    
+    return False, ''
+
 HORIZON_THRESHOLD = {'strong': 1.5, 'weak': 0.5}
 
 def _get_weights(category=''):
@@ -932,6 +964,13 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
                 market_context: Optional[DailyMarketContext] = None) -> Optional[Dict]:
     """对单个标的进行统一多 Agent 预测。fast=True 跳过基本面和新闻情绪，仅技术面+多空辩论。ultra=True 使用轻量技术面分析，速度最快。macro_report 为全局宏观分析，影响经理裁决。"""
     try:
+        # === KHunter 借鉴：自动过滤高风险标的 ===
+        if category == '个股':
+            _should_skip, _skip_reason = _should_filter_stock(ticker, name)
+            if _should_skip:
+                print(f"  🚫 {name}({ticker}) 过滤: {_skip_reason}", file=sys.stderr)
+                return None
+        
         is_fut = is_futures(ticker)
 
         if is_fut:
