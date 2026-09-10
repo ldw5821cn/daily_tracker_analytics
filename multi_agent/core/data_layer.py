@@ -602,12 +602,22 @@ def _get_sina_data(ticker, datalen=500):
         return None
 
 
-def _get_yfinance_data(ticker, period="2y"):
-    """yfinance（通用备用）"""
+def _get_yfinance_data(ticker, period="2y", timeout=10):
+    """yfinance（通用备用），支持短超时避免阻塞。"""
     try:
         yf_ticker = f"{ticker}.SS" if ticker.startswith('6') else f"{ticker}.SZ"
         stock = yf.Ticker(yf_ticker)
-        df = stock.history(period=period)
+        # yfinance 内部 timeout 通过 session 控制较复杂；这里用外部包装
+        import signal
+        def _alarm_handler(signum, frame):
+            raise TimeoutError(f'yfinance {ticker} timeout')
+        old_handler = signal.signal(signal.SIGALRM, _alarm_handler)
+        signal.alarm(int(timeout))
+        try:
+            df = stock.history(period=period)
+        finally:
+            signal.alarm(0)
+            signal.signal(signal.SIGALRM, old_handler)
         if len(df) < 20:
             return None
         df = df.rename(columns={
@@ -621,6 +631,22 @@ def _get_yfinance_data(ticker, period="2y"):
         return df
     except Exception:
         return None
+
+
+def _get_yfinance_data_thread(ticker, period="2y", timeout=8):
+    """线程包装版 yfinance，避免 signal 在子线程中不可用。"""
+    import threading
+    result = [None]
+    def _fetch():
+        try:
+            result[0] = _get_yfinance_data(ticker, period=period, timeout=timeout)
+        except Exception:
+            pass
+    t = threading.Thread(target=_fetch)
+    t.daemon = True
+    t.start()
+    t.join(timeout=timeout)
+    return result[0]
 
 
 def _get_realtime_price_legacy(ticker):
@@ -717,6 +743,9 @@ def get_stock_data(ticker, period="2y", calibrate=True) -> tuple[pd.DataFrame, d
     个股: 富途(需OpenD在线) -> mootdx(主) -> Tushare(备) -> 新浪(备) -> yfinance(备)
     ETF:  富途 -> akshare前复权(主) -> mootdx(备) -> 新浪(备) -> yfinance(备)
     """
+    # 2026-09-10: 生产预测默认关闭校验，避免 yfinance 限速阻塞主流程
+    if os.environ.get('AGENTIC_CALIBRATE') not in ('1', 'true'):
+        calibrate = False
     df = None
     source = None
     info = {}
@@ -786,15 +815,15 @@ def get_stock_data(ticker, period="2y", calibrate=True) -> tuple[pd.DataFrame, d
 
 
 def _verify_data(ticker, primary_df, primary_source):
-    """用辅助数据源校验主数据源"""
+    """用辅助数据源校验主数据源（生产环境默认应关闭，避免 yfinance 限速阻塞）。"""
     cache_key = f"{ticker}_verify"
     if cache_key in CALIBRATION_CACHE:
         return
 
-    verify_df = _get_yfinance_data(ticker)
-    if verify_df is None and primary_source != "sina":
-        verify_df = _get_sina_data(ticker)
+    # 2026-09-10: yfinance 当前被限流，校验超时 5s，失败即放弃，不再 fallback sina
+    verify_df = _get_yfinance_data_thread(ticker, timeout=5)
     if verify_df is None or verify_df.empty or len(verify_df) < 20:
+        CALIBRATION_CACHE[cache_key] = {'skipped': True, 'reason': 'verify_source_unavailable'}
         return
     if 'close' not in verify_df.columns or 'close' not in primary_df.columns:
         return
@@ -818,19 +847,8 @@ def _verify_data(ticker, primary_df, primary_source):
 
     avg_dev = np.mean(deviations)
     max_dev = np.max(deviations)
-    print(f"  🔍 数据校验: yfinance vs {primary_source}")
-    print(f"     平均偏差: {avg_dev:.2f}% | 最大偏差: {max_dev:.2f}%")
     if avg_dev > 2.0:
-        print(f"  ⚠️ 偏差较大!")
-
-    last_p = float(primary_df['close'].iloc[-1])
-    last_v_dates = verify_df[verify_df.index.date == primary_df.index[-1].date()]
-    if len(last_v_dates) > 0:
-        last_v = float(last_v_dates['close'].iloc[-1])
-        if last_v > 0:
-            today_dev = abs(last_p / last_v - 1) * 100
-            if today_dev > 2.0:
-                print(f"  ⚠️ 今日({primary_df.index[-1].date()})价格偏差 {today_dev:.2f}%")
+        print(f"  ⚠️ {ticker} 数据校验偏差较大: yfinance vs {primary_source} 平均 {avg_dev:.2f}% | 最大 {max_dev:.2f}%")
 
     CALIBRATION_CACHE[cache_key] = {
         'primary_source': primary_source,
