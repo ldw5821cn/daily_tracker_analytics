@@ -974,16 +974,18 @@ def _fast_technical_analysis(ticker: str, name: str = "", macro_report: Optional
     }
 
 
-def _futures_technical_analysis(ticker: str, name: str = "", macro_report: Optional[Dict] = None, category: str = '') -> Dict:
-    """期货专用轻量技术面分析：使用 data_loader_registry 获取期货日线。"""
-    from core.data_loader_registry import fetch_market_data
-
-    end = datetime.now()
-    start = (end - timedelta(days=365)).strftime('%Y-%m-%d')
-    end_str = end.strftime('%Y-%m-%d')
-
-    result = fetch_market_data([ticker], start_date=start, end_date=end_str, market='futures')
-    df = result.get(ticker)
+def _futures_technical_analysis(ticker: str, name: str = "", macro_report: Optional[Dict] = None, category: str = '', fast: bool = False) -> Dict:
+    """期货专用轻量技术面分析：使用新浪期货日线。"""
+    if fast:
+        # 2026-09-10: fast 模式直接走新浪期货，绕过 registry 防止富途单连接阻塞
+        df = _get_sina_futures_data(ticker)
+    else:
+        from core.data_loader_registry import fetch_market_data
+        end = datetime.now()
+        start = (end - timedelta(days=365)).strftime('%Y-%m-%d')
+        end_str = end.strftime('%Y-%m-%d')
+        result = fetch_market_data([ticker], start_date=start, end_date=end_str, market='futures')
+        df = result.get(ticker)
     if df is None or df.empty:
         raise ValueError(f"无法获取期货数据: {ticker}")
 
@@ -1095,10 +1097,14 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
         
         is_fut = is_futures(ticker)
 
+        # 2026-09-10: fast/ultra 模式统一走轻量技术面，避免 technical_analyst.analyze 中的重计算阻塞
         if is_fut:
             # 期货走专用技术面，避免 get_stock_data 不支持期货主连代码
-            technical = _futures_technical_analysis(ticker, name, macro_report, category=category)
-        elif ultra:
+            if fast or ultra:
+                technical = _futures_technical_analysis(ticker, name, macro_report, category=category, fast=True)
+            else:
+                technical = _futures_technical_analysis(ticker, name, macro_report, category=category)
+        elif fast or ultra:
             technical = _fast_technical_analysis(ticker, name, macro_report, category=category)
         else:
             technical = technical_analyst.analyze(ticker, name)
