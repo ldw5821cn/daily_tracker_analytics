@@ -131,16 +131,6 @@ def _should_filter_stock(ticker: str, name: str, df: pd.DataFrame = None) -> tup
 
 HORIZON_THRESHOLD = {'strong': 1.5, 'weak': 0.5}
 
-def _get_weights(category=''):
-    v = _PARAMS.get(category, _PARAMS.get('_default', {})) if _PARAMS.get('_version') == 2 else _PARAMS
-    if isinstance(v, dict) and 'weights' in v: return v['weights']
-    return WEIGHTS
-
-def _get_threshold(category=''):
-    v = _PARAMS.get(category, _PARAMS.get('_default', {})) if _PARAMS.get('_version') == 2 else _PARAMS
-    if isinstance(v, dict) and 'threshold' in v: return v['threshold']
-    return THRESHOLD
-
 def _get_weights(category: str = '') -> dict:
     """返回类别特定权重。支持 V2/V4/V5 多类别优化格式。"""
     if _PARAMS.get('_version') in (2, 4, 5):
@@ -566,6 +556,21 @@ def _manager_verdict(technical_report: Dict, fundamental_report: Dict, news_repo
         w_news = max(0.05, _W['sentiment'] - shift / 2)
     else:
         _W = _get_weights(category)
+        w_tech = _W['technical']
+        w_fund = _W['fundamental']
+        w_news = _W['sentiment']
+
+    # fast 模式：基本面/情绪/辩论数据不完整，适度提升技术面权重以增加信号区分度
+    if fast:
+        _W = dict(_W)
+        _W['technical'] = min(0.50, _W['technical'] + 0.10)
+        # 等比例压缩其他权重，保持总和为 1
+        others = [k for k in _W if k != 'technical']
+        other_sum = sum(_W[k] for k in others)
+        target_other_sum = 1.0 - _W['technical']
+        if other_sum > 0:
+            for k in others:
+                _W[k] = _W[k] / other_sum * target_other_sum
         w_tech = _W['technical']
         w_fund = _W['fundamental']
         w_news = _W['sentiment']
