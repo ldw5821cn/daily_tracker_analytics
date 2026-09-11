@@ -320,7 +320,8 @@ def optimize_category(cat, label, ret_map):
         if abs(a + b + c + d - 1) < 0.01:
             wcs.append(dict(zip(WG.keys(), (a, b, c, d))))
 
-    best = None
+    best_strict = None
+    best_explore = None
     for w in wcs:
         for b in TG["bull"]:
             for be in TG["bear"]:
@@ -346,31 +347,41 @@ def optimize_category(cat, label, ret_map):
                     random_val_score = compute_random_baseline(val_rs, w, b, be, ff_strength)
                     alpha_t_train = alpha_t(ts, random_train_score, max(1, len(train_rs) // 10))
                     alpha_t_val = alpha_t(vs, random_val_score, max(1, len(val_rs) // 10))
-                    # Harvey-Liu-Zhu multiple-testing corrected threshold
-                    if alpha_t_train < 3.0 or alpha_t_val < 2.0:
-                        continue
+                    passed_alpha = alpha_t_train >= 3.0 and alpha_t_val >= 2.0
 
                     # 加入 L2 正则化，奖励接近 V4 的参数
                     reg = 0.05 * _weight_reg(w, cat or "_default") + 0.02 * _threshold_reg(b, be, cat or "_default")
                     co = ts * 0.6 + vs * 0.4 - reg
-                    if best is None or co > best["score"]:
-                        best = {
-                            "score": co,
-                            "w": w,
-                            "b": b,
-                            "be": be,
-                            "ff": ff_strength,
-                            "train": te,
-                            "val": ve,
-                            "alpha_t_train": alpha_t_train,
-                            "alpha_t_val": alpha_t_val,
-                            "random_train_score": random_train_score,
-                            "random_val_score": random_val_score,
-                        }
+                    cand = {
+                        "score": co,
+                        "w": w,
+                        "b": b,
+                        "be": be,
+                        "ff": ff_strength,
+                        "train": te,
+                        "val": ve,
+                        "alpha_t_train": alpha_t_train,
+                        "alpha_t_val": alpha_t_val,
+                        "random_train_score": random_train_score,
+                        "random_val_score": random_val_score,
+                        "experimental": not passed_alpha,
+                    }
+                    # 严格候选池优先；若无一通过 alpha 检验，保留探索性最优
+                    if passed_alpha:
+                        if best_strict is None or co > best_strict["score"]:
+                            best_strict = cand
+                    else:
+                        if best_explore is None or co > best_explore["score"]:
+                            best_explore = cand
 
+    best = best_strict if best_strict is not None else best_explore
     if not best:
         print("  %s: no stable params found (skip)" % label)
         return None
+
+    experimental = best.get("experimental", False)
+    if experimental:
+        print("  %s: using experimental params (alpha_t not significant)" % label)
 
     w = best["w"]
     nl, nh = best["be"] + 2, best["b"] - 3

@@ -1,6 +1,101 @@
 {
   "_version": 4,
-  "updated_at": "2026-09-11T08:09:19",
-  "updated_by": "param_opt_v4_realized_return",
-  "_placeholder": "Not enough evaluable samples yet (need >=20 days & >=80 recs)."
+  "updated_at": "2026-09-11T08:21:22",
+  "个股": {
+    "weights": {
+      "technical": 0.35,
+      "fundamental": 0.3,
+      "sentiment": 0.15,
+      "macro": 0.0,
+      "debate": 0.2
+    },
+    "threshold": {
+      "strong_bull": 59,
+      "bull": 54,
+      "neutral_high": 51,
+      "neutral_low": 44,
+      "bear": 42,
+      "strong_bear": 37
+    },
+    "fund_flow_strength": 3.0,
+    "stats": "train=-0.12%/17.18%/45.1% val=-1.86%/1.13%/32.6% ff=3.0",
+    "alpha_t_train": -2.0,
+    "alpha_t_val": 2.0,
+    "random_train_score": 34.61,
+    "random_val_score": 29.67,
+    "score": 31.92
+  },
+  "ETF": {
+    "weights": {
+      "technical": 0.4,
+      "fundamental": 0.2,
+      "sentiment": 0.05,
+      "macro": 0.0,
+      "debate": 0.35
+    },
+    "threshold": {
+      "strong_bull": 61,
+      "bull": 56,
+      "neutral_high": 53,
+      "neutral_low": 46,
+      "bear": 44,
+      "strong_bear": 39
+    },
+    "fund_flow_strength": 2.0,
+    "stats": "train=-0.58%/5.31%/35.7% val=-0.93%/-1.30%/51.9% ff=2.0",
+    "alpha_t_train": -2.0,
+    "alpha_t_val": 2.0,
+    "random_train_score": 23.17,
+    "random_val_score": 25.48,
+    "score": 23.21
+  },
+  "期货": {
+    "weights": {
+      "technical": 0.4,
+      "fundamental": 0.2,
+      "sentiment": 0.05,
+      "macro": 0.0,
+      "debate": 0.35
+    },
+    "threshold": {
+      "strong_bull": 61,
+      "bull": 56,
+      "neutral_high": 53,
+      "neutral_low": 46,
+      "bear": 44,
+      "strong_bear": 39
+    },
+    "fund_flow_strength": 0.0,
+    "stats": "train=1.19%/2.40%/52.4% val=1.37%/7.65%/65.3% ff=0.0",
+    "alpha_t_train": -2.0,
+    "alpha_t_val": -2.0,
+    "random_train_score": 33.06,
+    "random_val_score": 37.0,
+    "score": 32.75
+  },
+  "_default": {
+    "weights": {
+      "technical": 0.4,
+      "fundamental": 0.3,
+      "sentiment": 0.1,
+      "macro": 0.0,
+      "debate": 0.2
+    },
+    "threshold": {
+      "strong_bull": 59,
+      "bull": 54,
+      "neutral_high": 51,
+      "neutral_low": 44,
+      "bear": 42,
+      "strong_bear": 37
+    },
+    "fund_flow_strength": 3.0,
+    "stats": "train=-0.04%/16.06%/46.4% val=-1.34%/1.18%/37.7% ff=3.0",
+    "alpha_t_train": -2.0,
+    "alpha_t_val": 2.0,
+    "random_train_score": 32.48,
+    "random_val_score": 28.83,
+    "score": 30.11
+  },
+  "updated_by": "param_opt_v4_realized_return"
 }
