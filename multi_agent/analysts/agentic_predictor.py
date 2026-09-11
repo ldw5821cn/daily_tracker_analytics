@@ -912,38 +912,18 @@ def _fast_technical_analysis(ticker: str, name: str = "", macro_report: Optional
     if pd.notna(latest['ma60']):
         ma60_dist = (cp / float(latest['ma60']) - 1) * 100
         if ma60_dist > 0:
-            score += 6; reasons.append(f"MA60上方{ma60_dist:+.1f}%")
+            score += 8; reasons.append(f"MA60上方{ma60_dist:+.1f}%")
         else:
-            score -= 6; reasons.append(f"MA60下方{ma60_dist:+.1f}%")
-    # 均线排列：对称加分/减分（权重较小，避免多信号叠加过度偏向空头）
-    if pd.notna(latest['ma5']) and pd.notna(latest['ma10']) and pd.notna(latest['ma20']):
-        ma5, ma10, ma20 = float(latest['ma5']), float(latest['ma10']), float(latest['ma20'])
-        if ma5 > ma10 > ma20:
-            score += 4; reasons.append("均线多头排列")
-        elif ma5 < ma10 < ma20:
-            score -= 4; reasons.append("均线空头排列")
-        # 价格相对短期均线
-        if cp > ma5:
-            score += 2; reasons.append("站上MA5")
-        else:
-            score -= 2; reasons.append("跌破MA5")
-    # 20日新高/新低
-    if len(df) >= 20:
-        high_20 = float(df['high'].tail(20).max())
-        low_20 = float(df['low'].tail(20).min())
-        if cp >= high_20 * 0.995:
-            score += 3; reasons.append("创20日新高")
-        elif cp <= low_20 * 1.005:
-            score -= 3; reasons.append("创20日新低")
-    if latest['macd_hist'] > 0: score += 5; reasons.append("MACD红柱")
-    else: score -= 5; reasons.append("MACD绿柱")
-    if 30 <= latest['rsi_14'] <= 70: score += 0; reasons.append("RSI合理")
-    elif latest['rsi_14'] < 30: score += 3; reasons.append("RSI超卖反弹")
+            score -= 5; reasons.append(f"MA60下方{ma60_dist:+.1f}%")
+    if latest['macd_hist'] > 0: score += 6; reasons.append("MACD红柱")
+    else: score -= 4; reasons.append("MACD绿柱")
+    if 30 < latest['rsi_14'] < 70: score += 3; reasons.append("RSI合理")
+    elif latest['rsi_14'] < 30: score += 4; reasons.append("RSI超卖反弹")
     else: score -= 3; reasons.append("RSI超买")
     vol = tech_snapshot['annual_vol_20d']
-    if vol < 30: score += 2; reasons.append("低波")
+    if vol < 30: score += 3; reasons.append("低波")
     elif vol > 60: score -= 2; reasons.append("高波")
-    # TickFlow 实时涨跌幅修正
+    score = max(0, min(100, score))
     if tf_change_pct > 0.03:
         score += 2; reasons.append("TickFlow实时涨>3%")
     elif tf_change_pct < -0.03:
@@ -1051,41 +1031,21 @@ def _futures_technical_analysis(ticker: str, name: str = "", macro_report: Optio
         signals.append(("🔴", "MACD绿柱"))
     if latest['rsi_14'] < 30: signals.append(("🟢", "RSI超卖"))
     elif latest['rsi_14'] > 70: signals.append(("🔴", "RSI超买"))
-
     score = 50
     reasons = []
     if pd.notna(latest['ma60']):
         ma60_dist = (cp / float(latest['ma60']) - 1) * 100
         if ma60_dist > 0:
-            score += 6; reasons.append(f"MA60上方{ma60_dist:+.1f}%")
+            score += 8; reasons.append(f"MA60上方{ma60_dist:+.1f}%")
         else:
-            score -= 6; reasons.append(f"MA60下方{ma60_dist:+.1f}%")
-    # 均线排列：对称加分/减分（权重较小，避免多信号叠加过度偏向空头）
-    if pd.notna(latest['ma5']) and pd.notna(latest['ma10']) and pd.notna(latest['ma20']):
-        ma5, ma10, ma20 = float(latest['ma5']), float(latest['ma10']), float(latest['ma20'])
-        if ma5 > ma10 > ma20:
-            score += 4; reasons.append("均线多头排列")
-        elif ma5 < ma10 < ma20:
-            score -= 4; reasons.append("均线空头排列")
-        if cp > ma5:
-            score += 2; reasons.append("站上MA5")
-        else:
-            score -= 2; reasons.append("跌破MA5")
-    # 20日新高/新低
-    if len(df) >= 20:
-        high_20 = float(df['high'].tail(20).max())
-        low_20 = float(df['low'].tail(20).min())
-        if cp >= high_20 * 0.995:
-            score += 3; reasons.append("创20日新高")
-        elif cp <= low_20 * 1.005:
-            score -= 3; reasons.append("创20日新低")
-    if latest['macd_hist'] > 0: score += 5; reasons.append("MACD红柱")
-    else: score -= 5; reasons.append("MACD绿柱")
-    if 30 <= latest['rsi_14'] <= 70: score += 0; reasons.append("RSI合理")
-    elif latest['rsi_14'] < 30: score += 3; reasons.append("RSI超卖反弹")
+            score -= 5; reasons.append(f"MA60下方{ma60_dist:+.1f}%")
+    if latest['macd_hist'] > 0: score += 6; reasons.append("MACD红柱")
+    else: score -= 4; reasons.append("MACD绿柱")
+    if 30 < latest['rsi_14'] < 70: score += 3; reasons.append("RSI合理")
+    elif latest['rsi_14'] < 30: score += 4; reasons.append("RSI超卖反弹")
     else: score -= 3; reasons.append("RSI超买")
     vol = tech_snapshot['annual_vol_20d']
-    if vol < 30: score += 2; reasons.append("低波")
+    if vol < 30: score += 3; reasons.append("低波")
     elif vol > 60: score -= 2; reasons.append("高波")
     score = max(0, min(100, score))
 

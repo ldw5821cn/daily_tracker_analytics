@@ -36,15 +36,15 @@ def _fetch_tencent_realtime_bar(ticker: str, trade_date: str) -> Optional[Dict[s
     """
     import requests as _rq
     try:
-        # 指数代码转腾讯格式
+        # 指数代码转腾讯格式（保留 sh/sz 前缀）
         if ticker.startswith(('sh', 'sz')):
             tq = ticker
-        elif ticker.startswith('000') or ticker.startswith('880'):
-            tq = f"sh{ticker}"  # 上证指数/沪深300/中证系列
         elif ticker.startswith('399'):
             tq = f"sz{ticker}"  # 深证指数
-        elif ticker.startswith(('60', '68', '51', '58', '56', '50', '11', '13')):
-            tq = f"sh{ticker}"
+        elif ticker.startswith(('000', '001', '002', '003', '300', '301')):
+            tq = f"sz{ticker}"  # 深圳主板/中小板/创业板
+        elif ticker.startswith(('60', '68', '51', '58', '56', '50', '11', '13', '880')):
+            tq = f"sh{ticker}"  # 上海主板/科创/ETF/可转债/指数
         else:
             tq = f"sz{ticker}"
         r = _rq.get(f"http://qt.gtimg.cn/q={tq}", timeout=10)
@@ -58,12 +58,17 @@ def _fetch_tencent_realtime_bar(ticker: str, trade_date: str) -> Optional[Dict[s
         ts = parts[30]
         if not ts.startswith(trade_date.replace("-", "")):
             return None  # 实时行情非当日，不采用
+        name = parts[1] if len(parts) > 1 else ""
         close = float(parts[3]) if parts[3] else None
         prev_close = float(parts[5]) if parts[5] else None
         if close is None or close <= 0:
             return None
         # 价格合理性校验：当前价相对昨收偏离超过 20% 视为异常（防止指数/期货串号）
         if prev_close and prev_close > 0 and abs(close - prev_close) / prev_close > 0.20:
+            return None
+        # 额外校验：名称与 watchlist 名称差异过大时可能是串号（简单长度校验）
+        if name and len(name) >= 4 and name in ("上证指数", "深证成指", "创业板指", "沪深300", "中证500"):
+            # 如果个股代码返回了大盘指数名称，说明代码映射错误
             return None
         # 安全：open/high/low 用昨收近似，不直接使用实时盘口中的高低点（parts[33]/34 字段不稳定）
         ref = prev_close if prev_close and prev_close > 0 else close
