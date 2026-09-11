@@ -70,7 +70,8 @@ def update_prediction(pred_date: str, ticker: str, new_result: dict):
             """UPDATE agentic_predictions SET
                 signal=?, confidence=?, weighted_score=?, position_pct=?,
                 target_price=?, stop_loss=?, key_support=?, key_resistance=?,
-                reasoning=?, bull_points=?, bear_points=?, component_scores=?
+                reasoning=?, bull_points=?, bear_points=?, component_scores=?,
+                llm_debate_detail=?
             WHERE pred_date=? AND ticker=?""",
             (
                 new_result.get('signal'),
@@ -85,6 +86,7 @@ def update_prediction(pred_date: str, ticker: str, new_result: dict):
                 json.dumps(new_result.get('bull_points', []), ensure_ascii=False),
                 json.dumps(new_result.get('bear_points', []), ensure_ascii=False),
                 json.dumps(new_result.get('component_scores', {}), ensure_ascii=False),
+                json.dumps(new_result.get('llm_debate_detail') or {}, ensure_ascii=False),
                 pred_date,
                 ticker,
             )
