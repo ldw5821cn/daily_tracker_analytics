@@ -80,9 +80,9 @@
       "name": "甲醇",
       "category": "期货",
       "signal": "中性",
-      "return_pct": -12.041,
+      "return_pct": -12.07,
       "pred_price": 3430.0,
-      "today_price": 3017.0,
+      "today_price": 3016.0,
       "weighted_score": 54.3,
       "confidence": 0.65,
       "reasoning": "技术面中性偏多(64/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1.4 vs 看跌0 | 宏观中性(45.1/100) | 市场上下文neutral(50.0/100)上限100%"
@@ -202,9 +202,9 @@
       "name": "燃油",
       "category": "期货",
       "signal": "看多",
-      "return_pct": 6.083,
+      "return_pct": 6.058,
       "pred_price": 4044.0,
-      "today_price": 4290.0,
+      "today_price": 4289.0,
       "weighted_score": 61.5,
       "confidence": 0.77
     },
@@ -264,17 +264,6 @@
       "confidence": 0.79
     },
     {
-      "ticker": "LU0",
-      "name": "低硫燃油",
-      "category": "期货",
-      "signal": "看多",
-      "return_pct": 4.343,
-      "pred_price": 5227.0,
-      "today_price": 5454.0,
-      "weighted_score": 61.5,
-      "confidence": 0.77
-    },
-    {
       "ticker": "600961",
       "name": "株冶集团",
       "category": "个股",
@@ -283,6 +272,17 @@
       "pred_price": 25.4,
       "today_price": 24.3,
       "weighted_score": 39.2,
+      "confidence": 0.77
+    },
+    {
+      "ticker": "LU0",
+      "name": "低硫燃油",
+      "category": "期货",
+      "signal": "看多",
+      "return_pct": 4.324,
+      "pred_price": 5227.0,
+      "today_price": 5453.0,
+      "weighted_score": 61.5,
       "confidence": 0.77
     },
     {

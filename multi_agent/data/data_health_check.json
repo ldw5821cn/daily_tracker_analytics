@@ -1,86 +1,86 @@
 {
-  "generated_at": "2026-09-10T17:05:19",
-  "today": "2026-09-10",
+  "generated_at": "2026-09-11T17:05:40",
+  "today": "2026-09-11",
   "warehouse": {
     "daily_bar": {
-      "count": 110976,
+      "count": 111160,
       "min_date": "1990-12-19",
-      "max_date": "2026-09-10",
+      "max_date": "2026-09-11",
       "up_to_date": true,
       "lag_days": 0
     },
     "feature_snapshot": {
-      "count": 33310,
+      "count": 33511,
       "min_date": "2025-09-22",
-      "max_date": "2026-09-10",
+      "max_date": "2026-09-11",
       "up_to_date": true,
       "lag_days": 0
     },
     "sentiment": {
-      "count": 12574,
+      "count": 12587,
       "min_date": "2024-08-16",
-      "max_date": "2026-09-10",
+      "max_date": "2026-09-11",
       "up_to_date": true,
       "lag_days": 0
     },
     "macro": {
-      "count": 201,
+      "count": 204,
       "min_date": "2015-12-01",
-      "max_date": "2026-09-10",
+      "max_date": "2026-09-11",
       "up_to_date": true,
       "lag_days": 0
     },
     "fund_flow": {
-      "count": 4275,
+      "count": 4417,
       "min_date": "2026-07-23",
-      "max_date": "2026-09-10",
+      "max_date": "2026-09-11",
       "up_to_date": true,
       "lag_days": 0
     },
     "market_regime_features": {
-      "count": 43,
+      "count": 44,
       "min_date": "2026-07-14",
-      "max_date": "2026-09-10",
+      "max_date": "2026-09-11",
       "up_to_date": true,
       "lag_days": 0
     },
     "daily_bar_by_category": {
       "个股": {
-        "max_date": "2026-09-10",
-        "count": 30137,
+        "max_date": "2026-09-11",
+        "count": 30267,
         "lag_days": 0
       },
       "ETF": {
-        "max_date": "2026-09-10",
-        "count": 6634,
+        "max_date": "2026-09-11",
+        "count": 6657,
         "lag_days": 0
       },
       "期货": {
-        "max_date": "2026-09-10",
-        "count": 19159,
+        "max_date": "2026-09-11",
+        "count": 19180,
         "lag_days": 0
       },
       "US": {
-        "max_date": "2026-09-09",
-        "count": 21055,
+        "max_date": "2026-09-10",
+        "count": 21058,
         "lag_days": 1
       },
       "index": {
         "max_date": "2026-09-10",
-        "count": 33988,
-        "lag_days": 0
+        "count": 33995,
+        "lag_days": 1
       }
     }
   },
   "predictions": {
-    "latest_pred_date": "2026-09-10",
-    "total_predictions": 5888,
+    "latest_pred_date": "2026-09-11",
+    "total_predictions": 6083,
     "pred_lag_days": 0,
     "latest_by_category": {
       "个股": 119,
       "ETF": 23,
       "期货": 49,
-      "US": 49
+      "US": 53
     }
   },
   "trainable_status": {
@@ -105,6 +105,8 @@
       "note": "需继续积累 20 天"
     }
   },
-  "status": "ok",
-  "issues": []
+  "status": "warning",
+  "issues": [
+    "daily_bar.指数 最新日期 2026-09-10，滞后 1 天"
+  ]
 }
