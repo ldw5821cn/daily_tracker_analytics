@@ -1288,6 +1288,7 @@ def predict_one(ticker: str, name: str = '', sector: str = '', category: str = '
                                  'fundamental_score': fundamental.get('score', 50),
                                  'fundamental': fundamental.get('fundamentals', {})},
             'backtest_summary': backtest_summary,
+            'llm_debate_detail': verdict.get('llm_debate_detail'),
         }
     except Exception as e:
         import traceback
