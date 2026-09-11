@@ -118,6 +118,8 @@ def init_predictions_db(conn: sqlite3.Connection) -> None:
     cols = [r[1] for r in conn.execute("PRAGMA table_info(agentic_predictions)")]
     if 'price_date' not in cols:
         conn.execute("ALTER TABLE agentic_predictions ADD COLUMN price_date TEXT")
+    if 'llm_debate_detail' not in cols:
+        conn.execute("ALTER TABLE agentic_predictions ADD COLUMN llm_debate_detail TEXT")
     conn.commit()
 
 
@@ -242,7 +244,7 @@ def save_predictions(predictions: List[Dict[str, Any]], pred_date: Optional[str]
             (today, *categories, *tickers)
         )
 
-        # 3. 批量插入
+        # 批量插入
         rows = []
         for p in valid:
             try:
@@ -260,6 +262,7 @@ def save_predictions(predictions: List[Dict[str, Any]], pred_date: Optional[str]
                     json.dumps(p['bear_points'], ensure_ascii=False) if isinstance(p['bear_points'], (list, dict)) else p['bear_points'],
                     json.dumps(p['component_scores'], ensure_ascii=False) if isinstance(p['component_scores'], (list, dict)) else p['component_scores'],
                     json.dumps(p['backtest_summary'], ensure_ascii=False) if isinstance(p['backtest_summary'], (list, dict)) else p['backtest_summary'],
+                    json.dumps(p['llm_debate_detail'], ensure_ascii=False) if isinstance(p.get('llm_debate_detail'), (list, dict)) else p.get('llm_debate_detail'),
                     p['current_price'], p.get('price_date', ''), today, now
                 ))
             except Exception as e:
@@ -274,9 +277,9 @@ def save_predictions(predictions: List[Dict[str, Any]], pred_date: Optional[str]
                  horizon_1d, horizon_3d, horizon_5d, horizon_10d,
                  horizon_1d_return, horizon_3d_return, horizon_5d_return, horizon_10d_return,
                  key_support, key_resistance, reasoning,
-                 bull_points, bear_points, component_scores, backtest_summary,
+                 bull_points, bear_points, component_scores, backtest_summary, llm_debate_detail,
                  current_price, price_date, pred_date, pred_time)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, rows)
             stats['saved'] = len(rows)
         conn.commit()
