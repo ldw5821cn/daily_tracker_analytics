@@ -117,12 +117,16 @@
   },
   "llm_report": {
     "enabled": true,
-    "provider": "deepseek",
-    "model": "deepseek-v4-flash",
+    "provider": "kimi-coding",
+    "model": "kimi-for-coding",
     "temperature": 0.3,
     "max_tokens": 4000,
-    "env_api_key": "DEEPSEEK_API_KEY",
-    "env_base_url": "DEEPSEEK_BASE_URL"
+    "env_api_key": "KIMI_API_KEY",
+    "env_base_url": "KIMI_BASE_URL",
+    "fallback_provider": "deepseek",
+    "fallback_model": "deepseek-v4-pro",
+    "fallback_env_api_key": "DEEPSEEK_API_KEY",
+    "fallback_env_base_url": "DEEPSEEK_BASE_URL"
   },
   "features": {
     "llm_report": true,

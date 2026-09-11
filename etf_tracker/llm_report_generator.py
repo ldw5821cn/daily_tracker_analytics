@@ -21,13 +21,60 @@ from typing import Dict, List, Optional, Tuple
 import urllib.request
 import urllib.parse
 
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_REPO_ROOT = os.path.dirname(_HERE)
+_HERMES_HOME = os.path.expanduser("~/.hermes")
+
+
+def _load_env_files() -> None:
+    """把项目 / Hermes 的 .env 补进 os.environ（已存在的变量不覆盖）。
+
+    cron 调起本脚本时，DEEPSEEK_API_KEY / KIMI_API_KEY 等不一定会被导出到
+    子进程环境里，这里做一次兜底，保证脚本单独运行也能拿到 key。
+    """
+    for path in (
+        os.path.join(_REPO_ROOT, ".env"),
+        os.path.join(_HERE, ".env"),
+        os.path.join(_HERMES_HOME, ".env"),
+    ):
+        try:
+            with open(path, encoding="utf-8-sig", errors="replace") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line or line.startswith("#") or "=" not in line:
+                        continue
+                    k, v = line.split("=", 1)
+                    k = k.strip()
+                    v = v.strip().strip('"').strip("'")
+                    if k and not os.environ.get(k):
+                        os.environ[k] = v
+        except OSError:
+            continue
+
+
+def _hermes_provider_config(name: str) -> Dict[str, str]:
+    """从 ~/.hermes/config.yaml 的 custom_providers 读取 key/base_url/model。"""
+    if not name:
+        return {}
+    try:
+        import yaml
+        with open(os.path.join(_HERMES_HOME, "config.yaml"), encoding="utf-8") as f:
+            cfg = yaml.safe_load(f) or {}
+    except Exception:
+        return {}
+    for cp in cfg.get("custom_providers") or []:
+        if str(cp.get("name", "")).lower() == name.lower():
+            return {k: str(cp[k]) for k in ("api_key", "base_url", "model") if cp.get(k)}
+    return {}
+
 
 class LLMProvider:
-    """统一的 LLM 调用器，支持多种 provider"""
+    """统一的 LLM 调用器：kimi 优先，额度不足/异常时回退 deepseek"""
     
     def __init__(self, provider: str = "", model: str = "", api_key: str = "", base_url: str = "", config: Optional[Dict] = None):
         cfg = config or {}
-        self.provider = (provider or cfg.get("provider") or os.getenv("LLM_REPORT_PROVIDER", "deepseek")).lower().strip()
+        _load_env_files()
+        self.provider = (provider or cfg.get("provider") or os.getenv("LLM_REPORT_PROVIDER", "kimi-coding")).lower().strip()
         self.model = model or cfg.get("model") or os.getenv("LLM_REPORT_MODEL", "")
         # 兼容 kimi-coding / moonshot 等 Moonshot 系 provider 名称
         if self.provider == "kimi":
@@ -35,15 +82,20 @@ class LLMProvider:
         # 支持从配置文件指定的环境变量名读取 key/base_url
         api_key_env = cfg.get("env_api_key", "LLM_REPORT_API_KEY") if isinstance(cfg, dict) else "LLM_REPORT_API_KEY"
         base_url_env = cfg.get("env_base_url", "LLM_REPORT_BASE_URL") if isinstance(cfg, dict) else "LLM_REPORT_BASE_URL"
-        self.api_key = api_key or os.getenv(api_key_env, "")
-        self.base_url = base_url or os.getenv(base_url_env, "")
+        self.api_key = api_key or os.getenv(api_key_env, "") or self._hermes_lookup("api_key")
+        self.base_url = base_url or os.getenv(base_url_env, "") or self._hermes_lookup("base_url")
+        # 回退 provider：kimi 额度不足/异常时切到 deepseek
+        self.fallback_provider = (cfg.get("fallback_provider") or "").lower().strip()
+        self.fallback_model = cfg.get("fallback_model") or ""
+        self.fallback_api_key_env = cfg.get("fallback_env_api_key") or ""
+        self.fallback_base_url_env = cfg.get("fallback_env_base_url") or ""
         
         # 默认模型映射
         self._default_models = {
             "deepseek": "deepseek-v4-flash",
             "kimi": "kimi-k2-5-or-latest",
-            "kimi-coding": "k2p5",
-            "kimi-for-coding": "k2p5",
+            "kimi-coding": "kimi-for-coding",
+            "kimi-for-coding": "kimi-for-coding",
             "moonshot": "kimi-k2-5-or-latest",
             "openai": "gpt-4o-mini",
             "anthropic": "claude-3-5-sonnet-20241022",
@@ -56,7 +108,12 @@ class LLMProvider:
         # 默认 base URL 映射
         if not self.base_url:
             self.base_url = self._infer_base_url()
-    
+
+    def _hermes_lookup(self, field: str) -> str:
+        """环境变量缺失时，从 ~/.hermes/config.yaml 的 custom_providers 兜底取 key/base_url。"""
+        name = self.provider.replace("custom:", "").split(":")[0]
+        return _hermes_provider_config(name).get(field, "")
+
     def _infer_base_url(self) -> str:
         """根据 provider 推断 base URL"""
         if self.provider == "deepseek":
@@ -154,26 +211,53 @@ class LLMProvider:
             data = json.loads(resp.read().decode('utf-8'))
             return data['content'][0]['text']
     
-    def call(self, system_prompt: str, user_prompt: str, temperature: float = 0.3, max_tokens: int = 4000) -> str:
-        """统一的 LLM 调用入口"""
-        if not self.api_key:
-            raise ValueError(f"LLM provider {self.provider} 未配置 API key")
-        
-        messages = self._build_messages(system_prompt, user_prompt)
-        
+    def _invoke(self, messages: List[Dict], temperature: float, max_tokens: int) -> str:
+        """单个 provider 的调用（含重试）；返回空内容视为失败，交由上层重试/回退。"""
         max_retries = 2
         for attempt in range(max_retries):
             try:
                 if self.provider == "anthropic":
-                    return self._call_anthropic(messages, temperature, max_tokens)
+                    content = self._call_anthropic(messages, temperature, max_tokens)
                 else:
-                    return self._call_openai_compatible(messages, temperature, max_tokens)
+                    content = self._call_openai_compatible(messages, temperature, max_tokens)
+                if content:
+                    return content
+                raise RuntimeError("LLM 返回内容为空")
             except Exception as e:
                 if attempt < max_retries - 1:
                     print(f"  LLM 调用失败（第 {attempt+1} 次）: {e}，重试中...")
                     time.sleep(2)
                 else:
                     raise
+
+    def _build_fallback(self) -> Optional["LLMProvider"]:
+        """构造回退 provider（kimi 额度不足时切 deepseek）；未配置或同名则返回 None。"""
+        if not self.fallback_provider or self.fallback_provider == self.provider:
+            return None
+        fb = LLMProvider(
+            provider=self.fallback_provider,
+            model=self.fallback_model,
+            config={
+                "env_api_key": self.fallback_api_key_env or "LLM_REPORT_API_KEY",
+                "env_base_url": self.fallback_base_url_env or "LLM_REPORT_BASE_URL",
+            },
+        )
+        return fb if fb.api_key else None
+
+    def call(self, system_prompt: str, user_prompt: str, temperature: float = 0.3, max_tokens: int = 4000) -> str:
+        """统一的 LLM 调用入口：kimi 优先，额度不足/异常时回退 deepseek"""
+        if not self.api_key:
+            raise ValueError(f"LLM provider {self.provider} 未配置 API key")
+
+        messages = self._build_messages(system_prompt, user_prompt)
+        try:
+            return self._invoke(messages, temperature, max_tokens)
+        except Exception as primary_error:
+            fb = self._build_fallback()
+            if fb is None:
+                raise
+            print(f"  LLM 主 provider {self.provider}/{self.model} 失败（{primary_error}），回退到 {fb.provider}/{fb.model}")
+            return fb._invoke(messages, temperature, max_tokens)
 
 
 class LLMReportGenerator:
