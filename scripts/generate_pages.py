@@ -79,6 +79,7 @@ TABS = [
     ('xueqiu_returns.html', '💰', '雪球收益'),
     ('recommendations.html', '🎯', '推荐回测'),
     ('backtest.html', '📈', '回测'),
+    ('cmc_rank.html', '₿', '加密情绪'),
     ('reflection.html', '🧠', '复盘'),
     ('cron_status.html', '⏰', '任务调度'),
     ('data_health.html', '❤️', '数据健康'),
@@ -2205,6 +2206,12 @@ if __name__ == '__main__':
     generate_reflection_page(dates=dates)
     generate_xueqiu_returns_page(dates=dates)
     generate_cron_status_page(dates=dates)
+    # 外部数据源页面：加密情绪
+    try:
+        import subprocess
+        subprocess.run([sys.executable, os.path.join(REPO_ROOT, 'scripts', 'generate_cmc_rank_page.py')], check=True)
+    except Exception as e:
+        print(f'⚠️ 生成 cmc_rank 页面失败: {e}')
     for d in dates:
         generate_archive_page(d, dates=dates)
 

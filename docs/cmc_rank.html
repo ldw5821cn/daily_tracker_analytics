@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>加密货币恐惧贪婪指数 | daily_tracker_analytics</title>
+<script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
+<style>
+  :root { --bg: #0f172a; --card: #1e293b; --text: #e2e8f0; --muted: #94a3b8; --up: #ef4444; --down: #22c55e; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 24px; }
+  h1 { margin: 0 0 8px; font-size: 22px; }
+  .subtitle { color: var(--muted); margin-bottom: 24px; font-size: 14px; }
+  .grid { display: grid; grid-template-columns: 280px 1fr; gap: 24px; }
+  .card { background: var(--card); border-radius: 12px; padding: 20px; }
+  .big { font-size: 56px; font-weight: 700; color: #f87171; margin: 12px 0; }
+  .label { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: .5px; }
+  .desc { margin-top: 12px; font-size: 14px; line-height: 1.6; color: var(--muted); }
+  #chart { height: 360px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+  th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid #334155; }
+  th { color: var(--muted); font-weight: 500; }
+  a { color: #60a5fa; text-decoration: none; }
+  .nav { margin-bottom: 24px; }
+  @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+  <div class="nav"><a href="index.html">← 返回首页</a></div>
+  <h1>加密货币恐惧贪婪指数</h1>
+  <div class="subtitle">数据来源：alternative.me（Crypto Fear & Greed Index），每日更新</div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="label">最新数值（2026-09-11）</div>
+      <div class="big">56</div>
+      <div style="font-size:18px;color:#f87171">贪婪</div>
+      <div class="desc">
+        0-24 极度恐慌 · 25-44 恐慌 · 45-55 中性 · 56-74 贪婪 · 75-100 极度贪婪。<br>
+        该指数反映加密货币市场风险偏好，可作为 A 股/全球风险资产的辅助情绪参考。
+      </div>
+    </div>
+    <div class="card">
+      <div id="chart"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:24px">
+    <div class="label">近 30 日历史</div>
+    <table>
+      <thead><tr><th>日期</th><th>数值</th><th>情绪</th></tr></thead>
+      <tbody><tr><td>2026-09-11</td><td>56</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-09-10</td><td>69</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-09-09</td><td>66</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-09-08</td><td>69</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-09-07</td><td>71</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-09-06</td><td>73</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-09-05</td><td>73</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-09-04</td><td>74</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-09-03</td><td>65</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-09-02</td><td>63</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-09-01</td><td>69</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-08-31</td><td>62</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-08-30</td><td>69</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-08-29</td><td>68</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-08-28</td><td>73</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-08-27</td><td>71</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-08-26</td><td>65</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-08-25</td><td>74</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-08-24</td><td>73</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-08-23</td><td>66</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-08-22</td><td>71</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-08-21</td><td>72</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-08-20</td><td>62</td><td style='color:#f87171'>贪婪</td></tr>
+<tr><td>2026-08-19</td><td>46</td><td style='color:#4ade80'>恐慌</td></tr>
+<tr><td>2026-08-18</td><td>41</td><td style='color:#4ade80'>恐慌</td></tr>
+<tr><td>2026-08-17</td><td>31</td><td style='color:#4ade80'>恐慌</td></tr>
+<tr><td>2026-08-16</td><td>34</td><td style='color:#4ade80'>恐慌</td></tr>
+<tr><td>2026-08-15</td><td>34</td><td style='color:#4ade80'>恐慌</td></tr>
+<tr><td>2026-08-14</td><td>29</td><td style='color:#4ade80'>恐慌</td></tr>
+<tr><td>2026-08-13</td><td>29</td><td style='color:#4ade80'>恐慌</td></tr></tbody>
+    </table>
+  </div>
+
+  <script>
+    const chartData = [{"date": "2026-06-14", "value": 18}, {"date": "2026-06-15", "value": 20}, {"date": "2026-06-16", "value": 23}, {"date": "2026-06-17", "value": 22}, {"date": "2026-06-18", "value": 15}, {"date": "2026-06-19", "value": 14}, {"date": "2026-06-20", "value": 23}, {"date": "2026-06-21", "value": 23}, {"date": "2026-06-22", "value": 20}, {"date": "2026-06-23", "value": 23}, {"date": "2026-06-24", "value": 17}, {"date": "2026-06-25", "value": 12}, {"date": "2026-06-26", "value": 13}, {"date": "2026-06-27", "value": 15}, {"date": "2026-06-28", "value": 18}, {"date": "2026-06-29", "value": 12}, {"date": "2026-06-30", "value": 15}, {"date": "2026-07-01", "value": 11}, {"date": "2026-07-02", "value": 19}, {"date": "2026-07-03", "value": 21}, {"date": "2026-07-04", "value": 22}, {"date": "2026-07-05", "value": 23}, {"date": "2026-07-06", "value": 24}, {"date": "2026-07-07", "value": 27}, {"date": "2026-07-08", "value": 20}, {"date": "2026-07-09", "value": 22}, {"date": "2026-07-10", "value": 23}, {"date": "2026-07-11", "value": 26}, {"date": "2026-07-12", "value": 26}, {"date": "2026-07-13", "value": 28}, {"date": "2026-07-14", "value": 22}, {"date": "2026-07-15", "value": 25}, {"date": "2026-07-16", "value": 25}, {"date": "2026-07-17", "value": 27}, {"date": "2026-07-18", "value": 25}, {"date": "2026-07-19", "value": 28}, {"date": "2026-07-20", "value": 29}, {"date": "2026-07-21", "value": 25}, {"date": "2026-07-22", "value": 33}, {"date": "2026-07-23", "value": 31}, {"date": "2026-07-24", "value": 28}, {"date": "2026-07-25", "value": 27}, {"date": "2026-07-26", "value": 26}, {"date": "2026-07-27", "value": 30}, {"date": "2026-07-28", "value": 29}, {"date": "2026-07-29", "value": 29}, {"date": "2026-07-30", "value": 28}, {"date": "2026-07-31", "value": 25}, {"date": "2026-08-01", "value": 27}, {"date": "2026-08-02", "value": 27}, {"date": "2026-08-03", "value": 28}, {"date": "2026-08-04", "value": 25}, {"date": "2026-08-05", "value": 27}, {"date": "2026-08-06", "value": 25}, {"date": "2026-08-07", "value": 29}, {"date": "2026-08-08", "value": 30}, {"date": "2026-08-09", "value": 31}, {"date": "2026-08-10", "value": 30}, {"date": "2026-08-11", "value": 29}, {"date": "2026-08-12", "value": 27}, {"date": "2026-08-13", "value": 29}, {"date": "2026-08-14", "value": 29}, {"date": "2026-08-15", "value": 34}, {"date": "2026-08-16", "value": 34}, {"date": "2026-08-17", "value": 31}, {"date": "2026-08-18", "value": 41}, {"date": "2026-08-19", "value": 46}, {"date": "2026-08-20", "value": 62}, {"date": "2026-08-21", "value": 72}, {"date": "2026-08-22", "value": 71}, {"date": "2026-08-23", "value": 66}, {"date": "2026-08-24", "value": 73}, {"date": "2026-08-25", "value": 74}, {"date": "2026-08-26", "value": 65}, {"date": "2026-08-27", "value": 71}, {"date": "2026-08-28", "value": 73}, {"date": "2026-08-29", "value": 68}, {"date": "2026-08-30", "value": 69}, {"date": "2026-08-31", "value": 62}, {"date": "2026-09-01", "value": 69}, {"date": "2026-09-02", "value": 63}, {"date": "2026-09-03", "value": 65}, {"date": "2026-09-04", "value": 74}, {"date": "2026-09-05", "value": 73}, {"date": "2026-09-06", "value": 73}, {"date": "2026-09-07", "value": 71}, {"date": "2026-09-08", "value": 69}, {"date": "2026-09-09", "value": 66}, {"date": "2026-09-10", "value": 69}, {"date": "2026-09-11", "value": 56}];
+    const chart = LightweightCharts.createChart(document.getElementById('chart'), {
+      layout: { background: { color: 'transparent' }, textColor: '#e2e8f0' },
+      grid: { vertLines: { color: '#334155' }, horzLines: { color: '#334155' } },
+      rightPriceScale: { borderColor: '#334155' },
+      timeScale: { borderColor: '#334155', timeVisible: false },
+      crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+    });
+    const line = chart.addLineSeries({ color: '#60a5fa', lineWidth: 2 });
+    line.setData(chartData);
+    chart.timeScale().fitContent();
+  </script>
+</body>
+</html>
