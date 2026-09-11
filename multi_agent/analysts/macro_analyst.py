@@ -228,6 +228,88 @@ def _get_macro_indicators(current_date: str) -> Dict:
     return result
 
 
+def _get_fred_macro_liquidity(current_date: str) -> Dict:
+    """加载 FRED 全球宏观流动性指标（WALCL/SOFR/DGS10/DXY/VIXCLS/T10Y2Y）。
+
+    FRED 数据有滞后，采用最新可用文件（文件名 YYYYMMDD）。
+    """
+    data_dir = os.path.join(MULTI_AGENT, 'data', 'macro_liquidity')
+    result = {
+        'date': current_date,
+        'walcl': None, 'walcl_1w_change': None,
+        'sofr': None, 'dgs10': None, 'dxy': None, 'vixcls': None, 't10y2y': None,
+    }
+    if not os.path.exists(data_dir):
+        return result
+    files = sorted([f for f in os.listdir(data_dir) if f.endswith('_macro_liquidity.json')], reverse=True)
+    for f in files:
+        path = os.path.join(data_dir, f)
+        try:
+            with open(path, 'r', encoding='utf-8') as fh:
+                loaded = json.load(fh)
+            result.update({k: loaded.get(k) for k in result if k != 'date'})
+            result['date'] = loaded.get('date', current_date)
+            break
+        except Exception:
+            continue
+    return result
+
+
+def _score_fred_macro_liquidity(fred: Dict) -> Tuple[float, List[str]]:
+    """基于 FRED 指标计算全球流动性/风险偏好评分（0-100，50 为中性）。"""
+    score = 50.0
+    reasons = []
+
+    # WALCL 美联储总资产周变化：扩张=流动性宽松=偏多；收缩=偏空
+    walcl_change = fred.get('walcl_1w_change')
+    if walcl_change is not None:
+        # 周变化 100B 以内为正常，±500B 以上较显著；每 100B 对应 1 分
+        delta = max(-5, min(5, walcl_change / 100))
+        score += delta
+        reasons.append(f'WALCL周变化{walcl_change:+.0f}B 修正{delta:+.1f}')
+
+    # SOFR：低利率=Risk-on，高利率=Risk-off；中性约 4.5%
+    sofr = fred.get('sofr')
+    if sofr is not None:
+        # 5.5% 以上扣 3 分，3.5% 以下加 3 分
+        if sofr > 5.5:
+            score -= 3; reasons.append(f'SOFR高{sofr}% 修正-3')
+        elif sofr < 3.5:
+            score += 3; reasons.append(f'SOFR低{sofr}% 修正+3')
+
+    # 10Y 美债收益率：>5% 偏空（全球资金成本），<4% 偏多
+    dgs10 = fred.get('dgs10')
+    if dgs10 is not None:
+        if dgs10 > 5.0:
+            score -= 2; reasons.append(f'10Y美债{dgs10}% 修正-2')
+        elif dgs10 < 4.0:
+            score += 2; reasons.append(f'10Y美债{dgs10}% 修正+2')
+
+    # 期限利差 T10Y2Y：倒挂=偏空，陡峭=偏多
+    t10y2y = fred.get('t10y2y')
+    if t10y2y is not None:
+        if t10y2y < -0.2:
+            score -= 3; reasons.append(f'期限利差倒挂{t10y2y}% 修正-3')
+        elif t10y2y > 1.0:
+            score += 2; reasons.append(f'期限利差陡峭{t10y2y}% 修正+2')
+
+    # 美元指数 DXY：>105 偏紧/偏空，<100 偏松/偏多
+    dxy = fred.get('dxy')
+    if dxy is not None:
+        if dxy > 105:
+            score -= 2; reasons.append(f'DXY强{dxy} 修正-2')
+        elif dxy < 100:
+            score += 2; reasons.append(f'DXY弱{dxy} 修正+2')
+
+    # VIX：>30 恐慌/偏空，<15 低风险/偏多
+    vixcls = fred.get('vixcls')
+    if vixcls is not None:
+        if vixcls > 30:
+            score -= 3; reasons.append(f'VIX高{vixcls} 修正-3')
+        elif vixcls < 15:
+            score += 2; reasons.append(f'VIX低{vixcls} 修正+2')
+
+    return max(0, min(100, round(score, 1))), reasons
 def _score_capital_flow(macro_indicators: Dict) -> float:
     """基于北向、融资融券、期权 PCR 计算资金面偏置分（0-100）。"""
     score = 50.0
@@ -547,11 +629,13 @@ def analyze(current_date: Optional[str] = None) -> Dict:
     vix_proxy = _get_vix_proxy()
     macro_indicators = _get_macro_indicators(current_date)
     capital_flow_score = _score_capital_flow(macro_indicators)
+    fred_liquidity = _get_fred_macro_liquidity(current_date)
+    fred_score, fred_reasons = _score_fred_macro_liquidity(fred_liquidity)
     risk_on_off = _get_risk_on_off(50, us_macro, china_macro, vix_proxy, yield_curve)
     sector_rotation = _get_sector_rotation_proxy()
     global_semi = _get_global_semi_momentum()
 
-    # 综合宏观得分（指数动量40% + 市场广度15% + 中国宏观数据30% + 资金面5% + 风险修正）
+    # 综合宏观得分（指数动量40% + 市场广度15% + 中国宏观数据25% + 资金面5% + FRED全球流动性10% + 风险修正）
     avg_index_score = sum(s['score'] for s in index_scores) / len(index_scores) if index_scores else 50
     china_macro_bias = _score_china_macro(china_macro, yield_curve)
     risk_adjustment = 0
@@ -559,7 +643,7 @@ def analyze(current_date: Optional[str] = None) -> Dict:
         risk_adjustment = -5
     elif risk_on_off['state'] == 'risk_on':
         risk_adjustment = 3
-    macro_score = round(avg_index_score * 0.40 + breadth['score'] * 0.15 + china_macro_bias * 0.30 + capital_flow_score * 0.05 + risk_adjustment, 1)
+    macro_score = round(avg_index_score * 0.40 + breadth['score'] * 0.15 + china_macro_bias * 0.25 + capital_flow_score * 0.05 + fred_score * 0.10 + risk_adjustment, 1)
     macro_score = max(0, min(100, macro_score))
 
     # 重新计算 Risk-on/off 使用真实宏观评分
@@ -624,6 +708,12 @@ def analyze(current_date: Optional[str] = None) -> Dict:
         summary_lines.append(f"- 期权 PCR（上交所）: {pcr_summary}")
     summary_lines.append(f"- 资金面情绪分: {capital_flow_score}")
     summary_lines.append("")
+    summary_lines.append("## 全球宏观流动性（FRED）")
+    summary_lines.append(f"- WALCL: {fred_liquidity.get('walcl')} 十亿美元，周变化 {fred_liquidity.get('walcl_1w_change')}B")
+    summary_lines.append(f"- SOFR: {fred_liquidity.get('sofr')}%, 10Y美债: {fred_liquidity.get('dgs10')}%, 期限利差: {fred_liquidity.get('t10y2y')}%")
+    summary_lines.append(f"- DXY: {fred_liquidity.get('dxy')}, VIX: {fred_liquidity.get('vixcls')}")
+    summary_lines.append(f"- FRED流动性评分: {fred_score}/100 ({'; '.join(fred_reasons) if fred_reasons else '中性'})")
+    summary_lines.append("")
     summary_lines.append("## 全球半导体动量（美日韩）")
     summary_lines.append(f"- 综合得分: {global_semi.get('composite_score', 50)} / 信号: {global_semi.get('composite_signal', 'neutral')}")
     summary_lines.append(f"- 美股: {global_semi.get('us', {}).get('score', 50)} (5日 {global_semi.get('us', {}).get('ret_5d_avg', 0):+.2f}%, 20日 {global_semi.get('us', {}).get('ret_20d_avg', 0):+.2f}%)")
@@ -648,6 +738,9 @@ def analyze(current_date: Optional[str] = None) -> Dict:
         'china_macro_bias': china_macro_bias,
         'macro_indicators': macro_indicators,
         'capital_flow_score': capital_flow_score,
+        'fred_liquidity': fred_liquidity,
+        'fred_score': fred_score,
+        'fred_reasons': fred_reasons,
         'yield_curve': yield_curve,
         'vix_proxy': vix_proxy,
         'sector_rotation': sector_rotation,

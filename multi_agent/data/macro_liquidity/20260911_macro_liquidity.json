@@ -1,6 +1,6 @@
 {
-  "date": "20260911",
-  "fred": {
+  "date": "2026-09-11",
+  "details": {
     "fed_total_assets": {
       "series": "WALCL",
       "latest": {
@@ -367,5 +367,12 @@
         }
       ]
     }
-  }
+  },
+  "walcl": 6740.6,
+  "walcl_1w_change": 3.4,
+  "sofr": 3.64,
+  "dgs10": 4.83,
+  "dxy": 118.0732,
+  "vixcls": 16.46,
+  "t10y2y": 0.39
 }

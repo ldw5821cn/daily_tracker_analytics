@@ -73,22 +73,49 @@ def _parse_csv(text: str, tail_n: int = 12):
 
 
 def main():
-    today = datetime.now().strftime("%Y%m%d")
+    today = datetime.now().strftime("%Y-%m-%d")
+    flat_date = datetime.now().strftime("%Y%m%d")
     result = {"date": today, "fred": {}}
+    flat = {
+        "date": today,
+        "walcl": None, "walcl_1w_change": None,
+        "sofr": None, "dgs10": None, "dxy": None, "vixcls": None, "t10y2y": None,
+    }
     for name, series in FRED_SERIES.items():
         try:
             text = _fetch_csv(series)
             parsed = _parse_csv(text)
             if parsed:
                 result["fred"][name] = parsed
+                latest_val = parsed["latest"]["value"]
+                prev_val = parsed["previous"]["value"]
+                if name == "fed_total_assets":
+                    flat["walcl"] = round(latest_val / 1000, 1)  # 百万美元 -> 十亿美元
+                    if prev_val:
+                        flat["walcl_1w_change"] = round((latest_val - prev_val) / 1000, 1)
+                elif name == "sofr":
+                    flat["sofr"] = latest_val
+                elif name == "us10y":
+                    flat["dgs10"] = latest_val
+                elif name == "dxy":
+                    flat["dxy"] = latest_val
+                elif name == "vix":
+                    flat["vixcls"] = latest_val
+                elif name == "yield_curve_10y2y":
+                    flat["t10y2y"] = latest_val
                 print(f"✅ {name} ({series}): latest={parsed['latest']}")
             else:
                 print(f"⚠️ {name} ({series}): no data")
         except Exception as e:
             print(f"❌ {name} ({series}): {e}")
 
+    # 保留详细嵌套数据在 details 字段，便于追溯
+    result["details"] = result.pop("fred")
+    # 扁平字段直接放在顶层，便于 macro_analyst 读取
+    result.update(flat)
+
     os.makedirs(OUT_DIR, exist_ok=True)
-    out_path = os.path.join(OUT_DIR, f"{today}_macro_liquidity.json")
+    out_path = os.path.join(OUT_DIR, f"{flat_date}_macro_liquidity.json")
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
     print(f"Saved {out_path}")
