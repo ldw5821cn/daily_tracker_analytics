@@ -6,11 +6,12 @@
     "exchange": "SH",
     "alert_type": "跌破年线",
     "condition": "close < ma250",
-    "triggered": false,
-    "last_checked": "2026-09-14",
+    "triggered": true,
+    "last_checked": "2026-09-15",
     "notes": "用户要求：513530持续跟踪，跌破年线时通知买入",
-    "last_close": 1.59,
-    "last_ma250": 1.5738320000000001,
-    "last_date": "2026-09-14"
+    "last_close": 1.57,
+    "last_ma250": 1.574,
+    "last_date": "2026-09-15",
+    "triggered_at": "2026-09-15"
   }
 ]
