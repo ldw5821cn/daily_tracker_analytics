@@ -8,7 +8,11 @@ import json
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-sys.path.insert(0, '/home/zhihu/daily_tracker_analytics/etf_tracker/multi_agent')
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+_REPO_ROOT = os.path.dirname(os.path.dirname(_SCRIPT_DIR))
+_MULTI_AGENT_DIR = os.path.join(_REPO_ROOT, 'multi_agent')
+if _MULTI_AGENT_DIR not in sys.path:
+    sys.path.insert(0, _MULTI_AGENT_DIR)
 
 from orchestrator import analyze_stock, print_short_summary
 from core.data_layer import get_realtime_price, get_stock_data, calc_technical_indicators
@@ -274,13 +278,16 @@ def generate_wechat_report(stocks, futures_list=None, current_date=None):
         risk = r['risk_assessment']
         
         rt = get_realtime_price(r['ticker'])
-        price = rt['price'] if rt else r['current_price']
+        if rt and isinstance(rt, dict):
+            price = rt.get('price', r['current_price'])
+        else:
+            price = r['current_price']
         
         lines.append(f"━━━━━━━━━━━━━━━━━━━━")
         lines.append(f"**{r['name']}({r['ticker']})** | {price}元{' (实时)' if rt else ''}")
         lines.append("")
         lines.append(f"📈 **{v['rating']}** (评分{v['weighted_score']}) | 建议: {v['recommendation']}")
-        lines.append(f"🔵看涨{v['bull_score']} vs 🔴看跌{v['bear_score']} | 净信号{v['net_signal']:+d}")
+        lines.append(f"🔵看涨{v['bull_score']} vs 🔴看跌{v['bear_score']} | 净信号{v['net_signal']:+.1f}")
         if fund:
             lines.append(f"技术{tech['score']}/100 | 基本面{fund['score']}/100")
         else:
@@ -466,7 +473,7 @@ def generate_markdown_report(stocks, futures_list=None, current_date=None, outpu
 def load_daily_focus_list(path=None):
     """加载每日重点关注列表（核心标的，避免跑全量watchlist超时）"""
     if path is None:
-        path = os.path.join(os.path.dirname(__file__), 'daily_focus_list.json')
+        path = os.path.join(_MULTI_AGENT_DIR, 'daily_focus_list.json')
     if not os.path.exists(path):
         return []
     try:
