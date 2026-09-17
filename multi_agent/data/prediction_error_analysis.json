@@ -104,9 +104,9 @@
       "name": "原油",
       "category": "期货",
       "signal": "观望",
-      "return_pct": -6.344,
+      "return_pct": -6.368,
       "pred_price": 838.6,
-      "today_price": 785.4,
+      "today_price": 785.2,
       "weighted_score": 49.4,
       "confidence": 0.59,
       "reasoning": "技术面中性(59/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌0 | 宏观中性(49.2/100) | 市场上下文neutral(50.0/100)上限100%"
