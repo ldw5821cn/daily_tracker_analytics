@@ -31,6 +31,12 @@
         "SH512890": 0.20,
         "SH512170": 0.20
       }
+    },
+    "LOCAL_FUTURES": {
+      "name": "期货模拟盘（本地）",
+      "market": "cn",
+      "source": "futures_simulator",
+      "_note": "期货无法推送到雪球（雪球仅支持股票/ETF），此组合仅本地维护，数据在 multi_agent/data/futures_simulator.db。ZH3650824 已改为 ETF 组合拳，期货概念从此组合独立出来。"
     }
   }
 }

@@ -199,7 +199,9 @@ def optimize():
     # ---------- 4. 写回参数 + 记录 ----------
     applied = bool(changes)
     if applied:
-        params['updated_reason'] = ' | '.join(param_changes)[:500]
+        # 用独立字段 reflection_reason，避免与 auto_tune/warehouse 优化器的 updated_reason 语义混淆
+        params['reflection_reason'] = ' | '.join(param_changes)[:500]
+        params['reflection_updated_at'] = datetime.now().isoformat()
         _save_params(params)
 
     entry = {
