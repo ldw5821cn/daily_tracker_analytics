@@ -20,6 +20,7 @@ from datetime import datetime
 REPO = '/home/liudawei/github/daily_tracker_analytics'
 sys.path.insert(0, REPO)
 
+
 CFG = os.path.join(REPO, 'multi_agent', 'config', 'xueqiu_config.json')
 REC = os.path.join(REPO, 'multi_agent', 'data', 'recommendations.json')
 LOG_DIR = os.path.join(REPO, 'logs')
@@ -34,13 +35,29 @@ def log(msg, f):
     f.write(line + '\n')
 
 
+def _load_cookies_from_env():
+    """从仓库 .env 的 XUEQIU_COOKIES 加载 cookies（xueqiu_config.json 已不含 cookies 字段）。
+
+    返回 cookie 字符串；未找到返回空串。
+    """
+    try:
+        from dotenv import load_dotenv  # 已在 easytrader venv 装 python-dotenv
+        load_dotenv(os.path.join(REPO, '.env'))
+    except Exception:
+        pass
+    return os.environ.get('XUEQIU_COOKIES', '').strip()
+
+
 def load_config():
     if not os.path.exists(CFG):
         raise FileNotFoundError(f"配置不存在: {CFG}")
     with open(CFG) as f:
         c = json.load(f)
-    if not c.get('cookies') or '粘贴' in str(c['cookies']):
-        raise ValueError("cookies未配置")
+    # cookies 已从 config 移除（gitignore），统一走 .env 的 XUEQIU_COOKIES
+    cookies = _load_cookies_from_env()
+    if not cookies or '粘贴' in cookies:
+        raise ValueError("cookies未配置（请设置 .env 的 XUEQIU_COOKIES）")
+    c['cookies'] = cookies
     return c
 
 
@@ -55,7 +72,19 @@ def init_xq(cfg, code, log_f):
     import easytrader
     u = easytrader.use('xq')
     p = cfg['portfolios'].get(code, {})
-    u.prepare(cookies=cfg['cookies'], portfolio_code=code, portfolio_market=p.get('market', 'cn'))
+    # 关键: cookie 通过 u.s.headers 注入, 而不是明文传给 u.prepare()
+    # 否则雪球 WAF 拒绝 (Seek IP Blacklisted 403)
+    try:
+        u.prepare(portfolio_code=code, portfolio_market=p.get('market', 'cn'))
+    except Exception as e:
+        # 某些版本 prepare 必须传 cookies, 但要在注入 header 后传
+        u.s.headers['Cookie'] = cfg['cookies']
+        u.prepare(cookies=cfg['cookies'], portfolio_code=code,
+                  portfolio_market=p.get('market', 'cn'))
+    u.s.headers['Cookie'] = cfg['cookies']
+    u.s.headers['User-Agent'] = (
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) '
+        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36')
     try:
         pos = u.position
         log(f"  ✅ {code} ({p.get('name', '')}) 登录成功", log_f)
@@ -63,6 +92,17 @@ def init_xq(cfg, code, log_f):
     except Exception as e:
         log(f"  ❌ {code} 登录失败: {e}", log_f)
         return None, None
+
+
+def _normalize_holdings(pos):
+    """easytrader u.position 返回 list, 每项含 market_value 但无 weight 字段。
+    用 market_value / 总市值 计算真实权重。"""
+    holdings = pos if isinstance(pos, list) else pos.get('holdings', [])
+    total_mv = sum(float(h.get('market_value', 0)) for h in holdings)
+    for h in holdings:
+        if 'weight' not in h or not h['weight']:
+            h['weight'] = (float(h.get('market_value', 0)) / total_mv) if total_mv else 0.0
+    return holdings
 
 
 def sync_allocator(code, cfg, recs, dry=True, log_f=None):
@@ -93,7 +133,7 @@ def sync_allocator(code, cfg, recs, dry=True, log_f=None):
             log(f"   ℹ️ 无多头信号或宏观禁止做多，目标空仓", log_f)
 
         log(f"\n📋 当前持仓:", log_f)
-        holdings = pos if isinstance(pos, list) else pos.get('holdings', [])
+        holdings = _normalize_holdings(pos)
         for h in holdings:
             log(f"   {h.get('stock_name', h.get('stock_code', '?'))}: {h.get('weight', 0)*100:.2f}%", log_f)
         if not holdings:
@@ -160,7 +200,7 @@ def sync_fixed(code, cfg, dry=True, log_f=None):
             targets.append({'stock_code': ticker, 'weight': w / total if total else 0})
 
         log(f"\n📋 当前持仓:", log_f)
-        holdings = pos if isinstance(pos, list) else pos.get('holdings', [])
+        holdings = _normalize_holdings(pos)
         for h in holdings:
             log(f"   {h.get('stock_name', h.get('stock_code', '?'))}: {h.get('weight', 0)*100:.2f}%", log_f)
 
@@ -210,12 +250,15 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dry-run', '-n', action='store_true', help='仅预览，不执行')
     parser.add_argument('--no-dry-run', action='store_true', help='实际执行')
+    parser.add_argument('--portfolio', '-p', action='append', default=None,
+                        help='只处理指定组合（可多次指定），如 -p ZH3650487；不指定则处理全部')
     args = parser.parse_args()
     dry = not args.no_dry_run
     if dry:
         print("🔍 DRY RUN\n")
+    wanted = set(args.portfolio) if args.portfolio else None
     with open(LOG_FILE, 'a', encoding='utf-8') as log_f:
-        log(f"\n{'='*50}\n🚀 雪球组合维护启动 (dry={dry})\n{'='*50}", log_f)
+        log(f"\n{'='*50}\n🚀 雪球组合维护启动 (dry={dry}, portfolio={wanted or 'ALL'})\n{'='*50}", log_f)
         try:
             cfg = load_config()
             recs = load_recommendations()
@@ -226,6 +269,9 @@ def main():
             sys.exit(1)
         results = []
         for code, p in cfg['portfolios'].items():
+            if wanted and code not in wanted:
+                log(f"   ⏭️ 跳过 {code}（未在 --portfolio 指定范围内）", log_f)
+                continue
             src = p.get('source', '')
             if src == 'allocator':
                 r = sync_allocator(code, cfg, recs, dry, log_f)

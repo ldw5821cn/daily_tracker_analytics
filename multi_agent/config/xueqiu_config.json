@@ -21,9 +21,16 @@
       }
     },
     "ZH3650824": {
-      "name": "期货模拟盘",
+      "name": "ETF组合拳",
       "market": "cn",
-      "source": "futures_simulator"
+      "source": "fixed",
+      "holdings": {
+        "SH516580": 0.20,
+        "SH512800": 0.20,
+        "SH563180": 0.20,
+        "SH512890": 0.20,
+        "SH512170": 0.20
+      }
     }
   }
 }
