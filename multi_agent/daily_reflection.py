@@ -418,6 +418,22 @@ def generate_daily_reflection():
     
     if consecutive_losses >= 3:
         print(f"\n⚠️ **连续{consecutive_losses}天亏损，建议减仓防御!**")
+
+    # ========== 反思 -> 优化系统 闭环 ==========
+    # 把 morning_validation 的验证结果转化为参数微调 + 知识库沉淀
+    print("\n🔄 反思优化闭环：根据验证结果微调系统参数...")
+    try:
+        from scripts.reflection_optimizer import optimize as _reflect_optimize
+        opt = _reflect_optimize()
+        if opt.get('applied'):
+            print(f"  📊 当日总体准确率 {opt.get('overall_accuracy')}%")
+            for c in opt.get('changes', []):
+                print(f"  {c}")
+            print("  ✅ 已微调 predictor_params.json 并沉淀到知识库")
+        else:
+            print(f"  ℹ️ 未触发参数微调（{opt.get('reason', '无显著偏差')}）")
+    except Exception as e:
+        print(f"  ⚠️ 反思优化闭环执行失败（不影响主反思）: {e}")
     
     kb['consecutive_losses'] = consecutive_losses
     save_knowledge(kb)

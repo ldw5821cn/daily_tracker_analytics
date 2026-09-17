@@ -1,0 +1,21 @@
+{
+  "_comment": "每日反思优化器配置。reflection_optimizer.py 启动时读取本文件覆盖默认值。修改后次日 17:00 evening pipeline 自动生效。",
+  "categories": ["个股", "ETF", "期货", "_default"],
+  "low_acc_categories": ["个股"],
+  "category_acc_floor": 48,
+  "signal_min_samples": 5,
+  "bull_extreme_reverse": 0.20,
+  "bear_extreme_reverse": 0.25,
+  "max_weight_delta": 0.03,
+  "max_thresh_delta": 2,
+  "extreme_boost_factor": 1.5,
+  "thresh_bounds": {
+    "bull": [52, 70],
+    "strong_bull": [60, 80],
+    "bear": [30, 55],
+    "strong_bear": [20, 45]
+  },
+  "weight_bounds": [0.10, 0.40],
+  "low_overall_acc": 45,
+  "max_lessons": 100
+}

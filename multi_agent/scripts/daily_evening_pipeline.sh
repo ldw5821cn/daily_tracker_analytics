@@ -80,6 +80,11 @@ echo "[$(date +'%Y-%m-%d %H:%M:%S')] 4/9 运行 auto_tune_from_reflection.py + A
 "${PYTHON}" multi_agent/scripts/auto_tune_from_reflection.py
 "${PYTHON}" multi_agent/scripts/ab_test_predictions.py
 
+# 4b. 反思优化闭环：把 morning_validation 验证结果转化为线上参数微调 + 知识库沉淀
+#     （reflection_optimizer 内部已 try/except，失败不中断 pipeline）
+echo "[$(date +'%Y-%m-%d %H:%M:%S')] 4b/9 运行 reflection_optimizer.py（反思->优化系统闭环）"
+"${PYTHON}" multi_agent/scripts/reflection_optimizer.py || echo "⚠️ reflection_optimizer.py 失败，继续执行"
+
 # 5. 生成 warehouse 真实收益回测报告
 # 替换旧版实时拉价回测，使用统一 warehouse 日线数据源
 echo "[$(date +'%Y-%m-%d %H:%M:%S')] 5/9 运行 backtest_predictions.py（warehouse 数据源）"
