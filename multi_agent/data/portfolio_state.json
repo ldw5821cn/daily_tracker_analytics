@@ -1,5 +1,5 @@
 {
-  "scan_time": "2026-09-17 15:33:48",
+  "scan_time": "2026-09-18 15:32:30",
   "top10": [
     {
       "ticker": "000612",
@@ -47,14 +47,9 @@
     "success_count": 5,
     "error_count": 0,
     "errors": [],
-    "weights": {
-      "SZ000612": 15.0,
-      "SZ300394": 15.0,
-      "SH600206": 15.0,
-      "SZ002281": 15.0
-    },
-    "note": "synced from recommendations.json 2026-09-17",
-    "scan_time": "2026-09-17 15:33:48",
+    "weights": {},
+    "note": "synced from recommendations.json 2026-09-18",
+    "scan_time": "2026-09-18 15:32:30",
     "updated": "2026-08-21"
   }
 }

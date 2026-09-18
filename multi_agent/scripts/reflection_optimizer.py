@@ -107,6 +107,24 @@ def _clamp(v, lo, hi):
     return max(lo, min(hi, v))
 
 
+def _already_applied(validate_date: str) -> bool:
+    """检查某 validate_date 是否已应用过参数微调（防止手动+自动双跑叠加）。"""
+    if not validate_date or not os.path.exists(OPT_HISTORY):
+        return False
+    try:
+        with open(OPT_HISTORY) as f:
+            for line in f:
+                try:
+                    e = json.loads(line)
+                except Exception:
+                    continue
+                if e.get('validate_date') == validate_date and e.get('applied'):
+                    return True
+    except Exception:
+        return False
+    return False
+
+
 def optimize():
     """主入口：读验证结果 -> 微调参数 + 沉淀经验。返回优化报告 dict。"""
     conf = _load_conf()
@@ -123,6 +141,12 @@ def optimize():
     by_cat = mv.get('by_category') or {}
     by_sig = mv.get('by_signal') or {}
     params = _load_params()
+
+    # 去重：同一 validate_date 只应用一次参数微调（知识库沉淀仍执行，但不再重复调参）
+    vdate = mv.get('validate_date')
+    if _already_applied(vdate):
+        return {'applied': False, 'reason': f'validate_date={vdate} 已应用过参数微调，跳过（防重复）',
+                'overall_accuracy': acc}
 
     categories = conf['categories']
     max_td = conf['max_thresh_delta']

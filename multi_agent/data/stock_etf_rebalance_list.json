@@ -1,66 +1,9 @@
 {
-  "date": "2026-09-17",
+  "date": "2026-09-18",
   "total_portfolio_value": 50000.0,
-  "stock_etf_total_weight": 0.32,
-  "long_amount": 11750.0,
+  "stock_etf_total_weight": 0,
+  "long_amount": 0,
   "short_amount": 0,
-  "skipped_count": 2,
-  "items": [
-    {
-      "ticker": "600206",
-      "name": "有研新材",
-      "category": "个股",
-      "signal": "bullish",
-      "target_weight": 0.08,
-      "reason": "信号bull 信心63% 60日收益-16.8% 回撤-50.2% 因子分+0.00",
-      "current_price": 50.55,
-      "target_price": 51.829,
-      "stop_loss": 49.539,
-      "action": "买入",
-      "target_amount": 5875.0,
-      "constraint_note": ""
-    },
-    {
-      "ticker": "000612",
-      "name": "焦作万方",
-      "category": "个股",
-      "signal": "bullish",
-      "target_weight": 0.08,
-      "reason": "信号bull 信心73% 60日收益+4.3% 回撤-10.3% 因子分+0.00",
-      "current_price": 11.34,
-      "target_price": 11.472,
-      "stop_loss": 11.113,
-      "action": "买入",
-      "target_amount": 5875.0,
-      "constraint_note": ""
-    },
-    {
-      "ticker": "300394",
-      "name": "天孚通信",
-      "category": "个股",
-      "signal": "bullish",
-      "target_weight": 0.08,
-      "reason": "信号bull 信心73% 60日收益-12.7% 回撤-49.6% 因子分+0.00",
-      "current_price": 277.65,
-      "target_price": 282.065,
-      "stop_loss": 272.097,
-      "action": "不操作",
-      "target_amount": 0.0,
-      "constraint_note": "金额不足一手(¥27765)"
-    },
-    {
-      "ticker": "002281",
-      "name": "光迅科技",
-      "category": "个股",
-      "signal": "bullish",
-      "target_weight": 0.08,
-      "reason": "信号bull 信心63% 60日收益-20.4% 回撤-40.7% 因子分+0.00",
-      "current_price": 191.22,
-      "target_price": 199.576,
-      "stop_loss": 187.396,
-      "action": "不操作",
-      "target_amount": 0.0,
-      "constraint_note": "金额不足一手(¥19122)"
-    }
-  ]
+  "skipped_count": 0,
+  "items": []
 }
