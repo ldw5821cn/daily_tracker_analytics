@@ -99,20 +99,41 @@ def _get_client():
     except ImportError:
         return None
 
-    # 优先从 Hermes config 加载 deepseek（已充值，恢复使用）
-    hermes = _load_hermes_provider('deepseek')
+    # 优先加载 kimi-coding（用户指定，2026-08-04）
+    hermes = _load_hermes_kimi_coding()
+    if not hermes:
+        # fallback: 从环境变量或 .env 文件读 KIMI_API_KEY
+        kimi_key = os.getenv('KIMI_API_KEY')
+        if not kimi_key:
+            # 尝试从项目 .env 读取
+            for env_path in [os.path.join(os.getcwd(), '.env'), os.path.expanduser('~/.hermes/.env')]:
+                if os.path.exists(env_path):
+                    with open(env_path) as f:
+                        for line in f:
+                            if line.startswith('KIMI_API_KEY='):
+                                kimi_key = line.strip().split('=', 1)[1]
+                                break
+                    if kimi_key:
+                        break
+        if kimi_key:
+            hermes = {
+                'name': 'kimi-coding',
+                'api_key': kimi_key,
+                'base_url': 'https://api.kimi.com/coding/v1',
+                'model': 'kimi-for-coding',
+            }
     if hermes:
         api_key = hermes['api_key']
-        base_url = hermes.get('base_url')
-        default_model = hermes.get('model', 'deepseek-chat')
+        base_url = hermes.get('base_url', 'https://api.moonshot.cn/v1')
+        default_model = hermes.get('model', 'kimi-for-coding')
         os.environ.setdefault('LLM_MODEL', default_model)
     else:
-        # fallback: 尝试加载 kimi-coding
-        hermes = _load_hermes_kimi_coding()
+        # fallback: 尝试加载 deepseek
+        hermes = _load_hermes_provider('deepseek')
         if hermes:
             api_key = hermes['api_key']
-            base_url = hermes.get('base_url', 'https://api.moonshot.cn/v1')
-            default_model = hermes.get('model', 'kimi-for-coding')
+            base_url = hermes.get('base_url')
+            default_model = hermes.get('model', 'deepseek-chat')
             os.environ.setdefault('LLM_MODEL', default_model)
         else:
             api_key = os.getenv('OPENAI_API_KEY') or os.getenv('OPENROUTER_API_KEY') or os.getenv('LLM_API_KEY')
@@ -170,6 +191,10 @@ def chat(messages: List[Dict[str, str]],
         fallback_models = ['deepseek-v4-flash', 'deepseek-v4-pro']
     elif _model == 'deepseek-reasoner':
         fallback_models = ['deepseek-chat', 'kimi-for-coding']
+
+    # kimi-for-coding 只允许 temperature=1
+    if 'kimi-for-coding' in _model or 'kimi-k2' in _model:
+        temperature = 1.0
 
     attempts = [_model] + fallback_models
     last_error = None

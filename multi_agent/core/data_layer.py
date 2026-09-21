@@ -590,7 +590,31 @@ def _get_sina_data(ticker, datalen=500):
 
 
 def _get_yfinance_data(ticker, period="2y", timeout=10):
-    """yfinance（通用备用），支持短超时避免阻塞。"""
+    """yfinance（通用备用），支持短超时避免阻塞。
+
+    2026-09-20: yfinance 走 Yahoo 接口，IP 容易被 429/403。对美股代码
+    （无 '.' 后缀）增加 akshare stock_us_daily 兜底，避免夜间批处理整体失败。
+    """
+    # 美股代码兜底：akshare stock_us_daily（来源：barchart/纳斯达克历史数据）
+    if '.' not in ticker:
+        try:
+            import akshare as _ak
+            _df = _ak.stock_us_daily(symbol=ticker, adjust='qfq')
+            if _df is not None and len(_df) >= 20:
+                _df = _df.rename(columns={
+                    'date': 'date', 'open': 'open', 'high': 'high',
+                    'low': 'low', 'close': 'close', 'volume': 'volume',
+                })
+                _df['date'] = pd.to_datetime(_df['date'])
+                _df = _df.set_index('date')
+                # 取最近 period 对应的天数（2y ≈ 500 交易日）
+                days = {'1y': 250, '2y': 500, '3y': 750, '5y': 1250}.get(period, 500)
+                if len(_df) > days:
+                    _df = _df.iloc[-days:]
+                print(f"  📡 数据源: akshare_us {ticker} {len(_df)}天")
+                return _df
+        except Exception as _e:
+            print(f"  ⚠️  akshare_us {ticker} 失败: {_e}")
     try:
         yf_ticker = f"{ticker}.SS" if ticker.startswith('6') else f"{ticker}.SZ"
         stock = yf.Ticker(yf_ticker)

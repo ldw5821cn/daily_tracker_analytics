@@ -923,7 +923,8 @@ class BaostockAdapter(BaseDataAdapter):
             
             code = self._format_code(etf_code)
             end_date = datetime.now().strftime('%Y-%m-%d')
-            start_date = (datetime.now() - timedelta(days=days * 2)).strftime('%Y-%m-%d')
+            # 请求更多数据以确保有足够的历史（考虑周末和节假日）
+            start_date = (datetime.now() - timedelta(days=days * 3)).strftime('%Y-%m-%d')
             
             rs = self._bs.query_history_k_data_plus(
                 code,
@@ -1156,12 +1157,11 @@ class DataSourceManager:
     def _get_default_configs(self) -> List[DataSourceConfig]:
         """获取默认配置"""
         return [
-            DataSourceConfig(name="tickflow", source_type=DataSourceType.TICKFLOW, priority=1, api_key=""),
+            DataSourceConfig(name="baostock", source_type=DataSourceType.BAOSTOCK, priority=1, timeout=30),
             DataSourceConfig(name="akshare", source_type=DataSourceType.AKSHARE, priority=2),
             DataSourceConfig(name="eastmoney", source_type=DataSourceType.EASTMONEY, priority=3),
             DataSourceConfig(name="tushare", source_type=DataSourceType.TUSHARE, priority=4, token=""),
-            DataSourceConfig(name="baostock", source_type=DataSourceType.BAOSTOCK, priority=5),
-            DataSourceConfig(name="yfinance", source_type=DataSourceType.YFINANCE, priority=6),
+            DataSourceConfig(name="yfinance", source_type=DataSourceType.YFINANCE, priority=5),
         ]
     
     def _init_adapters(self):

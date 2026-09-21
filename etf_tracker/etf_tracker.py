@@ -718,7 +718,15 @@ class BacktestEngine:
     def backtest_period(self, days: int) -> Dict:
         """回测指定周期"""
         if len(self.df) < days:
-            return {"error": f"数据不足{days}天"}
+            return {
+                "period_days": days,
+                "period_desc": f"近{days}天",
+                "error": f"数据不足{days}天",
+                "total_return": 0,
+                "max_drawdown": 0,
+                "sharpe_ratio": 0,
+                "ma_trend": "数据不足"
+            }
         
         recent = self.df.tail(days).copy()
         
@@ -1406,8 +1414,13 @@ class ReportGenerator:
 |------|------|----------|----------|------|
 """
                 for bt in result['backtest']:
-                    period_desc = bt.get('period_desc', f"近{bt['period_days']}天")
-                    report += f"| {bt['period_days']}天 ({period_desc}) | {bt['total_return']:+.2f}% | {bt['max_drawdown']:.2f}% | {bt['sharpe_ratio']:.2f} | {bt['ma_trend']} |\n"
+                    pd_days = bt.get('period_days', 0)
+                    period_desc = bt.get('period_desc', f"近{pd_days}天")
+                    total_ret = bt.get('total_return', 0)
+                    max_dd = bt.get('max_drawdown', 0)
+                    sharpe = bt.get('sharpe_ratio', 0)
+                    ma_trend = bt.get('ma_trend', '-')
+                    report += f"| {pd_days}天 ({period_desc}) | {total_ret:+.2f}% | {max_dd:.2f}% | {sharpe:.2f} | {ma_trend} |\n"
                 
                 # 多模型预测
                 if result.get('multi_model'):
@@ -1563,15 +1576,15 @@ def run_multi_etf_daily_report(config: Config = None, deep_analysis_top_n: int =
             print(f"  {etf['name']} 扫描失败: {e}")
             return None
     
-    # 使用线程池并行扫描（IO 密集型适合多线程）
-    from concurrent.futures import ThreadPoolExecutor, as_completed
+    # 串行扫描（Baostock 不支持多线程并发）
     quick_results = []
-    with ThreadPoolExecutor(max_workers=8) as executor:
-        futures = {executor.submit(scan_single_etf, etf): etf for etf in config.etfs}
-        for future in as_completed(futures):
-            result = future.result()
+    for etf in config.etfs:
+        try:
+            result = scan_single_etf(etf)
             if result is not None:
                 quick_results.append(result)
+        except Exception as e:
+            print(f"  {etf['name']} 扫描异常: {e}")
     
     if not quick_results:
         print("⚠️ 没有 ETF 扫描成功，退出")
@@ -1660,20 +1673,11 @@ def run_multi_etf_daily_report(config: Config = None, deep_analysis_top_n: int =
     analyzer.results = quick_results
     sector_ranking = analyzer.get_sector_ranking()
     
-    # 获取国际市场数据
+    # 获取国际市场数据（暂时禁用 - yfinance rate limit）
     international_data = None
     international_summary = ""
     international_analysis = ""
-    if INTERNATIONAL_MARKET_AVAILABLE:
-        try:
-            print("  正在获取国际市场数据...")
-            im_fetcher = InternationalMarketFetcher()
-            international_data = im_fetcher.fetch_all(days=30)
-            international_summary = im_fetcher.generate_market_summary()
-            international_analysis = im_fetcher.generate_market_analysis()
-            print(f"  国际市场数据获取成功: {len(international_data)} 个品种")
-        except Exception as e:
-            print(f"  国际市场数据获取失败: {e}")
+    print("  跳过国际市场数据获取（yfinance rate limit）")
     
     # 加载研报观点
     research_summary = ""
