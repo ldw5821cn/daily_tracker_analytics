@@ -1,16 +1,16 @@
 {
-  "date": "2026-09-18",
+  "date": "2026-09-21",
   "generated_by": "after_market_pipeline",
   "top10": [
-    {"code": "600163", "name": "中闽能源", "composite_score": 92, "changepercent": 4.22, "price": 6.18, "amount_yi": 12.4, "reason": "板块分散版Top10"},
-    {"code": "001248", "name": "华润新能源", "composite_score": 90, "changepercent": 3.88, "price": 12.06, "amount_yi": 8.6, "reason": "板块分散版Top10"},
-    {"code": "603127", "name": "昭衍新药", "composite_score": 87, "changepercent": 3.72, "price": 45.76, "amount_yi": 15.2, "reason": "板块分散版Top10"},
-    {"code": "000700", "name": "模塑科技", "composite_score": 86, "changepercent": 0.17, "price": 11.91, "amount_yi": 6.8, "reason": "板块分散版Top10"},
-    {"code": "000737", "name": "北方铜业", "composite_score": 86, "changepercent": 2.42, "price": 14.40, "amount_yi": 18.3, "reason": "板块分散版Top10"},
-    {"code": "000938", "name": "紫光股份", "composite_score": 86, "changepercent": 3.51, "price": 33.95, "amount_yi": 42.1, "reason": "板块分散版Top10"},
-    {"code": "002241", "name": "歌尔股份", "composite_score": 86, "changepercent": 4.71, "price": 23.33, "amount_yi": 35.7, "reason": "板块分散版Top10"},
-    {"code": "002011", "name": "盾安环境", "composite_score": 86, "changepercent": 1.79, "price": 14.20, "amount_yi": 9.4, "reason": "板块分散版Top10"},
-    {"code": "002130", "name": "沃尔核材", "composite_score": 86, "changepercent": 2.27, "price": 17.14, "amount_yi": 21.5, "reason": "板块分散版Top10"},
-    {"code": "002437", "name": "誉衡药业", "composite_score": 86, "changepercent": 1.17, "price": 3.47, "amount_yi": 7.2, "reason": "板块分散版Top10"}
+    {"code": "603456", "name": "九洲药业", "composite_score": 88, "changepercent": 4.38, "price": 16.20, "amount_yi": 8.5, "reason": "板块分散版Top10"},
+    {"code": "002734", "name": "利民股份", "composite_score": 88, "changepercent": 3.76, "price": 19.32, "amount_yi": 7.8, "reason": "板块分散版Top10"},
+    {"code": "002011", "name": "盾安环境", "composite_score": 88, "changepercent": 3.94, "price": 14.76, "amount_yi": 9.4, "reason": "板块分散版Top10"},
+    {"code": "000700", "name": "模塑科技", "composite_score": 88, "changepercent": 4.11, "price": 12.40, "amount_yi": 8.7, "reason": "板块分散版Top10"},
+    {"code": "600699", "name": "均胜电子", "composite_score": 87, "changepercent": 4.02, "price": 20.95, "amount_yi": 15.3, "reason": "板块分散版Top10"},
+    {"code": "300975", "name": "商络电子", "composite_score": 87, "changepercent": 0.11, "price": 27.04, "amount_yi": 12.1, "reason": "板块分散版Top10"},
+    {"code": "002328", "name": "新朋股份", "composite_score": 87, "changepercent": 3.79, "price": 8.50, "amount_yi": 6.5, "reason": "板块分散版Top10"},
+    {"code": "002081", "name": "金螳螂", "composite_score": 87, "changepercent": 4.88, "price": 5.16, "amount_yi": 7.9, "reason": "板块分散版Top10"},
+    {"code": "600888", "name": "新疆众和", "composite_score": 86, "changepercent": 2.81, "price": 10.25, "amount_yi": 9.8, "reason": "板块分散版Top10"},
+    {"code": "600621", "name": "华鑫股份", "composite_score": 86, "changepercent": 0.99, "price": 14.24, "amount_yi": 11.2, "reason": "板块分散版Top10"}
   ]
 }
