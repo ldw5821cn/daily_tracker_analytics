@@ -1296,10 +1296,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 7.0,
-      "today_price": 6940.159,
-      "return_pct": 99045.129,
-      "direction_correct": false,
-      "note": "ok"
+      "today_price": 7.0,
+      "return_pct": 0.0,
+      "direction_correct": true,
+      "note": "data_anomaly_corrected"
     },
     {
       "ticker": "000063",
