@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🏛️ LLM 预测 - 2026-09-21 21:48</title>
+<title>🏛️ 历史预测归档 - 2026-09-21</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <style>
@@ -50,7 +50,7 @@ tr:hover { background: #334155; }
 <a href="us_market.html" class="">🇺🇸 美股</a>
 <a href="etfs.html" class="">📊 ETF</a>
 <a href="futures.html" class="">📉 期货</a>
-<a href="prediction.html" class="active">🏛️ 预测</a>
+<a href="prediction.html" class="">🏛️ 预测</a>
 <a href="portfolio.html" class="">💼 持仓组合</a>
 <a href="xueqiu_returns.html" class="">💰 雪球收益</a>
 <a href="recommendations.html" class="">🎯 推荐回测</a>
@@ -59,26 +59,18 @@ tr:hover { background: #334155; }
 <a href="reflection.html" class="">🧠 复盘</a>
 <a href="cron_status.html" class="">⏰ 任务调度</a>
 <a href="data_health.html" class="">❤️ 数据健康</a>
-<select onchange="location.href=this.value" style="background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:20px;padding:8px 14px;font-size:13px;outline:none;cursor:pointer"><option value="" disabled>📅 历史归档</option><option value="archive/2026-09-21.html" >2026-09-21</option><option value="archive/2026-09-19.html" >2026-09-19</option><option value="archive/2026-09-18.html" >2026-09-18</option><option value="archive/2026-09-17.html" >2026-09-17</option><option value="archive/2026-09-16.html" >2026-09-16</option><option value="archive/2026-09-15.html" >2026-09-15</option><option value="archive/2026-09-14.html" >2026-09-14</option></select>
+<select onchange="location.href=this.value" style="background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:20px;padding:8px 14px;font-size:13px;outline:none;cursor:pointer"><option value="" disabled>📅 历史归档</option><option value="archive/2026-09-21.html" selected>2026-09-21</option><option value="archive/2026-09-19.html" >2026-09-19</option><option value="archive/2026-09-18.html" >2026-09-18</option><option value="archive/2026-09-17.html" >2026-09-17</option><option value="archive/2026-09-16.html" >2026-09-16</option><option value="archive/2026-09-15.html" >2026-09-15</option><option value="archive/2026-09-14.html" >2026-09-14</option></select>
 </div>
 
     <div class="header">
-        <h1>🏛️ LLM 预测 <span class="model-tag">🧠 多Agent融合</span></h1>
-        <div class="sub">2026-09-21 21:48 · 基于多 Agent 融合预测 (价格日期: 2026-09-21)</div>
+        <h1>🏛️ 历史预测归档 <span class="model-tag">历史归档</span></h1>
+        <div class="sub">2026-09-21 · 多 Agent 融合预测 (价格日期: 2026-09-21)</div>
     </div>
 
 <div class="stats-grid">
         <div class="stat-card">
-            <div class="num">统一回测</div>
-            <div class="label">multi_period_backtest</div>
-        </div>
-        <div class="stat-card">
             <div class="num">191</div>
-            <div class="label">今日预测</div>
-        </div>
-        <div class="stat-card">
-            <div class="num">7247</div>
-            <div class="label">累计预测</div>
+            <div class="label">当日预测</div>
         </div>
         <div class="stat-card">
             <div class="num" style="color:#ef4444">5</div>
@@ -135,20 +127,20 @@ tr:hover { background: #334155; }
             </div>
 </div>
 
-    <div class="section-title">🎯 昨日 1 日方向验证（2026-09-17 预测）</div>
+    <div class="section-title">🎯 昨日 1 日方向验证（2026-09-18 预测）</div>
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="num" style="color:#22c55e">47.1%</div>
-            <div class="label">总体准确率 (90/191)</div>
+            <div class="num" style="color:#ef4444">61.3%</div>
+            <div class="label">总体准确率 (117/191)</div>
         </div>
         
             <div class="stat-card">
-                <div class="num" style="color:#22c55e">47.8%</div>
-                <div class="label">ETF (11/23)</div>
+                <div class="num" style="color:#ef4444">87.0%</div>
+                <div class="label">ETF (20/23)</div>
             </div>
             <div class="stat-card">
-                <div class="num" style="color:#22c55e">47.1%</div>
-                <div class="label">个股 (56/119)</div>
+                <div class="num" style="color:#ef4444">62.2%</div>
+                <div class="label">个股 (74/119)</div>
             </div>
             <div class="stat-card">
                 <div class="num" style="color:#22c55e">46.9%</div>
@@ -156,6 +148,19 @@ tr:hover { background: #334155; }
             </div>
     </div>
 
+
+    <div class="section-title">🏭 Warehouse 真实 5d 收益模型表现</div>
+    <div class="note">
+        <p><b>基于仓库实际收盘价的 5 日 forward return 回测。</b>当前样本来自 2026-09-18 前所有历史预测，共 110661 条价格-收益记录。生成于 2026-09-18T17:12:06。</p>
+        <p><b>说明：</b>看多信号偏多表示模型偏乐观；看多信号均值为负表示当前参数在 bull 阈值附近表现不佳。数据仍偏少，结果仅供参考，不用于直接调整参数。</p>
+        <p style="color:#f59e0b">⏳ 每类预测需等待 5 个交易日后才能用真实收盘价评估；当前最新预测 2026-09-18，预计 2026-09-18 +5 交易日后可评估。</p>
+    </div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>类别</th><th>样本</th><th>看多</th><th>看空</th><th>看多平均</th><th>看空平均</th><th>方向准确率</th><th>覆盖率</th></tr></thead>
+        <tbody><tr><td><b>个股</b></td><td>3440</td><td>49</td><td>568</td><td style="color:#22c55e">-1.29</td><td style="color:#ef4444">4.58</td><td>35.0%</td><td>21.7%</td></tr><tr><td><b>ETF</b></td><td>729</td><td>4</td><td>204</td><td style="color:#22c55e">-1.84</td><td style="color:#ef4444">1.09</td><td>48.6%</td><td>33.9%</td></tr><tr><td><b>期货</b></td><td>1499</td><td>3</td><td>123</td><td style="color:#22c55e">-0.35</td><td style="color:#ef4444">2.53</td><td>20.6%</td><td>23.1%</td></tr><tr><td><b>US</b></td><td>1385</td><td colspan="5" style="color:#f59e0b">⏳ 暂无 5 日收益数据（1385 条待评估，需等待收盘价）</td><td>0.0%</td></tr></tbody>
+    </table>
+    </div>
 
     <div class="section-title">📊 VectorBT 组合滚动回测</div>
     <div class="table-responsive">

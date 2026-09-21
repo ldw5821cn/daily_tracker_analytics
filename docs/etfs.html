@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>📊 ETF - 2026-09-20 23:11</title>
+<title>📊 ETF - 2026-09-21 21:48</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <style>
@@ -59,12 +59,12 @@ tr:hover { background: #334155; }
 <a href="reflection.html" class="">🧠 复盘</a>
 <a href="cron_status.html" class="">⏰ 任务调度</a>
 <a href="data_health.html" class="">❤️ 数据健康</a>
-<select onchange="location.href=this.value" style="background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:20px;padding:8px 14px;font-size:13px;outline:none;cursor:pointer"><option value="" disabled>📅 历史归档</option><option value="archive/2026-09-19.html" >2026-09-19</option><option value="archive/2026-09-18.html" >2026-09-18</option><option value="archive/2026-09-17.html" >2026-09-17</option><option value="archive/2026-09-16.html" >2026-09-16</option><option value="archive/2026-09-15.html" >2026-09-15</option><option value="archive/2026-09-14.html" >2026-09-14</option><option value="archive/2026-09-12.html" >2026-09-12</option></select>
+<select onchange="location.href=this.value" style="background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:20px;padding:8px 14px;font-size:13px;outline:none;cursor:pointer"><option value="" disabled>📅 历史归档</option><option value="archive/2026-09-21.html" >2026-09-21</option><option value="archive/2026-09-19.html" >2026-09-19</option><option value="archive/2026-09-18.html" >2026-09-18</option><option value="archive/2026-09-17.html" >2026-09-17</option><option value="archive/2026-09-16.html" >2026-09-16</option><option value="archive/2026-09-15.html" >2026-09-15</option><option value="archive/2026-09-14.html" >2026-09-14</option></select>
 </div>
 
     <div class="header">
         <h1>📊 ETF </h1>
-        <div class="sub">2026-09-20 23:11 · 最新预测 23 只 (价格日期: 2026-09-18)</div>
+        <div class="sub">2026-09-21 21:48 · 最新预测 23 只 (价格日期: 2026-09-21)</div>
     </div>
 
 <div class="stats-grid">
@@ -73,7 +73,7 @@ tr:hover { background: #334155; }
             <div class="label">总数</div>
         </div>
         <div class="stat-card">
-            <div class="num" style="color:#ef4444">0</div>
+            <div class="num" style="color:#ef4444">1</div>
             <div class="label">看多</div>
         </div>
         <div class="stat-card">
@@ -81,12 +81,43 @@ tr:hover { background: #334155; }
             <div class="label">看空</div>
         </div>
         <div class="stat-card">
-            <div class="num">14</div>
+            <div class="num">11</div>
             <div class="label">中性</div>
         </div>
 
 </div>
+<div class="section-title">🏆 重点看多</div>
+<div class="cards">
 
+            <div class="card bull">
+                <div class="card-title">🔥 医疗ETF华宝 (512170)</div>
+                <div class="card-meta">评分 64.5 | 60日收益 <span style="color:#ef4444">+13.7%</span> | 回撤 -8.9%</div>
+                <div class="card-meta">推荐策略：每日多空（无成本） | 收益 <span style="color:#ef4444">+8.9%</span> | 回撤 -5.6%</div>
+                <div class="card-price">2026/09/21 现价 0.35 | 目标 0.358 | 止损 0.343</div>
+                <div class="card-reason">技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨2.0 vs 看跌0 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%</div>
+                
+                <div id="chart_512170" style="width:100%;height:180px;margin-top:10px;border-radius:8px;background:#0f172a;"></div>
+                <script>
+                (function(){
+                    const chart = LightweightCharts.createChart(document.getElementById('chart_512170'), {
+                        layout: { background: { color: '#0f172a' }, textColor: '#94a3b8' },
+                        grid: { vertLines: { color: '#1e293b' }, horzLines: { color: '#1e293b' } },
+                        crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+                        rightPriceScale: { borderColor: '#1e293b' },
+                        timeScale: { borderColor: '#1e293b', timeVisible: false },
+                    });
+                    const series = chart.addCandlestickSeries({
+                        upColor: '#ef4444', downColor: '#22c55e',
+                        borderUpColor: '#ef4444', borderDownColor: '#22c55e',
+                        wickUpColor: '#ef4444', wickDownColor: '#22c55e'
+                    });
+                    series.setData([{"time": "2026-06-23", "open": 0.296, "high": 0.304, "low": 0.296, "close": 0.298, "volume": 20626474.0}, {"time": "2026-06-24", "open": 0.299, "high": 0.306, "low": 0.298, "close": 0.302, "volume": 23614492.0}, {"time": "2026-06-25", "open": 0.299, "high": 0.304, "low": 0.294, "close": 0.302, "volume": 20831152.0}, {"time": "2026-06-26", "open": 0.302, "high": 0.305, "low": 0.295, "close": 0.296, "volume": 18250464.0}, {"time": "2026-06-29", "open": 0.295, "high": 0.311, "low": 0.291, "close": 0.311, "volume": 34040123.0}, {"time": "2026-06-30", "open": 0.309, "high": 0.309, "low": 0.304, "close": 0.306, "volume": 17444375.0}, {"time": "2026-07-01", "open": 0.304, "high": 0.316, "low": 0.299, "close": 0.314, "volume": 30315816.0}, {"time": "2026-07-02", "open": 0.313, "high": 0.319, "low": 0.31, "close": 0.311, "volume": 21133319.0}, {"time": "2026-07-03", "open": 0.312, "high": 0.317, "low": 0.309, "close": 0.316, "volume": 19570234.0}, {"time": "2026-07-06", "open": 0.315, "high": 0.323, "low": 0.313, "close": 0.317, "volume": 25250815.0}, {"time": "2026-07-07", "open": 0.314, "high": 0.314, "low": 0.305, "close": 0.306, "volume": 22963363.0}, {"time": "2026-07-08", "open": 0.306, "high": 0.31, "low": 0.303, "close": 0.304, "volume": 16686939.0}, {"time": "2026-07-09", "open": 0.302, "high": 0.311, "low": 0.3, "close": 0.307, "volume": 22925238.0}, {"time": "2026-07-10", "open": 0.306, "high": 0.321, "low": 0.304, "close": 0.316, "volume": 35312398.0}, {"time": "2026-07-13", "open": 0.315, "high": 0.318, "low": 0.309, "close": 0.311, "volume": 22084860.0}, {"time": "2026-07-14", "open": 0.31, "high": 0.32, "low": 0.308, "close": 0.319, "volume": 26035894.0}, {"time": "2026-07-15", "open": 0.319, "high": 0.336, "low": 0.318, "close": 0.332, "volume": 45746932.0}, {"time": "2026-07-16", "open": 0.33, "high": 0.338, "low": 0.324, "close": 0.333, "volume": 33090632.0}, {"time": "2026-07-17", "open": 0.331, "high": 0.333, "low": 0.317, "close": 0.318, "volume": 31620931.0}, {"time": "2026-07-20", "open": 0.317, "high": 0.328, "low": 0.315, "close": 0.326, "volume": 26516951.0}, {"time": "2026-07-21", "open": 0.323, "high": 0.328, "low": 0.321, "close": 0.328, "volume": 18255882.0}, {"time": "2026-07-22", "open": 0.326, "high": 0.333, "low": 0.325, "close": 0.327, "volume": 17439548.0}, {"time": "2026-08-02", "open": 0.329, "high": 0.331, "low": 0.326, "close": 0.328, "volume": 11615074.0}, {"time": "2026-08-03", "open": 0.329, "high": 0.331, "low": 0.326, "close": 0.328, "volume": 11615074.0}, {"time": "2026-08-04", "open": 0.331, "high": 0.337, "low": 0.331, "close": 0.334, "volume": 18398622.0}, {"time": "2026-08-05", "open": 0.334, "high": 0.339, "low": 0.333, "close": 0.337, "volume": 15984777.0}, {"time": "2026-08-06", "open": 0.338, "high": 0.339, "low": 0.33, "close": 0.331, "volume": 16600790.0}, {"time": "2026-08-07", "open": 0.33, "high": 0.347, "low": 0.33, "close": 0.346, "volume": 36317870.0}, {"time": "2026-08-10", "open": 0.349, "high": 0.36, "low": 0.349, "close": 0.353, "volume": 36806143.0}, {"time": "2026-08-11", "open": 0.35, "high": 0.359, "low": 0.349, "close": 0.351, "volume": 20984647.0}, {"time": "2026-08-12", "open": 0.349, "high": 0.355, "low": 0.349, "close": 0.35, "volume": 13248406.0}, {"time": "2026-08-13", "open": 0.349, "high": 0.361, "low": 0.347, "close": 0.355, "volume": 25232671.0}, {"time": "2026-08-14", "open": 0.354, "high": 0.358, "low": 0.348, "close": 0.351, "volume": 16879722.0}, {"time": "2026-08-17", "open": 0.351, "high": 0.354, "low": 0.345, "close": 0.353, "volume": 17810223.0}, {"time": "2026-08-18", "open": 0.352, "high": 0.354, "low": 0.349, "close": 0.353, "volume": 17514437.0}, {"time": "2026-08-19", "open": 0.352, "high": 0.353, "low": 0.342, "close": 0.344, "volume": 16476924.0}, {"time": "2026-08-20", "open": 0.351, "high": 0.365, "low": 0.351, "close": 0.359, "volume": 35277161.0}, {"time": "2026-08-21", "open": 0.354, "high": 0.355, "low": 0.347, "close": 0.349, "volume": 20497747.0}, {"time": "2026-08-24", "open": 0.347, "high": 0.349, "low": 0.336, "close": 0.339, "volume": 19746601.0}, {"time": "2026-08-25", "open": 0.338, "high": 0.348, "low": 0.336, "close": 0.347, "volume": 17875941.0}, {"time": "2026-08-26", "open": 0.347, "high": 0.35, "low": 0.343, "close": 0.345, "volume": 12705618.0}, {"time": "2026-08-27", "open": 0.344, "high": 0.346, "low": 0.341, "close": 0.346, "volume": 10206994.0}, {"time": "2026-08-28", "open": 0.345, "high": 0.347, "low": 0.341, "close": 0.342, "volume": 9348521.0}, {"time": "2026-08-31", "open": 0.34, "high": 0.341, "low": 0.336, "close": 0.339, "volume": 11769755.0}, {"time": "2026-09-01", "open": 0.339, "high": 0.342, "low": 0.338, "close": 0.341, "volume": 8517845.0}, {"time": "2026-09-02", "open": 0.34, "high": 0.341, "low": 0.335, "close": 0.338, "volume": 9193468.0}, {"time": "2026-09-03", "open": 0.338, "high": 0.34, "low": 0.336, "close": 0.339, "volume": 9315410.0}, {"time": "2026-09-04", "open": 0.339, "high": 0.342, "low": 0.336, "close": 0.339, "volume": 11092176.0}, {"time": "2026-09-07", "open": 0.338, "high": 0.339, "low": 0.335, "close": 0.337, "volume": 7254993.0}, {"time": "2026-09-08", "open": 0.337, "high": 0.342, "low": 0.335, "close": 0.341, "volume": 11297825.0}, {"time": "2026-09-09", "open": 0.34, "high": 0.34, "low": 0.335, "close": 0.337, "volume": 9046178.0}, {"time": "2026-09-10", "open": 0.336, "high": 0.336, "low": 0.331, "close": 0.333, "volume": 9940972.0}, {"time": "2026-09-11", "open": 0.331, "high": 0.332, "low": 0.325, "close": 0.327, "volume": 13181461.0}, {"time": "2026-09-14", "open": 0.326, "high": 0.335, "low": 0.325, "close": 0.334, "volume": 11517972.0}, {"time": "2026-09-15", "open": 0.333, "high": 0.335, "low": 0.332, "close": 0.332, "volume": 5593539.0}, {"time": "2026-09-16", "open": 0.333, "high": 0.337, "low": 0.331, "close": 0.335, "volume": 9260083.0}, {"time": "2026-09-17", "open": 0.333, "high": 0.339, "low": 0.333, "close": 0.337, "volume": 12188374.0}, {"time": "2026-09-18", "open": 0.338, "high": 0.344, "low": 0.337, "close": 0.34, "volume": 14123303.0}, {"time": "2026-09-21", "open": 0.341, "high": 0.349, "low": 0.34, "close": 0.348, "volume": 15431129.0}]);
+                    chart.timeScale().fitContent();
+                })();
+                </script>
+                
+            </div>
+</div>
 
     <div class="section-title">📂 📊 ETF (23只)</div>
     <div class="table-responsive">
@@ -94,533 +125,533 @@ tr:hover { background: #334155; }
         <thead><tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>60日收益</th><th>60日回撤</th><th>60日夏普</th><th>推荐策略</th><th>策略收益</th><th>策略回撤</th><th>价格</th><th>目标</th><th>止损</th><th>仓位</th><th>技术分</th></tr></thead>
         <tbody>
         <tr>
-            <td><b>563180</b></td>
-            <td>高股息ETF </td>
-            <td>高股息</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>54.3</td>
-            <td>61%</td>
+            <td><b>512170</b></td>
+            <td>医疗ETF华宝 </td>
+            <td>医疗器械</td>
+            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
+            <td>64.5</td>
+            <td>80%</td>
             <td>震荡</td>
-            <td>偏空</td>
-            <td>偏空</td>
-            <td>看跌</td>
-            <td style="color:#ef4444">+9.2%</td>
-            <td>-4.4%</td>
-            <td>2.38</td>
-            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#ef4444">+5.6%</td>
-            <td>-3.4%</td>
-            <td>2026/09/18 现价 1.14</td>
-            <td>1.126</td>
-            <td>1.117</td>
-            <td>0%</td>
-            <td title="技术面中性偏多(61/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1.1 vs 看跌2 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">61</td>
-        </tr>
-        <tr>
-            <td><b>512890</b></td>
-            <td>红利低波ETF华泰柏瑞 </td>
-            <td>高股息</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>53.6</td>
-            <td>62%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>偏空</td>
-            <td>偏空</td>
-            <td style="color:#ef4444">+8.7%</td>
-            <td>-4.3%</td>
-            <td>2.35</td>
-            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#ef4444">+2.5%</td>
-            <td>-4.4%</td>
-            <td>2026/09/18 现价 1.18</td>
-            <td>1.172</td>
-            <td>1.156</td>
-            <td>0%</td>
-            <td title="技术面中性偏多(60/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌2 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">60</td>
+            <td>偏多</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td style="color:#ef4444">+13.7%</td>
+            <td>-8.9%</td>
+            <td>1.89</td>
+            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
+            <td style="color:#ef4444">+8.9%</td>
+            <td>-5.6%</td>
+            <td>2026/09/21 现价 0.35</td>
+            <td>0.358</td>
+            <td>0.343</td>
+            <td>20%</td>
+            <td title="技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨2.0 vs 看跌0 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">70</td>
         </tr>
         <tr>
             <td><b>513120</b></td>
             <td>港股创新药ETF广发 </td>
             <td>创新药</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>52.0</td>
-            <td>60%</td>
-            <td>震荡</td>
+            <td>56.0</td>
+            <td>64%</td>
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td style="color:#ef4444">+18.7%</td>
+            <td>看涨</td>
+            <td style="color:#ef4444">+28.9%</td>
             <td>-9.4%</td>
-            <td>2.02</td>
+            <td>2.86</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
             <td style="color:#ef4444">+2.6%</td>
             <td>-5.0%</td>
-            <td>2026/09/18 现价 1.29</td>
-            <td>1.318</td>
-            <td>1.264</td>
+            <td>2026/09/21 现价 1.36</td>
+            <td>1.41</td>
+            <td>1.333</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌2 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨2 vs 看跌1 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
+        </tr>
+        <tr>
+            <td><b>512890</b></td>
+            <td>红利低波ETF华泰柏瑞 </td>
+            <td>高股息</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>54.3</td>
+            <td>62%</td>
+            <td>震荡</td>
+            <td>偏空</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td style="color:#ef4444">+11.2%</td>
+            <td>-4.3%</td>
+            <td>3.14</td>
+            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
+            <td style="color:#ef4444">+2.7%</td>
+            <td>-4.4%</td>
+            <td>2026/09/21 现价 1.19</td>
+            <td>1.179</td>
+            <td>1.166</td>
+            <td>0%</td>
+            <td title="技术面中性偏多(60/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌2 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">60</td>
+        </tr>
+        <tr>
+            <td><b>563180</b></td>
+            <td>高股息ETF </td>
+            <td>高股息</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>54.3</td>
+            <td>62%</td>
+            <td>震荡</td>
+            <td>偏空</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td style="color:#ef4444">+11.9%</td>
+            <td>-4.4%</td>
+            <td>3.15</td>
+            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
+            <td style="color:#ef4444">+5.6%</td>
+            <td>-3.4%</td>
+            <td>2026/09/21 现价 1.14</td>
+            <td>1.13</td>
+            <td>1.117</td>
+            <td>0%</td>
+            <td title="技术面中性偏多(60/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌2 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">60</td>
         </tr>
         <tr>
             <td><b>515880</b></td>
             <td>通信ETF国泰 </td>
             <td>通信</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>47.4</td>
-            <td>61%</td>
+            <td>48.1</td>
+            <td>60%</td>
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td style="color:#22c55e">-59.0%</td>
+            <td style="color:#22c55e">-60.4%</td>
             <td>-69.1%</td>
-            <td>-2.14</td>
+            <td>-2.27</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#ef4444">+12.6%</td>
+            <td style="color:#ef4444">+13.9%</td>
             <td>-11.1%</td>
-            <td>2026/09/18 现价 0.7</td>
-            <td>0.718</td>
-            <td>0.686</td>
+            <td>2026/09/21 现价 0.71</td>
+            <td>0.747</td>
+            <td>0.696</td>
             <td>0%</td>
-            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌0 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">54</td>
-        </tr>
-        <tr>
-            <td><b>159755</b></td>
-            <td>电池ETF广发 </td>
-            <td>动力电池</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>45.7</td>
-            <td>70%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>偏空</td>
-            <td>偏空</td>
-            <td style="color:#22c55e">-18.3%</td>
-            <td>-21.4%</td>
-            <td>-2.80</td>
-            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#ef4444">+20.7%</td>
-            <td>-6.5%</td>
-            <td>2026/09/18 现价 0.88</td>
-            <td>0.876</td>
-            <td>0.862</td>
-            <td>0%</td>
-            <td title="技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">48</td>
+            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌0 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">54</td>
         </tr>
         <tr>
             <td><b>159928</b></td>
             <td>消费ETF </td>
             <td>消费</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>45.1</td>
-            <td>71%</td>
+            <td>47.5</td>
+            <td>61%</td>
             <td>震荡</td>
             <td>震荡</td>
-            <td>偏空</td>
-            <td>偏空</td>
-            <td style="color:#ef4444">+4.8%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td style="color:#ef4444">+7.0%</td>
             <td>-7.3%</td>
-            <td>0.92</td>
+            <td>1.32</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#ef4444">+1.8%</td>
+            <td style="color:#ef4444">+2.8%</td>
             <td>-7.3%</td>
-            <td>2026/09/18 现价 0.65</td>
-            <td>0.646</td>
-            <td>0.637</td>
+            <td>2026/09/21 现价 0.66</td>
+            <td>0.66</td>
+            <td>0.647</td>
             <td>0%</td>
-            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">47</td>
-        </tr>
-        <tr>
-            <td><b>512000</b></td>
-            <td>券商ETF华宝 </td>
-            <td>证券</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>45.1</td>
-            <td>71%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td style="color:#22c55e">-5.8%</td>
-            <td>-11.5%</td>
-            <td>-1.12</td>
-            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#22c55e">-4.7%</td>
-            <td>-5.5%</td>
-            <td>2026/09/18 现价 0.51</td>
-            <td>0.509</td>
-            <td>0.5</td>
-            <td>0%</td>
-            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">47</td>
-        </tr>
-        <tr>
-            <td><b>512880</b></td>
-            <td>证券ETF国泰 </td>
-            <td>证券</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>45.1</td>
-            <td>71%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td style="color:#22c55e">-5.9%</td>
-            <td>-11.4%</td>
-            <td>-1.15</td>
-            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#22c55e">-4.8%</td>
-            <td>-5.5%</td>
-            <td>2026/09/18 现价 1.06</td>
-            <td>1.059</td>
-            <td>1.039</td>
-            <td>0%</td>
-            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">47</td>
-        </tr>
-        <tr>
-            <td><b>513180</b></td>
-            <td>恒生科技ETF华夏 </td>
-            <td>港股科技</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>45.1</td>
-            <td>71%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>偏空</td>
-            <td style="color:#22c55e">-1.4%</td>
-            <td>-13.1%</td>
-            <td>-0.21</td>
-            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#ef4444">+10.9%</td>
-            <td>-4.6%</td>
-            <td>2026/09/18 现价 0.55</td>
-            <td>0.548</td>
-            <td>0.539</td>
-            <td>0%</td>
-            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">47</td>
-        </tr>
-        <tr>
-            <td><b>510300</b></td>
-            <td>沪深300ETF华泰柏瑞 </td>
-            <td>大盘蓝筹</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>45.1</td>
-            <td>71%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td style="color:#22c55e">-7.6%</td>
-            <td>-9.9%</td>
-            <td>-1.69</td>
-            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#22c55e">-1.6%</td>
-            <td>-3.9%</td>
-            <td>2026/09/18 现价 4.58</td>
-            <td>4.57</td>
-            <td>4.488</td>
-            <td>0%</td>
-            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">47</td>
-        </tr>
-        <tr>
-            <td><b>516150</b></td>
-            <td>稀土ETF嘉实 </td>
-            <td>稀土永磁</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>45.1</td>
-            <td>71%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td style="color:#22c55e">-16.4%</td>
-            <td>-24.5%</td>
-            <td>-1.93</td>
-            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#ef4444">+24.3%</td>
-            <td>-7.1%</td>
-            <td>2026/09/18 现价 1.66</td>
-            <td>1.66</td>
-            <td>1.627</td>
-            <td>0%</td>
-            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">47</td>
+            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌2 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">47</td>
         </tr>
         <tr>
             <td><b>512400</b></td>
             <td>有色金属ETF南方 </td>
             <td>有色金属</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>44.0</td>
-            <td>80%</td>
+            <td>46.4</td>
+            <td>70%</td>
             <td>震荡</td>
             <td>偏空</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td style="color:#22c55e">-7.1%</td>
+            <td style="color:#22c55e">-6.7%</td>
             <td>-15.4%</td>
-            <td>-0.61</td>
+            <td>-0.57</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#ef4444">+17.9%</td>
+            <td style="color:#ef4444">+18.1%</td>
             <td>-11.2%</td>
-            <td>2026/09/18 现价 1.73</td>
-            <td>1.697</td>
+            <td>2026/09/21 现价 1.73</td>
+            <td>1.702</td>
             <td>1.695</td>
             <td>0%</td>
-            <td title="技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">48</td>
+            <td title="技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">48</td>
         </tr>
         <tr>
             <td><b>159792</b></td>
             <td>港股通互联网ETF富国 </td>
             <td>互联网</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>43.5</td>
-            <td>81%</td>
+            <td>45.9</td>
+            <td>70%</td>
+            <td>震荡</td>
+            <td>震荡</td>
             <td>震荡</td>
             <td>偏空</td>
-            <td>偏空</td>
-            <td>看跌</td>
-            <td style="color:#ef4444">+2.5%</td>
+            <td style="color:#ef4444">+3.8%</td>
             <td>-16.9%</td>
-            <td>0.42</td>
+            <td>0.58</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#ef4444">+14.2%</td>
-            <td>-7.3%</td>
-            <td>2026/09/18 现价 0.54</td>
-            <td>0.534</td>
-            <td>0.529</td>
+            <td style="color:#ef4444">+6.4%</td>
+            <td>-3.2%</td>
+            <td>2026/09/21 现价 0.55</td>
+            <td>0.548</td>
+            <td>0.539</td>
             <td>0%</td>
-            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">47</td>
+            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">47</td>
         </tr>
         <tr>
-            <td><b>159819</b></td>
-            <td>人工智能ETF </td>
-            <td>人工智能</td>
+            <td><b>512000</b></td>
+            <td>券商ETF华宝 </td>
+            <td>证券</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>43.4</td>
-            <td>60%</td>
+            <td>45.9</td>
+            <td>70%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>偏多</td>
+            <td>偏多</td>
+            <td style="color:#22c55e">-5.0%</td>
+            <td>-11.5%</td>
+            <td>-0.96</td>
+            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
+            <td style="color:#22c55e">-4.7%</td>
+            <td>-5.5%</td>
+            <td>2026/09/21 现价 0.51</td>
+            <td>0.513</td>
+            <td>0.5</td>
+            <td>0%</td>
+            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">47</td>
+        </tr>
+        <tr>
+            <td><b>512880</b></td>
+            <td>证券ETF国泰 </td>
+            <td>证券</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>45.9</td>
+            <td>70%</td>
+            <td>震荡</td>
             <td>震荡</td>
             <td>偏多</td>
             <td>看涨</td>
-            <td>看涨</td>
-            <td style="color:#22c55e">-16.3%</td>
-            <td>-25.4%</td>
-            <td>-1.23</td>
+            <td style="color:#22c55e">-5.2%</td>
+            <td>-11.4%</td>
+            <td>-1.00</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#22c55e">-10.8%</td>
-            <td>-17.5%</td>
-            <td>2026/09/18 现价 1.76</td>
-            <td>1.794</td>
-            <td>1.725</td>
+            <td style="color:#22c55e">-4.8%</td>
+            <td>-5.5%</td>
+            <td>2026/09/21 现价 1.07</td>
+            <td>1.078</td>
+            <td>1.049</td>
             <td>0%</td>
-            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.4 vs 看跌0 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">54</td>
+            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">47</td>
+        </tr>
+        <tr>
+            <td><b>513180</b></td>
+            <td>恒生科技ETF华夏 </td>
+            <td>港股科技</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>45.9</td>
+            <td>70%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>偏多</td>
+            <td style="color:#22c55e">-2.3%</td>
+            <td>-13.1%</td>
+            <td>-0.36</td>
+            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
+            <td style="color:#ef4444">+11.9%</td>
+            <td>-4.6%</td>
+            <td>2026/09/21 现价 0.55</td>
+            <td>0.551</td>
+            <td>0.539</td>
+            <td>0%</td>
+            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">47</td>
+        </tr>
+        <tr>
+            <td><b>516150</b></td>
+            <td>稀土ETF嘉实 </td>
+            <td>稀土永磁</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>45.9</td>
+            <td>70%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>偏多</td>
+            <td>偏多</td>
+            <td style="color:#22c55e">-18.1%</td>
+            <td>-24.5%</td>
+            <td>-2.20</td>
+            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
+            <td style="color:#ef4444">+22.8%</td>
+            <td>-7.1%</td>
+            <td>2026/09/21 现价 1.68</td>
+            <td>1.691</td>
+            <td>1.646</td>
+            <td>0%</td>
+            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">47</td>
         </tr>
         <tr>
             <td><b>512800</b></td>
             <td>银行ETF </td>
             <td>银行</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
-            <td>57.5</td>
-            <td>57%</td>
-            <td>震荡</td>
+            <td>56.0</td>
+            <td>56%</td>
             <td>震荡</td>
             <td>震荡</td>
             <td>偏空</td>
-            <td style="color:#ef4444">+11.3%</td>
+            <td>看跌</td>
+            <td style="color:#ef4444">+14.3%</td>
             <td>-5.2%</td>
-            <td>2.53</td>
+            <td>3.28</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#ef4444">+0.7%</td>
+            <td style="color:#ef4444">+1.2%</td>
             <td>-2.5%</td>
-            <td>2026/09/18 现价 0.83</td>
-            <td>0.827</td>
-            <td>0.813</td>
+            <td>2026/09/21 现价 0.84</td>
+            <td>0.834</td>
+            <td>0.823</td>
             <td>0%</td>
-            <td title="技术面中性偏多(60/100) | 基本面质量评分55(50/100) | 新闻情绪+0.04 | 多空辩论 看涨65 vs 看跌65">60</td>
+            <td title="技术面中性偏多(60/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌1 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">60</td>
         </tr>
         <tr>
-            <td><b>512480</b></td>
-            <td>半导体ETF </td>
-            <td>半导体</td>
+            <td><b>510300</b></td>
+            <td>沪深300ETF华泰柏瑞 </td>
+            <td>大盘蓝筹</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
-            <td>56.0</td>
-            <td>56%</td>
-            <td>偏多</td>
-            <td>看涨</td>
-            <td>看涨</td>
-            <td>看涨</td>
-            <td style="color:#22c55e">-64.2%</td>
-            <td>-69.3%</td>
-            <td>-2.74</td>
-            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#22c55e">-7.3%</td>
-            <td>-11.4%</td>
-            <td>2026/09/18 现价 1.04</td>
-            <td>1.082</td>
-            <td>1.019</td>
-            <td>0%</td>
-            <td title="技术面中性(55.199999999999996/100) | 基本面质量评分51(50/100) | 新闻情绪+0.19 | 多空辩论 看涨65 vs 看跌65 | LLM裁决看多(58)">55.199999999999996</td>
-        </tr>
-        <tr>
-            <td><b>512170</b></td>
-            <td>医疗ETF华宝 </td>
-            <td>医疗器械</td>
-            <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
-            <td>55.2</td>
+            <td>52.2</td>
             <td>55%</td>
             <td>震荡</td>
+            <td>震荡</td>
             <td>偏多</td>
-            <td>看涨</td>
-            <td>看涨</td>
-            <td style="color:#ef4444">+9.3%</td>
-            <td>-8.9%</td>
-            <td>1.34</td>
-            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#ef4444">+7.1%</td>
-            <td>-5.6%</td>
-            <td>2026/09/18 现价 0.34</td>
-            <td>0.345</td>
-            <td>0.333</td>
+            <td>偏多</td>
+            <td style="color:#22c55e">-8.2%</td>
+            <td>-9.9%</td>
+            <td>-1.84</td>
+            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
+            <td style="color:#22c55e">-1.6%</td>
+            <td>-3.9%</td>
+            <td>2026/09/21 现价 4.61</td>
+            <td>4.635</td>
+            <td>4.518</td>
             <td>0%</td>
-            <td title="技术面中性偏多(60/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌1 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">60</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.7 vs 看跌1 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
+        </tr>
+        <tr>
+            <td><b>159755</b></td>
+            <td>电池ETF广发 </td>
+            <td>动力电池</td>
+            <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
+            <td>52.2</td>
+            <td>55%</td>
+            <td>震荡</td>
+            <td>偏空</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td style="color:#22c55e">-20.1%</td>
+            <td>-21.4%</td>
+            <td>-3.17</td>
+            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
+            <td style="color:#ef4444">+17.6%</td>
+            <td>-6.5%</td>
+            <td>2026/09/21 现价 0.88</td>
+            <td>0.872</td>
+            <td>0.862</td>
+            <td>0%</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.7 vs 看跌1 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
         </tr>
         <tr>
             <td><b>512760</b></td>
             <td>芯片ETF </td>
             <td>半导体</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
-            <td>54.7</td>
-            <td>55%</td>
+            <td>48.8</td>
+            <td>56%</td>
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td style="color:#22c55e">-28.5%</td>
+            <td style="color:#22c55e">-30.5%</td>
             <td>-37.2%</td>
-            <td>-1.99</td>
+            <td>-2.20</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
             <td style="color:#22c55e">-7.1%</td>
             <td>-11.5%</td>
-            <td>2026/09/18 现价 1.1</td>
-            <td>1.139</td>
+            <td>2026/09/21 现价 1.1</td>
+            <td>1.155</td>
             <td>1.078</td>
             <td>0%</td>
-            <td title="技术面中性(54/100) | 基本面质量评分51(50/100) | 新闻情绪+0.05 | 多空辩论 看涨65 vs 看跌65">54</td>
-        </tr>
-        <tr>
-            <td><b>562500</b></td>
-            <td>机器人ETF华夏 </td>
-            <td>机器人</td>
-            <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
-            <td>51.5</td>
-            <td>54%</td>
-            <td>震荡</td>
-            <td>偏多</td>
-            <td>偏多</td>
-            <td>看涨</td>
-            <td style="color:#22c55e">-14.4%</td>
-            <td>-24.9%</td>
-            <td>-1.36</td>
-            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#22c55e">-4.9%</td>
-            <td>-10.1%</td>
-            <td>2026/09/18 现价 0.93</td>
-            <td>0.939</td>
-            <td>0.911</td>
-            <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.7 vs 看跌1 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
+            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.4 vs 看跌1 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">54</td>
         </tr>
         <tr>
             <td><b>159516</b></td>
             <td>半导体设备ETF国泰 </td>
             <td>半导体设备</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
-            <td>48.1</td>
-            <td>57%</td>
+            <td>48.8</td>
+            <td>56%</td>
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td style="color:#22c55e">-62.0%</td>
+            <td style="color:#22c55e">-63.3%</td>
             <td>-69.6%</td>
-            <td>-2.23</td>
+            <td>-2.35</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#ef4444">+52.4%</td>
+            <td style="color:#ef4444">+47.2%</td>
             <td>-22.1%</td>
-            <td>2026/09/18 现价 0.73</td>
-            <td>0.77</td>
-            <td>0.715</td>
+            <td>2026/09/21 现价 0.72</td>
+            <td>0.76</td>
+            <td>0.706</td>
             <td>0%</td>
-            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.4 vs 看跌1 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">54</td>
+            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.4 vs 看跌1 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">54</td>
+        </tr>
+        <tr>
+            <td><b>512480</b></td>
+            <td>半导体ETF </td>
+            <td>半导体</td>
+            <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
+            <td>48.8</td>
+            <td>56%</td>
+            <td>偏多</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td style="color:#22c55e">-65.3%</td>
+            <td>-69.3%</td>
+            <td>-2.85</td>
+            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
+            <td style="color:#22c55e">-6.0%</td>
+            <td>-11.4%</td>
+            <td>2026/09/21 现价 1.04</td>
+            <td>1.095</td>
+            <td>1.019</td>
+            <td>0%</td>
+            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.4 vs 看跌1 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">54</td>
         </tr>
         <tr>
             <td><b>159995</b></td>
             <td>芯片ETF华夏 </td>
             <td>芯片设计</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
-            <td>48.1</td>
-            <td>57%</td>
+            <td>48.8</td>
+            <td>56%</td>
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td style="color:#22c55e">-65.1%</td>
+            <td style="color:#22c55e">-65.9%</td>
             <td>-69.3%</td>
-            <td>-2.88</td>
+            <td>-2.96</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#22c55e">-5.2%</td>
+            <td style="color:#22c55e">-3.3%</td>
             <td>-11.6%</td>
-            <td>2026/09/18 现价 1.15</td>
-            <td>1.187</td>
-            <td>1.127</td>
+            <td>2026/09/21 现价 1.16</td>
+            <td>1.218</td>
+            <td>1.137</td>
             <td>0%</td>
-            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.4 vs 看跌1 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">54</td>
+            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.4 vs 看跌1 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">54</td>
         </tr>
         <tr>
             <td><b>588200</b></td>
             <td>科创芯片ETF嘉实 </td>
             <td>芯片制造</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
-            <td>48.1</td>
-            <td>57%</td>
+            <td>48.8</td>
+            <td>56%</td>
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td style="color:#22c55e">-74.9%</td>
+            <td style="color:#22c55e">-76.0%</td>
             <td>-78.9%</td>
-            <td>-3.02</td>
+            <td>-3.17</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#ef4444">+50.9%</td>
+            <td style="color:#ef4444">+44.6%</td>
             <td>-21.1%</td>
-            <td>2026/09/18 现价 1.18</td>
-            <td>1.23</td>
-            <td>1.156</td>
+            <td>2026/09/21 现价 1.19</td>
+            <td>1.258</td>
+            <td>1.166</td>
             <td>0%</td>
-            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.4 vs 看跌1 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">54</td>
+            <td title="技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.4 vs 看跌1 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">54</td>
+        </tr>
+        <tr>
+            <td><b>159819</b></td>
+            <td>人工智能ETF </td>
+            <td>人工智能</td>
+            <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
+            <td>47.2</td>
+            <td>58%</td>
+            <td>偏多</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td>看涨</td>
+            <td style="color:#22c55e">-20.2%</td>
+            <td>-25.4%</td>
+            <td>-1.69</td>
+            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
+            <td style="color:#22c55e">-10.8%</td>
+            <td>-17.5%</td>
+            <td>2026/09/21 现价 1.78</td>
+            <td>1.852</td>
+            <td>1.744</td>
+            <td>0%</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.7 vs 看跌0 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
+        </tr>
+        <tr>
+            <td><b>562500</b></td>
+            <td>机器人ETF华夏 </td>
+            <td>机器人</td>
+            <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
+            <td>47.2</td>
+            <td>58%</td>
+            <td>震荡</td>
+            <td>偏多</td>
+            <td>偏多</td>
+            <td>看涨</td>
+            <td style="color:#22c55e">-18.6%</td>
+            <td>-24.9%</td>
+            <td>-1.95</td>
+            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
+            <td style="color:#22c55e">-4.9%</td>
+            <td>-10.1%</td>
+            <td>2026/09/21 现价 0.94</td>
+            <td>0.951</td>
+            <td>0.921</td>
+            <td>0%</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.7 vs 看跌0 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
         </tr>
         <tr>
             <td><b>159530</b></td>
             <td>机器人ETF易方达 </td>
             <td>机器人</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
-            <td>46.5</td>
-            <td>59%</td>
+            <td>47.2</td>
+            <td>58%</td>
             <td>震荡</td>
             <td>偏多</td>
             <td>看涨</td>
             <td>看涨</td>
-            <td style="color:#22c55e">-12.5%</td>
+            <td style="color:#22c55e">-18.5%</td>
             <td>-30.2%</td>
-            <td>-0.88</td>
+            <td>-1.58</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
             <td style="color:#22c55e">-6.4%</td>
             <td>-12.2%</td>
-            <td>2026/09/18 现价 1.3</td>
-            <td>1.319</td>
-            <td>1.274</td>
+            <td>2026/09/21 现价 1.31</td>
+            <td>1.332</td>
+            <td>1.284</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.7 vs 看跌0 | 宏观中性(49.9/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.7 vs 看跌0 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
         </tr></tbody>
     </table>
     </div>
