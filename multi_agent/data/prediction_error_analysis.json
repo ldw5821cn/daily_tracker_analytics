@@ -75,9 +75,9 @@
       "name": "乙二醇",
       "category": "期货",
       "signal": "中性",
-      "return_pct": -11.166,
+      "return_pct": -11.2,
       "pred_price": 6027.0,
-      "today_price": 5354.0,
+      "today_price": 5352.0,
       "weighted_score": 60.8,
       "confidence": 0.66,
       "reasoning": "技术面中性偏多(67/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1.7 vs 看跌1 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%"
@@ -159,9 +159,9 @@
       "name": "沥青",
       "category": "期货",
       "signal": "看多",
-      "return_pct": -3.883,
+      "return_pct": -3.902,
       "pred_price": 5305.0,
-      "today_price": 5099.0,
+      "today_price": 5098.0,
       "weighted_score": 62.8,
       "confidence": 0.71,
       "reasoning": "技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨2.0 vs 看跌1 | 宏观中性(54.8/100) | 市场上下文neutral(50.0/100)上限100%"
@@ -192,17 +192,6 @@
     }
   ],
   "correct_top10": [
-    {
-      "ticker": "LC0",
-      "name": "碳酸锂",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": 1.479,
-      "pred_price": 132500.0,
-      "today_price": 134460.0,
-      "weighted_score": 43.2,
-      "confidence": 0.81
-    },
     {
       "ticker": "513180",
       "name": "恒生科技ETF华夏",
@@ -248,6 +237,17 @@
       "confidence": 0.56
     },
     {
+      "ticker": "LC0",
+      "name": "碳酸锂",
+      "category": "期货",
+      "signal": "中性",
+      "return_pct": 1.434,
+      "pred_price": 132500.0,
+      "today_price": 134400.0,
+      "weighted_score": 43.2,
+      "confidence": 0.81
+    },
+    {
       "ticker": "300308",
       "name": "中际旭创",
       "category": "个股",
@@ -270,17 +270,6 @@
       "confidence": 0.69
     },
     {
-      "ticker": "BC0",
-      "name": "国际铜",
-      "category": "期货",
-      "signal": "观望",
-      "return_pct": 1.37,
-      "pred_price": 98550.0,
-      "today_price": 99900.0,
-      "weighted_score": 56.0,
-      "confidence": 0.56
-    },
-    {
       "ticker": "000426",
       "name": "兴业银锡",
       "category": "个股",
@@ -301,6 +290,17 @@
       "today_price": 9.79,
       "weighted_score": 45.2,
       "confidence": 0.71
+    },
+    {
+      "ticker": "002428",
+      "name": "云南锗业",
+      "category": "个股",
+      "signal": "中性",
+      "return_pct": 1.337,
+      "pred_price": 93.49,
+      "today_price": 94.74,
+      "weighted_score": 60.0,
+      "confidence": 0.66
     }
   ],
   "suggestions": [
