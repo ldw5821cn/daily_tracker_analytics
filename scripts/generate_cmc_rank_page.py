@@ -63,7 +63,7 @@ def generate() -> None:
     ])
 
     chart_data = json.dumps([
-        {"date": ts_to_date(r.get("timestamp", "")), "value": int(r.get("value", 0))}
+        {"time": ts_to_date(r.get("timestamp", "")), "value": int(r.get("value", 0))}
         for r in reversed(rows)
     ], ensure_ascii=False)
 
