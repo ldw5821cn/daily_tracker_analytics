@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>证据链分析报告</title>
+<style>
+  body { font-family: -apple-system, sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 24px; }
+  h1 { color: #60a5fa; }
+  .card { background: #1e293b; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .headline { font-size: 18px; font-weight: 600; }
+  .evidence-level { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; }
+  .level-sufficient { background: #166534; color: #86efac; }
+  .level-limited { background: #854d0e; color: #fde047; }
+  .evidence-item { background: #0f172a; padding: 12px; border-radius: 8px; margin: 8px 0; border-left: 3px solid #22c55e; }
+  .evidence-item.counter { border-left-color: #ef4444; }
+  .type-fact { background: #1e40af; color: #93c5fd; padding: 2px 8px; border-radius: 8px; font-size: 11px; }
+  .type-inference { background: #0e7490; color: #67e8f9; padding: 2px 8px; border-radius: 8px; font-size: 11px; }
+</style>
+</head>
+<body>
+  <h1>📋 证据链分析报告</h1>
+
+  <div class="card">
+    <div class="headline">513530 跌破年线，短期偏弱</div>
+    <span class="evidence-level level-limited">limited</span>
+    <span style="color:#64748b;margin-left:12px;">港股通红利ETF (513530)</span>
+    <p style="margin-top:12px;">港股红利ETF从6月高点回撤9.2%，年线失守，但股息率仍有支撑</p>
+
+    <div class="evidence-item">
+      <span class="type-fact">fact</span>
+      <span style="color:#64748b;font-size:12px;">[m-price-001]</span>
+      <div>当前价 1.558，跌破年线 1.574</div>
+    </div>
+
+    <div class="evidence-item">
+      <span class="type-fact">fact</span>
+      <span style="color:#64748b;font-size:12px;">[m-tech-001]</span>
+      <div>MA5=1.565 < MA20=1.572，短期空头排列</div>
+    </div>
+
+    <div class="evidence-item counter">
+      <span class="type-inference">inference</span>
+      <span style="color:#64748b;font-size:12px;">[m-fund-001]</span>
+      <div>股息率 6%+，中线有支撑</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="headline">AI 算力板块资金流入，短期看多</div>
+    <span class="evidence-level level-sufficient">sufficient</span>
+    <span style="color:#64748b;margin-left:12px;">AI算力ETF (000001)</span>
+    <p style="margin-top:12px;">多模态 AI 需求爆发，算力租赁概念活跃，资金持续流入</p>
+
+    <div class="evidence-item">
+      <span class="type-fact">fact</span>
+      <span style="color:#64748b;font-size:12px;">[m-fund-002]</span>
+      <div>今日资金净流入 2.3 亿，板块排名第一</div>
+    </div>
+
+    <div class="evidence-item">
+      <span class="type-fact">fact</span>
+      <span style="color:#64748b;font-size:12px;">[m-tech-002]</span>
+      <div>MACD 金叉，放量突破平台</div>
+    </div>
+  </div></body></html>
