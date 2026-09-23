@@ -36,6 +36,19 @@ sys.path.insert(0, f'{BASE}/multi_agent')
 from core.data_layer import get_stock_data, calc_technical_indicators, get_realtime_price
 from core.futures import FUTURES_MAP, CATEGORIES, get_futures_quotes, get_futures_kline_data
 
+# 证据链模块（P0 新增）
+try:
+    from evidence import (
+        Evidence, EvidenceType, EvidenceLevel,
+        AnalysisResultWithEvidence, Condition, Scenario,
+        convert_prediction_to_evidence_result,
+        enrich_prompt_with_evidence_rules
+    )
+    EVIDENCE_CHAIN_AVAILABLE = True
+except ImportError:
+    EVIDENCE_CHAIN_AVAILABLE = False
+    print("⚠️  evidence.py 未找到，证据链功能不可用")
+
 
 # 期货代码白名单（用于识别期货标的）
 FUTURES_CODES = {code for code, _ in FUTURES_MAP}
@@ -514,6 +527,282 @@ def format_wechat_summary(results: list) -> str:
         lines.append("")
 
     return "\n".join(lines)
+
+
+# ============================================================
+# 证据链功能（P0 新增）
+# ============================================================
+
+def build_evidence_enriched_prompt(item: Dict) -> str:
+    """
+    构建带证据规则的预测 prompt
+    
+    借鉴 easy-stock 的证据链设计
+    """
+    base_prompt = build_prediction_prompt(item)
+    
+    if not EVIDENCE_CHAIN_AVAILABLE:
+        return base_prompt
+    
+    # 注入证据规则
+    enriched = enrich_prompt_with_evidence_rules(base_prompt)
+    
+    # 添加证据输出格式要求
+    evidence_format = """
+【证据链输出要求】
+请在 reasoning 字段中包含以下证据信息：
+1. support_points: 支持看涨的具体证据（引用市场数据）
+2. counter_points: 支持看跌的具体证据（引用市场数据）
+3. evidence_level: 证据充分度（sufficient/limited/insufficient）
+4. key_conditions: 失效条件（如"若跌破XX则判断失效"）
+5. source_refs: 引用的数据来源编号（如 m-price-001, m-tech-001）
+
+示例：
+{
+  "signal": "bullish",
+  "confidence": 0.65,
+  ...
+  "support_points": ["MACD金叉且放量", "板块资金净流入"],
+  "counter_points": ["RSI超买，短期可能回调"],
+  "evidence_level": "limited",
+  "key_conditions": ["若跌破MA20则看涨失效"],
+  "source_refs": ["m-price-001", "m-tech-001", "m-fund-001"]
+}
+"""
+    return enriched + evidence_format
+
+
+def convert_to_evidence_result(
+    prediction: Dict,
+    market_data: Dict
+) -> Optional[AnalysisResultWithEvidence]:
+    """
+    将预测结果转换为带证据链的分析结果
+    
+    Args:
+        prediction: LLM 预测结果
+        market_data: 市场数据
+        
+    Returns:
+        AnalysisResultWithEvidence 或 None（如果模块不可用）
+    """
+    if not EVIDENCE_CHAIN_AVAILABLE:
+        return None
+    
+    return convert_prediction_to_evidence_result(prediction, market_data)
+
+
+def save_evidence_result(
+    result: AnalysisResultWithEvidence,
+    output_dir: str = None
+) -> str:
+    """
+    保存证据链结果到 JSON 文件
+    
+    Args:
+        result: 分析结果
+        output_dir: 输出目录（默认 multi_agent/data/evidence）
+        
+    Returns:
+        保存的文件路径
+    """
+    if output_dir is None:
+        output_dir = os.path.join(BASE, 'multi_agent', 'data', 'evidence')
+    
+    os.makedirs(output_dir, exist_ok=True)
+    
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    filename = f"{result.ticker}_{timestamp}.json"
+    filepath = os.path.join(output_dir, filename)
+    
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(result.to_json())
+    
+    return filepath
+
+
+def generate_evidence_report(
+    results: List[AnalysisResultWithEvidence],
+    output_path: str = None
+) -> str:
+    """
+    生成证据链报告（HTML 格式）
+    
+    Args:
+        results: 分析结果列表
+        output_path: 输出路径（可选）
+        
+    Returns:
+        HTML 报告内容
+    """
+    if not results:
+        return "<p>无证据链数据</p>"
+    
+    html = """
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>证据链分析报告</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+         background: #0f172a; color: #e2e8f0; margin: 0; padding: 24px; }
+  h1 { color: #60a5fa; font-size: 24px; margin-bottom: 8px; }
+  .subtitle { color: #94a3b8; margin-bottom: 24px; }
+  .card { background: #1e293b; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .headline { font-size: 18px; font-weight: 600; color: #f1f5f9; margin-bottom: 8px; }
+  .evidence-level { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; }
+  .level-sufficient { background: #166534; color: #86efac; }
+  .level-limited { background: #854d0e; color: #fde047; }
+  .level-insufficient { background: #991b1b; color: #fca5a5; }
+  .section { margin-top: 16px; }
+  .section-title { font-size: 14px; font-weight: 600; color: #94a3b8; margin-bottom: 8px; 
+                   text-transform: uppercase; letter-spacing: 0.5px; }
+  .evidence-item { background: #0f172a; padding: 12px; border-radius: 8px; margin-bottom: 8px;
+                   border-left: 3px solid #334155; }
+  .evidence-item.support { border-left-color: #22c55e; }
+  .evidence-item.counter { border-left-color: #ef4444; }
+  .evidence-type { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 11px;
+                   margin-right: 8px; }
+  .type-fact { background: #1e40af; color: #93c5fd; }
+  .type-opinion { background: #7c3aed; color: #c4b5fd; }
+  .type-inference { background: #0e7490; color: #67e8f9; }
+  .source-id { color: #64748b; font-size: 12px; font-family: monospace; }
+  .condition { background: #1e293b; padding: 12px; border-radius: 8px; margin-bottom: 8px; }
+  .condition-id { color: #f59e0b; font-weight: 600; }
+  .scenario { background: #1e293b; padding: 12px; border-radius: 8px; margin-bottom: 8px; }
+  .scenario-key { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 12px;
+                  margin-right: 8px; }
+  .key-strong { background: #166534; color: #86efac; }
+  .key-base { background: #1e40af; color: #93c5fd; }
+  .key-weak { background: #991b1b; color: #fca5a5; }
+  .baseline-relation { margin-top: 16px; padding: 12px; background: #1e293b; border-radius: 8px; }
+  .timestamp { color: #64748b; font-size: 12px; margin-top: 8px; }
+</style>
+</head>
+<body>
+  <h1>📋 证据链分析报告</h1>
+  <div class="subtitle">生成时间: """ + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + """</div>
+"""
+    
+    for result in results:
+        # 证据充分度样式
+        level_class = f"level-{result.evidence_level}"
+        
+        html += f"""
+  <div class="card">
+    <div class="headline">{result.headline}</div>
+    <div>
+      <span class="evidence-level {level_class}">{result.evidence_level}</span>
+      <span style="color: #64748b; font-size: 13px; margin-left: 12px;">
+        {result.name} ({result.ticker})
+      </span>
+    </div>
+    
+    <div class="section">
+      <div class="section-title">核心判断</div>
+      <p>{result.thesis}</p>
+    </div>
+"""
+        
+        # 支持证据
+        if result.support:
+            html += """
+    <div class="section">
+      <div class="section-title">✅ 支持证据</div>
+"""
+            for ev in result.support:
+                type_class = f"type-{ev.source_type}"
+                html += f"""
+      <div class="evidence-item support">
+        <span class="evidence-type {type_class}">{ev.source_type}</span>
+        <span class="source-id">[{ev.source_id}]</span>
+        <div style="margin-top: 4px;">{ev.content}</div>
+      </div>
+"""
+            html += "    </div>\n"
+        
+        # 反对证据
+        if result.counter:
+            html += """
+    <div class="section">
+      <div class="section-title">❌ 反对证据</div>
+"""
+            for ev in result.counter:
+                type_class = f"type-{ev.source_type}"
+                html += f"""
+      <div class="evidence-item counter">
+        <span class="evidence-type {type_class}">{ev.source_type}</span>
+        <span class="source-id">[{ev.source_id}]</span>
+        <div style="margin-top: 4px;">{ev.content}</div>
+      </div>
+"""
+            html += "    </div>\n"
+        
+        # 失效条件
+        if result.conditions:
+            html += """
+    <div class="section">
+      <div class="section-title">⚠️ 失效条件</div>
+"""
+            for cond in result.conditions:
+                html += f"""
+      <div class="condition">
+        <span class="condition-id">{cond.condition_id}</span>
+        <span style="margin-left: 8px;">{cond.text}</span>
+        <div style="color: #64748b; font-size: 12px; margin-top: 4px;">
+          指标: {cond.metric} | 窗口: {cond.window} | 状态: {cond.status}
+        </div>
+      </div>
+"""
+            html += "    </div>\n"
+        
+        # 情景分析
+        if result.scenarios:
+            html += """
+    <div class="section">
+      <div class="section-title">📊 情景分析</div>
+"""
+            for scenario in result.scenarios:
+                key_class = f"key-{scenario.key}"
+                html += f"""
+      <div class="scenario">
+        <span class="scenario-key {key_class}">{scenario.key}</span>
+        <strong>{scenario.name}</strong>
+        <div style="margin-top: 4px; color: #94a3b8;">{scenario.description}</div>
+        <div style="margin-top: 4px;">应对: {scenario.response}</div>
+      </div>
+"""
+            html += "    </div>\n"
+        
+        # 基线关系
+        if result.baseline_relation != "insufficient":
+            relation_emoji = "✅" if result.baseline_relation == "agree" else "⚠️"
+            html += f"""
+    <div class="baseline-relation">
+      {relation_emoji} 基线关系: <strong>{result.baseline_relation}</strong>
+      {f" - {result.baseline_reason}" if result.baseline_reason else ""}
+    </div>
+"""
+        
+        html += f"""
+    <div class="timestamp">分析时间: {result.created_at} | 模型版本: {result.model_version}</div>
+  </div>
+"""
+    
+    html += """
+</body>
+</html>
+"""
+    
+    # 保存到文件
+    if output_path:
+        os.makedirs(os.path.dirname(output_path) or '.', exist_ok=True)
+        with open(output_path, 'w', encoding='utf-8') as f:
+            f.write(html)
+    
+    return html
 
 
 # ============================================================

@@ -1,0 +1,61 @@
+{
+  "headline": "测试股票(000001) - 买入",
+  "thesis": {
+    "text": "综合评估，建议买入。技术面和基本面均表现良好，新闻情绪积极。",
+    "kind": "inference",
+    "source_ids": []
+  },
+  "support": [
+    {
+      "source_id": "tech-score-001",
+      "source_type": "fact",
+      "content": "技术面评分 72/100",
+      "timestamp": "2026-09-23",
+      "source_url": null,
+      "exact": false
+    },
+    {
+      "source_id": "fund-score-001",
+      "source_type": "fact",
+      "content": "基本面评分 65/100",
+      "timestamp": "2026-09-23",
+      "source_url": null,
+      "exact": false
+    },
+    {
+      "source_id": "news-sentiment-001",
+      "source_type": "opinion",
+      "content": "新闻情绪积极 (+0.35)",
+      "timestamp": "2026-09-23",
+      "source_url": null,
+      "exact": false
+    }
+  ],
+  "counter": [
+    {
+      "source_id": "debate-bear-001",
+      "source_type": "inference",
+      "content": "短期涨幅较大，可能存在回调风险",
+      "timestamp": "2026-09-23",
+      "source_url": null,
+      "exact": false
+    }
+  ],
+  "alternatives": [],
+  "evidence_level": "sufficient",
+  "conditions": [],
+  "invalidation_ids": [],
+  "scenarios": [],
+  "baseline_relation": "agree",
+  "baseline_reason": "AI 与量化基线一致看多 (净信号 +5)",
+  "ticker": "000001",
+  "name": "测试股票",
+  "created_at": "2026-09-23 17:13:42",
+  "model_version": "1.0",
+  "all_source_ids": [
+    "news-sentiment-001",
+    "tech-score-001",
+    "debate-bear-001",
+    "fund-score-001"
+  ]
+}

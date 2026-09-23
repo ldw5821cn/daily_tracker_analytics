@@ -1,0 +1,84 @@
+{
+  "analysis_date": "2026-09-23",
+  "total_news": 45,
+  "topics": [
+    {
+      "topic": "金融",
+      "total_mentions": 13,
+      "bullish_count": 0,
+      "bearish_count": 0,
+      "neutral_count": 13,
+      "consensus_stance": "neutral",
+      "consensus_strength": 0.5,
+      "key_points": [
+        "美国抵押贷款利率突破7%关口 升至逾两年高点 美国抵押贷款利率升至逾两年来最高水平，进一步拖累本已受高房价和销售低迷制约的住房市场"
+      ],
+      "risks": [
+        "美国抵押贷款利率突破7%关口 升至逾两年高点 美国抵押贷款利率升至逾两年来最高水平，进一步拖累本已受高房价和销售低迷制约的住房市场"
+      ]
+    },
+    {
+      "topic": "半导体",
+      "total_mentions": 11,
+      "bullish_count": 2,
+      "bearish_count": 0,
+      "neutral_count": 9,
+      "consensus_stance": "bullish",
+      "consensus_strength": 0.18181818181818182,
+      "key_points": [
+        "花旗上调美光目标价，预计存储供需紧张将推动股价在SEMICON West前走强 花旗预计，美光股价在SEMICON West大会召开前仍有进一步上涨空间，并将目标价从1150美元上调至1300美元"
+      ],
+      "risks": []
+    },
+    {
+      "topic": "消费",
+      "total_mentions": 3,
+      "bullish_count": 0,
+      "bearish_count": 2,
+      "neutral_count": 1,
+      "consensus_stance": "bearish",
+      "consensus_strength": 0.6666666666666666,
+      "key_points": [
+        "麦当劳CEO 表示，高通胀、客流低迷或将长期困扰餐饮行业 核心要点麦当劳首席执行官克里斯・肯普钦斯基认为，高通胀以及客流停滞，会持续给餐饮行业带来压力"
+      ],
+      "risks": []
+    },
+    {
+      "topic": "AI/算力",
+      "total_mentions": 2,
+      "bullish_count": 2,
+      "bearish_count": 0,
+      "neutral_count": 0,
+      "consensus_stance": "bullish",
+      "consensus_strength": 0.9,
+      "key_points": [
+        "花旗上调美光目标价，预计存储供需紧张将推动股价在SEMICON West前走强 花旗预计，美光股价在SEMICON West大会召开前仍有进一步上涨空间，并将目标价从1150美元上调至1300美元"
+      ],
+      "risks": []
+    },
+    {
+      "topic": "医药",
+      "total_mentions": 1,
+      "bullish_count": 0,
+      "bearish_count": 0,
+      "neutral_count": 1,
+      "consensus_stance": "neutral",
+      "consensus_strength": 0.5,
+      "key_points": [],
+      "risks": []
+    }
+  ],
+  "overall_sentiment": "neutral",
+  "overall_confidence": 0.5496969696969697,
+  "key_insights": [
+    "🔴 消费: bearish (强度 67%, 提及 3 次)",
+    "🟢 AI/算力: bullish (强度 90%, 提及 2 次)"
+  ],
+  "risks": [
+    "美国抵押贷款利率突破7%关口 升至逾两年高点 美国抵押贷款利率升至逾两年来最高水平，进一步拖累本已受高房价和销售低迷制约的住房市场"
+  ],
+  "watch_items": [
+    "金融 风险: 美国抵押贷款利率突破7%关口 升至逾两年高点 美国抵押贷款利率升至逾两年来最高水平，进一步拖累本已受",
+    "关注 AI/算力 的持续性，防止过度拥挤"
+  ]
+}

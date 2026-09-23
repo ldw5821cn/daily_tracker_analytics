@@ -1,0 +1,79 @@
+{
+  "headline": "跌破年线，短期偏弱，但股息率有支撑",
+  "thesis": {
+    "text": "跌破年线，短期偏弱，但股息率有支撑",
+    "kind": "inference",
+    "source_ids": []
+  },
+  "support": [
+    {
+      "source_id": "bull-001",
+      "source_type": "inference",
+      "content": "股息率6%+有支撑",
+      "timestamp": "2026-09-22 15:00:00",
+      "source_url": null,
+      "exact": false
+    },
+    {
+      "source_id": "bull-002",
+      "source_type": "inference",
+      "content": "美联储降息利好高股息",
+      "timestamp": "2026-09-22 15:00:00",
+      "source_url": null,
+      "exact": false
+    },
+    {
+      "source_id": "m-price-001",
+      "source_type": "fact",
+      "content": "当前价 1.558, 涨跌幅 -0.95%",
+      "timestamp": "2026-09-22 15:00:00",
+      "source_url": null,
+      "exact": false
+    },
+    {
+      "source_id": "m-tech-001",
+      "source_type": "fact",
+      "content": "MA5=1.565, MA20=1.572, RSI14=42.5",
+      "timestamp": "2026-09-22 15:00:00",
+      "source_url": null,
+      "exact": false
+    }
+  ],
+  "counter": [
+    {
+      "source_id": "bear-001",
+      "source_type": "inference",
+      "content": "跌破年线技术性走弱",
+      "timestamp": "2026-09-22 15:00:00",
+      "source_url": null,
+      "exact": false
+    },
+    {
+      "source_id": "bear-002",
+      "source_type": "inference",
+      "content": "红利板块整体回调",
+      "timestamp": "2026-09-22 15:00:00",
+      "source_url": null,
+      "exact": false
+    }
+  ],
+  "alternatives": [],
+  "evidence_level": "limited",
+  "conditions": [],
+  "invalidation_ids": [],
+  "scenarios": [],
+  "baseline_relation": "disagree",
+  "baseline_reason": "AI 信号与量化基线不一致（看跌）",
+  "ticker": "513530",
+  "name": "港股通红利ETF",
+  "created_at": "2026-09-23 17:09:27",
+  "model_version": "1.0",
+  "all_source_ids": [
+    "bull-001",
+    "bear-001",
+    "bear-002",
+    "bull-002",
+    "m-price-001",
+    "m-tech-001"
+  ]
+}

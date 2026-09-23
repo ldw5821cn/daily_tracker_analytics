@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>市场观点共识报告 - 2026-09-23</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    background: #0f172a; 
+    color: #e2e8f0; 
+    line-height: 1.6;
+    padding: 20px;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 { color: #60a5fa; font-size: 24px; margin-bottom: 8px; }
+  .subtitle { color: #94a3b8; font-size: 14px; margin-bottom: 24px; }
+  
+  .overview {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .sentiment-badge {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    background: #eab30822;
+    border: 3px solid #eab308;
+  }
+  .overview-info { flex: 1; }
+  .overview-title { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .overview-meta { color: #94a3b8; font-size: 13px; }
+  .confidence-bar {
+    width: 100%; height: 8px;
+    background: #334155;
+    border-radius: 4px;
+    margin-top: 12px;
+    overflow: hidden;
+  }
+  .confidence-fill {
+    height: 100%;
+    width: 55%;
+    background: #eab308;
+    border-radius: 4px;
+  }
+  
+  .section { margin-bottom: 24px; }
+  .section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #94a3b8;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .topic-card {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    border-left: 4px solid #334155;
+  }
+  .topic-card.bullish { border-left-color: #22c55e; }
+  .topic-card.bearish { border-left-color: #ef4444; }
+  .topic-card.neutral { border-left-color: #eab308; }
+  
+  .topic-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .topic-name { font-size: 16px; font-weight: 600; }
+  .topic-stance {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 12px;
+  }
+  .stance-bullish { background: #22c55e22; color: #4ade80; }
+  .stance-bearish { background: #ef444422; color: #f87171; }
+  .stance-neutral { background: #eab30822; color: #facc15; }
+  
+  .topic-stats {
+    display: flex;
+    gap: 16px;
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 12px;
+  }
+  .stat-item { display: flex; align-items: center; gap: 4px; }
+  
+  .topic-points {
+    background: #0f172a;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 13px;
+  }
+  .topic-points li {
+    margin: 4px 0;
+    padding-left: 16px;
+    position: relative;
+  }
+  .topic-points li::before {
+    content: "•";
+    position: absolute;
+    left: 4px;
+    color: #64748b;
+  }
+  
+  .insights-list {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .insights-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #334155;
+  }
+  .insights-list li:last-child { border-bottom: none; }
+  
+  .risks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .risk-card {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 16px;
+    border-left: 4px solid #f59e0b;
+  }
+  
+  .watch-list {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .watch-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    font-size: 14px;
+  }
+  .watch-icon { color: #60a5fa; }
+  
+  .footer {
+    text-align: center;
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid #334155;
+  }
+  
+  @media (max-width: 600px) {
+    .overview { flex-direction: column; text-align: center; }
+    .risks-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📊 市场观点共识报告</h1>
+  <div class="subtitle">分析日期: 2026-09-23 | 新闻来源: 45 条</div>
+  
+  <div class="overview">
+    <div class="sentiment-badge">🟡</div>
+    <div class="overview-info">
+      <div class="overview-title">整体情绪: 中性</div>
+      <div class="overview-meta">
+        置信度 55% | 
+        覆盖话题 5 个
+      </div>
+      <div class="confidence-bar">
+        <div class="confidence-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">📈 话题共识</div>
+
+    <div class="topic-card neutral">
+      <div class="topic-header">
+        <span class="topic-name">金融</span>
+        <span class="topic-stance stance-neutral">中性 50%</span>
+      </div>
+      <div class="topic-stats">
+        <span class="stat-item">📰 提及 13</span>
+        <span class="stat-item">🟢 看多 0</span>
+        <span class="stat-item">🔴 看空 0</span>
+      </div>
+
+      <ul class="topic-points">
+        <li>美国抵押贷款利率突破7%关口 升至逾两年高点 美国抵押贷款利率升至逾两年来最高水平，进一步拖累本已受高房价和销售低迷制约的住房市场...</li>
+      </ul>
+    </div>
+
+    <div class="topic-card bullish">
+      <div class="topic-header">
+        <span class="topic-name">半导体</span>
+        <span class="topic-stance stance-bullish">看多 18%</span>
+      </div>
+      <div class="topic-stats">
+        <span class="stat-item">📰 提及 11</span>
+        <span class="stat-item">🟢 看多 2</span>
+        <span class="stat-item">🔴 看空 0</span>
+      </div>
+
+      <ul class="topic-points">
+        <li>花旗上调美光目标价，预计存储供需紧张将推动股价在SEMICON West前走强 花旗预计，美光股价在SEMICON West大会召开前仍有进一步上涨空间，并将目...</li>
+      </ul>
+    </div>
+
+    <div class="topic-card bearish">
+      <div class="topic-header">
+        <span class="topic-name">消费</span>
+        <span class="topic-stance stance-bearish">看空 67%</span>
+      </div>
+      <div class="topic-stats">
+        <span class="stat-item">📰 提及 3</span>
+        <span class="stat-item">🟢 看多 0</span>
+        <span class="stat-item">🔴 看空 2</span>
+      </div>
+
+      <ul class="topic-points">
+        <li>麦当劳CEO 表示，高通胀、客流低迷或将长期困扰餐饮行业 核心要点麦当劳首席执行官克里斯・肯普钦斯基认为，高通胀以及客流停滞，会持续给餐饮行业带来压力...</li>
+      </ul>
+    </div>
+
+    <div class="topic-card bullish">
+      <div class="topic-header">
+        <span class="topic-name">AI/算力</span>
+        <span class="topic-stance stance-bullish">看多 90%</span>
+      </div>
+      <div class="topic-stats">
+        <span class="stat-item">📰 提及 2</span>
+        <span class="stat-item">🟢 看多 2</span>
+        <span class="stat-item">🔴 看空 0</span>
+      </div>
+
+      <ul class="topic-points">
+        <li>花旗上调美光目标价，预计存储供需紧张将推动股价在SEMICON West前走强 花旗预计，美光股价在SEMICON West大会召开前仍有进一步上涨空间，并将目...</li>
+      </ul>
+    </div>
+
+    <div class="topic-card neutral">
+      <div class="topic-header">
+        <span class="topic-name">医药</span>
+        <span class="topic-stance stance-neutral">中性 50%</span>
+      </div>
+      <div class="topic-stats">
+        <span class="stat-item">📰 提及 1</span>
+        <span class="stat-item">🟢 看多 0</span>
+        <span class="stat-item">🔴 看空 0</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">💡 关键洞察</div>
+    <ul class="insights-list">
+      <li>🔴 消费: bearish (强度 67%, 提及 3 次)</li>
+      <li>🟢 AI/算力: bullish (强度 90%, 提及 2 次)</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⚠️ 风险提示</div>
+    <div class="risks-grid">
+
+      <div class="risk-card">美国抵押贷款利率突破7%关口 升至逾两年高点 美国抵押贷款利率升至逾两年来最高水平，进一步拖累本已受高房价和销售低迷制约的住房市场...</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">👀 关注事项</div>
+    <div class="watch-list">
+
+      <div class="watch-item">
+        <span class="watch-icon">▸</span>
+        <span>金融 风险: 美国抵押贷款利率突破7%关口 升至逾两年高点 美国抵押贷款利率升至逾两年来最高水平，进一步拖累本已受</span>
+      </div>
+
+      <div class="watch-item">
+        <span class="watch-icon">▸</span>
+        <span>关注 AI/算力 的持续性，防止过度拥挤</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    报告生成时间: 2026-09-23 23:44:54<br>
+    数据来源: 东方财富 / 新浪财经 | 分析: LLM-native 观点提炼引擎
+  </div>
+</div>
+</body>
+</html>

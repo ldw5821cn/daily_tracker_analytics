@@ -3,6 +3,7 @@
 - 并行启动四个分析师 Agent
 - 运行辩论裁决
 - 输出综合报告
+- 【P0 新增】集成证据链，为 AI 结论添加可追溯的证据支持
 
 注：Hermes Agent 中有 delegate_task 可以实现真正的并行
 这里用顺序执行+函数调用，兼容 cron 自动运行模式
@@ -14,11 +15,23 @@ import argparse
 from datetime import datetime
 
 sys.path.insert(0, '/home/zhihu/daily_tracker_analytics/etf_tracker/multi_agent')
+sys.path.insert(0, '/home/liudawei/github/daily_tracker_analytics/multi_agent')
 
 from analysts.technical_analyst import analyze as tech_analysis
 from analysts.fundamentals_analyst import analyze as fundamental_analysis
 from analysts.news_analyst import analyze as news_analysis
 from core.debate_engine import DebateEngine
+
+# 证据链模块（P0 新增）
+try:
+    from evidence import (
+        Evidence, EvidenceType, EvidenceLevel,
+        AnalysisResultWithEvidence, Condition, Scenario,
+        convert_prediction_to_evidence_result
+    )
+    EVIDENCE_CHAIN_AVAILABLE = True
+except ImportError:
+    EVIDENCE_CHAIN_AVAILABLE = False
 
 
 def analyze_stock(ticker, name="", current_date=None, output_file=None, agentic=True):
@@ -210,6 +223,10 @@ def analyze_stock(ticker, name="", current_date=None, output_file=None, agentic=
         'verdict': verdict,
         'agentic_report': agentic_report,
         'full_report': report_text,
+        'evidence_chain': build_evidence_chain(
+            ticker, name, tech_report, fundamental_report, news_report,
+            bull_arg, bear_arg, verdict, current_date
+        ) if EVIDENCE_CHAIN_AVAILABLE else None,
     }
     
     # 输出到文件
@@ -218,6 +235,183 @@ def analyze_stock(ticker, name="", current_date=None, output_file=None, agentic=
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(report_text)
         print(f"\n  📁 报告已保存: {output_file}")
+        
+        # 【P0 新增】保存证据链 JSON
+        if result['evidence_chain']:
+            evidence_file = output_file.replace('.md', '_evidence.json')
+            with open(evidence_file, 'w', encoding='utf-8') as f:
+                f.write(result['evidence_chain'].to_json())
+            print(f"  📁 证据链已保存: {evidence_file}")
+    
+    return result
+
+
+# ============================================================
+# 证据链构建（P0 新增）
+# ============================================================
+
+def build_evidence_chain(
+    ticker: str,
+    name: str,
+    tech_report: dict,
+    fundamental_report: dict,
+    news_report: dict,
+    bull_arg: dict,
+    bear_arg: dict,
+    verdict: dict,
+    current_date: str
+) -> AnalysisResultWithEvidence:
+    """
+    从多 Agent 分析结果构建证据链
+    
+    将各分析师的输出、辩论结果、最终裁决整合为带证据链的分析结果
+    """
+    # 确定证据充分度
+    evidence_level = EvidenceLevel.LIMITED.value
+    if tech_report and fundamental_report and news_report:
+        evidence_level = EvidenceLevel.SUFFICIENT.value
+    elif not tech_report and not fundamental_report and not news_report:
+        evidence_level = EvidenceLevel.INSUFFICIENT.value
+    
+    # 创建基础结果
+    result = AnalysisResultWithEvidence(
+        headline=f"{name}({ticker}) - {verdict.get('rating', 'N/A')}",
+        thesis=verdict.get('verdict_text', '')[:200],
+        evidence_level=evidence_level,
+        ticker=ticker,
+        name=name
+    )
+    
+    # 添加技术面证据
+    if tech_report:
+        # 支持证据
+        if tech_report.get('score', 0) >= 60:
+            result.add_support(Evidence(
+                source_id="tech-score-001",
+                source_type=EvidenceType.FACT.value,
+                content=f"技术面评分 {tech_report['score']}/100，评级 {tech_report.get('rating', 'N/A')}",
+                timestamp=current_date
+            ))
+        
+        # 技术指标快照
+        tech_snapshot = tech_report.get('tech_snapshot', {})
+        if tech_snapshot:
+            indicators = []
+            if tech_snapshot.get('ma_trend'):
+                indicators.append(f"均线趋势: {tech_snapshot['ma_trend']}")
+            if tech_snapshot.get('rsi_14'):
+                indicators.append(f"RSI14: {tech_snapshot['rsi_14']}")
+            if tech_snapshot.get('macd_signal'):
+                indicators.append(f"MACD: {tech_snapshot['macd_signal']}")
+            
+            if indicators:
+                result.add_support(Evidence(
+                    source_id="tech-indicators-001",
+                    source_type=EvidenceType.FACT.value,
+                    content=" | ".join(indicators),
+                    timestamp=current_date
+                ))
+        
+        # 信号列表
+        signals = tech_report.get('signals', [])
+        if signals:
+            signal_text = f"技术信号: {', '.join(signals[:3])}"
+            result.add_support(Evidence(
+                source_id="tech-signals-001",
+                source_type=EvidenceType.INFERENCE.value,
+                content=signal_text,
+                timestamp=current_date
+            ))
+    
+    # 添加基本面证据
+    if fundamental_report:
+        score = fundamental_report.get('score', 0)
+        if score >= 60:
+            result.add_support(Evidence(
+                source_id="fund-score-001",
+                source_type=EvidenceType.FACT.value,
+                content=f"基本面评分 {score}/100，评级 {fundamental_report.get('rating', 'N/A')}",
+                timestamp=current_date
+            ))
+        else:
+            result.add_counter(Evidence(
+                source_id="fund-score-001",
+                source_type=EvidenceType.FACT.value,
+                content=f"基本面评分较低 {score}/100",
+                timestamp=current_date
+            ))
+        
+        # 关键财务指标
+        fundamentals = fundamental_report.get('fundamentals', {})
+        if fundamentals:
+            key_metrics = []
+            if fundamentals.get('pe_ratio'):
+                key_metrics.append(f"PE: {fundamentals['pe_ratio']}")
+            if fundamentals.get('pb_ratio'):
+                key_metrics.append(f"PB: {fundamentals['pb_ratio']}")
+            if fundamentals.get('roe'):
+                key_metrics.append(f"ROE: {fundamentals['roe']}%")
+            
+            if key_metrics:
+                result.add_support(Evidence(
+                    source_id="fund-metrics-001",
+                    source_type=EvidenceType.FACT.value,
+                    content=" | ".join(key_metrics),
+                    timestamp=current_date
+                ))
+    
+    # 添加新闻情绪证据
+    if news_report:
+        sentiment = news_report.get('sentiment_score', 0)
+        news_count = news_report.get('news_count', 0)
+        
+        if sentiment > 0.2:
+            result.add_support(Evidence(
+                source_id="news-sentiment-001",
+                source_type=EvidenceType.OPINION.value,
+                content=f"新闻情绪积极 ({sentiment:+.2f})，相关新闻 {news_count} 条",
+                timestamp=current_date
+            ))
+        elif sentiment < -0.2:
+            result.add_counter(Evidence(
+                source_id="news-sentiment-001",
+                source_type=EvidenceType.OPINION.value,
+                content=f"新闻情绪消极 ({sentiment:+.2f})，相关新闻 {news_count} 条",
+                timestamp=current_date
+            ))
+        else:
+            result.add_alternative(Evidence(
+                source_id="news-sentiment-001",
+                source_type=EvidenceType.OPINION.value,
+                content=f"新闻情绪中性 ({sentiment:+.2f})",
+                timestamp=current_date
+            ))
+    
+    # 添加辩论证据
+    if bull_arg and bull_arg.get('score', 0) > 0:
+        result.add_support(Evidence(
+            source_id="debate-bull-001",
+            source_type=EvidenceType.INFERENCE.value,
+            content=f"看涨论证: {bull_arg.get('text', '')[:100]}...",
+            timestamp=current_date
+        ))
+    
+    if bear_arg and bear_arg.get('score', 0) > 0:
+        result.add_counter(Evidence(
+            source_id="debate-bear-001",
+            source_type=EvidenceType.INFERENCE.value,
+            content=f"看跌论证: {bear_arg.get('text', '')[:100]}...",
+            timestamp=current_date
+        ))
+    
+    # 设置基线关系
+    net_signal = verdict.get('net_signal', 0)
+    if net_signal > 2:
+        result.set_baseline_relation("agree", f"AI 与量化基线一致看多 (净信号 {net_signal:+d})")
+    elif net_signal < -2:
+        result.set_baseline_relation("disagree", f"AI 与量化基线不一致 (净信号 {net_signal:+d})")
+    else:
+        result.set_baseline_relation("insufficient", f"信号不明确 (净信号 {net_signal:+d})")
     
     return result
 
