@@ -516,22 +516,157 @@ RAW_METRICS = {
 ## 八、总结
 
 **立即可做（本周）**：
-1. 添加证据链到现有 AI 分析
-2. 在报告中显示支持/反对证据
+1. 添加证据链到现有 AI 分析 ✅ **已完成 2026-09-23**
+2. 在报告中显示支持/反对证据 ✅ **已完成 2026-09-23**
 
 **短期（2-3 周）**：
-3. 实现雪球大V文章抓取
-4. 生成观点共识报告
+3. 实现雪球大V文章抓取 ⚠️ **改用公开API（东财/新浪），雪球待cookies更新**
+4. 生成观点共识报告 ✅ **已完成 2026-09-23**
 
 **中期（1-2 月）**：
-5. 接入涨停数据源
-6. 实现情绪周期监控
+5. 接入涨停数据源 ⬜ 待开始（P2）
+6. 实现情绪周期监控 ⬜ 待开始（P2）
 
 **长期（可选）**：
-7. 题材雷达
-8. 游资心法库
+7. 题材雷达 ⬜ 待开始（P3）
+8. 游资心法库 ⬜ 待开始（P4）
+
+---
+
+## 九、实施进度追踪
+
+### P0: 证据链研究 ✅ 已完成（2026-09-23）
+
+**交付物**：
+- `multi_agent/evidence.py` — 证据链核心模块（~430行）
+- `multi_agent/predictor.py` — 添加4个证据链函数
+- `multi_agent/orchestrator.py` — 集成证据链构建
+- `multi_agent/data/evidence/` — 证据链JSON输出目录
+- `docs/evidence_report_test.html` — HTML报告样例
+
+**核心能力**：
+```
+Evidence (证据)
+  ├── source_id      # 唯一编号，可追溯
+  ├── source_type    # fact / opinion / inference
+  ├── content        # 证据内容
+  └── timestamp      # 时间戳
+
+AnalysisResultWithEvidence
+  ├── support[] / counter[]    # 支持/反对证据
+  ├── evidence_level           # sufficient / limited / insufficient
+  ├── conditions[]             # 失效条件
+  └── baseline_relation        # 与量化基线关系
+```
+
+**使用方式**：
+```python
+from predictor import convert_to_evidence_result, save_evidence_result
+evidence_result = convert_to_evidence_result(prediction, market_data)
+filepath = save_evidence_result(evidence_result)
+```
+
+**提交**: `a4d5f1f` feat: P0 证据链 + P1 大V复盘
+
+---
+
+### P1: 大V自动复盘 ✅ 已完成（2026-09-23）
+
+**交付物**：
+- `multi_agent/news_fetcher.py` — 多源新闻抓取（~400行）
+- `multi_agent/narrative_analyzer.py` — 观点提炼分析（~500行）
+- `multi_agent/narrative_report.py` — 报告生成（~500行）
+- `docs/narrative_report.html` — 观点共识报告
+- `docs/narrative_data/*.json` — 结构化数据
+
+**数据源现状**：
+| 数据源 | 状态 | 说明 |
+|--------|------|------|
+| 东方财富公告 | ✅ 可用 | 公开API，公司公告 |
+| 新浪财经 | ✅ 可用 | 公开API，财经/股票新闻 |
+| 雪球 | ⚠️ 待更新 | cookies过期（400016），待用户更新 |
+| 财联社 | ❌ 404 | API端点变更 |
+
+**核心能力**：
+```
+话题分组（8组）
+  ├── AI/算力, 半导体, 新能源
+  ├── 消费, 医药, 金融
+  └── 地产, 红利
+
+话题共识分析
+  ├── 立场检测（bullish/bearish/neutral）
+  ├── 共识强度计算（0-1）
+  ├── 关键观点提取
+  └── 风险识别
+```
+
+**使用方式**：
+```python
+from narrative_report import run_full_pipeline
+output = run_full_pipeline(keywords=None, limit_per_source=15)
+# 输出: HTML报告 + JSON数据 + 微信摘要
+```
+
+**待优化**：
+- [ ] 更新雪球cookies后启用大V抓取
+- [ ] 添加 LLM 深化分析（LLMNarrativeAnalyzer）
+- [ ] 接入 cron 定时任务
+
+---
+
+### P2: 超短情绪分析 ⬜ 待开始
+
+**借鉴点**（来自 easy-stock marketemotion）：
+```
+RawMetrics 核心指标:
+  ├── limit_up_count      # 涨停数
+  ├── limit_down_count    # 跌停数
+  ├── broken_count        # 炸板数
+  ├── first_board_count   # 首板数
+  ├── board_count         # 连板数
+  ├── max_streak          # 最高连板
+  ├── final_break_rate    # 封板率
+  └── reopen_success_rate # 回封率
+
+情绪周期:
+  ├── 修复期（涨停数回升）
+  ├── 退潮期（涨停数下降）
+  ├── 冰点期（涨停数极低）
+  └── 启动期（情绪回暖）
+```
+
+**数据源需求**：
+- 涨停池数据（可用 akshare / tushare / 东财接口）
+- 连板梯队数据
+- 昨日涨停表现
+
+**预计工作量**: 5-7天
+
+---
+
+### P3: 题材雷达 ⬜ 待开始
+
+**借鉴点**（来自 easy-stock sector/radar.go）：
+- 题材强度评分（涨停数、连板数、资金流入）
+- 题材轮动监控（新题材出现、老题材退潮）
+- 题材-个股映射（成分股自动推导）
+
+**预计工作量**: 7-10天
+
+---
+
+### P4: 游资心法库 ⬜ 可选
+
+**借鉴点**（来自 easy-stock methodology/builtin/documents）：
+- 21位游资42篇心法文档
+- 经典战役复盘（章盟主、炒股养家等）
+- 交易心理学（情绪管理、仓位控制）
+
+**预计工作量**: 2-3天（主要是整理资料）
 
 ---
 
 *报告生成时间：2026-09-22*
+*最后更新：2026-09-23（P0/P1完成）*
 *调研对象：easy-stock v1.2.2*
