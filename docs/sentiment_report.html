@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>超短情绪监控 - 2026-09-23</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #0f172a; color: #e2e8f0; line-height: 1.6; padding: 20px;
+  }
+  .container { max-width: 960px; margin: 0 auto; }
+  h1 { color: #60a5fa; font-size: 24px; margin-bottom: 6px; }
+  .subtitle { color: #94a3b8; font-size: 13px; margin-bottom: 20px; }
+
+  .phase-banner {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border-radius: 16px; padding: 24px; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 20px;
+    border-left: 5px solid #60a5fa;
+  }
+  .phase-emoji { font-size: 52px; }
+  .phase-name { font-size: 22px; font-weight: 700; color: #60a5fa; }
+  .phase-desc { color: #94a3b8; font-size: 14px; }
+  .phase-conf { font-size: 12px; color: #64748b; margin-top: 4px; }
+
+  .metrics-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px; margin-bottom: 20px;
+  }
+  .metric-card {
+    background: #1e293b; border-radius: 12px; padding: 14px; text-align: center;
+  }
+  .metric-label { font-size: 12px; color: #94a3b8; margin-bottom: 6px; }
+  .metric-value { font-size: 22px; font-weight: 700; }
+  .metric-sub { font-size: 11px; color: #64748b; }
+  .up { color: #f87171; }     /* A股习惯：红涨 */
+  .down { color: #4ade80; }   /* 绿跌 */
+
+  .chart-box {
+    background: #1e293b; border-radius: 12px; padding: 16px; margin-bottom: 20px;
+  }
+  .chart-title { font-size: 14px; color: #94a3b8; margin-bottom: 10px; }
+
+  .section { margin-bottom: 20px; }
+  .section-title {
+    font-size: 15px; font-weight: 600; color: #94a3b8;
+    margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+  }
+  .card {
+    background: #1e293b; border-radius: 12px; padding: 16px;
+  }
+  .list-item { padding: 8px 0; border-bottom: 1px solid #334155; font-size: 14px; }
+  .list-item:last-child { border-bottom: none; }
+
+  .note { font-size: 12px; color: #64748b; margin-top: 16px; }
+  .footer {
+    text-align: center; color: #64748b; font-size: 12px;
+    margin-top: 24px; padding-top: 14px; border-top: 1px solid #334155;
+  }
+  @media (max-width: 600px) { .phase-banner { flex-direction: column; text-align: center; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📡 超短情绪监控</h1>
+  <div class="subtitle">数据日期: 2026-09-23 | 情绪周期: 退潮期</div>
+
+  <div class="phase-banner">
+    <div class="phase-emoji">🌊</div>
+    <div>
+      <div class="phase-name">退潮期</div>
+      <div class="phase-desc">亏钱扩散，减仓防守</div>
+      <div class="phase-conf">判定置信度 80%</div>
+    </div>
+  </div>
+
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-label">涨停</div>
+      <div class="metric-value up">51</div>
+      <div class="metric-sub">首板 39 / 2板+ 12</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">跌停</div>
+      <div class="metric-value down">13</div>
+      <div class="metric-sub">恐慌盘</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">炸板</div>
+      <div class="metric-value">26</div>
+      <div class="metric-sub">封板率 66%</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">最高连板</div>
+      <div class="metric-value ">4</div>
+      <div class="metric-sub">空间高度</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">昨日涨停溢价</div>
+      <div class="metric-value down">-0.37%</div>
+      <div class="metric-sub">上涨占比 40%</div>
+    </div>
+  </div>
+
+  <div class="chart-box">
+    <div class="chart-title">📈 近10日情绪序列（涨停数 vs 昨日涨停溢价）</div>
+    <canvas id="sentimentChart" height="120"></canvas>
+  </div>
+
+  <div class="section">
+    <div class="section-title">💡 交易提示</div>
+    <div class="card">
+      <div class="list-item">🔴 跌停 13 家，恐慌盘涌出</div>
+      <div class="list-item">💡 退潮期：亏钱效应扩散，减仓防守，等待冰点信号</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⚠️ 风险提示</div>
+    <div class="card">
+      <div class="list-item">退潮期高位股补跌风险大，避免接力中位股</div>
+      <div class="list-item">封板率 66% 偏低，盘面分歧大，持仓需更分散</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">📊 涨停数动态分位（60日滚动）</div>
+    <div class="card">
+      <div class="list-item">25分位: 47 | 中位数: 68 | 75分位: 88</div>
+      <div class="list-item">当前 51 家处于 中位区间</div>
+    </div>
+  </div>
+
+  <div class="note">📝 阈值为60日滚动分位数动态计算，随市场自适应，无硬编码</div>
+
+  <div class="footer">
+    生成时间: 2026-09-24 00:01:43<br>
+    数据源: akshare 东财涨停池/跌停池/炸板池 | 分析: LLM-native 情绪周期引擎 v1
+  </div>
+</div>
+
+<script>
+const ctx = document.getElementById('sentimentChart').getContext('2d');
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ["09-10", "09-11", "09-14", "09-15", "09-16", "09-17", "09-18", "09-21", "09-22", "09-23"],
+    datasets: [
+      {
+        label: '涨停数',
+        data: [35, 40, 55, 32, 89, 47, 78, 103, 63, 51],
+        backgroundColor: 'rgba(248,113,113,0.6)',
+        borderColor: '#f87171',
+        borderWidth: 1,
+        yAxisID: 'y',
+      },
+      {
+        label: '昨日涨停溢价%',
+        data: [0.0, 0.0, 0.0, 0.0, 0.0, 0.15, 2.78, 3.23, 2.6, -0.37],
+        type: 'line',
+        borderColor: '#60a5fa',
+        backgroundColor: 'rgba(96,165,250,0.15)',
+        tension: 0.3,
+        yAxisID: 'y1',
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { labels: { color: '#94a3b8' } } },
+    scales: {
+      x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
+      y: { position: 'left', ticks: { color: '#f87171' }, grid: { color: '#334155' }, title: { display: true, text: '涨停数', color: '#f87171' } },
+      y1: { position: 'right', ticks: { color: '#60a5fa' }, grid: { drawOnChartArea: false }, title: { display: true, text: '溢价%', color: '#60a5fa' } }
+    }
+  }
+});
+</script>
+</body>
+</html>
