@@ -1,23 +1,23 @@
 {
-  "date": "2026-09-22",
+  "date": "2026-09-23",
   "total_portfolio_value": 50000.0,
-  "stock_etf_total_weight": 0.2,
-  "long_amount": 34700.0,
+  "stock_etf_total_weight": 0.2166,
+  "long_amount": 31251.16,
   "short_amount": 0,
-  "skipped_count": 0,
+  "skipped_count": 1,
   "items": [
     {
       "ticker": "512170",
       "name": "医疗ETF华宝",
       "category": "ETF",
       "signal": "bullish",
-      "target_weight": 0.1,
-      "reason": "信号bull 信心80% 60日收益+10.8% 回撤-8.9% 因子分+0.00",
+      "target_weight": 0.0967,
+      "reason": "信号bull 信心81% 60日收益+12.2% 回撤-8.9% 因子分+0.00",
       "current_price": 0.35,
-      "target_price": 0.358,
+      "target_price": 0.357,
       "stop_loss": 0.343,
       "action": "买入",
-      "target_amount": 17350.0,
+      "target_amount": 15625.58,
       "constraint_note": ""
     },
     {
@@ -25,14 +25,28 @@
       "name": "港股创新药ETF广发",
       "category": "ETF",
       "signal": "bullish",
-      "target_weight": 0.1,
-      "reason": "信号bull 信心79% 60日收益+22.9% 回撤-9.4% 因子分+0.00",
+      "target_weight": 0.0967,
+      "reason": "信号bull 信心80% 60日收益+22.9% 回撤-9.4% 因子分+0.00",
       "current_price": 1.36,
-      "target_price": 1.408,
+      "target_price": 1.412,
       "stop_loss": 1.333,
       "action": "买入",
-      "target_amount": 17350.0,
+      "target_amount": 15625.58,
       "constraint_note": "跨境ETF"
+    },
+    {
+      "ticker": "300474",
+      "name": "景嘉微",
+      "category": "个股",
+      "signal": "bullish",
+      "target_weight": 0.0232,
+      "reason": "信号bull 信心80% 60日收益-9.4% 回撤-25.8% 因子分+0.00",
+      "current_price": 53.28,
+      "target_price": 56.445,
+      "stop_loss": 52.214,
+      "action": "不操作",
+      "target_amount": 0.0,
+      "constraint_note": "金额不足一手(¥5328)"
     }
   ]
 }
