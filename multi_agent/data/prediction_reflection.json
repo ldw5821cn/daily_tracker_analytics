@@ -1,58 +1,63 @@
 {
-  "pred_date": "2026-09-22",
+  "pred_date": "2026-09-23",
   "validation_date": null,
-  "accuracy": 72.25,
+  "accuracy": 36.65,
   "total": 191,
-  "correct": 138,
-  "wrong": 53,
+  "correct": 70,
+  "wrong": 121,
   "by_signal": {
     "中性": {
-      "total": 123,
-      "wrong": 34,
-      "error_rate": 27.64
+      "total": 121,
+      "wrong": 72,
+      "error_rate": 59.5
     },
     "看多": {
-      "total": 6,
-      "wrong": 4,
-      "error_rate": 66.67
+      "total": 8,
+      "wrong": 8,
+      "error_rate": 100.0
+    },
+    "看空": {
+      "total": 1,
+      "wrong": 0,
+      "error_rate": 0.0
     },
     "观望": {
-      "total": 62,
-      "wrong": 15,
-      "error_rate": 24.19
+      "total": 61,
+      "wrong": 41,
+      "error_rate": 67.21
     }
   },
   "by_category": {
     "ETF": {
       "total": 23,
-      "wrong": 1,
-      "error_rate": 4.35
+      "wrong": 15,
+      "error_rate": 65.22
     },
     "个股": {
       "total": 119,
-      "wrong": 36,
-      "error_rate": 30.25
+      "wrong": 87,
+      "error_rate": 73.11
     },
     "期货": {
       "total": 49,
-      "wrong": 16,
-      "error_rate": 32.65
+      "wrong": 19,
+      "error_rate": 38.78
     }
   },
   "feature_compare": {
     "weighted_score": {
-      "correct_avg": 51.01,
-      "wrong_avg": 52.75
+      "correct_avg": 50.42,
+      "wrong_avg": 51.99
     },
     "confidence": {
-      "correct_avg": 0.63,
-      "wrong_avg": 0.65
+      "correct_avg": 0.62,
+      "wrong_avg": 0.64
     }
   },
   "component_compare": {
     "技术面": {
-      "correct_avg": 55.2,
-      "wrong_avg": 56.92
+      "correct_avg": 53.93,
+      "wrong_avg": 55.76
     },
     "新闻情绪": {
       "correct_avg": 50.0,
@@ -63,26 +68,26 @@
       "wrong_avg": 50.0
     },
     "多空辩论净得分": {
-      "correct_avg": -0.84,
-      "wrong_avg": -0.58
+      "correct_avg": -0.98,
+      "wrong_avg": -0.64
     }
   },
   "divergence_analysis": {
     "fundamental_technical_divergence": {
-      "correct_avg": -5.2,
-      "wrong_avg": -6.92,
+      "correct_avg": -3.93,
+      "wrong_avg": -5.76,
       "by_wrong_signal": {
         "看多": {
-          "avg": -20.0,
-          "n": 4
+          "avg": -19.62,
+          "n": 8
         },
         "中性": {
-          "avg": -5.76,
-          "n": 34
+          "avg": -4.31,
+          "n": 72
         },
         "观望": {
-          "avg": -6.07,
-          "n": 15
+          "avg": -5.61,
+          "n": 41
         }
       }
     }
@@ -94,8 +99,9 @@
     "model_optimizer_agent": "model_optimizer_agent 未返回观点。"
   },
   "key_suggestions": [
+    "整体胜率不足 50%，当前处于学习期，应继续积累真实标签并扩展数据仓库，由 parameter_optimizer 自动学习权重/阈值映射",
     "建议增加日内 TickFlow 数据作为校验，减少滞后技术面影响",
     "建议继续扩展宏观/资金面 Agent 数据维度，让优化器自动判断各周期下的权重"
   ],
-  "generated_at": "2026-09-23T15:35:06.157114"
+  "generated_at": "2026-09-24T15:36:32.859724"
 }
