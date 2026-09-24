@@ -1,0 +1,138 @@
+{
+  "date": "2026-09-23",
+  "phase": "退潮期",
+  "themes": [
+    {
+      "name": "通用设备",
+      "zt_count": 6,
+      "max_board": 1,
+      "avg_fund": 5348.872716666668,
+      "stocks": [
+        {
+          "ticker": "002849",
+          "board": 1,
+          "fund_wan": 8303.3
+        },
+        {
+          "ticker": "688628",
+          "board": 1,
+          "fund_wan": 8766.7
+        },
+        {
+          "ticker": "002819",
+          "board": 1,
+          "fund_wan": 4791.0
+        },
+        {
+          "ticker": "002633",
+          "board": 1,
+          "fund_wan": 3204.8
+        },
+        {
+          "ticker": "688337",
+          "board": 1,
+          "fund_wan": 4674.2
+        }
+      ],
+      "first_board": 6,
+      "high_board": 0
+    },
+    {
+      "name": "半导体",
+      "zt_count": 3,
+      "max_board": 1,
+      "avg_fund": 8621.023933333332,
+      "stocks": [
+        {
+          "ticker": "002119",
+          "board": 1,
+          "fund_wan": 15940.1
+        },
+        {
+          "ticker": "603991",
+          "board": 1,
+          "fund_wan": 9358.3
+        },
+        {
+          "ticker": "688512",
+          "board": 1,
+          "fund_wan": 564.6
+        }
+      ],
+      "first_board": 3,
+      "high_board": 0
+    },
+    {
+      "name": "房地产服",
+      "zt_count": 2,
+      "max_board": 3,
+      "avg_fund": 10225.212449999999,
+      "stocks": [
+        {
+          "ticker": "600743",
+          "board": 3,
+          "fund_wan": 13130.0
+        },
+        {
+          "ticker": "000560",
+          "board": 3,
+          "fund_wan": 7320.4
+        }
+      ],
+      "first_board": 0,
+      "high_board": 2
+    },
+    {
+      "name": "消费电子",
+      "zt_count": 2,
+      "max_board": 1,
+      "avg_fund": 8993.364450000001,
+      "stocks": [
+        {
+          "ticker": "002426",
+          "board": 1,
+          "fund_wan": 8956.7
+        },
+        {
+          "ticker": "002635",
+          "board": 1,
+          "fund_wan": 9030.1
+        }
+      ],
+      "first_board": 2,
+      "high_board": 0
+    },
+    {
+      "name": "医疗器械",
+      "zt_count": 2,
+      "max_board": 1,
+      "avg_fund": 2979.37855,
+      "stocks": [
+        {
+          "ticker": "688656",
+          "board": 1,
+          "fund_wan": 1997.0
+        },
+        {
+          "ticker": "603222",
+          "board": 1,
+          "fund_wan": 3961.7
+        }
+      ],
+      "first_board": 2,
+      "high_board": 0
+    }
+  ],
+  "watchlist": [
+    "出版",
+    "专用设备",
+    "汽车零部",
+    "化学制品",
+    "元件"
+  ],
+  "avoid": [
+    "出版",
+    "房地产服"
+  ],
+  "market_summary": "最强题材: 通用设备（6只涨停，最高1连板） | 次强: 半导体（3只） | ⚠️ 情绪退潮期，回避高位题材"
+}

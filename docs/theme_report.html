@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>题材雷达 - 2026-09-23</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #0f172a; color: #e2e8f0; line-height: 1.6; padding: 20px;
+  }
+  .container { max-width: 960px; margin: 0 auto; }
+  h1 { color: #60a5fa; font-size: 24px; margin-bottom: 6px; }
+  .subtitle { color: #94a3b8; font-size: 13px; margin-bottom: 20px; }
+
+  .phase-banner {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border-radius: 16px; padding: 20px; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 16px;
+    border-left: 5px solid #60a5fa;
+  }
+  .phase-emoji { font-size: 48px; }
+  .phase-name { font-size: 20px; font-weight: 700; color: #60a5fa; }
+  .phase-desc { color: #94a3b8; font-size: 14px; }
+
+  .summary {
+    background: #1e293b; border-radius: 12px; padding: 16px; margin-bottom: 20px;
+    font-size: 15px; color: #e2e8f0;
+  }
+
+  .section { margin-bottom: 20px; }
+  .section-title {
+    font-size: 15px; font-weight: 600; color: #94a3b8;
+    margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
+  }
+
+  .theme-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .theme-card {
+    background: #1e293b; border-radius: 12px; padding: 16px;
+    border-left: 4px solid #60a5fa;
+  }
+  .theme-name { font-size: 16px; font-weight: 700; color: #e2e8f0; margin-bottom: 8px; }
+  .theme-stats { display: flex; gap: 12px; font-size: 12px; color: #94a3b8; margin-bottom: 10px; }
+  .theme-stat { text-align: center; }
+  .theme-stat-val { font-size: 18px; font-weight: 700; color: #e2e8f0; }
+  .theme-strength {
+    height: 6px; background: #334155; border-radius: 3px; overflow: hidden;
+  }
+  .theme-strength-bar {
+    height: 100%; border-radius: 3px; transition: width 0.3s;
+  }
+  .strength-label { font-size: 11px; color: #64748b; margin-top: 4px; text-align: right; }
+
+  .stock-list { font-size: 12px; color: #94a3b8; margin-top: 8px; }
+  .stock-item {
+    display: flex; justify-content: space-between; padding: 4px 0;
+    border-bottom: 1px solid #334155;
+  }
+  .stock-item:last-child { border-bottom: none; }
+  .board-badge {
+    display: inline-block; padding: 1px 6px; border-radius: 4px;
+    font-size: 11px; font-weight: 600;
+  }
+  .board-high { background: rgba(248,113,113,0.2); color: #f87171; }
+  .board-mid { background: rgba(251,191,36,0.2); color: #fbbf24; }
+  .board-low { background: rgba(96,165,250,0.2); color: #60a5fa; }
+
+  .list-box {
+    background: #1e293b; border-radius: 12px; padding: 14px;
+  }
+  .list-item { padding: 6px 0; border-bottom: 1px solid #334155; font-size: 14px; }
+  .list-item:last-child { border-bottom: none; }
+  .avoid-item { color: #f87171; }
+  .watch-item { color: #fbbf24; }
+
+  .footer {
+    text-align: center; color: #64748b; font-size: 12px;
+    margin-top: 24px; padding-top: 14px; border-top: 1px solid #334155;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📡 题材雷达</h1>
+  <div class="subtitle">数据日期: 2026-09-23 | 情绪周期: 退潮期</div>
+
+  <div class="phase-banner">
+    <div class="phase-emoji">🌊</div>
+    <div>
+      <div class="phase-name">退潮期</div>
+      <div class="phase-desc">最强题材: 通用设备（6只涨停，最高1连板） | 次强: 半导体（3只） | ⚠️ 情绪退潮期，回避高位题材</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">🔥 活跃题材（5个）</div>
+    <div class="theme-grid">
+
+      <div class="theme-card" style="border-left-color: #fbbf24">
+        <div class="theme-name">通用设备</div>
+        <div class="theme-stats">
+          <div class="theme-stat">
+            <div class="theme-stat-val">6</div>
+            <div>涨停</div>
+          </div>
+          <div class="theme-stat">
+            <div class="theme-stat-val">1</div>
+            <div>最高板</div>
+          </div>
+          <div class="theme-stat">
+            <div class="theme-stat-val">6</div>
+            <div>首板</div>
+          </div>
+          <div class="theme-stat">
+            <div class="theme-stat-val">5349万</div>
+            <div>封单均值</div>
+          </div>
+        </div>
+        <div class="theme-strength">
+          <div class="theme-strength-bar" style="width: 50%; background: #fbbf24"></div>
+        </div>
+        <div class="strength-label">强度 5.0/10</div>
+        <div class="stock-list">
+
+          <div class="stock-item">
+            <span>002849</span>
+            <span class="board-badge board-low">1板</span>
+          </div>
+
+          <div class="stock-item">
+            <span>688628</span>
+            <span class="board-badge board-low">1板</span>
+          </div>
+
+          <div class="stock-item">
+            <span>002819</span>
+            <span class="board-badge board-low">1板</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="theme-card" style="border-left-color: #fbbf24">
+        <div class="theme-name">半导体</div>
+        <div class="theme-stats">
+          <div class="theme-stat">
+            <div class="theme-stat-val">3</div>
+            <div>涨停</div>
+          </div>
+          <div class="theme-stat">
+            <div class="theme-stat-val">1</div>
+            <div>最高板</div>
+          </div>
+          <div class="theme-stat">
+            <div class="theme-stat-val">3</div>
+            <div>首板</div>
+          </div>
+          <div class="theme-stat">
+            <div class="theme-stat-val">8621万</div>
+            <div>封单均值</div>
+          </div>
+        </div>
+        <div class="theme-strength">
+          <div class="theme-strength-bar" style="width: 50%; background: #fbbf24"></div>
+        </div>
+        <div class="strength-label">强度 5.0/10</div>
+        <div class="stock-list">
+
+          <div class="stock-item">
+            <span>002119</span>
+            <span class="board-badge board-low">1板</span>
+          </div>
+
+          <div class="stock-item">
+            <span>603991</span>
+            <span class="board-badge board-low">1板</span>
+          </div>
+
+          <div class="stock-item">
+            <span>688512</span>
+            <span class="board-badge board-low">1板</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="theme-card" style="border-left-color: #fbbf24">
+        <div class="theme-name">房地产服</div>
+        <div class="theme-stats">
+          <div class="theme-stat">
+            <div class="theme-stat-val">2</div>
+            <div>涨停</div>
+          </div>
+          <div class="theme-stat">
+            <div class="theme-stat-val">3</div>
+            <div>最高板</div>
+          </div>
+          <div class="theme-stat">
+            <div class="theme-stat-val">0</div>
+            <div>首板</div>
+          </div>
+          <div class="theme-stat">
+            <div class="theme-stat-val">10225万</div>
+            <div>封单均值</div>
+          </div>
+        </div>
+        <div class="theme-strength">
+          <div class="theme-strength-bar" style="width: 50%; background: #fbbf24"></div>
+        </div>
+        <div class="strength-label">强度 5.0/10</div>
+        <div class="stock-list">
+
+          <div class="stock-item">
+            <span>600743</span>
+            <span class="board-badge board-high">3板</span>
+          </div>
+
+          <div class="stock-item">
+            <span>000560</span>
+            <span class="board-badge board-high">3板</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="theme-card" style="border-left-color: #fbbf24">
+        <div class="theme-name">消费电子</div>
+        <div class="theme-stats">
+          <div class="theme-stat">
+            <div class="theme-stat-val">2</div>
+            <div>涨停</div>
+          </div>
+          <div class="theme-stat">
+            <div class="theme-stat-val">1</div>
+            <div>最高板</div>
+          </div>
+          <div class="theme-stat">
+            <div class="theme-stat-val">2</div>
+            <div>首板</div>
+          </div>
+          <div class="theme-stat">
+            <div class="theme-stat-val">8993万</div>
+            <div>封单均值</div>
+          </div>
+        </div>
+        <div class="theme-strength">
+          <div class="theme-strength-bar" style="width: 50%; background: #fbbf24"></div>
+        </div>
+        <div class="strength-label">强度 5.0/10</div>
+        <div class="stock-list">
+
+          <div class="stock-item">
+            <span>002426</span>
+            <span class="board-badge board-low">1板</span>
+          </div>
+
+          <div class="stock-item">
+            <span>002635</span>
+            <span class="board-badge board-low">1板</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="theme-card" style="border-left-color: #fbbf24">
+        <div class="theme-name">医疗器械</div>
+        <div class="theme-stats">
+          <div class="theme-stat">
+            <div class="theme-stat-val">2</div>
+            <div>涨停</div>
+          </div>
+          <div class="theme-stat">
+            <div class="theme-stat-val">1</div>
+            <div>最高板</div>
+          </div>
+          <div class="theme-stat">
+            <div class="theme-stat-val">2</div>
+            <div>首板</div>
+          </div>
+          <div class="theme-stat">
+            <div class="theme-stat-val">2979万</div>
+            <div>封单均值</div>
+          </div>
+        </div>
+        <div class="theme-strength">
+          <div class="theme-strength-bar" style="width: 50%; background: #fbbf24"></div>
+        </div>
+        <div class="strength-label">强度 5.0/10</div>
+        <div class="stock-list">
+
+          <div class="stock-item">
+            <span>688656</span>
+            <span class="board-badge board-low">1板</span>
+          </div>
+
+          <div class="stock-item">
+            <span>603222</span>
+            <span class="board-badge board-low">1板</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">👀 观察名单</div>
+    <div class="list-box">
+      <div class="list-item watch-item">⚡ 出版</div>
+      <div class="list-item watch-item">⚡ 专用设备</div>
+      <div class="list-item watch-item">⚡ 汽车零部</div>
+      <div class="list-item watch-item">⚡ 化学制品</div>
+      <div class="list-item watch-item">⚡ 元件</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">🚫 回避名单（退潮期期）</div>
+    <div class="list-box">
+      <div class="list-item avoid-item">❌ 出版</div>
+      <div class="list-item avoid-item">❌ 房地产服</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    生成时间: 2026-09-24 08:26:52<br>
+    数据源: akshare 东财涨停池 | 分析: LLM-native 题材雷达 v1
+  </div>
+</div>
+</body>
+</html>
