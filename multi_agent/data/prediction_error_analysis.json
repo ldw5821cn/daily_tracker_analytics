@@ -264,6 +264,17 @@
       "confidence": 0.69
     },
     {
+      "ticker": "SA0",
+      "name": "纯碱",
+      "category": "期货",
+      "signal": "中性",
+      "return_pct": -1.278,
+      "pred_price": 1017.0,
+      "today_price": 1004.0,
+      "weighted_score": 45.9,
+      "confidence": 0.7
+    },
+    {
       "ticker": "300782",
       "name": "卓胜微",
       "category": "个股",
@@ -295,17 +306,6 @@
       "today_price": 40.9,
       "weighted_score": 48.4,
       "confidence": 0.57
-    },
-    {
-      "ticker": "562500",
-      "name": "机器人ETF华夏",
-      "category": "ETF",
-      "signal": "观望",
-      "return_pct": -1.183,
-      "pred_price": 0.93,
-      "today_price": 0.919,
-      "weighted_score": 52.3,
-      "confidence": 0.55
     }
   ],
   "suggestions": [
