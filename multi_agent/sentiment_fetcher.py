@@ -85,6 +85,8 @@ def fetch_zt_pool(date_raw: str, date_fmt: str = None) -> list:
                 'industry': row.get('所属行业'),
                 'first_seal_time': str(row.get('首次封板时间', '')),
                 'seal_amount': float(row.get('封板资金', 0) or 0) / 10000,  # 万元
+                'turnover': float(row.get('换手率', 0) or 0),  # %
+                'amount': float(row.get('成交额', 0) or 0) / 10000,  # 万元
             }, ensure_ascii=False, default=str),
             'source': 'akshare_zt',
         })

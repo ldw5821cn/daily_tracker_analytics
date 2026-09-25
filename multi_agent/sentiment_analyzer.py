@@ -59,6 +59,9 @@ class DailyMetrics:
     first_board: int = 0       # 首板数
     max_streak: int = 0        # 最高连板
     board_2plus: int = 0       # 2板及以上数量
+    avg_turnover: float = 0.0  # 平均换手率（%）
+    total_amount: float = 0.0  # 总成交额（万元）
+    avg_amount: float = 0.0    # 平均成交额（万元）
     zt_q25: float = 0.0        # 涨停数历史25分位（动态参考）
     zt_q50: float = 0.0
     zt_q75: float = 0.0
@@ -125,16 +128,25 @@ class SentimentAnalyzer:
                 SELECT detail FROM sentiment WHERE date=? AND metric='zt_pool'
             """, (date,))
             boards = []
+            turnovers = []
+            amounts = []
             for (detail,) in cur.fetchall():
                 try:
                     info = json.loads(detail) if detail else {}
                     boards.append(int(info.get('limit_boards', 1) or 1))
+                    if 'turnover' in info:
+                        turnovers.append(float(info['turnover']))
+                    if 'amount' in info:
+                        amounts.append(float(info['amount']))
                 except Exception:
                     boards.append(1)
             m.zt_count = len(boards)
             m.first_board = sum(1 for b in boards if b == 1)
             m.board_2plus = sum(1 for b in boards if b >= 2)
             m.max_streak = max(boards) if boards else 0
+            m.avg_turnover = sum(turnovers) / len(turnovers) if turnovers else 0
+            m.total_amount = sum(amounts)
+            m.avg_amount = sum(amounts) / len(amounts) if amounts else 0
 
             # 跌停池
             cur.execute("""
