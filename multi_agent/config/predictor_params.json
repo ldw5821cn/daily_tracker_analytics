@@ -1,21 +1,21 @@
 {
   "_version": 5,
-  "updated_at": "2026-09-18T17:11:49.779339",
+  "updated_at": "2026-09-24T17:22:24.764199",
   "个股": {
     "weights": {
       "technical": 0.22,
       "fundamental": 0.25,
       "sentiment": 0.15,
       "macro": 0.18,
-      "debate": 0.19
+      "debate": 0.16
     },
     "threshold": {
-      "strong_bull": 70,
-      "bull": 62,
+      "strong_bull": 74,
+      "bull": 65,
       "neutral_high": 55,
       "neutral_low": 45,
       "bear": 42,
-      "strong_bear": 34
+      "strong_bear": 33
     },
     "fund_flow_strength": 0.0,
     "market_flow_strength": 0.0,
@@ -43,8 +43,8 @@
       "debate": 0.25
     },
     "threshold": {
-      "strong_bull": 69,
-      "bull": 62,
+      "strong_bull": 72,
+      "bull": 65,
       "neutral_high": 55,
       "neutral_low": 45,
       "bear": 42,
@@ -76,8 +76,8 @@
       "debate": 0.25
     },
     "threshold": {
-      "strong_bull": 69,
-      "bull": 62,
+      "strong_bull": 72,
+      "bull": 65,
       "neutral_high": 55,
       "neutral_low": 45,
       "bear": 42,
@@ -109,8 +109,8 @@
       "debate": 0.25
     },
     "threshold": {
-      "strong_bull": 69,
-      "bull": 62,
+      "strong_bull": 72,
+      "bull": 65,
       "neutral_high": 55,
       "neutral_low": 45,
       "bear": 42,
@@ -148,6 +148,6 @@
     "bear": 42,
     "strong_bear": 35
   },
-  "reflection_reason": "个股低准确率收紧强信号(47%)",
-  "reflection_updated_at": "2026-09-18T17:11:49.779331"
+  "reflection_reason": "个股低准确率收紧强信号(27%) | 看多反向提门槛(bull_acc=0%)",
+  "reflection_updated_at": "2026-09-24T17:22:24.764192"
 }
