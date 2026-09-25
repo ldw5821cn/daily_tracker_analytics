@@ -1,24 +1,9 @@
 {
-  "date": "2026-09-24",
+  "date": "2026-09-25",
   "total_portfolio_value": 50000.0,
-  "stock_etf_total_weight": 0.1,
-  "long_amount": 29925.0,
+  "stock_etf_total_weight": 0,
+  "long_amount": 0,
   "short_amount": 0,
   "skipped_count": 0,
-  "items": [
-    {
-      "ticker": "512170",
-      "name": "医疗ETF华宝",
-      "category": "ETF",
-      "signal": "bullish",
-      "target_weight": 0.1,
-      "reason": "信号bull 信心72% 60日收益+7.9% 回撤-8.9% 因子分+0.00",
-      "current_price": 0.34,
-      "target_price": 0.341,
-      "stop_loss": 0.333,
-      "action": "买入",
-      "target_amount": 29925.0,
-      "constraint_note": ""
-    }
-  ]
+  "items": []
 }
