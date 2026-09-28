@@ -1,43 +1,10 @@
 {
-  "pred_date": "2026-09-25",
-  "generated_at": "2026-09-25 15:37:41",
-  "macro_score": 49.2,
+  "pred_date": "2026-09-28",
+  "generated_at": "2026-09-28 15:35:50",
+  "macro_score": 49.3,
   "macro_signal": "neutral",
   "allow_long": true,
-  "longs": [
-    {
-      "ticker": "ABBV",
-      "name": "艾伯维",
-      "category": "US",
-      "signal": "看多",
-      "confidence": 0.81,
-      "price": 265.12,
-      "target": 270.422,
-      "stop": 251.864,
-      "weighted_score": 65.0,
-      "bt_return_60d": 6.33,
-      "bt_max_dd_60d": -7.41,
-      "bt_sharpe_60d": 1.14,
-      "reasoning": "技术面中性偏多(70/100) | 基本面普通(50/100) | 新闻情绪-0.10 | 多空辩论 看涨2 vs 看跌0 | 宏观中性(49.2/100)",
-      "position_pct": 0.1
-    },
-    {
-      "ticker": "LLY",
-      "name": "礼来",
-      "category": "US",
-      "signal": "看多",
-      "confidence": 0.81,
-      "price": 1181.89,
-      "target": 1205.528,
-      "stop": 1122.795,
-      "weighted_score": 65.0,
-      "bt_return_60d": -0.83,
-      "bt_max_dd_60d": -12.86,
-      "bt_sharpe_60d": -0.03,
-      "reasoning": "技术面中性偏多(70/100) | 基本面普通(50/100) | 新闻情绪-0.10 | 多空辩论 看涨2.0 vs 看跌0 | 宏观中性(49.2/100)",
-      "position_pct": 0.1
-    }
-  ],
+  "longs": [],
   "shorts_or_avoids": [
     {
       "ticker": "LC0",
@@ -52,7 +19,7 @@
       "bt_return_60d": -26.28,
       "bt_max_dd_60d": -26.28,
       "bt_sharpe_60d": -3.0,
-      "reasoning": "技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.2/100) | 市场上下文neutral(50.0/100)上限100%"
+      "reasoning": "技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.3/100) | 市场上下文neutral(50.0/100)上限100%"
     }
   ],
   "max_single_position": 0.1,
