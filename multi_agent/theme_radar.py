@@ -72,10 +72,11 @@ class ThemeRadarResult:
     ladder: Dict[int, List[dict]] = field(default_factory=dict)  # 连板梯队
 
     def to_dict(self):
+        themes = self.themes if isinstance(self.themes, list) else []
         return {
             'date': self.date,
             'phase': self.phase,
-            'themes': [t.to_dict() for t in self.themes],
+            'themes': themes if (themes and isinstance(themes[0], dict)) else [t.to_dict() for t in themes],
             'watchlist': self.watchlist,
             'avoid': self.avoid,
             'market_summary': self.market_summary,

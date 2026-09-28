@@ -180,8 +180,9 @@ class DailyReportGenerator:
             md += "| 题材 | 涨停 | 最高板 | 封单均值 | 状态 |\n"
             md += "|------|------|--------|----------|------|\n"
             for t in theme.themes[:5]:
-                status = "🔥 活跃" if t.zt_count >= 3 else "⚡ 观察"
-                md += f"| {t.name} | {t.zt_count} | {t.max_board} | {t.avg_fund:.0f}万 | {status} |\n"
+                zt_count = t.get('zt_count', 0)
+                status = "🔥 活跃" if zt_count >= 3 else "⚡ 观察"
+                md += f"| {t['name']} | {zt_count} | {t.get('max_board', '-')} | {t.get('avg_fund', 0):.0f}万 | {status} |\n"
             md += "\n"
 
         if theme.avoid:
@@ -243,7 +244,7 @@ class DailyReportGenerator:
         # 基于题材
         if theme.themes:
             top = theme.themes[0]
-            advice.append(f"最强题材: {top.name}（{top.zt_count}只涨停），关注首板补涨机会")
+            advice.append(f"最强题材: {top.get('name', '-')}（{top.get('zt_count', 0)}只涨停），关注首板补涨机会")
 
         if theme.avoid:
             advice.append(f"回避: {', '.join(theme.avoid)}（高位风险）")
