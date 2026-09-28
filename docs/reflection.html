@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🧠 复盘 - 2026-09-24</title>
+<title>🧠 复盘 - 2026-09-25</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <style>
@@ -64,25 +64,25 @@ tr:hover { background: #334155; }
 
     <div class="header">
         <h1>🧠 复盘 </h1>
-        <div class="sub">2026-09-24 预测验证后反思 · 生成于 2026-09-25T17:19:43</div>
+        <div class="sub">2026-09-25 预测验证后反思 · 生成于 2026-09-28T15:41:41</div>
     </div>
 
     <div class="header">
         <h1>🧠 每日预测反思 </h1>
-        <div class="sub">2026-09-24 预测 · 验证准确率 57.14% (28/49) · 错误 21 个</div>
+        <div class="sub">2026-09-25 预测 · 验证准确率 36.13% (69/191) · 错误 122 个</div>
     </div>
 
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="num" style="color:#ef4444">57.14%</div>
+            <div class="num" style="color:#22c55e">36.13%</div>
             <div class="label">总体准确率</div>
         </div>
         <div class="stat-card">
-            <div class="num">28</div>
+            <div class="num">69</div>
             <div class="label">正确</div>
         </div>
         <div class="stat-card">
-            <div class="num">21</div>
+            <div class="num">122</div>
             <div class="label">错误</div>
         </div>
     </div>
@@ -92,9 +92,10 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>信号</th><th>总数</th><th>错误</th><th>错误率</th></tr></thead>
         <tbody>
-        <tr><td>中性</td><td>34</td><td>9</td><td>26.47%</td></tr>
-        <tr><td>看多</td><td>4</td><td>4</td><td>100.0%</td></tr>
-        <tr><td>观望</td><td>11</td><td>8</td><td>72.73%</td></tr></tbody>
+        <tr><td>中性</td><td>133</td><td>88</td><td>66.17%</td></tr>
+        <tr><td>看多</td><td>11</td><td>10</td><td>90.91%</td></tr>
+        <tr><td>看空</td><td>4</td><td>2</td><td>50.0%</td></tr>
+        <tr><td>观望</td><td>43</td><td>22</td><td>51.16%</td></tr></tbody>
     </table>
     </div>
 
@@ -103,7 +104,9 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>类别</th><th>总数</th><th>错误</th><th>错误率</th></tr></thead>
         <tbody>
-        <tr><td>期货</td><td>49</td><td>21</td><td>42.86%</td></tr></tbody>
+        <tr><td>ETF</td><td>23</td><td>16</td><td>69.57%</td></tr>
+        <tr><td>个股</td><td>119</td><td>91</td><td>76.47%</td></tr>
+        <tr><td>期货</td><td>49</td><td>15</td><td>30.61%</td></tr></tbody>
     </table>
     </div>
 
@@ -112,8 +115,8 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>特征</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>weighted_score</td><td>51.06</td><td>55.04</td></tr>
-        <tr><td>confidence</td><td>0.64</td><td>0.65</td></tr></tbody>
+        <tr><td>weighted_score</td><td>49.91</td><td>51.96</td></tr>
+        <tr><td>confidence</td><td>0.64</td><td>0.68</td></tr></tbody>
     </table>
     </div>
 
@@ -122,10 +125,10 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>分项</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>技术面</td><td>54.96</td><td>58.52</td></tr>
-        <tr><td>新闻情绪</td><td>50.0</td><td>50.0</td></tr>
-        <tr><td>基本面</td><td>50.0</td><td>50.0</td></tr>
-        <tr><td>多空辩论净得分</td><td>-1.16</td><td>-0.19</td></tr></tbody>
+        <tr><td>技术面</td><td>54.24</td><td>53.92</td></tr>
+        <tr><td>新闻情绪</td><td>49.88</td><td>50.64</td></tr>
+        <tr><td>基本面</td><td>50.53</td><td>51.72</td></tr>
+        <tr><td>多空辩论净得分</td><td>-1.2</td><td>-0.28</td></tr></tbody>
     </table>
     </div>
 
@@ -134,10 +137,11 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>背离指标</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>fundamental_technical_divergence</td><td>-4.96</td><td>-8.52</td></tr>
-        <tr><td style='padding-left:24px;color:#94a3b8'>└ 看多错误样本</td><td>-20.0</td><td>n=4</td></tr>
-        <tr><td style='padding-left:24px;color:#94a3b8'>└ 中性错误样本</td><td>-4.11</td><td>n=9</td></tr>
-        <tr><td style='padding-left:24px;color:#94a3b8'>└ 观望错误样本</td><td>-7.75</td><td>n=8</td></tr></tbody>
+        <tr><td>fundamental_technical_divergence</td><td>-3.72</td><td>-2.21</td></tr>
+        <tr><td style='padding-left:24px;color:#94a3b8'>└ 看多错误样本</td><td>4.21</td><td>n=10</td></tr>
+        <tr><td style='padding-left:24px;color:#94a3b8'>└ 看空错误样本</td><td>-6.15</td><td>n=2</td></tr>
+        <tr><td style='padding-left:24px;color:#94a3b8'>└ 中性错误样本</td><td>-1.78</td><td>n=88</td></tr>
+        <tr><td style='padding-left:24px;color:#94a3b8'>└ 观望错误样本</td><td>-6.45</td><td>n=22</td></tr></tbody>
     </table>
     </div>
 
@@ -150,7 +154,7 @@ tr:hover { background: #334155; }
     </div>
 
     <div class="section-title">🤖 LLM 深度反思</div>
-    <div class="note"><strong>数据/因子诊断报告（2026-09-24）<br><br>## 一、当前失效或低信息量的因子<br><br>### 1. 信号映射层失效：因子→方向的单调性断裂（核心问题）<br>- <strong>量化证据</strong>：错误样本的 `weighted_score`（55.04）<strong>高于</strong>正确样本（51.06），技术面得分错误 58.52 vs 正确 54.96。即<strong>评分越高的样本反而越错</strong>——因子与最终方向的映射在当前权重下出现反转。<br>- <strong>多空辩论净得分</strong>：错误样本 -0.19 接近中性偏多，正确样本 -1.16 偏空，但最终信号却把"偏多证据组"输出为中性/观望，把"偏空证据组"判定为正确。说明<strong>综合分数到信号方向（阈值映射）的函数没有被正确学习</strong>，而非因子本身无信息量。<br><br>### 2. 方向性不对称：系统性低估上行<br>- 看多信号 4/4 全错，观望 8/11 错，且 Top 5 失败样本全部是<strong>收益 +5%~+8% 被判为中性/观望</strong>。当前因子组合呈现单向保守偏置——score 分布集中在 50-58 区间时一律坍缩到 neutral。<br>- 失败看多样本平均 `fundamental_technical_divergence = -20.0`：基本面缺失（50/N/A）+ 技术面 55-57 时，系统完全丢失上行动能信号。<br><br>### 3. 常量因子占位，未提供判别力<br>- 新闻情绪恒为 0.00、基本面恒为 50/N/A、市场上下文恒为 50.0——这三个分项在 49 个样本中无方差，<strong>当前相当于在加权公式里塞入常数项</strong>，是纯噪声而非特征，且会稀释真正有方差的因子（技术面、宏观）的有效权重。<br><br>### 4. 技术面因子滞后（已知问题，本轮复发）<br>- 错误样本技术面得分更高（58.52）却对应大涨，说明 `_fast_technical_analysis` 的动量/趋势分项在能源链急涨行情中滞后。<strong>已知模式 `tech_score_distribution_bias` 的监控结论应升级为 factor-level 失效标注</strong>，能源/化工品种在 2026-09-23（准确率 36.65%）至 09-24 连续两个交易日出现同向行情，技术面因子对板块级跳空行情完全钝化。<br><br>### 5. 缺失行业/产业链聚类因子 → 结构性误读<br>- Top 5 失败样本中 4 个为<strong>原油—炼化链</strong>（SC 原油、BU 沥青、FU 燃油、LU 低硫燃油），且<strong>评分、置信度、分项得分完全相同</strong>（54.4/0.54，技术 57）。这暴露两点：<br>  a) 系统对同链品种输出<strong>复制的打分</strong>，说明不存在品种独立信号，只有板块共因子；<br>  b) 错误不是 21 个独立事件，而是<strong>1-2 个板块级因子错误被复制 20 次</strong>。按独立错误计，真实有效错误样本远少于 21，准确率指标本身被板块聚类污染。<br><br>---<br><br>## 二、需要新增的数据源/因子特征<br><br>### 1. 高频/日内微观结构因子（针对技术面滞后）<br>- TickFlow / 盘口主动买卖盘差、日内净主动成交量、大单净流入（尤其能源链品种夜盘为主，日频技术面丢失关键信息）；<br>- 基差与持仓量变化：涨持仓 vs 减仓上涨区分真实资金流入与空头回补。<br><br>### 2. 板块级聚类因子（把"复制打分"变成真实因子）<br>- 品种所属产业链标签（原油炼化、煤化工、油脂油料、黑色</strong></div>
+    <div class="note">data_factor_agent 未返回观点。</div>
 
     <div class="footer">
         数据由 Hermes Agent + 多Agent LLM 预测系统自动生成 · 研究辅助非投资建议 ·

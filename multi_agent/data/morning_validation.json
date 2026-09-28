@@ -1,65 +1,58 @@
 {
-  "pred_date": "2026-09-24",
-  "validate_date": "2026-09-25",
+  "pred_date": "2026-09-25",
+  "validate_date": "2026-09-28",
   "direction_threshold": 1.5,
   "overall": {
-    "total": 49,
-    "correct": 28,
-    "accuracy": 57.14
+    "total": 191,
+    "correct": 69,
+    "accuracy": 36.13
   },
   "by_category": {
+    "ETF": {
+      "total": 23,
+      "correct": 7,
+      "accuracy": 30.43
+    },
+    "个股": {
+      "total": 119,
+      "correct": 28,
+      "accuracy": 23.53
+    },
     "期货": {
       "total": 49,
-      "correct": 28,
-      "accuracy": 57.14
+      "correct": 34,
+      "accuracy": 69.39
     }
   },
   "by_signal": {
     "中性": {
-      "total": 34,
-      "correct": 25,
-      "accuracy": 73.53
+      "total": 133,
+      "correct": 45,
+      "accuracy": 33.83
     },
     "看多": {
+      "total": 11,
+      "correct": 1,
+      "accuracy": 9.09
+    },
+    "看空": {
       "total": 4,
-      "correct": 0,
-      "accuracy": 0.0
+      "correct": 2,
+      "accuracy": 50.0
     },
     "观望": {
-      "total": 11,
-      "correct": 3,
-      "accuracy": 27.27
+      "total": 43,
+      "correct": 21,
+      "accuracy": 48.84
     }
   },
   "items": [
-    {
-      "ticker": "SMH",
-      "name": "美国半导体ETF-VanEck",
-      "category": "US",
-      "signal": "中性",
-      "pred_price": 601.41,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "SOXX",
-      "name": "美国半导体ETF-iShares",
-      "category": "US",
-      "signal": "中性",
-      "pred_price": 565.72,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
     {
       "ticker": "IWM",
       "name": "罗素2000ETF",
       "category": "US",
       "signal": "中性",
-      "pred_price": 281.92,
+      "pred_price": 281.66,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -70,7 +63,7 @@
       "name": "道琼斯ETF",
       "category": "US",
       "signal": "中性",
-      "pred_price": 514.3,
+      "pred_price": 512.68,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -81,29 +74,18 @@
       "name": "亚马逊",
       "category": "US",
       "signal": "中性",
-      "pred_price": 249.27,
+      "pred_price": 249.38,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
       "note": "no_data"
     },
     {
-      "ticker": "NVDA",
-      "name": "英伟达",
+      "ticker": "MSFT",
+      "name": "微软",
       "category": "US",
       "signal": "中性",
-      "pred_price": 225.51,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "META",
-      "name": "Meta",
-      "category": "US",
-      "signal": "中性",
-      "pred_price": 744.1,
+      "pred_price": 497.93,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -114,7 +96,18 @@
       "name": "特斯拉",
       "category": "US",
       "signal": "中性",
-      "pred_price": 380.12,
+      "pred_price": 377.94,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "META",
+      "name": "Meta",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 777.59,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -125,7 +118,7 @@
       "name": "AMD",
       "category": "US",
       "signal": "中性",
-      "pred_price": 614.61,
+      "pred_price": 629.26,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -136,18 +129,7 @@
       "name": "奈飞",
       "category": "US",
       "signal": "中性",
-      "pred_price": 71.36,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "CRM",
-      "name": "Salesforce",
-      "category": "US",
-      "signal": "中性",
-      "pred_price": 237.58,
+      "pred_price": 71.72,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -158,29 +140,7 @@
       "name": "Adobe",
       "category": "US",
       "signal": "中性",
-      "pred_price": 120.34,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "IBM",
-      "name": "IBM",
-      "category": "US",
-      "signal": "中性",
-      "pred_price": 232.76,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "ORCL",
-      "name": "甲骨文",
-      "category": "US",
-      "signal": "中性",
-      "pred_price": 144.56,
+      "pred_price": 119.46,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -191,7 +151,29 @@
       "name": "Uber",
       "category": "US",
       "signal": "中性",
-      "pred_price": 69.42,
+      "pred_price": 69.22,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "ORCL",
+      "name": "甲骨文",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 139.54,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "IBM",
+      "name": "IBM",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 227.06,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -202,18 +184,7 @@
       "name": "摩根大通",
       "category": "US",
       "signal": "中性",
-      "pred_price": 337.53,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "WFC",
-      "name": "富国银行",
-      "category": "US",
-      "signal": "中性",
-      "pred_price": 81.9,
+      "pred_price": 338.56,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -224,7 +195,18 @@
       "name": "美国银行",
       "category": "US",
       "signal": "中性",
-      "pred_price": 56.0,
+      "pred_price": 56.03,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "V",
+      "name": "Visa",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 367.98,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -235,29 +217,29 @@
       "name": "高盛",
       "category": "US",
       "signal": "中性",
-      "pred_price": 936.36,
+      "pred_price": 923.29,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
       "note": "no_data"
     },
     {
-      "ticker": "JNJ",
-      "name": "强生",
+      "ticker": "WFC",
+      "name": "富国银行",
       "category": "US",
       "signal": "中性",
-      "pred_price": 269.17,
+      "pred_price": 82.18,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
       "note": "no_data"
     },
     {
-      "ticker": "PFE",
-      "name": "辉瑞",
+      "ticker": "MA",
+      "name": "万事达",
       "category": "US",
       "signal": "中性",
-      "pred_price": 28.18,
+      "pred_price": 566.08,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -268,7 +250,7 @@
       "name": "联合健康",
       "category": "US",
       "signal": "中性",
-      "pred_price": 371.29,
+      "pred_price": 375.01,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -279,7 +261,7 @@
       "name": "开市客",
       "category": "US",
       "signal": "中性",
-      "pred_price": 904.7,
+      "pred_price": 896.48,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -290,7 +272,7 @@
       "name": "可口可乐",
       "category": "US",
       "signal": "中性",
-      "pred_price": 88.09,
+      "pred_price": 88.1,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -301,7 +283,7 @@
       "name": "百事",
       "category": "US",
       "signal": "中性",
-      "pred_price": 130.18,
+      "pred_price": 128.15,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -312,7 +294,7 @@
       "name": "麦当劳",
       "category": "US",
       "signal": "中性",
-      "pred_price": 238.32,
+      "pred_price": 237.02,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -323,18 +305,7 @@
       "name": "家得宝",
       "category": "US",
       "signal": "中性",
-      "pred_price": 296.72,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "NKE",
-      "name": "耐克",
-      "category": "US",
-      "signal": "中性",
-      "pred_price": 36.05,
+      "pred_price": 292.18,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -345,7 +316,7 @@
       "name": "迪士尼",
       "category": "US",
       "signal": "中性",
-      "pred_price": 103.46,
+      "pred_price": 105.56,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -356,7 +327,7 @@
       "name": "埃克森美孚",
       "category": "US",
       "signal": "中性",
-      "pred_price": 161.23,
+      "pred_price": 162.14,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -367,18 +338,7 @@
       "name": "雪佛龙",
       "category": "US",
       "signal": "中性",
-      "pred_price": 205.51,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "BA",
-      "name": "波音",
-      "category": "US",
-      "signal": "中性",
-      "pred_price": 199.93,
+      "pred_price": 205.65,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -389,18 +349,18 @@
       "name": "通用电气",
       "category": "US",
       "signal": "中性",
-      "pred_price": 319.8,
+      "pred_price": 319.78,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
       "note": "no_data"
     },
     {
-      "ticker": "BABA",
-      "name": "阿里巴巴",
+      "ticker": "BA",
+      "name": "波音",
       "category": "US",
       "signal": "中性",
-      "pred_price": 110.8,
+      "pred_price": 196.8,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -411,7 +371,7 @@
       "name": "美国塔",
       "category": "US",
       "signal": "中性",
-      "pred_price": 170.78,
+      "pred_price": 167.26,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -422,29 +382,7 @@
       "name": "百度",
       "category": "US",
       "signal": "中性",
-      "pred_price": 89.78,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "JD",
-      "name": "京东",
-      "category": "US",
-      "signal": "中性",
-      "pred_price": 27.16,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "512800",
-      "name": "银行ETF",
-      "category": "ETF",
-      "signal": "中性",
-      "pred_price": 0.84,
+      "pred_price": 88.08,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -456,10 +394,10 @@
       "category": "ETF",
       "signal": "中性",
       "pred_price": 1.02,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 0.98,
+      "return_pct": -3.922,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "159928",
@@ -467,10 +405,10 @@
       "category": "ETF",
       "signal": "中性",
       "pred_price": 0.65,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 0.645,
+      "return_pct": -0.769,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "512760",
@@ -478,10 +416,10 @@
       "category": "ETF",
       "signal": "中性",
       "pred_price": 1.08,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 1.035,
+      "return_pct": -4.167,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "563180",
@@ -489,10 +427,10 @@
       "category": "ETF",
       "signal": "中性",
       "pred_price": 1.14,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 1.136,
+      "return_pct": -0.351,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "159516",
@@ -500,21 +438,10 @@
       "category": "ETF",
       "signal": "中性",
       "pred_price": 0.7,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "588200",
-      "name": "科创芯片ETF嘉实",
-      "category": "ETF",
-      "signal": "中性",
-      "pred_price": 1.16,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 0.67,
+      "return_pct": -4.286,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "159995",
@@ -522,10 +449,21 @@
       "category": "ETF",
       "signal": "中性",
       "pred_price": 1.13,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 1.079,
+      "return_pct": -4.513,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "588200",
+      "name": "科创芯片ETF嘉实",
+      "category": "ETF",
+      "signal": "中性",
+      "pred_price": 1.16,
+      "today_price": 1.106,
+      "return_pct": -4.655,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "512400",
@@ -533,21 +471,10 @@
       "category": "ETF",
       "signal": "中性",
       "pred_price": 1.66,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "512000",
-      "name": "券商ETF华宝",
-      "category": "ETF",
-      "signal": "中性",
-      "pred_price": 0.5,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 1.593,
+      "return_pct": -4.036,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "512880",
@@ -555,65 +482,21 @@
       "category": "ETF",
       "signal": "中性",
       "pred_price": 1.05,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 1.025,
+      "return_pct": -2.381,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
-      "ticker": "513120",
-      "name": "港股创新药ETF广发",
+      "ticker": "512000",
+      "name": "券商ETF华宝",
       "category": "ETF",
       "signal": "中性",
-      "pred_price": 1.31,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "512890",
-      "name": "红利低波ETF华泰柏瑞",
-      "category": "ETF",
-      "signal": "中性",
-      "pred_price": 1.19,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "601991",
-      "name": "大唐发电",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 5.36,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "600206",
-      "name": "有研新材",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 49.81,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "688019",
-      "name": "安集科技",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 225.66,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "pred_price": 0.5,
+      "today_price": 0.49,
+      "return_pct": -2.0,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "300054",
@@ -621,10 +504,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 70.11,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 67.5,
+      "return_pct": -3.723,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "688041",
@@ -632,21 +515,32 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 248.3,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 240.5,
+      "return_pct": -3.141,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
-      "ticker": "688256",
-      "name": "寒武纪",
+      "ticker": "512890",
+      "name": "红利低波ETF华泰柏瑞",
+      "category": "ETF",
+      "signal": "中性",
+      "pred_price": 1.19,
+      "today_price": 1.18,
+      "return_pct": -0.84,
+      "direction_correct": true,
+      "note": "ok"
+    },
+    {
+      "ticker": "688019",
+      "name": "安集科技",
       "category": "个股",
       "signal": "中性",
-      "pred_price": 1091.48,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "pred_price": 225.66,
+      "today_price": 214.9,
+      "return_pct": -4.768,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "688981",
@@ -654,21 +548,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 119.98,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "688047",
-      "name": "龙芯中科",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 104.7,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 116.56,
+      "return_pct": -2.85,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "688012",
@@ -676,21 +559,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 339.3,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 324.5,
+      "return_pct": -4.362,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
-      "ticker": "688082",
-      "name": "盛美上海",
+      "ticker": "688256",
+      "name": "寒武纪",
       "category": "个股",
       "signal": "中性",
-      "pred_price": 304.11,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "pred_price": 1091.48,
+      "today_price": 1020.0,
+      "return_pct": -6.549,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "688072",
@@ -698,10 +581,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 700.9,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 653.8,
+      "return_pct": -6.72,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "600549",
@@ -709,21 +592,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 46.9,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "688146",
-      "name": "中船特气",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 212.99,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 43.5,
+      "return_pct": -7.249,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "000657",
@@ -731,10 +603,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 57.18,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 53.25,
+      "return_pct": -6.873,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "688146",
+      "name": "中船特气",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 212.99,
+      "today_price": 201.07,
+      "return_pct": -5.597,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "002378",
@@ -742,10 +625,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 22.5,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 21.36,
+      "return_pct": -5.067,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "601958",
@@ -753,10 +636,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 19.7,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 19.13,
+      "return_pct": -2.893,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "603993",
@@ -764,21 +647,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 17.08,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "300263",
-      "name": "隆华科技",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 10.64,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 16.83,
+      "return_pct": -1.464,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "000960",
@@ -786,10 +658,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 31.61,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 30.34,
+      "return_pct": -4.018,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "300263",
+      "name": "隆华科技",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 10.64,
+      "today_price": 10.14,
+      "return_pct": -4.699,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "000426",
@@ -797,21 +680,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 32.77,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "301319",
-      "name": "唯特偶",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 95.33,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 31.17,
+      "return_pct": -4.883,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "600961",
@@ -819,10 +691,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 23.61,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 22.31,
+      "return_pct": -5.506,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "688047",
+      "name": "龙芯中科",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 104.7,
+      "today_price": 99.91,
+      "return_pct": -4.575,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "688530",
@@ -830,10 +713,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 61.71,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 57.45,
+      "return_pct": -6.903,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "301319",
+      "name": "唯特偶",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 95.33,
+      "today_price": 86.66,
+      "return_pct": -9.095,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "601600",
@@ -841,21 +735,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 8.88,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "000612",
-      "name": "焦作万方",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 10.71,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 8.68,
+      "return_pct": -2.252,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "300346",
@@ -863,21 +746,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 54.4,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "600703",
-      "name": "三安光电",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 12.47,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 52.15,
+      "return_pct": -4.136,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "002428",
@@ -885,21 +757,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 91.63,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 87.77,
+      "return_pct": -4.213,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
-      "ticker": "600497",
-      "name": "驰宏锌锗",
+      "ticker": "600703",
+      "name": "三安光电",
       "category": "个股",
       "signal": "中性",
-      "pred_price": 9.26,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "pred_price": 12.47,
+      "today_price": 11.59,
+      "return_pct": -7.057,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "688313",
@@ -907,10 +779,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 157.3,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 145.5,
+      "return_pct": -7.502,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "000962",
@@ -918,10 +790,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 58.52,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 55.52,
+      "return_pct": -5.126,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "300726",
@@ -929,10 +801,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 58.43,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 52.39,
+      "return_pct": -10.337,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "002138",
@@ -940,10 +812,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 51.3,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 47.89,
+      "return_pct": -6.647,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "000612",
+      "name": "焦作万方",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 10.71,
+      "today_price": 10.19,
+      "return_pct": -4.855,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "603678",
@@ -951,21 +834,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 48.05,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "301219",
-      "name": "腾远钴业",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 40.05,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 43.45,
+      "return_pct": -9.573,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "300618",
@@ -973,21 +845,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 31.28,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 30.21,
+      "return_pct": -3.421,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
-      "ticker": "300666",
-      "name": "江丰电子",
+      "ticker": "301219",
+      "name": "腾远钴业",
       "category": "个股",
       "signal": "中性",
-      "pred_price": 243.62,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "pred_price": 40.05,
+      "today_price": 38.75,
+      "return_pct": -3.246,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "600459",
@@ -995,43 +867,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 18.53,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 17.9,
+      "return_pct": -3.4,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
-      "ticker": "300706",
-      "name": "阿石创",
+      "ticker": "300666",
+      "name": "江丰电子",
       "category": "个股",
       "signal": "中性",
-      "pred_price": 50.36,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "301026",
-      "name": "浩通科技",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 18.86,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "000630",
-      "name": "铜陵有色",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 5.89,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "pred_price": 243.62,
+      "today_price": 232.64,
+      "return_pct": -4.507,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "601899",
@@ -1039,10 +889,32 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 30.01,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 29.42,
+      "return_pct": -1.966,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "300706",
+      "name": "阿石创",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 50.36,
+      "today_price": 48.02,
+      "return_pct": -4.647,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "600497",
+      "name": "驰宏锌锗",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 9.26,
+      "today_price": 8.83,
+      "return_pct": -4.644,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "600362",
@@ -1050,10 +922,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 42.4,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 40.92,
+      "return_pct": -3.491,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "301026",
+      "name": "浩通科技",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 18.86,
+      "today_price": 18.43,
+      "return_pct": -2.28,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "002203",
@@ -1061,21 +944,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 17.78,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 17.09,
+      "return_pct": -3.881,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
-      "ticker": "300502",
-      "name": "新易盛",
+      "ticker": "000630",
+      "name": "铜陵有色",
       "category": "个股",
       "signal": "中性",
-      "pred_price": 435.0,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "pred_price": 5.89,
+      "today_price": 5.69,
+      "return_pct": -3.396,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "000878",
@@ -1083,10 +966,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 16.36,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 15.61,
+      "return_pct": -4.584,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "300502",
+      "name": "新易盛",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 435.0,
+      "today_price": 399.7,
+      "return_pct": -8.115,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "300308",
@@ -1094,21 +988,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 895.86,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "300394",
-      "name": "天孚通信",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 267.93,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 815.0,
+      "return_pct": -9.026,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "002281",
@@ -1116,10 +999,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 181.99,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 163.8,
+      "return_pct": -9.995,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "000988",
@@ -1127,32 +1010,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 102.9,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "600547",
-      "name": "山东黄金",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 29.07,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "600489",
-      "name": "中金黄金",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 22.12,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 92.61,
+      "return_pct": -10.0,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "600988",
@@ -1160,21 +1021,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 40.28,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 38.07,
+      "return_pct": -5.487,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
-      "ticker": "000807",
-      "name": "云铝股份",
+      "ticker": "600489",
+      "name": "中金黄金",
       "category": "个股",
       "signal": "中性",
-      "pred_price": 26.03,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "pred_price": 22.12,
+      "today_price": 20.95,
+      "return_pct": -5.289,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "000975",
@@ -1182,21 +1043,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 23.17,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "000898",
-      "name": "鞍钢股份",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 1.99,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 22.13,
+      "return_pct": -4.489,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "600219",
@@ -1204,21 +1054,32 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 4.61,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 4.49,
+      "return_pct": -2.603,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
-      "ticker": "000959",
-      "name": "首钢股份",
+      "ticker": "600547",
+      "name": "山东黄金",
       "category": "个股",
       "signal": "中性",
-      "pred_price": 3.42,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "pred_price": 29.07,
+      "today_price": 26.16,
+      "return_pct": -10.01,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "000898",
+      "name": "鞍钢股份",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 1.99,
+      "today_price": 1.97,
+      "return_pct": -1.005,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "000932",
@@ -1226,10 +1087,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 3.45,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 3.4,
+      "return_pct": -1.449,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "600010",
@@ -1237,10 +1098,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 2.09,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 2.06,
+      "return_pct": -1.435,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "601088",
@@ -1248,10 +1109,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 48.03,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 48.39,
+      "return_pct": 0.75,
+      "direction_correct": true,
+      "note": "ok"
+    },
+    {
+      "ticker": "000959",
+      "name": "首钢股份",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 3.42,
+      "today_price": 3.38,
+      "return_pct": -1.17,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "601898",
@@ -1259,21 +1131,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 14.01,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "600188",
-      "name": "兖矿能源",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 19.76,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 14.18,
+      "return_pct": 1.213,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "601225",
@@ -1281,21 +1142,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 25.83,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "601857",
-      "name": "中国石油",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 10.95,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 25.85,
+      "return_pct": 0.077,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "000983",
@@ -1303,10 +1153,32 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 6.53,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 6.48,
+      "return_pct": -0.766,
+      "direction_correct": true,
+      "note": "ok"
+    },
+    {
+      "ticker": "601857",
+      "name": "中国石油",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 10.95,
+      "today_price": 11.19,
+      "return_pct": 2.192,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "600188",
+      "name": "兖矿能源",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 19.76,
+      "today_price": 19.66,
+      "return_pct": -0.506,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "601808",
@@ -1314,32 +1186,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 12.12,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 12.17,
+      "return_pct": 0.413,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
-      "ticker": "600583",
-      "name": "海油工程",
+      "ticker": "000807",
+      "name": "云铝股份",
       "category": "个股",
       "signal": "中性",
-      "pred_price": 6.52,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "002353",
-      "name": "杰瑞股份",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 116.02,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "pred_price": 26.03,
+      "today_price": 25.37,
+      "return_pct": -2.536,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "600309",
@@ -1347,10 +1208,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 69.45,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 69.4,
+      "return_pct": -0.072,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "600989",
@@ -1358,32 +1219,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 22.33,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "000923",
-      "name": "河钢资源",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 15.75,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "002493",
-      "name": "荣盛石化",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 13.11,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 22.45,
+      "return_pct": 0.537,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "600346",
@@ -1391,10 +1230,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 16.15,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 16.42,
+      "return_pct": 1.672,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "000923",
+      "name": "河钢资源",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 15.75,
+      "today_price": 15.04,
+      "return_pct": -4.508,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "002385",
@@ -1402,32 +1252,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 3.09,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "001203",
-      "name": "大中矿业",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 23.11,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "000876",
-      "name": "新希望",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 6.92,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 3.06,
+      "return_pct": -0.971,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "300999",
@@ -1435,30 +1263,74 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 24.55,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 24.18,
+      "return_pct": -1.507,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "001203",
+      "name": "大中矿业",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 23.11,
+      "today_price": 21.8,
+      "return_pct": -5.669,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "000876",
+      "name": "新希望",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 6.92,
+      "today_price": 6.82,
+      "return_pct": -1.445,
+      "direction_correct": true,
+      "note": "ok"
+    },
+    {
+      "ticker": "002353",
+      "name": "杰瑞股份",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 116.02,
+      "today_price": 110.4,
+      "return_pct": -4.844,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "002493",
+      "name": "荣盛石化",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 13.11,
+      "today_price": 13.69,
+      "return_pct": 4.424,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "AU0",
+      "name": "黄金",
+      "category": "期货",
+      "signal": "中性",
+      "pred_price": 927.66,
+      "today_price": 904.68,
+      "return_pct": -2.477,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "AL0",
       "name": "沪铝",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 24205.0,
-      "today_price": 24200.0,
-      "return_pct": -0.021,
-      "direction_correct": true,
-      "note": "ok"
-    },
-    {
-      "ticker": "ZN0",
-      "name": "沪锌",
-      "category": "期货",
-      "signal": "中性",
-      "pred_price": 26515.0,
-      "today_price": 26760.0,
-      "return_pct": 0.924,
+      "pred_price": 24200.0,
+      "today_price": 23950.0,
+      "return_pct": -1.033,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1467,31 +1339,9 @@
       "name": "螺纹钢",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 3113.0,
-      "today_price": 3118.0,
-      "return_pct": 0.161,
-      "direction_correct": true,
-      "note": "ok"
-    },
-    {
-      "ticker": "AU0",
-      "name": "黄金",
-      "category": "期货",
-      "signal": "中性",
-      "pred_price": 939.5,
-      "today_price": 927.66,
-      "return_pct": -1.26,
-      "direction_correct": true,
-      "note": "ok"
-    },
-    {
-      "ticker": "I0",
-      "name": "铁矿石",
-      "category": "期货",
-      "signal": "中性",
-      "pred_price": 712.0,
-      "today_price": 713.5,
-      "return_pct": 0.211,
+      "pred_price": 3118.0,
+      "today_price": 3108.0,
+      "return_pct": -0.321,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1500,20 +1350,31 @@
       "name": "热卷",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 3301.0,
-      "today_price": 3298.0,
-      "return_pct": -0.091,
+      "pred_price": 3298.0,
+      "today_price": 3282.0,
+      "return_pct": -0.485,
       "direction_correct": true,
       "note": "ok"
     },
     {
-      "ticker": "JM0",
-      "name": "焦煤",
+      "ticker": "AG0",
+      "name": "白银",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 1503.0,
-      "today_price": 1509.0,
-      "return_pct": 0.399,
+      "pred_price": 15661.0,
+      "today_price": 14987.0,
+      "return_pct": -4.304,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "I0",
+      "name": "铁矿石",
+      "category": "期货",
+      "signal": "中性",
+      "pred_price": 713.5,
+      "today_price": 705.0,
+      "return_pct": -1.191,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1522,9 +1383,42 @@
       "name": "焦炭",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 1968.5,
-      "today_price": 1974.5,
-      "return_pct": 0.305,
+      "pred_price": 1974.5,
+      "today_price": 1952.0,
+      "return_pct": -1.14,
+      "direction_correct": true,
+      "note": "ok"
+    },
+    {
+      "ticker": "JM0",
+      "name": "焦煤",
+      "category": "期货",
+      "signal": "中性",
+      "pred_price": 1509.0,
+      "today_price": 1458.5,
+      "return_pct": -3.347,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "SC0",
+      "name": "原油",
+      "category": "期货",
+      "signal": "中性",
+      "pred_price": 743.5,
+      "today_price": 728.0,
+      "return_pct": -2.085,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "TA0",
+      "name": "PTA",
+      "category": "期货",
+      "signal": "中性",
+      "pred_price": 6340.0,
+      "today_price": 6256.0,
+      "return_pct": -1.325,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1533,21 +1427,10 @@
       "name": "硅锰",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 5852.0,
-      "today_price": 5846.0,
-      "return_pct": -0.103,
+      "pred_price": 5846.0,
+      "today_price": 5852.0,
+      "return_pct": 0.103,
       "direction_correct": true,
-      "note": "ok"
-    },
-    {
-      "ticker": "SC0",
-      "name": "原油",
-      "category": "期货",
-      "signal": "中性",
-      "pred_price": 688.1,
-      "today_price": 743.5,
-      "return_pct": 8.051,
-      "direction_correct": false,
       "note": "ok"
     },
     {
@@ -1555,10 +1438,10 @@
       "name": "甲醇",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 2833.0,
-      "today_price": 2960.0,
-      "return_pct": 4.483,
-      "direction_correct": false,
+      "pred_price": 2960.0,
+      "today_price": 2941.0,
+      "return_pct": -0.642,
+      "direction_correct": true,
       "note": "ok"
     },
     {
@@ -1566,9 +1449,9 @@
       "name": "玉米",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 2184.0,
+      "pred_price": 2181.0,
       "today_price": 2181.0,
-      "return_pct": -0.137,
+      "return_pct": 0.0,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1577,53 +1460,9 @@
       "name": "棉花",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 15820.0,
-      "today_price": 15835.0,
-      "return_pct": 0.095,
-      "direction_correct": true,
-      "note": "ok"
-    },
-    {
-      "ticker": "SR0",
-      "name": "白糖",
-      "category": "期货",
-      "signal": "中性",
-      "pred_price": 5373.0,
-      "today_price": 5404.0,
-      "return_pct": 0.577,
-      "direction_correct": true,
-      "note": "ok"
-    },
-    {
-      "ticker": "RM0",
-      "name": "菜粕",
-      "category": "期货",
-      "signal": "中性",
-      "pred_price": 2349.0,
-      "today_price": 2360.0,
-      "return_pct": 0.468,
-      "direction_correct": true,
-      "note": "ok"
-    },
-    {
-      "ticker": "P0",
-      "name": "棕榈油",
-      "category": "期货",
-      "signal": "中性",
-      "pred_price": 9718.0,
-      "today_price": 9806.0,
-      "return_pct": 0.906,
-      "direction_correct": true,
-      "note": "ok"
-    },
-    {
-      "ticker": "SA0",
-      "name": "纯碱",
-      "category": "期货",
-      "signal": "中性",
-      "pred_price": 1011.0,
-      "today_price": 1004.0,
-      "return_pct": -0.692,
+      "pred_price": 15835.0,
+      "today_price": 16000.0,
+      "return_pct": 1.042,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1632,31 +1471,64 @@
       "name": "玻璃",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 925.0,
-      "today_price": 914.0,
-      "return_pct": -1.189,
+      "pred_price": 914.0,
+      "today_price": 894.0,
+      "return_pct": -2.188,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "P0",
+      "name": "棕榈油",
+      "category": "期货",
+      "signal": "中性",
+      "pred_price": 9806.0,
+      "today_price": 9630.0,
+      "return_pct": -1.795,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "SA0",
+      "name": "纯碱",
+      "category": "期货",
+      "signal": "中性",
+      "pred_price": 1004.0,
+      "today_price": 1014.0,
+      "return_pct": 0.996,
       "direction_correct": true,
       "note": "ok"
     },
     {
-      "ticker": "OI0",
-      "name": "菜油",
+      "ticker": "PG0",
+      "name": "LPG",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 10152.0,
-      "today_price": 10264.0,
-      "return_pct": 1.103,
+      "pred_price": 6686.0,
+      "today_price": 6650.0,
+      "return_pct": -0.538,
       "direction_correct": true,
       "note": "ok"
     },
     {
-      "ticker": "EG0",
-      "name": "乙二醇",
+      "ticker": "L0",
+      "name": "塑料",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 5153.0,
-      "today_price": 5412.0,
-      "return_pct": 5.026,
+      "pred_price": 8235.0,
+      "today_price": 8203.0,
+      "return_pct": -0.389,
+      "direction_correct": true,
+      "note": "ok"
+    },
+    {
+      "ticker": "RU0",
+      "name": "橡胶",
+      "category": "期货",
+      "signal": "中性",
+      "pred_price": 19600.0,
+      "today_price": 19280.0,
+      "return_pct": -1.633,
       "direction_correct": false,
       "note": "ok"
     },
@@ -1665,53 +1537,9 @@
       "name": "聚丙烯",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 8330.0,
-      "today_price": 8631.0,
-      "return_pct": 3.613,
-      "direction_correct": false,
-      "note": "ok"
-    },
-    {
-      "ticker": "RU0",
-      "name": "橡胶",
-      "category": "期货",
-      "signal": "中性",
-      "pred_price": 19455.0,
-      "today_price": 19600.0,
-      "return_pct": 0.745,
-      "direction_correct": true,
-      "note": "ok"
-    },
-    {
-      "ticker": "NR0",
-      "name": "20号胶",
-      "category": "期货",
-      "signal": "中性",
-      "pred_price": 16725.0,
-      "today_price": 17100.0,
-      "return_pct": 2.242,
-      "direction_correct": false,
-      "note": "ok"
-    },
-    {
-      "ticker": "L0",
-      "name": "塑料",
-      "category": "期货",
-      "signal": "中性",
-      "pred_price": 8028.0,
-      "today_price": 8235.0,
-      "return_pct": 2.578,
-      "direction_correct": false,
-      "note": "ok"
-    },
-    {
-      "ticker": "AP0",
-      "name": "苹果",
-      "category": "期货",
-      "signal": "中性",
-      "pred_price": 7112.0,
-      "today_price": 7076.0,
-      "return_pct": -0.506,
+      "pred_price": 8631.0,
+      "today_price": 8596.0,
+      "return_pct": -0.406,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1720,32 +1548,21 @@
       "name": "尿素",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 1748.0,
-      "today_price": 1758.0,
-      "return_pct": 0.572,
+      "pred_price": 1758.0,
+      "today_price": 1753.0,
+      "return_pct": -0.284,
       "direction_correct": true,
       "note": "ok"
     },
     {
-      "ticker": "CJ0",
-      "name": "红枣",
+      "ticker": "AP0",
+      "name": "苹果",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 7375.0,
-      "today_price": 7165.0,
-      "return_pct": -2.847,
-      "direction_correct": false,
-      "note": "ok"
-    },
-    {
-      "ticker": "LH0",
-      "name": "生猪",
-      "category": "期货",
-      "signal": "中性",
-      "pred_price": 10820.0,
-      "today_price": 10655.0,
-      "return_pct": -1.525,
-      "direction_correct": false,
+      "pred_price": 7076.0,
+      "today_price": 6987.0,
+      "return_pct": -1.258,
+      "direction_correct": true,
       "note": "ok"
     },
     {
@@ -1753,42 +1570,42 @@
       "name": "棉纱",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 22005.0,
-      "today_price": 21970.0,
-      "return_pct": -0.159,
+      "pred_price": 21970.0,
+      "today_price": 22245.0,
+      "return_pct": 1.252,
       "direction_correct": true,
       "note": "ok"
     },
     {
-      "ticker": "NI0",
-      "name": "沪镍",
+      "ticker": "LH0",
+      "name": "生猪",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 125660.0,
-      "today_price": 125320.0,
-      "return_pct": -0.271,
+      "pred_price": 10655.0,
+      "today_price": 10295.0,
+      "return_pct": -3.379,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "CJ0",
+      "name": "红枣",
+      "category": "期货",
+      "signal": "中性",
+      "pred_price": 7165.0,
+      "today_price": 7060.0,
+      "return_pct": -1.465,
       "direction_correct": true,
       "note": "ok"
     },
     {
-      "ticker": "SN0",
-      "name": "沪锡",
+      "ticker": "PB0",
+      "name": "沪铅",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 410960.0,
-      "today_price": 412790.0,
-      "return_pct": 0.445,
-      "direction_correct": true,
-      "note": "ok"
-    },
-    {
-      "ticker": "AO0",
-      "name": "氧化铝",
-      "category": "期货",
-      "signal": "中性",
-      "pred_price": 2692.0,
-      "today_price": 2687.0,
-      "return_pct": -0.186,
+      "pred_price": 16270.0,
+      "today_price": 16210.0,
+      "return_pct": -0.369,
       "direction_correct": true,
       "note": "ok"
     },
@@ -1797,21 +1614,21 @@
       "name": "工业硅",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 8555.0,
-      "today_price": 8530.0,
-      "return_pct": -0.292,
+      "pred_price": 8530.0,
+      "today_price": 8470.0,
+      "return_pct": -0.703,
       "direction_correct": true,
       "note": "ok"
     },
     {
-      "ticker": "LC0",
-      "name": "碳酸锂",
+      "ticker": "AO0",
+      "name": "氧化铝",
       "category": "期货",
       "signal": "中性",
-      "pred_price": 128900.0,
-      "today_price": 124420.0,
-      "return_pct": -3.476,
-      "direction_correct": false,
+      "pred_price": 2687.0,
+      "today_price": 2694.0,
+      "return_pct": 0.261,
+      "direction_correct": true,
       "note": "ok"
     },
     {
@@ -1820,21 +1637,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 284.34,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "601100",
-      "name": "恒立液压",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 92.3,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 274.62,
+      "return_pct": -3.418,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "002472",
@@ -1842,10 +1648,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 38.94,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 38.79,
+      "return_pct": -0.385,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "002371",
@@ -1853,10 +1659,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 653.06,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 633.93,
+      "return_pct": -2.929,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "002156",
@@ -1864,10 +1670,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 61.02,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 58.9,
+      "return_pct": -3.474,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "601100",
+      "name": "恒立液压",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 92.3,
+      "today_price": 90.0,
+      "return_pct": -2.492,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "600584",
@@ -1875,54 +1692,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 68.78,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "603986",
-      "name": "兆易创新",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 383.77,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "301269",
-      "name": "华大九天",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 87.56,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "300223",
-      "name": "北京君正",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 140.31,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "688008",
-      "name": "澜起科技",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 214.5,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 65.43,
+      "return_pct": -4.871,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "688525",
@@ -1930,21 +1703,43 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 211.01,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 198.25,
+      "return_pct": -6.047,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
-      "ticker": "688018",
-      "name": "乐鑫科技",
+      "ticker": "301269",
+      "name": "华大九天",
       "category": "个股",
       "signal": "中性",
-      "pred_price": 118.64,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "pred_price": 87.56,
+      "today_price": 86.45,
+      "return_pct": -1.268,
+      "direction_correct": true,
+      "note": "ok"
+    },
+    {
+      "ticker": "300223",
+      "name": "北京君正",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 140.31,
+      "today_price": 132.26,
+      "return_pct": -5.737,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "603986",
+      "name": "兆易创新",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 383.77,
+      "today_price": 358.51,
+      "return_pct": -6.582,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "688220",
@@ -1952,21 +1747,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 97.36,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "603501",
-      "name": "韦尔股份",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 81.4,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 92.23,
+      "return_pct": -5.269,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "000837",
@@ -1974,32 +1758,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 9.61,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 9.47,
+      "return_pct": -1.457,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
-      "ticker": "002031",
-      "name": "巨轮智能",
+      "ticker": "603501",
+      "name": "韦尔股份",
       "category": "个股",
       "signal": "中性",
-      "pred_price": 5.35,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "300450",
-      "name": "先导智能",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 32.11,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "pred_price": 81.4,
+      "today_price": 80.75,
+      "return_pct": -0.799,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "300035",
@@ -2007,21 +1780,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 12.21,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 11.84,
+      "return_pct": -3.03,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
-      "ticker": "002460",
-      "name": "赣锋锂业",
+      "ticker": "300450",
+      "name": "先导智能",
       "category": "个股",
       "signal": "中性",
-      "pred_price": 43.68,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "pred_price": 32.11,
+      "today_price": 31.2,
+      "return_pct": -2.834,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "000420",
@@ -2029,10 +1802,21 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 3.57,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 3.47,
+      "return_pct": -2.801,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "002460",
+      "name": "赣锋锂业",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 43.68,
+      "today_price": 41.9,
+      "return_pct": -4.075,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "000009",
@@ -2040,21 +1824,10 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 6.8,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "000099",
-      "name": "中信海直",
-      "category": "个股",
-      "signal": "中性",
-      "pred_price": 12.89,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 6.76,
+      "return_pct": -0.588,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "000801",
@@ -2062,28 +1835,39 @@
       "category": "个股",
       "signal": "中性",
       "pred_price": 11.85,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 11.54,
+      "return_pct": -2.616,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "000099",
+      "name": "中信海直",
+      "category": "个股",
+      "signal": "中性",
+      "pred_price": 12.89,
+      "today_price": 12.74,
+      "return_pct": -1.164,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "QQQ",
       "name": "纳斯达克100ETF",
       "category": "US",
       "signal": "看多",
-      "pred_price": 741.21,
+      "pred_price": 741.1,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
       "note": "no_data"
     },
     {
-      "ticker": "VTI",
-      "name": "全美股票ETF",
+      "ticker": "SOXX",
+      "name": "美国半导体ETF-iShares",
       "category": "US",
       "signal": "看多",
-      "pred_price": 376.19,
+      "pred_price": 566.07,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -2094,7 +1878,18 @@
       "name": "SPDR标普500ETF",
       "category": "US",
       "signal": "看多",
-      "pred_price": 767.81,
+      "pred_price": 767.18,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "VTI",
+      "name": "全美股票ETF",
+      "category": "US",
+      "signal": "看多",
+      "pred_price": 376.04,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -2105,29 +1900,40 @@
       "name": "苹果",
       "category": "US",
       "signal": "看多",
-      "pred_price": 337.02,
+      "pred_price": 335.92,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
       "note": "no_data"
     },
     {
-      "ticker": "ABBV",
-      "name": "艾伯维",
+      "ticker": "NVDA",
+      "name": "英伟达",
       "category": "US",
       "signal": "看多",
-      "pred_price": 265.08,
+      "pred_price": 224.58,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
       "note": "no_data"
     },
     {
-      "ticker": "WMT",
-      "name": "沃尔玛",
+      "ticker": "PFE",
+      "name": "辉瑞",
       "category": "US",
       "signal": "看多",
-      "pred_price": 110.53,
+      "pred_price": 28.41,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "LLY",
+      "name": "礼来",
+      "category": "US",
+      "signal": "看多",
+      "pred_price": 1181.89,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -2139,19 +1945,74 @@
       "category": "ETF",
       "signal": "看多",
       "pred_price": 0.34,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 0.34,
+      "return_pct": 0.0,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "513120",
+      "name": "港股创新药ETF广发",
+      "category": "ETF",
+      "signal": "看多",
+      "pred_price": 1.31,
+      "today_price": 1.318,
+      "return_pct": 0.611,
+      "direction_correct": true,
+      "note": "ok"
+    },
+    {
+      "ticker": "601991",
+      "name": "大唐发电",
+      "category": "个股",
+      "signal": "看多",
+      "pred_price": 5.36,
+      "today_price": 5.32,
+      "return_pct": -0.746,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "688082",
+      "name": "盛美上海",
+      "category": "个股",
+      "signal": "看多",
+      "pred_price": 304.11,
+      "today_price": 286.01,
+      "return_pct": -5.952,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "300394",
+      "name": "天孚通信",
+      "category": "个股",
+      "signal": "看多",
+      "pred_price": 267.93,
+      "today_price": 244.8,
+      "return_pct": -8.633,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "600583",
+      "name": "海油工程",
+      "category": "个股",
+      "signal": "看多",
+      "pred_price": 6.52,
+      "today_price": 6.5,
+      "return_pct": -0.307,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "CU0",
       "name": "沪铜",
       "category": "期货",
       "signal": "看多",
-      "pred_price": 110330.0,
-      "today_price": 110130.0,
-      "return_pct": -0.181,
+      "pred_price": 110130.0,
+      "today_price": 109460.0,
+      "return_pct": -0.608,
       "direction_correct": false,
       "note": "ok"
     },
@@ -2160,20 +2021,20 @@
       "name": "纸浆",
       "category": "期货",
       "signal": "看多",
-      "pred_price": 4896.0,
-      "today_price": 4874.0,
-      "return_pct": -0.449,
+      "pred_price": 4874.0,
+      "today_price": 4828.0,
+      "return_pct": -0.944,
       "direction_correct": false,
       "note": "ok"
     },
     {
-      "ticker": "PB0",
-      "name": "沪铅",
+      "ticker": "NR0",
+      "name": "20号胶",
       "category": "期货",
       "signal": "看多",
-      "pred_price": 16335.0,
-      "today_price": 16270.0,
-      "return_pct": -0.398,
+      "pred_price": 17100.0,
+      "today_price": 16740.0,
+      "return_pct": -2.105,
       "direction_correct": false,
       "note": "ok"
     },
@@ -2182,29 +2043,106 @@
       "name": "国际铜",
       "category": "期货",
       "signal": "看多",
-      "pred_price": 99780.0,
-      "today_price": 99150.0,
-      "return_pct": -0.631,
+      "pred_price": 99150.0,
+      "today_price": 98400.0,
+      "return_pct": -0.756,
       "direction_correct": false,
       "note": "ok"
     },
     {
-      "ticker": "MSFT",
-      "name": "微软",
+      "ticker": "688018",
+      "name": "乐鑫科技",
+      "category": "个股",
+      "signal": "看多",
+      "pred_price": 118.64,
+      "today_price": 115.7,
+      "return_pct": -2.478,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "SMH",
+      "name": "美国半导体ETF-VanEck",
       "category": "US",
-      "signal": "观望",
-      "pred_price": 500.59,
+      "signal": "看空",
+      "pred_price": 600.52,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
       "note": "no_data"
     },
     {
+      "ticker": "ABBV",
+      "name": "艾伯维",
+      "category": "US",
+      "signal": "看空",
+      "pred_price": 265.12,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "600206",
+      "name": "有研新材",
+      "category": "个股",
+      "signal": "看空",
+      "pred_price": 49.81,
+      "today_price": 51.63,
+      "return_pct": 3.654,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "LC0",
+      "name": "碳酸锂",
+      "category": "期货",
+      "signal": "看空",
+      "pred_price": 124420.0,
+      "today_price": 119040.0,
+      "return_pct": -4.324,
+      "direction_correct": true,
+      "note": "ok"
+    },
+    {
+      "ticker": "688008",
+      "name": "澜起科技",
+      "category": "个股",
+      "signal": "看空",
+      "pred_price": 214.5,
+      "today_price": 208.6,
+      "return_pct": -2.751,
+      "direction_correct": true,
+      "note": "ok"
+    },
+    {
+      "ticker": "002031",
+      "name": "巨轮智能",
+      "category": "个股",
+      "signal": "看空",
+      "pred_price": 5.35,
+      "today_price": 5.56,
+      "return_pct": 3.925,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
       "ticker": "GOOGL",
       "name": "谷歌A",
       "category": "US",
       "signal": "观望",
-      "pred_price": 337.83,
+      "pred_price": 342.36,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "CRM",
+      "name": "Salesforce",
+      "category": "US",
+      "signal": "观望",
+      "pred_price": 238.22,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -2215,29 +2153,18 @@
       "name": "英特尔",
       "category": "US",
       "signal": "观望",
-      "pred_price": 122.6,
+      "pred_price": 127.39,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
       "note": "no_data"
     },
     {
-      "ticker": "V",
-      "name": "Visa",
+      "ticker": "JNJ",
+      "name": "强生",
       "category": "US",
       "signal": "观望",
-      "pred_price": 361.52,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "MA",
-      "name": "万事达",
-      "category": "US",
-      "signal": "观望",
-      "pred_price": 559.92,
+      "pred_price": 270.68,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -2248,18 +2175,29 @@
       "name": "默沙东",
       "category": "US",
       "signal": "观望",
-      "pred_price": 148.08,
+      "pred_price": 147.98,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
       "note": "no_data"
     },
     {
-      "ticker": "LLY",
-      "name": "礼来",
+      "ticker": "WMT",
+      "name": "沃尔玛",
       "category": "US",
       "signal": "观望",
-      "pred_price": 1150.99,
+      "pred_price": 107.59,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "NKE",
+      "name": "耐克",
+      "category": "US",
+      "signal": "观望",
+      "pred_price": 35.99,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -2270,7 +2208,7 @@
       "name": "卡特彼勒",
       "category": "US",
       "signal": "观望",
-      "pred_price": 812.02,
+      "pred_price": 805.25,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -2281,7 +2219,7 @@
       "name": "林德",
       "category": "US",
       "signal": "观望",
-      "pred_price": 469.72,
+      "pred_price": 468.14,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -2292,18 +2230,29 @@
       "name": "拼多多",
       "category": "US",
       "signal": "观望",
-      "pred_price": 79.2,
+      "pred_price": 78.2,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
       "note": "no_data"
     },
     {
-      "ticker": "NTES",
-      "name": "网易",
+      "ticker": "BABA",
+      "name": "阿里巴巴",
       "category": "US",
       "signal": "观望",
-      "pred_price": 117.02,
+      "pred_price": 110.63,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "JD",
+      "name": "京东",
+      "category": "US",
+      "signal": "观望",
+      "pred_price": 26.75,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -2314,7 +2263,18 @@
       "name": "腾讯ADR",
       "category": "US",
       "signal": "观望",
-      "pred_price": 55.91,
+      "pred_price": 55.59,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "NTES",
+      "name": "网易",
+      "category": "US",
+      "signal": "观望",
+      "pred_price": 117.56,
       "today_price": null,
       "return_pct": null,
       "direction_correct": null,
@@ -2326,10 +2286,10 @@
       "category": "ETF",
       "signal": "观望",
       "pred_price": 1.63,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 1.572,
+      "return_pct": -3.558,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "159819",
@@ -2337,21 +2297,10 @@
       "category": "ETF",
       "signal": "观望",
       "pred_price": 1.76,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "159530",
-      "name": "机器人ETF易方达",
-      "category": "ETF",
-      "signal": "观望",
-      "pred_price": 1.29,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 1.681,
+      "return_pct": -4.489,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "562500",
@@ -2359,10 +2308,10 @@
       "category": "ETF",
       "signal": "观望",
       "pred_price": 0.92,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 0.895,
+      "return_pct": -2.717,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "159755",
@@ -2370,43 +2319,21 @@
       "category": "ETF",
       "signal": "观望",
       "pred_price": 0.86,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 0.832,
+      "return_pct": -3.256,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
-      "ticker": "159792",
-      "name": "港股通互联网ETF富国",
+      "ticker": "512800",
+      "name": "银行ETF",
       "category": "ETF",
       "signal": "观望",
-      "pred_price": 0.54,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "510300",
-      "name": "沪深300ETF华泰柏瑞",
-      "category": "ETF",
-      "signal": "观望",
-      "pred_price": 4.51,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "513180",
-      "name": "恒生科技ETF华夏",
-      "category": "ETF",
-      "signal": "观望",
-      "pred_price": 0.55,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "pred_price": 0.84,
+      "today_price": 0.835,
+      "return_pct": -0.595,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "515880",
@@ -2414,10 +2341,43 @@
       "category": "ETF",
       "signal": "观望",
       "pred_price": 0.68,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 0.627,
+      "return_pct": -7.794,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "513180",
+      "name": "恒生科技ETF华夏",
+      "category": "ETF",
+      "signal": "观望",
+      "pred_price": 0.55,
+      "today_price": 0.542,
+      "return_pct": -1.455,
+      "direction_correct": true,
+      "note": "ok"
+    },
+    {
+      "ticker": "510300",
+      "name": "沪深300ETF华泰柏瑞",
+      "category": "ETF",
+      "signal": "观望",
+      "pred_price": 4.51,
+      "today_price": 4.417,
+      "return_pct": -2.062,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "159530",
+      "name": "机器人ETF易方达",
+      "category": "ETF",
+      "signal": "观望",
+      "pred_price": 1.29,
+      "today_price": 1.266,
+      "return_pct": -1.86,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "300782",
@@ -2425,10 +2385,10 @@
       "category": "个股",
       "signal": "观望",
       "pred_price": 75.78,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 70.25,
+      "return_pct": -7.297,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "300474",
@@ -2436,10 +2396,21 @@
       "category": "个股",
       "signal": "观望",
       "pred_price": 52.58,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 52.1,
+      "return_pct": -0.913,
+      "direction_correct": true,
+      "note": "ok"
+    },
+    {
+      "ticker": "159792",
+      "name": "港股通互联网ETF富国",
+      "category": "ETF",
+      "signal": "观望",
+      "pred_price": 0.54,
+      "today_price": 0.538,
+      "return_pct": -0.37,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "000969",
@@ -2447,21 +2418,10 @@
       "category": "个股",
       "signal": "观望",
       "pred_price": 16.86,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "600301",
-      "name": "华锡有色",
-      "category": "个股",
-      "signal": "观望",
-      "pred_price": 47.65,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 16.12,
+      "return_pct": -4.389,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "600392",
@@ -2469,10 +2429,21 @@
       "category": "个股",
       "signal": "观望",
       "pred_price": 21.35,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 20.13,
+      "return_pct": -5.714,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "600301",
+      "name": "华锡有色",
+      "category": "个股",
+      "signal": "观望",
+      "pred_price": 47.65,
+      "today_price": 48.19,
+      "return_pct": 1.133,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "300489",
@@ -2480,10 +2451,10 @@
       "category": "个股",
       "signal": "观望",
       "pred_price": 271.15,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 257.9,
+      "return_pct": -4.887,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "000733",
@@ -2491,10 +2462,10 @@
       "category": "个股",
       "signal": "观望",
       "pred_price": 40.9,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 39.13,
+      "return_pct": -4.328,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "600019",
@@ -2502,21 +2473,10 @@
       "category": "个股",
       "signal": "观望",
       "pred_price": 5.84,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
-    },
-    {
-      "ticker": "600028",
-      "name": "中国石化",
-      "category": "个股",
-      "signal": "观望",
-      "pred_price": 5.32,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 5.8,
+      "return_pct": -0.685,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "600426",
@@ -2524,10 +2484,10 @@
       "category": "个股",
       "signal": "观望",
       "pred_price": 19.71,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 19.4,
+      "return_pct": -1.573,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "000301",
@@ -2535,20 +2495,42 @@
       "category": "个股",
       "signal": "观望",
       "pred_price": 13.36,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 13.23,
+      "return_pct": -0.973,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
-      "ticker": "AG0",
-      "name": "白银",
+      "ticker": "ZN0",
+      "name": "沪锌",
       "category": "期货",
       "signal": "观望",
-      "pred_price": 16165.0,
-      "today_price": 15661.0,
-      "return_pct": -3.118,
+      "pred_price": 26760.0,
+      "today_price": 26505.0,
+      "return_pct": -0.953,
+      "direction_correct": true,
+      "note": "ok"
+    },
+    {
+      "ticker": "600028",
+      "name": "中国石化",
+      "category": "个股",
+      "signal": "观望",
+      "pred_price": 5.32,
+      "today_price": 5.41,
+      "return_pct": 1.692,
       "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "SR0",
+      "name": "白糖",
+      "category": "期货",
+      "signal": "观望",
+      "pred_price": 5404.0,
+      "today_price": 5376.0,
+      "return_pct": -0.518,
+      "direction_correct": true,
       "note": "ok"
     },
     {
@@ -2556,20 +2538,20 @@
       "name": "PVC",
       "category": "期货",
       "signal": "观望",
-      "pred_price": 4770.0,
-      "today_price": 4798.0,
-      "return_pct": 0.587,
+      "pred_price": 4798.0,
+      "today_price": 4773.0,
+      "return_pct": -0.521,
       "direction_correct": true,
       "note": "ok"
     },
     {
-      "ticker": "TA0",
-      "name": "PTA",
+      "ticker": "RM0",
+      "name": "菜粕",
       "category": "期货",
       "signal": "观望",
-      "pred_price": 6120.0,
-      "today_price": 6340.0,
-      "return_pct": 3.595,
+      "pred_price": 2360.0,
+      "today_price": 2316.0,
+      "return_pct": -1.864,
       "direction_correct": false,
       "note": "ok"
     },
@@ -2578,10 +2560,21 @@
       "name": "苯乙烯",
       "category": "期货",
       "signal": "观望",
-      "pred_price": 9348.0,
-      "today_price": 9730.0,
-      "return_pct": 4.086,
-      "direction_correct": false,
+      "pred_price": 9730.0,
+      "today_price": 9613.0,
+      "return_pct": -1.202,
+      "direction_correct": true,
+      "note": "ok"
+    },
+    {
+      "ticker": "OI0",
+      "name": "菜油",
+      "category": "期货",
+      "signal": "观望",
+      "pred_price": 10264.0,
+      "today_price": 10111.0,
+      "return_pct": -1.491,
+      "direction_correct": true,
       "note": "ok"
     },
     {
@@ -2589,31 +2582,20 @@
       "name": "低硫燃油",
       "category": "期货",
       "signal": "观望",
-      "pred_price": 5385.0,
-      "today_price": 5657.0,
-      "return_pct": 5.051,
-      "direction_correct": false,
+      "pred_price": 5657.0,
+      "today_price": 5585.0,
+      "return_pct": -1.273,
+      "direction_correct": true,
       "note": "ok"
     },
     {
-      "ticker": "PG0",
-      "name": "LPG",
+      "ticker": "EG0",
+      "name": "乙二醇",
       "category": "期货",
       "signal": "观望",
-      "pred_price": 6403.0,
-      "today_price": 6686.0,
-      "return_pct": 4.42,
-      "direction_correct": false,
-      "note": "ok"
-    },
-    {
-      "ticker": "FU0",
-      "name": "燃油",
-      "category": "期货",
-      "signal": "观望",
-      "pred_price": 4117.0,
-      "today_price": 4363.0,
-      "return_pct": 5.975,
+      "pred_price": 5412.0,
+      "today_price": 5280.0,
+      "return_pct": -2.439,
       "direction_correct": false,
       "note": "ok"
     },
@@ -2622,9 +2604,9 @@
       "name": "沥青",
       "category": "期货",
       "signal": "观望",
-      "pred_price": 4898.0,
-      "today_price": 5256.0,
-      "return_pct": 7.309,
+      "pred_price": 5256.0,
+      "today_price": 5110.0,
+      "return_pct": -2.778,
       "direction_correct": false,
       "note": "ok"
     },
@@ -2633,20 +2615,9 @@
       "name": "短纤",
       "category": "期货",
       "signal": "观望",
-      "pred_price": 8022.0,
-      "today_price": 8316.0,
-      "return_pct": 3.665,
-      "direction_correct": false,
-      "note": "ok"
-    },
-    {
-      "ticker": "SS0",
-      "name": "不锈钢",
-      "category": "期货",
-      "signal": "观望",
-      "pred_price": 13840.0,
-      "today_price": 13815.0,
-      "return_pct": -0.181,
+      "pred_price": 8316.0,
+      "today_price": 8248.0,
+      "return_pct": -0.818,
       "direction_correct": true,
       "note": "ok"
     },
@@ -2655,9 +2626,42 @@
       "name": "鸡蛋",
       "category": "期货",
       "signal": "观望",
-      "pred_price": 3838.0,
-      "today_price": 3865.0,
-      "return_pct": 0.703,
+      "pred_price": 3865.0,
+      "today_price": 3809.0,
+      "return_pct": -1.449,
+      "direction_correct": true,
+      "note": "ok"
+    },
+    {
+      "ticker": "FU0",
+      "name": "燃油",
+      "category": "期货",
+      "signal": "观望",
+      "pred_price": 4363.0,
+      "today_price": 4419.0,
+      "return_pct": 1.284,
+      "direction_correct": true,
+      "note": "ok"
+    },
+    {
+      "ticker": "NI0",
+      "name": "沪镍",
+      "category": "期货",
+      "signal": "观望",
+      "pred_price": 125320.0,
+      "today_price": 123960.0,
+      "return_pct": -1.085,
+      "direction_correct": true,
+      "note": "ok"
+    },
+    {
+      "ticker": "SS0",
+      "name": "不锈钢",
+      "category": "期货",
+      "signal": "观望",
+      "pred_price": 13815.0,
+      "today_price": 13815.0,
+      "return_pct": 0.0,
       "direction_correct": true,
       "note": "ok"
     },
@@ -2667,10 +2671,10 @@
       "category": "个股",
       "signal": "观望",
       "pred_price": 49.31,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 48.19,
+      "return_pct": -2.271,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "603728",
@@ -2678,10 +2682,21 @@
       "category": "个股",
       "signal": "观望",
       "pred_price": 51.07,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 52.25,
+      "return_pct": 2.311,
+      "direction_correct": false,
+      "note": "ok"
+    },
+    {
+      "ticker": "SN0",
+      "name": "沪锡",
+      "category": "期货",
+      "signal": "观望",
+      "pred_price": 412790.0,
+      "today_price": 408580.0,
+      "return_pct": -1.02,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "001309",
@@ -2689,10 +2704,10 @@
       "category": "个股",
       "signal": "观望",
       "pred_price": 394.43,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 371.28,
+      "return_pct": -5.869,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "002050",
@@ -2700,10 +2715,10 @@
       "category": "个股",
       "signal": "观望",
       "pred_price": 36.08,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 35.44,
+      "return_pct": -1.774,
+      "direction_correct": false,
+      "note": "ok"
     },
     {
       "ticker": "001696",
@@ -2711,10 +2726,10 @@
       "category": "个股",
       "signal": "观望",
       "pred_price": 15.64,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 15.85,
+      "return_pct": 1.343,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "000901",
@@ -2722,10 +2737,10 @@
       "category": "个股",
       "signal": "观望",
       "pred_price": 14.06,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 13.87,
+      "return_pct": -1.351,
+      "direction_correct": true,
+      "note": "ok"
     },
     {
       "ticker": "000063",
@@ -2733,10 +2748,10 @@
       "category": "个股",
       "signal": "观望",
       "pred_price": 31.92,
-      "today_price": null,
-      "return_pct": null,
-      "direction_correct": null,
-      "note": "no_data"
+      "today_price": 30.79,
+      "return_pct": -3.54,
+      "direction_correct": false,
+      "note": "ok"
     }
   ]
 }
