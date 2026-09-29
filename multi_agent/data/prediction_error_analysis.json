@@ -104,9 +104,9 @@
       "name": "低硫燃油",
       "category": "期货",
       "signal": "看多",
-      "return_pct": -5.887,
+      "return_pct": -5.922,
       "pred_price": 5657.0,
-      "today_price": 5324.0,
+      "today_price": 5322.0,
       "weighted_score": 100.0,
       "confidence": 0.95,
       "reasoning": "技术面中性偏多(61/100) | 基本面neutral(50/100) | 新闻情绪-0.10 | 多空辩论 看涨72 vs 看跌50"
@@ -128,9 +128,9 @@
       "name": "白银",
       "category": "期货",
       "signal": "中性",
-      "return_pct": -5.185,
+      "return_pct": -5.191,
       "pred_price": 15661.0,
-      "today_price": 14849.0,
+      "today_price": 14848.0,
       "weighted_score": 51.4,
       "confidence": 0.62,
       "reasoning": "技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.7 vs 看跌2 | 宏观中性(49.3/100) | 市场上下文neutral(50.0/100)上限100%"
@@ -160,6 +160,18 @@
       "reasoning": "技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌2 | 宏观中性(49.3/100) | 市场上下文neutral(50.0/100)上限100%"
     },
     {
+      "ticker": "JD0",
+      "name": "鸡蛋",
+      "category": "期货",
+      "signal": "观望",
+      "return_pct": -4.321,
+      "pred_price": 3865.0,
+      "today_price": 3698.0,
+      "weighted_score": 46.4,
+      "confidence": 0.59,
+      "reasoning": "技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.7 vs 看跌0 | 宏观中性(49.3/100) | 市场上下文neutral(50.0/100)上限100%"
+    },
+    {
       "ticker": "000612",
       "name": "焦作万方",
       "category": "个股",
@@ -172,25 +184,13 @@
       "reasoning": "技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(49.3/100) | 市场上下文neutral(50.0/100)上限100%"
     },
     {
-      "ticker": "JD0",
-      "name": "鸡蛋",
-      "category": "期货",
-      "signal": "观望",
-      "return_pct": -4.295,
-      "pred_price": 3865.0,
-      "today_price": 3699.0,
-      "weighted_score": 46.4,
-      "confidence": 0.59,
-      "reasoning": "技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.7 vs 看跌0 | 宏观中性(49.3/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
       "ticker": "SC0",
       "name": "原油",
       "category": "期货",
       "signal": "中性",
-      "return_pct": -4.223,
+      "return_pct": -4.25,
       "pred_price": 743.5,
-      "today_price": 712.1,
+      "today_price": 711.9,
       "weighted_score": 49.2,
       "confidence": 0.67,
       "reasoning": "技术面中性(55/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3 | 宏观中性(49.3/100) | 市场上下文neutral(50.0/100)上限100%"
@@ -202,9 +202,9 @@
       "name": "碳酸锂",
       "category": "期货",
       "signal": "看空",
-      "return_pct": -4.453,
+      "return_pct": -4.533,
       "pred_price": 124420.0,
-      "today_price": 118880.0,
+      "today_price": 118780.0,
       "weighted_score": 28.5,
       "confidence": 0.95
     },
@@ -235,9 +235,9 @@
       "name": "纸浆",
       "category": "期货",
       "signal": "看多",
-      "return_pct": 1.805,
+      "return_pct": 1.764,
       "pred_price": 4874.0,
-      "today_price": 4962.0,
+      "today_price": 4960.0,
       "weighted_score": 85.2,
       "confidence": 0.95
     },
