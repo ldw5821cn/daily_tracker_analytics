@@ -1,5 +1,5 @@
 {
-  "date": "2026-09-28",
+  "date": "2026-09-29",
   "based_on_pred_date": null,
   "total_exposure": 0.05,
   "long_exposure": 0,
@@ -10,19 +10,19 @@
   "short_targets": 1,
   "targets": [
     {
-      "ticker": "LC0",
-      "name": "碳酸锂",
+      "ticker": "HC0",
+      "name": "热卷",
       "category": "期货",
-      "sector": "新能源",
+      "sector": "黑色",
       "signal": "bearish",
-      "current_price": 124420.0,
-      "target_price": 118693.258,
-      "stop_loss": 121931.6,
-      "confidence": 0.82,
-      "bt_score": -24.351,
+      "current_price": 3282.0,
+      "target_price": 3267.969,
+      "stop_loss": 3216.36,
+      "confidence": 0.74,
+      "bt_score": -0.785,
       "factor_score": 0.0,
-      "raw_weight": -0.24599999999999997,
-      "reason": "信号bear 信心82% 60日收益-26.3% 回撤-26.3% 因子分+0.00",
+      "raw_weight": -0.222,
+      "reason": "信号bear 信心74% 60日收益-0.2% 回撤-3.9% 因子分+0.00",
       "target_weight": -0.05,
       "capped": true
     }

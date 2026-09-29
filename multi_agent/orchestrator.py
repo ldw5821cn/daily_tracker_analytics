@@ -315,7 +315,9 @@ def build_evidence_chain(
         # 信号列表
         signals = tech_report.get('signals', [])
         if signals:
-            signal_text = f"技术信号: {', '.join(signals[:3])}"
+            # signals 是元组列表 (icon, title, desc)，提取 title 组成字符串
+            signal_titles = [s[1] if isinstance(s, (list, tuple)) and len(s) > 1 else str(s) for s in signals[:3]]
+            signal_text = f"技术信号: {', '.join(signal_titles)}"
             result.add_support(Evidence(
                 source_id="tech-signals-001",
                 source_type=EvidenceType.INFERENCE.value,
