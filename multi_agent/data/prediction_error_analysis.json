@@ -87,9 +87,9 @@
       "name": "低硫燃油",
       "category": "期货",
       "signal": "中性",
-      "return_pct": -7.592,
+      "return_pct": -7.574,
       "pred_price": 5585.0,
-      "today_price": 5161.0,
+      "today_price": 5162.0,
       "weighted_score": 58.9,
       "confidence": 0.75,
       "reasoning": "技术面中性偏多(61/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨2 vs 看跌0 | 宏观中性(48.7/100) | 市场上下文neutral(50.0/100)上限100%"
