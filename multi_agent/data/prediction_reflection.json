@@ -1,102 +1,89 @@
 {
-  "pred_date": "2026-09-28",
+  "pred_date": "2026-09-29",
   "validation_date": null,
-  "accuracy": 63.87,
+  "accuracy": 60.73,
   "total": 191,
-  "correct": 122,
-  "wrong": 69,
+  "correct": 116,
+  "wrong": 75,
   "by_signal": {
     "中性": {
-      "total": 136,
-      "wrong": 45,
-      "error_rate": 33.09
-    },
-    "看多": {
-      "total": 16,
-      "wrong": 8,
-      "error_rate": 50.0
+      "total": 166,
+      "wrong": 65,
+      "error_rate": 39.16
     },
     "看空": {
-      "total": 11,
-      "wrong": 6,
-      "error_rate": 54.55
+      "total": 1,
+      "wrong": 0,
+      "error_rate": 0.0
     },
     "观望": {
-      "total": 28,
+      "total": 24,
       "wrong": 10,
-      "error_rate": 35.71
+      "error_rate": 41.67
     }
   },
   "by_category": {
     "ETF": {
       "total": 23,
-      "wrong": 2,
-      "error_rate": 8.7
+      "wrong": 9,
+      "error_rate": 39.13
     },
     "个股": {
       "total": 119,
-      "wrong": 46,
-      "error_rate": 38.66
+      "wrong": 53,
+      "error_rate": 44.54
     },
     "期货": {
       "total": 49,
-      "wrong": 21,
-      "error_rate": 42.86
+      "wrong": 13,
+      "error_rate": 26.53
     }
   },
   "feature_compare": {
     "weighted_score": {
-      "correct_avg": 49.81,
-      "wrong_avg": 51.69
+      "correct_avg": 47.95,
+      "wrong_avg": 50.16
     },
     "confidence": {
-      "correct_avg": 0.7,
-      "wrong_avg": 0.72
+      "correct_avg": 0.69,
+      "wrong_avg": 0.67
     }
   },
   "component_compare": {
     "技术面": {
-      "correct_avg": 52.23,
-      "wrong_avg": 52.63
+      "correct_avg": 50.65,
+      "wrong_avg": 53.92
     },
     "新闻情绪": {
-      "correct_avg": 50.75,
-      "wrong_avg": 51.46
+      "correct_avg": 50.0,
+      "wrong_avg": 50.0
     },
     "基本面": {
-      "correct_avg": 51.47,
-      "wrong_avg": 54.32
+      "correct_avg": 50.0,
+      "wrong_avg": 50.0
     },
     "多空辩论净得分": {
-      "correct_avg": -0.89,
-      "wrong_avg": -0.2
+      "correct_avg": -1.7,
+      "wrong_avg": -1.25
     }
   },
   "divergence_analysis": {
     "fundamental_technical_divergence": {
-      "correct_avg": -0.76,
-      "wrong_avg": 1.7,
+      "correct_avg": -0.65,
+      "wrong_avg": -3.92,
       "by_wrong_signal": {
-        "看多": {
-          "avg": 1.51,
-          "n": 8
-        },
-        "看空": {
-          "avg": 24.4,
-          "n": 6
-        },
         "中性": {
-          "avg": -0.07,
-          "n": 45
+          "avg": -3.23,
+          "n": 65
         },
         "观望": {
-          "avg": -3.84,
+          "avg": -8.4,
           "n": 10
         }
       }
     }
   },
-  "llm_reflection": "# 量化策略复盘报告\n\n## 1. 一句话总结（≤50字）\n三位分析师均无输出，缺乏信号、成交与特征数据支撑，当日准确率无法归因，只能以流程性复盘为主。\n\n## 2. 主要错误模式\n因缺乏数据，以下为**待验证假设**，需在下周数据补齐后用回测确认：\n\n- **错误模式A｜信号缺失型**：预测器在分析师沉默时仍可能输出高置信信号，置信度校准失效。可证伪 breaker：若能产出\"预测时的 regime 标签分布\"，则检验高置信信号是否集中于未标注 regime 时段。\n- **错误模式B｜情绪滞后型**：若错误样本集中在政策/消息驱动的跳空日，说明日内因子未捕捉开盘信息冲击。Breaker：统计错误日开盘 30 分钟涨跌幅是否显著异于正确日（t 检验）。\n- **错误模式C｜涨跌停失真型**：T+1 下一交易日无法成交的信号若被计入正确样本，准确率被虚增。Breaker：将涨停日信号标记为\"不可交易\"后重算命中率，若下降超过噪声区间则确认。\n\n## 3. 成功信号特征\n无样本数据可归纳。建议 frame 为可检验问题：正确样本的共性是否体现在**因子截面稳定性**（信号在同类 stock 池内方向一致）、**regime 内一致性**（同一 regime 标签下胜率单调）两个维度上，交由 optimizer 用 logistic 回归/GBM 自动验证。\n\n## 4. 数据驱动改进建议\n- 扩展历史区间至覆盖 ≥2 次完整政策周期（如降准降息、监管表态、注册制节点），让 optimizer 学到 regime-conditional 权重。\n- 新增因子：北向资金净流入变化率、两融余额边际变化、50ETF 认沽认购比（PCR）分位数、涨停/跌停家数比、连板高度分布、龙虎榜席位集中度。\n- 将\"置信度\"改为**可校准的概率输出**（isotonic/Platt calibration），由 optimizer 学习置信度-胜率映射曲线，而非人工设阈值。\n- 增加\"不可交易\"标签（涨停封死、跌停、停牌）作为样本权重输入，由模型自行降权，而非规则剔除。\n\n## 5. 策略回测建议\n在 regime 标签缺失状态下，优先回测**低换手、低杠杆的中性偏防御策略**（高股息+低波动篮子对冲），其收益对方向判断依赖度最低，能在准确率存疑时控制回撤。待 regime 分类器补齐并稳定后，再迭代到 regime-conditional 多空策略。\n\n## 6. 今日操作建议（明日预测）\n- 所有预测信号输出时**强制附带 calibrated 概率与置信区间**；概率低于样本均值区间的信号由 optimizer 自动降仓，不做人工否决。\n- 明日新增一项数据工程任务：补齐三位分析师的原始输出与 regime 标签，否则任何仓位决策仅按基准仓位执行，禁止加大敞口。\n\n## 7. 需要新增/改进的数据源或因子\n1. **北向资金**（每日行业/个股级净买入）；\n2. **两融余额及融资买入占比**（日频）；\n3. **期权 PCR 与隐含波动率曲面**（50ETF/300ETF 期权）；\n4. **涨跌停微观结构**（封单额、炸板率、连板梯队）；\n5. **政策事件库**（含文本 embedding 向量），供 regime 分类器与 optimizer 学习政策冲击的时变影响；\n6. **龙虎榜与散户情绪代理**（开户数、新基金发行、股吧情绪指数）。\n\n---\n**首席策略官批注**：本次复盘本质是\"数据基础设施复盘\"——在信号链路上游缺失的情况下，任何归因都是猜测。下一步优先级：数据管道 > 概率校准 > regime 标签，再谈策略优化。",
+  "llm_reflection": "data_factor_agent 未返回观点。",
   "agent_views": {
     "data_factor_agent": "data_factor_agent 未返回观点。",
     "market_regime_agent": "market_regime_agent 未返回观点。",
@@ -106,5 +93,5 @@
     "建议增加日内 TickFlow 数据作为校验，减少滞后技术面影响",
     "建议继续扩展宏观/资金面 Agent 数据维度，让优化器自动判断各周期下的权重"
   ],
-  "generated_at": "2026-09-29T17:23:43.154794"
+  "generated_at": "2026-09-30T15:34:15.041834"
 }
