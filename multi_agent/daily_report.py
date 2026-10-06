@@ -47,7 +47,7 @@ class DailyReportGenerator:
 
         # 1. 情绪分析（P2）
         print("\n[1/5] 情绪周期分析...")
-        sentiment = SentimentAnalyzer().analyze()
+        sentiment = SentimentAnalyzer().analyze(target_date=date)
         print(f"   ✅ {sentiment.date} → {sentiment.phase} ({sentiment.phase_confidence:.0%})")
 
         # 2. 题材雷达（P3）

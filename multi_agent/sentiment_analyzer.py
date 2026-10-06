@@ -307,18 +307,33 @@ class SentimentAnalyzer:
     # ------------------------------------------------------------------
     # 主入口
     # ------------------------------------------------------------------
-    def analyze(self) -> SentimentResult:
+    def analyze(self, target_date: str = None) -> SentimentResult:
         history = self._load_daily_metrics()
         if not history:
             return SentimentResult(
-                date=datetime.now().strftime('%Y-%m-%d'),
+                date=target_date or datetime.now().strftime('%Y-%m-%d'),
                 phase=PHASE_ICE, phase_confidence=0.0,
                 metrics=DailyMetrics(date=''),
                 indicators_note='warehouse 无情绪数据，请先运行 sentiment_fetcher.py'
             )
-
-        curr = history[-1]
-        prev = history[-2] if len(history) >= 2 else None
+        
+        # 如果指定日期，找该日期或之前最近的数据
+        if target_date:
+            target = target_date.replace('-', '')
+            for i, h in enumerate(history):
+                h_date = h.date.replace('-', '')
+                if h_date >= target:
+                    curr = h
+                    prev = history[i-1] if i > 0 else None
+                    break
+            else:
+                # 没找到，用最新
+                curr = history[-1]
+                prev = history[-2] if len(history) >= 2 else None
+        else:
+            curr = history[-1]
+            prev = history[-2] if len(history) >= 2 else None
+        
         phase, conf = self._classify_phase(curr, prev)
 
         return SentimentResult(
