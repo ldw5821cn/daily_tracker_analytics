@@ -6,6 +6,21 @@ cd /home/liudawei/github/daily_tracker_analytics
 
 DATE=${1:-$(date +%Y-%m-%d)}
 
+# 非交易日静默退出（周末/法定节假日）
+if ! TRADE_CHECK=$(DATE="$DATE" python3 - <<'PY'
+import akshare as ak, os, sys
+cal = ak.tool_trade_date_hist_sina()
+dates = set(cal['trade_date'].astype(str))
+today = os.environ['DATE']
+if today not in dates:
+    print(f"[daily_fast_predict] {today} 非交易日，静默退出")
+    sys.exit(1)
+PY
+); then
+    echo "$TRADE_CHECK"
+    exit 0
+fi
+
 echo "Running daily fast prediction for $DATE"
 timeout 1800 python3 multi_agent/scripts/daily_agentic_predictor.py \
     --date "$DATE" \
