@@ -30,6 +30,7 @@ REPO = BASE.parent
 from sentiment_analyzer import SentimentAnalyzer, PHASE_EBB, PHASE_CLimax, PHASE_ICE, PHASE_REPAIR, PHASE_START
 from theme_radar import ThemeRadar
 from trader_wisdom import TraderWisdomLibrary
+from kronos_predictor import KronosStockPredictor  # 新增 Kronos
 
 
 class DailyReportGenerator:
@@ -71,18 +72,24 @@ class DailyReportGenerator:
             ev_list = []
         print(f"   {'✅ 找到 ' + str(len(ev_list)) + ' 条证据链' if ev_list else '⚠️ 暂无当日证据链'}")
 
-        # 5. 读取 P1 大V观点（如果有当日数据）
-        print("\n[5/5] 读取大V观点共识...")
+        # 5. Kronos AI 预测（新增）
+        print("\n[5/6] Kronos K线预测...")
+        kronos = self._run_kronos_prediction()
+        print(f"   ✅ 预测完成: {len(kronos.get('predictions', []))} 只")
+        
+        # 6. 读取 P1 大V观点
+        print("\n[6/6] 读取大V观点共识...")
         narrative_data = self._load_latest_narrative()
         print(f"   {'✅ 找到观点数据' if narrative_data else '⚠️ 暂无当日观点数据'}")
 
-        # 生成报告
+        # 构建报告
         report = self._build_report(
             sentiment=sentiment,
             theme=theme,
             wisdom=wisdom,
-            evidence=ev_list,
+            evidence=evidence_data,
             narrative=narrative_data,
+            kronos=kronos,  # 传入 Kronos 预测
         )
 
         # 保存
@@ -104,6 +111,30 @@ class DailyReportGenerator:
             'md_path': md_path,
             'wechat_summary': wechat,
         }
+
+    def _run_kronos_prediction(self, symbols: list = None) -> dict:
+        """运行 Kronos 预测（默认预测用户持仓）"""
+        # 默认预测用户持仓股票
+        if symbols is None:
+            symbols = ['000001', '000598', '000027', '600011', '600027', '600023', '600642', '601398']
+        
+        try:
+            predictor = KronosStockPredictor(model_size="mini")
+            predictions = []
+            
+            # 只预测前3只（避免太慢）
+            for symbol in symbols[:3]:
+                try:
+                    result = predictor.predict(symbol, pred_days=3, sample_count=20)
+                    if 'error' not in result:
+                        predictions.append(result)
+                except Exception as e:
+                    print(f"   ⚠️ {symbol}: {e}")
+            
+            return {'predictions': predictions}
+        except Exception as e:
+            print(f"   ⚠️ Kronos 加载失败: {e}")
+            return {'predictions': [], 'error': str(e)}
 
     def _load_latest_evidence(self) -> list:
         """读取最新证据链数据"""
@@ -133,7 +164,7 @@ class DailyReportGenerator:
         except:
             return {}
 
-    def _build_report(self, sentiment, theme, wisdom, evidence, narrative) -> dict:
+    def _build_report(self, sentiment, theme, wisdom, evidence, narrative, kronos=None) -> dict:
         """构建完整报告"""
         m = sentiment.metrics
 
@@ -173,7 +204,16 @@ class DailyReportGenerator:
                 md += f"- {r}\n"
             md += "\n"
 
-        md += "---\n\n## 二、题材雷达（P3）\n\n"
+        # Kronos AI 预测（新增）
+        if kronos and kronos.get('predictions'):
+            md += "---\n\n## 二、Kronos AI 预测\n\n"
+            md += "| 标的 | 现价 | 预期收益 | 上涨概率 | 信号 |\n"
+            md += "|------|------|----------|----------|------|\n"
+            for pred in kronos['predictions']:
+                md += f"| {pred['symbol']} | {pred['current_price']:.2f} | {pred['expected_return']*100:+.2f}% | {pred['bull_prob']*100:.0f}% | {pred['signal']} |\n"
+            md += "\n"
+
+        md += "---\n\n## 三、题材雷达（P3）\n\n"
         md += f"{theme.market_summary}\n\n"
 
         if theme.themes:
@@ -188,7 +228,7 @@ class DailyReportGenerator:
         if theme.avoid:
             md += f"**回避名单**: {', '.join(theme.avoid)}\n\n"
 
-        md += "---\n\n## 三、游资心法推荐（P4）\n\n"
+        md += "---\n\n## 四、游资心法推荐（P4）\n\n"
         if wisdom:
             md += f"针对 **{sentiment.phase}**，推荐以下心法：\n\n"
             for w in wisdom[:5]:
@@ -199,21 +239,26 @@ class DailyReportGenerator:
                     md += f"- 名言: \"{doc['quote'][:80]}{'...' if len(doc['quote']) > 80 else ''}\"\n"
                 md += "\n"
 
-        md += "---\n\n## 四、大V观点共识（P1）\n\n"
+        md += "---\n\n## 五、大V观点共识（P1）\n\n"
         if narrative:
             md += "*(当日观点数据已生成，详见 narrative_report.html)*\n\n"
         else:
             md += "*暂无当日观点数据*\n\n"
 
-        md += "---\n\n## 五、证据链追踪（P0）\n\n"
+        md += "---\n\n## 六、证据链追踪（P0）\n\n"
         if evidence:
-            md += f"当日证据链: {len(evidence)} 条\n\n"
-            for ev in evidence[:3]:
-                md += f"- {ev.get('ticker', 'N/A')}: {ev.get('headline', 'N/A')}\n"
+            # 确保证据是列表格式
+            if isinstance(evidence, list):
+                md += f"当日证据链: {len(evidence)} 条\n\n"
+                for ev in evidence[:3]:
+                    if isinstance(ev, dict):
+                        md += f"- {ev.get('ticker', 'N/A')}: {ev.get('headline', 'N/A')}\n"
+            else:
+                md += f"当日证据链: {type(evidence).__name__}\n\n"
         else:
             md += "*暂无当日证据链数据*\n\n"
 
-        md += "---\n\n## 六、综合建议\n\n"
+        md += "---\n\n## 七、综合建议\n\n"
         md += self._generate_advice(sentiment, theme)
 
         md += f"\n\n---\n*报告生成: LLM-native 量化系统 v1.0*\n"
