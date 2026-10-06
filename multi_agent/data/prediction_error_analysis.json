@@ -1,275 +1,61 @@
 {
-  "pred_date": "2026-09-30",
+  "pred_date": "2026-10-03",
   "validation_date": null,
   "summary": {
-    "total": 49,
-    "correct": 42,
-    "wrong": 7,
-    "accuracy": 85.71
+    "total": 2,
+    "correct": 2,
+    "wrong": 0,
+    "accuracy": 100.0
   },
   "by_category": {
-    "期货": {
-      "total": 49,
-      "wrong": 7,
-      "error_rate": 14.29
+    "US": {
+      "total": 2,
+      "wrong": 0,
+      "error_rate": 0.0
     }
   },
   "by_signal": {
-    "中性": {
-      "total": 41,
-      "wrong": 4,
-      "error_rate": 9.76
+    "看多": {
+      "total": 1,
+      "wrong": 0,
+      "error_rate": 0.0
     },
     "观望": {
-      "total": 8,
-      "wrong": 3,
-      "error_rate": 37.5
+      "total": 1,
+      "wrong": 0,
+      "error_rate": 0.0
     }
   },
-  "feature_compare": {
-    "weighted_score": {
-      "correct_avg": 50.8,
-      "wrong_avg": 52.69
-    },
-    "confidence": {
-      "correct_avg": 0.67,
-      "wrong_avg": 0.62
-    }
-  },
-  "component_compare": {
-    "技术面": {
-      "correct_avg": 55.19,
-      "wrong_avg": 57.0
-    },
-    "新闻情绪": {
-      "correct_avg": 50.0,
-      "wrong_avg": 50.0
-    },
-    "基本面": {
-      "correct_avg": 50.0,
-      "wrong_avg": 50.0
-    },
-    "多空辩论净得分": {
-      "correct_avg": -0.97,
-      "wrong_avg": -0.57
-    }
-  },
-  "wrong_top10": [
-    {
-      "ticker": "NR0",
-      "name": "20号胶",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": 5.972,
-      "pred_price": 16410.0,
-      "today_price": 17390.0,
-      "weighted_score": 62.1,
-      "confidence": 0.7,
-      "reasoning": "技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨2 vs 看跌1 | 宏观中性(49.6/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "RU0",
-      "name": "橡胶",
-      "category": "期货",
-      "signal": "观望",
-      "return_pct": 5.708,
-      "pred_price": 19010.0,
-      "today_price": 20095.0,
-      "weighted_score": 55.2,
-      "confidence": 0.55,
-      "reasoning": "技术面中性偏多(60/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨2 vs 看跌2 | 宏观中性(49.6/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "BU0",
-      "name": "沥青",
-      "category": "期货",
-      "signal": "观望",
-      "return_pct": -4.441,
-      "pred_price": 5246.0,
-      "today_price": 5013.0,
-      "weighted_score": 53.6,
-      "confidence": 0.54,
-      "reasoning": "技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌1 | 宏观中性(49.6/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "V0",
-      "name": "PVC",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": 3.2,
-      "pred_price": 4844.0,
-      "today_price": 4999.0,
-      "weighted_score": 53.6,
-      "confidence": 0.62,
-      "reasoning": "技术面中性偏多(60/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌2 | 宏观中性(49.6/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "LU0",
-      "name": "低硫燃油",
-      "category": "期货",
-      "signal": "观望",
-      "return_pct": -3.006,
-      "pred_price": 5322.0,
-      "today_price": 5162.0,
-      "weighted_score": 53.6,
-      "confidence": 0.54,
-      "reasoning": "技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨2 vs 看跌2 | 宏观中性(49.6/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "AO0",
-      "name": "氧化铝",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": 2.523,
-      "pred_price": 2656.0,
-      "today_price": 2723.0,
-      "weighted_score": 45.6,
-      "confidence": 0.7,
-      "reasoning": "技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(49.6/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "OI0",
-      "name": "菜油",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": 1.72,
-      "pred_price": 10057.0,
-      "today_price": 10230.0,
-      "weighted_score": 45.1,
-      "confidence": 0.71,
-      "reasoning": "技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(49.6/100) | 市场上下文neutral(50.0/100)上限100%"
-    }
-  ],
+  "feature_compare": {},
+  "component_compare": {},
+  "wrong_top10": [],
   "correct_top10": [
     {
-      "ticker": "AP0",
-      "name": "苹果",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": -1.41,
-      "pred_price": 6952.0,
-      "today_price": 6854.0,
-      "weighted_score": 45.6,
-      "confidence": 0.7
-    },
-    {
-      "ticker": "AU0",
-      "name": "黄金",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": 1.313,
-      "pred_price": 898.78,
-      "today_price": 910.58,
-      "weighted_score": 45.6,
-      "confidence": 0.7
-    },
-    {
-      "ticker": "UR0",
-      "name": "尿素",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": 1.144,
-      "pred_price": 1748.0,
-      "today_price": 1768.0,
-      "weighted_score": 54.2,
-      "confidence": 0.61
-    },
-    {
-      "ticker": "LH0",
-      "name": "生猪",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": 1.136,
-      "pred_price": 10560.0,
-      "today_price": 10680.0,
-      "weighted_score": 44.0,
-      "confidence": 0.8
-    },
-    {
-      "ticker": "RM0",
-      "name": "菜粕",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": 1.083,
-      "pred_price": 2308.0,
-      "today_price": 2333.0,
-      "weighted_score": 53.6,
-      "confidence": 0.62
-    },
-    {
-      "ticker": "CF0",
-      "name": "棉花",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": -1.046,
-      "pred_price": 15780.0,
-      "today_price": 15615.0,
-      "weighted_score": 45.6,
-      "confidence": 0.7
-    },
-    {
-      "ticker": "L0",
-      "name": "塑料",
-      "category": "期货",
+      "ticker": "SMH",
+      "name": "美国半导体ETF-VanEck",
+      "category": "US",
       "signal": "观望",
-      "return_pct": -1.038,
-      "pred_price": 8283.0,
-      "today_price": 8197.0,
-      "weighted_score": 55.2,
-      "confidence": 0.55
+      "return_pct": 0.523,
+      "pred_price": 630.6,
+      "today_price": 633.9,
+      "weighted_score": 56.9,
+      "confidence": 0.57
     },
     {
-      "ticker": "SP0",
-      "name": "纸浆",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": -0.968,
-      "pred_price": 4960.0,
-      "today_price": 4912.0,
-      "weighted_score": 63.7,
-      "confidence": 0.8
-    },
-    {
-      "ticker": "AG0",
-      "name": "白银",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": 0.889,
-      "pred_price": 14848.0,
-      "today_price": 14980.0,
-      "weighted_score": 43.5,
-      "confidence": 0.72
-    },
-    {
-      "ticker": "J0",
-      "name": "焦炭",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": 0.824,
-      "pred_price": 1942.5,
-      "today_price": 1958.5,
-      "weighted_score": 45.6,
-      "confidence": 0.7
+      "ticker": "SOXX",
+      "name": "美国半导体ETF-iShares",
+      "category": "US",
+      "signal": "看多",
+      "return_pct": 0.104,
+      "pred_price": 588.9,
+      "today_price": 589.51,
+      "weighted_score": 100.0,
+      "confidence": 0.95
     }
   ],
   "suggestions": [
     "建议增加日内 TickFlow 数据作为校验，减少滞后技术面影响",
     "建议继续扩展宏观/资金面 Agent 数据维度，让优化器自动判断各周期下的权重"
   ],
-  "divergence_analysis": {
-    "fundamental_technical_divergence": {
-      "correct_avg": -5.19,
-      "wrong_avg": -7.0,
-      "by_wrong_signal": {
-        "中性": {
-          "avg": -6.25,
-          "n": 4
-        },
-        "观望": {
-          "avg": -8.0,
-          "n": 3
-        }
-      }
-    }
-  }
+  "divergence_analysis": {}
 }
