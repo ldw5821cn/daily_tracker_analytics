@@ -20,7 +20,7 @@ from model import Kronos, KronosTokenizer, KronosPredictor
 class KronosStockPredictor:
     """Kronos A股预测器"""
     
-    def __init__(self, model_size="small"):
+    def __init__(self, model_size="mini"):  # 改用 mini
         self.model_size = model_size
         self.predictor = None
         self.device = "cuda" if self._check_cuda() else "cpu"
@@ -40,57 +40,54 @@ class KronosStockPredictor:
         
         print(f"📦 Loading Kronos-{self.model_size}...")
         
-        tokenizer = KronosTokenizer.from_pretrained(
-            "NeoQuasar/Kronos-Tokenizer-base"
-        )
-        model = Kronos.from_pretrained(
-            f"NeoQuasar/Kronos-{self.model_size}"
-        )
+        # mini 用 2k tokenizer，small/base 用 base tokenizer
+        tokenizer_name = "NeoQuasar/Kronos-Tokenizer-2k" if self.model_size == "mini" else "NeoQuasar/Kronos-Tokenizer-base"
+        
+        tokenizer = KronosTokenizer.from_pretrained(tokenizer_name)
+        model = Kronos.from_pretrained(f"NeoQuasar/Kronos-{self.model_size}")
         
         self.predictor = KronosPredictor(
             model, 
             tokenizer, 
-            max_context=512,
+            max_context=2048 if self.model_size == "mini" else 512,  # mini 支持更长上下文
             device=self.device
         )
         print("✅ Model loaded")
     
     def fetch_a_share_data(self, symbol: str, days: int = 120) -> pd.DataFrame:
-        """获取A股数据"""
-        try:
-            import akshare as ak
-        except ImportError:
-            raise ImportError("请安装 akshare: pip install akshare")
-        
-        # 转换代码格式
-        if symbol.startswith('6'):
-            ak_symbol = f"sh{symbol}"
-        else:
-            ak_symbol = f"sz{symbol}"
-        
+        """获取A股数据（用腾讯接口，更稳定）"""
         print(f"📥 Fetching {symbol} data...")
         
-        # 获取日线数据
-        end_date = datetime.now().strftime('%Y%m%d')
-        start_date = (datetime.now() - timedelta(days=days)).strftime('%Y%m%d')
+        # 腾讯接口
+        if symbol.startswith('6'):
+            tencent_code = f"sh{symbol}"
+        else:
+            tencent_code = f"sz{symbol}"
         
-        raw = ak.stock_zh_a_hist(
-            symbol=symbol, 
-            period="daily", 
-            start_date=start_date,
-            end_date=end_date,
-            adjust="qfq"  # 前复权
-        )
+        import urllib.request
+        import json
         
-        df = pd.DataFrame({
-            'timestamps': pd.to_datetime(raw['日期']),
-            'open': raw['开盘'].astype(float),
-            'high': raw['最高'].astype(float),
-            'low': raw['最低'].astype(float),
-            'close': raw['收盘'].astype(float),
-            'volume': raw['成交量'].astype(float),
-            'amount': raw['成交额'].astype(float),
-        })
+        url = f'https://web.ifzq.gtimg.cn/appstock/app/kline/kline?param={tencent_code},day,,,{days}'
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            data = json.loads(resp.read().decode())
+        
+        kline = data['data'][tencent_code].get('day', [])
+        if not kline:
+            raise ValueError(f"无数据: {symbol}")
+        
+        # 转换为 DataFrame（腾讯K线格式: date, open, close, high, low, volume, 其他）
+        df = pd.DataFrame(kline)
+        df = df.iloc[:, :6]  # 只取前6列
+        df.columns = ['date', 'open', 'close', 'high', 'low', 'volume']
+        df['timestamps'] = pd.to_datetime(df['date'])
+        df['open'] = df['open'].astype(float)
+        df['high'] = df['high'].astype(float)
+        df['low'] = df['low'].astype(float)
+        df['close'] = df['close'].astype(float)
+        df['volume'] = df['volume'].astype(float)
+        df['amount'] = df['volume'] * df['close']  # 估算成交额
         
         print(f"✅ Fetched {len(df)} days")
         return df
@@ -115,21 +112,24 @@ class KronosStockPredictor:
         if len(df) < 30:
             return {'error': '数据不足'}
         
-        # 准备时间戳
+        # 准备时间戳（转为 Series，Kronos 需要 .dt 访问器）
         last_date = df['timestamps'].iloc[-1]
         future_dates = pd.date_range(
             start=last_date + timedelta(days=1),
             periods=pred_days,
             freq='B'  # 工作日
         )
+        # 转为 Series（Kronos 需要 .dt 访问器）
+        x_timestamp = pd.Series(df['timestamps'].values)
+        y_timestamp = pd.Series(future_dates)
         
         # Kronos 预测
         print(f"🔮 Predicting {pred_days} days with {sample_count} samples...")
         
         pred_df = self.predictor.predict(
             df=df[['open', 'high', 'low', 'close', 'volume', 'amount']],
-            x_timestamp=df['timestamps'],
-            y_timestamp=future_dates,
+            x_timestamp=x_timestamp,
+            y_timestamp=y_timestamp,
             pred_len=pred_days,
             T=1.0,
             top_p=0.9,
