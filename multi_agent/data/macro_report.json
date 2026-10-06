@@ -1,15 +1,12 @@
 {
   "analyst": "宏观市场分析师",
-  "macro_score": 50.1,
+  "macro_score": 47.2,
   "macro_signal": "neutral",
   "risk_on_off": {
-    "state": "risk_on",
-    "label": "Risk-on（偏好风险资产）",
-    "score": 2,
+    "state": "neutral",
+    "label": "中性（风险/避险平衡）",
+    "score": 1,
     "reasons": [
-      "中国LPR宽松(3.5%)",
-      "Shibor低位(1.43%)",
-      "PMI收缩(49.4)",
       "波动率低"
     ]
   },
@@ -31,13 +28,14 @@
       "ticker": "000300.SH",
       "name": "沪深300",
       "score": 50,
-      "trend": "unknown",
-      "close": 0,
-      "ma20": 0,
-      "ma60": 0,
-      "return_1d": 0,
-      "return_5d": 0,
-      "return_20d": 0
+      "trend": "neutral",
+      "close": 4357.62,
+      "ma20": 4493.78,
+      "ma60": NaN,
+      "return_1d": 0.29,
+      "return_5d": -4.11,
+      "return_20d": -5.5,
+      "vol_20d": 13.37
     },
     {
       "ticker": "000905.SH",
@@ -88,36 +86,33 @@
   },
   "us_macro": {
     "fed_rate": 4.5,
-    "cpi_yoy": null,
-    "unemployment": null,
-    "initial_jobless": null,
+    "cpi_yoy": 3.4,
+    "unemployment": 4.2,
+    "initial_jobless": 23.7,
     "fed_rate_date": "2025-07-31",
-    "error": "HTTPSConnectionPool(host='datacenter-web.eastmoney.com', port=443): Max retries exceeded with url: /api/data/v1/get?reportName=RPT_ECONOMICVALUE_USA&columns=ALL&filter=%28INDICATOR_ID%3D%22EMG00000733%22%29&sortColumns=REPORT_DATE&sortTypes=-1&source=WEB&client=WEB (Caused by ConnectTimeoutError(<HTTPSConnection(host='datacenter-web.eastmoney.com', port=443) at 0x7819bd5b0aa0>, 'Connection to datacenter-web.eastmoney.com timed out. (connect timeout=None)'))"
+    "cpi_date": "2026-09-11",
+    "unemployment_date": "2025-08-01",
+    "initial_jobless_date": "2025-09-04"
   },
   "china_macro": {
-    "lpr_1y": 3.0,
-    "lpr_5y": 3.5,
-    "rrr_large": 9.0,
-    "rrr_small": 6.0,
-    "shibor_1w": 1.371,
-    "shibor_3m": 1.43,
-    "m2_yoy": 7.5,
-    "m1_yoy": 4.1,
-    "pmi": 49.4,
+    "lpr_1y": null,
+    "lpr_5y": null,
+    "rrr_large": null,
+    "rrr_small": null,
+    "shibor_1w": null,
+    "shibor_3m": null,
+    "m2_yoy": null,
+    "m1_yoy": null,
+    "pmi": null,
     "cpi_yoy": null,
     "ppi_yoy": null,
     "gdp_yoy": null,
-    "lpr_date": "2026-09-20",
-    "rrr_date": "2025年05月15日",
-    "shibor_date": "2026-09-30",
-    "m2_date": "2026年08月份",
-    "pmi_date": "2025-08-31",
-    "error": "HTTPSConnectionPool(host='datacenter-api.jin10.com', port=443): Max retries exceeded with url: /reports/list_v2?max_date=1987-06-30&category=ec&attr_id=56&_=1790926700599 (Caused by ConnectTimeoutError(<HTTPSConnection(host='datacenter-api.jin10.com', port=443) at 0x7819bd5b3470>, 'Connection to datacenter-api.jin10.com timed out. (connect timeout=None)'))"
+    "error": "[Errno 32] Broken pipe"
   },
-  "china_macro_bias": 49.6,
+  "china_macro_bias": 50.0,
   "macro_indicators": {
-    "date": "2026-10-01",
-    "fetched_at": "2026-10-01T17:03:36.626991",
+    "date": "2026-10-02",
+    "fetched_at": "2026-10-02T17:25:56.794559",
     "northbound": {
       "date": "2026-09-30",
       "net_buy": null,
@@ -127,13 +122,13 @@
       "hs300": 3842.19
     },
     "margin": {
-      "date": "2026-10-01",
-      "sh_balance": 13518.58684135,
+      "date": "2026-10-02",
+      "sh_balance": 13526.835869,
       "sz_balance": 12626.05,
-      "total_balance": 26144.63684135
+      "total_balance": 26152.885868999998
     },
     "option_pcr": {
-      "date": "2026-10-01",
+      "date": "2026-10-02",
       "pcr_records": [
         {
           "market": "SSE",
@@ -248,19 +243,19 @@
   },
   "capital_flow_score": 54.6,
   "fred_liquidity": {
-    "date": "2026-10-02",
+    "date": "2026-10-04",
     "walcl": 6743.0,
     "walcl_1w_change": -4.7,
-    "sofr": 3.9,
-    "dgs10": 5.29,
+    "sofr": 3.87,
+    "dgs10": 5.24,
     "dxy": 120.33,
-    "vixcls": 16.34,
-    "t10y2y": 0.46
+    "vixcls": 16.39,
+    "t10y2y": 0.45
   },
   "fred_score": 46.0,
   "fred_reasons": [
     "WALCL周变化-5B 修正-0.0",
-    "10Y美债5.29% 修正-2",
+    "10Y美债5.24% 修正-2",
     "DXY强120.33 修正-2"
   ],
   "yield_curve": {
@@ -268,7 +263,7 @@
     "china_2y": null,
     "us_10y_proxy": null,
     "spread": null,
-    "error": "HTTPSConnectionPool(host='datacenter.eastmoney.com', port=443): Max retries exceeded with url: /api/data/get?type=RPTA_WEB_TREASURYYIELD&sty=ALL&st=SOLAR_DATE&sr=-1&token=894050c76af8597a853f5b408b759f5d&p=13&ps=500&pageNo=13&pageNum=13 (Caused by ConnectTimeoutError(<HTTPSConnection(host='datacenter.eastmoney.com', port=443) at 0x7819bd5b1730>, 'Connection to datacenter.eastmoney.com timed out. (connect timeout=None)'))"
+    "error": "[Errno 32] Broken pipe"
   },
   "vix_proxy": {
     "vix_proxy": 13.37,
@@ -349,7 +344,7 @@
     "composite_score": 50,
     "composite_signal": "neutral",
     "details": {},
-    "updated_at": "2026-10-02 15:46:16"
+    "updated_at": "2026-10-06 18:18:03"
   },
-  "summary": "# 宏观市场分析报告 (2026-10-02)\n\n综合宏观评分: 50.1/100 | 信号: neutral | 状态: Risk-on（偏好风险资产）\n\n## 大盘指数\n- 上证指数(000001.SH): 评分50, 趋势neutral, 1日+0.31%, 5日-2.78%, 20日-3.46%\n- 沪深300(000300.SH): 评分50, 趋势unknown, 1日+0.00%, 5日+0.00%, 20日+0.00%\n- 中证500(000905.SH): 评分50, 趋势neutral, 1日-0.06%, 5日-5.03%, 20日-5.39%\n- 创业板指(399006.SZ): 评分50, 趋势neutral, 1日-0.23%, 5日-7.78%, 20日-7.61%\n- 创业板50(399673.SZ): 评分48, 趋势neutral, 1日-0.21%, 5日-8.47%, 20日-8.60%\n\n## 市场广度\n- 指数上涨: 0 / 下跌: 0\n- 广度得分: 50\n- 涨停家数: 52\n\n## 中国宏观（akshare）\n- LPR 1Y: 3.0%, 5Y: 3.5% (日期: 2026-09-20)\n- 存款准备金率: 大型9.0%, 中小6.0% (日期: 2025年05月15日)\n- Shibor 1W: 1.371%, 3M: 1.43% (日期: 2026-09-30)\n- M2同比: 7.5%, M1同比: 4.1% (日期: 2026年08月份)\n- PMI: 49.4 (日期: 2025-08-31)\n- CPI同比: None%, PPI同比: None% (日期: None)\n- GDP同比: None% (日期: None)\n\n## 美国宏观（akshare）\n- 联邦利率: 4.5% (日期: 2025-07-31)\n- CPI 同比: None% (日期: None)\n- 失业率: None% (日期: None)\n- 初请失业金: None万 (日期: None)\n\n## 收益率曲线与波动率\n- 中国10Y: None%, 2Y: None%, 利差: None\n- 美国10Y代理: None%\n- VIX 代理(A股波动率): 13.37, 状态: low\n\n## 资金面指标（akshare）\n- 北向资金净买入: None 亿元 (日期: 2026-09-30)\n- 融资融券余额: 沪市 13518.58684135 亿元, 深市 12626.05 亿元, 合计 26144.63684135 亿元\n- 期权 PCR（上交所）: 上证50ETF华夏(510050) PCR=68.97, 沪深300ETF华泰柏瑞(510300) PCR=61.91, 中证500ETF南方(510500) PCR=69.43, 科创50ETF华夏(588000) PCR=75.69, 科创50ETF易方达(588080) PCR=57.33\n- 资金面情绪分: 54.6\n\n## 全球宏观流动性（FRED）\n- WALCL: 6743.0 十亿美元，周变化 -4.7B\n- SOFR: 3.9%, 10Y美债: 5.29%, 期限利差: 0.46%\n- DXY: 120.33, VIX: 16.34\n- FRED流动性评分: 46.0/100 (WALCL周变化-5B 修正-0.0; 10Y美债5.29% 修正-2; DXY强120.33 修正-2)\n\n## 全球半导体动量（美日韩）\n- 综合得分: 50 / 信号: neutral\n- 美股: 50 (5日 +0.00%, 20日 +0.00%)\n- 日本: 50 (5日 +0.00%, 20日 +0.00%)\n- 韩国: 50 (5日 +0.00%, 20日 +0.00%)\n\n## 板块轮动\n- 领涨板块: 银行ETF\n  - 银行ETF: 5日+1.67%, 20日+0.83%\n  - 医药ETF: 5日+1.04%, 20日+2.65%\n  - 房地产ETF: 5日+0.93%, 20日+6.64%\n  - 红利ETF: 5日-0.36%, 20日-3.27%\n  - 新能源车ETF: 5日-3.83%, 20日-8.71%"
+  "summary": "# 宏观市场分析报告 (2026-10-06)\n\n综合宏观评分: 47.2/100 | 信号: neutral | 状态: 中性（风险/避险平衡）\n\n## 大盘指数\n- 上证指数(000001.SH): 评分50, 趋势neutral, 1日+0.31%, 5日-2.78%, 20日-3.46%\n- 沪深300(000300.SH): 评分50, 趋势neutral, 1日+0.29%, 5日-4.11%, 20日-5.50%\n- 中证500(000905.SH): 评分50, 趋势neutral, 1日-0.06%, 5日-5.03%, 20日-5.39%\n- 创业板指(399006.SZ): 评分50, 趋势neutral, 1日-0.23%, 5日-7.78%, 20日-7.61%\n- 创业板50(399673.SZ): 评分48, 趋势neutral, 1日-0.21%, 5日-8.47%, 20日-8.60%\n\n## 市场广度\n- 指数上涨: 0 / 下跌: 0\n- 广度得分: 50\n- 涨停家数: 52\n\n## 中国宏观（akshare）\n- LPR 1Y: None%, 5Y: None% (日期: None)\n- 存款准备金率: 大型None%, 中小None% (日期: None)\n- Shibor 1W: None%, 3M: None% (日期: None)\n- M2同比: None%, M1同比: None% (日期: None)\n- PMI: None (日期: None)\n- CPI同比: None%, PPI同比: None% (日期: None)\n- GDP同比: None% (日期: None)\n\n## 美国宏观（akshare）\n- 联邦利率: 4.5% (日期: 2025-07-31)\n- CPI 同比: 3.4% (日期: 2026-09-11)\n- 失业率: 4.2% (日期: 2025-08-01)\n- 初请失业金: 23.7万 (日期: 2025-09-04)\n\n## 收益率曲线与波动率\n- 中国10Y: None%, 2Y: None%, 利差: None\n- 美国10Y代理: None%\n- VIX 代理(A股波动率): 13.37, 状态: low\n\n## 资金面指标（akshare）\n- 北向资金净买入: None 亿元 (日期: 2026-09-30)\n- 融资融券余额: 沪市 13526.835869 亿元, 深市 12626.05 亿元, 合计 26152.885868999998 亿元\n- 期权 PCR（上交所）: 上证50ETF华夏(510050) PCR=68.97, 沪深300ETF华泰柏瑞(510300) PCR=61.91, 中证500ETF南方(510500) PCR=69.43, 科创50ETF华夏(588000) PCR=75.69, 科创50ETF易方达(588080) PCR=57.33\n- 资金面情绪分: 54.6\n\n## 全球宏观流动性（FRED）\n- WALCL: 6743.0 十亿美元，周变化 -4.7B\n- SOFR: 3.87%, 10Y美债: 5.24%, 期限利差: 0.45%\n- DXY: 120.33, VIX: 16.39\n- FRED流动性评分: 46.0/100 (WALCL周变化-5B 修正-0.0; 10Y美债5.24% 修正-2; DXY强120.33 修正-2)\n\n## 全球半导体动量（美日韩）\n- 综合得分: 50 / 信号: neutral\n- 美股: 50 (5日 +0.00%, 20日 +0.00%)\n- 日本: 50 (5日 +0.00%, 20日 +0.00%)\n- 韩国: 50 (5日 +0.00%, 20日 +0.00%)\n\n## 板块轮动\n- 领涨板块: 银行ETF\n  - 银行ETF: 5日+1.67%, 20日+0.83%\n  - 医药ETF: 5日+1.04%, 20日+2.65%\n  - 房地产ETF: 5日+0.93%, 20日+6.64%\n  - 红利ETF: 5日-0.36%, 20日-3.27%\n  - 新能源车ETF: 5日-3.83%, 20日-8.71%"
 }
