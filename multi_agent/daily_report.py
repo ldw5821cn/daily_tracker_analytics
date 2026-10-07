@@ -35,6 +35,18 @@ try:
 except Exception:
     KronosStockPredictor = None  # Kronos 依赖 torch，缺失时静默降级
 
+# 尝试导入 HiThink 客户端
+try:
+    from hithink_client import HiThinkFinanceClient
+    HITHINK_AVAILABLE = True
+except ImportError:
+    try:
+        from multi_agent.hithink_client import HiThinkFinanceClient
+        HITHINK_AVAILABLE = True
+    except ImportError:
+        HiThinkFinanceClient = None
+        HITHINK_AVAILABLE = False
+
 
 class DailyReportGenerator:
     """每日盘前报告生成器"""
@@ -76,12 +88,17 @@ class DailyReportGenerator:
         print(f"   {'✅ 找到 ' + str(len(ev_list)) + ' 条证据链' if ev_list else '⚠️ 暂无当日证据链'}")
 
         # 5. Kronos AI 预测（新增）
-        print("\n[5/6] Kronos K线预测...")
+        print("\n[5/7] Kronos K线预测...")
         kronos = self._run_kronos_prediction()
         print(f"   ✅ 预测完成: {len(kronos.get('predictions', []))} 只")
         
-        # 6. 读取 P1 大V观点
-        print("\n[6/6] 读取大V观点共识...")
+        # 6. HiThink 估值数据（新增）
+        print("\n[6/7] HiThink 估值数据...")
+        valuation = self._run_valuation_analysis()
+        print(f"   {'✅ 估值分析完成' if valuation else '⚠️ 估值数据不可用'}")
+        
+        # 7. 读取 P1 大V观点
+        print("\n[7/7] 读取大V观点共识...")
         narrative_data = self._load_latest_narrative()
         print(f"   {'✅ 找到观点数据' if narrative_data else '⚠️ 暂无当日观点数据'}")
 
@@ -93,6 +110,7 @@ class DailyReportGenerator:
             evidence=evidence_data,
             narrative=narrative_data,
             kronos=kronos,  # 传入 Kronos 预测
+            valuation=valuation,  # 传入估值数据
         )
 
         # 保存
@@ -150,6 +168,43 @@ class DailyReportGenerator:
             print(f"   ⚠️ Kronos 加载失败: {e}")
             return {'predictions': [], 'error': str(e)}
 
+    def _run_valuation_analysis(self) -> dict:
+        """运行 HiThink 估值分析"""
+        if not HITHINK_AVAILABLE or HiThinkFinanceClient is None:
+            return {}
+        
+        try:
+            client = HiThinkFinanceClient()
+            
+            # 用户持仓
+            holdings = ['000001', '000598', '000027', '600011', '600027', '600023', '600642', '601398']
+            thscodes = [HiThinkFinanceClient.to_thscode(s) for s in holdings]
+            
+            # 获取估值数据
+            valuations = client.get_valuation(thscodes)
+            
+            # 添加中文名称
+            name_map = {
+                '000001': '平安银行',
+                '000598': '兴蓉环境',
+                '000027': '深圳能源',
+                '600011': '华能国际',
+                '600027': '华电国际',
+                '600023': '浙能电力',
+                '600642': '申能股份',
+                '601398': '工商银行',
+            }
+            
+            for v in valuations:
+                ticker = HiThinkFinanceClient.from_thscode(v.get('thscode', ''))
+                v['name'] = name_map.get(ticker, ticker)
+                v['ticker'] = ticker
+            
+            return {'valuations': valuations}
+        except Exception as e:
+            print(f"   ⚠️ HiThink 估值分析失败: {e}")
+            return {}
+
     def _load_latest_evidence(self) -> list:
         """读取最新证据链数据"""
         evidence_dir = REPO / 'multi_agent' / 'data' / 'evidence'
@@ -178,7 +233,7 @@ class DailyReportGenerator:
         except:
             return {}
 
-    def _build_report(self, sentiment, theme, wisdom, evidence, narrative, kronos=None) -> dict:
+    def _build_report(self, sentiment, theme, wisdom, evidence, narrative, kronos=None, valuation=None) -> dict:
         """构建完整报告"""
         m = sentiment.metrics
 
@@ -228,7 +283,22 @@ class DailyReportGenerator:
                 md += f"| {name} | {pred['current_price']:.2f} | {pred['expected_return']*100:+.2f}% | {pred['bull_prob']*100:.0f}% | {pred['signal']} |\n"
             md += "\n"
 
-        md += "---\n\n## 三、题材雷达（P3）\n\n"
+        md += "---\n\n## 三、估值分析（HiThink）\n\n"
+        if valuation and valuation.get('valuations'):
+            md += "| 标的 | PE(TTM) | PB(MRQ) | PS(TTM) | PC(TTM) |\n"
+            md += "|------|---------|---------|---------|---------|\n"
+            for v in valuation['valuations']:
+                pe = v.get('pe_ttm', '-')
+                pb = v.get('pb_mrq', '-')
+                ps = v.get('ps_ttm', '-')
+                pc = v.get('pc_ttm', '-')
+                md += f"| {v['name']} | {pe if pe != '-' else 'N/A'} | {pb if pb != '-' else 'N/A'} | {ps if ps != '-' else 'N/A'} | {pc if pc != '-' else 'N/A'} |\n"
+            md += "\n"
+            md += "*注: PE=市盈率, PB=市净率, PS=市销率, PC=市现率*\n\n"
+        else:
+            md += "*估值数据暂不可用（需要 HiThink API）*\n\n"
+
+        md += "---\n\n## 四、题材雷达（P3）\n\n"
         md += f"{theme.market_summary}\n\n"
 
         if theme.themes:
@@ -243,7 +313,7 @@ class DailyReportGenerator:
         if theme.avoid:
             md += f"**回避名单**: {', '.join(theme.avoid)}\n\n"
 
-        md += "---\n\n## 四、游资心法推荐（P4）\n\n"
+        md += "---\n\n## 五、游资心法推荐（P4）\n\n"
         if wisdom:
             md += f"针对 **{sentiment.phase}**，推荐以下心法：\n\n"
             for w in wisdom[:5]:
@@ -254,13 +324,13 @@ class DailyReportGenerator:
                     md += f"- 名言: \"{doc['quote'][:80]}{'...' if len(doc['quote']) > 80 else ''}\"\n"
                 md += "\n"
 
-        md += "---\n\n## 五、大V观点共识（P1）\n\n"
+        md += "---\n\n## 六、大V观点共识（P1）\n\n"
         if narrative:
             md += "*(当日观点数据已生成，详见 narrative_report.html)*\n\n"
         else:
             md += "*暂无当日观点数据*\n\n"
 
-        md += "---\n\n## 六、证据链追踪（P0）\n\n"
+        md += "---\n\n## 七、证据链追踪（P0）\n\n"
         if evidence:
             # 确保证据是列表格式
             if isinstance(evidence, list):
@@ -273,10 +343,10 @@ class DailyReportGenerator:
         else:
             md += "*暂无当日证据链数据*\n\n"
 
-        md += "---\n\n## 七、综合建议\n\n"
-        md += self._generate_advice(sentiment, theme, kronos)  # 传入 kronos
+        md += "---\n\n## 八、综合建议\n\n"
+        md += self._generate_advice(sentiment, theme, kronos, valuation)  # 传入 kronos 和 valuation
         
-        md += f"\n\n---\n*报告生成: LLM-native 量化系统 v1.0 | 含 Kronos AI 预测*\n"
+        md += f"\n\n---\n*报告生成: LLM-native 量化系统 v1.0 | 含 Kronos AI 预测 + HiThink 估值*\n"
 
         return {
             'date': sentiment.date,
@@ -287,7 +357,7 @@ class DailyReportGenerator:
             'wisdom_count': len(wisdom),
         }
 
-    def _generate_advice(self, sentiment, theme, kronos=None) -> str:
+    def _generate_advice(self, sentiment, theme, kronos=None, valuation=None) -> str:
         """生成综合建议"""
         advice = []
 
@@ -326,6 +396,19 @@ class DailyReportGenerator:
             if bearish:
                 names = [p.get('name', p['symbol']) for p in bearish]
                 advice.append(f"Kronos看跌: {', '.join(names)}（注意风险）")
+        
+        # 基于估值（新增）
+        if valuation and valuation.get('valuations'):
+            low_pb = [v for v in valuation['valuations'] if v.get('pb_mrq') and v['pb_mrq'] < 1.0]
+            high_pe = [v for v in valuation['valuations'] if v.get('pe_ttm') and v['pe_ttm'] > 20]
+            
+            if low_pb:
+                names = [v['name'] for v in low_pb]
+                advice.append(f"低 PB 标的: {', '.join(names)}（破净，安全边际高）")
+            
+            if high_pe:
+                names = [v['name'] for v in high_pe]
+                advice.append(f"高 PE 标的: {', '.join(names)}（估值偏高，注意风险）")
 
         return "\n\n".join([f"{i+1}. {a}" for i, a in enumerate(advice)])
 
