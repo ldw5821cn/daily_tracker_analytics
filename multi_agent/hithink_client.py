@@ -20,13 +20,28 @@ def _load_api_key():
     if key:
         return key
     
-    # 尝试 .env 文件
-    env_path = os.path.join(os.path.dirname(__file__), '..', '..', '.env')
-    if os.path.exists(env_path):
-        with open(env_path) as f:
-            for line in f:
-                if line.startswith('HITHINK_API_KEY='):
-                    return line.strip().split('=', 1)[1]
+    # 尝试多个 .env 文件路径
+    possible_paths = [
+        os.path.join(os.path.dirname(__file__), '..', '..', '.env'),  # 项目根目录
+        os.path.join(os.path.dirname(__file__), '..', '.env'),        # multi_agent 上级
+        os.path.join(os.getcwd(), '.env'),                             # 当前工作目录
+        os.path.expanduser('~/.env'),                                  # 用户主目录
+    ]
+    
+    for env_path in possible_paths:
+        if os.path.exists(env_path):
+            try:
+                with open(env_path) as f:
+                    for line in f:
+                        if line.startswith('HITHINK_API_KEY='):
+                            value = line.strip().split('=', 1)[1]
+                            # 处理可能的引号
+                            value = value.strip('"\'')
+                            if value:
+                                return value
+            except Exception as e:
+                print(f"  ⚠️ 读取 {env_path} 失败: {e}")
+                continue
     
     return None
 
