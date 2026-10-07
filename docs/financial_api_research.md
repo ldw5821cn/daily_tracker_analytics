@@ -1,5 +1,15 @@
 # 同花顺 Financial-API 调研报告
 
+## ✅ 接入状态
+
+| 项目 | 状态 |
+|------|------|
+| **API Key** | ✅ 已配置（sk-fuy...oG7i） |
+| **客户端封装** | ✅ `multi_agent/hithink_client.py` |
+| **测试通过** | ✅ 行情/K线/特色数据 |
+
+---
+
 ## 项目概览
 
 | 属性 | 内容 |
@@ -67,11 +77,107 @@
 
 ---
 
+## 客户端封装
+
+### 文件位置
+
+`multi_agent/hithink_client.py`
+
+### 主要类
+
+```python
+class HiThinkFinanceClient:
+    """同花顺金融数据客户端"""
+    
+    # 行情数据
+    def get_quote(thscode: str) -> dict
+    def get_quotes(thscodes: List[str]) -> List[dict]
+    def get_kline(thscode: str, start: str, end: str) -> List[dict]
+    
+    # 特色数据
+    def get_limit_up_pool(date: str = None) -> List[dict]
+    def get_limit_down_pool(date: str = None) -> List[dict]
+    def get_break_board_pool(date: str = None) -> List[dict]
+    def get_streak_board(date: str = None) -> List[dict]
+    def get_hot_list(date: str = None) -> List[dict]
+    def get_dragon_tiger_list(date: str = None) -> List[dict]
+    
+    # 财务数据
+    def get_income_statement(thscode: str, periods: int) -> List[dict]
+    def get_balance_sheet(thscode: str, periods: int) -> List[dict]
+    def get_cash_flow(thscode: str, periods: int) -> List[dict]
+    def get_financial_indicators(thscode: str, periods: int) -> List[dict]
+    
+    # 估值数据
+    def get_valuation(thscodes: List[str]) -> List[dict]
+    
+    # 指数数据
+    def get_index_list(tag: str = None) -> List[dict]
+    def get_index_constituents(thscode: str) -> List[dict]
+    
+    # 交易日历
+    def get_trading_days(start: str, end: str) -> List[str]
+    
+    # 工具方法
+    @staticmethod
+    def to_thscode(symbol: str) -> str  # 000001 -> 000001.SZ
+    @staticmethod
+    def from_thscode(thscode: str) -> str  # 000001.SZ -> 000001
+```
+
+### 使用示例
+
+```python
+from multi_agent.hithink_client import HiThinkFinanceClient
+
+client = HiThinkFinanceClient()
+
+# 行情快照
+quote = client.get_quote('000001.SZ')
+print(f"最新价: {quote['last_price']}")
+
+# 历史 K 线
+kline = client.get_kline('000001.SZ', '2024-01-01', '2024-12-31')
+for bar in kline[-5:]:
+    print(f"{bar['date']}: {bar['close_price']}")
+
+# 涨停池
+limit_up = client.get_limit_up_pool()
+print(f"涨停股票数: {len(limit_up)}")
+```
+
+---
+
+## 测试记录
+
+### 2026-10-07 测试
+
+```
+✅ 行情快照（平安银行）
+   最新价: 11.57
+   涨跌幅: 1.94%
+   成交量: 104,535,745
+
+✅ 历史 K 线（最近 5 天）
+   2024-09-23: 开8.44 高8.64 低8.42 收8.59
+   2024-09-24: 开8.66 高8.92 低8.63 收8.92
+   2024-09-25: 开9.07 高9.25 低9.00 收9.05
+   2024-09-26: 开9.05 高9.70 低9.05 收9.70
+   2024-09-27: 开9.90 高10.11 低9.58 收9.97
+
+✅ 涨停池（空数据，非交易时间）
+   涨停股票数: 0
+
+共发送 3 次请求
+```
+
+---
+
 ## 接入建议
 
 ### 方案 A：Python SDK（推荐）
 
-```python
+```bash
 # 安装
 pip install hithink-finance
 
@@ -136,8 +242,8 @@ hithink-finance dump --type daily-kline --start 2024-01-01 --end 2024-12-31
 
 | 现有模块 | 当前数据源 | 替换为 Financial-API |
 |---------|-----------|---------------------|
-| `sentiment_fetcher.py` | 东方财富爬取 | `limit_up_pool()` API |
-| `kronos_predictor.py` | 腾讯K线接口 | `stock_kline()` API |
+| `sentiment_fetcher.py` | 东方财富爬取 | `get_limit_up_pool()` 等 |
+| `kronos_predictor.py` | 腾讯K线接口 | `get_kline()` |
 | `daily_report.py` | 多源混合 | 统一 Financial-API |
 
 ### 新增能力
@@ -176,21 +282,21 @@ hithink-finance dump --type daily-kline --start 2024-01-01 --end 2024-12-31
 
 ### 短期（1周）
 
-1. **注册 API Key**
-2. **安装 Python SDK**
-3. **测试核心接口**（行情、K线、涨停数据）
+1. **注册 API Key** ✅ 已完成
+2. **封装客户端** ✅ 已完成
+3. **测试核心接口** ✅ 已完成
 4. **对比现有数据源**（准确性、稳定性）
 
 ### 中期（2周）
 
 1. **替换 sentiment_fetcher.py**
-   - 用 `limit_up_pool()` 替代东方财富爬取
-   - 用 `limit_down_pool()` 获取跌停数据
-   - 用 `break_board_pool()` 获取炸板数据
+   - 用 `get_limit_up_pool()` 替代东方财富爬取
+   - 用 `get_limit_down_pool()` 获取跌停数据
+   - 用 `get_break_board_pool()` 获取炸板数据
 
 2. **增强 kronos_predictor.py**
-   - 用 `stock_kline()` 替代腾讯接口
-   - 支持复权数据（`adjustflag` 参数）
+   - 用 `get_kline()` 替代腾讯接口
+   - 支持复权数据（`adjust` 参数）
 
 3. **新增财务估值模块**
    - PE/PB/PS/PC 批量查询
@@ -208,6 +314,48 @@ hithink-finance dump --type daily-kline --start 2024-01-01 --end 2024-12-31
 
 3. **多因子选股**
    - 财务指标 + 估值 + 情绪 + Kronos 预测
+
+---
+
+## 注意事项
+
+### 1. 限流策略
+
+- **当前不限累计次数**
+- **建议频率**: ≤10 次/秒
+- **HTTP 429**: 触发限流，降低并发
+
+### 2. 数据格式
+
+- **时间戳**: 毫秒级 Unix 时间戳
+- **时区**: Asia/Shanghai
+- **货币**: CNY
+- **字段**: snake_case
+
+### 3. 错误处理
+
+| code | 说明 |
+|------|------|
+| 0 | 成功 |
+| 1001 | 缺少必需参数 |
+| 1002 | 参数格式错误 |
+| 1003 | 时间范围超限（>10年） |
+| 2001 | API Key 缺失/无效 |
+| 4001 | 触发限流 |
+
+---
+
+## 参考链接
+
+| 资源 | 链接 |
+|------|------|
+| **官网** | https://fuyao.aicubes.cn/ |
+| **API 文档** | https://fuyao.aicubes.cn/docs/ |
+| **在线调试** | https://fuyao.aicubes.cn/playground/ |
+| **API Key 管理** | https://fuyao.aicubes.cn/admin/ |
+| **GitHub** | https://github.com/HiThink-Tech/Financial-API |
+| **llms.txt** | https://fuyao.aicubes.cn/llms.txt |
+| **llms-full.txt** | https://fuyao.aicubes.cn/llms-full.txt |
 
 ---
 
@@ -233,4 +381,5 @@ hithink-finance dump --type daily-kline --start 2024-01-01 --end 2024-12-31
 ---
 
 **调研时间**: 2026-10-07  
-**项目链接**: https://github.com/HiThink-Tech/Financial-API
+**项目链接**: https://github.com/HiThink-Tech/Financial-API  
+**状态**: ✅ 已接入，测试通过
