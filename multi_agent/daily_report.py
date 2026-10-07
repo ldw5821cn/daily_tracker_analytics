@@ -30,7 +30,10 @@ REPO = BASE.parent
 from sentiment_analyzer import SentimentAnalyzer, PHASE_EBB, PHASE_CLimax, PHASE_ICE, PHASE_REPAIR, PHASE_START
 from theme_radar import ThemeRadar
 from trader_wisdom import TraderWisdomLibrary
-from kronos_predictor import KronosStockPredictor  # 新增 Kronos
+try:
+    from kronos_predictor import KronosStockPredictor  # 新增 Kronos
+except Exception:
+    KronosStockPredictor = None  # Kronos 依赖 torch，缺失时静默降级
 
 
 class DailyReportGenerator:
@@ -114,7 +117,6 @@ class DailyReportGenerator:
 
     def _run_kronos_prediction(self, symbols: list = None) -> dict:
         """运行 Kronos 预测（默认预测用户持仓）"""
-        # 默认预测用户持仓股票
         if symbols is None:
             symbols = ['000001', '000598', '000027', '600011', '600027', '600023', '600642', '601398']
         
@@ -122,11 +124,23 @@ class DailyReportGenerator:
             predictor = KronosStockPredictor(model_size="mini")
             predictions = []
             
-            # 只预测前3只（避免太慢）
-            for symbol in symbols[:3]:
+            # 预测所有持仓（8只）
+            for symbol in symbols:
                 try:
-                    result = predictor.predict(symbol, pred_days=3, sample_count=20)
+                    result = predictor.predict(symbol, pred_days=5, sample_count=30)
                     if 'error' not in result:
+                        # 添加中文名称
+                        name_map = {
+                            '000001': '平安银行',
+                            '000598': '兴蓉环境',
+                            '000027': '深圳能源',
+                            '600011': '华能国际',
+                            '600027': '华电国际',
+                            '600023': '浙能电力',
+                            '600642': '申能股份',
+                            '601398': '工商银行',
+                        }
+                        result['name'] = name_map.get(symbol, symbol)
                         predictions.append(result)
                 except Exception as e:
                     print(f"   ⚠️ {symbol}: {e}")
@@ -210,7 +224,8 @@ class DailyReportGenerator:
             md += "| 标的 | 现价 | 预期收益 | 上涨概率 | 信号 |\n"
             md += "|------|------|----------|----------|------|\n"
             for pred in kronos['predictions']:
-                md += f"| {pred['symbol']} | {pred['current_price']:.2f} | {pred['expected_return']*100:+.2f}% | {pred['bull_prob']*100:.0f}% | {pred['signal']} |\n"
+                name = pred.get('name', pred['symbol'])
+                md += f"| {name} | {pred['current_price']:.2f} | {pred['expected_return']*100:+.2f}% | {pred['bull_prob']*100:.0f}% | {pred['signal']} |\n"
             md += "\n"
 
         md += "---\n\n## 三、题材雷达（P3）\n\n"
@@ -259,9 +274,9 @@ class DailyReportGenerator:
             md += "*暂无当日证据链数据*\n\n"
 
         md += "---\n\n## 七、综合建议\n\n"
-        md += self._generate_advice(sentiment, theme)
-
-        md += f"\n\n---\n*报告生成: LLM-native 量化系统 v1.0*\n"
+        md += self._generate_advice(sentiment, theme, kronos)  # 传入 kronos
+        
+        md += f"\n\n---\n*报告生成: LLM-native 量化系统 v1.0 | 含 Kronos AI 预测*\n"
 
         return {
             'date': sentiment.date,
@@ -272,7 +287,7 @@ class DailyReportGenerator:
             'wisdom_count': len(wisdom),
         }
 
-    def _generate_advice(self, sentiment, theme) -> str:
+    def _generate_advice(self, sentiment, theme, kronos=None) -> str:
         """生成综合建议"""
         advice = []
 
@@ -298,6 +313,19 @@ class DailyReportGenerator:
         m = sentiment.metrics
         if m.seal_rate < 0.7:
             advice.append(f"封板率 {m.seal_rate:.0%} 偏低，盘面分歧大，持仓需分散")
+
+        # 基于 Kronos 预测（新增）
+        if kronos and kronos.get('predictions'):
+            bullish = [p for p in kronos['predictions'] if p['bull_prob'] > 0.6]
+            bearish = [p for p in kronos['predictions'] if p['bull_prob'] < 0.4]
+            
+            if bullish:
+                names = [p.get('name', p['symbol']) for p in bullish]
+                advice.append(f"Kronos看涨: {', '.join(names)}（短期强势）")
+            
+            if bearish:
+                names = [p.get('name', p['symbol']) for p in bearish]
+                advice.append(f"Kronos看跌: {', '.join(names)}（注意风险）")
 
         return "\n\n".join([f"{i+1}. {a}" for i, a in enumerate(advice)])
 
