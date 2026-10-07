@@ -54,10 +54,87 @@ class KronosStockPredictor:
         )
         print("✅ Model loaded")
     
-    def fetch_a_share_data(self, symbol: str, days: int = 120) -> pd.DataFrame:
-        """获取A股数据（用腾讯接口，更稳定）"""
+    def fetch_a_share_data(self, symbol: str, days: int = 120, use_hithink: bool = True) -> pd.DataFrame:
+        """
+        获取A股数据
+        
+        Args:
+            symbol: A股代码（如 000001）
+            days: 历史天数
+            use_hithink: 是否优先使用 HiThink API（默认 True）
+        
+        Returns:
+            DataFrame: OHLCV 数据
+        """
         print(f"📥 Fetching {symbol} data...")
         
+        # 优先使用 HiThink API
+        if use_hithink:
+            try:
+                return self._fetch_from_hithink(symbol, days)
+            except Exception as e:
+                print(f"  ⚠️ HiThink 失败，降级腾讯接口: {e}")
+        
+        # 降级：腾讯接口
+        return self._fetch_from_tencent(symbol, days)
+    
+    def _fetch_from_hithink(self, symbol: str, days: int) -> pd.DataFrame:
+        """从 HiThink API 获取数据"""
+        try:
+            from multi_agent.hithink_client import HiThinkFinanceClient
+        except ImportError:
+            try:
+                from hithink_client import HiThinkFinanceClient
+            except ImportError:
+                raise ImportError("HiThink 客户端不可用")
+        
+        client = HiThinkFinanceClient()
+        thscode = HiThinkFinanceClient.to_thscode(symbol)
+        
+        # 计算日期范围
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=int(days * 1.5))  # 多取一些，避免节假日
+        
+        # 获取 K 线
+        kline = client.get_kline(
+            thscode=thscode,
+            start_date=start_date.strftime('%Y-%m-%d'),
+            end_date=end_date.strftime('%Y-%m-%d'),
+            interval='1d',
+            adjust='forward'
+        )
+        
+        if not kline:
+            raise ValueError(f"HiThink 无数据: {symbol}")
+        
+        # 转换为 DataFrame
+        df = pd.DataFrame(kline)
+        df = df.rename(columns={
+            'open_price': 'open',
+            'high_price': 'high',
+            'low_price': 'low',
+            'close_price': 'close',
+            'volume': 'volume'
+        })
+        
+        # 只保留需要的列
+        df = df[['date', 'open', 'high', 'low', 'close', 'volume']].copy()
+        df['timestamps'] = pd.to_datetime(df['date'])
+        df['open'] = df['open'].astype(float)
+        df['high'] = df['high'].astype(float)
+        df['low'] = df['low'].astype(float)
+        df['close'] = df['close'].astype(float)
+        df['volume'] = df['volume'].astype(float)
+        df['amount'] = df['volume'] * df['close']  # 估算成交额
+        
+        # 只取最近 days 天
+        df = df.tail(days).reset_index(drop=True)
+        
+        print(f"✅ HiThink fetched {len(df)} days")
+        return df
+    
+    def _fetch_from_tencent(self, symbol: str, days: int) -> pd.DataFrame:
+        """从腾讯接口获取数据（降级方案）"""
         # 腾讯接口
         if symbol.startswith('6'):
             tencent_code = f"sh{symbol}"
@@ -89,7 +166,7 @@ class KronosStockPredictor:
         df['volume'] = df['volume'].astype(float)
         df['amount'] = df['volume'] * df['close']  # 估算成交额
         
-        print(f"✅ Fetched {len(df)} days")
+        print(f"✅ Tencent fetched {len(df)} days")
         return df
     
     def predict(self, symbol: str, pred_days: int = 3, sample_count: int = 100) -> dict:
