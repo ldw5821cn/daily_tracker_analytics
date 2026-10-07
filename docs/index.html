@@ -3,653 +3,253 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🏠 首页 - A股 & 期货 多维度投资分析 - 2026-10-07 16:36</title>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
+<title>量化系统报告中心</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; }
-.container { max-width: 1400px; margin: 0 auto; padding: 20px; }
-.header { background: linear-gradient(135deg, #1e293b, #334155); padding: 30px; border-radius: 16px; margin-bottom: 24px; }
-.header h1 { font-size: 24px; margin-bottom: 8px; }
-.header .sub { color: #94a3b8; font-size: 14px; }
-.stats-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-bottom: 24px; }
-@media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
-.stat-card { background: #1e293b; border-radius: 12px; padding: 16px 10px; text-align: center; }
-.stat-card .num { font-size: 28px; font-weight: bold; white-space: nowrap; }
-.stat-card .label { color: #94a3b8; font-size: 12px; margin-top: 4px; }
-.section-title { font-size: 18px; font-weight: 600; margin: 24px 0 12px; padding-left: 12px; border-left: 4px solid #6366f1; }
-.nav { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; align-items: center; gap: 10px; margin-bottom: 20px; }
-.nav a { display: inline-block; white-space: nowrap; color: #94a3b8; text-decoration: none; padding: 8px 18px; border-radius: 20px; background: #1e293b; border: 1px solid #334155; font-size: 13px; }
-.nav a:hover { background: #334155; color: #e2e8f0; }
-.nav a.active { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; border-color: transparent; }
-.footer { text-align: center; color: #475569; font-size: 12px; margin-top: 40px; padding: 20px; }
-.model-tag { display: inline-block; background: #6366f1; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 8px; }
-.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 24px; }
-.card { background: #1e293b; border-radius: 12px; padding: 16px; border-left: 4px solid #6366f1; }
-.card.bull { border-left-color: #22c55e; }
-.card.bear { border-left-color: #ef4444; }
-.card-title { font-weight: 600; margin-bottom: 6px; }
-.card-meta { color: #94a3b8; font-size: 12px; margin-bottom: 6px; }
-.card-price { color: #e2e8f0; font-size: 13px; margin-bottom: 6px; }
-.card-reason { color: #94a3b8; font-size: 12px; line-height: 1.5; }
-.table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 24px; border-radius: 12px; }
-table { width: 100%; border-collapse: collapse; background: #1e293b; font-size: 13px; min-width: 800px; }
-th { background: #334155; padding: 10px 12px; text-align: left; font-size: 12px; color: #94a3b8; text-transform: uppercase; }
-td { padding: 8px 12px; border-bottom: 1px solid #1e293b; font-size: 13px; }
-tr:hover { background: #334155; }
-.note { background: #1e293b; padding: 16px; border-radius: 12px; color: #cbd5e1; line-height: 1.8; margin-bottom: 24px; }
-.empty { text-align: center; color: #64748b; padding: 40px; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #0f172a; color: #e2e8f0; line-height: 1.6; padding: 20px;
+  }
+  .container { max-width: 960px; margin: 0 auto; }
+  h1 { color: #60a5fa; font-size: 24px; margin-bottom: 6px; }
+  .subtitle { color: #94a3b8; font-size: 13px; margin-bottom: 24px; }
+
+  .section { margin-bottom: 24px; }
+  .section-title {
+    font-size: 16px; font-weight: 600; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .report-list {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px;
+  }
+  .report-item {
+    display: block; background: #1e293b; border-radius: 10px; padding: 12px;
+    text-decoration: none; color: #e2e8f0; transition: all 0.2s;
+    border-left: 3px solid #334155;
+  }
+  .report-item:hover {
+    background: #334155; border-left-color: #60a5fa;
+    transform: translateX(4px);
+  }
+  .report-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .report-meta { font-size: 12px; color: #64748b; }
+
+  .stats-bar {
+    display: flex; gap: 16px; margin-bottom: 24px; padding: 16px;
+    background: #1e293b; border-radius: 12px;
+  }
+  .stat { text-align: center; flex: 1; }
+  .stat-num { font-size: 24px; font-weight: 700; color: #60a5fa; }
+  .stat-label { font-size: 12px; color: #94a3b8; }
+
+  .footer {
+    text-align: center; color: #64748b; font-size: 12px;
+    margin-top: 32px; padding-top: 16px; border-top: 1px solid #334155;
+  }
 </style>
 </head>
 <body>
 <div class="container">
-<div class="nav">
-<a href="index.html" class="active">🏠 首页</a>
-<a href="stocks.html" class="">📈 个股</a>
-<a href="us_market.html" class="">🇺🇸 美股</a>
-<a href="etfs.html" class="">📊 ETF</a>
-<a href="futures.html" class="">📉 期货</a>
-<a href="prediction.html" class="">🏛️ 预测</a>
-<a href="portfolio.html" class="">💼 持仓组合</a>
-<a href="xueqiu_returns.html" class="">💰 雪球收益</a>
-<a href="recommendations.html" class="">🎯 推荐回测</a>
-<a href="backtest.html" class="">📈 回测</a>
-<a href="cmc_rank.html" class="">₿ 加密情绪</a>
-<a href="reflection.html" class="">🧠 复盘</a>
-<a href="cron_status.html" class="">⏰ 任务调度</a>
-<a href="data_health.html" class="">❤️ 数据健康</a>
-<select onchange="location.href=this.value" style="background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:20px;padding:8px 14px;font-size:13px;outline:none;cursor:pointer"><option value="" disabled>📅 历史归档</option><option value="archive/2026-10-08.html" >2026-10-08</option><option value="archive/2026-10-07.html" >2026-10-07</option><option value="archive/2026-10-03.html" >2026-10-03</option><option value="archive/2026-10-02.html" >2026-10-02</option><option value="archive/2026-10-01.html" >2026-10-01</option><option value="archive/2026-09-30.html" >2026-09-30</option><option value="archive/2026-09-29.html" >2026-09-29</option></select>
-</div>
+  <h1>📊 量化系统报告中心</h1>
+  <div class="subtitle">LLM-native 量化系统 | 生成时间: 2026-10-07 16:52:40</div>
 
-    <div class="header">
-        <h1>🏠 首页 </h1>
-        <div class="sub">2026-10-07 16:36 · 首页概览 · 价格日期: 2026-09-30</div>
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-num">9</div>
+      <div class="stat-label">盘前报告</div>
     </div>
-
-<div class="stats-grid">
-        <div class="stat-card">
-            <div class="num">190</div>
-            <div class="label">今日预测</div>
-        </div>
-        <div class="stat-card">
-            <div class="num" style="color:#ef4444">13</div>
-            <div class="label">看多</div>
-        </div>
-        <div class="stat-card">
-            <div class="num" style="color:#22c55e">9</div>
-            <div class="label">看空</div>
-        </div>
-        <div class="stat-card">
-            <div class="num">118</div>
-            <div class="label">个股</div>
-        </div>
-        <div class="stat-card">
-            <div class="num">23</div>
-            <div class="label">ETF</div>
-        </div>
-        <div class="stat-card">
-            <div class="num">49</div>
-            <div class="label">期货</div>
-        </div>
-        <div class="stat-card">
-            <div class="num">0</div>
-            <div class="label">美股</div>
-        </div>
-
-</div>
-<div class="section-title">🔥 今日重点看多</div>
-<div class="cards">
-
-            <div class="card bull">
-                <div class="card-title">🔥 港股创新药ETF广发 (513120)</div>
-                <div class="card-meta">评分 100.0 | 60日收益 <span style="color:#ef4444">+23.2%</span> | 回撤 -9.4%</div>
-                <div class="card-meta">推荐策略：每周只做多（无成本） | 收益 <span style="color:#ef4444">+6.3%</span> | 回撤 -5.0%</div>
-                <div class="card-price">2026/09/30 现价 1.39 | 目标 1.419 | 止损 1.362</div>
-                <div class="card-reason">技术面中性偏多(67/100) | 基本面质量评分55(50/100) | 新闻情绪+0.18 | 多空辩论 看涨72 vs 看跌50</div>
-                
-            </div>
-            <div class="card bull">
-                <div class="card-title">🔥 20号胶 (NR0)</div>
-                <div class="card-meta">评分 71.2 | 60日收益 <span style="color:#ef4444">+17.2%</span> | 回撤 -6.0%</div>
-                <div class="card-meta">推荐策略：每周只做多（无成本） | 收益 <span style="color:#ef4444">+12.2%</span> | 回撤 -7.3%</div>
-                <div class="card-price">2026/09/30 现价 17390.0 | 目标 18179.463 | 止损 17042.2</div>
-                <div class="card-reason">技术面中性偏多(65.5/100) | 基本面neutral(50/100) | 新闻情绪-0.08 | 多空辩论 看涨74 vs 看跌68 | LLM裁决看多(62)</div>
-                
-            </div>
-            <div class="card bull">
-                <div class="card-title">🔥 橡胶 (RU0)</div>
-                <div class="card-meta">评分 73.2 | 60日收益 <span style="color:#ef4444">+18.4%</span> | 回撤 -5.6%</div>
-                <div class="card-meta">推荐策略：每周只做多（无成本） | 收益 <span style="color:#ef4444">+2.1%</span> | 回撤 -1.7%</div>
-                <div class="card-price">2026/09/30 现价 20095.0 | 目标 20829.723 | 止损 19693.1</div>
-                <div class="card-reason">技术面中性偏多(70/100) | 基本面bullish(50/100) | 新闻情绪-0.09 | 多空辩论 看涨68 vs 看跌62</div>
-                
-            </div>
-            <div class="card bull">
-                <div class="card-title">🔥 医疗ETF华宝 (512170)</div>
-                <div class="card-meta">评分 73.5 | 60日收益 <span style="color:#ef4444">+14.8%</span> | 回撤 -8.9%</div>
-                <div class="card-meta">推荐策略：每周只做多（无成本） | 收益 <span style="color:#ef4444">+11.9%</span> | 回撤 -5.8%</div>
-                <div class="card-price">2026/09/30 现价 0.35 | 目标 0.351 | 止损 0.343</div>
-                <div class="card-reason">技术面中性偏多(70/100) | 基本面质量评分58(50/100) | 新闻情绪-0.04 | 多空辩论 看涨68 vs 看跌62</div>
-                
-            </div>
-            <div class="card bull">
-                <div class="card-title">🔥 银行ETF (512800)</div>
-                <div class="card-meta">评分 67.5 | 60日收益 <span style="color:#ef4444">+10.8%</span> | 回撤 -5.2%</div>
-                <div class="card-meta">推荐策略：每周只做多（无成本） | 收益 <span style="color:#ef4444">+1.2%</span> | 回撤 -2.5%</div>
-                <div class="card-price">2026/09/30 现价 0.85 | 目标 0.858 | 止损 0.833</div>
-                <div class="card-reason">技术面中性偏多(60/100) | 基本面质量评分55(50/100) | 新闻情绪+0.13 | 多空辩论 看涨62 vs 看跌58</div>
-                
-            </div>
-</div>
-
-    <div class="section-title">🔥 A 股市场状态 (2026-10-06)</div>
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="num" style="color:#22c55e">2566/2824</div>
-            <div class="label">涨跌家数 (0.91)</div>
-        </div>
-        <div class="stat-card">
-            <div class="num" style="color:#ef4444">52</div>
-            <div class="label">涨停</div>
-        </div>
-        <div class="stat-card">
-            <div class="num" style="color:#f59e0b">34</div>
-            <div class="label">炸板</div>
-        </div>
-        <div class="stat-card">
-            <div class="num" style="color:#ef4444">75</div>
-            <div class="label">连板</div>
-        </div>
-        <div class="stat-card">
-            <div class="num">0</div>
-            <div class="label">龙虎榜家数</div>
-        </div>
-
+    <div class="stat">
+      <div class="stat-num">1</div>
+      <div class="stat-label">情绪分析</div>
     </div>
-    <div class="section-title">🏆 连板梯队</div>
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="num">40</div>
-            <div class="label">1板</div>
-        </div>
-        <div class="stat-card">
-            <div class="num">6</div>
-            <div class="label">2板</div>
-        </div>
-        <div class="stat-card">
-            <div class="num">4</div>
-            <div class="label">3板</div>
-        </div>
-        <div class="stat-card">
-            <div class="num" style="color:#ef4444">0</div>
-            <div class="label">4板+</div>
-        </div>
-        <div class="stat-card">
-            <div class="num" style="color:#ef4444">7板</div>
-            <div class="label">最高连板</div>
-        </div>
-        <div class="stat-card">
-            <div class="num">1.01亿</div>
-            <div class="label">平均封单</div>
-        </div>
+    <div class="stat">
+      <div class="stat-num">1</div>
+      <div class="stat-label">题材雷达</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1</div>
+      <div class="stat-label">游资心法</div>
+    </div>
+  </div>
 
-    </div>
-    <div class="section-title">🌀 概念 RPS 轮动</div>
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="num">5.28%</div>
-            <div class="label">概念分化度</div>
-        </div>
+  <div class="section">
+    <div class="section-title" style="color: #60a5fa">📋 📋 盘前报告（P0-P4 整合）（9）</div>
+    <div class="report-list">
 
-    </div>
-    <div class="table-responsive" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-        
-        <table>
-            <thead><tr><th>行业 Top5</th><th>净流入</th></tr></thead>
-            <tbody><tr><td>银行</td><td style='color:#ef4444'>+41万</td></tr><tr><td>化学制药</td><td style='color:#ef4444'>+31万</td></tr><tr><td>医疗服务</td><td style='color:#ef4444'>+26万</td></tr><tr><td>房地产</td><td style='color:#ef4444'>+25万</td></tr><tr><td>能源金属</td><td style='color:#ef4444'>+17万</td></tr></tbody>
-        </table>
-        
-        <p>暂无 概念 Top5 Top5 数据</p>
-        
-        <table>
-            <thead><tr><th>概念 RPS Top5</th><th>涨幅</th></tr></thead>
-            <tbody><tr><td>重组蛋白</td><td style='color:#ef4444'>+3.78%</td></tr><tr><td>细胞免疫治疗</td><td style='color:#ef4444'>+3.45%</td></tr><tr><td>CRO概念</td><td style='color:#ef4444'>+3.40%</td></tr><tr><td>猴痘概念</td><td style='color:#ef4444'>+2.96%</td></tr><tr><td>生物疫苗</td><td style='color:#ef4444'>+2.95%</td></tr></tbody>
-        </table>
-        
-    </div>
-    <div class="section-title">💰 资金流向</div>
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="num" style="color:#22c55e">-0.02亿</div>
-            <div class="label">行业净流入</div>
-        </div>
-        <div class="stat-card">
-            <div class="num" style="color:#22c55e">+0.00亿</div>
-            <div class="label">概念净流入</div>
-        </div>
+      <a href="docs/daily_report_20261007.md" class="report-item" target="_blank">
+        <div class="report-name">daily_report_20261007.md</div>
+        <div class="report-meta">3.8 KB | 2026-10-07 16:51</div>
+      </a>
 
-    </div>
-    <div class="section-title">🐉 龙虎榜机构动向</div>
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="num" style="color:#22c55e">+0.000亿</div>
-            <div class="label">机构净买入</div>
-        </div>
-        <div class="stat-card">
-            <div class="num">0.000亿</div>
-            <div class="label">机构买入</div>
-        </div>
-        <div class="stat-card">
-            <div class="num">0.000亿</div>
-            <div class="label">机构卖出</div>
-        </div>
-        <div class="stat-card">
-            <div class="num" style="color:#ef4444">0</div>
-            <div class="label">涨停+机构买</div>
-        </div>
-        <div class="stat-card">
-            <div class="num" style="color:#22c55e">0</div>
-            <div class="label">跌停+机构卖</div>
-        </div>
+      <a href="docs/daily_report_20261006.md" class="report-item" target="_blank">
+        <div class="report-name">daily_report_20261006.md</div>
+        <div class="report-meta">2.6 KB | 2026-10-07 08:51</div>
+      </a>
 
-    </div>
-    <div class="section-title">📊 资金面指标</div>
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="num">26,153亿</div>
-            <div class="label">两融余额</div>
-        </div>
-        <div class="stat-card">
-            <div class="num">66.67</div>
-            <div class="label">期权 PCR</div>
-        </div>
+      <a href="docs/daily_report_20261002.md" class="report-item" target="_blank">
+        <div class="report-name">daily_report_20261002.md</div>
+        <div class="report-meta">2.4 KB | 2026-10-06 18:15</div>
+      </a>
 
-    </div>
-    <div class="note">
-        <p>涨停/炸板/连板、行业/概念资金流向与 RPS 轮动、龙虎榜机构席位、融资融券与期权 PCR 均来自 akshare / 交易所公开数据，每日盘后自动缓存。</p>
-    </div>
+      <a href="docs/daily_report_20261001.md" class="report-item" target="_blank">
+        <div class="report-name">daily_report_20261001.md</div>
+        <div class="report-meta">2.6 KB | 2026-10-02 08:15</div>
+      </a>
 
+      <a href="docs/daily_report_20260930.md" class="report-item" target="_blank">
+        <div class="report-name">daily_report_20260930.md</div>
+        <div class="report-meta">2.6 KB | 2026-10-01 08:16</div>
+      </a>
 
-    <div class="section-title">🤖 参数优化器训练进度</div>
-    <div class="table-responsive">
-    <table>
-        <thead><tr><th>类别</th><th>可评估样本进度（5日真实收益）</th><th>说明</th></tr></thead>
-        <tbody>
-        <tr>
-            <td><b>A股</b></td>
-            <td>
-                <div style="display:flex;align-items:center;gap:10px">
-                    <div style="flex:1;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
-                        <div style="width:100%;height:100%;background:#22c55e;border-radius:4px"></div>
-                    </div>
-                    <span style="white-space:nowrap;color:#22c55e;font-size:13px">✅ 可训练</span>
-                </div>
-            </td>
-            <td style="color:#94a3b8;font-size:12px">可训练</td>
-        </tr>
-        <tr>
-            <td><b>ETF</b></td>
-            <td>
-                <div style="display:flex;align-items:center;gap:10px">
-                    <div style="flex:1;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
-                        <div style="width:100%;height:100%;background:#22c55e;border-radius:4px"></div>
-                    </div>
-                    <span style="white-space:nowrap;color:#22c55e;font-size:13px">✅ 可训练</span>
-                </div>
-            </td>
-            <td style="color:#94a3b8;font-size:12px">可训练</td>
-        </tr>
-        <tr>
-            <td><b>期货</b></td>
-            <td>
-                <div style="display:flex;align-items:center;gap:10px">
-                    <div style="flex:1;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
-                        <div style="width:100%;height:100%;background:#22c55e;border-radius:4px"></div>
-                    </div>
-                    <span style="white-space:nowrap;color:#22c55e;font-size:13px">✅ 可训练</span>
-                </div>
-            </td>
-            <td style="color:#94a3b8;font-size:12px">可训练</td>
-        </tr>
-        <tr>
-            <td><b>美股</b></td>
-            <td>
-                <div style="display:flex;align-items:center;gap:10px">
-                    <div style="flex:1;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
-                        <div style="width:0%;height:100%;background:#f59e0b;border-radius:4px"></div>
-                    </div>
-                    <span style="white-space:nowrap;color:#f59e0b;font-size:13px">⏳ 积累中 0/20 天</span>
-                </div>
-            </td>
-            <td style="color:#94a3b8;font-size:12px">需继续积累 20 天</td>
-        </tr></tbody>
-    </table>
-    </div>
-    
-            <div class="note" style="margin-top:12px">
-                <p>📦 参数仓库 <code>predictor_params_warehouse_v4.json</code>（更新于 2026-09-11T10:34）已生成候选参数，<a href="predictor_params.html">查看详情</a></p>
-            </div>
+      <a href="docs/daily_report_20260929.md" class="report-item" target="_blank">
+        <div class="report-name">daily_report_20260929.md</div>
+        <div class="report-meta">4.1 KB | 2026-10-07 11:56</div>
+      </a>
 
-    <div class="section-title">🎯 昨日 1 日方向验证（2026-10-03 预测）</div>
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="num" style="color:#ef4444">100.0%</div>
-            <div class="label">总体准确率 (2/2)</div>
-        </div>
-        
-            <div class="stat-card">
-                <div class="num" style="color:#ef4444">100.0%</div>
-                <div class="label">US (2/2)</div>
-            </div>
-    </div>
+      <a href="docs/daily_report_20260928.md" class="report-item" target="_blank">
+        <div class="report-name">daily_report_20260928.md</div>
+        <div class="report-meta">2.4 KB | 2026-09-29 15:02</div>
+      </a>
 
-<div class="section-title">📊 推荐策略分布</div>
-<div class="stats-grid">
-        <div class="stat-card">
-            <div class="num" style="color:#94a3b8">101</div>
-            <div class="label">每周只做多（无成本）</div>
-        </div>
-        <div class="stat-card">
-            <div class="num" style="color:#94a3b8">78</div>
-            <div class="label">每日多空（无成本）</div>
-        </div>
-        <div class="stat-card">
-            <div class="num" style="color:#94a3b8">11</div>
-            <div class="label">每周只做多+止损（无成本）</div>
-        </div>
+      <a href="docs/daily_report_20260925.md" class="report-item" target="_blank">
+        <div class="report-name">daily_report_20260925.md</div>
+        <div class="report-meta">2.6 KB | 2026-09-28 08:16</div>
+      </a>
 
-</div>
+      <a href="docs/daily_report_20260924.md" class="report-item" target="_blank">
+        <div class="report-name">daily_report_20260924.md</div>
+        <div class="report-meta">2.6 KB | 2026-09-25 11:42</div>
+      </a>
+    </div>
+  </div>
 
-    <div class="section-title">🏭 Warehouse 真实 5d 收益模型表现</div>
-    <div class="note">
-        <p><b>基于仓库实际收盘价的 5 日 forward return 回测。</b>当前样本来自 2026-10-07 前所有历史预测，共 111866 条价格-收益记录。生成于 2026-10-07T16:30:47。</p>
-        <p><b>说明：</b>看多信号偏多表示模型偏乐观；看多信号均值为负表示当前参数在 bull 阈值附近表现不佳。数据仍偏少，结果仅供参考，不用于直接调整参数。</p>
-        <p style="color:#f59e0b">⏳ 每类预测需等待 5 个交易日后才能用真实收盘价评估；当前最新预测 2026-10-07，预计 2026-10-07 +5 交易日后可评估。</p>
-    </div>
-    <div class="table-responsive">
-    <table>
-        <thead><tr><th>类别</th><th>样本</th><th>看多</th><th>看空</th><th>看多平均</th><th>看空平均</th><th>方向准确率</th><th>覆盖率</th></tr></thead>
-        <tbody><tr><td><b>个股</b></td><td>4742</td><td>15</td><td>1595</td><td style="color:#22c55e">-4.93</td><td style="color:#ef4444">1.04</td><td>49.2%</td><td>43.8%</td></tr><tr><td><b>ETF</b></td><td>982</td><td>3</td><td>282</td><td style="color:#22c55e">-0.32</td><td style="color:#ef4444">1.04</td><td>45.6%</td><td>36.8%</td></tr><tr><td><b>期货</b></td><td>2030</td><td>4</td><td>158</td><td style="color:#22c55e">-0.39</td><td style="color:#ef4444">1.9</td><td>29.0%</td><td>23.4%</td></tr><tr><td><b>US</b></td><td>1936</td><td colspan="5" style="color:#f59e0b">⏳ 暂无 5 日收益数据（1936 条待评估，需等待收盘价）</td><td>0.0%</td></tr></tbody>
-    </table>
-    </div>
+  <div class="section">
+    <div class="section-title" style="color: #f87171">📡 📡 情绪分析（P2）（1）</div>
+    <div class="report-list">
 
-    <div class="section-title">📊 VectorBT 组合滚动回测</div>
-    <div class="table-responsive">
-    <table>
-        <thead><tr><th>场景</th><th>年化</th><th>回撤</th><th>夏普</th><th>Calmar</th><th>交易次数</th><th>含义</th></tr></thead>
-        <tbody><tr ><td>每日多空（无成本）</td><td style="color:#ef4444">+39.50%</td><td>-26.13%</td><td>1.19</td><td>1.51</td><td>4655</td><td>每日按技术得分 Top 做多、Bottom 做空，无交易成本</td></tr><tr ><td>每日多空（含成本）</td><td style="color:#ef4444">+12.43%</td><td>-34.59%</td><td>0.52</td><td>0.36</td><td>4695</td><td>每日按技术得分 Top 做多、Bottom 做空，扣 0.1% 单边成本</td></tr><tr ><td>每周只做多（无成本）</td><td style="color:#ef4444">+44.40%</td><td>-24.70%</td><td>1.29</td><td>1.80</td><td>3871</td><td>每周五按技术得分判定下周方向，无成本</td></tr><tr ><td>每周只做多（含成本）</td><td style="color:#ef4444">+31.52%</td><td>-28.63%</td><td>1.01</td><td>1.10</td><td>3900</td><td>每周五按技术得分判定下周方向，扣 0.1% 成本</td></tr><tr ><td>每周只做多+止损（无成本）</td><td style="color:#ef4444">+19.81%</td><td>-24.62%</td><td>0.79</td><td>0.80</td><td>2294</td><td>每周五只做多 + 8% 止损，无成本</td></tr><tr style="background:#1e293b;font-weight:bold"><td>每周只做多+止损（含成本） ⭐</td><td style="color:#ef4444">+10.86%</td><td>-27.42%</td><td>0.51</td><td>0.40</td><td>2318</td><td>每周五只做多 + 8% 止损，含成本</td></tr></tbody>
-    </table>
+      <a href="docs/sentiment_report.html" class="report-item" target="_blank">
+        <div class="report-name">sentiment_report.html</div>
+        <div class="report-meta">6.5 KB | 2026-09-24 00:16</div>
+      </a>
     </div>
+  </div>
 
-    <div class="section-title">📈 全历史预测 Forward Return 回测</div>
-    <div class="note">
-        <p><b>样本范围：</b>2026-08-03 ~ 2026-10-08 · 共 9635 条预测 · 38540 条记录 · 生成于 2026-10-06 18:51:15</p>
-        <p>Forward Return = 以预测日收盘价为基准，未来 N 个交易日的实际收益率。推荐组合统计只取看多信号做等权持有。</p>
-    </div>
-    <div class="table-responsive">
-    <table>
-        <thead><tr><th>horizon</th><th>整体均值</th><th>整体中位</th><th>整体胜率</th><th>方向准确率</th><th>样本数</th><th>组合日均</th><th>组合累计</th><th>组合胜率</th></tr></thead>
-        <tbody><tr><td><b>1d</b></td><td>-0.12%</td><td>-0.20%</td><td>45.1%</td><td>51.3%</td><td>5798</td><td>-0.30%</td><td>-11.23%</td><td>50.0%</td></tr><tr><td><b>3d</b></td><td>-0.16%</td><td>-0.43%</td><td>45.3%</td><td>36.8%</td><td>5472</td><td>-0.49%</td><td>-17.54%</td><td>38.9%</td></tr><tr><td><b>5d</b></td><td>-0.07%</td><td>-0.43%</td><td>45.7%</td><td>33.4%</td><td>5146</td><td>-0.81%</td><td>-27.40%</td><td>44.1%</td></tr><tr><td><b>10d</b></td><td>-0.73%</td><td>-1.59%</td><td>39.7%</td><td>28.0%</td><td>4331</td><td>-1.31%</td><td>-38.01%</td><td>27.6%</td></tr></tbody>
-    </table>
-    </div>
-    <div class="section-title">📊 按信号方向</div>
-    <div class="table-responsive">
-    <table>
-        <thead><tr><th>horizon</th><th>信号</th><th>样本数</th><th>均值</th><th>中位</th><th>胜率</th><th>方向准确率</th></tr></thead>
-        <tbody><tr><td>1d</td><td>bearish</td><td>486</td><td>+1.55%</td><td>+0.67%</td><td>61.3%</td><td>38.7%</td></tr><tr><td>1d</td><td>bullish</td><td>1878</td><td>-0.33%</td><td>-0.27%</td><td>44.5%</td><td>44.5%</td></tr><tr><td>1d</td><td>neutral</td><td>3434</td><td>-0.24%</td><td>-0.28%</td><td>43.2%</td><td>56.8%</td></tr><tr><td>3d</td><td>bearish</td><td>473</td><td>+4.88%</td><td>+2.63%</td><td>73.8%</td><td>26.2%</td></tr><tr><td>3d</td><td>bullish</td><td>1860</td><td>-0.71%</td><td>-0.88%</td><td>41.7%</td><td>41.7%</td></tr><tr><td>3d</td><td>neutral</td><td>3139</td><td>-0.59%</td><td>-0.51%</td><td>43.2%</td><td>35.4%</td></tr><tr><td>5d</td><td>bearish</td><td>465</td><td>+6.58%</td><td>+3.60%</td><td>77.2%</td><td>22.8%</td></tr><tr><td>5d</td><td>bullish</td><td>1842</td><td>-0.79%</td><td>-0.85%</td><td>42.6%</td><td>42.6%</td></tr><tr><td>5d</td><td>neutral</td><td>2839</td><td>-0.69%</td><td>-0.66%</td><td>42.6%</td><td>29.2%</td></tr><tr><td>10d</td><td>bearish</td><td>438</td><td>+7.41%</td><td>+3.48%</td><td>68.3%</td><td>31.7%</td></tr><tr><td>10d</td><td>bullish</td><td>1790</td><td>-1.63%</td><td>-1.77%</td><td>38.5%</td><td>38.5%</td></tr><tr><td>10d</td><td>neutral</td><td>2103</td><td>-1.67%</td><td>-2.15%</td><td>34.8%</td><td>18.2%</td></tr></tbody>
-    </table>
-    </div>
-    <div class="section-title">📂 按资产类别</div>
-    <div class="table-responsive">
-    <table>
-        <thead><tr><th>horizon</th><th>类别</th><th>样本数</th><th>均值</th><th>胜率</th><th>方向准确率</th></tr></thead>
-        <tbody><tr><td>1d</td><td>ETF</td><td>867</td><td>-0.14%</td><td>44.4%</td><td>62.2%</td></tr><tr><td>1d</td><td>个股</td><td>4154</td><td>-0.14%</td><td>44.5%</td><td>45.6%</td></tr><tr><td>1d</td><td>期货</td><td>777</td><td>+0.04%</td><td>49.4%</td><td>69.6%</td></tr><tr><td>3d</td><td>ETF</td><td>821</td><td>-0.33%</td><td>41.8%</td><td>39.8%</td></tr><tr><td>3d</td><td>个股</td><td>3916</td><td>-0.23%</td><td>44.2%</td><td>32.7%</td></tr><tr><td>3d</td><td>期货</td><td>735</td><td>+0.39%</td><td>55.5%</td><td>55.1%</td></tr><tr><td>5d</td><td>ETF</td><td>775</td><td>-0.39%</td><td>41.3%</td><td>36.1%</td></tr><tr><td>5d</td><td>个股</td><td>3678</td><td>-0.19%</td><td>43.8%</td><td>30.1%</td></tr><tr><td>5d</td><td>期货</td><td>693</td><td>+0.93%</td><td>61.0%</td><td>47.5%</td></tr><tr><td>10d</td><td>ETF</td><td>660</td><td>-1.39%</td><td>31.5%</td><td>25.9%</td></tr><tr><td>10d</td><td>个股</td><td>3083</td><td>-1.16%</td><td>37.4%</td><td>27.4%</td></tr><tr><td>10d</td><td>期货</td><td>588</td><td>+2.25%</td><td>61.2%</td><td>33.2%</td></tr></tbody>
-    </table>
-    </div>
+  <div class="section">
+    <div class="section-title" style="color: #fbbf24">🎯 🎯 题材雷达（P3）（1）</div>
+    <div class="report-list">
 
-    <div class="section-title">🏆 Top 10 看多个股/ETF/期货</div>
-    <div class="table-responsive">
-    <table>
-        <thead><tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>60日收益</th><th>60日回撤</th><th>60日夏普</th><th>推荐策略</th><th>策略收益</th><th>策略回撤</th><th>价格</th><th>目标</th><th>止损</th><th>仓位</th><th>技术分</th></tr></thead>
-        <tbody>
-        <tr>
-            <td><b>513120</b></td>
-            <td>港股创新药ETF广发 </td>
-            <td>创新药</td>
-            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>100.0</td>
-            <td>95%</td>
-            <td>震荡</td>
-            <td>偏多</td>
-            <td>看涨</td>
-            <td>看涨</td>
-            <td style="color:#ef4444">+23.2%</td>
-            <td>-9.4%</td>
-            <td>2.47</td>
-            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#ef4444">+6.3%</td>
-            <td>-5.0%</td>
-            <td>2026/09/30 现价 1.39</td>
-            <td>1.419</td>
-            <td>1.362</td>
-            <td>24%</td>
-            <td title="技术面中性偏多(67/100) | 基本面质量评分55(50/100) | 新闻情绪+0.18 | 多空辩论 看涨72 vs 看跌50">67</td>
-        </tr>
-        <tr>
-            <td><b>600301</b></td>
-            <td>华锡有色 🛡️稳健型</td>
-            <td>锡/锑</td>
-            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>90.6</td>
-            <td>95%</td>
-            <td>震荡</td>
-            <td>偏多</td>
-            <td>看涨</td>
-            <td>看涨</td>
-            <td style="color:#22c55e">-19.6%</td>
-            <td>-41.4%</td>
-            <td>-1.09</td>
-            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#ef4444">+49.5%</td>
-            <td>-16.3%</td>
-            <td>2026/09/30 现价 49.83</td>
-            <td>50.792</td>
-            <td>48.833</td>
-            <td>24%</td>
-            <td title="技术面中性偏多(67/100) | 基本面优秀(87/100) | 新闻情绪+0.39 | 多空辩论 看涨76 vs 看跌50">67</td>
-        </tr>
-        <tr>
-            <td><b>002472</b></td>
-            <td>双环传动 🛡️稳健型</td>
-            <td>机器人</td>
-            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>81.0</td>
-            <td>95%</td>
-            <td>震荡</td>
-            <td>偏多</td>
-            <td>偏多</td>
-            <td>看涨</td>
-            <td style="color:#22c55e">-10.0%</td>
-            <td>-20.5%</td>
-            <td>-0.79</td>
-            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#ef4444">+1.2%</td>
-            <td>-7.9%</td>
-            <td>2026/09/30 现价 38.09</td>
-            <td>38.607</td>
-            <td>37.328</td>
-            <td>24%</td>
-            <td title="技术面中性偏多(64.3/100) | 基本面优秀(78/100) | 新闻情绪+0.36 | 多空辩论 看涨78 vs 看跌58 | LLM裁决看多(58)">64.3</td>
-        </tr>
-        <tr>
-            <td><b>512170</b></td>
-            <td>医疗ETF华宝 </td>
-            <td>医疗器械</td>
-            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>73.5</td>
-            <td>95%</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td>偏多</td>
-            <td style="color:#ef4444">+14.8%</td>
-            <td>-8.9%</td>
-            <td>2.06</td>
-            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#ef4444">+11.9%</td>
-            <td>-5.8%</td>
-            <td>2026/09/30 现价 0.35</td>
-            <td>0.351</td>
-            <td>0.343</td>
-            <td>24%</td>
-            <td title="技术面中性偏多(70/100) | 基本面质量评分58(50/100) | 新闻情绪-0.04 | 多空辩论 看涨68 vs 看跌62">70</td>
-        </tr>
-        <tr>
-            <td><b>RU0</b></td>
-            <td>橡胶 </td>
-            <td>工业品</td>
-            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>73.2</td>
-            <td>95%</td>
-            <td>偏多</td>
-            <td>看涨</td>
-            <td>看涨</td>
-            <td>看涨</td>
-            <td style="color:#ef4444">+18.4%</td>
-            <td>-5.6%</td>
-            <td>3.02</td>
-            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#ef4444">+2.1%</td>
-            <td>-1.7%</td>
-            <td>2026/09/30 现价 20095.0</td>
-            <td>20829.723</td>
-            <td>19693.1</td>
-            <td>24%</td>
-            <td title="技术面中性偏多(70/100) | 基本面bullish(50/100) | 新闻情绪-0.09 | 多空辩论 看涨68 vs 看跌62">70</td>
-        </tr>
-        <tr>
-            <td><b>NR0</b></td>
-            <td>20号胶 </td>
-            <td>工业品</td>
-            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>71.2</td>
-            <td>95%</td>
-            <td>偏多</td>
-            <td>看涨</td>
-            <td>看涨</td>
-            <td>看涨</td>
-            <td style="color:#ef4444">+17.2%</td>
-            <td>-6.0%</td>
-            <td>2.80</td>
-            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#ef4444">+12.2%</td>
-            <td>-7.3%</td>
-            <td>2026/09/30 现价 17390.0</td>
-            <td>18179.463</td>
-            <td>17042.2</td>
-            <td>24%</td>
-            <td title="技术面中性偏多(65.5/100) | 基本面neutral(50/100) | 新闻情绪-0.08 | 多空辩论 看涨74 vs 看跌68 | LLM裁决看多(62)">65.5</td>
-        </tr>
-        <tr>
-            <td><b>688072</b></td>
-            <td>拓荆科技 🛡️稳健型</td>
-            <td>半导体设备</td>
-            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>71.0</td>
-            <td>95%</td>
-            <td>偏空</td>
-            <td>看跌</td>
-            <td>看跌</td>
-            <td>看跌</td>
-            <td style="color:#22c55e">-21.9%</td>
-            <td>-30.4%</td>
-            <td>-0.86</td>
-            <td title="每周五只做多 + 8% 止损，无成本">每周只做多+止损（无成本）</td>
-            <td style="color:#22c55e">-10.8%</td>
-            <td>-11.9%</td>
-            <td>2026/09/30 现价 640.0</td>
-            <td>604.083</td>
-            <td>627.2</td>
-            <td>24%</td>
-            <td title="技术面中性(44/100) | 基本面优秀(90/100) | 新闻情绪+0.43 | 多空辩论 看涨72 vs 看跌58">44</td>
-        </tr>
-        <tr>
-            <td><b>512800</b></td>
-            <td>银行ETF </td>
-            <td>银行</td>
-            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>67.5</td>
-            <td>95%</td>
-            <td>震荡</td>
-            <td>偏多</td>
-            <td>偏多</td>
-            <td>看涨</td>
-            <td style="color:#ef4444">+10.8%</td>
-            <td>-5.2%</td>
-            <td>2.54</td>
-            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#ef4444">+1.2%</td>
-            <td>-2.5%</td>
-            <td>2026/09/30 现价 0.85</td>
-            <td>0.858</td>
-            <td>0.833</td>
-            <td>24%</td>
-            <td title="技术面中性偏多(60/100) | 基本面质量评分55(50/100) | 新闻情绪+0.13 | 多空辩论 看涨62 vs 看跌58">60</td>
-        </tr>
-        <tr>
-            <td><b>688018</b></td>
-            <td>乐鑫科技 ⚖️均衡型</td>
-            <td>半导体</td>
-            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>67.5</td>
-            <td>95%</td>
-            <td>偏空</td>
-            <td>看跌</td>
-            <td>看跌</td>
-            <td>看跌</td>
-            <td style="color:#22c55e">-2.7%</td>
-            <td>-27.0%</td>
-            <td>0.10</td>
-            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#22c55e">-5.6%</td>
-            <td>-18.6%</td>
-            <td>2026/09/30 现价 115.08</td>
-            <td>110.329</td>
-            <td>112.778</td>
-            <td>24%</td>
-            <td title="技术面中性偏多(67/100) | 基本面优秀(82/100) | 新闻情绪+0.22 | 多空辩论 看涨72 vs 看跌68">67</td>
-        </tr>
-        <tr>
-            <td><b>603728</b></td>
-            <td>鸣志电器 ⚖️均衡型</td>
-            <td>机器人</td>
-            <td style="color:#ef4444;font-weight:bold">🔥 看多</td>
-            <td>67.3</td>
-            <td>95%</td>
-            <td>震荡</td>
-            <td>偏多</td>
-            <td>偏多</td>
-            <td>看涨</td>
-            <td style="color:#22c55e">-12.3%</td>
-            <td>-25.0%</td>
-            <td>-0.72</td>
-            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#22c55e">-9.5%</td>
-            <td>-9.5%</td>
-            <td>2026/09/30 现价 51.5</td>
-            <td>52.15</td>
-            <td>50.47</td>
-            <td>24%</td>
-            <td title="技术面中性偏多(67/100) | 基本面一般(59/100) | 新闻情绪+0.35 | 多空辩论 看涨68 vs 看跌58">67</td>
-        </tr></tbody>
-    </table>
+      <a href="docs/theme_report.html" class="report-item" target="_blank">
+        <div class="report-name">theme_report.html</div>
+        <div class="report-meta">10.9 KB | 2026-09-24 08:26</div>
+      </a>
     </div>
+  </div>
 
-    <div class="footer">
-        数据由 Hermes Agent + 多Agent LLM 预测系统自动生成 · 研究辅助非投资建议 ·
-        <a href="https://github.com/ldw5821cn/daily_tracker_analytics" style="color:#6366f1">GitHub</a>
+  <div class="section">
+    <div class="section-title" style="color: #4ade80">📚 📚 游资心法（P4）（1）</div>
+    <div class="report-list">
+
+      <a href="docs/trader_wisdom.html" class="report-item" target="_blank">
+        <div class="report-name">trader_wisdom.html</div>
+        <div class="report-meta">13.3 KB | 2026-09-25 11:30</div>
+      </a>
     </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title" style="color: #a78bfa">📰 📰 大V观点（P1）（1）</div>
+    <div class="report-list">
+
+      <a href="docs/narrative_report.html" class="report-item" target="_blank">
+        <div class="report-name">narrative_report.html</div>
+        <div class="report-meta">8.9 KB | 2026-09-23 23:44</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title" style="color: #38bdf8">🔗 🔗 证据链（P0）（1）</div>
+    <div class="report-list">
+
+      <a href="docs/evidence_report_test.html" class="report-item" target="_blank">
+        <div class="report-name">evidence_report_test.html</div>
+        <div class="report-meta">2.8 KB | 2026-09-23 17:10</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title" style="color: #f472b6">📈 📈 ETF 报告（1）</div>
+    <div class="report-list">
+
+      <a href="docs/etfs.html" class="report-item" target="_blank">
+        <div class="report-name">etfs.html</div>
+        <div class="report-meta">65.1 KB | 2026-10-07 16:36</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title" style="color: #94a3b8">📄 📄 其他报告（47）</div>
+    <div class="report-list">
+
+      <a href="docs/xueqiu_returns.html" class="report-item" target="_blank">
+        <div class="report-name">xueqiu_returns.html</div>
+        <div class="report-meta">8.6 KB | 2026-10-07 16:37</div>
+      </a>
+
+      <a href="docs/valuation_report.md" class="report-item" target="_blank">
+        <div class="report-name">valuation_report.md</div>
+        <div class="report-meta">1.3 KB | 2026-10-07 14:15</div>
+      </a>
+
+      <a href="docs/us_market.html" class="report-item" target="_blank">
+        <div class="report-name">us_market.html</div>
+        <div class="report-meta">6.1 KB | 2026-10-07 16:36</div>
+      </a>
+
+      <a href="docs/supply_chain_固态电池_news.html" class="report-item" target="_blank">
+        <div class="report-name">supply_chain_固态电池_news.html</div>
+        <div class="report-meta">4.5 KB | 2026-08-26 21:30</div>
+      </a>
+
+      <a href="docs/supply_chain_固态电池.html" class="report-item" target="_blank">
+        <div class="report-name">supply_chain_固态电池.html</div>
+        <div class="report-meta">9.6 KB | 2026-08-27 02:02</div>
+      </a>
+
+      <a href="docs/supply_chain_低空经济_news.html" class="report-item" target="_blank">
+        <div class="report-name">supply_chain_低空经济_news.html</div>
+        <div class="report-meta">5.1 KB | 2026-08-26 21:31</div>
+      </a>
+
+      <a href="docs/supply_chain_低空经济.html" class="report-item" target="_blank">
+        <div class="report-name">supply_chain_低空经济.html</div>
+        <div class="report-meta">14.0 KB | 2026-08-27 02:11</div>
+      </a>
+
+      <a href="docs/supply_chain_人形机器人_news.html" class="report-item" target="_blank">
+        <div class="report-name">supply_chain_人形机器人_news.html</div>
+        <div class="report-meta">4.8 KB | 2026-08-26 21:24</div>
+      </a>
+
+      <a href="docs/supply_chain_人形机器人.html" class="report-item" target="_blank">
+        <div class="report-name">supply_chain_人形机器人.html</div>
+        <div class="report-meta">10.8 KB | 2026-08-27 01:57</div>
+      </a>
+
+      <a href="docs/supply_chain_CPO光模块_news.html" class="report-item" target="_blank">
+        <div class="report-name">supply_chain_CPO光模块_news.html</div>
+        <div class="report-meta">5.3 KB | 2026-08-26 21:30</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer">
+    数据源: akshare 东财/新浪 | 分析: LLM-native 量化系统 v1.0<br>
+    模块: P0证据链 | P1大V复盘 | P2超短情绪 | P3题材雷达 | P4游资心法库
+  </div>
 </div>
 </body>
 </html>
