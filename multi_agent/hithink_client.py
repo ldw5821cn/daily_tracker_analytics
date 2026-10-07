@@ -258,13 +258,38 @@ class HiThinkFinanceClient:
         })
         return data.get('item', [])
     
-    def get_financial_indicators(self, thscode: str, periods: int = 4) -> List[dict]:
-        """获取财务指标"""
-        data = self._make_request("/api/a-share/financials/indicators", {
-            'thscode': thscode,
-            'periods': periods
-        })
-        return data.get('item', [])
+    def get_financial_indicators(self, thscode: str, report: str = None) -> List[dict]:
+        """
+        获取财务指标
+        
+        Args:
+            thscode: 同花顺代码
+            report: 报告期（如 2024-4，默认为最新）
+        
+        Returns:
+            list: 财务指标数据
+        """
+        params = {'thscode': thscode}
+        if report:
+            params['report'] = report
+        
+        data = self._make_request("/api/a-share/financials/indicators", params)
+        
+        # 转换为标准格式
+        indicators = []
+        if 'abilities' in data:
+            for ability_group in data['abilities']:
+                ability = ability_group.get('ability')
+                for indicator in ability_group.get('indicators', []):
+                    indicators.append({
+                        'ability': ability,
+                        'index_id': indicator.get('index_id'),
+                        'value': float(indicator['value']) if indicator.get('value') else None,
+                        'report': data.get('report'),
+                        'thscode': data.get('thscode')
+                    })
+        
+        return indicators
     
     # ==================== 估值数据 ====================
     
