@@ -1,53 +1,619 @@
 {
-  "pred_date": "2026-10-03",
-  "validate_date": "2026-10-06",
+  "pred_date": "2026-10-07",
+  "validate_date": "2026-10-07",
   "direction_threshold": 1.5,
   "overall": {
-    "total": 2,
-    "correct": 2,
-    "accuracy": 100.0
+    "total": 0,
+    "correct": 0,
+    "accuracy": 0.0
   },
-  "by_category": {
-    "US": {
-      "total": 2,
-      "correct": 2,
-      "accuracy": 100.0
-    }
-  },
-  "by_signal": {
-    "看多": {
-      "total": 1,
-      "correct": 1,
-      "accuracy": 100.0
-    },
-    "观望": {
-      "total": 1,
-      "correct": 1,
-      "accuracy": 100.0
-    }
-  },
+  "by_category": {},
+  "by_signal": {},
   "items": [
+    {
+      "ticker": "QQQ",
+      "name": "纳斯达克100ETF",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 759.66,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
     {
       "ticker": "SOXX",
       "name": "美国半导体ETF-iShares",
       "category": "US",
-      "signal": "看多",
-      "pred_price": 588.9,
-      "today_price": 589.51,
-      "return_pct": 0.104,
-      "direction_correct": true,
-      "note": "ok"
+      "signal": "中性",
+      "pred_price": 589.45,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
     },
     {
       "ticker": "SMH",
       "name": "美国半导体ETF-VanEck",
       "category": "US",
+      "signal": "中性",
+      "pred_price": 632.5,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "DIA",
+      "name": "道琼斯ETF",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 514.56,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "VTI",
+      "name": "全美股票ETF",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 380.5,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "SPY",
+      "name": "SPDR标普500ETF",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 779.09,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "MSFT",
+      "name": "微软",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 529.3,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "AMZN",
+      "name": "亚马逊",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 256.29,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "GOOGL",
+      "name": "谷歌A",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 347.68,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "NVDA",
+      "name": "英伟达",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 239.24,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "TSLA",
+      "name": "特斯拉",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 380.68,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "AMD",
+      "name": "AMD",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 649.42,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "NFLX",
+      "name": "奈飞",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 68.69,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "INTC",
+      "name": "英特尔",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 112.5,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "ADBE",
+      "name": "Adobe",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 119.05,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "ORCL",
+      "name": "甲骨文",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 144.77,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "IBM",
+      "name": "IBM",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 221.29,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "UBER",
+      "name": "Uber",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 69.08,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "JPM",
+      "name": "摩根大通",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 331.28,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "WFC",
+      "name": "富国银行",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 81.51,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "GS",
+      "name": "高盛",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 897.18,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "BAC",
+      "name": "美国银行",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 54.09,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "JNJ",
+      "name": "强生",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 254.78,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "PFE",
+      "name": "辉瑞",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 27.5,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "MRK",
+      "name": "默沙东",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 141.94,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "LLY",
+      "name": "礼来",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 1157.49,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "WMT",
+      "name": "沃尔玛",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 107.2,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "COST",
+      "name": "开市客",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 935.68,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "PEP",
+      "name": "百事",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 125.71,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "KO",
+      "name": "可口可乐",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 86.17,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "MCD",
+      "name": "麦当劳",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 232.45,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "NKE",
+      "name": "耐克",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 34.61,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "DIS",
+      "name": "迪士尼",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 104.03,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "HD",
+      "name": "家得宝",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 286.69,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "XOM",
+      "name": "埃克森美孚",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 164.48,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "CVX",
+      "name": "雪佛龙",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 207.58,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "CAT",
+      "name": "卡特彼勒",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 863.44,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "BA",
+      "name": "波音",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 189.82,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "LIN",
+      "name": "林德",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 489.95,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "AMT",
+      "name": "美国塔",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 164.78,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "BIDU",
+      "name": "百度",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 87.05,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "TCEHY",
+      "name": "腾讯ADR",
+      "category": "US",
+      "signal": "中性",
+      "pred_price": 54.5,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "IWM",
+      "name": "罗素2000ETF",
+      "category": "US",
       "signal": "观望",
-      "pred_price": 630.6,
-      "today_price": 633.9,
-      "return_pct": 0.523,
-      "direction_correct": true,
-      "note": "ok"
+      "pred_price": 281.34,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "AAPL",
+      "name": "苹果",
+      "category": "US",
+      "signal": "观望",
+      "pred_price": 333.63,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "META",
+      "name": "Meta",
+      "category": "US",
+      "signal": "观望",
+      "pred_price": 738.88,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "CRM",
+      "name": "Salesforce",
+      "category": "US",
+      "signal": "观望",
+      "pred_price": 224.99,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "V",
+      "name": "Visa",
+      "category": "US",
+      "signal": "观望",
+      "pred_price": 370.64,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "MA",
+      "name": "万事达",
+      "category": "US",
+      "signal": "观望",
+      "pred_price": 566.58,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "UNH",
+      "name": "联合健康",
+      "category": "US",
+      "signal": "观望",
+      "pred_price": 376.32,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "ABBV",
+      "name": "艾伯维",
+      "category": "US",
+      "signal": "观望",
+      "pred_price": 266.69,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "GE",
+      "name": "通用电气",
+      "category": "US",
+      "signal": "观望",
+      "pred_price": 309.39,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "BABA",
+      "name": "阿里巴巴",
+      "category": "US",
+      "signal": "观望",
+      "pred_price": 109.26,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "PDD",
+      "name": "拼多多",
+      "category": "US",
+      "signal": "观望",
+      "pred_price": 78.4,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "JD",
+      "name": "京东",
+      "category": "US",
+      "signal": "观望",
+      "pred_price": 26.5,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
+    },
+    {
+      "ticker": "NTES",
+      "name": "网易",
+      "category": "US",
+      "signal": "观望",
+      "pred_price": 119.07,
+      "today_price": null,
+      "return_pct": null,
+      "direction_correct": null,
+      "note": "no_data"
     }
   ]
 }

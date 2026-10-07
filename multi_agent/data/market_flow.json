@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-06T18:37:53",
-  "today": "2026-10-06",
+  "generated_at": "2026-10-07T17:23:34",
+  "today": "2026-10-07",
   "records": [
     {
       "date": "2024-08-16",
@@ -1097,81 +1097,6 @@
       "source": "akshare_option_stats"
     },
     {
-      "date": "2026-09-22",
-      "ticker": "sse_510050",
-      "metric": "option_pcr",
-      "value": 59.73,
-      "detail": {
-        "date": "2026-09-22",
-        "symbol": "sse_510050",
-        "pcr": 59.73,
-        "call_volume": 504525.0,
-        "put_volume": 301349.0,
-        "total_open_interest": 1320773.0
-      },
-      "source": "akshare_option_stats"
-    },
-    {
-      "date": "2026-09-22",
-      "ticker": "sse_510300",
-      "metric": "option_pcr",
-      "value": 77.92,
-      "detail": {
-        "date": "2026-09-22",
-        "symbol": "sse_510300",
-        "pcr": 77.92,
-        "call_volume": 472454.0,
-        "put_volume": 368153.0,
-        "total_open_interest": 1169649.0
-      },
-      "source": "akshare_option_stats"
-    },
-    {
-      "date": "2026-09-22",
-      "ticker": "sse_510500",
-      "metric": "option_pcr",
-      "value": 69.16,
-      "detail": {
-        "date": "2026-09-22",
-        "symbol": "sse_510500",
-        "pcr": 69.16,
-        "call_volume": 857414.0,
-        "put_volume": 592967.0,
-        "total_open_interest": 1369516.0
-      },
-      "source": "akshare_option_stats"
-    },
-    {
-      "date": "2026-09-22",
-      "ticker": "sse_588000",
-      "metric": "option_pcr",
-      "value": 69.2,
-      "detail": {
-        "date": "2026-09-22",
-        "symbol": "sse_588000",
-        "pcr": 69.2,
-        "call_volume": 1730072.0,
-        "put_volume": 1197240.0,
-        "total_open_interest": 2811339.0
-      },
-      "source": "akshare_option_stats"
-    },
-    {
-      "date": "2026-09-22",
-      "ticker": "sse_588080",
-      "metric": "option_pcr",
-      "value": 74.46,
-      "detail": {
-        "date": "2026-09-22",
-        "symbol": "sse_588080",
-        "pcr": 74.46,
-        "call_volume": 253976.0,
-        "put_volume": 189104.0,
-        "total_open_interest": 573443.0
-      },
-      "source": "akshare_option_stats"
-    },
-    {
       "date": "2026-09-30",
       "ticker": "szse_159901",
       "metric": "option_pcr",
@@ -1470,70 +1395,10 @@
         "total_open_interest": 244360.0
       },
       "source": "akshare_option_stats"
-    },
-    {
-      "date": "2026-09-22",
-      "ticker": "szse_159901",
-      "metric": "option_pcr",
-      "value": 64.1,
-      "detail": {
-        "date": "2026-09-22",
-        "symbol": "szse_159901",
-        "pcr": 64.1,
-        "call_volume": 34855.0,
-        "put_volume": 34462.0,
-        "total_open_interest": 75166.0
-      },
-      "source": "akshare_option_stats"
-    },
-    {
-      "date": "2026-09-22",
-      "ticker": "szse_159915",
-      "metric": "option_pcr",
-      "value": 76.96,
-      "detail": {
-        "date": "2026-09-22",
-        "symbol": "szse_159915",
-        "pcr": 76.96,
-        "call_volume": 1213408.0,
-        "put_volume": 789376.0,
-        "total_open_interest": 1665854.0
-      },
-      "source": "akshare_option_stats"
-    },
-    {
-      "date": "2026-09-22",
-      "ticker": "szse_159919",
-      "metric": "option_pcr",
-      "value": 52.11,
-      "detail": {
-        "date": "2026-09-22",
-        "symbol": "szse_159919",
-        "pcr": 52.11,
-        "call_volume": 83047.0,
-        "put_volume": 44276.0,
-        "total_open_interest": 208501.0
-      },
-      "source": "akshare_option_stats"
-    },
-    {
-      "date": "2026-09-22",
-      "ticker": "szse_159922",
-      "metric": "option_pcr",
-      "value": 57.75,
-      "detail": {
-        "date": "2026-09-22",
-        "symbol": "szse_159922",
-        "pcr": 57.75,
-        "call_volume": 205396.0,
-        "put_volume": 67546.0,
-        "total_open_interest": 364344.0
-      },
-      "source": "akshare_option_stats"
     }
   ],
   "stats": {
-    "saved": 102,
+    "saved": 93,
     "errors": 0
   }
 }

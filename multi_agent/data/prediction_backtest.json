@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-06 18:51:15",
+  "generated_at": "2026-10-07 17:42:36",
   "data_source": "warehouse.daily_bar",
-  "n_predictions": 9635,
-  "n_records": 38540,
+  "n_predictions": 9690,
+  "n_records": 38760,
   "date_range": {
     "start": "2026-08-03",
     "end": "2026-10-08"

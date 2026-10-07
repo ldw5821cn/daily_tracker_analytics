@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-07T16:30:47",
+  "generated_at": "2026-10-07T17:42:37",
   "pred_date": "2026-10-07",
   "ret_map_count": 111866,
   "warehouse_max_dates": {
     "个股": "2026-09-30",
     "指数": "2026-09-30",
     "ETF": "2026-09-30",
-    "US": "2026-10-05",
+    "US": "2026-10-06",
     "futures": "2026-09-30",
     "index": "2026-09-30",
     "期货": "2026-09-30"
@@ -62,7 +62,7 @@
       "bearish_mean": null,
       "direction_accuracy": 0,
       "coverage": 0,
-      "warehouse_max_date": "2026-10-05"
+      "warehouse_max_date": "2026-10-06"
     }
   }
 }

@@ -1,58 +1,18 @@
 {
-  "pred_date": "2026-10-03",
+  "pred_date": "2026-10-07",
   "validation_date": null,
   "summary": {
-    "total": 2,
-    "correct": 2,
+    "total": 0,
+    "correct": 0,
     "wrong": 0,
-    "accuracy": 100.0
+    "accuracy": 0.0
   },
-  "by_category": {
-    "US": {
-      "total": 2,
-      "wrong": 0,
-      "error_rate": 0.0
-    }
-  },
-  "by_signal": {
-    "看多": {
-      "total": 1,
-      "wrong": 0,
-      "error_rate": 0.0
-    },
-    "观望": {
-      "total": 1,
-      "wrong": 0,
-      "error_rate": 0.0
-    }
-  },
+  "by_category": {},
+  "by_signal": {},
   "feature_compare": {},
   "component_compare": {},
   "wrong_top10": [],
-  "correct_top10": [
-    {
-      "ticker": "SMH",
-      "name": "美国半导体ETF-VanEck",
-      "category": "US",
-      "signal": "观望",
-      "return_pct": 0.523,
-      "pred_price": 630.6,
-      "today_price": 633.9,
-      "weighted_score": 56.9,
-      "confidence": 0.57
-    },
-    {
-      "ticker": "SOXX",
-      "name": "美国半导体ETF-iShares",
-      "category": "US",
-      "signal": "看多",
-      "return_pct": 0.104,
-      "pred_price": 588.9,
-      "today_price": 589.51,
-      "weighted_score": 100.0,
-      "confidence": 0.95
-    }
-  ],
+  "correct_top10": [],
   "suggestions": [
     "建议增加日内 TickFlow 数据作为校验，减少滞后技术面影响",
     "建议继续扩展宏观/资金面 Agent 数据维度，让优化器自动判断各周期下的权重"
