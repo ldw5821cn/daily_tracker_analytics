@@ -1,11 +1,42 @@
 {
-  "pred_date": "2026-09-30",
-  "generated_at": "2026-09-30 15:32:14",
-  "macro_score": 49.6,
+  "pred_date": "2026-10-08",
+  "generated_at": "2026-10-08 15:35:49",
+  "macro_score": 49.7,
   "macro_signal": "neutral",
   "allow_long": true,
   "longs": [],
-  "shorts_or_avoids": [],
+  "shorts_or_avoids": [
+    {
+      "ticker": "159516",
+      "name": "半导体设备ETF国泰",
+      "category": "ETF",
+      "signal": "看空",
+      "confidence": 0.82,
+      "price": 0.63,
+      "target": 0.594,
+      "stop": 0.662,
+      "weighted_score": 41.9,
+      "bt_return_60d": -67.76,
+      "bt_max_dd_60d": -68.89,
+      "bt_sharpe_60d": -2.88,
+      "reasoning": "技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%"
+    },
+    {
+      "ticker": "515880",
+      "name": "通信ETF国泰",
+      "category": "ETF",
+      "signal": "看空",
+      "confidence": 0.82,
+      "price": 0.59,
+      "target": 0.577,
+      "stop": 0.619,
+      "weighted_score": 41.9,
+      "bt_return_60d": -26.39,
+      "bt_max_dd_60d": -31.23,
+      "bt_sharpe_60d": -1.78,
+      "reasoning": "技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%"
+    }
+  ],
   "max_single_position": 0.1,
   "stop_loss_pct": 0.05
 }

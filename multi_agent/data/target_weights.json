@@ -1,12 +1,47 @@
 {
-  "date": "2026-09-30",
+  "date": "2026-10-08",
   "based_on_pred_date": null,
-  "total_exposure": 0,
+  "total_exposure": 0.2,
   "long_exposure": 0,
-  "short_exposure": 0,
-  "net_exposure": 0,
-  "total_targets": 0,
+  "short_exposure": 0.2,
+  "net_exposure": -0.2,
+  "total_targets": 2,
   "long_targets": 0,
-  "short_targets": 0,
-  "targets": []
+  "short_targets": 2,
+  "targets": [
+    {
+      "ticker": "159516",
+      "name": "半导体设备ETF国泰",
+      "category": "ETF",
+      "sector": "半导体设备",
+      "signal": "bearish",
+      "current_price": 0.63,
+      "target_price": 0.586,
+      "stop_loss": 0.617,
+      "confidence": 0.82,
+      "bt_score": -51.996,
+      "factor_score": 0.0,
+      "raw_weight": -0.24599999999999997,
+      "reason": "信号bear 信心82% 60日收益-67.8% 回撤-68.9% 因子分+0.00",
+      "target_weight": -0.1,
+      "capped": true
+    },
+    {
+      "ticker": "515880",
+      "name": "通信ETF国泰",
+      "category": "ETF",
+      "sector": "通信",
+      "signal": "bearish",
+      "current_price": 0.59,
+      "target_price": 0.541,
+      "stop_loss": 0.578,
+      "confidence": 0.82,
+      "bt_score": -22.603,
+      "factor_score": 0.0,
+      "raw_weight": -0.24599999999999997,
+      "reason": "信号bear 信心82% 60日收益-26.4% 回撤-31.2% 因子分+0.00",
+      "target_weight": -0.1,
+      "capped": true
+    }
+  ]
 }

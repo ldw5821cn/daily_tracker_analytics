@@ -1,9 +1,38 @@
 {
-  "date": "2026-09-30",
+  "date": "2026-10-08",
   "total_portfolio_value": 50000.0,
-  "stock_etf_total_weight": 0,
+  "stock_etf_total_weight": 0.2,
   "long_amount": 0,
-  "short_amount": 0,
+  "short_amount": 10000.0,
   "skipped_count": 0,
-  "items": []
+  "items": [
+    {
+      "ticker": "159516",
+      "name": "半导体设备ETF国泰",
+      "category": "ETF",
+      "signal": "bearish",
+      "target_weight": -0.1,
+      "reason": "信号bear 信心82% 60日收益-67.8% 回撤-68.9% 因子分+0.00",
+      "current_price": 0.63,
+      "target_price": 0.586,
+      "stop_loss": 0.617,
+      "action": "融券卖出",
+      "target_amount": 5000.0,
+      "constraint_note": "需融券账户 跨境ETF"
+    },
+    {
+      "ticker": "515880",
+      "name": "通信ETF国泰",
+      "category": "ETF",
+      "signal": "bearish",
+      "target_weight": -0.1,
+      "reason": "信号bear 信心82% 60日收益-26.4% 回撤-31.2% 因子分+0.00",
+      "current_price": 0.59,
+      "target_price": 0.541,
+      "stop_loss": 0.578,
+      "action": "融券卖出",
+      "target_amount": 5000.0,
+      "constraint_note": "需融券账户"
+    }
+  ]
 }
