@@ -53,7 +53,7 @@ for h in holdings:
                     dates.append(dt.strftime('%m-%d'))
                 else:
                     dates.append(str(t)[5:10] if len(str(t)) >= 10 else str(t))
-                closes.append(d.get('close', 0))
+                closes.append(d.get('close_price', d.get('close', 0)))
                 volumes.append(d.get('volume', 0))
             
             all_data[h['name']] = {
