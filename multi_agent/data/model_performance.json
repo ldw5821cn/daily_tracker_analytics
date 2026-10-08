@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-07T17:42:37",
-  "pred_date": "2026-10-07",
+  "generated_at": "2026-10-08T16:31:01",
+  "pred_date": "2026-10-08",
   "ret_map_count": 111866,
   "warehouse_max_dates": {
     "个股": "2026-09-30",
@@ -14,9 +14,9 @@
   "categories": {
     "个股": {
       "status": "ok",
-      "n": 4742,
+      "n": 4743,
       "n_evaluable": 3678,
-      "skipped_no_forward": 1064,
+      "skipped_no_forward": 1065,
       "n_bull": 15,
       "n_bear": 1595,
       "bullish_mean": -4.93,
