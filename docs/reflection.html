@@ -64,25 +64,25 @@ tr:hover { background: #334155; }
 
     <div class="header">
         <h1>🧠 复盘 </h1>
-        <div class="sub">2026-10-08 预测验证后反思 · 生成于 2026-10-09T15:33:07</div>
+        <div class="sub">2026-10-08 预测验证后反思 · 生成于 2026-10-09T17:16:38</div>
     </div>
 
     <div class="header">
         <h1>🧠 每日预测反思 </h1>
-        <div class="sub">2026-10-08 预测 · 验证准确率 51.31% (98/191) · 错误 93 个</div>
+        <div class="sub">2026-10-08 预测 · 验证准确率 50.79% (97/191) · 错误 94 个</div>
     </div>
 
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="num" style="color:#ef4444">51.31%</div>
+            <div class="num" style="color:#ef4444">50.79%</div>
             <div class="label">总体准确率</div>
         </div>
         <div class="stat-card">
-            <div class="num">98</div>
+            <div class="num">97</div>
             <div class="label">正确</div>
         </div>
         <div class="stat-card">
-            <div class="num">93</div>
+            <div class="num">94</div>
             <div class="label">错误</div>
         </div>
     </div>
@@ -92,7 +92,7 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>信号</th><th>总数</th><th>错误</th><th>错误率</th></tr></thead>
         <tbody>
-        <tr><td>中性</td><td>165</td><td>80</td><td>48.48%</td></tr>
+        <tr><td>中性</td><td>165</td><td>81</td><td>49.09%</td></tr>
         <tr><td>看空</td><td>2</td><td>1</td><td>50.0%</td></tr>
         <tr><td>观望</td><td>24</td><td>12</td><td>50.0%</td></tr></tbody>
     </table>
@@ -105,7 +105,7 @@ tr:hover { background: #334155; }
         <tbody>
         <tr><td>ETF</td><td>23</td><td>7</td><td>30.43%</td></tr>
         <tr><td>个股</td><td>119</td><td>58</td><td>48.74%</td></tr>
-        <tr><td>期货</td><td>49</td><td>28</td><td>57.14%</td></tr></tbody>
+        <tr><td>期货</td><td>49</td><td>29</td><td>59.18%</td></tr></tbody>
     </table>
     </div>
 
@@ -114,7 +114,7 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>特征</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>weighted_score</td><td>48.52</td><td>48.43</td></tr>
+        <tr><td>weighted_score</td><td>48.46</td><td>48.49</td></tr>
         <tr><td>confidence</td><td>0.7</td><td>0.7</td></tr></tbody>
     </table>
     </div>
@@ -124,10 +124,10 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>分项</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>技术面</td><td>50.84</td><td>50.84</td></tr>
+        <tr><td>技术面</td><td>50.73</td><td>50.95</td></tr>
         <tr><td>新闻情绪</td><td>50.0</td><td>50.0</td></tr>
         <tr><td>基本面</td><td>50.0</td><td>50.0</td></tr>
-        <tr><td>多空辩论净得分</td><td>-1.53</td><td>-1.62</td></tr></tbody>
+        <tr><td>多空辩论净得分</td><td>-1.54</td><td>-1.62</td></tr></tbody>
     </table>
     </div>
 
@@ -136,9 +136,9 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>背离指标</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>fundamental_technical_divergence</td><td>-0.84</td><td>-0.84</td></tr>
+        <tr><td>fundamental_technical_divergence</td><td>-0.73</td><td>-0.95</td></tr>
         <tr><td style='padding-left:24px;color:#94a3b8'>└ 看空错误样本</td><td>6.0</td><td>n=1</td></tr>
-        <tr><td style='padding-left:24px;color:#94a3b8'>└ 中性错误样本</td><td>-0.1</td><td>n=80</td></tr>
+        <tr><td style='padding-left:24px;color:#94a3b8'>└ 中性错误样本</td><td>-0.23</td><td>n=81</td></tr>
         <tr><td style='padding-left:24px;color:#94a3b8'>└ 观望错误样本</td><td>-6.33</td><td>n=12</td></tr></tbody>
     </table>
     </div>
@@ -152,7 +152,7 @@ tr:hover { background: #334155; }
     </div>
 
     <div class="section-title">🤖 LLM 深度反思</div>
-    <div class="note">data_factor_agent 未返回观点。</div>
+    <div class="note"><strong>最终复盘报告（2026-10-08）<br><br>> 说明：data_factor_agent 与 model_optimizer_agent 未返回观点，本报告基于 market/sentiment_agent 的诊断独立成文，因子与优化器维度的结论标记为待补充项。<br><br>---<br><br>## 1. 一句话总结（50字以内）<br>模型在强趋势 regime 下以震荡假设全场输出中性，系统性踏空能化品 8-13% 单边资金行情，仅在无行情标的上"侥幸正确"。<br><br>## 2. 主要错误模式<br><br><strong>模式一：低置信趋势被误判为无趋势（踏空型看空错误）</strong><br>燃油 +13.71%、甲醇 +12.31%、LPG +10.65%、聚丙烯 +8.85%，技术面评分落在 50-60 分区间被判"中性"，本质是<strong>把趋势初期的不确定性归类为震荡</strong>。这是看空错误（该多未多）。<br>- <strong>Thesis breaker（可证伪条件）</strong>：若后续 3 个交易日内，板块内上涨家数占比回落至 50% 以下、主力合约持仓量净流出，且涨幅中位数转负，则"趋势初期"判断被证伪，中性为正确。<br><br><strong>模式二：市场上下文维度完全失能（regime 判断能力缺失）</strong><br>所有失败样本 market_context = 50.0、宏观 = 49.7，新旧信号迁移为零。能化板块集体异动的交易日仍输出"中性 50 分"，说明 regime 信号未参与决策。<br><br><strong>模式三：分歧信号被错误钝化（观望掩盖了偏多）</strong><br>观望错误样本平均 divergence = -6.33（技术面明显强于基本面），多空辩论 2:2 打平直接观望。在趋势 regime 下，分歧=低拥挤=该参与，"打平即观望"是无数据依据的默认行为。<br><br>## 3. 成功信号特征<br>成功样本全部为低波动个股（江西铜业、新希望、陕西煤业，收益 ±1.4% 区间），当日无资金行为异动。共性是<strong>标的自身处于弱波动环境，中性预测"什么都不做就对了"</strong>——模型并非预测准确，而是没碰到行情。这印证当前系统仅在震荡 regime 内有效，对趋势 regime 零识别能力。<br><br>## 4. 数据驱动改进建议（供 parameter_optimizer 学习，无硬编码）<br><br>- <strong>建立板块 regime 监督标签历史库</strong>：逐日快照各板块（能化/有色/黑色/农牧）上涨家数占比、涨跌幅中位数、涨幅>5% 标的占比、期货主力合约持仓量变化与增仓方向，作为趋势 regime 标签，让优化器学习 regime 状态与信号权重/阈值的条件关系。<br>- <strong>积累资金行为因子的真实收益标签</strong>：龙虎榜机构席位净买入与知名游资上榜密度、涨停家数与炸板率、连板高度梯队、北向行业净流入、两融余额环比、期权 PCR 及 IV 变化——全部以真实 T+1/T+3 收益为标签训练，而非人工推断因子含义。<br>- <strong>引入分歧度时序特征</strong>：将"多空辩论打平 + 技术面偏多"组合的历史后续收益单独建模，用数据验证"强趋势中分歧=低拥挤=参与信号"假设是否成立，由优化器自行决定该状态下置信度应上调还是下调。<br>- <strong>置信度输出校准</strong>：让模型输出"趋势概率 vs 震荡概率"的连续分数而非默认 50 分，交由优化器在回测中学习不同概率区间的最优仓位映射。<br><br>## 5. 策略回测建议<br>当前市场为<strong>商品强趋势 + 权益低波动分化</strong>的轮动 regime，建议：<br>- <strong>商品端回测"趋势跟随 + 分歧参与"策略</strong>：在板块扩散度确认的趋势状态下，对技术面偏多但评分中等的标的按分歧度加权建仓，重点回测 8-13% 单日行情的趋势延续性（T+1~T+5）。<br>- <strong>权益端回测"低波动中性 + 事件触发"策略</strong>：成功样本证明中性在低波动标的上损耗极小，可保留中性为默认，叠加龙虎榜/北向异常流入作为加仓触发器。<br>- 回测必须纳入 A 股 T+1 约束：当日信号对应次日开盘成交，避免用当日收盘价成交的乐观偏差。<br><br>## 6. 今日操作建议（针对明日预测）<br>1. <strong>能化板块明日延续趋势概率较高</strong>：燃油、甲醇、LPG 等今日已验证板块级资金共识，明日应对持仓量仍在增加、未出现放量滞涨的品种维持偏多立场；thesis breaker——若明日板块上涨家数占比跌破 60% 或主力合约大幅减仓，则立即降级为中性。<br>2. <strong>中性观望信号需附带 regime 条件</strong>：明日所有"观望"输出必须同时给出当前所处 regime 的概率判断，禁止无 regime 上下文的裸中性；若 regime 概率缺失，默认按上一交易日有效 regime 延续处理。<br><br>## 7. 需要新增/改进的数据源或因子<br>- 板块涨跌扩散度、期货主力合约持仓量与增仓方向（日频快照）<br>- 龙虎榜机构/游资席位明细、涨停炸板率、连板高度（日频）<br>- 北向资金行业级净流入、两融余额环比（日频）<br>- 期权 PCR 与隐含波动率曲面变化（日频）<br>- 多空辩论"打平"状态的历史标签与其后续收益分布<br>- 待 data_factor_agent / model_optimizer_agent 补充：因子库覆盖面与参数优化器的 regime 条件权重学习机制现状评估<br><br>---<br><strong>总体判断</strong>：系统当前的失败不是信号质量问题，而是 <strong>regime 感知层缺失</strong>导致的策略与市场状态错配。修复路径清晰——用数据驱动方式让 regime 标签和资金行为因子进入优化器的学习闭环，而非增加任何人工规则。</strong></div>
 
     <div class="footer">
         数据由 Hermes Agent + 多Agent LLM 预测系统自动生成 · 研究辅助非投资建议 ·
