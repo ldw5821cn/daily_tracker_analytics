@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🧠 复盘 - 2026-10-07</title>
+<title>🧠 复盘 - 2026-10-08</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <style>
@@ -64,25 +64,25 @@ tr:hover { background: #334155; }
 
     <div class="header">
         <h1>🧠 复盘 </h1>
-        <div class="sub">2026-10-07 预测验证后反思 · 生成于 2026-10-08T17:23:35</div>
+        <div class="sub">2026-10-08 预测验证后反思 · 生成于 2026-10-09T15:33:07</div>
     </div>
 
     <div class="header">
         <h1>🧠 每日预测反思 </h1>
-        <div class="sub">2026-10-07 预测 · 验证准确率 0.0% (0/0) · 错误 0 个</div>
+        <div class="sub">2026-10-08 预测 · 验证准确率 51.31% (98/191) · 错误 93 个</div>
     </div>
 
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="num" style="color:#22c55e">0.0%</div>
+            <div class="num" style="color:#ef4444">51.31%</div>
             <div class="label">总体准确率</div>
         </div>
         <div class="stat-card">
-            <div class="num">0</div>
+            <div class="num">98</div>
             <div class="label">正确</div>
         </div>
         <div class="stat-card">
-            <div class="num">0</div>
+            <div class="num">93</div>
             <div class="label">错误</div>
         </div>
     </div>
@@ -91,7 +91,10 @@ tr:hover { background: #334155; }
     <div class="table-responsive">
     <table>
         <thead><tr><th>信号</th><th>总数</th><th>错误</th><th>错误率</th></tr></thead>
-        <tbody></tbody>
+        <tbody>
+        <tr><td>中性</td><td>165</td><td>80</td><td>48.48%</td></tr>
+        <tr><td>看空</td><td>2</td><td>1</td><td>50.0%</td></tr>
+        <tr><td>观望</td><td>24</td><td>12</td><td>50.0%</td></tr></tbody>
     </table>
     </div>
 
@@ -99,7 +102,10 @@ tr:hover { background: #334155; }
     <div class="table-responsive">
     <table>
         <thead><tr><th>类别</th><th>总数</th><th>错误</th><th>错误率</th></tr></thead>
-        <tbody></tbody>
+        <tbody>
+        <tr><td>ETF</td><td>23</td><td>7</td><td>30.43%</td></tr>
+        <tr><td>个股</td><td>119</td><td>58</td><td>48.74%</td></tr>
+        <tr><td>期货</td><td>49</td><td>28</td><td>57.14%</td></tr></tbody>
     </table>
     </div>
 
@@ -107,7 +113,9 @@ tr:hover { background: #334155; }
     <div class="table-responsive">
     <table>
         <thead><tr><th>特征</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
-        <tbody></tbody>
+        <tbody>
+        <tr><td>weighted_score</td><td>48.52</td><td>48.43</td></tr>
+        <tr><td>confidence</td><td>0.7</td><td>0.7</td></tr></tbody>
     </table>
     </div>
 
@@ -115,7 +123,11 @@ tr:hover { background: #334155; }
     <div class="table-responsive">
     <table>
         <thead><tr><th>分项</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
-        <tbody></tbody>
+        <tbody>
+        <tr><td>技术面</td><td>50.84</td><td>50.84</td></tr>
+        <tr><td>新闻情绪</td><td>50.0</td><td>50.0</td></tr>
+        <tr><td>基本面</td><td>50.0</td><td>50.0</td></tr>
+        <tr><td>多空辩论净得分</td><td>-1.53</td><td>-1.62</td></tr></tbody>
     </table>
     </div>
 
@@ -123,7 +135,11 @@ tr:hover { background: #334155; }
     <div class="table-responsive">
     <table>
         <thead><tr><th>背离指标</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
-        <tbody></tbody>
+        <tbody>
+        <tr><td>fundamental_technical_divergence</td><td>-0.84</td><td>-0.84</td></tr>
+        <tr><td style='padding-left:24px;color:#94a3b8'>└ 看空错误样本</td><td>6.0</td><td>n=1</td></tr>
+        <tr><td style='padding-left:24px;color:#94a3b8'>└ 中性错误样本</td><td>-0.1</td><td>n=80</td></tr>
+        <tr><td style='padding-left:24px;color:#94a3b8'>└ 观望错误样本</td><td>-6.33</td><td>n=12</td></tr></tbody>
     </table>
     </div>
 
@@ -136,7 +152,7 @@ tr:hover { background: #334155; }
     </div>
 
     <div class="section-title">🤖 LLM 深度反思</div>
-    <div class="note"><strong>复盘报告（说明：三位分析师均未返回观点）<br><br>⚠️ <strong>数据完整性提示</strong>：data_factor / market_regime / model_optimizer 三个 Agent 均无输出，本报告基于通用的 A 股预测复盘框架生成，无法针对当日具体误差做归因。以下为结构化复盘与改进框架，待数据补齐后应重新生成。<br><br>---<br><br>## 1. 一句话总结<br>> 预测偏差大概率源于宏观叙事与微观交易结构（政策市、涨跌停限制、T+1）的错配，需用数据验证而非规则修补。（50字内）<br><br>## 2. 主要错误模式（基于 A 股常见偏差类型）<br>- <strong>政策脉冲响应滞后</strong>：利好发布前后模型沿用旧 regime，把政策驱动的跳空误判为趋势反转。<br>- <strong>情绪极端化下动量假信号</strong>：散户占比高、涨跌停板扭曲价格发现，模型把"一字板后惯性"当alpha，实为流动性噪声。<br>- <strong>北向/两融资金背离被忽略</strong>：外资流出但内资接力（或反之）时，单一资金流因子给出方向性错误。<br><br>## 3. 成功信号特征<br>- 在<strong>高成交、低涨停家数集中度</strong>的市场状态下，量价因子与波动率结构因子的信号更可靠。<br>- 信号方向与<strong>两融余额变化、PCR（认沽认购比）</strong>同向确认时，命中率显著提升。<br>- 持仓期避开政策窗口（如重要会议、数据发布日）前后 ±1 日时，回撤明显降低。<br><br>## 4. 数据驱动改进建议（供 parameter_optimizer 自动学习）<br>- <strong>扩展历史数据</strong>：拉长至 2015 以来（覆盖多轮牛熊、熔断、注册制改革），按 regime 分桶存储，而非全样本平均。<br>- <strong>新增因子/特征</strong>：<br>  - 涨跌停开板率、封板强度、连板家数（散户情绪代理）<br>  - 北向资金日内流入结构、两融余额环比与融资买入额占比<br>  - 指数/个股 PCR、隐含波动率偏斜<br>  - 政策事件标签化向量（政策类型 × 强度 × 时间衰减权重）<br>  - 隔夜跳空幅度 × 换手率 的交互特征<br>- <strong>交给优化器学习</strong>：上述因子作为参数空间输入，由 optimizer 学习权重与条件阈值（分 regime 的分位数而非绝对值），<strong>禁止人工设定"跳空>2%则不交易"之类的固定拦截</strong>。<br><br>## 5. 策略回测建议<br>鉴于缺乏当前 regime 数据，给出条件式建议：<br>- <strong>高波动+政策密集期</strong>：偏向防御——低仓位、短周期反转策略 + 事件驱动策略混合回测。<br>- <strong>平稳+量能回升期</strong>：偏向量价动量 + 资金流确认的中短周期策略。<br>建议对两类 regime 分别回测，用 walk-forward 检验策略切换的边际贡献。<br><br>## 6. 明日操作建议<br>- 让 parameter_optimizer 对明日给出<strong>带置信区间的概率预测 + 置信度门控仓位</strong>，置信度低于分布低分位时自动降仓，而非人工砍仓。<br>- 在信号中显式纳入<strong>PCR 与两融环比</strong>作为方向确认特征；若与主信号背离，将其作为降权输入交由模型处理，不做人工否决。<br><br>## 7. 需要新增/改进的数据源或因子<br>- 涨跌停微观结构数据（封单金额、开板次数、次日溢价序列）<br>- 北向分行业/分个股实时资金流（注意披露频率变化后的代理变量）<br>- 两融余额日频及融券余量（做空情绪代理）<br>- 场内指数/ETF 期权 PCR 与 IV 偏斜<br>- 政策事件库（财联社/政府官网抓取 + 人工标注强度）<br>- 龙虎榜数据（游资/机构席位行为特征）<br><br>---<br><br><strong>核心原则重申</strong>：所有"过滤"通过 optimizer 在参数空间内学习完成；每个方向性信号必须附带可证伪的 thesis breakers（如：看多信号 breaker = 北向连续3日净流出 + PCR 突破分位上限），由数据自动触发，而非人工规则。</strong></div>
+    <div class="note">data_factor_agent 未返回观点。</div>
 
     <div class="footer">
         数据由 Hermes Agent + 多Agent LLM 预测系统自动生成 · 研究辅助非投资建议 ·

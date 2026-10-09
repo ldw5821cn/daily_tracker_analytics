@@ -1,16 +1,96 @@
 {
-  "date": "2026-10-08",
+  "date": "2026-10-09",
   "generated_by": "after_market_pipeline",
   "top10": [
-    {"code": "300438", "name": "鹏辉能源", "composite_score": 89, "changepercent": 0.63, "price": 49.38, "amount_yi": 14.59, "reason": "6维评分Top10"},
-    {"code": "002709", "name": "天赐材料", "composite_score": 89, "changepercent": 4.78, "price": 32.69, "amount_yi": 27.86, "reason": "6维评分Top10"},
-    {"code": "603162", "name": "海通发展", "composite_score": 88, "changepercent": 3.53, "price": 13.50, "amount_yi": 5.69, "reason": "6维评分Top10"},
-    {"code": "600737", "name": "中粮糖业", "composite_score": 86, "changepercent": 3.14, "price": 15.12, "amount_yi": 14.89, "reason": "6维评分Top10"},
-    {"code": "002244", "name": "滨江集团", "composite_score": 86, "changepercent": 0.69, "price": 10.21, "amount_yi": 10.53, "reason": "6维评分Top10"},
-    {"code": "000968", "name": "蓝焰控股", "composite_score": 86, "changepercent": 4.83, "price": 7.16, "amount_yi": 2.71, "reason": "6维评分Top10"},
-    {"code": "603619", "name": "中曼石油", "composite_score": 85, "changepercent": 4.44, "price": 21.65, "amount_yi": 5.43, "reason": "6维评分Top10"},
-    {"code": "603418", "name": "友升股份", "composite_score": 85, "changepercent": 3.13, "price": 50.00, "amount_yi": 2.31, "reason": "6维评分Top10"},
-    {"code": "300457", "name": "赢合科技", "composite_score": 85, "changepercent": 2.53, "price": 21.90, "amount_yi": 5.36, "reason": "6维评分Top10"},
-    {"code": "603105", "name": "芯能科技", "composite_score": 84, "changepercent": 3.53, "price": 8.80, "amount_yi": 2.09, "reason": "6维评分Top10"}
+    {
+      "code": "002437",
+      "name": "誉衡药业",
+      "composite_score": 88,
+      "changepercent": 4.53,
+      "price": 3.69,
+      "amount_yi": 0.0,
+      "reason": "6维评分Top10"
+    },
+    {
+      "code": "002083",
+      "name": "孚日股份",
+      "composite_score": 88,
+      "changepercent": 4.83,
+      "price": 10.19,
+      "amount_yi": 0.0,
+      "reason": "6维评分Top10"
+    },
+    {
+      "code": "600699",
+      "name": "均胜电子",
+      "composite_score": 87,
+      "changepercent": 4.22,
+      "price": 22.0,
+      "amount_yi": 0.0,
+      "reason": "6维评分Top10"
+    },
+    {
+      "code": "300457",
+      "name": "赢合科技",
+      "composite_score": 87,
+      "changepercent": 3.74,
+      "price": 22.72,
+      "amount_yi": 0.0,
+      "reason": "6维评分Top10"
+    },
+    {
+      "code": "002558",
+      "name": "巨人网络",
+      "composite_score": 87,
+      "changepercent": 4.01,
+      "price": 22.82,
+      "amount_yi": 0.0,
+      "reason": "6维评分Top10"
+    },
+    {
+      "code": "000513",
+      "name": "丽珠集团",
+      "composite_score": 87,
+      "changepercent": 3.01,
+      "price": 30.5,
+      "amount_yi": 0.0,
+      "reason": "6维评分Top10"
+    },
+    {
+      "code": "600863",
+      "name": "华能蒙电",
+      "composite_score": 86,
+      "changepercent": 1.57,
+      "price": 5.18,
+      "amount_yi": 0.0,
+      "reason": "6维评分Top10"
+    },
+    {
+      "code": "600737",
+      "name": "中粮糖业",
+      "composite_score": 86,
+      "changepercent": 3.24,
+      "price": 15.61,
+      "amount_yi": 0.0,
+      "reason": "6维评分Top10"
+    },
+    {
+      "code": "600551",
+      "name": "时代出版",
+      "composite_score": 86,
+      "changepercent": 3.52,
+      "price": 8.23,
+      "amount_yi": 0.0,
+      "reason": "6维评分Top10"
+    },
+    {
+      "code": "600351",
+      "name": "亚宝药业",
+      "composite_score": 86,
+      "changepercent": 3.67,
+      "price": 7.07,
+      "amount_yi": 0.0,
+      "reason": "6维评分Top10"
+    }
   ]
 }
