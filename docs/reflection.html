@@ -64,7 +64,7 @@ tr:hover { background: #334155; }
 
     <div class="header">
         <h1>🧠 复盘 </h1>
-        <div class="sub">2026-10-09 预测验证后反思 · 生成于 2026-10-12T15:41:56</div>
+        <div class="sub">2026-10-09 预测验证后反思 · 生成于 2026-10-12T17:18:33</div>
     </div>
 
     <div class="header">
@@ -153,7 +153,7 @@ tr:hover { background: #334155; }
     </div>
 
     <div class="section-title">🤖 LLM 深度反思</div>
-    <div class="note">data_factor_agent 未返回观点。</div>
+    <div class="note"><strong>量化预测复盘报告（数据/因子诊断视角）<br><br><strong>预测日期：2026-10-09 | 准确率 38.22% (73/191)</strong><br><br>---<br><br>## 1. 一句话总结<br><br>中性信号占 78% 且 66% 出错，核心在于评分被压缩在 42-52 无区分度区间，叠加情绪/基本面数据归零，系统实际只剩单一技术面因子在发声。<br><br>---<br><br>## 2. 主要错误模式<br><br><strong>模式一：debate 强空头证据被"中性化"吞没（占比最高）</strong><br><br>失败样本高度一致：多空辩论看跌 3:0 / 看跌 3:0 / 看跌 1:0，但 tech_score 给"中性"(42-45)，最终输出 neutral，标的随后大跌 -8% ~ -11%。<br>数据证据：错误样本 debate 净得分 -1.25 vs 正确样本 -0.23。也就是说<strong>错误样本恰恰携带了更强的可行动空头信息</strong>，但 debate 因子的权重不足以把 weighted_score 推过任何 bearish 阈值，信息在聚合阶段丢失。<br>证伪方式：监控"debate 净得分 ≤ -2 且 tech_score < 50"组合的次日收益分布——若该组合持续跑输（当前 5 个案例全部大跌，已可初步确认），则"debate 空头 + 技术中性 ⇒ 中性"这一映射本身被证伪，应交由 optimizer 重学该联合特征的信号映射，而非继续由 score 中位数决定。<br><br><strong>模式二：score 分布塌陷，信号实质上是"猜 50 上下"</strong><br><br>失败样本评分 42.3-52.4，成功样本看空也只有 21-36、看多 78-94——<strong>系统只在信号远离 50 时才对，贴近 50 的信号（占大多数）几乎全是噪音</strong>。结合历史知识库 `tech_score_distribution_bias`（大量 42-45 分），技术面公式输出存在系统性压缩，且 bandit 中性区间可能过宽。<br><br><strong>模式三：个股 = 单因子裸奔，期货/ETF = 多因子有效</strong><br><br>个股错误率 73.95% vs 期货 38.78%。失败样本个股全部显示 `基本面N/A(50/100)`、`新闻情绪+0.00`——个股层面实际只有技术面一个有效因子，且技术面本身压缩塌陷。<strong>conf 0.80-0.82 恰恰是出错样本</strong>，置信度对个股无校准能力（正确 0.71 vs 错误 0.73，置信度方向信息为负）。A 股个股（云南锗业、东方钽业这类小盘主题股）的短期价格由资金博弈主导，单一 lagging 技术面天然失效——印证需要引入资金流/盘口类微观结构数据，而非硬门控。<br><br>---<br><br>## 3. 成功信号特征<br><br>- <strong>信号远离评分中位数</strong>：5 个成功案例 score 分别为 94.3 / 82.3 / 78.2 / 36.5 / 21.1，全部 |score-50| ≥ 15；错误案例全部 |score-50| < 10。<br>- <strong>debate 证据方向与信号一致</strong>：成功案例要么多空同向（红利低波、银行 ETF 多头 0 分歧），要么净得分极负（PTA</strong></div>
 
     <div class="footer">
         数据由 Hermes Agent + 多Agent LLM 预测系统自动生成 · 研究辅助非投资建议 ·
