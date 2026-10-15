@@ -3,9 +3,9 @@
   "validation_date": null,
   "summary": {
     "total": 191,
-    "correct": 48,
-    "wrong": 143,
-    "accuracy": 25.13
+    "correct": 47,
+    "wrong": 144,
+    "accuracy": 24.61
   },
   "by_category": {
     "ETF": {
@@ -20,8 +20,8 @@
     },
     "期货": {
       "total": 49,
-      "wrong": 26,
-      "error_rate": 53.06
+      "wrong": 27,
+      "error_rate": 55.1
     }
   },
   "by_signal": {
@@ -37,14 +37,14 @@
     },
     "观望": {
       "total": 20,
-      "wrong": 11,
-      "error_rate": 55.0
+      "wrong": 12,
+      "error_rate": 60.0
     }
   },
   "feature_compare": {
     "weighted_score": {
-      "correct_avg": 51.35,
-      "wrong_avg": 47.09
+      "correct_avg": 51.3,
+      "wrong_avg": 47.13
     },
     "confidence": {
       "correct_avg": 0.7,
@@ -53,8 +53,8 @@
   },
   "component_compare": {
     "技术面": {
-      "correct_avg": 55.65,
-      "wrong_avg": 48.97
+      "correct_avg": 55.62,
+      "wrong_avg": 49.03
     },
     "新闻情绪": {
       "correct_avg": 50.0,
@@ -65,8 +65,8 @@
       "wrong_avg": 50.0
     },
     "多空辩论净得分": {
-      "correct_avg": -0.49,
-      "wrong_avg": -1.94
+      "correct_avg": -0.5,
+      "wrong_avg": -1.93
     }
   },
   "wrong_top10": [
@@ -123,9 +123,9 @@
       "name": "碳酸锂",
       "category": "期货",
       "signal": "中性",
-      "return_pct": -7.678,
+      "return_pct": -7.697,
       "pred_price": 107060.0,
-      "today_price": 98840.0,
+      "today_price": 98820.0,
       "weighted_score": 42.4,
       "confidence": 0.82,
       "reasoning": "技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%"
@@ -197,9 +197,9 @@
       "name": "白银",
       "category": "期货",
       "signal": "看空",
-      "return_pct": -7.326,
+      "return_pct": -7.346,
       "pred_price": 14743.0,
-      "today_price": 13663.0,
+      "today_price": 13660.0,
       "weighted_score": 41.9,
       "confidence": 0.82
     },
@@ -208,9 +208,9 @@
       "name": "黄金",
       "category": "期货",
       "signal": "中性",
-      "return_pct": -1.466,
+      "return_pct": -1.48,
       "pred_price": 907.02,
-      "today_price": 893.72,
+      "today_price": 893.6,
       "weighted_score": 45.1,
       "confidence": 0.71
     },
@@ -226,15 +226,15 @@
       "confidence": 0.66
     },
     {
-      "ticker": "PF0",
-      "name": "短纤",
+      "ticker": "RM0",
+      "name": "菜粕",
       "category": "期货",
       "signal": "观望",
-      "return_pct": -1.46,
-      "pred_price": 8356.0,
-      "today_price": 8234.0,
-      "weighted_score": 53.6,
-      "confidence": 0.54
+      "return_pct": -1.432,
+      "pred_price": 2374.0,
+      "today_price": 2340.0,
+      "weighted_score": 55.2,
+      "confidence": 0.55
     },
     {
       "ticker": "512000",
@@ -248,15 +248,15 @@
       "confidence": 0.71
     },
     {
-      "ticker": "RM0",
-      "name": "菜粕",
+      "ticker": "LH0",
+      "name": "生猪",
       "category": "期货",
       "signal": "观望",
-      "return_pct": -1.39,
-      "pred_price": 2374.0,
-      "today_price": 2341.0,
-      "weighted_score": 55.2,
-      "confidence": 0.55
+      "return_pct": -1.414,
+      "pred_price": 10605.0,
+      "today_price": 10455.0,
+      "weighted_score": 51.5,
+      "confidence": 0.54
     },
     {
       "ticker": "SP0",
@@ -270,15 +270,15 @@
       "confidence": 0.62
     },
     {
-      "ticker": "LH0",
-      "name": "生猪",
+      "ticker": "TA0",
+      "name": "PTA",
       "category": "期货",
-      "signal": "观望",
-      "return_pct": -1.367,
-      "pred_price": 10605.0,
-      "today_price": 10460.0,
-      "weighted_score": 51.5,
-      "confidence": 0.54
+      "signal": "中性",
+      "return_pct": -1.338,
+      "pred_price": 6576.0,
+      "today_price": 6488.0,
+      "weighted_score": 60.5,
+      "confidence": 0.69
     },
     {
       "ticker": "000975",
@@ -310,16 +310,16 @@
   ],
   "divergence_analysis": {
     "fundamental_technical_divergence": {
-      "correct_avg": -5.65,
-      "wrong_avg": 1.03,
+      "correct_avg": -5.62,
+      "wrong_avg": 0.97,
       "by_wrong_signal": {
         "中性": {
           "avg": 1.63,
           "n": 132
         },
         "观望": {
-          "avg": -6.18,
-          "n": 11
+          "avg": -6.25,
+          "n": 12
         }
       }
     }
