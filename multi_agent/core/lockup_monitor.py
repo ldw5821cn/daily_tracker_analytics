@@ -36,13 +36,13 @@ class LockupMonitor:
             解禁数据列表
         """
         try:
-            # 使用 akshare 获取解禁数据
-            end_date = (datetime.now() + timedelta(days=days)).strftime('%Y%m%d')
-            start_date = datetime.now().strftime('%Y%m%d')
+            # 使用 akshare 东财接口获取解禁详细数据
+            today = datetime.now()
+            start_date = today.strftime('%Y%m%d')
+            end_date = (today + timedelta(days=days)).strftime('%Y%m%d')
             
-            # 获取解禁数据
-            df = ak.stock_restricted_release_queue_em(
-                symbol="全部股票",
+            # 获取解禁详细数据
+            df = ak.stock_restricted_release_detail_em(
                 start_date=start_date,
                 end_date=end_date
             )
@@ -53,14 +53,23 @@ class LockupMonitor:
             # 转换为字典列表
             lockups = []
             for _, row in df.iterrows():
+                # 处理日期序列化
+                release_date = row.get('解禁时间', '')
+                if hasattr(release_date, 'strftime'):
+                    release_date = release_date.strftime('%Y-%m-%d')
+                elif hasattr(release_date, 'isoformat'):
+                    release_date = release_date.isoformat()
+                
                 lockups.append({
-                    'code': row.get('代码', ''),
-                    'name': row.get('名称', ''),
-                    'release_date': row.get('解禁时间', ''),
-                    'release_shares': row.get('解禁数量', 0),
-                    'market_value': row.get('实际解禁市值', 0),
-                    'holder_type': row.get(' holder_type', '未知'),
-                    'lockup_type': row.get('解禁类型', ''),
+                    'code': str(row.get('股票代码', '')),
+                    'name': row.get('股票简称', ''),
+                    'release_date': release_date,
+                    'release_shares': float(row.get('实际解禁数量', 0)),
+                    'market_value': float(row.get('实际解禁市值', 0)),
+                    'lockup_type': str(row.get('限售股类型', '')),
+                    'pre_close': float(row.get('解禁前一交易日收盘价', 0)),
+                    'pre_20d_change': float(row.get('解禁前20日涨跌幅', 0)) if pd.notna(row.get('解禁前20日涨跌幅')) else 0,
+                    'post_20d_change': float(row.get('解禁后20日涨跌幅', 0)) if pd.notna(row.get('解禁后20日涨跌幅')) else 0,
                 })
             
             # 缓存数据
@@ -72,6 +81,39 @@ class LockupMonitor:
             print(f"Error fetching lockup data: {e}")
             # 尝试从缓存加载
             return self._load_cached_lockups()
+    
+    def _get_watchlist_lockups(self, days: int) -> List[Dict]:
+        """从监控列表获取解禁数据"""
+        # 可以从配置文件读取监控列表
+        watchlist = ['600519', '000001', '601318']  # 示例
+        lockups = []
+        
+        today = datetime.now()
+        future = today + timedelta(days=days)
+        
+        for code in watchlist:
+            try:
+                df = ak.stock_restricted_release_queue_sina(symbol=code)
+                if df is not None and not df.empty:
+                    # 转换日期
+                    df['解禁日期'] = pd.to_datetime(df['解禁日期'])
+                    
+                    # 筛选未来解禁
+                    mask = (df['解禁日期'] >= today) & (df['解禁日期'] <= future)
+                    upcoming = df[mask]
+                    
+                    for _, row in upcoming.iterrows():
+                        lockups.append({
+                            'code': code,
+                            'name': row.get('名称', ''),
+                            'release_date': row['解禁日期'].strftime('%Y-%m-%d'),
+                            'release_shares': row.get('解禁数量', 0),
+                            'market_value': row.get('解禁股流通市值', 0),
+                        })
+            except Exception as e:
+                print(f"获取 {code} 解禁数据失败: {e}")
+        
+        return lockups
     
     def check_stock_lockup(self, ticker: str) -> Dict:
         """检查个股解禁风险
