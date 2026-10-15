@@ -11,6 +11,13 @@ import pandas as pd
 import numpy as np
 import json
 
+# TALib 可用性检查
+try:
+    import talib
+    TALIB_AVAILABLE = True
+except ImportError:
+    TALIB_AVAILABLE = False
+
 
 def analyze(ticker, name="", current_date="2026-07-02"):
     """
@@ -190,6 +197,28 @@ def analyze(ticker, name="", current_date="2026-07-02"):
     else:
         rating = "偏空"
     
+    # ========== 4. K线形态识别 (新增) ==========
+    kline_patterns = {}
+    if TALIB_AVAILABLE:
+        try:
+            from analysts.kline_pattern import KLinePatternRecognizer
+            recognizer = KLinePatternRecognizer()
+            kline_results = recognizer.recognize_patterns(df)
+            kline_patterns = {
+                'signal': kline_results['signal'],
+                'strength': kline_results['strength'],
+                'latest': kline_results['latest_patterns'][:3],  # 只保留最近3个
+                'bullish_count': kline_results['bullish_count'],
+                'bearish_count': kline_results['bearish_count'],
+            }
+            # 添加K线形态信号到signals
+            if kline_results['latest_patterns']:
+                latest = kline_results['latest_patterns'][0]
+                emoji = "🟢" if latest['signal'] == 'bullish' else "🔴" if latest['signal'] == 'bearish' else "⚪"
+                signals.append((emoji, f"K线形态: {latest['name']}", latest['desc']))
+        except Exception as e:
+            print(f"  ⚠️ K线形态识别失败: {e}")
+    
     return {
         'analyst': '技术面分析师',
         'ticker': ticker,
@@ -202,6 +231,7 @@ def analyze(ticker, name="", current_date="2026-07-02"):
         'tech_snapshot': tech_snapshot,
         'signals': signals,
         'reasons': reasons,
+        'kline_patterns': kline_patterns,
         'prediction': prediction,
         'summary': _generate_summary(name, cp, rating, score, backtest_results, signals, prediction),
     }
