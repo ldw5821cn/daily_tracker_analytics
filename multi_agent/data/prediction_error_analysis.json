@@ -171,9 +171,9 @@
       "name": "碳酸锂",
       "category": "期货",
       "signal": "中性",
-      "return_pct": -4.5,
+      "return_pct": -4.539,
       "pred_price": 100900.0,
-      "today_price": 96360.0,
+      "today_price": 96320.0,
       "weighted_score": 42.3,
       "confidence": 0.82,
       "reasoning": "技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(48.8/100) | 市场上下文neutral(50.0/100)上限100%"
@@ -183,9 +183,9 @@
       "name": "LPG",
       "category": "期货",
       "signal": "中性",
-      "return_pct": -4.446,
+      "return_pct": -4.459,
       "pred_price": 7468.0,
-      "today_price": 7136.0,
+      "today_price": 7135.0,
       "weighted_score": 59.1,
       "confidence": 0.73,
       "reasoning": "技术面中性偏多(67/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1.7 vs 看跌0 | 宏观中性(48.8/100) | 市场上下文neutral(50.0/100)上限100%"
@@ -281,6 +281,17 @@
       "confidence": 0.78
     },
     {
+      "ticker": "J0",
+      "name": "焦炭",
+      "category": "期货",
+      "signal": "中性",
+      "return_pct": -1.375,
+      "pred_price": 2000.0,
+      "today_price": 1972.5,
+      "weighted_score": 62.0,
+      "confidence": 0.7
+    },
+    {
       "ticker": "600362",
       "name": "江西铜业",
       "category": "个股",
@@ -290,17 +301,6 @@
       "today_price": 39.43,
       "weighted_score": 44.1,
       "confidence": 0.8
-    },
-    {
-      "ticker": "601857",
-      "name": "中国石油",
-      "category": "个股",
-      "signal": "中性",
-      "return_pct": 1.35,
-      "pred_price": 12.59,
-      "today_price": 12.76,
-      "weighted_score": 58.0,
-      "confidence": 0.74
     }
   ],
   "suggestions": [
