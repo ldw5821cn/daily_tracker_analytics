@@ -1,0 +1,178 @@
+[
+  {
+    "code": "300995",
+    "name": "奇德新材",
+    "release_date": "2026-10-15",
+    "release_shares": 137310.0,
+    "market_value": 3269351.1,
+    "lockup_type": "股权激励限售股份",
+    "pre_close": 23.81,
+    "pre_20d_change": -8.48110401,
+    "post_20d_change": -3.09
+  },
+  {
+    "code": "605296",
+    "name": "神农集团",
+    "release_date": "2026-10-15",
+    "release_shares": 2531440.0,
+    "market_value": 69817115.2,
+    "lockup_type": "股权激励限售股份",
+    "pre_close": 27.58,
+    "pre_20d_change": -19.35933148,
+    "post_20d_change": -4.73
+  },
+  {
+    "code": "920072",
+    "name": "科莱瑞迪",
+    "release_date": "2026-10-15",
+    "release_shares": 5532000.0,
+    "market_value": 110916600.0,
+    "lockup_type": "公开发行原股东限售股份",
+    "pre_close": 20.05,
+    "pre_20d_change": -11.70225392,
+    "post_20d_change": -4.34
+  },
+  {
+    "code": "920059",
+    "name": "双英集团",
+    "release_date": "2026-10-15",
+    "release_shares": 36836316.0,
+    "market_value": 408883107.6,
+    "lockup_type": "公开发行原股东限售股份",
+    "pre_close": 11.1,
+    "pre_20d_change": -16.04754829,
+    "post_20d_change": -1.77
+  },
+  {
+    "code": "688261",
+    "name": "东微半导",
+    "release_date": "2026-10-16",
+    "release_shares": 8823.0,
+    "market_value": 529821.15,
+    "lockup_type": "股权激励限售股份",
+    "pre_close": 60.05,
+    "pre_20d_change": 0,
+    "post_20d_change": 0
+  },
+  {
+    "code": "002857",
+    "name": "三晖电气",
+    "release_date": "2026-10-16",
+    "release_shares": 585150.0,
+    "market_value": 9409212.0,
+    "lockup_type": "股权激励限售股份",
+    "pre_close": 16.08,
+    "pre_20d_change": 0,
+    "post_20d_change": 0
+  },
+  {
+    "code": "920298",
+    "name": "腾信精密",
+    "release_date": "2026-10-16",
+    "release_shares": 600000.0,
+    "market_value": 43200000.0,
+    "lockup_type": "公开发行原股东限售股份",
+    "pre_close": 72.0,
+    "pre_20d_change": 0,
+    "post_20d_change": 0
+  },
+  {
+    "code": "603293",
+    "name": "埃泰克",
+    "release_date": "2026-10-16",
+    "release_shares": 721621.0,
+    "market_value": 22947547.8,
+    "lockup_type": "首发机构配售股份",
+    "pre_close": 31.8,
+    "pre_20d_change": 0,
+    "post_20d_change": 0
+  },
+  {
+    "code": "002331",
+    "name": "皖通科技",
+    "release_date": "2026-10-16",
+    "release_shares": 1500000.0,
+    "market_value": 10950000.0,
+    "lockup_type": "股权激励限售股份",
+    "pre_close": 7.3,
+    "pre_20d_change": 0,
+    "post_20d_change": 0
+  },
+  {
+    "code": "002938",
+    "name": "鹏鼎控股",
+    "release_date": "2026-10-16",
+    "release_shares": 2659436.0,
+    "market_value": 200149153.35999998,
+    "lockup_type": "股权激励限售股份",
+    "pre_close": 75.26,
+    "pre_20d_change": 0,
+    "post_20d_change": 0
+  },
+  {
+    "code": "301666",
+    "name": "大普微",
+    "release_date": "2026-10-16",
+    "release_shares": 8380966.0,
+    "market_value": 2332674266.7799997,
+    "lockup_type": "首发机构配售股份",
+    "pre_close": 278.33,
+    "pre_20d_change": 0,
+    "post_20d_change": 0
+  },
+  {
+    "code": "301203",
+    "name": "国泰环保",
+    "release_date": "2026-10-16",
+    "release_shares": 10867500.0,
+    "market_value": 336892500.0,
+    "lockup_type": "追加承诺限售股份上市流通",
+    "pre_close": 31.0,
+    "pre_20d_change": 0,
+    "post_20d_change": 0
+  },
+  {
+    "code": "920117",
+    "name": "龙鑫智能",
+    "release_date": "2026-10-16",
+    "release_shares": 13048094.000000002,
+    "market_value": 316807722.32,
+    "lockup_type": "公开发行原股东限售股份",
+    "pre_close": 24.28,
+    "pre_20d_change": 0,
+    "post_20d_change": 0
+  },
+  {
+    "code": "002471",
+    "name": "中超控股",
+    "release_date": "2026-10-16",
+    "release_shares": 16448000.0,
+    "market_value": 77963520.0,
+    "lockup_type": "股权激励限售股份",
+    "pre_close": 4.74,
+    "pre_20d_change": 0,
+    "post_20d_change": 0
+  },
+  {
+    "code": "920100",
+    "name": "三协电机",
+    "release_date": "2026-10-16",
+    "release_shares": 28951146.0,
+    "market_value": 744623475.1199999,
+    "lockup_type": "公开发行原股东限售股份,公开发行战略配售股份",
+    "pre_close": 25.72,
+    "pre_20d_change": 0,
+    "post_20d_change": 0
+  },
+  {
+    "code": "920158",
+    "name": "长江能科",
+    "release_date": "2026-10-16",
+    "release_shares": 146216840.0,
+    "market_value": 994274512.0,
+    "lockup_type": "公开发行原股东限售股份,公开发行战略配售股份",
+    "pre_close": 6.8,
+    "pre_20d_change": 0,
+    "post_20d_change": 0
+  }
+]
