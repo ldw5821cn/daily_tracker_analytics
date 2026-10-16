@@ -1,13 +1,13 @@
 {
   "_description": "雪球组合每日收益跟踪，由 xueqiu_nav_updater.py 自动更新",
-  "last_updated": "2026-10-13 15:40:36",
+  "last_updated": "2026-10-16 17:35:15",
   "portfolios": {
     "ZH3650487": {
       "name": "郑希框架模拟盘",
       "start_date": "2026-07-09",
-      "latest_date": "2026-09-17",
-      "latest_nav": 1.0125,
-      "total_return_pct": 1.25,
+      "latest_date": "2026-10-16",
+      "latest_nav": 0.874,
+      "total_return_pct": -12.6,
       "max_return_pct": 6.83,
       "max_return_date": "2026-08-28",
       "min_return_pct": -1.39,
@@ -120,10 +120,16 @@
           "value": 1.0125,
           "percent": 1.25,
           "fetched_at": "2026-09-18 16:35:18"
+        },
+        {
+          "date": "2026-10-16",
+          "value": 0.874,
+          "percent": -12.6,
+          "fetched_at": "2026-10-16 17:35:15"
         }
       ],
       "last_error": "400 Client Error: Bad Request for url: https://www.xueqiu.com/cubes/nav_daily/all.json?cube_symbol=ZH3650487",
-      "last_error_time": "2026-10-13 15:40:36"
+      "last_error_time": "2026-10-16 17:34:10"
     },
     "ZH3650823": {
       "name": "高股息",
@@ -246,7 +252,7 @@
         }
       ],
       "last_error": "400 Client Error: Bad Request for url: https://www.xueqiu.com/cubes/nav_daily/all.json?cube_symbol=ZH3650823",
-      "last_error_time": "2026-10-13 15:40:37"
+      "last_error_time": "2026-10-16 17:34:11"
     }
   }
 }
