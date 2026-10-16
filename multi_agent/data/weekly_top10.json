@@ -1,94 +1,94 @@
 {
-  "date": "2026-10-15",
+  "date": "2026-10-16",
   "generated_by": "after_market_pipeline",
   "top10": [
     {
-      "code": "600621",
-      "name": "华鑫股份",
-      "composite_score": 92,
-      "changepercent": 3.14,
-      "price": 15.42,
-      "amount_yi": 0,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "600577",
-      "name": "精达股份",
-      "composite_score": 88,
-      "changepercent": 0.67,
-      "price": 8.96,
-      "amount_yi": 0,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "600664",
-      "name": "哈药股份",
-      "composite_score": 87,
-      "changepercent": 0.49,
-      "price": 6.19,
-      "amount_yi": 0,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "603328",
-      "name": "依顿电子",
+      "code": "603588",
+      "name": "高能环境",
       "composite_score": 86,
-      "changepercent": 4.68,
-      "price": 13.87,
+      "changepercent": 0.23,
+      "price": 12.82,
       "amount_yi": 0,
       "reason": "板块分散版Top10"
     },
     {
-      "code": "003013",
-      "name": "地铁设计",
+      "code": "601949",
+      "name": "中国出版",
       "composite_score": 86,
-      "changepercent": 4.73,
-      "price": 18.16,
+      "changepercent": 1.34,
+      "price": 6.06,
       "amount_yi": 0,
       "reason": "板块分散版Top10"
     },
     {
-      "code": "002961",
-      "name": "瑞达期货",
+      "code": "600737",
+      "name": "中粮糖业",
       "composite_score": 86,
-      "changepercent": 1.15,
-      "price": 14.10,
+      "changepercent": 4.77,
+      "price": 14.05,
       "amount_yi": 0,
       "reason": "板块分散版Top10"
     },
     {
-      "code": "000833",
-      "name": "粤桂股份",
+      "code": "002734",
+      "name": "利民股份",
       "composite_score": 86,
-      "changepercent": 1.65,
-      "price": 20.98,
+      "changepercent": 3.04,
+      "price": 14.55,
       "amount_yi": 0,
       "reason": "板块分散版Top10"
     },
     {
-      "code": "002074",
-      "name": "国轩高科",
-      "composite_score": 85,
-      "changepercent": 2.07,
-      "price": 28.16,
-      "amount_yi": 0,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "603127",
-      "name": "昭衍新药",
-      "composite_score": 84,
-      "changepercent": 3.81,
-      "price": 50.65,
+      "code": "002349",
+      "name": "精华制药",
+      "composite_score": 86,
+      "changepercent": 1.9,
+      "price": 8.05,
       "amount_yi": 0,
       "reason": "板块分散版Top10"
     },
     {
       "code": "002322",
       "name": "理工能科",
-      "composite_score": 84,
-      "changepercent": 0.32,
-      "price": 12.52,
+      "composite_score": 86,
+      "changepercent": 3.83,
+      "price": 13.0,
+      "amount_yi": 0,
+      "reason": "板块分散版Top10"
+    },
+    {
+      "code": "600664",
+      "name": "哈药股份",
+      "composite_score": 85,
+      "changepercent": 2.1,
+      "price": 6.32,
+      "amount_yi": 0,
+      "reason": "板块分散版Top10"
+    },
+    {
+      "code": "300975",
+      "name": "商络电子",
+      "composite_score": 85,
+      "changepercent": 1.9,
+      "price": 20.35,
+      "amount_yi": 0,
+      "reason": "板块分散版Top10"
+    },
+    {
+      "code": "002264",
+      "name": "新 华 都",
+      "composite_score": 85,
+      "changepercent": 3.86,
+      "price": 7.81,
+      "amount_yi": 0,
+      "reason": "板块分散版Top10"
+    },
+    {
+      "code": "002246",
+      "name": "北化股份",
+      "composite_score": 85,
+      "changepercent": 3.81,
+      "price": 24.81,
       "amount_yi": 0,
       "reason": "板块分散版Top10"
     }
