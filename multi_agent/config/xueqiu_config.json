@@ -25,11 +25,11 @@
       "market": "cn",
       "source": "fixed",
       "holdings": {
-        "SH516580": 0.20,
-        "SH512800": 0.20,
-        "SH563180": 0.20,
-        "SH512890": 0.20,
-        "SH512170": 0.20
+        "SH516580": 0.2,
+        "SH512800": 0.2,
+        "SH563180": 0.2,
+        "SH512890": 0.2,
+        "SH512170": 0.2
       }
     },
     "LOCAL_FUTURES": {
@@ -37,6 +37,23 @@
       "market": "cn",
       "source": "futures_simulator",
       "_note": "期货无法推送到雪球（雪球仅支持股票/ETF），此组合仅本地维护，数据在 multi_agent/data/futures_simulator.db。ZH3650824 已改为 ETF 组合拳，期货概念从此组合独立出来。"
+    },
+    "ZH3680472": {
+      "name": "我的实盘",
+      "market": "cn",
+      "source": "fixed",
+      "holdings": {
+        "600023": 0.142,
+        "000027": 0.13,
+        "000598": 0.149,
+        "600027": 0.109,
+        "600011": 0.118,
+        "601398": 0.133,
+        "600642": 0.095,
+        "000001": 0.06,
+        "SZ159905": 0.064
+      }
     }
-  }
+  },
+  "cookies": "cookiesu=141775807577106; device_id=00b65c7d3884d5ebfaaf1e61d87031ae; s=c512fvg70f; bid=ca497417227bdc8f32bf2020f1f27ff6_msio4ufo; xq_is_login=1; u=9874054794; smidV2=20260928110559ab54d276294863b535969b396ab4bb1a00645fb80d0945f60; __utmz=1.1790564871.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); ssxmod_itna=1-YqfhBKYve_xIhD0xeKdxQqiKiQD=v=I=5DXDUqAj=GgRDFqApxDHCI57RYOW0MC77AqDk_ifeqDlPmeDZDGKQDqx0ob0SexDQMKzidhG3OQixw1h5mQrec_aytbb5tbf1OBtLkwvlSto7v1mQDoDnneDQKDoxGkDi53D09tCxiiWx0rD0eDPxDYDG_pDD5Eb_4DjloIC4fhAlBeb/oDbhbwOG4DR2dDS0fEA/Eh1j3DacB3m_b_Dm9PtwbKs4GalU_uDlFwDmbbOf69DC90tIBQ_FSEAnZrygDHC=Grejeirmi58g0i1ib502x7DOtGVDAFti7SHF/yOBRqoxDGSYmizDmxqhehwCILrAweKxK3gtpCielD4nGzO5MA5QB5xhDqEsmGDd0sEmDP8zoGeM7xur4jrdrGY57o9jpC2vwn_FWDD; ssxmod_itna2=1-YqfhBKYve_xIhD0xeKdxQqiKiQD=v=I=5DXDUqAj=GgRDFqApxDHCI57RYOW0MC77AqDk_ifeDA9xDKKQwBD03QI9eDs07nhintr_S0x9xhwzBLwtmFbf=MyM9cTdiqq1QC6zBdPD; xq_a_token=37d592015df6f276bf21c6d1cf846120e7278e2b; xqat=37d592015df6f276bf21c6d1cf846120e7278e2b; xq_id_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1aWQiOjk4NzQwNTQ3OTQsImlzcyI6InVjIiwiZXhwIjoxNzk0NzM1MTU1LCJjdG0iOjE3OTIxNDMxNTU3MjYsImNpZCI6ImQ5ZDBuNEFadXAifQ.HILKRoLlNfEX_ZdQbqBVvttm3pbf-QryU8utF9ON4SjWTNzMqcDWzM_pmDyqHL53gaZQA0C7aBPm8TeD5OgfIbzMFC2bou2AOajXgbH7weo1LSwmIPxc9-lGv0JXZV3z46zuZQAdmmBsSOTbAC7qwCN2cVZk28QNzqqbFbzU5YWrGCvaSIpX8DK7cHAuqXiHHIEbWem9rKz0oZsa4IPHfmB9dziIFG-e48KTu52Dv6dYlEYfi_FQ9kwEVnkVaxdW7_Oe8CsBgEeYFGmFm4bQKPESjdJt9BeAXutPdprHFp2KalMNK6cwjofEn6PgkzGqUwifeGjDSjJeh3Gsod79Ng; xq_r_token=cd09b03ea17fdd19495ef889fafa896498a235f2; is_overseas=0; Hm_lvt_1db88642e346389874251b5a1eded6e3=1789632003,1792143158; HMACCOUNT=7FF1827FD1DBA5E9; .thumbcache_f24b8bbe5a5934237bbc0eda20c1b6e7=ncOfL9TSKzXgb45avEZ5nn2tTqJbapTunb9g90CY+2LwU022480scGuPFOLETKwLWN1UvrWkuFsP/oEPyBFSXA%3D%3D; __utma=1.1242588903.1790564871.1790564871.1792143171.2; __utmc=1; __utmt=1; __utmb=1.2.10.1792143171; Hm_lpvt_1db88642e346389874251b5a1eded6e3=1792143179"
 }

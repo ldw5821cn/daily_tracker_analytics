@@ -17,7 +17,19 @@ def load_config():
         print(f"❌ 配置不存在: {CFG}"); sys.exit(1)
     with open(CFG) as f:
         c = json.load(f)
-    if not c.get('cookies') or '粘贴' in str(c['cookies']):
+    
+    # 从 .env 加载 cookies
+    if not c.get('cookies') or '粘贴' in str(c.get('cookies', '')):
+        try:
+            from dotenv import load_dotenv
+            load_dotenv(os.path.join(REPO, '.env'))
+            cookies = os.environ.get('XUEQIU_COOKIES', '').strip()
+            if cookies:
+                c['cookies'] = cookies
+        except Exception as e:
+            print(f"⚠️ 加载 .env 失败: {e}")
+    
+    if not c.get('cookies') or '粘贴' in str(c.get('cookies', '')):
         print("❌ cookies未配置\n   浏览器登录雪球→F12→Application→Cookies→复制cookie字符串"); sys.exit(1)
     return c
 
@@ -44,12 +56,16 @@ def init_xq(cfg, code):
     p = cfg['portfolios'].get(code,{})
     u.prepare(cookies=cfg['cookies'], portfolio_code=code, portfolio_market=p.get('market','cn'))
     try:
+        # 延迟获取持仓，避免休市时出错
+        import time
+        time.sleep(1)
         pos = u.position
         print(f"  ✅ {code} ({p.get('name','')}) 登录成功")
         return u, pos
     except Exception as e:
-        print(f"  ❌ {code} 登录失败: {e}")
-        return None, None
+        print(f"  ⚠️ {code} 获取持仓失败 (可能是休市): {e}")
+        # 仍然返回 u，允许调仓
+        return u, []
 
 def sync(code, targets, dry=True):
     cfg = load_config()
@@ -69,12 +85,53 @@ def sync(code, targets, dry=True):
         print(f"\n   执行加 --no-dry-run")
         return
     try:
-        # convert to easytrader format: [{stock_code, weight}, ...]
-        adj_targets = [{'stock_code':t['ticker'], 'weight':t['weight']} for t in targets]
-        r = u.adjust_weight(adj_targets, cash_plan=0)
+        # 使用正确的 adjust_weight 参数格式
+        for t in targets:
+            stock_code = t['ticker']
+            weight = t['weight']
+            print(f"  调仓: {stock_code} -> {weight*100:.1f}%")
+            u.adjust_weight(stock_code, weight)
         print(f"  ✅ 调仓成功")
     except Exception as e:
         print(f"  ❌ 调仓失败: {e}")
+
+def sync_fixed(code, dry=True):
+    """同步固定持仓组合"""
+    cfg = load_config()
+    p = cfg['portfolios'].get(code, {})
+    holdings = p.get('holdings', {})
+    
+    if not holdings:
+        print(f"⚠️ {code} 无固定持仓配置")
+        return
+    
+    print(f"\n{'='*50}")
+    print(f"📊 {code} ({p.get('name', '')}) - 固定持仓")
+    print(f"{'='*50}")
+    
+    # 转换为 targets 格式
+    targets = []
+    for stock_code, weight in holdings.items():
+        # 转换代码格式
+        if stock_code.startswith('SH'):
+            ticker = stock_code[2:] + '.SH'
+        elif stock_code.startswith('SZ'):
+            ticker = stock_code[2:] + '.SZ'
+        elif stock_code.startswith('6'):
+            ticker = stock_code + '.SH'
+        elif stock_code.startswith('0') or stock_code.startswith('3'):
+            ticker = stock_code + '.SZ'
+        else:
+            ticker = stock_code
+        
+        targets.append({
+            'ticker': ticker,
+            'name': '',
+            'weight': weight,
+        })
+    
+    # 调用 sync
+    sync(code, targets, dry)
 
 def main():
     dry = '--dry-run' in sys.argv or '-n' in sys.argv
@@ -83,7 +140,7 @@ def main():
     for code, p in cfg['portfolios'].items():
         src = p.get('source','')
         if src == 'fixed':
-            print(f"\n📊 {p.get('name','')} - 固定持仓")
+            sync_fixed(code, dry)
         elif src == 'allocator':
             t = get_targets()
             mw = p.get('max_weight',0.15)
