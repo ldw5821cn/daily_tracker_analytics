@@ -1,51 +1,105 @@
 {
   "name": "高股息组合",
   "description": "低估值 + 稳定分红央企电力/能源/银行平台",
-  "total_cash": 10000,
+  "total_cash": 19067,
   "created_date": "2026-07-06",
+  "updated_date": "2026-10-16",
   "currency": "CNY",
   "rebalance_frequency": "monthly",
   "strategy": "以高股息率为核心，优先配置现金流稳定的央企/地方能源平台与银行，兼顾低估值与分红可持续性。",
   "holdings": [
     {
-      "ticker": "600642",
-      "name": "申能股份",
-      "weight_target": 0.25,
-      "shares": 300,
-      "cost_price": 8.88,
-      "notes": "上海综合能源平台，分红稳定"
-    },
-    {
       "ticker": "600023",
       "name": "浙能电力",
-      "weight_target": 0.25,
-      "shares": 400,
-      "cost_price": 5.37,
+      "weight_target": 0.142,
+      "shares": 500,
+      "cost_price": 5.058,
+      "current_price": 5.400,
+      "market_value": 2700,
       "notes": "浙江电力平台，低PB高股息"
     },
     {
-      "ticker": "600011",
-      "name": "华能国际",
-      "weight_target": 0.20,
-      "shares": 300,
-      "cost_price": 6.99,
-      "notes": "央企火电龙头，盈利改善股息高"
+      "ticker": "000027",
+      "name": "深圳能源",
+      "weight_target": 0.130,
+      "shares": 400,
+      "cost_price": 6.248,
+      "current_price": 6.200,
+      "market_value": 2480,
+      "notes": "深圳综合能源平台"
+    },
+    {
+      "ticker": "000598",
+      "name": "兴蓉环境",
+      "weight_target": 0.149,
+      "shares": 400,
+      "cost_price": 7.073,
+      "current_price": 7.080,
+      "market_value": 2832,
+      "notes": "成都水务环保，稳定现金流"
     },
     {
       "ticker": "600027",
       "name": "华电国际",
-      "weight_target": 0.15,
-      "shares": 300,
-      "cost_price": 4.51,
+      "weight_target": 0.109,
+      "shares": 400,
+      "cost_price": 4.725,
+      "current_price": 5.180,
+      "market_value": 2072,
       "notes": "央企火电，低估值"
+    },
+    {
+      "ticker": "600011",
+      "name": "华能国际",
+      "weight_target": 0.118,
+      "shares": 300,
+      "cost_price": 6.920,
+      "current_price": 7.510,
+      "market_value": 2253,
+      "notes": "央企火电龙头，盈利改善股息高"
     },
     {
       "ticker": "601398",
       "name": "工商银行",
-      "weight_target": 0.15,
-      "shares": 200,
-      "cost_price": 7.04,
+      "weight_target": 0.133,
+      "shares": 300,
+      "cost_price": 7.843,
+      "current_price": 8.480,
+      "market_value": 2544,
       "notes": "国有大行，分红极稳"
+    },
+    {
+      "ticker": "600642",
+      "name": "申能股份",
+      "weight_target": 0.095,
+      "shares": 200,
+      "cost_price": 8.505,
+      "current_price": 9.080,
+      "market_value": 1816,
+      "notes": "上海综合能源平台，分红稳定"
+    },
+    {
+      "ticker": "000001",
+      "name": "平安银行",
+      "weight_target": 0.060,
+      "shares": 100,
+      "cost_price": 11.400,
+      "current_price": 11.500,
+      "market_value": 1150,
+      "notes": "股份制银行，零售转型"
+    },
+    {
+      "ticker": "159905",
+      "name": "深红利ETF",
+      "weight_target": 0.064,
+      "shares": 800,
+      "cost_price": 1.535,
+      "current_price": 1.525,
+      "market_value": 1220,
+      "notes": "深证红利指数ETF"
     }
-  ]
+  ],
+  "total_market_value": 19067,
+  "total_profit": 821,
+  "total_return_pct": 4.5
 }

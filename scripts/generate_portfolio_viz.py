@@ -20,14 +20,15 @@ from pathlib import Path
 
 # 持仓
 holdings = [
-    {'symbol': '000001', 'name': '平安银行', 'shares': 100, 'color': '#FF6B6B'},
-    {'symbol': '000027', 'name': '深圳能源', 'shares': 200, 'color': '#4ECDC4'},
-    {'symbol': '000598', 'name': '兴蓉环境', 'shares': 200, 'color': '#45B7D1'},
-    {'symbol': '600011', 'name': '华能国际', 'shares': 600, 'color': '#96CEB4'},
-    {'symbol': '600027', 'name': '华电国际', 'shares': 400, 'color': '#FECA57'},
     {'symbol': '600023', 'name': '浙能电力', 'shares': 500, 'color': '#48DBFB'},
-    {'symbol': '600642', 'name': '申能股份', 'shares': 200, 'color': '#FF9FF3'},
+    {'symbol': '000027', 'name': '深圳能源', 'shares': 400, 'color': '#4ECDC4'},
+    {'symbol': '000598', 'name': '兴蓉环境', 'shares': 400, 'color': '#45B7D1'},
+    {'symbol': '600027', 'name': '华电国际', 'shares': 400, 'color': '#FECA57'},
+    {'symbol': '600011', 'name': '华能国际', 'shares': 300, 'color': '#96CEB4'},
     {'symbol': '601398', 'name': '工商银行', 'shares': 300, 'color': '#54A0FF'},
+    {'symbol': '600642', 'name': '申能股份', 'shares': 200, 'color': '#FF9FF3'},
+    {'symbol': '000001', 'name': '平安银行', 'shares': 100, 'color': '#FF6B6B'},
+    {'symbol': '159905', 'name': '深红利ETF', 'shares': 800, 'color': '#A29BFE'},
 ]
 
 print("=" * 70)
