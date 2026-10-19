@@ -1,42 +1,11 @@
 {
-  "pred_date": "2026-10-16",
-  "generated_at": "2026-10-16 15:32:07",
-  "macro_score": 48.6,
+  "pred_date": "2026-10-19",
+  "generated_at": "2026-10-19 15:33:07",
+  "macro_score": 49.7,
   "macro_signal": "neutral",
   "allow_long": true,
   "longs": [],
-  "shorts_or_avoids": [
-    {
-      "ticker": "FG0",
-      "name": "玻璃",
-      "category": "期货",
-      "signal": "看空",
-      "confidence": 0.74,
-      "price": 853.0,
-      "target": 835.94,
-      "stop": 895.65,
-      "weighted_score": 41.8,
-      "bt_return_60d": -8.18,
-      "bt_max_dd_60d": -12.78,
-      "bt_sharpe_60d": -1.3,
-      "reasoning": "技术面中性(41/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(48.6/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "AG0",
-      "name": "白银",
-      "category": "期货",
-      "signal": "看空",
-      "confidence": 0.82,
-      "price": 13660.0,
-      "target": 13386.8,
-      "stop": 14343.0,
-      "weighted_score": 41.7,
-      "bt_return_60d": -1.99,
-      "bt_max_dd_60d": -20.65,
-      "bt_sharpe_60d": -0.05,
-      "reasoning": "技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(48.6/100) | 市场上下文neutral(50.0/100)上限100%"
-    }
-  ],
+  "shorts_or_avoids": [],
   "max_single_position": 0.1,
   "stop_loss_pct": 0.05
 }
