@@ -318,41 +318,55 @@ def update_pages(all_scores: list):
 
 
 def build_portfolio_data(all_scores: list) -> dict:
-    """构造组合页数据，取Top10为推荐持仓等权"""
+    """构造组合页数据，使用实际持仓配置"""
+    
+    # 实际持仓配置 (2026-10-15)
+    actual_holdings = [
+        {'symbol': '600023', 'name': '浙能电力', 'weight': 14.2, 'price': 5.400, 'notes': '浙江电力平台，低PB高股息'},
+        {'symbol': '000027', 'name': '深圳能源', 'weight': 13.0, 'price': 6.200, 'notes': '深圳综合能源平台'},
+        {'symbol': '000598', 'name': '兴蓉环境', 'weight': 14.9, 'price': 7.080, 'notes': '成都水务环保，稳定现金流'},
+        {'symbol': '600027', 'name': '华电国际', 'weight': 10.9, 'price': 5.180, 'notes': '央企火电，低估值'},
+        {'symbol': '600011', 'name': '华能国际', 'weight': 11.8, 'price': 7.510, 'notes': '央企火电龙头，盈利改善股息高'},
+        {'symbol': '601398', 'name': '工商银行', 'weight': 13.3, 'price': 8.480, 'notes': '国有大行，分红极稳'},
+        {'symbol': '600642', 'name': '申能股份', 'weight': 9.5, 'price': 9.080, 'notes': '上海综合能源平台，分红稳定'},
+        {'symbol': '000001', 'name': '平安银行', 'weight': 6.0, 'price': 11.500, 'notes': '股份制银行，零售转型'},
+        {'symbol': '159905', 'name': '深红利ETF', 'weight': 6.4, 'price': 1.525, 'notes': '深证红利指数ETF'},
+    ]
+    
     holdings = []
-    total = len(all_scores[:10])
-    total_asset = 1000000.0
-    stock_value = total_asset * 0.9 if total else 0.0
-    for i, s in enumerate(all_scores[:10], 1):
-        weight = round(90 / total, 2) if total else 0
-        price = s.get('price', 0)
-        entry_price = price * (1 - s.get('changepercent', 0) / 100) if price else price
+    total_asset = 19067.0  # 实际总市值
+    
+    for h in actual_holdings:
         holdings.append({
-            'name': s['name'],
-            'symbol': s['code'],
-            'code': s['code'],
-            'price': price,
-            'entry_price': entry_price,
-            'chg_pct': s.get('changepercent', 0),
-            'weight': weight,
-            'market_value': total_asset * (weight / 100),
-            'volume': s.get('amount', 0) / 1e8 if s.get('amount') else 0,
-            'market': s.get('market', ''),
-            'pe': s.get('pe', 0) or 0,
+            'name': h['name'],
+            'symbol': h['symbol'],
+            'code': h['symbol'],
+            'price': h['price'],
+            'entry_price': h['price'],
+            'chg_pct': 0,
+            'weight': h['weight'],
+            'market_value': total_asset * (h['weight'] / 100),
+            'volume': 0,
+            'market': 'CN',
+            'pe': 0,
+            'notes': h['notes'],
         })
+    
+    stock_value = sum(h['market_value'] for h in holdings)
+    
     return {
-        'name': 'ZH3650487',
-        'net_value': 1.0,
+        'name': '我的实盘',
+        'net_value': 1.045,
         'daily_gain': 0.0,
-        'total_gain': 0.0,
+        'total_gain': 4.5,
         'annualized_gain': 0.0,
         'monthly_gain': 0.0,
         'holdings': holdings,
         'recommendations': holdings,
-        'initial_capital': 1000000,
-        'cash_pct': 10.0,
-        'cash_ratio': 0.10,
-        'cash': total_asset - stock_value,
+        'initial_capital': 19067,
+        'cash_pct': 0.0,
+        'cash_ratio': 0.0,
+        'cash': 0,
         'total_asset': total_asset,
         'stock_value': stock_value,
         'rebalance_history': [],
