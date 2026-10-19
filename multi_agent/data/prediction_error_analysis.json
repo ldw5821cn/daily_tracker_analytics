@@ -275,6 +275,17 @@
       "confidence": 0.8
     },
     {
+      "ticker": "PF0",
+      "name": "短纤",
+      "category": "期货",
+      "signal": "观望",
+      "return_pct": -1.337,
+      "pred_price": 8230.0,
+      "today_price": 8120.0,
+      "weighted_score": 53.5,
+      "confidence": 0.53
+    },
+    {
       "ticker": "512890",
       "name": "红利低波ETF华泰柏瑞",
       "category": "ETF",
@@ -295,17 +306,6 @@
       "today_price": 67.1,
       "weighted_score": 45.4,
       "confidence": 0.79
-    },
-    {
-      "ticker": "159792",
-      "name": "港股通互联网ETF富国",
-      "category": "ETF",
-      "signal": "观望",
-      "return_pct": -1.296,
-      "pred_price": 0.54,
-      "today_price": 0.533,
-      "weighted_score": 46.3,
-      "confidence": 0.59
     }
   ],
   "suggestions": [
