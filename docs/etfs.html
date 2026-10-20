@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>📊 ETF - 2026-10-20 08:52</title>
+<title>📊 ETF - 2026-10-20 15:31</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <style>
@@ -64,7 +64,7 @@ tr:hover { background: #334155; }
 
     <div class="header">
         <h1>📊 ETF </h1>
-        <div class="sub">2026-10-20 08:52 · 最新预测 23 只 (价格日期: 2026-10-19)</div>
+        <div class="sub">2026-10-20 15:31 · 最新预测 23 只 (价格日期: 2026-10-20)</div>
     </div>
 
 <div class="stats-grid">
@@ -77,22 +77,99 @@ tr:hover { background: #334155; }
             <div class="label">看多</div>
         </div>
         <div class="stat-card">
-            <div class="num" style="color:#22c55e">0</div>
+            <div class="num" style="color:#22c55e">1</div>
             <div class="label">看空</div>
         </div>
         <div class="stat-card">
-            <div class="num">19</div>
+            <div class="num">18</div>
             <div class="label">中性</div>
         </div>
 
 </div>
+<div class="section-title">❄️ 重点看空</div>
+<div class="cards">
 
+            <div class="card bear">
+                <div class="card-title">❄️ 机器人ETF易方达 (159530)</div>
+                <div class="card-meta">评分 41.9 | 60日收益 <span style="color:#22c55e">-8.9%</span> | 回撤 -25.0%</div>
+                <div class="card-meta">推荐策略：每周只做多（无成本） | 收益 <span style="color:#22c55e">-4.3%</span> | 回撤 -4.6%</div>
+                <div class="card-price">2026/10/20 现价 1.22 | 目标 1.232 | 止损 1.196</div>
+                <div class="card-reason">技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%</div>
+                
+                <div id="chart_159530" style="width:100%;height:180px;margin-top:10px;border-radius:8px;background:#0f172a;"></div>
+                <script>
+                (function(){
+                    const chart = LightweightCharts.createChart(document.getElementById('chart_159530'), {
+                        layout: { background: { color: '#0f172a' }, textColor: '#94a3b8' },
+                        grid: { vertLines: { color: '#1e293b' }, horzLines: { color: '#1e293b' } },
+                        crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+                        rightPriceScale: { borderColor: '#1e293b' },
+                        timeScale: { borderColor: '#1e293b', timeVisible: false },
+                    });
+                    const series = chart.addCandlestickSeries({
+                        upColor: '#ef4444', downColor: '#22c55e',
+                        borderUpColor: '#ef4444', borderDownColor: '#22c55e',
+                        wickUpColor: '#ef4444', wickDownColor: '#22c55e'
+                    });
+                    series.setData([{"time": "2026-07-22", "open": 1.325, "high": 1.334, "low": 1.296, "close": 1.31, "volume": 6956015.0}, {"time": "2026-07-23", "open": 1.29, "high": 1.308, "low": 1.282, "close": 1.295, "volume": 3467638.0}, {"time": "2026-08-02", "open": 1.324, "high": 1.36, "low": 1.32, "close": 1.35, "volume": 8245876.0}, {"time": "2026-08-03", "open": 1.324, "high": 1.36, "low": 1.32, "close": 1.35, "volume": 8245876.0}, {"time": "2026-08-04", "open": 1.358, "high": 1.382, "low": 1.336, "close": 1.378, "volume": 6810129.0}, {"time": "2026-08-05", "open": 1.38, "high": 1.419, "low": 1.374, "close": 1.415, "volume": 7544412.0}, {"time": "2026-08-06", "open": 1.402, "high": 1.419, "low": 1.386, "close": 1.402, "volume": 6604662.0}, {"time": "2026-08-07", "open": 1.405, "high": 1.417, "low": 1.377, "close": 1.417, "volume": 6620227.0}, {"time": "2026-08-10", "open": 1.423, "high": 1.428, "low": 1.389, "close": 1.402, "volume": 5057967.0}, {"time": "2026-08-11", "open": 1.394, "high": 1.445, "low": 1.382, "close": 1.431, "volume": 7965515.0}, {"time": "2026-08-12", "open": 1.43, "high": 1.43, "low": 1.412, "close": 1.42, "volume": 4449611.0}, {"time": "2026-08-13", "open": 1.421, "high": 1.437, "low": 1.397, "close": 1.397, "volume": 5759970.0}, {"time": "2026-08-14", "open": 1.396, "high": 1.405, "low": 1.377, "close": 1.398, "volume": 5330721.0}, {"time": "2026-08-17", "open": 1.401, "high": 1.436, "low": 1.393, "close": 1.435, "volume": 5578761.0}, {"time": "2026-08-18", "open": 1.437, "high": 1.471, "low": 1.42, "close": 1.471, "volume": 8575915.0}, {"time": "2026-08-19", "open": 1.447, "high": 1.448, "low": 1.332, "close": 1.337, "volume": 12712682.0}, {"time": "2026-08-20", "open": 1.345, "high": 1.348, "low": 1.317, "close": 1.32, "volume": 5809391.0}, {"time": "2026-08-21", "open": 1.312, "high": 1.335, "low": 1.305, "close": 1.33, "volume": 4632930.0}, {"time": "2026-08-24", "open": 1.325, "high": 1.327, "low": 1.276, "close": 1.291, "volume": 4970128.0}, {"time": "2026-08-25", "open": 1.284, "high": 1.333, "low": 1.284, "close": 1.322, "volume": 5204002.0}, {"time": "2026-08-26", "open": 1.32, "high": 1.337, "low": 1.308, "close": 1.316, "volume": 3342642.0}, {"time": "2026-08-27", "open": 1.315, "high": 1.339, "low": 1.311, "close": 1.336, "volume": 3686394.0}, {"time": "2026-08-28", "open": 1.336, "high": 1.349, "low": 1.321, "close": 1.321, "volume": 3447445.0}, {"time": "2026-08-31", "open": 1.307, "high": 1.345, "low": 1.303, "close": 1.343, "volume": 3535778.0}, {"time": "2026-09-01", "open": 1.343, "high": 1.348, "low": 1.325, "close": 1.328, "volume": 3038240.0}, {"time": "2026-09-02", "open": 1.318, "high": 1.318, "low": 1.303, "close": 1.307, "volume": 3038824.0}, {"time": "2026-09-03", "open": 1.316, "high": 1.336, "low": 1.312, "close": 1.326, "volume": 3200472.0}, {"time": "2026-09-04", "open": 1.34, "high": 1.35, "low": 1.293, "close": 1.298, "volume": 4676412.0}, {"time": "2026-09-07", "open": 1.301, "high": 1.333, "low": 1.297, "close": 1.323, "volume": 4074338.0}, {"time": "2026-09-08", "open": 1.323, "high": 1.333, "low": 1.311, "close": 1.318, "volume": 3043596.0}, {"time": "2026-09-09", "open": 1.32, "high": 1.322, "low": 1.299, "close": 1.309, "volume": 2735819.0}, {"time": "2026-09-10", "open": 1.302, "high": 1.303, "low": 1.282, "close": 1.286, "volume": 2929670.0}, {"time": "2026-09-11", "open": 1.27, "high": 1.274, "low": 1.24, "close": 1.261, "volume": 4501455.0}, {"time": "2026-09-14", "open": 1.252, "high": 1.284, "low": 1.251, "close": 1.271, "volume": 2611883.0}, {"time": "2026-09-15", "open": 1.266, "high": 1.274, "low": 1.258, "close": 1.258, "volume": 2229085.0}, {"time": "2026-09-16", "open": 1.255, "high": 1.277, "low": 1.244, "close": 1.271, "volume": 2983235.0}, {"time": "2026-09-17", "open": 1.265, "high": 1.296, "low": 1.263, "close": 1.287, "volume": 3835434.0}, {"time": "2026-09-18", "open": 1.296, "high": 1.308, "low": 1.292, "close": 1.305, "volume": 3822456.0}, {"time": "2026-09-21", "open": 1.306, "high": 1.326, "low": 1.305, "close": 1.311, "volume": 3943264.0}, {"time": "2026-09-22", "open": 1.318, "high": 1.325, "low": 1.305, "close": 1.309, "volume": 2816753.0}, {"time": "2026-09-23", "open": 1.312, "high": 1.312, "low": 1.301, "close": 1.307, "volume": 2447300.0}, {"time": "2026-09-24", "open": 1.301, "high": 1.325, "low": 1.295, "close": 1.295, "volume": 3200983.0}, {"time": "2026-09-28", "open": 1.292, "high": 1.299, "low": 1.26, "close": 1.266, "volume": 3458515.0}, {"time": "2026-09-29", "open": 1.26, "high": 1.277, "low": 1.253, "close": 1.271, "volume": 3007022.0}, {"time": "2026-09-30", "open": 1.272, "high": 1.286, "low": 1.264, "close": 1.264, "volume": 3023617.0}, {"time": "2026-10-08", "open": 1.263, "high": 1.264, "low": 1.207, "close": 1.212, "volume": 4710898.0}, {"time": "2026-10-09", "open": 1.207, "high": 1.228, "low": 1.165, "close": 1.219, "volume": 4550908.0}, {"time": "2026-10-12", "open": 1.218, "high": 1.219, "low": 1.19, "close": 1.19, "volume": 3599675.0}, {"time": "2026-10-13", "open": 1.18, "high": 1.194, "low": 1.149, "close": 1.183, "volume": 3810965.0}, {"time": "2026-10-14", "open": 1.178, "high": 1.18, "low": 1.149, "close": 1.15, "volume": 3223895.0}, {"time": "2026-10-15", "open": 1.125, "high": 1.134, "low": 1.102, "close": 1.103, "volume": 4643778.0}, {"time": "2026-10-16", "open": 1.116, "high": 1.14, "low": 1.106, "close": 1.116, "volume": 4302700.0}, {"time": "2026-10-19", "open": 1.108, "high": 1.17, "low": 1.097, "close": 1.164, "volume": 6122852.0}]);
+                    chart.timeScale().fitContent();
+                })();
+                </script>
+                
+            </div>
+</div>
 
     <div class="section-title">📂 📊 ETF (23只)</div>
     <div class="table-responsive">
     <table>
         <thead><tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>60日收益</th><th>60日回撤</th><th>60日夏普</th><th>推荐策略</th><th>策略收益</th><th>策略回撤</th><th>价格</th><th>目标</th><th>止损</th><th>仓位</th><th>技术分</th></tr></thead>
         <tbody>
+        <tr>
+            <td><b>159530</b></td>
+            <td>机器人ETF易方达 </td>
+            <td>机器人</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>41.9</td>
+            <td>82%</td>
+            <td>震荡</td>
+            <td>偏多</td>
+            <td>偏多</td>
+            <td>看涨</td>
+            <td style="color:#22c55e">-8.9%</td>
+            <td>-25.0%</td>
+            <td>-0.86</td>
+            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
+            <td style="color:#22c55e">-4.3%</td>
+            <td>-4.6%</td>
+            <td>2026/10/20 现价 1.22</td>
+            <td>1.232</td>
+            <td>1.196</td>
+            <td>12%</td>
+            <td title="技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">44</td>
+        </tr>
+        <tr>
+            <td><b>512800</b></td>
+            <td>银行ETF </td>
+            <td>银行</td>
+            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
+            <td>63.7</td>
+            <td>80%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td>偏多</td>
+            <td style="color:#ef4444">+9.6%</td>
+            <td>-5.2%</td>
+            <td>2.42</td>
+            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
+            <td style="color:#ef4444">+0.2%</td>
+            <td>-2.5%</td>
+            <td>2026/10/20 现价 0.87</td>
+            <td>0.872</td>
+            <td>0.853</td>
+            <td>0%</td>
+            <td title="技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨2.0 vs 看跌0 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">70</td>
+        </tr>
         <tr>
             <td><b>512890</b></td>
             <td>红利低波ETF华泰柏瑞 </td>
@@ -102,65 +179,42 @@ tr:hover { background: #334155; }
             <td>80%</td>
             <td>震荡</td>
             <td>震荡</td>
-            <td>偏多</td>
-            <td>偏多</td>
-            <td style="color:#ef4444">+5.5%</td>
-            <td>-4.3%</td>
-            <td>1.66</td>
-            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#22c55e">-0.3%</td>
-            <td>-3.7%</td>
-            <td>2026/10/19 现价 1.24</td>
-            <td>1.247</td>
-            <td>1.215</td>
-            <td>0%</td>
-            <td title="技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨2.0 vs 看跌0 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">70</td>
-        </tr>
-        <tr>
-            <td><b>512800</b></td>
-            <td>银行ETF </td>
-            <td>银行</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>60.6</td>
-            <td>77%</td>
             <td>震荡</td>
-            <td>偏多</td>
-            <td>偏多</td>
-            <td>看涨</td>
-            <td style="color:#ef4444">+8.5%</td>
-            <td>-5.2%</td>
-            <td>2.09</td>
+            <td>震荡</td>
+            <td style="color:#ef4444">+5.4%</td>
+            <td>-4.3%</td>
+            <td>1.65</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#ef4444">+1.5%</td>
-            <td>-2.5%</td>
-            <td>2026/10/19 现价 0.88</td>
-            <td>0.888</td>
-            <td>0.862</td>
+            <td style="color:#22c55e">-1.3%</td>
+            <td>-3.7%</td>
+            <td>2026/10/20 现价 1.22</td>
+            <td>1.221</td>
+            <td>1.196</td>
             <td>0%</td>
-            <td title="技术面中性偏多(64/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨2 vs 看跌0 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
+            <td title="技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨2.0 vs 看跌0 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">70</td>
         </tr>
         <tr>
             <td><b>563180</b></td>
             <td>高股息ETF </td>
             <td>高股息</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>55.0</td>
-            <td>66%</td>
+            <td>62.1</td>
+            <td>70%</td>
             <td>震荡</td>
             <td>震荡</td>
-            <td>偏多</td>
-            <td>偏多</td>
-            <td style="color:#ef4444">+4.8%</td>
+            <td>震荡</td>
+            <td>震荡</td>
+            <td style="color:#ef4444">+4.2%</td>
             <td>-4.5%</td>
-            <td>1.57</td>
+            <td>1.35</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#ef4444">+0.4%</td>
-            <td>-2.0%</td>
-            <td>2026/10/19 现价 1.19</td>
-            <td>1.198</td>
-            <td>1.166</td>
+            <td style="color:#22c55e">-0.5%</td>
+            <td>-2.1%</td>
+            <td>2026/10/20 现价 1.17</td>
+            <td>1.169</td>
+            <td>1.147</td>
             <td>0%</td>
-            <td title="技术面中性偏多(64/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1.4 vs 看跌0 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">64</td>
+            <td title="技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨2.0 vs 看跌1 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">70</td>
         </tr>
         <tr>
             <td><b>510300</b></td>
@@ -173,17 +227,17 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td style="color:#22c55e">-8.8%</td>
-            <td>-11.8%</td>
-            <td>-2.50</td>
+            <td style="color:#22c55e">-11.8%</td>
+            <td>-12.1%</td>
+            <td>-3.73</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
             <td style="color:#22c55e">-0.6%</td>
             <td>-1.0%</td>
-            <td>2026/10/19 现价 4.24</td>
-            <td>4.147</td>
-            <td>4.155</td>
+            <td>2026/10/20 现价 4.22</td>
+            <td>4.126</td>
+            <td>4.136</td>
             <td>0%</td>
-            <td title="技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">48</td>
+            <td title="技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">48</td>
         </tr>
         <tr>
             <td><b>513180</b></td>
@@ -196,40 +250,40 @@ tr:hover { background: #334155; }
             <td>偏空</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td style="color:#22c55e">-14.8%</td>
-            <td>-18.3%</td>
-            <td>-3.17</td>
+            <td style="color:#22c55e">-16.6%</td>
+            <td>-18.4%</td>
+            <td>-3.63</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#ef4444">+5.5%</td>
+            <td style="color:#ef4444">+4.9%</td>
             <td>-6.7%</td>
-            <td>2026/10/19 现价 0.51</td>
+            <td>2026/10/20 现价 0.51</td>
             <td>0.502</td>
             <td>0.5</td>
             <td>0%</td>
-            <td title="技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">48</td>
+            <td title="技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">48</td>
         </tr>
         <tr>
             <td><b>513120</b></td>
             <td>港股创新药ETF广发 </td>
             <td>创新药</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>45.2</td>
+            <td>45.1</td>
             <td>63%</td>
             <td>震荡</td>
+            <td>震荡</td>
             <td>偏空</td>
-            <td>看跌</td>
-            <td>看跌</td>
-            <td style="color:#ef4444">+5.8%</td>
+            <td>偏空</td>
+            <td style="color:#ef4444">+7.3%</td>
             <td>-11.9%</td>
-            <td>0.79</td>
+            <td>0.96</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
             <td style="color:#22c55e">-1.1%</td>
             <td>-6.2%</td>
-            <td>2026/10/19 现价 1.24</td>
-            <td>1.214</td>
-            <td>1.215</td>
+            <td>2026/10/20 现价 1.26</td>
+            <td>1.253</td>
+            <td>1.235</td>
             <td>0%</td>
-            <td title="技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌2 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">44</td>
+            <td title="技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌2 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">44</td>
         </tr>
         <tr>
             <td><b>512170</b></td>
@@ -239,20 +293,20 @@ tr:hover { background: #334155; }
             <td>45.1</td>
             <td>71%</td>
             <td>震荡</td>
+            <td>震荡</td>
+            <td>震荡</td>
             <td>偏空</td>
-            <td>看跌</td>
-            <td>看跌</td>
-            <td style="color:#e2e8f0">+0.0%</td>
+            <td style="color:#ef4444">+1.5%</td>
             <td>-10.3%</td>
-            <td>0.06</td>
-            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#22c55e">-1.4%</td>
-            <td>-8.8%</td>
-            <td>2026/10/19 现价 0.33</td>
-            <td>0.323</td>
+            <td>0.30</td>
+            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
+            <td style="color:#ef4444">+0.6%</td>
+            <td>-10.6%</td>
+            <td>2026/10/20 现价 0.33</td>
+            <td>0.329</td>
             <td>0.323</td>
             <td>0%</td>
-            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">47</td>
+            <td title="技术面中性(47/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">47</td>
         </tr>
         <tr>
             <td><b>516150</b></td>
@@ -265,40 +319,17 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td style="color:#22c55e">-6.1%</td>
+            <td style="color:#22c55e">-9.4%</td>
             <td>-21.8%</td>
-            <td>-0.79</td>
+            <td>-1.39</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
             <td style="color:#ef4444">+4.7%</td>
             <td>-6.7%</td>
-            <td>2026/10/19 现价 1.45</td>
-            <td>1.398</td>
-            <td>1.421</td>
+            <td>2026/10/20 现价 1.47</td>
+            <td>1.429</td>
+            <td>1.441</td>
             <td>0%</td>
-            <td title="技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">48</td>
-        </tr>
-        <tr>
-            <td><b>562500</b></td>
-            <td>机器人ETF华夏 </td>
-            <td>机器人</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>44.0</td>
-            <td>80%</td>
-            <td>偏空</td>
-            <td>看跌</td>
-            <td>看跌</td>
-            <td>看跌</td>
-            <td style="color:#22c55e">-12.6%</td>
-            <td>-24.1%</td>
-            <td>-1.55</td>
-            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#ef4444">+1.9%</td>
-            <td>-7.6%</td>
-            <td>2026/10/19 现价 0.82</td>
-            <td>0.798</td>
-            <td>0.804</td>
-            <td>0%</td>
-            <td title="技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">48</td>
+            <td title="技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">48</td>
         </tr>
         <tr>
             <td><b>159755</b></td>
@@ -311,40 +342,40 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td style="color:#22c55e">-13.2%</td>
+            <td style="color:#22c55e">-17.2%</td>
             <td>-22.5%</td>
-            <td>-2.19</td>
+            <td>-3.21</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
             <td style="color:#ef4444">+2.4%</td>
             <td>0.0%</td>
-            <td>2026/10/19 现价 0.78</td>
-            <td>0.739</td>
+            <td>2026/10/20 现价 0.78</td>
+            <td>0.749</td>
             <td>0.764</td>
             <td>0%</td>
-            <td title="技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">48</td>
+            <td title="技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">48</td>
         </tr>
         <tr>
-            <td><b>159530</b></td>
-            <td>机器人ETF易方达 </td>
+            <td><b>562500</b></td>
+            <td>机器人ETF华夏 </td>
             <td>机器人</td>
             <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
             <td>42.4</td>
             <td>82%</td>
             <td>震荡</td>
+            <td>震荡</td>
             <td>偏空</td>
-            <td>看跌</td>
-            <td>看跌</td>
-            <td style="color:#22c55e">-9.4%</td>
-            <td>-25.0%</td>
-            <td>-0.94</td>
-            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#22c55e">-0.4%</td>
-            <td>-7.5%</td>
-            <td>2026/10/19 现价 1.16</td>
-            <td>1.137</td>
-            <td>1.137</td>
+            <td>偏空</td>
+            <td style="color:#22c55e">-13.9%</td>
+            <td>-24.1%</td>
+            <td>-1.78</td>
+            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
+            <td style="color:#22c55e">-3.7%</td>
+            <td>-4.2%</td>
+            <td>2026/10/20 现价 0.84</td>
+            <td>0.835</td>
+            <td>0.823</td>
             <td>0%</td>
-            <td title="技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">45</td>
+            <td title="技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">45</td>
         </tr>
         <tr>
             <td><b>512400</b></td>
@@ -357,17 +388,17 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td style="color:#22c55e">-6.2%</td>
-            <td>-25.0%</td>
-            <td>-0.56</td>
+            <td style="color:#22c55e">-11.9%</td>
+            <td>-25.4%</td>
+            <td>-1.33</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#ef4444">+16.3%</td>
+            <td style="color:#ef4444">+18.9%</td>
             <td>-3.1%</td>
-            <td>2026/10/19 现价 1.52</td>
-            <td>1.467</td>
-            <td>1.49</td>
+            <td>2026/10/20 现价 1.51</td>
+            <td>1.444</td>
+            <td>1.48</td>
             <td>0%</td>
-            <td title="技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">45</td>
+            <td title="技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">45</td>
         </tr>
         <tr>
             <td><b>159516</b></td>
@@ -380,17 +411,17 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td style="color:#22c55e">-14.4%</td>
-            <td>-28.8%</td>
-            <td>-0.84</td>
-            <td title="每周五只做多 + 8% 止损，无成本">每周只做多+止损（无成本）</td>
-            <td style="color:#22c55e">-10.2%</td>
-            <td>-10.2%</td>
-            <td>2026/10/19 现价 0.57</td>
-            <td>0.539</td>
-            <td>0.559</td>
+            <td style="color:#22c55e">-22.7%</td>
+            <td>-29.3%</td>
+            <td>-1.71</td>
+            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
+            <td style="color:#22c55e">-2.5%</td>
+            <td>-14.4%</td>
+            <td>2026/10/20 现价 0.56</td>
+            <td>0.526</td>
+            <td>0.549</td>
             <td>0%</td>
-            <td title="技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">45</td>
+            <td title="技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">45</td>
         </tr>
         <tr>
             <td><b>515880</b></td>
@@ -403,17 +434,17 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td style="color:#22c55e">-18.9%</td>
+            <td style="color:#22c55e">-24.5%</td>
             <td>-27.5%</td>
-            <td>-1.25</td>
+            <td>-1.89</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#ef4444">+1.3%</td>
+            <td style="color:#ef4444">+1.6%</td>
             <td>-11.9%</td>
-            <td>2026/10/19 现价 0.52</td>
-            <td>0.489</td>
-            <td>0.51</td>
+            <td>2026/10/20 现价 0.53</td>
+            <td>0.499</td>
+            <td>0.519</td>
             <td>0%</td>
-            <td title="技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">45</td>
+            <td title="技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">45</td>
         </tr>
         <tr>
             <td><b>159819</b></td>
@@ -426,17 +457,17 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td style="color:#22c55e">-21.9%</td>
+            <td style="color:#22c55e">-26.4%</td>
             <td>-27.9%</td>
-            <td>-2.18</td>
+            <td>-2.99</td>
             <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#22c55e">-6.3%</td>
-            <td>-12.3%</td>
-            <td>2026/10/19 现价 1.45</td>
-            <td>1.38</td>
-            <td>1.421</td>
+            <td style="color:#22c55e">-7.7%</td>
+            <td>-11.3%</td>
+            <td>2026/10/20 现价 1.48</td>
+            <td>1.426</td>
+            <td>1.45</td>
             <td>0%</td>
-            <td title="技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">45</td>
+            <td title="技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">45</td>
         </tr>
         <tr>
             <td><b>512480</b></td>
@@ -449,17 +480,17 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td style="color:#22c55e">-21.1%</td>
+            <td style="color:#22c55e">-27.5%</td>
             <td>-28.8%</td>
-            <td>-1.69</td>
+            <td>-2.64</td>
             <td title="每周五只做多 + 8% 止损，无成本">每周只做多+止损（无成本）</td>
             <td style="color:#22c55e">-8.5%</td>
             <td>-9.1%</td>
-            <td>2026/10/19 现价 0.82</td>
-            <td>0.776</td>
-            <td>0.804</td>
+            <td>2026/10/20 现价 0.83</td>
+            <td>0.792</td>
+            <td>0.813</td>
             <td>0%</td>
-            <td title="技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">45</td>
+            <td title="技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">45</td>
         </tr>
         <tr>
             <td><b>512760</b></td>
@@ -472,17 +503,17 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td style="color:#22c55e">-22.6%</td>
+            <td style="color:#22c55e">-29.0%</td>
             <td>-30.0%</td>
-            <td>-1.89</td>
+            <td>-2.91</td>
             <td title="每周五只做多 + 8% 止损，无成本">每周只做多+止损（无成本）</td>
             <td style="color:#22c55e">-8.2%</td>
             <td>-9.0%</td>
-            <td>2026/10/19 现价 0.88</td>
-            <td>0.834</td>
+            <td>2026/10/20 现价 0.88</td>
+            <td>0.839</td>
             <td>0.862</td>
             <td>0%</td>
-            <td title="技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">45</td>
+            <td title="技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">45</td>
         </tr>
         <tr>
             <td><b>159995</b></td>
@@ -495,17 +526,17 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td style="color:#22c55e">-25.1%</td>
+            <td style="color:#22c55e">-31.4%</td>
             <td>-31.9%</td>
-            <td>-2.09</td>
+            <td>-3.11</td>
             <td title="每周五只做多 + 8% 止损，无成本">每周只做多+止损（无成本）</td>
             <td style="color:#22c55e">-9.0%</td>
             <td>-9.8%</td>
-            <td>2026/10/19 现价 0.9</td>
-            <td>0.849</td>
+            <td>2026/10/20 现价 0.9</td>
+            <td>0.855</td>
             <td>0.882</td>
             <td>0%</td>
-            <td title="技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">45</td>
+            <td title="技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">45</td>
         </tr>
         <tr>
             <td><b>588200</b></td>
@@ -518,70 +549,70 @@ tr:hover { background: #334155; }
             <td>看跌</td>
             <td>看跌</td>
             <td>看跌</td>
-            <td style="color:#22c55e">-74.2%</td>
-            <td>-74.2%</td>
-            <td>-3.08</td>
-            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
-            <td style="color:#ef4444">+41.1%</td>
-            <td>-33.2%</td>
-            <td>2026/10/19 现价 0.91</td>
-            <td>0.856</td>
-            <td>0.892</td>
+            <td style="color:#22c55e">-31.8%</td>
+            <td>-32.4%</td>
+            <td>-3.02</td>
+            <td title="每周五只做多 + 8% 止损，无成本">每周只做多+止损（无成本）</td>
+            <td style="color:#22c55e">-9.0%</td>
+            <td>-9.3%</td>
+            <td>2026/10/20 现价 0.92</td>
+            <td>0.871</td>
+            <td>0.902</td>
             <td>0%</td>
-            <td title="技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">45</td>
+            <td title="技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">45</td>
         </tr>
         <tr>
             <td><b>512000</b></td>
             <td>券商ETF华宝 </td>
             <td>证券</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
-            <td>51.5</td>
+            <td>52.6</td>
             <td>54%</td>
             <td>震荡</td>
-            <td>震荡</td>
             <td>偏空</td>
             <td>偏空</td>
-            <td style="color:#22c55e">-7.5%</td>
+            <td>看跌</td>
+            <td style="color:#22c55e">-9.3%</td>
             <td>-10.2%</td>
-            <td>-1.98</td>
+            <td>-2.46</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#22c55e">-3.8%</td>
-            <td>-3.8%</td>
-            <td>2026/10/19 现价 0.49</td>
-            <td>0.488</td>
+            <td style="color:#22c55e">-5.2%</td>
+            <td>-5.2%</td>
+            <td>2026/10/20 现价 0.49</td>
+            <td>0.484</td>
             <td>0.48</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.7 vs 看跌1 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
+            <td title="技术面中性(58/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.8 vs 看跌1 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">58</td>
         </tr>
         <tr>
             <td><b>512880</b></td>
             <td>证券ETF国泰 </td>
             <td>证券</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
-            <td>51.5</td>
+            <td>52.6</td>
             <td>54%</td>
             <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
             <td>偏空</td>
-            <td style="color:#22c55e">-7.6%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td style="color:#22c55e">-9.6%</td>
             <td>-10.5%</td>
-            <td>-1.93</td>
+            <td>-2.42</td>
             <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#22c55e">-3.6%</td>
-            <td>-3.6%</td>
-            <td>2026/10/19 现价 1.03</td>
-            <td>1.026</td>
-            <td>1.009</td>
+            <td style="color:#22c55e">-5.2%</td>
+            <td>-5.2%</td>
+            <td>2026/10/20 现价 1.01</td>
+            <td>0.997</td>
+            <td>0.99</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.7 vs 看跌1 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
+            <td title="技术面中性(58/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.8 vs 看跌1 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">58</td>
         </tr>
         <tr>
             <td><b>159792</b></td>
             <td>港股通互联网ETF富国 </td>
             <td>互联网</td>
             <td style="color:#94a3b8;font-weight:bold">⚪ 观望</td>
-            <td>51.5</td>
+            <td>51.4</td>
             <td>54%</td>
             <td>震荡</td>
             <td>震荡</td>
@@ -590,14 +621,14 @@ tr:hover { background: #334155; }
             <td style="color:#22c55e">-12.9%</td>
             <td>-19.1%</td>
             <td>-2.05</td>
-            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#22c55e">-4.1%</td>
-            <td>-4.1%</td>
-            <td>2026/10/19 现价 0.53</td>
+            <td title="每日按技术得分 Top 做多、Bottom 做空，无交易成本">每日多空（无成本）</td>
+            <td style="color:#ef4444">+1.0%</td>
+            <td>-8.7%</td>
+            <td>2026/10/20 现价 0.53</td>
             <td>0.53</td>
             <td>0.519</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.7 vs 看跌1 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.7 vs 看跌1 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
         </tr>
         <tr>
             <td><b>159928</b></td>
@@ -608,19 +639,19 @@ tr:hover { background: #334155; }
             <td>59%</td>
             <td>震荡</td>
             <td>震荡</td>
-            <td>震荡</td>
-            <td>震荡</td>
-            <td style="color:#22c55e">-1.5%</td>
-            <td>-7.7%</td>
-            <td>-0.38</td>
-            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
+            <td>偏多</td>
+            <td>偏多</td>
             <td style="color:#22c55e">-0.8%</td>
+            <td>-7.7%</td>
+            <td>-0.20</td>
+            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
+            <td style="color:#22c55e">-1.1%</td>
             <td>-7.3%</td>
-            <td>2026/10/19 现价 0.67</td>
-            <td>0.671</td>
-            <td>0.657</td>
+            <td>2026/10/20 现价 0.66</td>
+            <td>0.664</td>
+            <td>0.647</td>
             <td>0%</td>
-            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.7 vs 看跌0 | 宏观中性(49.7/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
+            <td title="技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.7 vs 看跌0 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%">57</td>
         </tr></tbody>
     </table>
     </div>
