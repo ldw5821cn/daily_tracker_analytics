@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏛️ 历史预测归档 - 2026-10-20</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; }
+.container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+.header { background: linear-gradient(135deg, #1e293b, #334155); padding: 30px; border-radius: 16px; margin-bottom: 24px; }
+.header h1 { font-size: 24px; margin-bottom: 8px; }
+.header .sub { color: #94a3b8; font-size: 14px; }
+.stats-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-bottom: 24px; }
+@media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
+.stat-card { background: #1e293b; border-radius: 12px; padding: 16px 10px; text-align: center; }
+.stat-card .num { font-size: 28px; font-weight: bold; white-space: nowrap; }
+.stat-card .label { color: #94a3b8; font-size: 12px; margin-top: 4px; }
+.section-title { font-size: 18px; font-weight: 600; margin: 24px 0 12px; padding-left: 12px; border-left: 4px solid #6366f1; }
+.nav { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; align-items: center; gap: 10px; margin-bottom: 20px; }
+.nav a { display: inline-block; white-space: nowrap; color: #94a3b8; text-decoration: none; padding: 8px 18px; border-radius: 20px; background: #1e293b; border: 1px solid #334155; font-size: 13px; }
+.nav a:hover { background: #334155; color: #e2e8f0; }
+.nav a.active { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; border-color: transparent; }
+.footer { text-align: center; color: #475569; font-size: 12px; margin-top: 40px; padding: 20px; }
+.model-tag { display: inline-block; background: #6366f1; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 8px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.card { background: #1e293b; border-radius: 12px; padding: 16px; border-left: 4px solid #6366f1; }
+.card.bull { border-left-color: #22c55e; }
+.card.bear { border-left-color: #ef4444; }
+.card-title { font-weight: 600; margin-bottom: 6px; }
+.card-meta { color: #94a3b8; font-size: 12px; margin-bottom: 6px; }
+.card-price { color: #e2e8f0; font-size: 13px; margin-bottom: 6px; }
+.card-reason { color: #94a3b8; font-size: 12px; line-height: 1.5; }
+.table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 24px; border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; background: #1e293b; font-size: 13px; min-width: 800px; }
+th { background: #334155; padding: 10px 12px; text-align: left; font-size: 12px; color: #94a3b8; text-transform: uppercase; }
+td { padding: 8px 12px; border-bottom: 1px solid #1e293b; font-size: 13px; }
+tr:hover { background: #334155; }
+.note { background: #1e293b; padding: 16px; border-radius: 12px; color: #cbd5e1; line-height: 1.8; margin-bottom: 24px; }
+.empty { text-align: center; color: #64748b; padding: 40px; }
+</style>
+</head>
+<body>
+<div class="container">
+<div class="nav">
+<a href="index.html" class="">🏠 首页</a>
+<a href="stocks.html" class="">📈 个股</a>
+<a href="us_market.html" class="">🇺🇸 美股</a>
+<a href="etfs.html" class="">📊 ETF</a>
+<a href="futures.html" class="">📉 期货</a>
+<a href="prediction.html" class="">🏛️ 预测</a>
+<a href="portfolio.html" class="">💼 持仓组合</a>
+<a href="xueqiu_returns.html" class="">💰 雪球收益</a>
+<a href="recommendations.html" class="">🎯 推荐回测</a>
+<a href="backtest.html" class="">📈 回测</a>
+<a href="cmc_rank.html" class="">₿ 加密情绪</a>
+<a href="reflection.html" class="">🧠 复盘</a>
+<a href="cron_status.html" class="">⏰ 任务调度</a>
+<a href="data_health.html" class="">❤️ 数据健康</a>
+<select onchange="location.href=this.value" style="background:#1e293b;color:#94a3b8;border:1px solid #334155;border-radius:20px;padding:8px 14px;font-size:13px;outline:none;cursor:pointer"><option value="" disabled>📅 历史归档</option><option value="archive/2026-10-20.html" selected>2026-10-20</option><option value="archive/2026-10-19.html" >2026-10-19</option><option value="archive/2026-10-17.html" >2026-10-17</option><option value="archive/2026-10-16.html" >2026-10-16</option><option value="archive/2026-10-15.html" >2026-10-15</option><option value="archive/2026-10-14.html" >2026-10-14</option><option value="archive/2026-10-13.html" >2026-10-13</option></select>
+</div>
+
+    <div class="header">
+        <h1>🏛️ 历史预测归档 <span class="model-tag">历史归档</span></h1>
+        <div class="sub">2026-10-20 · 多 Agent 融合预测 (价格日期: 2026-10-19)</div>
+    </div>
+
+<div class="stats-grid">
+        <div class="stat-card">
+            <div class="num">55</div>
+            <div class="label">当日预测</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" style="color:#ef4444">0</div>
+            <div class="label">看多</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" style="color:#22c55e">1</div>
+            <div class="label">看空</div>
+        </div>
+
+</div>
+<div class="section-title">❄️ 重点看空（按回测排序）</div>
+<div class="cards">
+
+            <div class="card bear">
+                <div class="card-title">❄️ 家得宝 (HD)</div>
+                <div class="card-meta">评分 40.0 | 60日收益 <span style="color:#22c55e">-7.8%</span> | 回撤 -20.9%</div>
+                <div class="card-meta">推荐策略：每日多空（无成本） | 收益 <span style="color:#ef4444">+16.6%</span> | 回撤 -2.7%</div>
+                <div class="card-price">2026/10/19 现价 309.88 | 目标 321.211 | 止损 303.682</div>
+                <div class="card-reason">技术面中性(51/100) | 基本面普通(50/100) | 新闻情绪-0.10 | 多空辩论 看涨0.1 vs 看跌0 | 宏观中性(49.5/100)</div>
+                
+            </div>
+</div>
+
+    <div class="section-title">🎯 昨日 1 日方向验证（2026-10-16 预测）</div>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="num" style="color:#ef4444">57.6%</div>
+            <div class="label">总体准确率 (110/191)</div>
+        </div>
+        
+            <div class="stat-card">
+                <div class="num" style="color:#ef4444">69.6%</div>
+                <div class="label">ETF (16/23)</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" style="color:#ef4444">58.0%</div>
+                <div class="label">个股 (69/119)</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" style="color:#ef4444">51.0%</div>
+                <div class="label">期货 (25/49)</div>
+            </div>
+    </div>
+
+
+    <div class="section-title">🏭 Warehouse 真实 5d 收益模型表现</div>
+    <div class="note">
+        <p><b>基于仓库实际收盘价的 5 日 forward return 回测。</b>当前样本来自 2026-10-19 前所有历史预测，共 113226 条价格-收益记录。生成于 2026-10-19T17:24:07。</p>
+        <p><b>说明：</b>看多信号偏多表示模型偏乐观；看多信号均值为负表示当前参数在 bull 阈值附近表现不佳。数据仍偏少，结果仅供参考，不用于直接调整参数。</p>
+        <p style="color:#f59e0b">⏳ 每类预测需等待 5 个交易日后才能用真实收盘价评估；当前最新预测 2026-10-19，预计 2026-10-19 +5 交易日后可评估。</p>
+    </div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>类别</th><th>样本</th><th>看多</th><th>看空</th><th>看多平均</th><th>看空平均</th><th>方向准确率</th><th>覆盖率</th></tr></thead>
+        <tbody><tr><td><b>个股</b></td><td>5576</td><td>33</td><td>2459</td><td style="color:#22c55e">-5.18</td><td style="color:#22c55e">-1.4</td><td>59.4%</td><td>53.8%</td></tr><tr><td><b>ETF</b></td><td>1143</td><td>15</td><td>380</td><td style="color:#22c55e">-0.49</td><td style="color:#22c55e">-0.42</td><td>54.9%</td><td>41.2%</td></tr><tr><td><b>期货</b></td><td>2373</td><td>5</td><td>236</td><td style="color:#22c55e">-0.33</td><td style="color:#ef4444">1.21</td><td>38.6%</td><td>28.0%</td></tr><tr><td><b>US</b></td><td>2321</td><td colspan="5" style="color:#f59e0b">⏳ 暂无 5 日收益数据（2321 条待评估，需等待收盘价）</td><td>0.0%</td></tr></tbody>
+    </table>
+    </div>
+
+    <div class="section-title">📊 VectorBT 组合滚动回测</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>场景</th><th>年化</th><th>回撤</th><th>夏普</th><th>Calmar</th><th>交易次数</th><th>含义</th></tr></thead>
+        <tbody><tr ><td>每日多空（无成本）</td><td style="color:#ef4444">+39.50%</td><td>-26.13%</td><td>1.19</td><td>1.51</td><td>4655</td><td>每日按技术得分 Top 做多、Bottom 做空，无交易成本</td></tr><tr ><td>每日多空（含成本）</td><td style="color:#ef4444">+12.43%</td><td>-34.59%</td><td>0.52</td><td>0.36</td><td>4695</td><td>每日按技术得分 Top 做多、Bottom 做空，扣 0.1% 单边成本</td></tr><tr ><td>每周只做多（无成本）</td><td style="color:#ef4444">+44.40%</td><td>-24.70%</td><td>1.29</td><td>1.80</td><td>3871</td><td>每周五按技术得分判定下周方向，无成本</td></tr><tr ><td>每周只做多（含成本）</td><td style="color:#ef4444">+31.52%</td><td>-28.63%</td><td>1.01</td><td>1.10</td><td>3900</td><td>每周五按技术得分判定下周方向，扣 0.1% 成本</td></tr><tr ><td>每周只做多+止损（无成本）</td><td style="color:#ef4444">+19.81%</td><td>-24.62%</td><td>0.79</td><td>0.80</td><td>2294</td><td>每周五只做多 + 8% 止损，无成本</td></tr><tr style="background:#1e293b;font-weight:bold"><td>每周只做多+止损（含成本） ⭐</td><td style="color:#ef4444">+10.86%</td><td>-27.42%</td><td>0.51</td><td>0.40</td><td>2318</td><td>每周五只做多 + 8% 止损，含成本</td></tr></tbody>
+    </table>
+    </div>
+
+    <div class="section-title">📈 全历史预测 Forward Return 回测</div>
+    <div class="note">
+        <p><b>样本范围：</b>2026-08-03 ~ 2026-10-19 · 共 11413 条预测 · 45652 条记录 · 生成于 2026-10-19 17:24:07</p>
+        <p>Forward Return = 以预测日收盘价为基准，未来 N 个交易日的实际收益率。推荐组合统计只取看多信号做等权持有。</p>
+    </div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>horizon</th><th>整体均值</th><th>整体中位</th><th>整体胜率</th><th>方向准确率</th><th>样本数</th><th>组合日均</th><th>组合累计</th><th>组合胜率</th></tr></thead>
+        <tbody><tr><td><b>1d</b></td><td>-0.32%</td><td>-0.30%</td><td>43.1%</td><td>50.5%</td><td>7102</td><td>-0.32%</td><td>-14.72%</td><td>45.6%</td></tr><tr><td><b>3d</b></td><td>-0.73%</td><td>-0.78%</td><td>41.5%</td><td>34.8%</td><td>6776</td><td>-0.66%</td><td>-28.86%</td><td>34.1%</td></tr><tr><td><b>5d</b></td><td>-1.07%</td><td>-0.94%</td><td>41.3%</td><td>30.9%</td><td>6450</td><td>-1.26%</td><td>-53.07%</td><td>38.1%</td></tr><tr><td><b>10d</b></td><td>-2.45%</td><td>-2.45%</td><td>35.1%</td><td>25.0%</td><td>5635</td><td>-3.12%</td><td>-115.64%</td><td>21.6%</td></tr></tbody>
+    </table>
+    </div>
+    <div class="section-title">📊 按信号方向</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>horizon</th><th>信号</th><th>样本数</th><th>均值</th><th>中位</th><th>胜率</th><th>方向准确率</th></tr></thead>
+        <tbody><tr><td>1d</td><td>bearish</td><td>549</td><td>+1.21%</td><td>+0.37%</td><td>57.4%</td><td>42.6%</td></tr><tr><td>1d</td><td>bullish</td><td>1931</td><td>-0.33%</td><td>-0.27%</td><td>44.4%</td><td>44.4%</td></tr><tr><td>1d</td><td>neutral</td><td>4622</td><td>-0.49%</td><td>-0.39%</td><td>40.9%</td><td>54.0%</td></tr><tr><td>3d</td><td>bearish</td><td>535</td><td>+3.94%</td><td>+1.85%</td><td>67.7%</td><td>32.3%</td></tr><tr><td>3d</td><td>bullish</td><td>1922</td><td>-0.74%</td><td>-0.88%</td><td>41.6%</td><td>41.6%</td></tr><tr><td>3d</td><td>neutral</td><td>4319</td><td>-1.30%</td><td>-1.01%</td><td>38.3%</td><td>32.0%</td></tr><tr><td>5d</td><td>bearish</td><td>521</td><td>+5.22%</td><td>+2.99%</td><td>70.6%</td><td>29.4%</td></tr><tr><td>5d</td><td>bullish</td><td>1911</td><td>-0.88%</td><td>-0.87%</td><td>42.3%</td><td>42.3%</td></tr><tr><td>5d</td><td>neutral</td><td>4018</td><td>-1.97%</td><td>-1.45%</td><td>37.1%</td><td>25.7%</td></tr><tr><td>10d</td><td>bearish</td><td>480</td><td>+6.10%</td><td>+2.85%</td><td>64.2%</td><td>35.8%</td></tr><tr><td>10d</td><td>bullish</td><td>1871</td><td>-2.00%</td><td>-1.97%</td><td>37.6%</td><td>37.6%</td></tr><tr><td>10d</td><td>neutral</td><td>3284</td><td>-3.96%</td><td>-3.25%</td><td>29.5%</td><td>16.3%</td></tr></tbody>
+    </table>
+    </div>
+    <div class="section-title">📂 按资产类别</div>
+    <div class="table-responsive">
+    <table>
+        <thead><tr><th>horizon</th><th>类别</th><th>样本数</th><th>均值</th><th>胜率</th><th>方向准确率</th></tr></thead>
+        <tbody><tr><td>1d</td><td>ETF</td><td>1051</td><td>-0.29%</td><td>41.9%</td><td>61.8%</td></tr><tr><td>1d</td><td>个股</td><td>5106</td><td>-0.38%</td><td>42.4%</td><td>44.6%</td></tr><tr><td>1d</td><td>期货</td><td>945</td><td>-0.00%</td><td>48.2%</td><td>70.4%</td></tr><tr><td>3d</td><td>ETF</td><td>1005</td><td>-0.77%</td><td>38.6%</td><td>39.5%</td></tr><tr><td>3d</td><td>个股</td><td>4868</td><td>-0.91%</td><td>40.1%</td><td>29.9%</td></tr><tr><td>3d</td><td>期货</td><td>903</td><td>+0.28%</td><td>52.3%</td><td>55.4%</td></tr><tr><td>5d</td><td>ETF</td><td>959</td><td>-1.19%</td><td>37.9%</td><td>35.0%</td></tr><tr><td>5d</td><td>个股</td><td>4630</td><td>-1.38%</td><td>39.2%</td><td>27.2%</td></tr><tr><td>5d</td><td>期货</td><td>861</td><td>+0.72%</td><td>56.8%</td><td>46.2%</td></tr><tr><td>10d</td><td>ETF</td><td>844</td><td>-2.67%</td><td>29.3%</td><td>23.3%</td></tr><tr><td>10d</td><td>个股</td><td>4035</td><td>-3.16%</td><td>32.3%</td><td>23.7%</td></tr><tr><td>10d</td><td>期货</td><td>756</td><td>+1.59%</td><td>57.0%</td><td>33.9%</td></tr></tbody>
+    </table>
+    </div>
+
+
+    <div class="footer">
+        数据由 Hermes Agent + 多Agent LLM 预测系统自动生成 · 研究辅助非投资建议 ·
+        <a href="https://github.com/ldw5821cn/daily_tracker_analytics" style="color:#6366f1">GitHub</a>
+    </div>
+</div>
+</body>
+</html>
