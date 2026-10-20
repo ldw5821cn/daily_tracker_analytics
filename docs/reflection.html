@@ -64,25 +64,25 @@ tr:hover { background: #334155; }
 
     <div class="header">
         <h1>🧠 复盘 </h1>
-        <div class="sub">2026-10-19 预测验证后反思 · 生成于 2026-10-20T15:34:36</div>
+        <div class="sub">2026-10-19 预测验证后反思 · 生成于 2026-10-20T17:21:59</div>
     </div>
 
     <div class="header">
         <h1>🧠 每日预测反思 </h1>
-        <div class="sub">2026-10-19 预测 · 验证准确率 64.4% (123/191) · 错误 68 个</div>
+        <div class="sub">2026-10-19 预测 · 验证准确率 63.87% (122/191) · 错误 69 个</div>
     </div>
 
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="num" style="color:#ef4444">64.4%</div>
+            <div class="num" style="color:#ef4444">63.87%</div>
             <div class="label">总体准确率</div>
         </div>
         <div class="stat-card">
-            <div class="num">123</div>
+            <div class="num">122</div>
             <div class="label">正确</div>
         </div>
         <div class="stat-card">
-            <div class="num">68</div>
+            <div class="num">69</div>
             <div class="label">错误</div>
         </div>
     </div>
@@ -93,7 +93,7 @@ tr:hover { background: #334155; }
         <thead><tr><th>信号</th><th>总数</th><th>错误</th><th>错误率</th></tr></thead>
         <tbody>
         <tr><td>中性</td><td>175</td><td>66</td><td>37.71%</td></tr>
-        <tr><td>观望</td><td>16</td><td>2</td><td>12.5%</td></tr></tbody>
+        <tr><td>观望</td><td>16</td><td>3</td><td>18.75%</td></tr></tbody>
     </table>
     </div>
 
@@ -104,7 +104,7 @@ tr:hover { background: #334155; }
         <tbody>
         <tr><td>ETF</td><td>23</td><td>7</td><td>30.43%</td></tr>
         <tr><td>个股</td><td>119</td><td>44</td><td>36.97%</td></tr>
-        <tr><td>期货</td><td>49</td><td>17</td><td>34.69%</td></tr></tbody>
+        <tr><td>期货</td><td>49</td><td>18</td><td>36.73%</td></tr></tbody>
     </table>
     </div>
 
@@ -113,7 +113,7 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>特征</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>weighted_score</td><td>47.74</td><td>47.08</td></tr>
+        <tr><td>weighted_score</td><td>47.75</td><td>47.07</td></tr>
         <tr><td>confidence</td><td>0.72</td><td>0.75</td></tr></tbody>
     </table>
     </div>
@@ -123,10 +123,10 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>分项</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>技术面</td><td>50.28</td><td>49.16</td></tr>
+        <tr><td>技术面</td><td>50.23</td><td>49.28</td></tr>
         <tr><td>新闻情绪</td><td>50.0</td><td>50.0</td></tr>
         <tr><td>基本面</td><td>50.0</td><td>50.0</td></tr>
-        <tr><td>多空辩论净得分</td><td>-1.74</td><td>-2.01</td></tr></tbody>
+        <tr><td>多空辩论净得分</td><td>-1.76</td><td>-1.97</td></tr></tbody>
     </table>
     </div>
 
@@ -135,9 +135,9 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>背离指标</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>fundamental_technical_divergence</td><td>-0.28</td><td>0.84</td></tr>
+        <tr><td>fundamental_technical_divergence</td><td>-0.23</td><td>0.72</td></tr>
         <tr><td style='padding-left:24px;color:#94a3b8'>└ 中性错误样本</td><td>1.09</td><td>n=66</td></tr>
-        <tr><td style='padding-left:24px;color:#94a3b8'>└ 观望错误样本</td><td>-7.5</td><td>n=2</td></tr></tbody>
+        <tr><td style='padding-left:24px;color:#94a3b8'>└ 观望错误样本</td><td>-7.33</td><td>n=3</td></tr></tbody>
     </table>
     </div>
 
@@ -150,7 +150,7 @@ tr:hover { background: #334155; }
     </div>
 
     <div class="section-title">🤖 LLM 深度反思</div>
-    <div class="note">data_factor_agent 未返回观点。</div>
+    <div class="note">1) 当前失效/低区分度因子：  <br>- 技术面 score：错误样本技术面均值 49.28 vs 正确 50.23，差异极小，说明 tech_score 在 42–45 聚集区已丧失排序能力；科创失败样本 tech 43–65 但被 debate 0看涨/3看跌压成中性，仍大涨，技术因子滞后且被 hard/soft prior 过度牵引。  <br>- 多空辩论净得分：错误样本 -1.97、成功样本 -1.76，方向正确但区分度不足；失败 Top5 多为“看涨0/看跌3”的强一致看空，结果反向上涨，提示 debate 投票缺少资金流/涨停承接校验，容易把强趋势初期的缩量回踩误判为看空。  <br>- 基本面与新闻情绪：整体固定 50/0，错误与正确完全无差异，属缺失而非弱因子；fundamental N/A 使 fundamental_technical_divergence 被技术单边主导，错误样本背离 0.72 vs 正确 -0.23，背离越高越可能错。  <br>- 宏观/市场上下文：49.7/50.0 近似常数，跨标的无截面差异，权重学习会退化；ETF 错误率最低也说明分数边界在小波动资产上“靠不预测获胜”，非模型有效。<br><br>2) 需新增数据源/因子特征：  <br>- 交易微观结构：日内 TickFlow、主动买卖额、逐笔大单净额、开盘/尾盘 30min 量能占比、换手率分位、振幅-量比；用于识别 tech 42–45 聚集区的真实承接。  <br>- A 股可交易性/涨停链：涨停封单额/流通市值、封成比、炸板率、涨停家数与连板高度、跌停承接额、次日溢价/低开回补；T+1 下把“信号收益”改成可成交收益标签。  <br>- 资金行为：北向个股净买入、两融余额变化与融资买入占比、龙虎榜买/卖席位集中度、机构专用 vs 游资席位标记、ETF 申赎与份额变化。  <br>- 衍生/风险偏好：期权 PCR、IV skew、50/300 与科创/创业板 ETF 期权成交持仓异常；用于 debate 强一致时的反向拥挤校验。  <br>- 基本面补齐：财报 PIT、业绩预告/快报、毛利率/现金流/应收异常、行业量价库存；新闻情绪用来源可信度、公告 vs 自媒体分流，避免全 0。<br><br>3) optimizer 应重学的权重/阈值映射：  <br>- 重学 tech_score→信号的非线性映射，重点放开 40–48 区间，由真实可成交收益标签学习，禁止钳制 debate。  <br>- 提高 divergence、tickflow_confirm、limit_up_chain、northbound_margin_flow、dragon_tiger_institution_ratio、next_day_premium 的特征权重；降低宏观常数与 news zero-vector 的有效权重。  <br>- 对强一致看空/看多设置 thesis-breaker 监控而非否决门：炸板率抬升、封单骤减、龙虎榜卖方机构占比高、北向连续净流出、PCR 极端后 IV 回落，触发即重采样而非硬改信号。  <br>- 分资产学习：科创/高波动个股单独估计 debate、tech、divergence 权重；ETF 用申赎与成分资金流，降低个股噪声权重。</div>
 
     <div class="footer">
         数据由 Hermes Agent + 多Agent LLM 预测系统自动生成 · 研究辅助非投资建议 ·
