@@ -1,11 +1,42 @@
 {
-  "pred_date": "2026-10-19",
-  "generated_at": "2026-10-19 15:33:07",
-  "macro_score": 49.7,
+  "pred_date": "2026-10-20",
+  "generated_at": "2026-10-20 15:30:41",
+  "macro_score": 49.5,
   "macro_signal": "neutral",
   "allow_long": true,
   "longs": [],
-  "shorts_or_avoids": [],
+  "shorts_or_avoids": [
+    {
+      "ticker": "BU0",
+      "name": "沥青",
+      "category": "期货",
+      "signal": "看空",
+      "confidence": 0.83,
+      "price": 4397.0,
+      "target": 4309.06,
+      "stop": 4616.85,
+      "weighted_score": 40.8,
+      "bt_return_60d": 2.47,
+      "bt_max_dd_60d": -20.87,
+      "bt_sharpe_60d": 0.42,
+      "reasoning": "技术面中性(42/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(49.5/100) | 市场上下文neutral(50.0/100)上限100%"
+    },
+    {
+      "ticker": "HD",
+      "name": "家得宝",
+      "category": "US",
+      "signal": "看空",
+      "confidence": 0.61,
+      "price": 309.88,
+      "target": 303.682,
+      "stop": 325.374,
+      "weighted_score": 40.0,
+      "bt_return_60d": -7.8,
+      "bt_max_dd_60d": -20.94,
+      "bt_sharpe_60d": -1.35,
+      "reasoning": "技术面中性(51/100) | 基本面普通(50/100) | 新闻情绪-0.10 | 多空辩论 看涨0.1 vs 看跌0 | 宏观中性(49.5/100)"
+    }
+  ],
   "max_single_position": 0.1,
   "stop_loss_pct": 0.05
 }

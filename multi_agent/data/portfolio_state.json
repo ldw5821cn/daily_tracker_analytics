@@ -1,5 +1,5 @@
 {
-  "scan_time": "2026-10-19 15:35:44",
+  "scan_time": "2026-10-20 15:32:15",
   "top10": [
     {
       "ticker": "000612",
@@ -48,8 +48,8 @@
     "error_count": 0,
     "errors": [],
     "weights": {},
-    "note": "synced from recommendations.json 2026-10-19",
-    "scan_time": "2026-10-19 15:35:44",
+    "note": "synced from recommendations.json 2026-10-20",
+    "scan_time": "2026-10-20 15:32:15",
     "updated": "2026-08-21"
   }
 }

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🧠 复盘 - 2026-10-16</title>
+<title>🧠 复盘 - 2026-10-19</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <style>
@@ -64,25 +64,25 @@ tr:hover { background: #334155; }
 
     <div class="header">
         <h1>🧠 复盘 </h1>
-        <div class="sub">2026-10-16 预测验证后反思 · 生成于 2026-10-19T17:23:39</div>
+        <div class="sub">2026-10-19 预测验证后反思 · 生成于 2026-10-20T15:34:36</div>
     </div>
 
     <div class="header">
         <h1>🧠 每日预测反思 </h1>
-        <div class="sub">2026-10-16 预测 · 验证准确率 57.59% (110/191) · 错误 81 个</div>
+        <div class="sub">2026-10-19 预测 · 验证准确率 64.4% (123/191) · 错误 68 个</div>
     </div>
 
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="num" style="color:#ef4444">57.59%</div>
+            <div class="num" style="color:#ef4444">64.4%</div>
             <div class="label">总体准确率</div>
         </div>
         <div class="stat-card">
-            <div class="num">110</div>
+            <div class="num">123</div>
             <div class="label">正确</div>
         </div>
         <div class="stat-card">
-            <div class="num">81</div>
+            <div class="num">68</div>
             <div class="label">错误</div>
         </div>
     </div>
@@ -92,10 +92,8 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>信号</th><th>总数</th><th>错误</th><th>错误率</th></tr></thead>
         <tbody>
-        <tr><td>中性</td><td>160</td><td>71</td><td>44.38%</td></tr>
-        <tr><td>看多</td><td>4</td><td>2</td><td>50.0%</td></tr>
-        <tr><td>看空</td><td>10</td><td>5</td><td>50.0%</td></tr>
-        <tr><td>观望</td><td>17</td><td>3</td><td>17.65%</td></tr></tbody>
+        <tr><td>中性</td><td>175</td><td>66</td><td>37.71%</td></tr>
+        <tr><td>观望</td><td>16</td><td>2</td><td>12.5%</td></tr></tbody>
     </table>
     </div>
 
@@ -105,8 +103,8 @@ tr:hover { background: #334155; }
         <thead><tr><th>类别</th><th>总数</th><th>错误</th><th>错误率</th></tr></thead>
         <tbody>
         <tr><td>ETF</td><td>23</td><td>7</td><td>30.43%</td></tr>
-        <tr><td>个股</td><td>119</td><td>50</td><td>42.02%</td></tr>
-        <tr><td>期货</td><td>49</td><td>24</td><td>48.98%</td></tr></tbody>
+        <tr><td>个股</td><td>119</td><td>44</td><td>36.97%</td></tr>
+        <tr><td>期货</td><td>49</td><td>17</td><td>34.69%</td></tr></tbody>
     </table>
     </div>
 
@@ -115,8 +113,8 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>特征</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>weighted_score</td><td>47.28</td><td>45.91</td></tr>
-        <tr><td>confidence</td><td>0.73</td><td>0.77</td></tr></tbody>
+        <tr><td>weighted_score</td><td>47.74</td><td>47.08</td></tr>
+        <tr><td>confidence</td><td>0.72</td><td>0.75</td></tr></tbody>
     </table>
     </div>
 
@@ -125,10 +123,10 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>分项</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>技术面</td><td>50.65</td><td>48.27</td></tr>
-        <tr><td>新闻情绪</td><td>50.23</td><td>49.98</td></tr>
-        <tr><td>基本面</td><td>50.88</td><td>49.71</td></tr>
-        <tr><td>多空辩论净得分</td><td>-2.01</td><td>-2.56</td></tr></tbody>
+        <tr><td>技术面</td><td>50.28</td><td>49.16</td></tr>
+        <tr><td>新闻情绪</td><td>50.0</td><td>50.0</td></tr>
+        <tr><td>基本面</td><td>50.0</td><td>50.0</td></tr>
+        <tr><td>多空辩论净得分</td><td>-1.74</td><td>-2.01</td></tr></tbody>
     </table>
     </div>
 
@@ -137,11 +135,9 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>背离指标</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>fundamental_technical_divergence</td><td>0.22</td><td>1.45</td></tr>
-        <tr><td style='padding-left:24px;color:#94a3b8'>└ 看多错误样本</td><td>-29.25</td><td>n=2</td></tr>
-        <tr><td style='padding-left:24px;color:#94a3b8'>└ 看空错误样本</td><td>-0.67</td><td>n=5</td></tr>
-        <tr><td style='padding-left:24px;color:#94a3b8'>└ 中性错误样本</td><td>2.75</td><td>n=71</td></tr>
-        <tr><td style='padding-left:24px;color:#94a3b8'>└ 观望错误样本</td><td>-5.33</td><td>n=3</td></tr></tbody>
+        <tr><td>fundamental_technical_divergence</td><td>-0.28</td><td>0.84</td></tr>
+        <tr><td style='padding-left:24px;color:#94a3b8'>└ 中性错误样本</td><td>1.09</td><td>n=66</td></tr>
+        <tr><td style='padding-left:24px;color:#94a3b8'>└ 观望错误样本</td><td>-7.5</td><td>n=2</td></tr></tbody>
     </table>
     </div>
 
@@ -154,7 +150,7 @@ tr:hover { background: #334155; }
     </div>
 
     <div class="section-title">🤖 LLM 深度反思</div>
-    <div class="note"><strong>最终复盘报告<br><br>## ⚠️ 前置声明<br>三位分析师（数据/因子、市场/情绪、模型/优化器）均未返回观点，当前缺乏当日预测明细、信号记录与市场数据支撑。以下复盘基于框架性分析，<strong>不构成对已发生交易的真实归因</strong>。待数据补齐后，本报告应重新生成。<br><br>---<br><br>## 1. 一句话总结<br>当日准确率偏差的核心可能在于：信号未充分吸收政策脉冲与散户情绪，导致关键拐点错判。（48字）<br><br>## 2. 主要错误模式（假设性归纳，待数据验证）<br>- <strong>模式一：政策窗口误判</strong>——政策市特征下，重大会议/发布日前后信号方向滞后，看多/看空信号未叠加政策事件维度，拐点期被趋势延续假设误导。<br>- <strong>模式二：涨跌停与流动性失真</strong>——涨跌停限制下，开盘高/低开后的假突破被当作有效动量；T+1 下隔日反转风险未被惩罚。<br>- <strong>模式三：情绪极端化未定价</strong>——散户驱动的极端换手、两融余额异动、期权 PCR 极值未纳入特征，顶部看多信号在情绪过热时失效。<br><br>## 3. 成功信号特征（待验证的假设）<br>- 信号方向与北向资金持续净流入/流出同向；<br>- 处于低波动、趋势平稳 regime，模型适配度高；<br>- 触发时换手率在正常分位、未触及涨停/跌停的流动性健康样本。<br><br>## 4. 数据驱动改进建议（供 parameter_optimizer 学习）<br>- <strong>扩展历史数据</strong>：至少覆盖 2018–2024 完整牛熊周期，含 2019 年初、2020 疫情、2024 年初微盘股危机等极端 regime；全历史日频+分钟级行情。<br>- <strong>新增因子</strong>：政策事件日历与事件强度打分（以历史窗口统计而非固定规则）；北向资金日度流入、两融余额变化率、ETF 申赎、涨停家数与连板高度（情绪代理）；标的 PCR/50ETF PCR、隐含波动率期限结构；涨跌停距离与封单强度（流动性约束特征）。<br>- <strong>特征工程</strong>：对极端值不做截断硬编码，改为"是否涨停/跌停"布尔特征交给优化器；regime 标签（波动分位、量能分位）作为交互项。<br>- 让 optimizer 在样本外滚动验证中学习各因子权重与触发阈值，<strong>不预设任何方向否决门</strong>。<br><br>## 5. 策略回测建议<br>- 当前状态不明（缺少 regime 判断）。若明日处于高波动+情绪过热 regime，回测应优先比较<strong>防御型策略</strong>（低仓位动量反转、宽基对冲）与事件驱动策略；若处于低波动趋势市，则比较<strong>趋势跟踪 vs 均值回归</strong>的稳定性。<br>- 回测必须显式建模 T+1（信号当日不可成交、次日开盘成交）与涨跌停不可成交情形，否则结论不可信。<br><br>## 6. 今日操作建议（针对明日预测）<br>- 补齐三份分析师观点数据后，先由 optimizer 对当前 regime 打分，再决定信号方向，勿在数据缺失时给出方向性预测。<br>- 明日重点关注：是否临近政策/财报事件窗口、涨停家数是否极端、北向与两融是否背离——将这些实时数据注入特征集后重新跑参。<br><br>## 7. 需要新增/改进的数据源或因子<br>| 类别 | 内容 | 优先级 |<br>|---|---|---|<br>| 政策面 | 政策事件日历、事件强度历史统计 | 高 |<br>| 资金面 | 北向日度、两融余额变化、ETF 申赎、龙虎榜 | 高 |<br>| 情绪面 | 涨停家数、连板高度、换手率分位、雪球/股吧热度 | 高 |<br>| 衍生品 | 50ETF 期权 PCR、IV 期限结构、波动率锥 | 中 |<br>| 微观结构 | 分钟级行情、封单强度、盘口失衡 | 中 |<br>| 制度约束 | 涨跌停标记、停复牌、T+1 成交模拟 | 高（回测必须） |<br><br>---<br><br><strong>下一步</strong>：请三位分析师补交各自输出，我将据此生成带实证归因和 thesis breakers 的正式复盘。</strong></div>
+    <div class="note">data_factor_agent 未返回观点。</div>
 
     <div class="footer">
         数据由 Hermes Agent + 多Agent LLM 预测系统自动生成 · 研究辅助非投资建议 ·

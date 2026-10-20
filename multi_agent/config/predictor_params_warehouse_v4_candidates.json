@@ -1,6 +1,6 @@
 {
   "_version": 5,
-  "updated_at": "2026-10-14T17:18:35.375031",
+  "updated_at": "2026-10-19T17:23:39.585917",
   "个股": {
     "weights": {
       "technical": 0.22,
@@ -10,12 +10,12 @@
       "debate": 0.13
     },
     "threshold": {
-      "strong_bull": 79,
+      "strong_bull": 80,
       "bull": 68,
       "neutral_high": 55,
       "neutral_low": 45,
       "bear": 42,
-      "strong_bear": 31
+      "strong_bear": 29
     },
     "fund_flow_strength": 0.0,
     "market_flow_strength": 0.0,
@@ -143,20 +143,20 @@
   "threshold": {
     "strong_bull": 65,
     "bull": 59,
-    "neutral_high": 54,
-    "neutral_low": 46,
+    "neutral_high": 55,
+    "neutral_low": 45,
     "bear": 41,
     "strong_bear": 35
   },
-  "reflection_reason": "个股低准确率收紧强信号(26%)",
-  "reflection_updated_at": "2026-10-12T17:18:35.232828",
+  "reflection_reason": "个股低准确率收紧强信号(13%)",
+  "reflection_updated_at": "2026-10-15T17:11:32.462535",
   "hard_rules": {
     "macro_bearish_block_bullish": true,
     "macro_bearish_force_bearish_if_tech_below": 55,
     "macro_bearish_score_threshold": 50
   },
   "updated_by": "auto_tune_from_reflection",
-  "updated_reason": "收窄 neutral 区间 | 提高 bullish/bearish 阈值门槛",
-  "trigger_accuracy": 38.74,
-  "trigger_pred_date": "2026-10-13"
+  "updated_reason": "提高 bullish/bearish 阈值门槛",
+  "trigger_accuracy": 57.59,
+  "trigger_pred_date": "2026-10-16"
 }
