@@ -281,17 +281,6 @@
       "confidence": 0.8
     },
     {
-      "ticker": "LU0",
-      "name": "低硫燃油",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": 1.215,
-      "pred_price": 5924.0,
-      "today_price": 5996.0,
-      "weighted_score": 62.1,
-      "confidence": 0.78
-    },
-    {
       "ticker": "600989",
       "name": "宝丰能源",
       "category": "个股",
@@ -301,6 +290,17 @@
       "today_price": 22.18,
       "weighted_score": 45.3,
       "confidence": 0.71
+    },
+    {
+      "ticker": "LU0",
+      "name": "低硫燃油",
+      "category": "期货",
+      "signal": "中性",
+      "return_pct": 1.199,
+      "pred_price": 5924.0,
+      "today_price": 5995.0,
+      "weighted_score": 62.1,
+      "confidence": 0.78
     }
   ],
   "suggestions": [
