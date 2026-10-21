@@ -1,16 +1,16 @@
 {
-  "date": "2026-10-20",
+  "date": "2026-10-21",
   "generated_by": "after_market_pipeline",
   "top10": [
-    {"code": "605577", "name": "龙版传媒", "composite_score": 88, "changepercent": 4.31, "price": 15.50, "amount_yi": 0.0, "reason": "板块分散版Top10"},
-    {"code": "002185", "name": "华天科技", "composite_score": 88, "changepercent": 3.31, "price": 14.35, "amount_yi": 0.0, "reason": "板块分散版Top10"},
-    {"code": "600699", "name": "均胜电子", "composite_score": 87, "changepercent": 3.11, "price": 21.24, "amount_yi": 0.0, "reason": "板块分散版Top10"},
-    {"code": "002273", "name": "水晶光电", "composite_score": 87, "changepercent": 3.81, "price": 20.99, "amount_yi": 0.0, "reason": "板块分散版Top10"},
-    {"code": "603861", "name": "白云电器", "composite_score": 86, "changepercent": 1.78, "price": 12.57, "amount_yi": 0.0, "reason": "板块分散版Top10"},
-    {"code": "002734", "name": "利民股份", "composite_score": 86, "changepercent": 3.55, "price": 13.72, "amount_yi": 0.0, "reason": "板块分散版Top10"},
-    {"code": "688257", "name": "新锐股份", "composite_score": 85, "changepercent": 2.80, "price": 37.87, "amount_yi": 0.0, "reason": "板块分散版Top10"},
-    {"code": "603418", "name": "友升股份", "composite_score": 85, "changepercent": 3.38, "price": 49.54, "amount_yi": 0.0, "reason": "板块分散版Top10"},
-    {"code": "300975", "name": "商络电子", "composite_score": 85, "changepercent": 1.86, "price": 20.23, "amount_yi": 0.0, "reason": "板块分散版Top10"},
-    {"code": "300398", "name": "飞凯材料", "composite_score": 85, "changepercent": 3.33, "price": 27.95, "amount_yi": 0.0, "reason": "板块分散版Top10"}
+    {"code": "600664", "name": "哈药股份", "composite_score": 88, "changepercent": 1.88, "price": 5.97, "amount_yi": 0.0, "reason": "板块分散版Top10"},
+    {"code": "002085", "name": "万丰奥威", "composite_score": 88, "changepercent": 3.90, "price": 11.19, "amount_yi": 0.0, "reason": "板块分散版Top10"},
+    {"code": "600267", "name": "海正药业", "composite_score": 87, "changepercent": 5.12, "price": 13.95, "amount_yi": 0.0, "reason": "板块分散版Top10"},
+    {"code": "601609", "name": "金田股份", "composite_score": 86, "changepercent": 2.36, "price": 10.40, "amount_yi": 0.0, "reason": "板块分散版Top10"},
+    {"code": "600558", "name": "大西洋", "composite_score": 86, "changepercent": 3.16, "price": 5.22, "amount_yi": 0.0, "reason": "板块分散版Top10"},
+    {"code": "300773", "name": "拉卡拉", "composite_score": 86, "changepercent": 2.42, "price": 15.24, "amount_yi": 0.0, "reason": "板块分散版Top10"},
+    {"code": "300378", "name": "鼎捷数智", "composite_score": 86, "changepercent": 4.98, "price": 40.27, "amount_yi": 0.0, "reason": "板块分散版Top10"},
+    {"code": "300244", "name": "迪安诊断", "composite_score": 86, "changepercent": 3.49, "price": 22.55, "amount_yi": 0.0, "reason": "板块分散版Top10"},
+    {"code": "603337", "name": "杰克科技", "composite_score": 85, "changepercent": 2.26, "price": 37.12, "amount_yi": 0.0, "reason": "板块分散版Top10"},
+    {"code": "002273", "name": "水晶光电", "composite_score": 85, "changepercent": 3.43, "price": 21.71, "amount_yi": 0.0, "reason": "板块分散版Top10"}
   ]
 }
