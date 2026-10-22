@@ -1,0 +1,114 @@
+{
+  "date": "2026-10-22",
+  "details": {
+    "fed_total_assets": {
+      "series": "<!doctype html>",
+      "latest": {
+        "date": "<link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300",
+        "value": 400.0
+      },
+      "previous": {
+        "date": "<link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300",
+        "value": 400.0
+      },
+      "history_tail": [
+        {
+          "date": "<link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300",
+          "value": 400.0
+        }
+      ]
+    },
+    "sofr": {
+      "series": "<!doctype html>",
+      "latest": {
+        "date": "<link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300",
+        "value": 400.0
+      },
+      "previous": {
+        "date": "<link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300",
+        "value": 400.0
+      },
+      "history_tail": [
+        {
+          "date": "<link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300",
+          "value": 400.0
+        }
+      ]
+    },
+    "us10y": {
+      "series": "<!doctype html>",
+      "latest": {
+        "date": "<link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300",
+        "value": 400.0
+      },
+      "previous": {
+        "date": "<link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300",
+        "value": 400.0
+      },
+      "history_tail": [
+        {
+          "date": "<link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300",
+          "value": 400.0
+        }
+      ]
+    },
+    "dxy": {
+      "series": "<!doctype html>",
+      "latest": {
+        "date": "<link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300",
+        "value": 400.0
+      },
+      "previous": {
+        "date": "<link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300",
+        "value": 400.0
+      },
+      "history_tail": [
+        {
+          "date": "<link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300",
+          "value": 400.0
+        }
+      ]
+    },
+    "vix": {
+      "series": "<!doctype html>",
+      "latest": {
+        "date": "<link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300",
+        "value": 400.0
+      },
+      "previous": {
+        "date": "<link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300",
+        "value": 400.0
+      },
+      "history_tail": [
+        {
+          "date": "<link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300",
+          "value": 400.0
+        }
+      ]
+    },
+    "yield_curve_10y2y": {
+      "series": "<!doctype html>",
+      "latest": {
+        "date": "<link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300",
+        "value": 400.0
+      },
+      "previous": {
+        "date": "<link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300",
+        "value": 400.0
+      },
+      "history_tail": [
+        {
+          "date": "<link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300",
+          "value": 400.0
+        }
+      ]
+    }
+  },
+  "walcl": 0.4,
+  "walcl_1w_change": 0.0,
+  "sofr": 400.0,
+  "dgs10": 400.0,
+  "dxy": 400.0,
+  "vixcls": 400.0,
+  "t10y2y": 400.0
+}
