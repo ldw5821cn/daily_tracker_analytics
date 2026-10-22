@@ -1,9 +1,24 @@
 {
-  "date": "2026-10-21",
+  "date": "2026-10-22",
   "total_portfolio_value": 50000.0,
-  "stock_etf_total_weight": 0,
+  "stock_etf_total_weight": 0.1,
   "long_amount": 0,
-  "short_amount": 0,
+  "short_amount": 19500.0,
   "skipped_count": 0,
-  "items": []
+  "items": [
+    {
+      "ticker": "513120",
+      "name": "港股创新药ETF广发",
+      "category": "ETF",
+      "signal": "bearish",
+      "target_weight": -0.1,
+      "reason": "信号bear 信心82% 60日收益-1.3% 回撤-15.2% 因子分+0.00",
+      "current_price": 1.18,
+      "target_price": 1.15,
+      "stop_loss": 1.156,
+      "action": "融券卖出",
+      "target_amount": 19500.0,
+      "constraint_note": "需融券账户 跨境ETF"
+    }
+  ]
 }
