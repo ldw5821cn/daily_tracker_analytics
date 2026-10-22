@@ -274,33 +274,33 @@
       "name": "燃油",
       "category": "期货",
       "signal": "中性",
-      "return_pct": -1.286,
+      "return_pct": -1.306,
       "pred_price": 4976.0,
-      "today_price": 4912.0,
+      "today_price": 4911.0,
       "weighted_score": 56.4,
       "confidence": 0.68
     },
     {
-      "ticker": "000063",
-      "name": "中兴通讯",
-      "category": "个股",
+      "ticker": "SP0",
+      "name": "纸浆",
+      "category": "期货",
       "signal": "中性",
-      "return_pct": -1.267,
-      "pred_price": 27.63,
-      "today_price": 27.28,
-      "weighted_score": 46.1,
-      "confidence": 0.78
+      "return_pct": -1.279,
+      "pred_price": 4692.0,
+      "today_price": 4632.0,
+      "weighted_score": 45.6,
+      "confidence": 0.7
     },
     {
-      "ticker": "600583",
-      "name": "海油工程",
-      "category": "个股",
+      "ticker": "BC0",
+      "name": "国际铜",
+      "category": "期货",
       "signal": "中性",
-      "return_pct": -1.262,
-      "pred_price": 6.34,
-      "today_price": 6.26,
-      "weighted_score": 52.1,
-      "confidence": 0.6
+      "return_pct": -1.278,
+      "pred_price": 97820.0,
+      "today_price": 96570.0,
+      "weighted_score": 53.6,
+      "confidence": 0.62
     }
   ],
   "suggestions": [
