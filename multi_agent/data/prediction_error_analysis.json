@@ -167,18 +167,6 @@
       "reasoning": "技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.4 vs 看跌1 | 宏观中性(49.0/100) | 市场上下文neutral(50.0/100)上限100%"
     },
     {
-      "ticker": "FU0",
-      "name": "燃油",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": 6.75,
-      "pred_price": 4815.0,
-      "today_price": 5140.0,
-      "weighted_score": 58.5,
-      "confidence": 0.63,
-      "reasoning": "技术面中性偏多(65/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1.5 vs 看跌1 | 宏观中性(49.0/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
       "ticker": "601100",
       "name": "恒立液压",
       "category": "个股",
@@ -189,6 +177,18 @@
       "weighted_score": 50.0,
       "confidence": 0.63,
       "reasoning": "技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.4 vs 看跌2 | 宏观中性(49.0/100) | 市场上下文neutral(50.0/100)上限100%"
+    },
+    {
+      "ticker": "FU0",
+      "name": "燃油",
+      "category": "期货",
+      "signal": "中性",
+      "return_pct": 6.729,
+      "pred_price": 4815.0,
+      "today_price": 5139.0,
+      "weighted_score": 58.5,
+      "confidence": 0.63,
+      "reasoning": "技术面中性偏多(65/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1.5 vs 看跌1 | 宏观中性(49.0/100) | 市场上下文neutral(50.0/100)上限100%"
     }
   ],
   "correct_top10": [
@@ -230,9 +230,9 @@
       "name": "菜油",
       "category": "期货",
       "signal": "中性",
-      "return_pct": 1.451,
+      "return_pct": 1.432,
       "pred_price": 10197.0,
-      "today_price": 10345.0,
+      "today_price": 10343.0,
       "weighted_score": 45.0,
       "confidence": 0.71
     },
@@ -270,17 +270,6 @@
       "confidence": 0.54
     },
     {
-      "ticker": "AL0",
-      "name": "沪铝",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": 1.345,
-      "pred_price": 23050.0,
-      "today_price": 23360.0,
-      "weighted_score": 45.5,
-      "confidence": 0.7
-    },
-    {
       "ticker": "600584",
       "name": "长电科技",
       "category": "个股",
@@ -290,6 +279,17 @@
       "today_price": 59.78,
       "weighted_score": 44.6,
       "confidence": 0.79
+    },
+    {
+      "ticker": "AL0",
+      "name": "沪铝",
+      "category": "期货",
+      "signal": "中性",
+      "return_pct": 1.302,
+      "pred_price": 23050.0,
+      "today_price": 23350.0,
+      "weighted_score": 45.5,
+      "confidence": 0.7
     },
     {
       "ticker": "512880",
