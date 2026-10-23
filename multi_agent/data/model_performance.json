@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-22T17:24:04",
-  "pred_date": "2026-10-22",
+  "generated_at": "2026-10-23T15:50:34",
+  "pred_date": "2026-10-23",
   "ret_map_count": 113739,
   "warehouse_max_dates": {
     "个股": "2026-10-22",
@@ -14,9 +14,9 @@
   "categories": {
     "个股": {
       "status": "ok",
-      "n": 5933,
+      "n": 6052,
       "n_evaluable": 4987,
-      "skipped_no_forward": 946,
+      "skipped_no_forward": 1065,
       "n_bull": 35,
       "n_bear": 2786,
       "bullish_mean": -3.86,
@@ -27,9 +27,9 @@
     },
     "ETF": {
       "status": "ok",
-      "n": 1212,
+      "n": 1235,
       "n_evaluable": 1028,
-      "skipped_no_forward": 184,
+      "skipped_no_forward": 207,
       "n_bull": 21,
       "n_bear": 428,
       "bullish_mean": -1.22,
@@ -40,9 +40,9 @@
     },
     "期货": {
       "status": "ok",
-      "n": 2520,
+      "n": 2569,
       "n_evaluable": 924,
-      "skipped_no_forward": 1596,
+      "skipped_no_forward": 1645,
       "n_bull": 8,
       "n_bear": 270,
       "bullish_mean": -0.69,
@@ -53,9 +53,9 @@
     },
     "US": {
       "status": "ok",
-      "n": 2486,
+      "n": 2541,
       "n_evaluable": 0,
-      "skipped_no_forward": 2486,
+      "skipped_no_forward": 2541,
       "n_bull": 0,
       "n_bear": 0,
       "bullish_mean": null,
