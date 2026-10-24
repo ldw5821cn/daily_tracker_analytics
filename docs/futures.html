@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>📉 期货 - 2026-10-24 08:47</title>
+<title>📉 期货 - 2026-10-24 23:52</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <style>
@@ -64,7 +64,7 @@ tr:hover { background: #334155; }
 
     <div class="header">
         <h1>📉 期货 </h1>
-        <div class="sub">2026-10-24 08:47 · 最新预测 49 只 (价格日期: 2026-10-22)</div>
+        <div class="sub">2026-10-24 23:52 · 最新预测 49 只 (价格日期: 2026-10-22)</div>
     </div>
 
 <div class="stats-grid">
@@ -77,11 +77,11 @@ tr:hover { background: #334155; }
             <div class="label">看多</div>
         </div>
         <div class="stat-card">
-            <div class="num" style="color:#22c55e">2</div>
+            <div class="num" style="color:#22c55e">3</div>
             <div class="label">看空</div>
         </div>
         <div class="stat-card">
-            <div class="num">36</div>
+            <div class="num">35</div>
             <div class="label">中性</div>
         </div>
 
@@ -90,19 +90,47 @@ tr:hover { background: #334155; }
 <div class="cards">
 
             <div class="card bear">
+                <div class="card-title">❄️ PVC (V0)</div>
+                <div class="card-meta">评分 40.5 | 60日收益 <span style="color:#ef4444">+8.6%</span> | 回撤 -8.3%</div>
+                <div class="card-meta">推荐策略：每周只做多（无成本） | 收益 <span style="color:#22c55e">-3.4%</span> | 回撤 -8.0%</div>
+                <div class="card-price">2026/10/22 现价 5016.0 | 目标 5285.266 | 止损 5012.7</div>
+                <div class="card-reason">技术面中性偏多(70/100) | 基本面neutral(50/100) | 新闻情绪+0.07 | 多空辩论 看涨68 vs 看跌72</div>
+                
+                <div id="chart_V0" style="width:100%;height:180px;margin-top:10px;border-radius:8px;background:#0f172a;"></div>
+                <script>
+                (function(){
+                    const chart = LightweightCharts.createChart(document.getElementById('chart_V0'), {
+                        layout: { background: { color: '#0f172a' }, textColor: '#94a3b8' },
+                        grid: { vertLines: { color: '#1e293b' }, horzLines: { color: '#1e293b' } },
+                        crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+                        rightPriceScale: { borderColor: '#1e293b' },
+                        timeScale: { borderColor: '#1e293b', timeVisible: false },
+                    });
+                    const series = chart.addCandlestickSeries({
+                        upColor: '#ef4444', downColor: '#22c55e',
+                        borderUpColor: '#ef4444', borderDownColor: '#22c55e',
+                        wickUpColor: '#ef4444', wickDownColor: '#22c55e'
+                    });
+                    series.setData([{"time": "2026-07-27", "open": 4630.0, "high": 4656.0, "low": 4505.0, "close": 4536.0, "volume": 1092218.0}, {"time": "2026-07-28", "open": 4550.0, "high": 4572.0, "low": 4495.0, "close": 4503.0, "volume": 799712.0}, {"time": "2026-07-29", "open": 4500.0, "high": 4567.0, "low": 4485.0, "close": 4523.0, "volume": 703957.0}, {"time": "2026-07-30", "open": 4547.0, "high": 4558.0, "low": 4448.0, "close": 4467.0, "volume": 823352.0}, {"time": "2026-07-31", "open": 4455.0, "high": 4523.0, "low": 4438.0, "close": 4480.0, "volume": 716481.0}, {"time": "2026-08-03", "open": 4505.0, "high": 4514.0, "low": 4444.0, "close": 4451.0, "volume": 799445.0}, {"time": "2026-08-04", "open": 4449.0, "high": 4525.0, "low": 4446.0, "close": 4471.0, "volume": 692495.0}, {"time": "2026-08-05", "open": 4440.0, "high": 4489.0, "low": 4436.0, "close": 4461.0, "volume": 788657.0}, {"time": "2026-08-06", "open": 4468.0, "high": 4548.0, "low": 4450.0, "close": 4529.0, "volume": 736589.0}, {"time": "2026-08-07", "open": 4529.0, "high": 4535.0, "low": 4485.0, "close": 4507.0, "volume": 605198.0}, {"time": "2026-08-10", "open": 4505.0, "high": 4554.0, "low": 4496.0, "close": 4498.0, "volume": 612938.0}, {"time": "2026-08-11", "open": 4510.0, "high": 4562.0, "low": 4477.0, "close": 4556.0, "volume": 693388.0}, {"time": "2026-08-12", "open": 4545.0, "high": 4549.0, "low": 4510.0, "close": 4528.0, "volume": 514890.0}, {"time": "2026-08-13", "open": 4528.0, "high": 4536.0, "low": 4467.0, "close": 4511.0, "volume": 656753.0}, {"time": "2026-08-14", "open": 4490.0, "high": 4516.0, "low": 4474.0, "close": 4496.0, "volume": 500627.0}, {"time": "2026-08-17", "open": 4496.0, "high": 4610.0, "low": 4491.0, "close": 4581.0, "volume": 746961.0}, {"time": "2026-08-18", "open": 4724.0, "high": 4761.0, "low": 4722.0, "close": 4744.0, "volume": 516052.0}, {"time": "2026-08-19", "open": 4744.0, "high": 4782.0, "low": 4729.0, "close": 4746.0, "volume": 795940.0}, {"time": "2026-08-20", "open": 4738.0, "high": 4759.0, "low": 4683.0, "close": 4710.0, "volume": 839057.0}, {"time": "2026-08-21", "open": 4735.0, "high": 4735.0, "low": 4651.0, "close": 4679.0, "volume": 866442.0}, {"time": "2026-08-24", "open": 4671.0, "high": 4699.0, "low": 4641.0, "close": 4644.0, "volume": 961947.0}, {"time": "2026-08-25", "open": 4644.0, "high": 4667.0, "low": 4526.0, "close": 4539.0, "volume": 1335984.0}, {"time": "2026-08-26", "open": 4519.0, "high": 4540.0, "low": 4464.0, "close": 4466.0, "volume": 993800.0}, {"time": "2026-08-27", "open": 4464.0, "high": 4498.0, "low": 4440.0, "close": 4473.0, "volume": 847592.0}, {"time": "2026-08-28", "open": 4495.0, "high": 4583.0, "low": 4470.0, "close": 4578.0, "volume": 1061521.0}, {"time": "2026-08-31", "open": 4590.0, "high": 4791.0, "low": 4590.0, "close": 4791.0, "volume": 1718450.0}, {"time": "2026-09-01", "open": 4810.0, "high": 4907.0, "low": 4810.0, "close": 4888.0, "volume": 2051194.0}, {"time": "2026-09-02", "open": 4906.0, "high": 4978.0, "low": 4822.0, "close": 4906.0, "volume": 2050409.0}, {"time": "2026-09-03", "open": 4890.0, "high": 4955.0, "low": 4831.0, "close": 4867.0, "volume": 1643846.0}, {"time": "2026-09-04", "open": 4900.0, "high": 5154.0, "low": 4883.0, "close": 5128.0, "volume": 2668498.0}, {"time": "2026-09-07", "open": 5115.0, "high": 5144.0, "low": 4970.0, "close": 5051.0, "volume": 2191975.0}, {"time": "2026-09-08", "open": 5012.0, "high": 5122.0, "low": 4972.0, "close": 5113.0, "volume": 1572977.0}, {"time": "2026-09-09", "open": 5099.0, "high": 5148.0, "low": 5027.0, "close": 5103.0, "volume": 1825592.0}, {"time": "2026-09-10", "open": 5100.0, "high": 5194.0, "low": 5028.0, "close": 5084.0, "volume": 2344389.0}, {"time": "2026-09-11", "open": 5155.0, "high": 5162.0, "low": 5005.0, "close": 5028.0, "volume": 1971744.0}, {"time": "2026-09-14", "open": 5000.0, "high": 5087.0, "low": 4930.0, "close": 4952.0, "volume": 2001879.0}, {"time": "2026-09-15", "open": 4969.0, "high": 5055.0, "low": 4833.0, "close": 4847.0, "volume": 2100986.0}, {"time": "2026-09-16", "open": 4835.0, "high": 4917.0, "low": 4818.0, "close": 4887.0, "volume": 1548688.0}, {"time": "2026-09-17", "open": 4887.0, "high": 4935.0, "low": 4786.0, "close": 4786.0, "volume": 1564124.0}, {"time": "2026-09-18", "open": 4750.0, "high": 4779.0, "low": 4673.0, "close": 4703.0, "volume": 1564613.0}, {"time": "2026-09-21", "open": 4725.0, "high": 4776.0, "low": 4711.0, "close": 4755.0, "volume": 1216925.0}, {"time": "2026-09-22", "open": 4757.0, "high": 4795.0, "low": 4727.0, "close": 4757.0, "volume": 1118947.0}, {"time": "2026-09-23", "open": 4711.0, "high": 4797.0, "low": 4711.0, "close": 4770.0, "volume": 1243472.0}, {"time": "2026-09-24", "open": 4800.0, "high": 4825.0, "low": 4748.0, "close": 4798.0, "volume": 1284696.0}, {"time": "2026-09-28", "open": 4808.0, "high": 4832.0, "low": 4748.0, "close": 4773.0, "volume": 888456.0}, {"time": "2026-09-29", "open": 4778.0, "high": 4850.0, "low": 4760.0, "close": 4844.0, "volume": 1206360.0}, {"time": "2026-09-30", "open": 4844.0, "high": 5004.0, "low": 4795.0, "close": 4999.0, "volume": 1509018.0}, {"time": "2026-10-08", "open": 4946.0, "high": 4946.0, "low": 4847.0, "close": 4915.0, "volume": 1185740.0}, {"time": "2026-10-09", "open": 4900.0, "high": 4979.0, "low": 4893.0, "close": 4948.0, "volume": 1347941.0}, {"time": "2026-10-12", "open": 4950.0, "high": 5043.0, "low": 4872.0, "close": 4904.0, "volume": 1536979.0}, {"time": "2026-10-13", "open": 4909.0, "high": 4921.0, "low": 4816.0, "close": 4888.0, "volume": 1273633.0}, {"time": "2026-10-14", "open": 4900.0, "high": 4956.0, "low": 4881.0, "close": 4912.0, "volume": 1261935.0}, {"time": "2026-10-15", "open": 4926.0, "high": 4936.0, "low": 4807.0, "close": 4808.0, "volume": 1209968.0}, {"time": "2026-10-16", "open": 4810.0, "high": 4904.0, "low": 4788.0, "close": 4858.0, "volume": 1389457.0}, {"time": "2026-10-19", "open": 4870.0, "high": 4986.0, "low": 4860.0, "close": 4904.0, "volume": 1480130.0}, {"time": "2026-10-20", "open": 4904.0, "high": 5023.0, "low": 4904.0, "close": 4994.0, "volume": 1873574.0}, {"time": "2026-10-21", "open": 4990.0, "high": 5034.0, "low": 4927.0, "close": 5032.0, "volume": 1490241.0}, {"time": "2026-10-22", "open": 5012.0, "high": 5067.0, "low": 4956.0, "close": 5016.0, "volume": 1552562.0}, {"time": "2026-10-23", "open": 5005.0, "high": 5115.0, "low": 4994.0, "close": 5115.0, "volume": 1531708.0}]);
+                    chart.timeScale().fitContent();
+                })();
+                </script>
+                
+            </div>
+            <div class="card bear">
                 <div class="card-title">❄️ 乙二醇 (EG0)</div>
-                <div class="card-meta">评分 41.7 | 60日收益 <span style="color:#22c55e">-2.0%</span> | 回撤 -22.4%</div>
+                <div class="card-meta">评分 26.2 | 60日收益 <span style="color:#22c55e">-2.0%</span> | 回撤 -22.4%</div>
                 <div class="card-meta">推荐策略：每周只做多+止损（无成本） | 收益 <span style="color:#22c55e">-7.3%</span> | 回撤 -12.9%</div>
-                <div class="card-price">2026/10/22 现价 4769.0 | 目标 4463.522 | 止损 4673.62</div>
-                <div class="card-reason">技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(48.4/100) | 市场上下文neutral(50.0/100)上限100%</div>
+                <div class="card-price">2026/10/22 现价 4769.0 | 目标 4630.748 | 止损 4787.3</div>
+                <div class="card-reason">技术面中性(44/100) | 基本面neutral(50/100) | 新闻情绪+0.07 | 多空辩论 看涨62 vs 看跌74</div>
                 
             </div>
             <div class="card bear">
                 <div class="card-title">❄️ 生猪 (LH0)</div>
-                <div class="card-meta">评分 41.7 | 60日收益 <span style="color:#22c55e">-13.0%</span> | 回撤 -21.1%</div>
+                <div class="card-meta">评分 20.8 | 60日收益 <span style="color:#22c55e">-13.0%</span> | 回撤 -21.1%</div>
                 <div class="card-meta">推荐策略：每周只做多（无成本） | 收益 <span style="color:#e2e8f0">+0.0%</span> | 回撤 0.0%</div>
-                <div class="card-price">2026/10/22 现价 9860.0 | 目标 9459.906 | 止损 9662.8</div>
-                <div class="card-reason">技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(48.4/100) | 市场上下文neutral(50.0/100)上限100%</div>
+                <div class="card-price">2026/10/22 现价 9860.0 | 目标 9383.17 | 止损 9628.5</div>
+                <div class="card-reason">技术面中性(41.03/100) | 基本面neutral(50/100) | 新闻情绪+0.07 | 多空辩论 看涨58 vs 看跌72 | LLM裁决看空(34)</div>
                 
             </div>
 </div>
@@ -113,58 +141,12 @@ tr:hover { background: #334155; }
         <thead><tr><th>代码</th><th>名称</th><th>板块</th><th>信号</th><th>评分</th><th>信心</th><th>1日</th><th>3日</th><th>5日</th><th>10日</th><th>60日收益</th><th>60日回撤</th><th>60日夏普</th><th>推荐策略</th><th>策略收益</th><th>策略回撤</th><th>价格</th><th>目标</th><th>止损</th><th>仓位</th><th>技术分</th></tr></thead>
         <tbody>
         <tr>
-            <td><b>EG0</b></td>
-            <td>乙二醇 </td>
-            <td>化工</td>
-            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
-            <td>41.7</td>
-            <td>82%</td>
-            <td>偏空</td>
-            <td>看跌</td>
-            <td>看跌</td>
-            <td>看跌</td>
-            <td style="color:#22c55e">-2.0%</td>
-            <td>-22.4%</td>
-            <td>0.03</td>
-            <td title="每周五只做多 + 8% 止损，无成本">每周只做多+止损（无成本）</td>
-            <td style="color:#22c55e">-7.3%</td>
-            <td>-12.9%</td>
-            <td>2026/10/22 现价 4769.0</td>
-            <td>4463.522</td>
-            <td>4673.62</td>
-            <td>12%</td>
-            <td title="技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(48.4/100) | 市场上下文neutral(50.0/100)上限100%">44</td>
-        </tr>
-        <tr>
-            <td><b>LH0</b></td>
-            <td>生猪 </td>
-            <td>农产品</td>
-            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
-            <td>41.7</td>
-            <td>82%</td>
-            <td>偏空</td>
-            <td>看跌</td>
-            <td>看跌</td>
-            <td>看跌</td>
-            <td style="color:#22c55e">-13.0%</td>
-            <td>-21.1%</td>
-            <td>-1.88</td>
-            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
-            <td style="color:#e2e8f0">+0.0%</td>
-            <td>0.0%</td>
-            <td>2026/10/22 现价 9860.0</td>
-            <td>9459.906</td>
-            <td>9662.8</td>
-            <td>12%</td>
-            <td title="技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(48.4/100) | 市场上下文neutral(50.0/100)上限100%">44</td>
-        </tr>
-        <tr>
             <td><b>V0</b></td>
             <td>PVC </td>
             <td>能化</td>
-            <td style="color:#94a3b8;font-weight:bold">➖ 中性</td>
-            <td>63.5</td>
-            <td>80%</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>40.5</td>
+            <td>91%</td>
             <td>震荡</td>
             <td>偏多</td>
             <td>看涨</td>
@@ -176,10 +158,56 @@ tr:hover { background: #334155; }
             <td style="color:#22c55e">-3.4%</td>
             <td>-8.0%</td>
             <td>2026/10/22 现价 5016.0</td>
-            <td>5134.892</td>
-            <td>4915.68</td>
-            <td>0%</td>
-            <td title="技术面中性偏多(70/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨2.0 vs 看跌0 | 宏观中性(48.4/100) | 市场上下文neutral(50.0/100)上限100%">70</td>
+            <td>5285.266</td>
+            <td>5012.7</td>
+            <td>14%</td>
+            <td title="技术面中性偏多(70/100) | 基本面neutral(50/100) | 新闻情绪+0.07 | 多空辩论 看涨68 vs 看跌72">70</td>
+        </tr>
+        <tr>
+            <td><b>EG0</b></td>
+            <td>乙二醇 </td>
+            <td>化工</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>26.2</td>
+            <td>95%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td style="color:#22c55e">-2.0%</td>
+            <td>-22.4%</td>
+            <td>0.03</td>
+            <td title="每周五只做多 + 8% 止损，无成本">每周只做多+止损（无成本）</td>
+            <td style="color:#22c55e">-7.3%</td>
+            <td>-12.9%</td>
+            <td>2026/10/22 现价 4769.0</td>
+            <td>4630.748</td>
+            <td>4787.3</td>
+            <td>14%</td>
+            <td title="技术面中性(44/100) | 基本面neutral(50/100) | 新闻情绪+0.07 | 多空辩论 看涨62 vs 看跌74">44</td>
+        </tr>
+        <tr>
+            <td><b>LH0</b></td>
+            <td>生猪 </td>
+            <td>农产品</td>
+            <td style="color:#22c55e;font-weight:bold">❄️ 看空</td>
+            <td>20.8</td>
+            <td>95%</td>
+            <td>偏空</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td>看跌</td>
+            <td style="color:#22c55e">-13.0%</td>
+            <td>-21.1%</td>
+            <td>-1.88</td>
+            <td title="每周五按技术得分判定下周方向，无成本">每周只做多（无成本）</td>
+            <td style="color:#e2e8f0">+0.0%</td>
+            <td>0.0%</td>
+            <td>2026/10/22 现价 9860.0</td>
+            <td>9383.17</td>
+            <td>9628.5</td>
+            <td>14%</td>
+            <td title="技术面中性(41.03/100) | 基本面neutral(50/100) | 新闻情绪+0.07 | 多空辩论 看涨58 vs 看跌72 | LLM裁决看空(34)">41.03</td>
         </tr>
         <tr>
             <td><b>LU0</b></td>
