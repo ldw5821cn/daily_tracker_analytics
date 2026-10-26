@@ -1,94 +1,94 @@
 {
-  "date": "2026-10-23",
+  "date": "2026-10-26",
   "generated_by": "after_market_pipeline",
   "top10": [
     {
-      "code": "600621",
-      "name": "华鑫股份",
-      "composite_score": 92,
-      "changepercent": 3.9,
-      "price": 14.9,
+      "code": "300438",
+      "name": "鹏辉能源",
+      "composite_score": 89,
+      "changepercent": 1.49,
+      "price": 39.47,
       "amount_yi": 0.0,
       "reason": "原始6维Top10(skip-llm)"
     },
     {
-      "code": "002245",
-      "name": "蔚蓝锂芯",
-      "composite_score": 92,
-      "changepercent": 4.42,
-      "price": 11.8,
+      "code": "002048",
+      "name": "宁波华翔",
+      "composite_score": 88,
+      "changepercent": 4.47,
+      "price": 19.4,
+      "amount_yi": 0.0,
+      "reason": "原始6维Top10(skip-llm)"
+    },
+    {
+      "code": "688208",
+      "name": "道通科技",
+      "composite_score": 87,
+      "changepercent": 4.65,
+      "price": 25.65,
+      "amount_yi": 0.0,
+      "reason": "原始6维Top10(skip-llm)"
+    },
+    {
+      "code": "001301",
+      "name": "尚太科技",
+      "composite_score": 87,
+      "changepercent": 3.19,
+      "price": 47.17,
+      "amount_yi": 0.0,
+      "reason": "原始6维Top10(skip-llm)"
+    },
+    {
+      "code": "002223",
+      "name": "鱼跃医疗",
+      "composite_score": 87,
+      "changepercent": 4.39,
+      "price": 28.51,
+      "amount_yi": 0.0,
+      "reason": "原始6维Top10(skip-llm)"
+    },
+    {
+      "code": "603600",
+      "name": "永艺股份",
+      "composite_score": 86,
+      "changepercent": 3.71,
+      "price": 11.19,
+      "amount_yi": 0.0,
+      "reason": "原始6维Top10(skip-llm)"
+    },
+    {
+      "code": "600288",
+      "name": "大恒科技",
+      "composite_score": 86,
+      "changepercent": 3.56,
+      "price": 10.48,
       "amount_yi": 0.0,
       "reason": "原始6维Top10(skip-llm)"
     },
     {
       "code": "600267",
       "name": "海正药业",
-      "composite_score": 88,
-      "changepercent": 3.22,
-      "price": 14.1,
+      "composite_score": 86,
+      "changepercent": 0.92,
+      "price": 14.23,
       "amount_yi": 0.0,
       "reason": "原始6维Top10(skip-llm)"
     },
     {
-      "code": "000528",
-      "name": "柳工",
-      "composite_score": 88,
-      "changepercent": 6.91,
-      "price": 8.51,
+      "code": "300358",
+      "name": "楚天科技",
+      "composite_score": 86,
+      "changepercent": 3.97,
+      "price": 8.91,
       "amount_yi": 0.0,
       "reason": "原始6维Top10(skip-llm)"
     },
     {
-      "code": "603283",
-      "name": "赛腾股份",
-      "composite_score": 87,
-      "changepercent": 3.25,
-      "price": 35.31,
-      "amount_yi": 0.0,
-      "reason": "原始6维Top10(skip-llm)"
-    },
-    {
-      "code": "300390",
-      "name": "天华新能",
-      "composite_score": 87,
-      "changepercent": 3.57,
-      "price": 38.6,
-      "amount_yi": 0.0,
-      "reason": "原始6维Top10(skip-llm)"
-    },
-    {
-      "code": "300073",
-      "name": "当升科技",
-      "composite_score": 87,
-      "changepercent": 4.89,
-      "price": 36.27,
-      "amount_yi": 0.0,
-      "reason": "原始6维Top10(skip-llm)"
-    },
-    {
-      "code": "002487",
-      "name": "大金重工",
-      "composite_score": 87,
-      "changepercent": 4.87,
-      "price": 32.93,
-      "amount_yi": 0.0,
-      "reason": "原始6维Top10(skip-llm)"
-    },
-    {
-      "code": "002460",
-      "name": "赣锋锂业",
-      "composite_score": 87,
-      "changepercent": 3.41,
-      "price": 36.69,
-      "amount_yi": 0.0,
-      "reason": "原始6维Top10(skip-llm)"
-    },
-    {
-      "code": "002396",
-      "name": "星网锐捷",
-      "composite_score": 87,
-      "changepercent": 2.06,
-      "price": 26.23,
+      "code": "300224",
+      "name": "正海磁材",
+      "composite_score": 86,
+      "changepercent": 3.95,
+      "price": 11.84,
       "amount_yi": 0.0,
       "reason": "原始6维Top10(skip-llm)"
     }
