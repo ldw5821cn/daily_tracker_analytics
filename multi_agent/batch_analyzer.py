@@ -74,7 +74,7 @@ def batch_analyze(stocks, current_date=None, output_dir=None, agentic=False):
         sell_zone = zones.get('sell', '-') if zones else '-'
         summary_lines.append(
             f"| {r['name']}({r['ticker']}) | {r['current_price']} | {v['rating']} | {v['weighted_score']} | "
-            f"{v['bull_score']} | {v['bear_score']} | {v['net_signal']:+d} | {risk} | "
+            f"{v['bull_score']} | {v['bear_score']} | {int(v['net_signal']):+d} | {risk} | "
             f"{buy_zone} | {open_zone} | {sell_zone} | {v['recommendation']} |"
         )
     summary_lines.append(f"")
@@ -98,7 +98,7 @@ def batch_analyze(stocks, current_date=None, output_dir=None, agentic=False):
             summary_lines.append(f"- **基本面**: {fund['rating']}({fund['score']}/100)")
         if news:
             summary_lines.append(f"- **新闻情绪**: {news['sentiment_score']:+.2f}")
-        summary_lines.append(f"- **多空**: Bull({v['bull_score']}) vs Bear({v['bear_score']}) | 净信号{v['net_signal']:+d}")
+        summary_lines.append(f"- **多空**: Bull({v['bull_score']}) vs Bear({v['bear_score']}) | 净信号{int(v['net_signal']):+d}")
         summary_lines.append(f"- **风险**: {r['risk_assessment']['overall_risk']}")
         pred = r['technical_report'].get('prediction') or {}
         zones = pred.get('trading_zones', {})

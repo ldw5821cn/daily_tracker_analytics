@@ -408,12 +408,16 @@ def build_evidence_chain(
     
     # 设置基线关系
     net_signal = verdict.get('net_signal', 0)
-    if net_signal > 2:
-        result.set_baseline_relation("agree", f"AI 与量化基线一致看多 (净信号 {net_signal:+d})")
-    elif net_signal < -2:
-        result.set_baseline_relation("disagree", f"AI 与量化基线不一致 (净信号 {net_signal:+d})")
+    try:
+        net_signal_int = int(net_signal)
+    except (ValueError, TypeError):
+        net_signal_int = 0
+    if net_signal_int > 2:
+        result.set_baseline_relation("agree", f"AI 与量化基线一致看多 (净信号 {net_signal_int:+d})")
+    elif net_signal_int < -2:
+        result.set_baseline_relation("disagree", f"AI 与量化基线不一致 (净信号 {net_signal_int:+d})")
     else:
-        result.set_baseline_relation("insufficient", f"信号不明确 (净信号 {net_signal:+d})")
+        result.set_baseline_relation("insufficient", f"信号不明确 (净信号 {net_signal_int:+d})")
     
     return result
 
@@ -433,7 +437,7 @@ def print_short_summary(result):
         f"技术面: {t['rating']}({t['score']}/100)",
         f"基本面: {result['fundamental_report']['rating']}({result['fundamental_report']['score']}/100)" if result.get('fundamental_report') else "",
         f"新闻情绪: {news['sentiment_score']:+.2f}" if news else "",
-        f"多空: Bull({v['bull_score']}) vs Bear({v['bear_score']}) | 净信号{v['net_signal']:+d}",
+        f"多空: Bull({v['bull_score']}) vs Bear({v['bear_score']}) | 净信号{int(v['net_signal']):+d}",
         f"风险: {result['risk_assessment']['overall_risk']}",
     ]
     return "\n".join(l for l in lines if l)
