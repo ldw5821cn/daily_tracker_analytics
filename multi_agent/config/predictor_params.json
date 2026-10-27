@@ -1,6 +1,6 @@
 {
   "_version": 5,
-  "updated_at": "2026-10-23T15:42:21.108933",
+  "updated_at": "2026-10-26T17:28:06.203927",
   "个股": {
     "weights": {
       "technical": 0.22,
@@ -15,7 +15,7 @@
       "neutral_high": 55,
       "neutral_low": 45,
       "bear": 42,
-      "strong_bear": 27
+      "strong_bear": 26
     },
     "fund_flow_strength": 0.0,
     "market_flow_strength": 0.0,
@@ -148,6 +148,6 @@
     "bear": 42,
     "strong_bear": 35
   },
-  "reflection_reason": "个股低准确率收紧强信号(43%)",
-  "reflection_updated_at": "2026-10-23T15:42:21.108924"
+  "reflection_reason": "个股低准确率收紧强信号(39%)",
+  "reflection_updated_at": "2026-10-26T17:28:06.203920"
 }
