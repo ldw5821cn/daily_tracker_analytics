@@ -237,17 +237,6 @@
       "confidence": 0.54
     },
     {
-      "ticker": "JM0",
-      "name": "焦煤",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": 1.352,
-      "pred_price": 1405.5,
-      "today_price": 1424.5,
-      "weighted_score": 43.0,
-      "confidence": 0.73
-    },
-    {
       "ticker": "SA0",
       "name": "纯碱",
       "category": "期货",
@@ -279,6 +268,17 @@
       "today_price": 14.58,
       "weighted_score": 43.6,
       "confidence": 0.8
+    },
+    {
+      "ticker": "JM0",
+      "name": "焦煤",
+      "category": "期货",
+      "signal": "中性",
+      "return_pct": 1.316,
+      "pred_price": 1405.5,
+      "today_price": 1424.0,
+      "weighted_score": 43.0,
+      "confidence": 0.73
     },
     {
       "ticker": "600549",
