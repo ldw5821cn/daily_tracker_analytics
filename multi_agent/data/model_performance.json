@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-27T17:27:00",
-  "pred_date": "2026-10-27",
-  "ret_map_count": 114252,
+  "generated_at": "2026-10-28T15:51:11",
+  "pred_date": "2026-10-28",
+  "ret_map_count": 114395,
   "warehouse_max_dates": {
-    "个股": "2026-10-27",
+    "个股": "2026-10-28",
     "指数": "2026-10-26",
-    "ETF": "2026-10-27",
-    "US": "2026-10-26",
+    "ETF": "2026-10-28",
+    "US": "2026-10-27",
     "futures": "2026-10-27",
     "index": "2026-10-26",
     "期货": "2026-10-27"
@@ -14,35 +14,35 @@
   "categories": {
     "个股": {
       "status": "ok",
-      "n": 6290,
-      "n_evaluable": 5344,
+      "n": 6409,
+      "n_evaluable": 5463,
       "skipped_no_forward": 946,
-      "n_bull": 37,
-      "n_bear": 3111,
-      "bullish_mean": -3.84,
-      "bearish_mean": -1.57,
-      "direction_accuracy": 61.4,
-      "coverage": 58.9,
-      "warehouse_max_date": "2026-10-27"
+      "n_bull": 38,
+      "n_bear": 3221,
+      "bullish_mean": -3.79,
+      "bearish_mean": -1.6,
+      "direction_accuracy": 61.7,
+      "coverage": 59.7,
+      "warehouse_max_date": "2026-10-28"
     },
     "ETF": {
       "status": "ok",
-      "n": 1281,
-      "n_evaluable": 1097,
+      "n": 1304,
+      "n_evaluable": 1120,
       "skipped_no_forward": 184,
-      "n_bull": 29,
-      "n_bear": 473,
-      "bullish_mean": -1.88,
-      "bearish_mean": -0.74,
-      "direction_accuracy": 58.2,
-      "coverage": 45.8,
-      "warehouse_max_date": "2026-10-27"
+      "n_bull": 30,
+      "n_bear": 490,
+      "bullish_mean": -1.78,
+      "bearish_mean": -0.78,
+      "direction_accuracy": 58.8,
+      "coverage": 46.4,
+      "warehouse_max_date": "2026-10-28"
     },
     "期货": {
       "status": "ok",
-      "n": 2667,
+      "n": 2716,
       "n_evaluable": 987,
-      "skipped_no_forward": 1680,
+      "skipped_no_forward": 1729,
       "n_bull": 8,
       "n_bear": 304,
       "bullish_mean": -0.69,
@@ -53,16 +53,16 @@
     },
     "US": {
       "status": "ok",
-      "n": 2651,
+      "n": 2706,
       "n_evaluable": 0,
-      "skipped_no_forward": 2651,
+      "skipped_no_forward": 2706,
       "n_bull": 0,
       "n_bear": 0,
       "bullish_mean": null,
       "bearish_mean": null,
       "direction_accuracy": 0,
       "coverage": 0,
-      "warehouse_max_date": "2026-10-26"
+      "warehouse_max_date": "2026-10-27"
     }
   }
 }
