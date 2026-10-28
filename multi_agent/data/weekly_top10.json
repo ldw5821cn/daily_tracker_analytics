@@ -1,95 +1,85 @@
 {
-  "date": "2026-10-27",
+  "date": "2026-10-28",
   "generated_by": "after_market_pipeline",
   "top10": [
+    {
+      "code": "002245",
+      "name": "蔚蓝锂芯",
+      "composite_score": 92,
+      "changepercent": 3.91,
+      "price": 11.42,
+      "reason": "板块分散版Top10"
+    },
+    {
+      "code": "600664",
+      "name": "哈药股份",
+      "composite_score": 90,
+      "changepercent": 2.83,
+      "price": 5.45,
+      "reason": "板块分散版Top10"
+    },
+    {
+      "code": "002011",
+      "name": "盾安环境",
+      "composite_score": 90,
+      "changepercent": 1.23,
+      "price": 11.51,
+      "reason": "板块分散版Top10"
+    },
+    {
+      "code": "000810",
+      "name": "创维数字",
+      "composite_score": 90,
+      "changepercent": 4.64,
+      "price": 11.04,
+      "reason": "板块分散版Top10"
+    },
     {
       "code": "300398",
       "name": "飞凯材料",
       "composite_score": 89,
-      "changepercent": 3.8,
-      "price": 27.04,
-      "amount_yi": null,
+      "changepercent": 4.84,
+      "price": 28.35,
       "reason": "板块分散版Top10"
     },
     {
-      "code": "000700",
-      "name": "模塑科技",
+      "code": "002756",
+      "name": "永兴材料",
       "composite_score": 89,
-      "changepercent": 3.9,
-      "price": 13.58,
-      "amount_yi": null,
+      "changepercent": 1.48,
+      "price": 37.04,
       "reason": "板块分散版Top10"
     },
     {
-      "code": "002635",
-      "name": "安洁科技",
+      "code": "002552",
+      "name": "宝鼎科技",
+      "composite_score": 89,
+      "changepercent": 4.22,
+      "price": 35.54,
+      "reason": "板块分散版Top10"
+    },
+    {
+      "code": "002396",
+      "name": "星网锐捷",
+      "composite_score": 89,
+      "changepercent": 4.75,
+      "price": 24.92,
+      "reason": "板块分散版Top10"
+    },
+    {
+      "code": "603901",
+      "name": "永创智能",
       "composite_score": 88,
-      "changepercent": 3.61,
-      "price": 13.21,
-      "amount_yi": null,
+      "changepercent": 3.83,
+      "price": 10.85,
       "reason": "板块分散版Top10"
     },
     {
-      "code": "603337",
-      "name": "杰克科技",
-      "composite_score": 87,
-      "changepercent": 2.78,
-      "price": 44.39,
-      "amount_yi": null,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "002889",
-      "name": "东方嘉盛",
-      "composite_score": 87,
-      "changepercent": 4.31,
-      "price": 14.04,
-      "amount_yi": null,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "002487",
-      "name": "大金重工",
-      "composite_score": 87,
-      "changepercent": 0.57,
-      "price": 31.53,
-      "amount_yi": null,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "301048",
-      "name": "金鹰重工",
-      "composite_score": 86,
-      "changepercent": 4.1,
-      "price": 9.65,
-      "amount_yi": null,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "300432",
-      "name": "富临精工",
-      "composite_score": 86,
-      "changepercent": 3.28,
-      "price": 14.48,
-      "amount_yi": null,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "300196",
-      "name": "长海股份",
-      "composite_score": 86,
-      "changepercent": 4.93,
-      "price": 15.1,
-      "amount_yi": null,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "688516",
-      "name": "奥特维",
-      "composite_score": 85,
-      "changepercent": 0.32,
-      "price": 38.1,
-      "amount_yi": null,
+      "code": "603366",
+      "name": "日出东方",
+      "composite_score": 88,
+      "changepercent": 3.64,
+      "price": 7.68,
       "reason": "板块分散版Top10"
     }
   ]
