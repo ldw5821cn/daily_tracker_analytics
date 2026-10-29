@@ -281,17 +281,6 @@
       "confidence": 0.55
     },
     {
-      "ticker": "SI0",
-      "name": "工业硅",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": 1.215,
-      "pred_price": 8640.0,
-      "today_price": 8745.0,
-      "weighted_score": 53.4,
-      "confidence": 0.61
-    },
-    {
       "ticker": "159792",
       "name": "港股通互联网ETF富国",
       "category": "ETF",
@@ -301,6 +290,17 @@
       "today_price": 0.494,
       "weighted_score": 43.4,
       "confidence": 0.73
+    },
+    {
+      "ticker": "601600",
+      "name": "中国铝业",
+      "category": "个股",
+      "signal": "中性",
+      "return_pct": -1.172,
+      "pred_price": 8.53,
+      "today_price": 8.43,
+      "weighted_score": 46.4,
+      "confidence": 0.7
     }
   ],
   "suggestions": [

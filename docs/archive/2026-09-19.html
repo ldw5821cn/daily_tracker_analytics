@@ -135,14 +135,14 @@ tr:hover { background: #334155; }
 
     <div class="section-title">🏭 Warehouse 真实 5d 收益模型表现</div>
     <div class="note">
-        <p><b>基于仓库实际收盘价的 5 日 forward return 回测。</b>当前样本来自 2026-10-29 前所有历史预测，共 114423 条价格-收益记录。生成于 2026-10-29T15:50:29。</p>
+        <p><b>基于仓库实际收盘价的 5 日 forward return 回测。</b>当前样本来自 2026-10-29 前所有历史预测，共 114594 条价格-收益记录。生成于 2026-10-29T17:28:09。</p>
         <p><b>说明：</b>看多信号偏多表示模型偏乐观；看多信号均值为负表示当前参数在 bull 阈值附近表现不佳。数据仍偏少，结果仅供参考，不用于直接调整参数。</p>
         <p style="color:#f59e0b">⏳ 每类预测需等待 5 个交易日后才能用真实收盘价评估；当前最新预测 2026-10-29，预计 2026-10-29 +5 交易日后可评估。</p>
     </div>
     <div class="table-responsive">
     <table>
         <thead><tr><th>类别</th><th>样本</th><th>看多</th><th>看空</th><th>看多平均</th><th>看空平均</th><th>方向准确率</th><th>覆盖率</th></tr></thead>
-        <tbody><tr><td><b>个股</b></td><td>6528</td><td>38</td><td>2895</td><td style="color:#22c55e">-3.79</td><td style="color:#22c55e">-1.54</td><td>61.7%</td><td>53.7%</td></tr><tr><td><b>ETF</b></td><td>1327</td><td>30</td><td>350</td><td style="color:#22c55e">-1.78</td><td style="color:#22c55e">-0.73</td><td>58.7%</td><td>33.9%</td></tr><tr><td><b>期货</b></td><td>2765</td><td>8</td><td>247</td><td style="color:#22c55e">-0.69</td><td style="color:#ef4444">0.48</td><td>47.8%</td><td>25.3%</td></tr><tr><td><b>US</b></td><td>2761</td><td colspan="5" style="color:#f59e0b">⏳ 暂无 5 日收益数据（2761 条待评估，需等待收盘价）</td><td>0.0%</td></tr></tbody>
+        <tbody><tr><td><b>个股</b></td><td>6528</td><td>38</td><td>3000</td><td style="color:#22c55e">-3.79</td><td style="color:#22c55e">-1.62</td><td>62.2%</td><td>54.4%</td></tr><tr><td><b>ETF</b></td><td>1327</td><td>30</td><td>369</td><td style="color:#22c55e">-1.78</td><td style="color:#22c55e">-0.81</td><td>58.9%</td><td>34.9%</td></tr><tr><td><b>期货</b></td><td>2765</td><td>9</td><td>257</td><td style="color:#ef4444">0.01</td><td style="color:#ef4444">0.43</td><td>48.5%</td><td>25.9%</td></tr><tr><td><b>US</b></td><td>2761</td><td colspan="5" style="color:#f59e0b">⏳ 暂无 5 日收益数据（2761 条待评估，需等待收盘价）</td><td>0.0%</td></tr></tbody>
     </table>
     </div>
 
@@ -156,27 +156,27 @@ tr:hover { background: #334155; }
 
     <div class="section-title">📈 全历史预测 Forward Return 回测</div>
     <div class="note">
-        <p><b>样本范围：</b>2026-08-03 ~ 2026-10-28 · 共 13135 条预测 · 52540 条记录 · 生成于 2026-10-28 17:27:47</p>
+        <p><b>样本范围：</b>2026-08-03 ~ 2026-10-29 · 共 13381 条预测 · 53524 条记录 · 生成于 2026-10-29 17:28:09</p>
         <p>Forward Return = 以预测日收盘价为基准，未来 N 个交易日的实际收益率。推荐组合统计只取看多信号做等权持有。</p>
     </div>
     <div class="table-responsive">
     <table>
         <thead><tr><th>horizon</th><th>整体均值</th><th>整体中位</th><th>整体胜率</th><th>方向准确率</th><th>样本数</th><th>组合日均</th><th>组合累计</th><th>组合胜率</th></tr></thead>
-        <tbody><tr><td><b>1d</b></td><td>-0.33%</td><td>-0.31%</td><td>43.0%</td><td>50.5%</td><td>8243</td><td>-0.24%</td><td>-12.25%</td><td>46.1%</td></tr><tr><td><b>3d</b></td><td>-0.77%</td><td>-0.82%</td><td>41.0%</td><td>34.9%</td><td>7917</td><td>-0.37%</td><td>-18.72%</td><td>37.2%</td></tr><tr><td><b>5d</b></td><td>-1.23%</td><td>-1.20%</td><td>39.4%</td><td>30.3%</td><td>7591</td><td>-0.93%</td><td>-45.74%</td><td>38.8%</td></tr><tr><td><b>10d</b></td><td>-3.10%</td><td>-2.99%</td><td>32.4%</td><td>23.7%</td><td>6776</td><td>-2.68%</td><td>-117.95%</td><td>27.3%</td></tr></tbody>
+        <tbody><tr><td><b>1d</b></td><td>-0.38%</td><td>-0.34%</td><td>42.5%</td><td>50.1%</td><td>8406</td><td>-0.17%</td><td>-9.10%</td><td>47.2%</td></tr><tr><td><b>3d</b></td><td>-0.82%</td><td>-0.86%</td><td>40.6%</td><td>34.9%</td><td>8080</td><td>-0.44%</td><td>-22.66%</td><td>36.5%</td></tr><tr><td><b>5d</b></td><td>-1.26%</td><td>-1.21%</td><td>39.3%</td><td>30.1%</td><td>7754</td><td>-0.86%</td><td>-42.96%</td><td>40.0%</td></tr><tr><td><b>10d</b></td><td>-3.12%</td><td>-3.02%</td><td>32.4%</td><td>23.6%</td><td>6939</td><td>-2.60%</td><td>-117.22%</td><td>28.9%</td></tr></tbody>
     </table>
     </div>
     <div class="section-title">📊 按信号方向</div>
     <div class="table-responsive">
     <table>
         <thead><tr><th>horizon</th><th>信号</th><th>样本数</th><th>均值</th><th>中位</th><th>胜率</th><th>方向准确率</th></tr></thead>
-        <tbody><tr><td>1d</td><td>bearish</td><td>610</td><td>+1.01%</td><td>+0.34%</td><td>56.7%</td><td>43.3%</td></tr><tr><td>1d</td><td>bullish</td><td>1971</td><td>-0.33%</td><td>-0.28%</td><td>44.1%</td><td>44.1%</td></tr><tr><td>1d</td><td>neutral</td><td>5662</td><td>-0.47%</td><td>-0.38%</td><td>41.2%</td><td>53.5%</td></tr><tr><td>3d</td><td>bearish</td><td>585</td><td>+3.46%</td><td>+1.52%</td><td>64.8%</td><td>35.2%</td></tr><tr><td>3d</td><td>bullish</td><td>1963</td><td>-0.71%</td><td>-0.88%</td><td>41.5%</td><td>41.5%</td></tr><tr><td>3d</td><td>neutral</td><td>5369</td><td>-1.25%</td><td>-0.99%</td><td>38.2%</td><td>32.5%</td></tr><tr><td>5d</td><td>bearish</td><td>570</td><td>+4.59%</td><td>+2.30%</td><td>66.8%</td><td>33.2%</td></tr><tr><td>5d</td><td>bullish</td><td>1956</td><td>-0.87%</td><td>-0.88%</td><td>42.0%</td><td>42.0%</td></tr><tr><td>5d</td><td>neutral</td><td>5065</td><td>-2.02%</td><td>-1.61%</td><td>35.4%</td><td>25.4%</td></tr><tr><td>10d</td><td>bearish</td><td>535</td><td>+4.49%</td><td>+1.77%</td><td>58.7%</td><td>41.3%</td></tr><tr><td>10d</td><td>bullish</td><td>1922</td><td>-1.97%</td><td>-1.94%</td><td>37.6%</td><td>37.6%</td></tr><tr><td>10d</td><td>neutral</td><td>4319</td><td>-4.55%</td><td>-3.85%</td><td>26.8%</td><td>15.3%</td></tr></tbody>
+        <tbody><tr><td>1d</td><td>bearish</td><td>611</td><td>+0.99%</td><td>+0.31%</td><td>56.5%</td><td>43.5%</td></tr><tr><td>1d</td><td>bullish</td><td>1976</td><td>-0.32%</td><td>-0.28%</td><td>44.2%</td><td>44.2%</td></tr><tr><td>1d</td><td>neutral</td><td>5819</td><td>-0.54%</td><td>-0.42%</td><td>40.5%</td><td>52.8%</td></tr><tr><td>3d</td><td>bearish</td><td>599</td><td>+3.29%</td><td>+1.42%</td><td>63.8%</td><td>36.2%</td></tr><tr><td>3d</td><td>bullish</td><td>1971</td><td>-0.73%</td><td>-0.88%</td><td>41.5%</td><td>41.5%</td></tr><tr><td>3d</td><td>neutral</td><td>5510</td><td>-1.30%</td><td>-1.04%</td><td>37.8%</td><td>32.3%</td></tr><tr><td>5d</td><td>bearish</td><td>577</td><td>+4.43%</td><td>+2.25%</td><td>66.4%</td><td>33.6%</td></tr><tr><td>5d</td><td>bullish</td><td>1958</td><td>-0.87%</td><td>-0.87%</td><td>42.0%</td><td>42.0%</td></tr><tr><td>5d</td><td>neutral</td><td>5219</td><td>-2.03%</td><td>-1.62%</td><td>35.3%</td><td>25.2%</td></tr><tr><td>10d</td><td>bearish</td><td>540</td><td>+4.36%</td><td>+1.66%</td><td>58.1%</td><td>41.9%</td></tr><tr><td>10d</td><td>bullish</td><td>1928</td><td>-1.96%</td><td>-1.93%</td><td>37.7%</td><td>37.7%</td></tr><tr><td>10d</td><td>neutral</td><td>4471</td><td>-4.53%</td><td>-3.85%</td><td>27.0%</td><td>15.4%</td></tr></tbody>
     </table>
     </div>
     <div class="section-title">📂 按资产类别</div>
     <div class="table-responsive">
     <table>
         <thead><tr><th>horizon</th><th>类别</th><th>样本数</th><th>均值</th><th>胜率</th><th>方向准确率</th></tr></thead>
-        <tbody><tr><td>1d</td><td>ETF</td><td>1212</td><td>-0.30%</td><td>41.8%</td><td>59.6%</td></tr><tr><td>1d</td><td>个股</td><td>5939</td><td>-0.39%</td><td>42.4%</td><td>44.7%</td></tr><tr><td>1d</td><td>期货</td><td>1092</td><td>-0.01%</td><td>47.8%</td><td>71.8%</td></tr><tr><td>3d</td><td>ETF</td><td>1166</td><td>-0.81%</td><td>38.0%</td><td>39.7%</td></tr><tr><td>3d</td><td>个股</td><td>5701</td><td>-0.94%</td><td>39.9%</td><td>30.0%</td></tr><tr><td>3d</td><td>期货</td><td>1050</td><td>+0.20%</td><td>50.5%</td><td>56.2%</td></tr><tr><td>5d</td><td>ETF</td><td>1120</td><td>-1.33%</td><td>35.4%</td><td>34.6%</td></tr><tr><td>5d</td><td>个股</td><td>5463</td><td>-1.52%</td><td>37.6%</td><td>26.2%</td></tr><tr><td>5d</td><td>期货</td><td>1008</td><td>+0.50%</td><td>53.7%</td><td>47.6%</td></tr><tr><td>10d</td><td>ETF</td><td>1005</td><td>-3.19%</td><td>26.9%</td><td>23.9%</td></tr><tr><td>10d</td><td>个股</td><td>4868</td><td>-3.86%</td><td>29.8%</td><td>21.6%</td></tr><tr><td>10d</td><td>期货</td><td>903</td><td>+1.07%</td><td>52.6%</td><td>35.0%</td></tr></tbody>
+        <tbody><tr><td>1d</td><td>ETF</td><td>1235</td><td>-0.34%</td><td>41.3%</td><td>59.2%</td></tr><tr><td>1d</td><td>个股</td><td>6058</td><td>-0.45%</td><td>41.9%</td><td>44.3%</td></tr><tr><td>1d</td><td>期货</td><td>1113</td><td>-0.02%</td><td>47.4%</td><td>72.1%</td></tr><tr><td>3d</td><td>ETF</td><td>1189</td><td>-0.86%</td><td>37.5%</td><td>39.5%</td></tr><tr><td>3d</td><td>个股</td><td>5820</td><td>-1.00%</td><td>39.5%</td><td>29.9%</td></tr><tr><td>3d</td><td>期货</td><td>1071</td><td>+0.20%</td><td>50.5%</td><td>56.8%</td></tr><tr><td>5d</td><td>ETF</td><td>1143</td><td>-1.34%</td><td>35.4%</td><td>34.6%</td></tr><tr><td>5d</td><td>个股</td><td>5582</td><td>-1.56%</td><td>37.5%</td><td>26.0%</td></tr><tr><td>5d</td><td>期货</td><td>1029</td><td>+0.49%</td><td>53.6%</td><td>47.5%</td></tr><tr><td>10d</td><td>ETF</td><td>1028</td><td>-3.21%</td><td>26.9%</td><td>24.2%</td></tr><tr><td>10d</td><td>个股</td><td>4987</td><td>-3.87%</td><td>29.8%</td><td>21.4%</td></tr><tr><td>10d</td><td>期货</td><td>924</td><td>+1.03%</td><td>52.4%</td><td>35.1%</td></tr></tbody>
     </table>
     </div>
 
