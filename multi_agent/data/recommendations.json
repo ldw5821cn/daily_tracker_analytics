@@ -1,42 +1,11 @@
 {
-  "pred_date": "2026-10-28",
-  "generated_at": "2026-10-28 15:32:49",
-  "macro_score": 48.5,
+  "pred_date": "2026-10-29",
+  "generated_at": "2026-10-29 15:31:30",
+  "macro_score": 47.4,
   "macro_signal": "neutral",
   "allow_long": true,
   "longs": [],
-  "shorts_or_avoids": [
-    {
-      "ticker": "SMH",
-      "name": "美国半导体ETF-VanEck",
-      "category": "US",
-      "signal": "看空",
-      "confidence": 0.82,
-      "price": 557.98,
-      "target": 546.82,
-      "stop": 585.879,
-      "weighted_score": 41.7,
-      "bt_return_60d": -3.08,
-      "bt_max_dd_60d": -17.44,
-      "bt_sharpe_60d": -0.29,
-      "reasoning": "技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(48.5/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "SOXX",
-      "name": "美国半导体ETF-iShares",
-      "category": "US",
-      "signal": "看空",
-      "confidence": 0.82,
-      "price": 511.06,
-      "target": 500.839,
-      "stop": 536.613,
-      "weighted_score": 41.7,
-      "bt_return_60d": -5.69,
-      "bt_max_dd_60d": -19.31,
-      "bt_sharpe_60d": -0.51,
-      "reasoning": "技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(48.5/100) | 市场上下文neutral(50.0/100)上限100%"
-    }
-  ],
+  "shorts_or_avoids": [],
   "max_single_position": 0.1,
   "stop_loss_pct": 0.05
 }
