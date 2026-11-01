@@ -84,15 +84,22 @@ def generate_stock_etf_list():
                 if amount < min_lot:
                     item['action'] = '不操作'
                     item['target_amount'] = 0.0
+                    item['target_shares'] = 0
                     item['constraint_note'] = f'金额不足一手(¥{min_lot:.0f})'
                 else:
+                    # 计算100股整数倍
+                    shares = int(amount / price)
+                    shares = (shares // 100) * 100
+                    actual_amount = shares * price
                     item['action'] = '买入'
-                    item['target_amount'] = round(amount, 2)
-                    item['constraint_note'] = ''
+                    item['target_amount'] = round(actual_amount, 2)
+                    item['target_shares'] = shares
+                    item['constraint_note'] = f'买入 {shares} 股（100股整数倍）'
             else:
                 # A 股个股不能做空，只给减持建议
                 item['action'] = '减持/卖出'
                 item['target_amount'] = 0.0
+                item['target_shares'] = 0
                 item['constraint_note'] = 'A 股个股不能做空，仅作为卖出参考'
 
         elif category == 'ETF':
