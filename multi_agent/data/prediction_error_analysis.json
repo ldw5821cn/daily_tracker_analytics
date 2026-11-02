@@ -152,9 +152,9 @@
       "name": "白银",
       "category": "期货",
       "signal": "中性",
-      "return_pct": -6.269,
+      "return_pct": -6.284,
       "pred_price": 12682.0,
-      "today_price": 11887.0,
+      "today_price": 11885.0,
       "weighted_score": 41.9,
       "confidence": 0.82,
       "reasoning": "技术面中性(45/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(45.9/100) | 市场上下文neutral(50.0/100)上限100%"
@@ -275,17 +275,6 @@
       "confidence": 0.58
     },
     {
-      "ticker": "UR0",
-      "name": "尿素",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": 1.34,
-      "pred_price": 1716.0,
-      "today_price": 1739.0,
-      "weighted_score": 45.9,
-      "confidence": 0.6
-    },
-    {
       "ticker": "AO0",
       "name": "氧化铝",
       "category": "期货",
@@ -306,6 +295,17 @@
       "today_price": 14.02,
       "weighted_score": 54.1,
       "confidence": 0.65
+    },
+    {
+      "ticker": "UR0",
+      "name": "尿素",
+      "category": "期货",
+      "signal": "中性",
+      "return_pct": 1.282,
+      "pred_price": 1716.0,
+      "today_price": 1738.0,
+      "weighted_score": 45.9,
+      "confidence": 0.6
     }
   ],
   "suggestions": [
