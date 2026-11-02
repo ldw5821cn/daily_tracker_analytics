@@ -1,16 +1,16 @@
 {
-  "date": "2026-10-30",
+  "date": "2026-11-02",
   "generated_by": "after_market_pipeline",
   "top10": [
-    {"code": "000700", "name": "模塑科技", "composite_score": 90, "changepercent": 0.89, "price": 13.57, "amount_yi": 0.0, "reason": "板块分散版Top10"},
-    {"code": "600664", "name": "哈药股份", "composite_score": 89, "changepercent": 4.92, "price": 5.55, "amount_yi": 0.0, "reason": "板块分散版Top10"},
-    {"code": "300450", "name": "先导智能", "composite_score": 87, "changepercent": 4.46, "price": 30.45, "amount_yi": 0.0, "reason": "板块分散版Top10"},
-    {"code": "603366", "name": "日出东方", "composite_score": 86, "changepercent": 2.34, "price": 7.87, "amount_yi": 0.0, "reason": "板块分散版Top10"},
-    {"code": "600601", "name": "方正科技", "composite_score": 86, "changepercent": 0.84, "price": 9.58, "amount_yi": 0.0, "reason": "板块分散版Top10"},
-    {"code": "600267", "name": "海正药业", "composite_score": 86, "changepercent": 1.81, "price": 12.95, "amount_yi": 0.0, "reason": "板块分散版Top10"},
-    {"code": "600256", "name": "广汇能源", "composite_score": 86, "changepercent": 3.84, "price": 7.03, "amount_yi": 0.0, "reason": "板块分散版Top10"},
-    {"code": "300041", "name": "回天新材", "composite_score": 86, "changepercent": 4.51, "price": 9.74, "amount_yi": 0.0, "reason": "板块分散版Top10"},
-    {"code": "300224", "name": "正海磁材", "composite_score": 86, "changepercent": 3.25, "price": 12.70, "amount_yi": 0.0, "reason": "板块分散版Top10"},
-    {"code": "603619", "name": "中曼石油", "composite_score": 85, "changepercent": 3.44, "price": 20.78, "amount_yi": 0.0, "reason": "板块分散版Top10"}
+    {"code": "600664", "name": "哈药股份", "composite_score": 91, "changepercent": 3.78, "price": 5.76, "amount_yi": 0.0, "reason": "板块分散版Top10"},
+    {"code": "300438", "name": "鹏辉能源", "composite_score": 91, "changepercent": 4.96, "price": 37.05, "amount_yi": 0.0, "reason": "板块分散版Top10"},
+    {"code": "000700", "name": "模塑科技", "composite_score": 90, "changepercent": 1.84, "price": 13.82, "amount_yi": 0.0, "reason": "板块分散版Top10"},
+    {"code": "603667", "name": "五洲新春", "composite_score": 89, "changepercent": 1.16, "price": 49.89, "amount_yi": 0.0, "reason": "板块分散版Top10"},
+    {"code": "600258", "name": "首旅酒店", "composite_score": 88, "changepercent": 4.18, "price": 12.95, "amount_yi": 0.0, "reason": "板块分散版Top10"},
+    {"code": "001389", "name": "广合科技", "composite_score": 88, "changepercent": 4.46, "price": 89.31, "amount_yi": 0.0, "reason": "板块分散版Top10"},
+    {"code": "603618", "name": "杭电股份", "composite_score": 87, "changepercent": 2.52, "price": 22.80, "amount_yi": 0.0, "reason": "板块分散版Top10"},
+    {"code": "603283", "name": "赛腾股份", "composite_score": 87, "changepercent": 4.50, "price": 34.35, "amount_yi": 0.0, "reason": "板块分散版Top10"},
+    {"code": "300042", "name": "朗科科技", "composite_score": 87, "changepercent": 3.56, "price": 29.37, "amount_yi": 0.0, "reason": "板块分散版Top10"},
+    {"code": "000676", "name": "智度股份", "composite_score": 87, "changepercent": 4.24, "price": 6.89, "amount_yi": 0.0, "reason": "板块分散版Top10"}
   ]
 }
