@@ -232,17 +232,6 @@
       "confidence": 0.8
     },
     {
-      "ticker": "I0",
-      "name": "铁矿石",
-      "category": "期货",
-      "signal": "观望",
-      "return_pct": 1.186,
-      "pred_price": 674.5,
-      "today_price": 682.5,
-      "weighted_score": 51.6,
-      "confidence": 0.54
-    },
-    {
       "ticker": "600309",
       "name": "万华化学",
       "category": "个股",
@@ -263,6 +252,17 @@
       "today_price": 87.66,
       "weighted_score": 49.4,
       "confidence": 0.55
+    },
+    {
+      "ticker": "I0",
+      "name": "铁矿石",
+      "category": "期货",
+      "signal": "观望",
+      "return_pct": 1.112,
+      "pred_price": 674.5,
+      "today_price": 682.0,
+      "weighted_score": 51.6,
+      "confidence": 0.54
     },
     {
       "ticker": "600188",
