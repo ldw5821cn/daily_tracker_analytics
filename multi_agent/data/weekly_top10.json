@@ -1,95 +1,95 @@
 {
-  "date": "2026-11-03",
+  "date": "2026-11-04",
   "generated_by": "after_market_pipeline",
   "top10": [
     {
+      "code": "002245",
+      "name": "蔚蓝锂芯",
+      "composite_score": 92,
+      "changepercent": 4.73,
+      "price": 11.07,
+      "amount_yi": 0,
+      "reason": "板块分散版Top10"
+    },
+    {
+      "code": "600186",
+      "name": "莲花控股",
+      "composite_score": 90,
+      "changepercent": 4.38,
+      "price": 8.58,
+      "amount_yi": 0,
+      "reason": "板块分散版Top10"
+    },
+    {
+      "code": "600664",
+      "name": "哈药股份",
+      "composite_score": 89,
+      "changepercent": 4.75,
+      "price": 5.74,
+      "amount_yi": 0,
+      "reason": "板块分散版Top10"
+    },
+    {
+      "code": "600267",
+      "name": "海正药业",
+      "composite_score": 88,
+      "changepercent": 4.86,
+      "price": 13.39,
+      "amount_yi": 0,
+      "reason": "板块分散版Top10"
+    },
+    {
+      "code": "002240",
+      "name": "盛新锂能",
+      "composite_score": 88,
+      "changepercent": 3.91,
+      "price": 19.94,
+      "amount_yi": 0,
+      "reason": "板块分散版Top10"
+    },
+    {
+      "code": "000700",
+      "name": "模塑科技",
+      "composite_score": 88,
+      "changepercent": 4.12,
+      "price": 13.64,
+      "amount_yi": 0,
+      "reason": "板块分散版Top10"
+    },
+    {
       "code": "300438",
       "name": "鹏辉能源",
-      "composite_score": 89,
-      "changepercent": 2.62,
-      "price": 38.02,
-      "amount_yi": 12.4,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "002558",
-      "name": "巨人网络",
-      "composite_score": 89,
-      "changepercent": 3.92,
-      "price": 21.49,
-      "amount_yi": 12.4,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "002517",
-      "name": "恺英网络",
-      "composite_score": 88,
-      "changepercent": 3.8,
-      "price": 16.68,
-      "amount_yi": 12.4,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "600285",
-      "name": "羚锐制药",
       "composite_score": 87,
-      "changepercent": 4.57,
-      "price": 23.59,
-      "amount_yi": 12.4,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "300450",
-      "name": "先导智能",
-      "composite_score": 87,
-      "changepercent": 3.81,
-      "price": 31.61,
-      "amount_yi": 12.4,
+      "changepercent": 5.05,
+      "price": 39.94,
+      "amount_yi": 0,
       "reason": "板块分散版Top10"
     },
     {
       "code": "300390",
       "name": "天华新能",
       "composite_score": 87,
-      "changepercent": 3.62,
-      "price": 35.75,
-      "amount_yi": 12.4,
+      "changepercent": 4.73,
+      "price": 37.44,
+      "amount_yi": 0,
       "reason": "板块分散版Top10"
     },
     {
-      "code": "002709",
-      "name": "天赐材料",
+      "code": "300073",
+      "name": "当升科技",
       "composite_score": 87,
-      "changepercent": 2.72,
-      "price": 26.77,
-      "amount_yi": 12.4,
+      "changepercent": 3.44,
+      "price": 34.55,
+      "amount_yi": 0,
       "reason": "板块分散版Top10"
     },
     {
-      "code": "002812",
-      "name": "恩捷股份",
+      "code": "002558",
+      "name": "巨人网络",
       "composite_score": 87,
-      "changepercent": 2.59,
-      "price": 48.73,
-      "amount_yi": 12.4,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "603236",
-      "name": "移远通信",
-      "composite_score": 86,
-      "changepercent": 3.28,
-      "price": 67.7,
-      "amount_yi": 12.4,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "600686",
-      "name": "金龙汽车",
-      "composite_score": 86,
-      "changepercent": 3.07,
-      "price": 8.74,
-      "amount_yi": 12.4,
+      "changepercent": 0.79,
+      "price": 21.66,
+      "amount_yi": 0,
       "reason": "板块分散版Top10"
     }
   ]
