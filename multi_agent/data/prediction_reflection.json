@@ -1,15 +1,15 @@
 {
   "pred_date": "2026-11-04",
   "validation_date": null,
-  "accuracy": 36.13,
+  "accuracy": 35.6,
   "total": 191,
-  "correct": 69,
-  "wrong": 122,
+  "correct": 68,
+  "wrong": 123,
   "by_signal": {
     "中性": {
       "total": 141,
-      "wrong": 95,
-      "error_rate": 67.38
+      "wrong": 96,
+      "error_rate": 68.09
     },
     "观望": {
       "total": 50,
@@ -30,14 +30,14 @@
     },
     "期货": {
       "total": 49,
-      "wrong": 32,
-      "error_rate": 65.31
+      "wrong": 33,
+      "error_rate": 67.35
     }
   },
   "feature_compare": {
     "weighted_score": {
-      "correct_avg": 48.33,
-      "wrong_avg": 48.78
+      "correct_avg": 48.37,
+      "wrong_avg": 48.75
     },
     "confidence": {
       "correct_avg": 0.67,
@@ -46,8 +46,8 @@
   },
   "component_compare": {
     "技术面": {
-      "correct_avg": 52.29,
-      "wrong_avg": 52.27
+      "correct_avg": 52.35,
+      "wrong_avg": 52.24
     },
     "新闻情绪": {
       "correct_avg": 50.0,
@@ -58,18 +58,18 @@
       "wrong_avg": 50.0
     },
     "多空辩论净得分": {
-      "correct_avg": -1.21,
-      "wrong_avg": -1.32
+      "correct_avg": -1.19,
+      "wrong_avg": -1.33
     }
   },
   "divergence_analysis": {
     "fundamental_technical_divergence": {
-      "correct_avg": -2.29,
-      "wrong_avg": -2.27,
+      "correct_avg": -2.35,
+      "wrong_avg": -2.24,
       "by_wrong_signal": {
         "中性": {
-          "avg": -1.58,
-          "n": 95
+          "avg": -1.54,
+          "n": 96
         },
         "观望": {
           "avg": -4.7,
@@ -89,5 +89,5 @@
     "建议增加日内 TickFlow 数据作为校验，减少滞后技术面影响",
     "建议继续扩展宏观/资金面 Agent 数据维度，让优化器自动判断各周期下的权重"
   ],
-  "generated_at": "2026-11-05T15:34:54.691254"
+  "generated_at": "2026-11-05T17:35:53.507606"
 }
