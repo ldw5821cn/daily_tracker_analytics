@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📊 持仓可视化分析 - 2026-11-04</title>
+    <title>📊 持仓可视化分析 - 2026-11-05</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
@@ -168,7 +168,7 @@
     <div class="container">
         <div class="header">
             <h1>📊 持仓可视化分析</h1>
-            <p>生成时间: 2026-11-04 11:45:05 | 数据来源: HiThink Financial-API</p>
+            <p>生成时间: 2026-11-05 10:02:51 | 数据来源: HiThink Financial-API</p>
         </div>
         
         <div class="stats-grid">
@@ -249,9 +249,9 @@
     
     <script>
         // 数据
-        const holdingsData = [{"name": "浙能电力", "symbol": "600023", "price": 5.33, "change": -0.929368, "shares": 500, "market_value": 2665.0, "color": "#48DBFB"}, {"name": "深圳能源", "symbol": "000027", "price": 6.26, "change": 0.320513, "shares": 400, "market_value": 2504.0, "color": "#4ECDC4"}, {"name": "兴蓉环境", "symbol": "000598", "price": 7.32, "change": 1.525659, "shares": 400, "market_value": 2928.0, "color": "#45B7D1"}, {"name": "华电国际", "symbol": "600027", "price": 5.18, "change": 0.974659, "shares": 400, "market_value": 2072.0, "color": "#FECA57"}, {"name": "华能国际", "symbol": "600011", "price": 7.42, "change": -1.066667, "shares": 300, "market_value": 2226.0, "color": "#96CEB4"}, {"name": "工商银行", "symbol": "601398", "price": 8.48, "change": -1.280559, "shares": 300, "market_value": 2544.0, "color": "#54A0FF"}, {"name": "申能股份", "symbol": "600642", "price": 8.98, "change": -0.663717, "shares": 200, "market_value": 1796.0, "color": "#FF9FF3"}, {"name": "平安银行", "symbol": "000001", "price": 11.78, "change": 0.084962, "shares": 100, "market_value": 1178.0, "color": "#FF6B6B"}];
+        const holdingsData = [{"name": "浙能电力", "symbol": "600023", "price": 5.25, "change": -0.943396, "shares": 500, "market_value": 2625.0, "color": "#48DBFB"}, {"name": "深圳能源", "symbol": "000027", "price": 6.25, "change": -0.477707, "shares": 400, "market_value": 2500.0, "color": "#4ECDC4"}, {"name": "兴蓉环境", "symbol": "000598", "price": 7.21, "change": -1.097394, "shares": 400, "market_value": 2884.0, "color": "#45B7D1"}, {"name": "华电国际", "symbol": "600027", "price": 5.01, "change": -1.764706, "shares": 400, "market_value": 2004.0, "color": "#FECA57"}, {"name": "华能国际", "symbol": "600011", "price": 7.3, "change": -0.544959, "shares": 300, "market_value": 2190.0, "color": "#96CEB4"}, {"name": "工商银行", "symbol": "601398", "price": 8.27, "change": -1.664685, "shares": 300, "market_value": 2481.0, "color": "#54A0FF"}, {"name": "申能股份", "symbol": "600642", "price": 8.91, "change": -0.223964, "shares": 200, "market_value": 1782.0, "color": "#FF9FF3"}, {"name": "平安银行", "symbol": "000001", "price": 11.62, "change": -1.022147, "shares": 100, "market_value": 1162.0, "color": "#FF6B6B"}];
         
-        const valuationData = [{"name": "浙能电力", "pe": 26.041753, "pb": 0.967094, "status": "fair"}, {"name": "深圳能源", "pe": 12.677757, "pb": 0.88721, "status": "fair"}, {"name": "兴蓉环境", "pe": 10.672363, "pb": 1.048066, "status": "fair"}, {"name": "华电国际", "pe": 16.985372, "pb": 1.187813, "status": "fair"}, {"name": "华能国际", "pe": 15.760047, "pb": 1.764401, "status": "fair"}, {"name": "工商银行", "pe": 7.864617, "pb": 0.754486, "status": "undervalued"}, {"name": "申能股份", "pe": 15.543363, "pb": 1.182377, "status": "fair"}, {"name": "平安银行", "pe": 5.257629, "pb": 0.479549, "status": "undervalued"}];
+        const valuationData = [{"name": "浙能电力", "pe": 25.699741, "pb": 0.954393, "status": "fair"}, {"name": "深圳能源", "pe": 12.637253, "pb": 0.884375, "status": "fair"}, {"name": "兴蓉环境", "pe": 10.511986, "pb": 1.032316, "status": "fair"}, {"name": "华电国际", "pe": 16.427937, "pb": 1.14883, "status": "fair"}, {"name": "华能国际", "pe": 15.526407, "pb": 1.738244, "status": "fair"}, {"name": "工商银行", "pe": 7.669856, "pb": 0.735802, "status": "undervalued"}, {"name": "申能股份", "pe": 15.422201, "pb": 1.17316, "status": "fair"}, {"name": "平安银行", "pe": 5.186218, "pb": 0.473036, "status": "undervalued"}];
         
         const financialData = [{"name": "浙能电力", "roe": 11.06, "revenue_growth": -8.306472, "score": 32.675625000000004}, {"name": "深圳能源", "roe": 4.47, "revenue_growth": 1.750703, "score": 17.70887625}, {"name": "兴蓉环境", "roe": 11.5, "revenue_growth": 11.897977, "score": 39.982110694444444}, {"name": "华电国际", "roe": 11.66, "revenue_growth": -3.569111, "score": 27.468550416666666}, {"name": "华能国际", "roe": 13.14, "revenue_growth": -3.477156, "score": 29.25830722222222}, {"name": "工商银行", "roe": 9.88, "revenue_growth": -2.522566, "score": 29.2807275}, {"name": "申能股份", "roe": 11.33, "revenue_growth": 1.639284, "score": 32.75175125}, {"name": "平安银行", "roe": 10.08, "revenue_growth": -10.931457, "score": 29.233333333333334}];
         

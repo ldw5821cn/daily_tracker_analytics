@@ -1,104 +1,108 @@
 {
   "name": "高股息实盘组合",
-  "total_value": 20932.1,
-  "available_cash": 378.73,
-  "total_profit": 990.48,
+  "total_value": 21204.0,
+  "available_cash": 14.95,
+  "total_profit": 595.0,
   "positions": [
     {
       "code": "000001",
       "name": "平安银行",
-      "shares": 200,
-      "price": 11.78,
-      "cost": 11.52,
-      "market_value": 2356.0,
-      "profit": 52.0,
-      "profit_pct": 2.257,
-      "daily_profit": 2.0,
-      "daily_profit_pct": 0.085
+      "shares": 500,
+      "available": 300,
+      "price": 11.63,
+      "cost": 11.636,
+      "market_value": 5815.0,
+      "profit": -3.0,
+      "profit_pct": -0.052
     },
     {
       "code": "000027",
       "name": "深圳能源",
-      "shares": 400,
-      "price": 6.26,
-      "cost": 6.248,
-      "market_value": 2504.0,
-      "profit": 5.0,
-      "profit_pct": 0.192,
-      "daily_profit": 8.0,
-      "daily_profit_pct": 0.321
+      "shares": 0,
+      "available": 0,
+      "price": 6.24,
+      "cost": 0.0,
+      "market_value": 0.0,
+      "profit": -0.26,
+      "profit_pct": 0.0,
+      "status": "已卖出"
     },
     {
       "code": "000598",
       "name": "兴蓉环境",
-      "shares": 400,
-      "price": 7.32,
-      "cost": 7.073,
-      "market_value": 2928.0,
-      "profit": 99.0,
-      "profit_pct": 3.492,
-      "daily_profit": 44.0,
-      "daily_profit_pct": 1.526
+      "shares": 700,
+      "available": 500,
+      "price": 7.21,
+      "cost": 7.177,
+      "market_value": 5047.0,
+      "profit": 23.0,
+      "profit_pct": 0.46
     },
     {
       "code": "600011",
       "name": "华能国际",
-      "shares": 300,
-      "price": 7.42,
-      "cost": 6.92,
-      "market_value": 2226.0,
-      "profit": 149.97,
-      "profit_pct": 7.225,
-      "daily_profit": -24.0,
-      "daily_profit_pct": -1.067
+      "shares": 400,
+      "available": 300,
+      "price": 7.3,
+      "cost": 7.03,
+      "market_value": 2920.0,
+      "profit": 107.96,
+      "profit_pct": 3.841
     },
     {
       "code": "600023",
       "name": "浙能电力",
       "shares": 500,
-      "price": 5.33,
+      "available": 500,
+      "price": 5.25,
       "cost": 5.038,
-      "market_value": 2665.0,
-      "profit": 145.98,
-      "profit_pct": 5.796,
-      "daily_profit": -25.0,
-      "daily_profit_pct": -0.929
+      "market_value": 2625.0,
+      "profit": 105.98,
+      "profit_pct": 4.208
     },
     {
       "code": "600027",
       "name": "华电国际",
       "shares": 400,
-      "price": 5.18,
+      "available": 400,
+      "price": 5.01,
       "cost": 4.725,
-      "market_value": 2072.0,
-      "profit": 181.99,
-      "profit_pct": 9.63,
-      "daily_profit": 20.0,
-      "daily_profit_pct": 0.975
+      "market_value": 2004.0,
+      "profit": 113.99,
+      "profit_pct": 6.032
     },
     {
       "code": "600642",
       "name": "申能股份",
-      "shares": 300,
-      "price": 8.98,
-      "cost": 8.597,
-      "market_value": 2854.0,
-      "profit": 114.97,
-      "profit_pct": 4.455,
-      "daily_profit": -18.0,
-      "daily_profit_pct": -0.664
+      "shares": 0,
+      "available": 0,
+      "price": 8.91,
+      "cost": 0.0,
+      "market_value": 0.0,
+      "profit": 87.6,
+      "profit_pct": 0.0,
+      "status": "已卖出"
     },
     {
       "code": "601398",
       "name": "工商银行",
-      "shares": 400,
-      "price": 8.48,
-      "cost": 7.869,
-      "market_value": 3392.0,
-      "profit": 244.29,
-      "profit_pct": 7.765,
-      "daily_profit": -44.0,
-      "daily_profit_pct": -1.281
+      "shares": 300,
+      "available": 300,
+      "price": 8.29,
+      "cost": 7.775,
+      "market_value": 2487.0,
+      "profit": 159.87,
+      "profit_pct": 6.871
+    }
+  ],
+  "funds": [
+    {
+      "code": "513330",
+      "name": "恒生互联",
+      "shares": 100,
+      "price": 0.34,
+      "market_value": 900.0,
+      "profit": 3.54
     }
   ]
 }
