@@ -104,9 +104,9 @@
       "name": "碳酸锂",
       "category": "期货",
       "signal": "中性",
-      "return_pct": -4.455,
+      "return_pct": -4.477,
       "pred_price": 91580.0,
-      "today_price": 87500.0,
+      "today_price": 87480.0,
       "weighted_score": 48.0,
       "confidence": 0.66,
       "reasoning": "技术面中性(52/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.2 vs 看跌2 | 宏观中性(49.0/100) | 市场上下文neutral(50.0/100)上限100%"
@@ -152,9 +152,9 @@
       "name": "LPG",
       "category": "期货",
       "signal": "中性",
-      "return_pct": -3.73,
+      "return_pct": -3.744,
       "pred_price": 6730.0,
-      "today_price": 6479.0,
+      "today_price": 6478.0,
       "weighted_score": 51.9,
       "confidence": 0.6,
       "reasoning": "技术面中性(57/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌2 | 宏观中性(49.0/100) | 市场上下文neutral(50.0/100)上限100%"
@@ -188,9 +188,9 @@
       "name": "棕榈油",
       "category": "期货",
       "signal": "中性",
-      "return_pct": -3.093,
+      "return_pct": -3.115,
       "pred_price": 8859.0,
-      "today_price": 8585.0,
+      "today_price": 8583.0,
       "weighted_score": 45.5,
       "confidence": 0.7,
       "reasoning": "技术面中性(48/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌2 | 宏观中性(49.0/100) | 市场上下文neutral(50.0/100)上限100%"
@@ -209,6 +209,17 @@
       "confidence": 0.95
     },
     {
+      "ticker": "RU0",
+      "name": "橡胶",
+      "category": "期货",
+      "signal": "中性",
+      "return_pct": -1.478,
+      "pred_price": 18945.0,
+      "today_price": 18665.0,
+      "weighted_score": 46.6,
+      "confidence": 0.61
+    },
+    {
       "ticker": "000426",
       "name": "兴业银锡",
       "category": "个股",
@@ -218,17 +229,6 @@
       "today_price": 24.42,
       "weighted_score": 48.9,
       "confidence": 0.65
-    },
-    {
-      "ticker": "RU0",
-      "name": "橡胶",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": -1.452,
-      "pred_price": 18945.0,
-      "today_price": 18670.0,
-      "weighted_score": 46.6,
-      "confidence": 0.61
     },
     {
       "ticker": "300618",
@@ -290,9 +290,9 @@
       "name": "甲醇",
       "category": "期货",
       "signal": "观望",
-      "return_pct": 1.332,
+      "return_pct": 1.3,
       "pred_price": 3153.0,
-      "today_price": 3195.0,
+      "today_price": 3194.0,
       "weighted_score": 53.5,
       "confidence": 0.54
     },
