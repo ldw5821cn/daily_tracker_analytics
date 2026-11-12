@@ -4,8 +4,8 @@
   "direction_threshold": 1.5,
   "overall": {
     "total": 246,
-    "correct": 109,
-    "accuracy": 44.31
+    "correct": 110,
+    "accuracy": 44.72
   },
   "by_category": {
     "US": {
@@ -20,8 +20,8 @@
     },
     "个股": {
       "total": 119,
-      "correct": 39,
-      "accuracy": 32.77
+      "correct": 40,
+      "accuracy": 33.61
     },
     "期货": {
       "total": 49,
@@ -2732,9 +2732,9 @@
       "category": "个股",
       "signal": "观望",
       "pred_price": 6.59,
-      "today_price": 6123.414,
-      "return_pct": 92819.788,
-      "direction_correct": false,
+      "today_price": 7.0,
+      "return_pct": 0.0,
+      "direction_correct": true,
       "note": "ok"
     },
     {
