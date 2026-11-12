@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-12T08:39:20",
+  "generated_at": "2026-11-12T17:07:00",
   "today": "2026-11-12",
   "records": [
     {
@@ -347,21 +347,6 @@
       "source": "akshare_margin_sse"
     },
     {
-      "date": "2026-10-28",
-      "ticker": "50ETF",
-      "metric": "option_vix_close",
-      "value": 15.44,
-      "detail": {
-        "date": "2026-10-28",
-        "symbol": "50ETF",
-        "vix_open": 16.33,
-        "vix_high": 16.39,
-        "vix_low": 15.39,
-        "vix_close": 15.44
-      },
-      "source": "akshare_option_vix"
-    },
-    {
       "date": "2026-10-29",
       "ticker": "50ETF",
       "metric": "option_vix_close",
@@ -497,17 +482,17 @@
       "source": "akshare_option_vix"
     },
     {
-      "date": "2026-10-28",
-      "ticker": "300ETF",
+      "date": "2026-11-12",
+      "ticker": "50ETF",
       "metric": "option_vix_close",
-      "value": 19.51,
+      "value": 14.23,
       "detail": {
-        "date": "2026-10-28",
-        "symbol": "300ETF",
-        "vix_open": 20.15,
-        "vix_high": 20.41,
-        "vix_low": 19.32,
-        "vix_close": 19.51
+        "date": "2026-11-12",
+        "symbol": "50ETF",
+        "vix_open": 14.13,
+        "vix_high": 14.23,
+        "vix_low": 14.13,
+        "vix_close": 14.23
       },
       "source": "akshare_option_vix"
     },
@@ -647,17 +632,17 @@
       "source": "akshare_option_vix"
     },
     {
-      "date": "2026-10-28",
-      "ticker": "500ETF",
+      "date": "2026-11-12",
+      "ticker": "300ETF",
       "metric": "option_vix_close",
-      "value": 30.98,
+      "value": 17.31,
       "detail": {
-        "date": "2026-10-28",
-        "symbol": "500ETF",
-        "vix_open": 33.16,
-        "vix_high": 33.82,
-        "vix_low": 30.15,
-        "vix_close": 30.98
+        "date": "2026-11-12",
+        "symbol": "300ETF",
+        "vix_open": 17.2,
+        "vix_high": 17.31,
+        "vix_low": 17.2,
+        "vix_close": 17.31
       },
       "source": "akshare_option_vix"
     },
@@ -793,6 +778,21 @@
         "vix_high": 29.45,
         "vix_low": 26.13,
         "vix_close": 26.84
+      },
+      "source": "akshare_option_vix"
+    },
+    {
+      "date": "2026-11-12",
+      "ticker": "500ETF",
+      "metric": "option_vix_close",
+      "value": 27.91,
+      "detail": {
+        "date": "2026-11-12",
+        "symbol": "500ETF",
+        "vix_open": 27.79,
+        "vix_high": 27.91,
+        "vix_low": 27.79,
+        "vix_close": 27.91
       },
       "source": "akshare_option_vix"
     },
