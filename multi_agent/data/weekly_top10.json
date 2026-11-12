@@ -1,96 +1,16 @@
 {
-  "date": "2026-11-05",
+  "date": "2026-11-12",
   "generated_by": "after_market_pipeline",
   "top10": [
-    {
-      "code": "002245",
-      "name": "蔚蓝锂芯",
-      "composite_score": 92,
-      "changepercent": 3.07,
-      "price": 11.41,
-      "amount_yi": 12.4,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "300378",
-      "name": "鼎捷数智",
-      "composite_score": 89,
-      "changepercent": 4.74,
-      "price": 39.99,
-      "amount_yi": 8.2,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "002396",
-      "name": "星网锐捷",
-      "composite_score": 89,
-      "changepercent": 4.07,
-      "price": 23.78,
-      "amount_yi": 6.8,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "603588",
-      "name": "高能时代",
-      "composite_score": 88,
-      "changepercent": 3.13,
-      "price": 11.19,
-      "amount_yi": 5.1,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "600267",
-      "name": "海正药业",
-      "composite_score": 88,
-      "changepercent": 3.29,
-      "price": 13.83,
-      "amount_yi": 4.6,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "300821",
-      "name": "东岳硅材",
-      "composite_score": 88,
-      "changepercent": 2.58,
-      "price": 13.94,
-      "amount_yi": 3.9,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "300790",
-      "name": "宇瞳光学",
-      "composite_score": 88,
-      "changepercent": 3.23,
-      "price": 16.93,
-      "amount_yi": 3.5,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "000973",
-      "name": "佛塑科技",
-      "composite_score": 88,
-      "changepercent": 3.39,
-      "price": 11.28,
-      "amount_yi": 3.2,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "688518",
-      "name": "联赢激光",
-      "composite_score": 87,
-      "changepercent": 0.69,
-      "price": 21.92,
-      "amount_yi": 2.8,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "603618",
-      "name": "杭电股份",
-      "composite_score": 87,
-      "changepercent": 1.55,
-      "price": 23.65,
-      "amount_yi": 2.5,
-      "reason": "板块分散版Top10"
-    }
+    {"code": "002245", "name": "蔚蓝锂芯", "composite_score": 90, "changepercent": 0.53, "price": 11.36, "amount_yi": 12.4, "reason": "板块分散版Top10"},
+    {"code": "002275", "name": "桂林三金", "composite_score": 88, "changepercent": 3.91, "price": 15.95, "amount_yi": 8.2, "reason": "板块分散版Top10"},
+    {"code": "001399", "name": "惠科股份", "composite_score": 86, "changepercent": 0.54, "price": 16.67, "amount_yi": 10.1, "reason": "板块分散版Top10"},
+    {"code": "603456", "name": "九洲药业", "composite_score": 86, "changepercent": 2.89, "price": 17.10, "amount_yi": 9.5, "reason": "板块分散版Top10"},
+    {"code": "002941", "name": "新疆交建", "composite_score": 86, "changepercent": 2.93, "price": 11.23, "amount_yi": 7.8, "reason": "板块分散版Top10"},
+    {"code": "002396", "name": "星网锐捷", "composite_score": 86, "changepercent": 4.13, "price": 25.47, "amount_yi": 6.8, "reason": "板块分散版Top10"},
+    {"code": "002697", "name": "红旗连锁", "composite_score": 85, "changepercent": 1.52, "price": 5.35, "amount_yi": 6.5, "reason": "板块分散版Top10"},
+    {"code": "300873", "name": "海晨股份", "composite_score": 84, "changepercent": 3.94, "price": 12.94, "amount_yi": 5.9, "reason": "板块分散版Top10"},
+    {"code": "300483", "name": "首华燃气", "composite_score": 84, "changepercent": 0.73, "price": 19.20, "amount_yi": 5.6, "reason": "板块分散版Top10"},
+    {"code": "300093", "name": "金刚光伏", "composite_score": 84, "changepercent": 1.06, "price": 18.14, "amount_yi": 5.2, "reason": "板块分散版Top10"}
   ]
 }
