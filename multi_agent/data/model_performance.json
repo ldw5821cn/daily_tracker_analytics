@@ -1,55 +1,55 @@
 {
-  "generated_at": "2026-11-13T15:50:16",
+  "generated_at": "2026-11-13T17:27:44",
   "pred_date": "2026-11-13",
-  "ret_map_count": 116304,
+  "ret_map_count": 116475,
   "warehouse_max_dates": {
-    "个股": "2026-11-12",
-    "指数": "2026-11-11",
-    "ETF": "2026-11-12",
-    "US": "2026-11-11",
-    "futures": "2026-11-12",
-    "index": "2026-11-11",
-    "期货": "2026-11-12"
+    "个股": "2026-11-13",
+    "指数": "2026-11-12",
+    "ETF": "2026-11-13",
+    "US": "2026-11-12",
+    "futures": "2026-11-13",
+    "index": "2026-11-12",
+    "期货": "2026-11-13"
   },
   "categories": {
     "个股": {
       "status": "ok",
       "n": 7718,
-      "n_evaluable": 6772,
-      "skipped_no_forward": 946,
+      "n_evaluable": 6891,
+      "skipped_no_forward": 827,
       "n_bull": 49,
-      "n_bear": 3513,
+      "n_bear": 3607,
       "bullish_mean": -2.58,
-      "bearish_mean": -1.32,
-      "direction_accuracy": 58.9,
-      "coverage": 52.6,
-      "warehouse_max_date": "2026-11-12"
+      "bearish_mean": -1.31,
+      "direction_accuracy": 59.0,
+      "coverage": 53.1,
+      "warehouse_max_date": "2026-11-13"
     },
     "ETF": {
       "status": "ok",
       "n": 1557,
-      "n_evaluable": 1373,
-      "skipped_no_forward": 184,
-      "n_bull": 45,
-      "n_bear": 238,
-      "bullish_mean": -1.71,
-      "bearish_mean": -0.09,
-      "direction_accuracy": 51.9,
+      "n_evaluable": 1396,
+      "skipped_no_forward": 161,
+      "n_bull": 46,
+      "n_bear": 241,
+      "bullish_mean": -1.69,
+      "bearish_mean": -0.07,
+      "direction_accuracy": 51.6,
       "coverage": 20.6,
-      "warehouse_max_date": "2026-11-12"
+      "warehouse_max_date": "2026-11-13"
     },
     "期货": {
       "status": "ok",
       "n": 3255,
-      "n_evaluable": 1239,
-      "skipped_no_forward": 2016,
+      "n_evaluable": 1260,
+      "skipped_no_forward": 1995,
       "n_bull": 9,
-      "n_bear": 71,
+      "n_bear": 72,
       "bullish_mean": 0.01,
-      "bearish_mean": 0.0,
-      "direction_accuracy": 47.5,
-      "coverage": 6.5,
-      "warehouse_max_date": "2026-11-12"
+      "bearish_mean": -0.04,
+      "direction_accuracy": 48.1,
+      "coverage": 6.4,
+      "warehouse_max_date": "2026-11-13"
     },
     "US": {
       "status": "ok",
@@ -62,7 +62,7 @@
       "bearish_mean": null,
       "direction_accuracy": 0,
       "coverage": 0,
-      "warehouse_max_date": "2026-11-11"
+      "warehouse_max_date": "2026-11-12"
     }
   }
 }
