@@ -1,12 +1,17 @@
 {
   "source": "alternative.me Fear and Greed Index",
-  "fetched_at": "2026-11-15T01:00:25.456041+00:00",
+  "fetched_at": "2026-11-16T01:00:35.001722+00:00",
   "data": [
     {
       "value": "10",
       "value_classification": "Extreme Fear",
-      "timestamp": "1794700800",
-      "time_until_update": "82775"
+      "timestamp": "1794787200",
+      "time_until_update": "82766"
+    },
+    {
+      "value": "10",
+      "value_classification": "Extreme Fear",
+      "timestamp": "1794700800"
     },
     {
       "value": "13",
@@ -447,11 +452,6 @@
       "value": "46",
       "value_classification": "Fear",
       "timestamp": "1787097600"
-    },
-    {
-      "value": "41",
-      "value_classification": "Fear",
-      "timestamp": "1787011200"
     }
   ]
 }
