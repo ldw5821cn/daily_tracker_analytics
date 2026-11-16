@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-11-13T17:27:45",
+  "generated_at": "2026-11-16T17:21:43",
   "pred_date_range": [
     "2026-08-03",
-    "2026-11-06"
+    "2026-11-09"
   ],
-  "n_days": 61,
-  "n_predictions": 9547,
+  "n_days": 62,
+  "n_predictions": 9710,
   "warehouse_max_dates": {
-    "个股": "2026-11-13",
-    "指数": "2026-11-12",
-    "ETF": "2026-11-13",
-    "US": "2026-11-12",
-    "futures": "2026-11-13",
-    "index": "2026-11-12",
-    "期货": "2026-11-13"
+    "个股": "2026-11-16",
+    "指数": "2026-11-13",
+    "ETF": "2026-11-16",
+    "US": "2026-11-13",
+    "futures": "2026-11-16",
+    "index": "2026-11-13",
+    "期货": "2026-11-16"
   },
   "categories": {
     "个股": {
@@ -38,36 +38,36 @@
           "name": "第二段",
           "dates": [
             "2026-08-31",
-            "2026-10-08"
+            "2026-10-09"
           ],
-          "n": 2261,
-          "n_evaluable": 2261,
-          "coverage": 0.5988500663423264,
+          "n": 2380,
+          "n_evaluable": 2380,
+          "coverage": 0.6100840336134454,
           "n_bull": 32,
-          "n_bear": 1322,
-          "accuracy": 61.81683899556869,
+          "n_bear": 1420,
+          "accuracy": 63.91184573002755,
           "bull_mean": -5.43,
-          "bear_mean": -2.53
+          "bear_mean": -2.9
         },
         {
           "name": "第三段",
           "dates": [
-            "2026-10-09",
-            "2026-11-06"
+            "2026-10-12",
+            "2026-11-09"
           ],
           "n": 2499,
           "n_evaluable": 2499,
-          "coverage": 0.8247298919567827,
+          "coverage": 0.8215286114445778,
           "n_bull": 17,
-          "n_bear": 2044,
-          "accuracy": 61.47501213003397,
+          "n_bear": 2036,
+          "accuracy": 61.13005358012664,
           "bull_mean": 2.78,
-          "bear_mean": -1.74
+          "bear_mean": -1.59
         }
       ],
-      "mean_accuracy": 48.3,
-      "accuracy_cv": 0.39,
-      "mean_coverage": 51.2,
+      "mean_accuracy": 48.9,
+      "accuracy_cv": 0.4,
+      "mean_coverage": 51.5,
       "coverage_cv": 0.58,
       "trainable": false,
       "note": "数据不足或跨窗口不稳定，暂不训练"
@@ -94,37 +94,37 @@
           "name": "第二段",
           "dates": [
             "2026-08-31",
-            "2026-10-08"
+            "2026-10-09"
           ],
-          "n": 453,
-          "n_evaluable": 453,
-          "coverage": 0.09933774834437085,
-          "n_bull": 10,
-          "n_bear": 35,
-          "accuracy": 64.44444444444444,
-          "bull_mean": -0.63,
-          "bear_mean": -1.25
+          "n": 476,
+          "n_evaluable": 476,
+          "coverage": 0.1092436974789916,
+          "n_bull": 14,
+          "n_bear": 38,
+          "accuracy": 67.3076923076923,
+          "bull_mean": -0.59,
+          "bear_mean": -1.76
         },
         {
           "name": "第三段",
           "dates": [
-            "2026-10-09",
-            "2026-11-06"
+            "2026-10-12",
+            "2026-11-09"
           ],
           "n": 483,
           "n_evaluable": 483,
-          "coverage": 0.4306418219461698,
-          "n_bull": 36,
-          "n_bear": 172,
-          "accuracy": 52.88461538461539,
-          "bull_mean": -1.99,
-          "bear_mean": -0.84
+          "coverage": 0.41821946169772256,
+          "n_bull": 32,
+          "n_bear": 170,
+          "accuracy": 51.98019801980198,
+          "bull_mean": -2.17,
+          "bear_mean": -0.76
         }
       ],
-      "mean_accuracy": 47.9,
-      "accuracy_cv": 0.33,
-      "mean_coverage": 20.1,
-      "coverage_cv": 0.81,
+      "mean_accuracy": 48.6,
+      "accuracy_cv": 0.35,
+      "mean_coverage": 20.0,
+      "coverage_cv": 0.77,
       "trainable": false,
       "note": "数据不足或跨窗口不稳定，暂不训练"
     },
@@ -150,37 +150,37 @@
           "name": "第二段",
           "dates": [
             "2026-08-31",
-            "2026-10-08"
+            "2026-10-09"
           ],
-          "n": 399,
-          "n_evaluable": 399,
-          "coverage": 0.03007518796992481,
+          "n": 420,
+          "n_evaluable": 420,
+          "coverage": 0.03333333333333333,
           "n_bull": 5,
-          "n_bear": 7,
-          "accuracy": 58.333333333333336,
+          "n_bear": 9,
+          "accuracy": 64.28571428571429,
           "bull_mean": -0.33,
-          "bear_mean": 0.12
+          "bear_mean": -0.76
         },
         {
           "name": "第三段",
           "dates": [
-            "2026-10-09",
-            "2026-11-06"
+            "2026-10-12",
+            "2026-11-09"
           ],
           "n": 441,
           "n_evaluable": 441,
-          "coverage": 0.09070294784580499,
+          "coverage": 0.08843537414965986,
           "n_bull": 4,
-          "n_bear": 36,
-          "accuracy": 77.5,
+          "n_bear": 35,
+          "accuracy": 76.92307692307693,
           "bull_mean": 0.44,
-          "bear_mean": -2.89
+          "bear_mean": -3.06
         }
       ],
-      "mean_accuracy": 46.4,
-      "accuracy_cv": 0.68,
-      "mean_coverage": 6.3,
-      "coverage_cv": 0.4,
+      "mean_accuracy": 48.2,
+      "accuracy_cv": 0.67,
+      "mean_coverage": 6.4,
+      "coverage_cv": 0.36,
       "trainable": false,
       "note": "数据不足或跨窗口不稳定，暂不训练"
     },
