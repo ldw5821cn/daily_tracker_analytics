@@ -3,9 +3,9 @@
   "validation_date": null,
   "summary": {
     "total": 191,
-    "correct": 96,
-    "wrong": 95,
-    "accuracy": 50.26
+    "correct": 95,
+    "wrong": 96,
+    "accuracy": 49.74
   },
   "by_category": {
     "ETF": {
@@ -20,15 +20,15 @@
     },
     "期货": {
       "total": 49,
-      "wrong": 29,
-      "error_rate": 59.18
+      "wrong": 30,
+      "error_rate": 61.22
     }
   },
   "by_signal": {
     "中性": {
       "total": 154,
-      "wrong": 69,
-      "error_rate": 44.81
+      "wrong": 70,
+      "error_rate": 45.45
     },
     "观望": {
       "total": 37,
@@ -38,8 +38,8 @@
   },
   "feature_compare": {
     "weighted_score": {
-      "correct_avg": 48.68,
-      "wrong_avg": 48.28
+      "correct_avg": 48.53,
+      "wrong_avg": 48.43
     },
     "confidence": {
       "correct_avg": 0.67,
@@ -48,8 +48,8 @@
   },
   "component_compare": {
     "技术面": {
-      "correct_avg": 52.72,
-      "wrong_avg": 52.94
+      "correct_avg": 52.54,
+      "wrong_avg": 53.11
     },
     "新闻情绪": {
       "correct_avg": 50.0,
@@ -60,8 +60,8 @@
       "wrong_avg": 50.0
     },
     "多空辩论净得分": {
-      "correct_avg": -1.27,
-      "wrong_avg": -1.2
+      "correct_avg": -1.31,
+      "wrong_avg": -1.16
     }
   },
   "wrong_top10": [
@@ -106,9 +106,9 @@
       "name": "燃油",
       "category": "期货",
       "signal": "中性",
-      "return_pct": -7.811,
+      "return_pct": -7.834,
       "pred_price": 4225.0,
-      "today_price": 3895.0,
+      "today_price": 3894.0,
       "weighted_score": 42.4,
       "confidence": 0.74,
       "reasoning": "技术面中性(43/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3 | 宏观中性(45.6/100) | 市场上下文neutral(50.0/100)上限100%"
@@ -118,9 +118,9 @@
       "name": "原油",
       "category": "期货",
       "signal": "中性",
-      "return_pct": -7.034,
+      "return_pct": -7.05,
       "pred_price": 625.5,
-      "today_price": 581.5,
+      "today_price": 581.4,
       "weighted_score": 42.9,
       "confidence": 0.73,
       "reasoning": "技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3 | 宏观中性(45.6/100) | 市场上下文neutral(50.0/100)上限100%"
@@ -162,6 +162,18 @@
       "reasoning": "技术面中性(42/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0 vs 看跌3 | 宏观中性(45.6/100) | 市场上下文neutral(50.0/100)上限100%"
     },
     {
+      "ticker": "BU0",
+      "name": "沥青",
+      "category": "期货",
+      "signal": "中性",
+      "return_pct": -6.25,
+      "pred_price": 4432.0,
+      "today_price": 4155.0,
+      "weighted_score": 42.9,
+      "confidence": 0.73,
+      "reasoning": "技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3 | 宏观中性(45.6/100) | 市场上下文neutral(50.0/100)上限100%"
+    },
+    {
       "ticker": "600301",
       "name": "华锡有色",
       "category": "个股",
@@ -172,32 +184,9 @@
       "weighted_score": 49.4,
       "confidence": 0.63,
       "reasoning": "技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.4 vs 看跌2 | 宏观中性(45.6/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
-      "ticker": "BU0",
-      "name": "沥青",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": -6.205,
-      "pred_price": 4432.0,
-      "today_price": 4157.0,
-      "weighted_score": 42.9,
-      "confidence": 0.73,
-      "reasoning": "技术面中性(44/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨1 vs 看跌3 | 宏观中性(45.6/100) | 市场上下文neutral(50.0/100)上限100%"
     }
   ],
   "correct_top10": [
-    {
-      "ticker": "NR0",
-      "name": "20号胶",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": -1.497,
-      "pred_price": 16695.0,
-      "today_price": 16445.0,
-      "weighted_score": 63.1,
-      "confidence": 0.79
-    },
     {
       "ticker": "RM0",
       "name": "菜粕",
@@ -219,6 +208,17 @@
       "today_price": 0.822,
       "weighted_score": 47.5,
       "confidence": 0.67
+    },
+    {
+      "ticker": "OI0",
+      "name": "菜油",
+      "category": "期货",
+      "signal": "中性",
+      "return_pct": -1.434,
+      "pred_price": 10113.0,
+      "today_price": 9968.0,
+      "weighted_score": 44.5,
+      "confidence": 0.72
     },
     {
       "ticker": "600547",
@@ -243,26 +243,26 @@
       "confidence": 0.8
     },
     {
-      "ticker": "OI0",
-      "name": "菜油",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": -1.424,
-      "pred_price": 10113.0,
-      "today_price": 9969.0,
-      "weighted_score": 44.5,
-      "confidence": 0.72
-    },
-    {
       "ticker": "SN0",
       "name": "沪锡",
       "category": "期货",
       "signal": "中性",
-      "return_pct": -1.387,
+      "return_pct": -1.407,
       "pred_price": 354000.0,
-      "today_price": 349090.0,
+      "today_price": 349020.0,
       "weighted_score": 41.3,
       "confidence": 0.83
+    },
+    {
+      "ticker": "SM0",
+      "name": "硅锰",
+      "category": "期货",
+      "signal": "中性",
+      "return_pct": -1.366,
+      "pred_price": 5856.0,
+      "today_price": 5776.0,
+      "weighted_score": 45.8,
+      "confidence": 0.6
     },
     {
       "ticker": "688525",
@@ -299,17 +299,18 @@
     }
   ],
   "suggestions": [
+    "整体胜率不足 50%，当前处于学习期，应继续积累真实标签并扩展数据仓库，由 parameter_optimizer 自动学习权重/阈值映射",
     "建议增加日内 TickFlow 数据作为校验，减少滞后技术面影响",
     "建议继续扩展宏观/资金面 Agent 数据维度，让优化器自动判断各周期下的权重"
   ],
   "divergence_analysis": {
     "fundamental_technical_divergence": {
-      "correct_avg": -2.72,
-      "wrong_avg": -2.94,
+      "correct_avg": -2.54,
+      "wrong_avg": -3.11,
       "by_wrong_signal": {
         "中性": {
-          "avg": -1.71,
-          "n": 69
+          "avg": -1.97,
+          "n": 70
         },
         "观望": {
           "avg": -6.19,
