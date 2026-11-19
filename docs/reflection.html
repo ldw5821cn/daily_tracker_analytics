@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🧠 复盘 - 2026-11-17</title>
+<title>🧠 复盘 - 2026-11-18</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <script src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <style>
@@ -64,12 +64,12 @@ tr:hover { background: #334155; }
 
     <div class="header">
         <h1>🧠 复盘 </h1>
-        <div class="sub">2026-11-17 预测验证后反思 · 生成于 2026-11-18T17:18:07</div>
+        <div class="sub">2026-11-18 预测验证后反思 · 生成于 2026-11-19T17:36:55</div>
     </div>
 
     <div class="header">
         <h1>🧠 每日预测反思 </h1>
-        <div class="sub">2026-11-17 预测 · 验证准确率 49.21% (94/191) · 错误 97 个</div>
+        <div class="sub">2026-11-18 预测 · 验证准确率 49.21% (94/191) · 错误 97 个</div>
     </div>
 
     <div class="stats-grid">
@@ -92,8 +92,8 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>信号</th><th>总数</th><th>错误</th><th>错误率</th></tr></thead>
         <tbody>
-        <tr><td>中性</td><td>154</td><td>85</td><td>55.19%</td></tr>
-        <tr><td>观望</td><td>37</td><td>12</td><td>32.43%</td></tr></tbody>
+        <tr><td>中性</td><td>153</td><td>73</td><td>47.71%</td></tr>
+        <tr><td>观望</td><td>38</td><td>24</td><td>63.16%</td></tr></tbody>
     </table>
     </div>
 
@@ -102,9 +102,9 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>类别</th><th>总数</th><th>错误</th><th>错误率</th></tr></thead>
         <tbody>
-        <tr><td>ETF</td><td>23</td><td>8</td><td>34.78%</td></tr>
-        <tr><td>个股</td><td>119</td><td>56</td><td>47.06%</td></tr>
-        <tr><td>期货</td><td>49</td><td>33</td><td>67.35%</td></tr></tbody>
+        <tr><td>ETF</td><td>23</td><td>5</td><td>21.74%</td></tr>
+        <tr><td>个股</td><td>119</td><td>64</td><td>53.78%</td></tr>
+        <tr><td>期货</td><td>49</td><td>28</td><td>57.14%</td></tr></tbody>
     </table>
     </div>
 
@@ -113,8 +113,8 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>特征</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>weighted_score</td><td>48.78</td><td>46.7</td></tr>
-        <tr><td>confidence</td><td>0.66</td><td>0.69</td></tr></tbody>
+        <tr><td>weighted_score</td><td>48.06</td><td>46.97</td></tr>
+        <tr><td>confidence</td><td>0.69</td><td>0.68</td></tr></tbody>
     </table>
     </div>
 
@@ -123,10 +123,10 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>分项</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>技术面</td><td>52.96</td><td>50.12</td></tr>
+        <tr><td>技术面</td><td>51.63</td><td>50.34</td></tr>
         <tr><td>新闻情绪</td><td>50.0</td><td>50.0</td></tr>
         <tr><td>基本面</td><td>50.0</td><td>50.0</td></tr>
-        <tr><td>多空辩论净得分</td><td>-1.13</td><td>-1.65</td></tr></tbody>
+        <tr><td>多空辩论净得分</td><td>-1.44</td><td>-1.63</td></tr></tbody>
     </table>
     </div>
 
@@ -135,9 +135,9 @@ tr:hover { background: #334155; }
     <table>
         <thead><tr><th>背离指标</th><th>正确样本平均</th><th>错误样本平均</th></tr></thead>
         <tbody>
-        <tr><td>fundamental_technical_divergence</td><td>-2.96</td><td>-0.12</td></tr>
-        <tr><td style='padding-left:24px;color:#94a3b8'>└ 中性错误样本</td><td>0.53</td><td>n=85</td></tr>
-        <tr><td style='padding-left:24px;color:#94a3b8'>└ 观望错误样本</td><td>-4.75</td><td>n=12</td></tr></tbody>
+        <tr><td>fundamental_technical_divergence</td><td>-1.63</td><td>-0.34</td></tr>
+        <tr><td style='padding-left:24px;color:#94a3b8'>└ 中性错误样本</td><td>0.88</td><td>n=73</td></tr>
+        <tr><td style='padding-left:24px;color:#94a3b8'>└ 观望错误样本</td><td>-4.04</td><td>n=24</td></tr></tbody>
     </table>
     </div>
 
@@ -150,7 +150,7 @@ tr:hover { background: #334155; }
     </div>
 
     <div class="section-title">🤖 LLM 深度反思</div>
-    <div class="note"><strong>数据/因子角度诊断报告 — 2026-11-17（准确率 49.21%）<br><br>## 一、当前失效的因子及量化证据<br><br>### 1. 基本面因子 —— 完全失效（死亡因子）<br>- 证据：所有失败 Top5 样本均为 `基本面N/A(50/100)`，正确 vs 错误样本基本面均值均为 <strong>50.00</strong>，零方差。<br>- 结论：该因子当前是常数占位符，既不提供横截面区分度，却可能仍占用 weighted_score 权重，纯稀释有效信号。期货 49 条样本（错误率 67.35%）全部缺失基本面数据，是期货成为重灾区之一的直接原因。<br>- Thesis breaker：任何信号中该分项输出 50.0 且无覆盖记录时，应视为"因子缺失"而非"中性"，进入 optimizer 时打 missing 标记而非参与加权。<br><br>### 2. 新闻情绪因子 —— 完全失效（死亡因子）<br>- 证据：全部样本新闻情绪 `+0.00`，正确/错误均值 50.00/50.00。<br>- 结论：与基本面同构，属于静默因子。正确与错误样本无法区分，说明该通道当前既无采集也无 fallback，应从加权中显式标记缺失。<br><br>### 3. 宏观因子 —— 退化（单值常数）<br>- 证据：所有标的宏观均为 `45.6/100`，跨标的零方差。A/B 测试信号迁移矩阵全 0、发生变化标的数 0 —— 说明当前参数下宏观+其他因子组合无任何区分力。<br>- 结论：宏观输入是全市场统一常数，</strong></div>
+    <div class="note"><strong>数据与因子深度复盘报告（2026-11-18）<br><br>## 1. 一句话总结<br><br>因子层几乎丧失区分度：正确与错误样本的加权评分、置信度、分项得分差异均不足1.5分，实质是"恒定因子 + 弱方差因子"在驱动一个随机分类器。（49字）<br><br>## 2. 主要错误模式<br><br><strong>模式一：核心因子方差塌缩，辨识度归零</strong><br>- 正确 vs 错误样本：`weighted_score 48.06 vs 46.97`、`confidence 0.69 vs 0.68`、技术面 `51.63 vs 50.34` —— 差异均 <1.7 分，远低于有效因子所需的组间分离度。<br>- <strong>基本面恒为 50（N/A）、新闻情绪恒为 +0.00</strong>：两个分项在错误样本中全部恒定，等于在整个评分管道中贡献零方差、零信息。当前系统的真实打分实质上只有技术面一个因子在起作用，且技术面本身又集中在 48-54 窄带内（失败样本技术面 48/52/54/59）。<br><br><strong>模式二：期货/有色板块系统性错误，多空辩论看跌票未被传导</strong><br>- 失败 Top 5 中 3 条为期货（沪锡 -9.73%、沪铜 -8.49%、苹果 -7.52%），共性：技术面中性偏强（54/100）+ 多空辩论看跌 2 票 + 宏观 45.8，最终信号仍为"中性"，错过大跌。<br>- 这对应知识库中 `fundamental_technical_divergence` 模式：技术分不低但辩论面强烈看跌时，系统没有赋予 divergence 任何权重，导致"技术面和辩论面背离 → 信号不动作"。观望类错误样本背离度 -4.04（n=24），说明<strong>强负背离是观望信号失败的高危特征</strong>。<br><br><strong>模式三：A/B 调参管线疑似失效（信号分布全为 0）</strong><br>- 2026-07-12 的 A/B 测试：新旧信号分布、迁移矩阵全部为 0，与当日实际产出 191 条预测矛盾。这不是"参数没学到东西"，而是 <strong>optimizer 的输入特征快照或回写链路存在数据缺失</strong>，需作为 P0 排查项——否则所有"让优化器自动学习"的建议都在空转。<br><br>## 3. 成功样本特征<br><br>- <strong>ETF 错误率仅 21.74%</strong>（个股 53.78%、期货 57.14%）：分散化标的波动低，中性信号在 ETF 上天然高胜率 → 信号的实际能力高度依赖标的波动率，评分中<strong>没有标的波动率/贝塔维度</strong>是当前映射的结构性缺陷。<br>- 成功样本的 `fundamental_te</strong></div>
 
     <div class="footer">
         数据由 Hermes Agent + 多Agent LLM 预测系统自动生成 · 研究辅助非投资建议 ·
