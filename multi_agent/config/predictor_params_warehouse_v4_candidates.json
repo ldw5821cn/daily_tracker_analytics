@@ -1,6 +1,6 @@
 {
   "_version": 5,
-  "updated_at": "2026-11-12T17:21:35.924924",
+  "updated_at": "2026-11-18T17:18:07.845460",
   "个股": {
     "weights": {
       "technical": 0.22,
@@ -148,8 +148,8 @@
     "bear": 41,
     "strong_bear": 35
   },
-  "reflection_reason": "个股低准确率收紧强信号(33%)",
-  "reflection_updated_at": "2026-11-12T15:33:35.650395",
+  "reflection_reason": "个股低准确率收紧强信号(24%)",
+  "reflection_updated_at": "2026-11-16T17:21:01.444606",
   "hard_rules": {
     "macro_bearish_block_bullish": true,
     "macro_bearish_force_bearish_if_tech_below": 55,
@@ -157,6 +157,6 @@
   },
   "updated_by": "auto_tune_from_reflection",
   "updated_reason": "收窄 neutral 区间 | 提高 bullish/bearish 阈值门槛",
-  "trigger_accuracy": 43.9,
-  "trigger_pred_date": "2026-11-10"
+  "trigger_accuracy": 49.21,
+  "trigger_pred_date": "2026-11-17"
 }
