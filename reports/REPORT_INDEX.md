@@ -4,7 +4,8 @@
 
 | 日期 | 报告 | 大小 |
 |------|------|------|
-| 2026-11-19 | [#1](./2026-11-19/multi_etf_report_1.md) + [#2](./2026-11-19/multi_etf_report_2.md) | 48 KB ← 最新 |
+| 2026-11-20 | [#1](./2026-11-20/multi_etf_report_1.md) | 19 KB ← 最新 |
+| 2026-11-19 | [#1](./2026-11-19/multi_etf_report_1.md) + [#2](./2026-11-19/multi_etf_report_2.md) | 50 KB |
 | 2026-11-18 | [#1](./2026-11-18/multi_etf_report_1.md) + [#2](./2026-11-18/multi_etf_report_2.md) | 51 KB |
 | 2026-11-17 | [#1](./2026-11-17/multi_etf_report_1.md) | 23 KB |
 | 2026-11-16 | [#1](./2026-11-16/multi_etf_report_1.md) + [#2](./2026-11-16/multi_etf_report_2.md) | 44 KB |
