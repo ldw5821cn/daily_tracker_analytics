@@ -1,0 +1,11 @@
+[Unit]
+Description=Hermes Morning Brief Report
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/liudawei/github/daily_tracker_analytics
+Environment="PATH=/home/liudawei/.local/bin:/usr/local/bin:/usr/bin:/bin"
+ExecStart=/home/liudawei/.hermes/scripts/morning_brief_with_retry.sh
+StandardOutput=journal
+StandardError=journal

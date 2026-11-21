@@ -1,0 +1,9 @@
+[Unit]
+Description=Hermes Morning Brief Timer
+
+[Timer]
+OnCalendar=Mon-Fri *-*-* 08:15:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

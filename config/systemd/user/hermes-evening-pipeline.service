@@ -1,0 +1,12 @@
+[Unit]
+Description=Hermes Evening Pipeline Report
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/liudawei/github/daily_tracker_analytics
+Environment="PATH=/home/liudawei/.local/bin:/usr/local/bin:/usr/bin:/bin"
+Environment="XUEQIU_COOKIES=%XUEQIU_COOKIES%"
+ExecStart=/home/liudawei/.hermes/scripts/daily_evening_pipeline_with_retry.sh
+StandardOutput=journal
+StandardError=journal
