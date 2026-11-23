@@ -87,18 +87,30 @@ def analyze_sentiment(topic: str, entries: List[Dict]) -> Dict:
                 'key_drivers': []
             }
 
-        # 提取 JSON
+        # 提取 JSON（支持代码块、直接 JSON、以及 LLM 多行/截断输出）
         text = response.strip()
         if '```json' in text:
             start = text.find('```json') + 7
             end = text.find('```', start)
+            if end == -1:
+                end = len(text)
             text = text[start:end].strip()
         elif '```' in text:
             start = text.find('```') + 3
             end = text.find('```', start)
+            if end == -1:
+                end = len(text)
             text = text[start:end].strip()
 
-        result = json.loads(text)
+        # 如果还没找到 JSON，尝试从文本中提取第一个 { ... } 块
+        try:
+            result = json.loads(text)
+        except json.JSONDecodeError:
+            start = text.find('{')
+            end = text.rfind('}')
+            if start != -1 and end != -1 and end > start:
+                text = text[start:end+1]
+            result = json.loads(text)
         sentiment = result.get('sentiment', 'neutral')
         if sentiment not in ['bullish', 'bearish', 'neutral']:
             sentiment = 'neutral'
