@@ -1,96 +1,96 @@
 {
-  "date": "2026-11-20",
+  "date": "2026-11-23",
   "generated_by": "after_market_pipeline",
   "top10": [
+    {
+      "code": "002008",
+      "name": "大族激光",
+      "composite_score": 89,
+      "changepercent": 3.05,
+      "price": 46.63,
+      "amount_yi": 22.27,
+      "reason": "6维评分Top10"
+    },
     {
       "code": "300416",
       "name": "苏试试验",
       "composite_score": 88,
-      "changepercent": 1.95,
-      "price": 13.06,
-      "amount_yi": null,
-      "reason": "板块分散版Top10"
+      "changepercent": 4.59,
+      "price": 13.66,
+      "amount_yi": 6.18,
+      "reason": "6维评分Top10"
     },
     {
-      "code": "603366",
-      "name": "日出东方",
-      "composite_score": 85,
-      "changepercent": 1.86,
-      "price": 9.29,
-      "amount_yi": null,
-      "reason": "板块分散版Top10"
+      "code": "688110",
+      "name": "东芯股份",
+      "composite_score": 87,
+      "changepercent": 4.79,
+      "price": 45.99,
+      "amount_yi": 11.82,
+      "reason": "6维评分Top10"
     },
     {
-      "code": "002815",
-      "name": "崇达技术",
-      "composite_score": 85,
-      "changepercent": 0.89,
-      "price": 13.6,
-      "amount_yi": null,
-      "reason": "板块分散版Top10"
+      "code": "300438",
+      "name": "鹏辉能源",
+      "composite_score": 87,
+      "changepercent": 3.78,
+      "price": 33.79,
+      "amount_yi": 7.6,
+      "reason": "6维评分Top10"
     },
     {
-      "code": "603998",
-      "name": "方盛制药",
-      "composite_score": 84,
-      "changepercent": 2.77,
-      "price": 11.11,
-      "amount_yi": null,
-      "reason": "板块分散版Top10"
+      "code": "001337",
+      "name": "四川黄金",
+      "composite_score": 87,
+      "changepercent": 4.31,
+      "price": 33.42,
+      "amount_yi": 5.05,
+      "reason": "6维评分Top10"
     },
     {
-      "code": "300905",
-      "name": "宝丽迪",
-      "composite_score": 84,
-      "changepercent": 3.62,
-      "price": 30.05,
-      "amount_yi": null,
-      "reason": "板块分散版Top10"
+      "code": "603328",
+      "name": "依顿电子",
+      "composite_score": 86,
+      "changepercent": 3.84,
+      "price": 9.73,
+      "amount_yi": 5.23,
+      "reason": "6维评分Top10"
     },
     {
-      "code": "002636",
-      "name": "金安国纪",
-      "composite_score": 84,
-      "changepercent": 0.99,
-      "price": 50.88,
-      "amount_yi": null,
-      "reason": "板块分散版Top10"
+      "code": "300497",
+      "name": "富祥股份",
+      "composite_score": 86,
+      "changepercent": 4.17,
+      "price": 11.99,
+      "amount_yi": 2.05,
+      "reason": "6维评分Top10"
     },
     {
-      "code": "603706",
-      "name": "东方环宇",
-      "composite_score": 83,
-      "changepercent": 1.46,
-      "price": 21.54,
-      "amount_yi": null,
-      "reason": "板块分散版Top10"
+      "code": "300223",
+      "name": "君正股份",
+      "composite_score": 86,
+      "changepercent": 4.9,
+      "price": 90.53,
+      "amount_yi": 30.56,
+      "reason": "6维评分Top10"
     },
     {
-      "code": "603186",
-      "name": "华正新材",
-      "composite_score": 83,
-      "changepercent": 0.29,
-      "price": 123.41,
-      "amount_yi": null,
-      "reason": "板块分散版Top10"
+      "code": "300181",
+      "name": "佐力药业",
+      "composite_score": 86,
+      "changepercent": 3.31,
+      "price": 13.09,
+      "amount_yi": 3.42,
+      "reason": "6维评分Top10"
     },
     {
-      "code": "600186",
-      "name": "莲花控股",
-      "composite_score": 83,
-      "changepercent": 0.67,
-      "price": 9.07,
-      "amount_yi": null,
-      "reason": "板块分散版Top10"
-    },
-    {
-      "code": "002520",
-      "name": "日发精机",
-      "composite_score": 83,
-      "changepercent": 3.88,
-      "price": 6.16,
-      "amount_yi": null,
-      "reason": "板块分散版Top10"
+      "code": "002716",
+      "name": "湖南白银",
+      "composite_score": 86,
+      "changepercent": 4.38,
+      "price": 6.68,
+      "amount_yi": 7.68,
+      "reason": "6维评分Top10"
     }
   ]
 }
