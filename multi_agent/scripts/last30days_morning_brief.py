@@ -206,8 +206,24 @@ def render_html(items: List[dict], output_path: str, hithink_summary: dict = Non
                 f'<li><span class="badge">{source}</span> <span class="date">{date}</span> '
                 f'{link} <span class="score">{score}</span></li>'
             )
+        # 情绪分析
+        sentiment_html = ''
+        if sentiment_results and topic in sentiment_results:
+            s = sentiment_results[topic]
+            icon = s.get('sentiment', 'neutral')
+            icon_str = {'bullish': '🔥 看涨', 'bearish': '⚠️ 看跌', 'neutral': '➖ 中性'}.get(icon, '➖ 中性')
+            conf = s.get('confidence', 0)
+            reason = s.get('reason', '')
+            drivers = s.get('key_drivers', [])
+            drivers_str = ' · '.join(drivers) if drivers else ''
+            sentiment_color = {'bullish': '#ef4444', 'bearish': '#22c55e', 'neutral': '#94a3b8'}.get(icon, '#94a3b8')
+            sentiment_html = f'<div style="margin-bottom:12px;padding:10px 14px;background:{sentiment_color}15;border-left:4px solid {sentiment_color};border-radius:6px;"><strong style="color:{sentiment_color};font-size:1.1rem;">{icon_str}</strong> <span style="color:#94a3b8;">(信心度 {conf}%)</span><br/><span style="color:#e2e8f0;font-size:0.9rem;">{reason}</span>'
+            if drivers_str:
+                sentiment_html += f'<br/><span style="color:#94a3b8;font-size:0.85rem;">驱动: {drivers_str}</span>'
+            sentiment_html += '</div>'
+
         rows.append(
-            f'<div class="topic"><h3>{topic}</h3><ul>{"".join(entry_html)}</ul></div>'
+            f'<div class="topic">{sentiment_html}<h3>{topic}</h3><ul>{"".join(entry_html)}</ul></div>'
         )
 
     # 同花顺市场情绪模块
