@@ -1,27 +1,27 @@
 {
-  "generated_at": "2026-11-23T15:35:18",
+  "generated_at": "2026-11-23T17:10:41",
   "today": "2026-11-23",
   "warehouse": {
     "daily_bar": {
-      "count": 118987,
+      "count": 119008,
       "min_date": "1990-12-19",
       "max_date": "2026-11-23",
       "up_to_date": true,
       "lag_days": 0
     },
     "feature_snapshot": {
-      "count": 43612,
+      "count": 43640,
       "min_date": "2025-09-22",
       "max_date": "2026-11-23",
       "up_to_date": true,
       "lag_days": 0
     },
     "sentiment": {
-      "count": 20886,
+      "count": 21096,
       "min_date": "2024-08-16",
-      "max_date": "2026-11-20",
-      "up_to_date": false,
-      "lag_days": 3
+      "max_date": "2026-11-23",
+      "up_to_date": true,
+      "lag_days": 0
     },
     "macro": {
       "count": 342,
@@ -56,9 +56,9 @@
         "lag_days": 0
       },
       "期货": {
-        "max_date": "2026-11-20",
-        "count": 20104,
-        "lag_days": 3
+        "max_date": "2026-11-23",
+        "count": 20125,
+        "lag_days": 0
       },
       "US": {
         "max_date": "2026-11-20",
@@ -74,12 +74,12 @@
   },
   "predictions": {
     "latest_pred_date": "2026-11-23",
-    "total_predictions": 17213,
+    "total_predictions": 17262,
     "pred_lag_days": 0,
     "latest_by_category": {
       "个股": 119,
       "ETF": 23,
-      "期货": 0,
+      "期货": 49,
       "US": 0
     }
   },
@@ -95,7 +95,7 @@
       "note": "可训练"
     },
     "期货": {
-      "evaluable_days": 64,
+      "evaluable_days": 65,
       "trainable": true,
       "note": "可训练"
     },
