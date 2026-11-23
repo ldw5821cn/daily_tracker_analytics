@@ -20,6 +20,15 @@ from html import escape
 from typing import List
 
 ROOT = '/home/liudawei/github/daily_tracker_analytics'
+
+# 主题情绪分析
+sys.path.insert(0, os.path.join(ROOT, 'multi_agent'))
+try:
+    from core.sentiment_analyzer import analyze_sentiment, sentiment_icon
+except Exception as e:
+    print(f'[morning_brief] sentiment analyzer import failed: {e}', file=sys.stderr)
+    analyze_sentiment = None
+    sentiment_icon = None
 LAST30DAYS_SCRIPT = '/tmp/last30days-skill-cn/skills/last30days/scripts/last30days.py'
 DEFAULT_TOPICS = ["A股", "人形机器人", "低空经济", "固态电池", "AI半导体", "CPO光模块"]
 HITHINK_CACHE = os.path.join(ROOT, 'multi_agent', 'data', 'hithink_cache')
@@ -166,7 +175,7 @@ def hithink_market_summary() -> dict:
     }
 
 
-def render_html(items: List[dict], output_path: str, hithink_summary: dict = None):
+def render_html(items: List[dict], output_path: str, hithink_summary: dict = None, sentiment_results: dict = None):
     """渲染盘前简报 HTML。"""
     date_str = datetime.now().strftime('%Y-%m-%d')
     rows = []
@@ -301,10 +310,25 @@ def main():
         res['topic'] = topic
         results.append(res)
 
+    # 对每个主题进行情绪分析
+    sentiment_results = {}
+    if analyze_sentiment is not None:
+        print('正在进行情绪分析...')
+        for res in results:
+            topic = res.get('topic', '')
+            entries = []
+            for source in ['weibo', 'xiaohongshu', 'bilibili', 'zhihu', 'douyin', 'wechat', 'baidu', 'toutiao']:
+                for e in res.get(source, []) or []:
+                    e['source'] = source
+                    entries.append(e)
+            entries.sort(key=lambda x: x.get('score', 0), reverse=True)
+            sentiment_results[topic] = analyze_sentiment(topic, entries)
+            print(f'  {topic}: {sentiment_results[topic]["sentiment"]} (信心度 {sentiment_results[topic]["confidence"]}%)')
+
     hithink_summary = hithink_market_summary()
     date_str = datetime.now().strftime('%Y-%m-%d')
     html_path = os.path.join(args.output_dir, f'{date_str}.html')
-    render_html(results, html_path, hithink_summary)
+    render_html(results, html_path, hithink_summary, sentiment_results)
     print(f'已生成: {html_path}')
 
 
