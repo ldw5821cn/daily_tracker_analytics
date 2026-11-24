@@ -3,9 +3,9 @@
   "validation_date": null,
   "summary": {
     "total": 191,
-    "correct": 105,
-    "wrong": 86,
-    "accuracy": 54.97
+    "correct": 104,
+    "wrong": 87,
+    "accuracy": 54.45
   },
   "by_category": {
     "ETF": {
@@ -20,8 +20,8 @@
     },
     "期货": {
       "total": 49,
-      "wrong": 16,
-      "error_rate": 32.65
+      "wrong": 17,
+      "error_rate": 34.69
     }
   },
   "by_signal": {
@@ -32,24 +32,24 @@
     },
     "观望": {
       "total": 19,
-      "wrong": 5,
-      "error_rate": 26.32
+      "wrong": 6,
+      "error_rate": 31.58
     }
   },
   "feature_compare": {
     "weighted_score": {
-      "correct_avg": 47.13,
-      "wrong_avg": 45.86
+      "correct_avg": 47.17,
+      "wrong_avg": 45.83
     },
     "confidence": {
       "correct_avg": 0.7,
-      "wrong_avg": 0.72
+      "wrong_avg": 0.73
     }
   },
   "component_compare": {
     "技术面": {
-      "correct_avg": 49.94,
-      "wrong_avg": 47.55
+      "correct_avg": 49.88,
+      "wrong_avg": 47.64
     },
     "新闻情绪": {
       "correct_avg": 50.0,
@@ -60,8 +60,8 @@
       "wrong_avg": 50.0
     },
     "多空辩论净得分": {
-      "correct_avg": -1.76,
-      "wrong_avg": -2.17
+      "correct_avg": -1.72,
+      "wrong_avg": -2.21
     }
   },
   "wrong_top10": [
@@ -114,18 +114,6 @@
       "reasoning": "技术面中性(42/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨2 vs 看跌3 | 宏观中性(48.3/100) | 市场上下文neutral(50.0/100)上限100%"
     },
     {
-      "ticker": "AP0",
-      "name": "苹果",
-      "category": "期货",
-      "signal": "中性",
-      "return_pct": 6.654,
-      "pred_price": 5666.0,
-      "today_price": 6043.0,
-      "weighted_score": 49.2,
-      "confidence": 0.64,
-      "reasoning": "技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.4 vs 看跌2 | 宏观中性(48.3/100) | 市场上下文neutral(50.0/100)上限100%"
-    },
-    {
       "ticker": "688256",
       "name": "寒武纪",
       "category": "个股",
@@ -138,13 +126,13 @@
       "reasoning": "技术面中性(52/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.2 vs 看跌2 | 宏观中性(48.3/100) | 市场上下文neutral(50.0/100)上限100%"
     },
     {
-      "ticker": "LH0",
-      "name": "生猪",
+      "ticker": "AP0",
+      "name": "苹果",
       "category": "期货",
       "signal": "中性",
-      "return_pct": 5.263,
-      "pred_price": 9215.0,
-      "today_price": 9700.0,
+      "return_pct": 5.789,
+      "pred_price": 5666.0,
+      "today_price": 5994.0,
       "weighted_score": 49.2,
       "confidence": 0.64,
       "reasoning": "技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.4 vs 看跌2 | 宏观中性(48.3/100) | 市场上下文neutral(50.0/100)上限100%"
@@ -184,6 +172,18 @@
       "weighted_score": 49.9,
       "confidence": 0.63,
       "reasoning": "技术面中性(54/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.4 vs 看跌2 | 宏观中性(48.3/100) | 市场上下文neutral(50.0/100)上限100%"
+    },
+    {
+      "ticker": "600988",
+      "name": "赤峰黄金",
+      "category": "个股",
+      "signal": "中性",
+      "return_pct": -4.816,
+      "pred_price": 35.3,
+      "today_price": 33.6,
+      "weighted_score": 48.8,
+      "confidence": 0.66,
+      "reasoning": "技术面中性(52/100) | 基本面N/A(50/100) | 新闻情绪+0.00 | 多空辩论 看涨0.2 vs 看跌2 | 宏观中性(48.3/100) | 市场上下文neutral(50.0/100)上限100%"
     }
   ],
   "correct_top10": [
@@ -199,15 +199,15 @@
       "confidence": 0.6
     },
     {
-      "ticker": "RU0",
-      "name": "橡胶",
+      "ticker": "FG0",
+      "name": "玻璃",
       "category": "期货",
-      "signal": "中性",
-      "return_pct": -1.45,
-      "pred_price": 18625.0,
-      "today_price": 18355.0,
-      "weighted_score": 44.9,
-      "confidence": 0.71
+      "signal": "观望",
+      "return_pct": -1.469,
+      "pred_price": 885.0,
+      "today_price": 872.0,
+      "weighted_score": 51.3,
+      "confidence": 0.54
     },
     {
       "ticker": "601857",
@@ -241,6 +241,17 @@
       "today_price": 34.36,
       "weighted_score": 45.0,
       "confidence": 0.71
+    },
+    {
+      "ticker": "RM0",
+      "name": "菜粕",
+      "category": "期货",
+      "signal": "观望",
+      "return_pct": 1.407,
+      "pred_price": 2203.0,
+      "today_price": 2234.0,
+      "weighted_score": 51.3,
+      "confidence": 0.54
     },
     {
       "ticker": "516150",
@@ -285,17 +296,6 @@
       "today_price": 0.821,
       "weighted_score": 47.8,
       "confidence": 0.67
-    },
-    {
-      "ticker": "159530",
-      "name": "机器人ETF易方达",
-      "category": "ETF",
-      "signal": "中性",
-      "return_pct": 1.322,
-      "pred_price": 1.21,
-      "today_price": 1.226,
-      "weighted_score": 40.6,
-      "confidence": 0.83
     }
   ],
   "suggestions": [
@@ -304,16 +304,16 @@
   ],
   "divergence_analysis": {
     "fundamental_technical_divergence": {
-      "correct_avg": 0.06,
-      "wrong_avg": 2.45,
+      "correct_avg": 0.12,
+      "wrong_avg": 2.36,
       "by_wrong_signal": {
         "中性": {
-          "avg": 2.88,
+          "avg": 2.89,
           "n": 81
         },
         "观望": {
-          "avg": -4.4,
-          "n": 5
+          "avg": -4.83,
+          "n": 6
         }
       }
     }
