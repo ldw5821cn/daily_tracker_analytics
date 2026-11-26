@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-11-26T15:42:54",
+  "generated_at": "2026-11-26T17:17:29",
   "pred_date_range": [
     "2026-08-03",
     "2026-11-19"
   ],
   "n_days": 69,
-  "n_predictions": 10830,
+  "n_predictions": 10851,
   "warehouse_max_dates": {
     "个股": "2026-11-26",
     "指数": "2026-11-25",
     "ETF": "2026-11-26",
     "US": "2026-11-25",
-    "futures": "2026-11-25",
+    "futures": "2026-11-26",
     "index": "2026-11-25",
-    "期货": "2026-11-25"
+    "期货": "2026-11-26"
   },
   "categories": {
     "个股": {
@@ -167,20 +167,20 @@
             "2026-10-19",
             "2026-11-19"
           ],
-          "n": 462,
-          "n_evaluable": 462,
-          "coverage": 0.06277056277056277,
+          "n": 483,
+          "n_evaluable": 483,
+          "coverage": 0.06625258799171843,
           "n_bull": 1,
-          "n_bear": 28,
-          "accuracy": 82.75862068965517,
+          "n_bear": 31,
+          "accuracy": 78.125,
           "bull_mean": 5.64,
-          "bear_mean": -3.48
+          "bear_mean": -3.33
         }
       ],
-      "mean_accuracy": 51.0,
-      "accuracy_cv": 0.67,
-      "mean_coverage": 6.0,
-      "coverage_cv": 0.03,
+      "mean_accuracy": 49.4,
+      "accuracy_cv": 0.66,
+      "mean_coverage": 6.2,
+      "coverage_cv": 0.05,
       "trainable": false,
       "note": "数据不足或跨窗口不稳定，暂不训练"
     },
