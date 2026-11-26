@@ -7,7 +7,7 @@
     "alert_type": "跌破年线",
     "condition": "close < ma250",
     "triggered": true,
-    "last_checked": "2026-11-25",
+    "last_checked": "2026-11-26",
     "notes": "用户要求：513530持续跟踪，跌破年线时通知买入",
     "last_close": 1.49,
     "last_ma250": 1.5500319999999999,
